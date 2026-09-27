@@ -11,5 +11,6 @@ The proposed study asks whether training directly predicted molecular forces to 
 - [Proposal PDF](proposal.pdf) and [editable LaTeX source](proposal.tex)
 - [Research field guide PDF](Research_Field_Guide.pdf) and [editable guide](FIELD_GUIDE.md)
 - [Claim-by-claim evidence audit](CLAIM_AUDIT.md)
+- [Landscape17 raw pathway sample](data/landscape17_sample/README.md), including aspirin and paracetamol path files and provenance
 
 The LaTeX source uses the supplied `neurips_2019.sty` style file in this repository. The research documents distinguish established prior work from planned experiments and hypotheses.
