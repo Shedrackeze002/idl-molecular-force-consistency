@@ -12,7 +12,6 @@
   {0.9ex \@plus 0.2ex \@minus 0.2ex}%
   {\large\bf\raggedright}}
 \makeatother
-\setlength{\parskip}{4.5pt}
 
 \title{Do Consistent Learned Forces Find the Right Molecular Shape?}
 \author{Shedrack Eze (seze) \quad Olufunke Abodunrin (oabodunr)\\
@@ -32,30 +31,30 @@ A molecule can take several shapes as its atoms move. A reference quantum-chemis
 An energy-based model calculates forces as the downhill direction of its predicted energy. A direct-force model predicts the arrows themselves, which may be faster, but its arrows can disagree with the energy it predicts. Earlier research already found that direct forces can score well on individual examples yet perform poorly in searches for transition states. The question here is more specific: if training makes the direct arrows agree better with the learned energy, do they lead to the correct stable shape more often on unseen paths, even after accounting for force error and cost?
 
 \section{Related Work and Background}
-Geometry-aware models such as PaiNN already learn energy-based forces \cite{painn}. Bigi et al. found direct-force problems in simulations and optimization \cite{bigi}; Zhao et al. showed that lower force error need not improve reaction transition-state search \cite{zhao}. Landscape17 documented missed conformational paths and extra stable shapes \cite{landscape}. Force/energy disagreement and conservation-related losses have also been studied \cite{disagree,takamoto}. The proposed contribution is to test whether reducing disagreement improves recovery from unseen conformational paths at similar error, not to claim a new penalty.
+Geometry-aware models such as PaiNN already learn energy-based forces \cite{painn}. Bigi et al. found direct-force problems in simulations and optimization \cite{bigi}; Zhao et al. showed that lower force error need not improve reaction transition-state search \cite{zhao}. Landscape17 documented missed conformational paths and extra stable shapes \cite{landscape}. Takamoto et al. tested conservation-related losses for direct-force models; a recent manuscript used force disagreement to guide fine-tuning \cite{takamoto,disagree}. The proposed contribution is to test recovery from withheld conformational paths at similar force error and cost, not to claim a new consistency method.
 
 \section{Methodology}
-Landscape17 provides public atomic positions, energies, and forces from one hybrid density-functional-theory (DFT) calculation \cite{landscape}. It includes 37 aspirin and nine paracetamol paths between stable shapes. Entire paths, not nearby frames, will be assigned to separate training, validation, and test groups. Shared shapes will be flagged. Labels from rMD17 use a different DFT calculation and will not be mixed in.
+Landscape17 provides public atomic positions, energies, and forces computed at the same hybrid density-functional-theory (DFT) level, $\omega$B97x/6-31G(d) \cite{landscape}. Its 37 aspirin and nine paracetamol transition-state connections each have two descent branches. Both branches of each connection will stay together in training, validation, or test. Shared shapes will be flagged. Labels from rMD17 use a different DFT method and will not be mixed in.
 
-Three models will share one E3x-based network \cite{e3x}: energy-derived forces, direct forces, and direct forces trained to agree with the energy-derived forces. The extra training cost will be counted; agreement is not guaranteed. A MACE model on the same split provides an established energy-based comparison \cite{mace}.
+For each molecule separately, three models will share an E3x-based architecture \cite{e3x}: energy-derived forces, direct forces, and direct forces trained to agree with the energy-derived forces. The extra training cost will be counted; agreement is not guaranteed. A MACE model on the same split provides an established energy-based comparison \cite{mace}.
 
-Validation paths will select model settings. Training time, total computing cost, and time per force prediction will be reported.
+Validation connection groups will select model settings. Training time, total computing cost, and time per force prediction will be reported.
 
 Each model will start from the same unseen positions and follow its predicted forces with the same relaxation procedure. Main measures are average force-component error and the share reaching the stable DFT reference shape. Wrong endpoints and failed runs count separately. A closed-loop test checks whether forces behave as slopes of one energy surface; speed and forces at reference stationary points are secondary. A direct model's energy output alone cannot justify reaction barriers or rates. The appendix specifies the checks.
 
-The key comparison is correct-shape recovery for consistency-trained versus ordinary direct forces at similar average error. Energy-based forces are a reference point. Whole paths are the unit of analysis. If errors cannot be matched, only the error--cost--recovery tradeoff will be reported.
+The key comparison is correct-shape recovery for consistency-trained versus ordinary direct forces at similar average error. Energy-based forces are a reference point. Whole transition-state connections are the unit of analysis. If errors cannot be matched, only the error--cost--recovery tradeoff will be reported.
 
 \section{Baseline and Extensions}
-The energy-based E3x model is the baseline. Ordinary direct E3x is the control for a predeclared sweep of consistency-training strengths. Aspirin is the main test; paracetamol checks whether the pattern repeats in another molecule. MACE provides a stronger established comparison. Adding more pathway training data is a separate experiment because Landscape17 already studied its general benefit \cite{landscape}.
+The energy-based E3x model is the baseline. Ordinary direct E3x is the control for a predeclared sweep of consistency-training strengths. Aspirin is the main test; separately trained paracetamol models check whether the pattern repeats. MACE provides a stronger established comparison. Adding more pathway training data is a separate experiment because Landscape17 already studied its general benefit \cite{landscape}.
 
 \section{Results and Analysis}
-The hypothesis is that making direct forces more consistent with energy will improve correct-shape recovery when average force errors are similar. If any gain comes only from lower force error, or if consistency improves without better recovery, that hypothesis will not be supported. No models have been trained. Variation across training runs and paths will be reported.
+The hypothesis is that making direct forces more consistent with energy will improve correct-shape recovery when average force errors are similar. If any gain comes only from lower force error, or if consistency improves without better recovery, that hypothesis will not be supported. No models have been trained. Variation across training runs and connections will be reported.
 
 \section{Discussion}
-There are few independent paths, some share stable shapes, and models may reach different error levels. Whole-path splits, fixed starting positions, and model choices made only on validation data limit unfair comparisons. A stopped direct-force relaxation is not necessarily an energy minimum. Even a positive result would apply to these molecules and this network; it would not establish reaction rates or a complete landscape. Zhao et al.'s reaction-search findings remain relevant prior work \cite{zhao}.
+There are few independent connections, some share stable shapes, and models may reach different error levels. Whole-connection splits, fixed starting positions, and model choices made only on validation data limit unfair comparisons. A stopped direct-force relaxation is not necessarily an energy minimum. Even a positive result would apply to these molecules and this network; it would not establish reaction rates or a complete landscape. Zhao et al.'s reaction-search findings remain relevant prior work \cite{zhao}.
 
 \section{Future Directions}
-Before the October 23 midterm: check the Landscape17 data, fix the path splits and starting positions, and test the first energy-based and direct models. Before the December 9 course report: run the consistency sweep, MACE comparison, paired relaxations, and paracetamol check.
+Before the October 23 midterm: check the Landscape17 data, fix the connection splits and starting positions, and test the first energy-based and direct models. Before the December 9 course report: run the consistency sweep, MACE comparison, paired relaxations, and paracetamol check.
 
 \section{Administrative}
 Provisional roles: data/evaluation (Eze), model implementation (Abodunrin), experiments (Aaron), and infrastructure/writing (Idris). Modeling has not begun; the team is currently reviewing the literature and refining the study design. Project repository (private): \url{https://github.com/Shedrackeze002/idl-molecular-force-consistency}.
@@ -63,11 +62,11 @@ Provisional roles: data/evaluation (Eze), model implementation (Abodunrin), expe
 \clearpage
 \section*{Appendix}
 \subsection*{Experimental Protocol Details}
-The public Landscape17 archive contains 37 aspirin and nine paracetamol transition-path groups, with atomic coordinates and hybrid-DFT energy/force labels along the paths and at stationary points \cite{landscape}. Path identifiers, rather than individual frames, define the partitions. Validation and test path groups are disjoint; duplicate structures and shared minima will be audited before fitting. Hyperparameters, penalty strengths, and MAE-matched checkpoint pairs are chosen using training and validation data only. Test groups are evaluated once after selection. Three seeds and a same-split MACE reference are planned core controls; a pilot will size the dedicated compute needed.
+The public Landscape17 archive contains 37 aspirin and nine paracetamol transition-state connections, each with two descent branches, with atomic coordinates and hybrid-DFT energy/force labels along the branches and at stationary points \cite{landscape}. Connection identifiers, rather than individual frames, define the partitions separately for each molecule. Validation and test groups are disjoint; duplicate structures and shared minima will be audited before fitting. Hyperparameters, penalty strengths, and MAE-matched checkpoint pairs are chosen using training and validation data only. Test groups are evaluated once after selection. Three seeds and a same-split MACE reference are planned core controls; a pilot will size the dedicated compute needed.
 
 The direct consistency arm minimizes an energy/force objective plus $\lambda_C\|\hat{\mathbf F}^{\mathrm D}+\nabla\hat E\|_2^2$ on training geometries. The $\lambda_C=0$ direct model and gradient-force model are controls. Head parameter counts, equal-update and equal-wall-time results, total GPU-hours, and batched force-inference latency will be reported on identical hardware.
 
-Held-out path frames and transition-state coordinates will not tune the models; a minimum shared with training paths will be labeled as seen. Identical perturbed starts from held-out paths will be relaxed with a fixed force-driven optimizer and evaluation budget. Success requires convergence and a symmetry-aware structural match to the connected reference minimum; unmatched converged fixed points and nonconvergence are separate outcomes. Closed-loop work is measured on preselected geometry loops with numerical refinement. The primary analysis compares path-group outcomes across models within validation-defined force-MAE bands, with uncertainty reported over groups and seeds. Full transition-state networks, barrier heights, and reaction rates are outside this proposal's direct-force claims.
+Held-out branch frames and transition-state coordinates will not tune the models; a minimum shared with training connections will be labeled as seen. Each branch endpoint will be matched to a reference DFT minimum before evaluation. Identical exact, nonstationary frames from held-out descent branches will be relaxed with a fixed force-driven optimizer and evaluation budget. Success requires convergence and a symmetry-aware structural match to that branch's reference minimum; unmatched converged fixed points and nonconvergence are separate outcomes. Closed-loop work is measured on preselected geometry loops with numerical refinement. The primary analysis compares connection-group outcomes across models within validation-defined force-MAE bands, with uncertainty reported over groups and seeds. Full transition-state networks, barrier heights, and reaction rates are outside this proposal's direct-force claims.
 
 \begin{thebibliography}{9}
 \small
@@ -76,7 +75,7 @@ Held-out path frames and transition-state coordinates will not tune the models; 
 \bibitem{zhao} Q. Zhao et al. Harnessing machine learning to enhance transition state search with interatomic potentials and generative models. \emph{Advanced Science}, 12:e06240, 2025.
 \bibitem{e3x} O. T. Unke and H. Maennel. E3x: E(3)-equivariant deep learning made easy. arXiv:2401.07595, 2024.
 \bibitem{landscape} V. C\u{a}rare et al. Global properties of the energy landscape: a testing and training arena for machine learned potentials. \emph{npj Computational Materials}, 12:9, 2026 (online 2025).
-\bibitem{disagree} Anonymous. When forces disagree: a data-free fast diagnostic from internal consistency of direct-force neural network potentials. OpenReview manuscript under review, 2026.
+\bibitem{disagree} Anonymous. When forces disagree: a data-free fast diagnostic from internal consistency of direct-force neural network potentials. OpenReview manuscript, 2026.
 \bibitem{takamoto} M. Takamoto, V. Zaverkin, and M. Niepert. Physics-informed weakly supervised learning for interatomic potentials. \emph{ICML}, 2025.
 \bibitem{mace} I. Batatia et al. MACE: Higher order equivariant message passing neural networks for fast and accurate force fields. \emph{NeurIPS}, 2022.
 \end{thebibliography}

@@ -1,6 +1,6 @@
 # The idea, from the beginning: can learned forces guide a molecule to the right shape?
 
-*Research field guide, revised 26 September 2026. This explains the proposed study and its evidence. The team is still reviewing literature; no model has been trained and no result is reported here.*
+*Research field guide, revised 27 September 2026. This explains the proposed study and its evidence. The team is still reviewing literature; no model has been trained and no result is reported here.*
 
 ## The question in one sentence
 
@@ -38,7 +38,7 @@ The broad idea of learned molecular forces is established. [sGDML](https://www.n
 
 [Landscape17](https://www.nature.com/articles/s41524-025-01878-x) provides a way to test this narrower question. It identifies stable structures, transition states, and approximate downhill paths between them for several molecules, and reports that evaluated MLIPs can miss reference connections or produce extra stable structures. It also shows that adding path data can help. The present project does not claim to invent that dataset or rediscover the benefit of adding path samples.
 
-A [public OpenReview manuscript](https://openreview.net/pdf?id=cQvBP4TZHe) already studies disagreement between direct forces and energy gradients as a diagnostic. [Takamoto, Zaverkin, and Niepert (2025)](https://arxiv.org/abs/2408.05215) already study conservation-related training losses. These works narrow the possible contribution: the proposed penalty and the disagreement score are tools for a controlled experiment, not new methods by themselves. [UMA](https://arxiv.org/html/2506.23971v2) also discusses direct and conservative training strategies at much larger scale; a two-stage strategy was part of the earlier course design but is no longer the main question.
+A [public OpenReview manuscript](https://openreview.net/pdf?id=cQvBP4TZHe) studies disagreement between direct forces and energy gradients as a diagnostic and uses high-disagreement data to fine-tune a conservative pathway, improving direct-force simulation stability. [Takamoto, Zaverkin, and Niepert (2025)](https://arxiv.org/html/2408.05215#S12.SS11) test conservation-related losses for direct-force branches and report reduced force curl. These works narrow the possible contribution: neither a consistency intervention nor a disagreement score is new by itself. [UMA](https://arxiv.org/html/2506.23971v2) also discusses direct and conservative training strategies at much larger scale; a two-stage strategy was part of the earlier course design but is no longer the main question.
 
 This is a selective map of the work most relevant to the project's claim, not a survey of every MLIP paper. The exact priority boundary must be checked again before submitting a manuscript.
 
@@ -46,15 +46,15 @@ This is a selective map of the work most relevant to the project's claim, not a 
 
 The first course idea used **rMD17**, whose molecular-dynamics frames have energies and forces calculated at the PBE/def2-SVP level. It is useful for measuring prediction error near sampled trajectories. But it does not, by itself, provide the full set of reference downhill routes needed for the new question. Its nearby frames are also correlated, so a random frame split can make generalization look stronger than it is. The [rMD17 source](https://arxiv.org/abs/2007.09593) documents the dataset. The locally supplied rMD17 package was inspected during the earlier claim audit.
 
-The current study instead uses **Landscape17** as its primary data source. Its public archive contains atomic positions, energies, and forces on paths from transition states toward connected stable shapes. The [paper](https://arxiv.org/html/2508.16425) lists 37 transition states for aspirin and nine for paracetamol, with path structures associated with them. Those counts are small enough for close scrutiny and large enough to make a whole-path holdout possible, though uncertainty will remain substantial. Aspirin is the primary molecule; paracetamol is a second check.
+The current study instead uses **Landscape17** as its primary data source. Its public archive contains atomic positions, energies, and forces on descent branches from transition states toward connected stable shapes. The [paper](https://arxiv.org/html/2508.16425) lists 37 transition-state connections for aspirin and nine for paracetamol; the archive has two descent branches per connection. Those counts are small enough for close scrutiny and large enough to make a connection-group holdout possible, though uncertainty will remain substantial. Aspirin is the primary molecule; separately trained paracetamol models provide a second check.
 
 Landscape17's reference labels use a hybrid DFT method, $\omega$B97x/6-31G(d). The earlier rMD17 labels use PBE/def2-SVP. Those methods define different energy surfaces. Scores or energies from the two sets cannot be merged as if they came from one reference. The proposal therefore trains and compares its core models on Landscape17 alone. No new DFT calculation is required for the core design, but the archive, units, path identities, duplicate structures, and shared endpoints must be audited before training.
 
-A *whole-path holdout* means every point on a selected reference path stays in the same training, validation, or test group. This is more demanding than scattering adjacent path frames across groups. It does not guarantee that a test path is entirely novel: two paths may share a stable endpoint already seen during training. Those endpoints will be marked as seen, and claims will concern withheld **paths**, not wholly unseen molecules or minima.
+A *whole-connection holdout* means both descent branches and the transition state for one connection stay in the same training, validation, or test group. This is more demanding than scattering adjacent frames across groups. It does not guarantee that a test connection is entirely novel: two connections may share a stable endpoint already seen during training. Those endpoints will be marked as seen, and claims will concern withheld **connections**, not wholly unseen molecules or minima.
 
 ## 5. Exactly what the team proposes to compare
 
-Three models will use the same equivariant E3x-based backbone and the same Landscape17 training split:
+For each molecule separately, three models will use the same equivariant E3x-based architecture and Landscape17 training split:
 
 1. **Energy-based baseline.** Predict energy and calculate its force by differentiation.
 2. **Ordinary direct-force control.** Predict forces directly, with an energy output but no consistency penalty.
@@ -64,19 +64,19 @@ A separately trained [MACE](https://papers.neurips.cc/paper_files/paper/2022/has
 
 The intervention is the change from model 2 to model 3. The scientific question is not merely whether the penalty makes its own disagreement score smaller; that would be unsurprising. The question is whether it changes **shape recovery** after controlling, as far as the data allow, for ordinary force error. The energy-based model anchors the physically constrained end of the comparison.
 
-The study will select model settings using training and validation paths only. It will compare checkpoints in force-MAE ranges that overlap on validation data. If the regularized and unregularized models never achieve comparable error, it cannot honestly attribute a recovery difference to consistency alone. In that case, the result will be an accuracy, cost, and recovery tradeoff rather than a matched-effect claim.
+The study will select model settings using training and validation connection groups only. It will compare checkpoints in force-MAE ranges that overlap on validation data. If the regularized and unregularized models never achieve comparable error, it cannot honestly attribute a recovery difference to consistency alone. In that case, the result will be an accuracy, cost, and recovery tradeoff rather than a matched-effect claim.
 
 ## 6. What the measurements mean
 
 **Force error** measures the average difference between predicted and reference x, y, and z force components on held-out path structures. It reveals local fit, not where a multi-step relaxation ends. Energy error can also be reported for heads with meaningful energy outputs, but the direct head's energy is not guaranteed to govern its forces.
 
-**Shape recovery** is the primary downstream task. Every model begins at the same preselected, slightly perturbed positions from a withheld path. The same force-driven relaxation algorithm and evaluation budget follow each model's forces. A run succeeds only if it converges and its final structure matches the connected reference DFT minimum under a symmetry-aware structural comparison. A run that stops at a different structure is counted separately from one that fails to converge. A stationary direct-force endpoint is a *force-field fixed point*, not automatically a minimum of any energy.
+**Shape recovery** is the primary downstream task. Every model begins at the same preselected, exact nonstationary frames from a withheld reference descent branch. Before evaluation, each branch's terminal structure is matched to its connected reference DFT minimum; the branch direction cannot be inferred merely from its plus/minus filename. The same force-driven relaxation algorithm and evaluation budget follow each model's forces. A run succeeds only if it converges and its final structure matches that branch's reference DFT minimum under a symmetry-aware structural comparison. A run that stops at a different structure is counted separately from one that fails to converge. A stationary direct-force endpoint is a *force-field fixed point*, not automatically a minimum of any energy. Perturbed starts would require separate DFT endpoint checks before they could be scored this way.
 
 **Closed-loop work** is a physical-consistency check. Imagine moving the atoms around a small route and returning to the start. For forces derived exactly from one smooth energy, the net work around that closed route is zero. A persistent nonzero result for direct forces indicates a nonconservative component. Numerical integration itself creates error, so the calculation must be repeated with finer steps. Lower closed-loop work is interesting, but it does not by itself show better shape recovery.
 
 **Cost** includes training time and GPU-hours, including the extra derivative used by consistency training. Force prediction speed is measured with the same hardware, batching, and implementation choices. Direct-force inference is not automatically faster in practice. Accuracy and cost should both be visible when comparing models.
 
-**Uncertainty** must respect the data structure. Many frames from one path are related, so they are not independent replications. Comparisons use whole path groups and repeated training seeds, with paired starts for each model. Three seeds and a same-split MACE reference are planned. Paracetamol has only nine path groups, so its uncertainty will be wide; it should be treated as a limited replication, not proof of broad molecular transfer.
+**Uncertainty** must respect the data structure. Many frames from one transition-state connection are related, so they are not independent replications. Comparisons use whole connection groups and repeated training seeds, with paired starts for each model. Three seeds and a same-split MACE reference are planned. Paracetamol has only nine connection groups, so its uncertainty will be wide; it should be treated as a limited replication, not proof of broad molecular transfer.
 
 ## 7. What different results would mean
 
@@ -95,7 +95,7 @@ The core design is feasible using the public archive, but it is ambitious for a 
 
 Several details can invalidate an apparently strong finding. Path frames or duplicates must not leak across splits. Shared minima must be identified. Energy and force units must be checked. The energy model's force should be checked against a finite-difference calculation; rotation and translation behavior should be tested. Matching criteria for final shapes, starting positions, relaxation budget, model-selection rule, and statistical unit should be fixed before test results are examined. Training cost of the regularizer must be included rather than hidden. These are design safeguards, not completed experimental results.
 
-The planned order is straightforward. Before the October 23 midterm, parse and audit Landscape17, freeze path groups and starting positions, and verify conservative and direct-force pilots. Before the December 9 course report, run the consistency sweep, same-split MACE reference, paired relaxations, and paracetamol check. A later paper may require broader replication, deeper failure analysis, more independent paths or molecules, and a refreshed prior-art search. The course report is the first milestone, not the manuscript's evidence by itself.
+The planned order is straightforward. Before the October 23 midterm, parse and audit Landscape17, freeze connection groups and starting positions, and verify conservative and direct-force pilots. Before the December 9 course report, run the consistency sweep, same-split MACE reference, paired relaxations, and paracetamol check. A later paper may require broader replication, deeper failure analysis, more independent connections or molecules, and a refreshed prior-art search. The course report is the first milestone, not the manuscript's evidence by itself.
 
 ## 9. Is this novel enough for a paper?
 
@@ -147,7 +147,7 @@ Many other MLIP questions lie beyond this project. Researchers build models tran
 - [Takamoto, Zaverkin, and Niepert, physics-informed training losses (2025)](https://arxiv.org/abs/2408.05215).
 - [Cărare et al., Landscape17 (online 2025; volume 2026)](https://www.nature.com/articles/s41524-025-01878-x).
 - [Fu et al., eSEN and practical energy conservation (2025)](https://arxiv.org/abs/2502.12147).
-- [When Forces Disagree, public manuscript under review (2026)](https://openreview.net/pdf?id=cQvBP4TZHe).
+- [When Forces Disagree, public OpenReview manuscript (2026)](https://openreview.net/pdf?id=cQvBP4TZHe).
 - [Wood et al., UMA and large-scale molecular potential training (2026 revision)](https://arxiv.org/html/2506.23971v2).
 - [Eastman, Pretti, and Markland, pretrained-model benchmark (2026)](https://pubs.acs.org/doi/10.1021/acs.jctc.6c00130).
 - [SPICE molecular dataset](https://www.nature.com/articles/s41597-022-01882-6) and [MACE-OFF transferable organic potentials](https://pubs.acs.org/doi/10.1021/jacs.4c07099).
