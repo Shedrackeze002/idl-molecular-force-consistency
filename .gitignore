@@ -1,0 +1,9 @@
+.DS_Store
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+overleaf_template/
+REVISION_NOTES.md
