@@ -1,16 +1,29 @@
 # Consistent learned forces and molecular shape recovery
 
-Course project for 11-785 Introduction to Deep Learning, Fall 2026.
+This repository is the working home for a **semester-long research project** in 11-785 Introduction to Deep Learning (Fall 2026). The proposal is its first milestone. The goal is to complete a rigorous empirical study and develop the findings into a publishable paper.
 
-The proposed study asks whether training directly predicted molecular forces to agree with a learned energy improves recovery of reference stable shapes from held-out conformational pathways. The planned comparison uses Landscape17 labels, whole-path splits, and energy-derived, direct, and consistency-trained direct-force models.
+## Research question
 
-**Status:** Literature review and study design. No model has been trained and no experimental result is reported here.
+Neural networks can estimate the forces that move a molecule's atoms. Directly predicted forces may be efficient, but they can disagree with the model's predicted energy. This project asks whether training those forces to agree more closely with energy helps a molecule reach the reference stable shape when the route to that shape was not seen during training.
 
-## Documents
+The planned study uses one electronic-structure reference from [Landscape17](https://doi.org/10.6084/m9.figshare.29949230.v1). Whole molecular pathways will be held out. An energy-derived model, an ordinary direct-force model, and a consistency-trained direct-force model will share a controlled equivariant backbone; a same-split MACE model provides an established comparison. Evaluation will consider force error, recovery of reference shapes, physical consistency, training cost, and inference speed. Aspirin is the primary molecule, with paracetamol as a second check.
 
-- [Proposal PDF](proposal.pdf) and [editable LaTeX source](proposal.tex)
+## Project roadmap
+
+1. **Foundation and proposal:** review the literature, define the claim boundary, inspect the data, and submit the course proposal. This is the current stage.
+2. **Data and baseline:** audit Landscape17, freeze whole-path train/validation/test splits and relaxation starts, and verify an energy-derived baseline.
+3. **Model comparisons:** train the direct-force and consistency-trained variants under matched protocols, then add the same-split MACE reference.
+4. **Evaluation and analysis:** run paired relaxations, physical-consistency checks, accuracy and compute comparisons, uncertainty analysis, and paracetamol replication.
+5. **Reporting and paper:** prepare the midterm and final course reports, release reproducible code and results, and develop a manuscript from the completed evidence.
+
+The plan may be refined as pilot measurements and mentor feedback reveal what is feasible. No model has been trained yet; the repository contains no experimental results.
+
+## Repository contents
+
+- [Current proposal PDF](proposal.pdf) and [LaTeX source](proposal.tex)
 - [Research field guide PDF](Research_Field_Guide.pdf) and [editable guide](FIELD_GUIDE.md)
 - [Claim-by-claim evidence audit](CLAIM_AUDIT.md)
-- [Landscape17 raw pathway sample](data/landscape17_sample/README.md), including aspirin and paracetamol path files and provenance
+- [Landscape17 raw pathway sample](data/landscape17_sample/README.md), with source attribution and checksums
+- `neurips_2019.sty`, the course-provided style used to compile the proposal
 
-The LaTeX source uses the supplied `neurips_2019.sty` style file in this repository. The research documents distinguish established prior work from planned experiments and hypotheses.
+Training code, frozen split manifests, configuration files, evaluation scripts, and measured results will be added as those stages begin. The small committed data sample is for exploration; the [full Landscape17 archive](https://ndownloader.figshare.com/files/57341180) is needed for the proposed experiments.
