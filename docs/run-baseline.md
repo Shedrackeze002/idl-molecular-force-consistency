@@ -1,6 +1,6 @@
 # Running the Landscape17 baseline
 
-Run commands from the repository root `Codex`. Proposal submission is complete. Aspirin passes preparation; paracetamol preparation is blocked by endpoint `01_2/plus`. The first learning check failed its unchanged force criterion. Read the current report before launching a pilot.
+Run commands from the repository root `Codex`. Proposal submission is complete. Aspirin passes preparation; paracetamol preparation is blocked by endpoint `01_2/plus`. Both original learning checks and the reviewed real-label full-batch control failed their unchanged force criteria. Read the current report before launching a pilot.
 
 ## CPU environment
 
@@ -49,3 +49,15 @@ uv run --frozen --extra gpu force-consistency train --config configs/aspirin-bas
 Use a fresh run directory in the copied JSON config, and carry the frozen source/manifest IDs. Keep Python3.12, the same lock and precision. Colab/Kaggle need a Python3.12 environment, archive access and persistent output storage; the launcher uses the package CLI, not notebook-specific state. CMU batch submission also needs the real partition/account/time/GPU settings, which are intentionally not invented. Record driver/CUDA/device metadata and rerun physical checks before treating a GPU result as verified. Later inference-speed comparisons must use the same recorded GPU setting; this CPU engineering check is not a scientific speed comparison.
 
 The architecture is adapted from the [official E3x force-field example](https://e3x.readthedocs.io/stable/examples/md17_ethanol.html), with retained vector features and head-local scalar readout. Its MD17 splits and label conventions are not used here.
+
+## Reviewed force-learning diagnostics (30 September)
+
+The saved diagnostic run completed validly: its easy synthetic teacher passed at300updates, but original-label fullbatch16 fitting failed the force gate at2000updates. Read [the diagnostic report](../reports/force-learning-diagnostics.md) and [compact evidence](../reports/force-learning-diagnostics.json). The full pilot remains pending. Frozen-feature readout solutions diagnose two fixed bodies; they are not network capacity bounds or production checkpoints.
+
+```sh
+uv run --frozen force-consistency diagnose-learning --config configs/aspirin-force-diagnostics.json
+```
+
+This invocation is a reproducibility reference; the completed output directory is protected. A future trial requires a new prospective reviewed protocol and separate directory, rather than silently rerunning or tuning this config. The controller validates historical checkpoint/config/subset hashes and current prepared identity, opens train.npz only, records outcomes in the evidence log, and blocks real-label fitting if the teacher fails. Its `completed` status describes diagnostic execution, not learning acceptance. Control summaries contain synthetic-versus-DFT label type, own-initial MSE thresholds, full-subset histories, input identities, final checkpoints and new-process verification. Teacher energy offset is synthetic0, with original loss scales. It is not a DFT energy prediction.
+
+The diagnostic figure can be regenerated from saved outputs with `python scripts/summarize_force_diagnostics.py` using Matplotlib (generator version recorded in the compact evidence). The original random-head run has no saved intermediate full-subset history, so only its endpoints are plotted. Existing minibatch losses are not substituted for missing full-subset metrics.

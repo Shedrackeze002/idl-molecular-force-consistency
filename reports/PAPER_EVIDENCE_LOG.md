@@ -213,3 +213,163 @@ Before molecular execution: new loader/readout tests first failed4/4 because int
 ## IMPLEMENTATION-003A — Diagnostic regression suite passed
 
 Full suite67/67 passed in57.25s before any molecular diagnostic execution. Existing55 tests remain passing;12 new tests cover the reviewed diagnostic contracts. No existing model/loss settings or preparation identities changed. The next invocation is the exact prospective CPU config; outcome remains unknown.
+
+## DIAGNOSTIC-001A — Frozen readout trial preregistered (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "config_hash": "b6c55a5a5aa40d7e30d0423f953793c635c7b2d433e6ebac59ad3cada906d556",
+  "controls": "fresh and historical backbones, joint and force-only",
+  "rcond": 1e-10,
+  "run_directory": "runs/aspirin-force-diagnostics-2026-09-30"
+}
+```
+
+## DIAGNOSTIC-001A — Frozen readout trial completed (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "artifact": "runs/aspirin-force-diagnostics-2026-09-30/readout.json",
+  "sha256": "6f760b0f374d33e090fb3f54c40948a27434df7e990c3c1487d1caebda3d4237",
+  "solutions": {
+    "fresh": [
+      {
+        "coefficient_l2": 3.3285634544307707,
+        "energy_mse_eV2": 0.009370411512161263,
+        "force_mse_eV2_per_A2": 0.008237971281002272,
+        "mode": "force_only",
+        "rank": 16
+      },
+      {
+        "coefficient_l2": 5.043436835152683,
+        "energy_mse_eV2": 0.0007420096271186995,
+        "force_mse_eV2_per_A2": 0.00879886195790133,
+        "mode": "joint",
+        "rank": 17
+      }
+    ],
+    "historical_final": [
+      {
+        "coefficient_l2": 0.9630752766324349,
+        "energy_mse_eV2": 0.0024365124422744406,
+        "force_mse_eV2_per_A2": 0.007373451310725372,
+        "mode": "force_only",
+        "rank": 16
+      },
+      {
+        "coefficient_l2": 0.5784706646425077,
+        "energy_mse_eV2": 0.00033510516512580505,
+        "force_mse_eV2_per_A2": 0.007501567117503857,
+        "mode": "joint",
+        "rank": 17
+      }
+    ]
+  }
+}
+```
+
+## DIAGNOSTIC-001B — Representable teacher trial preregistered (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "batch_size": 16,
+  "config_hash": "b6c55a5a5aa40d7e30d0423f953793c635c7b2d433e6ebac59ad3cada906d556",
+  "gate_fraction": 0.1,
+  "kernel_std": 0.1,
+  "max_updates": 2000,
+  "seed": 23
+}
+```
+
+## DIAGNOSTIC-001B — Representable teacher trial outcome (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "accepted": true,
+  "failure_reason": null,
+  "final_mse": {
+    "energy_mse_eV2": 7.629829221195148e-06,
+    "force_mse_eV2_per_A2": 2.0318703322910553e-05
+  },
+  "fraction_remaining": {
+    "energy_mse_eV2": 0.08482084275536658,
+    "force_mse_eV2_per_A2": 0.009713584025373742
+  },
+  "initial_mse": {
+    "energy_mse_eV2": 8.995229207048184e-05,
+    "force_mse_eV2_per_A2": 0.002091782319464598
+  },
+  "status": "passed",
+  "stop_reason": "learning_acceptance",
+  "updates": 300
+}
+```
+
+## DIAGNOSTIC-001C — Real full-batch trial preregistered (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "batch_size": 16,
+  "config_hash": "b6c55a5a5aa40d7e30d0423f953793c635c7b2d433e6ebac59ad3cada906d556",
+  "gate_fraction": 0.1,
+  "max_updates": 2000,
+  "subset_hash": "338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c"
+}
+```
+
+## DIAGNOSTIC-001C — Real full-batch trial outcome (30 September 2026)
+
+Training-only engineering diagnosis; full pilot remains pending.
+
+```json
+{
+  "accepted": false,
+  "executed": null,
+  "failure_reason": null,
+  "final_mse": {
+    "energy_mse_eV2": 0.00021554077745390633,
+    "force_mse_eV2_per_A2": 0.007240959200598679
+  },
+  "fraction_remaining": {
+    "energy_mse_eV2": 0.003516256921364446,
+    "force_mse_eV2_per_A2": 0.7145522825221747
+  },
+  "initial_mse": {
+    "energy_mse_eV2": 0.061298358531283896,
+    "force_mse_eV2_per_A2": 0.010133561081129106
+  },
+  "status": "incomplete",
+  "stop_reason": "max_updates",
+  "updates": 2000
+}
+```
+
+## IMPLEMENTATION-004 — Figure-generation failure preserved
+
+First postprocessing attempt wrote the compact diagnostic JSON but could not plot because the original random-head run predates saved full-subset `learning-history.json`. Failure: FileNotFoundError for that original run path. No molecular trial was rerun, altered or extended. Correction: show that run's verified initial/final full-subset points only, using its saved summary, while plotting the two available histories normally. Never substitute minibatch losses or invent intermediate full-subset metrics. Figure source hashes are saved in the compact JSON; regenerated report/figure verification follows. This is an artifact-generation trial, not a model-learning result.
+
+## DIAGNOSTIC-002 — Fixed-feature force fits remain insufficient
+
+Executed as preregistered on the original16 training frames; fixed rcond1e-10. Fresh/historical force-only MSEs0.008237971281002272/0.007373451310725372 eV²/A², ranks16/16. Joint MSEs0.00879886195790133/0.007501567117503857, ranks17/17. Both actual and nonzero-head reconstructions passed, solved-head maximum error<5.50e-15. These conditional readout solutions exceed the zero-head gate0.0010133561081129106; they do not bound differently trained backbones. See tracked `reports/force-learning-diagnostics.json` for singular values/coefficients/full identities. Earlier automatically generated DIAGNOSTIC-001A trial headings refer to the frozen-readout preregistration/outcome; the separately titled DIAGNOSTIC-001A review entry is the review supplement. Use this unique DIAGNOSTIC-002 record for paper citations to the readout result.
+
+## DIAGNOSTIC-003 — Exactly representable teacher passed
+
+Known in-class synthetic teacher shares initial student backbone, seed23 readout Normal(0,.1), centered molecular energy; original scales/seed0/Adam/fullbatch16. Passed at300updates, not a budget extension. Energy MSE8.995229207048184e-05 ->7.629829221195148e-06; force MSE0.002091782319464598 ->2.0318703322910553e-05. Fractions0.08482084275536658/0.009713584025373742 both<.10. CPU10.746022709063254s, fresh-process max prediction difference2.1510571102112408e-16. Pipeline can learn this deliberately easy target; this is not DFT correctness, generalization or a scientific comparison. Teacher pass enabled exactly one original-label full-batch control.
+
+## DIAGNOSTIC-004 — Real full-batch force criterion still failed
+
+Same original16IDs/seed0/zero head/backbone/Adam1e-3/loss scales, only sampling changed from batch4 to all16. Stopped at2000-update cap; no retry. Energy MSE0.061298358531283896 ->0.00021554077745390633; force MSE0.010133561081129106 ->0.007240959200598679. Force fraction0.7145522825221747>.10, improvement28.544771747782526% over zero forces. CPU34.36673712497577s; new-process max difference8.881784197001252e-16. This one sampling change did not resolve acceptance and does not retroactively clear batch4 learning. Representation/nonlinear optimization remain hypotheses; full pilot stays pending. No held-out array, extra seed, larger architecture or later scientific arm was evaluated.
+
+## IMPLEMENTATION-004A — Diagnostic artifacts verified
+
+Figure-generation correction succeeded: original random-head initial/final points only, two available molecular histories and separate teacher panel. PNG visually inspected; PDF also saved. All compact-record run and figure-input SHA256s checked against retained artifacts, and both checkpoint outcome/counter checks passed. Compact JSON SHA256 `2165ffb58ed9768b20b00b1c05d18dd73db3ddf9ff813c2dc0b31cab4aa73e54`. Report `reports/force-learning-diagnostics.md`, figure `reports/figures/force-learning-diagnostics.png`. Outcomes are validly executed diagnostics with real acceptance failed, not a full-pilot success.
