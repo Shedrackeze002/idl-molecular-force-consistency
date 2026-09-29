@@ -27,3 +27,7 @@ Both reviewers also checked `reports/PAPER_EVIDENCE_LOG.md` and found its raw ob
 ## Standing requirement
 
 Every later implementation plan must receive two independent subagent reviews before execution, as requested by Shedrack and recorded in `AGENTS.md`. Material revisions must be checked again. Findings must be evaluated against evidence rather than accepted automatically.
+
+## Per-molecule preparation clarification
+
+Both independent reviewers cleared the explicit per-molecule gate amendment before Task 4: aspirin may proceed after its own gates pass; paracetamol remains blocked by its unmatched branch. Engineering requested molecule-isolation, mixed-molecule rejection and no-success-export-on-failure tests. Scientific requested unshortlisted RMSDs for the blocked branch; the saved complete endpoint check supplies them. Both returned ready for Task 4. Thresholds and source group identities remain unchanged.
