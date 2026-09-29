@@ -109,3 +109,17 @@ Two structures can be close enough to exclude one from a held-out score, while s
 We will distinguish exact stored-coordinate label consistency from near-duplicate leakage screening. Near pairs keep their measured energy/force differences for diagnosis, without being declared corrupted solely from that difference. This policy must be frozen before inspecting discrepancies.
 
 **Relevance:** the methods should explain both the geometry threshold and the scope of label checks. A stricter leakage exclusion rule is not evidence that two reference calculations should return exactly equal forces.
+
+### DATA-005: retained archive inventory and source-grounded units
+
+**Status:** full selected archive parsed and source conventions traced during implementation; no independent DFT recalculation.
+
+The retained, checksum-verified archive parses into **8,874 records**: 8,813 path frames, 15 minima, and 46 transition states. Every selected connection has both contiguous numeric branch sequences and one uniquely resolved reference TS filename. This verifies source structure, not endpoint geometry or leak-free splits.
+
+`manifests/landscape17-unit-evidence.json` records the angstrom/eV/eV-per-angstrom assignment, identity conversion factors, versioned author code and frozen source hashes. TopSearch release 0.0.3 (commit `01e29d35c025bc3494db913f4dee526e82da4f9e`) returns ASE potential energy and forces. The ASE Psi4 calculator converts Hartree energies and Hartree/Bohr gradients to ASE units, while the published Figshare methods specify eV/angstrom force criteria. Snapshot files are under `reports/source_evidence/`.
+
+**Correction to the earlier provisional-unit status in DATA-002/DATA-003:** the implementation now uses this source-grounded unit assignment, so the listed RMSDs are interpreted in angstroms and listed raw forces in eV/angstrom. The archived XYZ headers still lack explicit unit fields; the private export script was not independently inspected, and no DFT label was recomputed. Those limits remain part of the provenance.
+
+**Additional source caveat:** the Figshare v1 metadata explicitly states that Hessian eigenvalues require multiplication by **9442.713128494901** to obtain eV/angstrom squared. Hessians are outside this baseline pipeline; future Hessian analysis must retain that conversion rather than silently reusing the stored values.
+
+**Next check:** finish full-archive symmetry matching, duplicate screening and eligible connection coverage before model-ready export.

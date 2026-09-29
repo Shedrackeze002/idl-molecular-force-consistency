@@ -1,0 +1,39 @@
+{
+  "archive_sha256": "3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b",
+  "source_units": {
+    "positions": "angstrom",
+    "energy": "eV",
+    "forces": "eV/angstrom"
+  },
+  "target_units": {
+    "positions": "angstrom",
+    "energy": "eV",
+    "forces": "eV/angstrom"
+  },
+  "conversion_factors": {
+    "positions": 1.0,
+    "energy": 1.0,
+    "forces": 1.0
+  },
+  "basis": "source-grounded assignment from published dataset methods and versioned author calculator; no new DFT calculation or private export-script verification",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/IBM/topography-searcher/01e29d35c025bc3494db913f4dee526e82da4f9e/src/topsearch/potentials/dft.py",
+      "sha256": "d06e4e26d9d21121620f00823bfe28bedb546429720672ce9a3097052c3971cd",
+      "snapshot": "reports/source_evidence/topsearch-0.0.3-dft.py.txt",
+      "location": "TopSearch DFT function/function_gradient returns ASE energy/forces; Figshare methods give eV/angstrom force criteria and TopSearch provenance"
+    },
+    {
+      "url": "https://api.figshare.com/v2/articles/29949230",
+      "sha256": "a2804093f44fb8937b188441f5629e49a8fd202720b4e71859840bed50d7a880",
+      "snapshot": "reports/source_evidence/figshare-29949230-v1.json",
+      "location": "TopSearch DFT function/function_gradient returns ASE energy/forces; Figshare methods give eV/angstrom force criteria and TopSearch provenance"
+    },
+    {
+      "url": "https://gitlab.com/ase/ase/-/blob/3.29.0/ase/calculators/psi4.py",
+      "sha256": "3716a40766d427c2dc1cc183535dc9e7bca3b20354c2342404866b8b52bc9cd7",
+      "snapshot": "reports/source_evidence/ase-3.29.0-psi4-calculate.py.txt",
+      "location": "Psi4 calculator multiplies energy by Hartree and negative gradient by Hartree/Bohr; ASE base units are eV and angstrom"
+    }
+  ]
+}
