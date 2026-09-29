@@ -195,3 +195,21 @@ No additional research learning trial was run. Both failed fixed-subset attempts
 ## METHOD-004 — Balanced experimental trail (user reaffirmation, 29 September 2026)
 
 Standing rule: document every experiment/trial whether it succeeds, fails, is blocked or abandoned. Before execution, save rationale, fixed settings, controls, acceptance rule and reviewed plan/configuration; append actual outcomes, stop reasons, hashes, limitations and next checks afterward. Preserve all attempts and distinguish proposals from executed trials. Earlier entries plus the saved pre-execution plans/configurations trace the two learning checks and their original failures; this rule makes the future before/after log explicit. Implementation/regression trials are recorded as code diagnostics, never converted into scientific model-comparison evidence. Obsidian is current-state/navigation memory; this repository log is authoritative for paper claims.
+
+## DIAGNOSTIC-001 — Prospective force-learning diagnosis (30 September 2026)
+
+Status: planned, not executed; two independent reviews pending. User authorized proceeding after discussion of both failed gates. Exact prospective plan: `docs/superpowers/plans/2026-09-30-force-learning-diagnostics.md`; fixed settings and historical artifact SHA256s: `configs/aspirin-force-diagnostics.json`. Existing source data, split, 16 training IDs, normalization, model size, seed0, Adam1e-3, 2000-update/1800-second cap and 10% own-initial-MSE rule preserved. No held-out arrays will be opened.
+
+A: conditional linear readout fits on fresh and historical final backbones, force-only and original normalized joint objective, fixed rcond1e-10; numerical reconstruction required. B: one exactly representable teacher control, initial student backbone shared with teacher, seed23 kernel Normal(0,.1), centered energy, original loss scales, all16 examples per update. C: one original-label full-batch control only if B passes. Each has unknown outcome and an explicit failure/block trail. These tests distinguish hypotheses; they do not establish comparative model accuracy, DFT correctness, generalization or satisfaction of the original batch4 learning gate. Full pilot remains pending. Append review decisions before implementation and outcomes as each check finishes.
+
+## DIAGNOSTIC-001A — Reviews cleared corrected prospective protocol
+
+Both independent reviews are saved in `docs/reviews/2026-09-30-diagnostic-plan-review.md`. Scientific follow-up explicitly cleared the corrected plan. Per-atom head bias uses mean molecular residual divided by atom count; rank-truncated readout solves are not whole-network capacity bounds. Engineering safeguards add nonzero-head reconstruction on both bodies, a holdout-free new-process probe, and explicit batch16. No research trial has run yet. Implementation tests below are engineering trials with red/green outcomes recorded separately.
+
+## IMPLEMENTATION-003 — Diagnostic implementation trials
+
+Before molecular execution: new loader/readout tests first failed4/4 because interfaces were absent. After implementation,9/10 passed; remaining failure was an in-memory tuple-vs-JSON-list fixture comparison, corrected without changing loader behavior. Task1 verification10/10 passed. New controller tests first failed5/9 because functions were absent; after implementation12/12 passed in25.31s, including weighted objective, force signs/axes, atom bias, teacher degeneracy/centering, immutable arrays, cap/history, nonfinite failure summary, blocked real run, historical hash/model/normalization gates and full CLI/new-process probe with all held-out files deleted. A synthetic test checkpoint uses a declared update-counter fixture, not a molecular training result. Full suite and exact production config preflight follow before experiments. Failed test traces retained in this plan's execution workspace and summarized here.
+
+## IMPLEMENTATION-003A — Diagnostic regression suite passed
+
+Full suite67/67 passed in57.25s before any molecular diagnostic execution. Existing55 tests remain passing;12 new tests cover the reviewed diagnostic contracts. No existing model/loss settings or preparation identities changed. The next invocation is the exact prospective CPU config; outcome remains unknown.

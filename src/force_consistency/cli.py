@@ -17,6 +17,8 @@ def main(argv=None):
     p=subs.add_parser('train',help='Run a capped, verified energy baseline')
     p.add_argument('--config',required=True,type=Path)
     p.add_argument('--backend',choices=('cpu','gpu'),help='Explicit device requirement; unavailable GPU fails')
+    p=subs.add_parser('diagnose-learning',help='Run reviewed training-only learning diagnostics')
+    p.add_argument('--config',required=True,type=Path)
     p=subs.add_parser('summarize-run',help='Read saved run results without accessing test data')
     p.add_argument('--run',required=True,type=Path)
     for name in ('audit','prepare'):
@@ -27,6 +29,11 @@ def main(argv=None):
         p.add_argument('--output',type=Path)
         if name=='prepare': p.add_argument('--molecule',required=True,choices=('aspirin','paracetamol'))
     args=parser.parse_args(argv)
+    if args.command=='diagnose-learning':
+        from .diagnostics import diagnose
+        summary=diagnose(json.loads(args.config.read_text()))
+        print(json.dumps({'status':summary['status'],'teacher':summary['teacher'].get('status'),'real':summary['real'].get('status'),'full_pilot':summary['full_pilot'],'failure_reason':summary.get('failure_reason')},indent=2))
+        return 0 if summary['execution_valid'] else 1
     if args.command=='train':
         from .train import train
         config=json.loads(args.config.read_text())
