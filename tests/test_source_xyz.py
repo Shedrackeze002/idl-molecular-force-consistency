@@ -67,3 +67,10 @@ def test_all_local_sample_records():
         mol = p.relative_to(ROOT / "data/landscape17_sample").parts[0]
         r = parse_xyz(p.read_text(), source_path="Landscape17/"+str(p.relative_to(ROOT / "data/landscape17_sample")), molecule=mol)
         assert len(r.species) == {"aspirin": 21, "paracetamol": 20}[mol]
+def test_correct_size_wrong_checksum_is_rejected(tmp_path):
+    from force_consistency.data.source import SIZE,SourceError,verify_archive
+    import pytest
+    p=tmp_path/'wrong.zip'
+    with p.open('wb') as f: f.truncate(SIZE)
+    with pytest.raises(SourceError,match='[Cc]hecksum|SHA'):
+        verify_archive(p)

@@ -1,0 +1,20 @@
+{
+  "seed": 19,
+  "nontrivial_head_seed": 191,
+  "head_perturbation_scale": 0.1,
+  "readout_initialization": "zero, deliberately perturbed for physics tests",
+  "parameter_count": 4737,
+  "finite_difference_steps_A": [
+    0.001,
+    0.0001,
+    1e-05
+  ],
+  "finite_difference_max_errors_eV_per_A": [
+    1.840800183117164e-08,
+    7.37725186494842e-09,
+    7.325904053528953e-09
+  ],
+  "net_force_max_eV_per_A": 3.469446951953614e-18,
+  "net_torque_max_eV": 6.938893903907228e-18,
+  "lock_sha256": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+}

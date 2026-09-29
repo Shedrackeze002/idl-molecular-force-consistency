@@ -101,3 +101,32 @@ def test_backend_requirement_and_nonfinite_update():
         with pytest.raises(ValueError,match='GPU'): require_backend('gpu')
     with pytest.raises(ValueError): require_backend('imaginary')
     with pytest.raises(FloatingPointError): assert_finite({'loss':np.nan})
+
+
+def test_cli_end_to_end_synthetic_and_missing_preflight(tmp_path):
+    from force_consistency.cli import main
+    from force_consistency.data.prepare import export_prepared
+    from test_splits_prepare import fixture,empty_duplicates,UNIT_EVIDENCE
+    from force_consistency.data.types import PreparationPolicy
+    rs,inv,ends=fixture();prepared=tmp_path/'data'
+    manifest=export_prepared(rs,directory=prepared,inventory=inv,endpoints=ends,duplicates=empty_duplicates(),policy=PreparationPolicy(),molecule='aspirin',unit_evidence=UNIT_EVIDENCE)
+    config={'mode':'integration','data_directory':str(prepared),'expected_split_hash':manifest['split_hash'],'run_directory':str(tmp_path/'run'),'max_updates':2,'wall_seconds':120,'validation_interval':2,'model':{'features':4,'iterations':1,'radial_basis':4}}
+    path=tmp_path/'config.json';path.write_text(json.dumps(config))
+    assert main(['train','--config',str(path)])==0
+    summary=json.loads((tmp_path/'run/summary.json').read_text())
+    assert summary['status']=='passed' and summary['updates']==2 and summary['checkpoint_new_process_verified']
+    assert summary['final_validation']['evaluated_ids']==manifest['partitions']['validation']['record_ids']
+    assert summary['provenance']['split_hash']==manifest['split_hash']
+    assert summary['precision']=='float64' and (tmp_path/'run/last.msgpack').exists()
+    assert main(['summarize-run','--run',str(tmp_path/'run')])==0
+    config.update(expected_split_hash='stale',run_directory=str(tmp_path/'failed'));path.write_text(json.dumps(config))
+    assert main(['train','--config',str(path)])==1
+    failure=json.loads((tmp_path/'failed/summary.json').read_text())
+    assert failure['status']=='failed' and 'split' in failure['failure_reason'].lower()
+
+
+def test_learning_identity_and_resume_gates():
+    from force_consistency.train import verify_learning_subset,RunConfig,validate_run_configuration
+    ids=['first','second']
+    with pytest.raises(ValueError,match='subset'): verify_learning_subset(ids,'stale')
+    with pytest.raises(ValueError,match='baseline'): validate_run_configuration(RunConfig('data','split','run',mode='learning_check',resume_checkpoint='old.msgpack'))

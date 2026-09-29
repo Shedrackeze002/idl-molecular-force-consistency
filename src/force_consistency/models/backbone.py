@@ -15,6 +15,7 @@ class ModelConfig:
     iterations: int=2
     radial_basis: int=8
     cutoff_A: float=5.0
+    energy_readout_init: str='lecun_normal'
 
 
 class Backbone(nn.Module):

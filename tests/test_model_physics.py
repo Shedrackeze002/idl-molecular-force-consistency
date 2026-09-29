@@ -9,10 +9,12 @@ import pytest
 def system():
     from force_consistency.models.backbone import ModelConfig
     from force_consistency.models.energy import EnergyModel,make_batch,energy_and_forces
-    model=EnergyModel(ModelConfig())
+    model=EnergyModel(ModelConfig(energy_readout_init='zero'))
     p=np.array([[0.,0,0],[1.1,.2,.1],[.2,1.25,-.3],[-.2,.3,1.4]])
     z=np.array([6,1,8,1]);b=make_batch(p[None],z[None])
     params=model.init(jax.random.PRNGKey(19),b['atomic_numbers'],b['positions'],b['dst_idx'],b['src_idx'],b['batch_segments'],1)['params']
+    # A deterministic nonzero head avoids vacuous zero-output physics checks.
+    params['energy_head']=jax.tree.map(lambda x:jax.random.normal(jax.random.PRNGKey(191),x.shape,dtype=jnp.float64)*.1,params['energy_head'])
     predict=jax.jit(lambda par,b:energy_and_forces(par,b,model=model))
     return model,p,z,params,predict
 
@@ -77,3 +79,20 @@ def test_reject_float32_inputs(system):
     from force_consistency.models.energy import make_batch
     _,p,z,_,_=system
     with pytest.raises(ValueError,match='float64'): make_batch(p[None].astype(np.float32),z[None])
+
+
+def test_zero_readout_is_explicit_and_can_learn_forces():
+    from force_consistency.models.backbone import ModelConfig
+    from force_consistency.models.energy import EnergyModel,make_batch,energy_and_forces
+    from force_consistency.train import initialize_state,build_step
+    from force_consistency.data.prepare import Normalization
+    model=EnergyModel(ModelConfig(features=4,iterations=1,radial_basis=4,energy_readout_init='zero'))
+    p=np.array([[[0.,0,0],[1.1,.2,.1],[.2,1.25,-.3]]]);b=make_batch(p,np.array([[6,1,8]]),np.array([.2]),-.1*p)
+    state=initialize_state(model,b,Normalization(0,1,1),0,.001)
+    e,f=energy_and_forces(state['params'],b,model=model)
+    np.testing.assert_array_equal(e,0);np.testing.assert_array_equal(f,0)
+    g=jax.grad(lambda params:jnp.mean((energy_and_forces(params,b,model=model)[1]-b['forces'])**2))(state['params'])
+    assert all(np.isfinite(x).all() for x in jax.tree.leaves(g))
+    assert sum(float(jnp.sum(x*x)) for x in jax.tree.leaves(g['energy_head']))>0
+    params,_,metrics=build_step(model,Normalization(0,1,1),.001)(state['params'],state['optimizer'],b)
+    assert np.isfinite(metrics['scaled_loss']) and np.linalg.norm(energy_and_forces(params,b,model=model)[1])>0

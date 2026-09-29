@@ -31,3 +31,7 @@ Every later implementation plan must receive two independent subagent reviews be
 ## Per-molecule preparation clarification
 
 Both independent reviewers cleared the explicit per-molecule gate amendment before Task 4: aspirin may proceed after its own gates pass; paracetamol remains blocked by its unmatched branch. Engineering requested molecule-isolation, mixed-molecule rejection and no-success-export-on-failure tests. Scientific requested unshortlisted RMSDs for the blocked branch; the saved complete endpoint check supplies them. Both returned ready for Task 4. Thresholds and source group identities remain unchanged.
+
+## Learning-gate amendment
+
+Both reviewers independently reproduced the failed force gate and compared the final checkpoint with a zero-force baseline. Neither found a demonstrated mathematical/sampler/scaling defect. Both reviewed the exact saved `docs/superpowers/plans/2026-09-29-learning-gate-amendment.md` and returned ready for execution. The approved change is one prospective zero-readout attempt, preserving seed/subset/order/backbone/loss/optimizer/caps and10% criterion. Its own zero baseline makes the absolute force gate stricter. Nontrivial physics parameters, fixed subset hash, periodic full-subset MSE and disabled learning resume are explicit safeguards. If it fails, the full pilot stays pending and this amendment authorizes no further tuning.

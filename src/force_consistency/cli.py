@@ -14,6 +14,11 @@ from .data.units import verify_units,convert_record
 def main(argv=None):
     parser=argparse.ArgumentParser(description='Audited Landscape17 preparation and baseline experiments')
     subs=parser.add_subparsers(dest='command',required=True)
+    p=subs.add_parser('train',help='Run a capped, verified energy baseline')
+    p.add_argument('--config',required=True,type=Path)
+    p.add_argument('--backend',choices=('cpu','gpu'),help='Explicit device requirement; unavailable GPU fails')
+    p=subs.add_parser('summarize-run',help='Read saved run results without accessing test data')
+    p.add_argument('--run',required=True,type=Path)
     for name in ('audit','prepare'):
         p=subs.add_parser(name)
         p.add_argument('--archive',type=Path,default=Path('data/Landscape17.zip'))
@@ -22,6 +27,16 @@ def main(argv=None):
         p.add_argument('--output',type=Path)
         if name=='prepare': p.add_argument('--molecule',required=True,choices=('aspirin','paracetamol'))
     args=parser.parse_args(argv)
+    if args.command=='train':
+        from .train import train
+        config=json.loads(args.config.read_text())
+        if args.backend: config['backend']=args.backend
+        summary=train(config)
+        print(json.dumps({k:v for k,v in summary.items() if k not in ('provenance','initial_validation','final_validation')},indent=2))
+        return 0 if summary['status']=='passed' else 1
+    if args.command=='summarize-run':
+        print(json.dumps(json.loads((args.run/'summary.json').read_text()),indent=2))
+        return 0
     policy=PreparationPolicy(**json.loads(args.policy.read_text()))
     evidence=json.loads(args.unit_evidence.read_text());units=verify_units(evidence)
     molecules=(args.molecule,) if args.command=='prepare' else ('aspirin','paracetamol')
@@ -37,4 +52,4 @@ def main(argv=None):
         print(json.dumps({'counts':inv.counts,'endpoint_statuses':{m:{s:sum(v['status']==s for k,v in ends.items() if k.startswith(m+'/')) for s in ('matched','unmatched','ambiguous','unresolved')} for m in molecules}},indent=2))
 
 
-if __name__=='__main__': main()
+if __name__=='__main__': raise SystemExit(main())

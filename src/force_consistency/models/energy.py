@@ -16,7 +16,9 @@ class EnergyModel(nn.Module):
         self.sow('intermediates','features',x)
         # Natural parity: degree zero is even; degree one is a polar vector.
         scalar=e3x.nn.change_max_degree_or_type(x,max_degree=0,include_pseudotensors=False)
-        atom_energy=e3x.nn.Dense(1,dtype=jnp.float64,param_dtype=jnp.float64,name='energy_head')(scalar).reshape(-1)
+        if self.config.energy_readout_init not in ('zero','lecun_normal'): raise ValueError('Unknown energy readout initialization')
+        kwargs={'kernel_init':jax.nn.initializers.zeros} if self.config.energy_readout_init=='zero' else {}
+        atom_energy=e3x.nn.Dense(1,dtype=jnp.float64,param_dtype=jnp.float64,name='energy_head',**kwargs)(scalar).reshape(-1)
         return jax.ops.segment_sum(atom_energy,batch_segments,num_segments=batch_size)
 
 

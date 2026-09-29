@@ -1,0 +1,73 @@
+{
+  "run_summary_sha256": "c435ffd94b77a243876dae289ecd5201407c1d17237f76c041315d5abf62770d",
+  "initial_mse": {
+    "energy_mse_eV2": 32.23256077457698,
+    "force_mse_eV2_per_A2": 0.0435718463614834
+  },
+  "final_mse": {
+    "energy_mse_eV2": 0.007751758500612726,
+    "force_mse_eV2_per_A2": 0.009779336686872274
+  },
+  "fraction_remaining": {
+    "energy_mse_eV2": 0.00024049465243626642,
+    "force_mse_eV2_per_A2": 0.2244416407269122
+  },
+  "branch_work": {
+    "minus": {
+      "adjacent_intervals": 122,
+      "energy_difference_vs_negative_trapezoid_force_work_correlation": 0.9953388508433747,
+      "zero_intercept_scale": 1.0180429842607541,
+      "max_interval_residual_eV": 0.002088654789781471,
+      "method": "Delta E versus -0.5*(F[i]+F[i+1]):(R[i+1]-R[i]), same stored atom order; finite-step diagnostic, not independent DFT verification"
+    },
+    "plus": {
+      "adjacent_intervals": 110,
+      "energy_difference_vs_negative_trapezoid_force_work_correlation": 0.9980037194017947,
+      "zero_intercept_scale": 1.0183555760226621,
+      "max_interval_residual_eV": 0.001314969457109091,
+      "method": "Delta E versus -0.5*(F[i]+F[i+1]):(R[i+1]-R[i]), same stored atom order; finite-step diagnostic, not independent DFT verification"
+    }
+  },
+  "label_symmetry": {
+    "target_net_force_max_eV_per_A": 0.0032202799999999972,
+    "target_net_torque_max_eV": 0.006987872417481195
+  },
+  "objective_gradients": {
+    "initial": {
+      "energy": {
+        "scaled_loss": 665.2870359392601,
+        "parameter_gradient_l2": 15064.895003084861,
+        "all_finite": true
+      },
+      "force": {
+        "scaled_loss": 3.4709242839490186,
+        "parameter_gradient_l2": 19.527774865069752,
+        "all_finite": true
+      },
+      "batch_record_ids": [
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz"
+      ]
+    },
+    "last": {
+      "energy": {
+        "scaled_loss": 0.27829083068116256,
+        "parameter_gradient_l2": 242.22876285486836,
+        "all_finite": true
+      },
+      "force": {
+        "scaled_loss": 1.152459435084792,
+        "parameter_gradient_l2": 1.8175776575674378,
+        "all_finite": true
+      },
+      "batch_record_ids": [
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz"
+      ]
+    }
+  }
+}

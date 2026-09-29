@@ -33,9 +33,21 @@ class RunConfig:
     wall_seconds: float=3600
     model: dict=field(default_factory=lambda:asdict(ModelConfig()))
     resume_checkpoint: str|None=None
+    expected_learning_subset_hash: str|None=None
 
 
 def new_sampler_state(seed): return np.random.PCG64(seed).state
+
+
+def verify_learning_subset(ids,expected_hash):
+    identity=canonical_hash(ids)
+    if expected_hash is not None and identity!=expected_hash: raise ValueError('Learning subset identity mismatch')
+    return identity
+
+
+def validate_run_configuration(config):
+    if config.mode not in ('pilot','learning_check','integration') or min(config.max_updates,config.batch_size,config.validation_interval,config.wall_seconds,config.learning_rate)<=0: raise ValueError('Invalid run configuration')
+    if config.mode=='learning_check' and config.resume_checkpoint: raise ValueError('Learning continuation requires immutable original acceptance baseline; resume disabled')
 
 
 def sample_training_batch(bundle,rng_state,batch_size):
@@ -107,7 +119,7 @@ def train(config):
     root.mkdir(parents=True,exist_ok=True);write_json(root/'config.json',asdict(config))
     summary={'status':'failed','mode':config.mode,'updates':0,'backend_requested':config.backend}
     try:
-        if config.mode not in ('pilot','learning_check','integration') or min(config.max_updates,config.batch_size,config.validation_interval,config.wall_seconds,config.learning_rate)<=0: raise ValueError('Invalid run configuration')
+        validate_run_configuration(config)
         device=require_backend(config.backend);bundle=load_training_bundle(config.data_directory,expected_split_hash=config.expected_split_hash)
         with jax.default_device(device):
             model=EnergyModel(ModelConfig(**config.model));b,_=sample_training_batch(bundle,new_sampler_state(config.seed),config.batch_size)
@@ -127,8 +139,15 @@ def train(config):
             for size in sorted(shapes):
                 probe=partition_batch(bundle.train,np.arange(size));t=time.perf_counter();predict.lower(state['params'],probe).compile();compile_seconds+=time.perf_counter()-t
             subset=learning_indices(bundle) if config.mode=='learning_check' else None
-            if subset: write_json(root/'learning-subset.json',{'indices':subset,'record_ids':[bundle.train.record_ids[i] for i in subset]})
+            if subset:
+                ids=[bundle.train.record_ids[i] for i in subset]
+                subset_hash=verify_learning_subset(ids,config.expected_learning_subset_hash)
+                write_json(root/'learning-subset.json',{'indices':subset,'record_ids':ids,'identity':subset_hash})
             initial_mse=subset_mse(state['params'],bundle.train,subset,predict,config.batch_size) if subset else None
+            baseline={'zero_force_mse_eV2_per_A2':float(np.mean(bundle.train.forces[subset]**2)),
+                      'zero_energy_residual_mse_eV2':float(np.mean(bundle.train.energy_residual[subset]**2)),
+                      'subset_mean_energy_mse_eV2':float(np.var(bundle.train.energy_residual[subset]))} if subset else None
+            learning_history=[{'update':int(state['update']),**initial_mse}] if subset else []
             best=float('inf');best_update=None;history=[];losses=[];times=[];validation_times=[]
             def evaluate():
                 nonlocal best,best_update
@@ -154,6 +173,7 @@ def train(config):
                     print(json.dumps({'update':state['update'],'loss':losses[-1]['scaled_loss'],'validation_force_mae':history[-1]['equal_connection_force_mae_eV_per_A'],'elapsed_seconds':time.perf_counter()-start}),flush=True)
                     if subset:
                         mse=subset_mse(state['params'],bundle.train,subset,predict,config.batch_size)
+                        learning_history.append({'update':int(state['update']),**mse});write_json(root/'learning-history.json',learning_history)
                         if all(mse[k]<.1*initial_mse[k] for k in mse): accepted=True;stop='learning_acceptance';break
             if history[-1]['update']!=state['update']: evaluate()
             save_checkpoint(root/'last.msgpack',state,provenance);write_json(root/'losses.json',losses)
@@ -161,12 +181,15 @@ def train(config):
             subprocess.run([sys.executable,'-m','force_consistency.train','--probe',str(root.resolve())],check=True,capture_output=True)
             mse=subset_mse(state['params'],bundle.train,subset,predict,config.batch_size) if subset else None
             if subset: accepted=all(mse[k]<.1*initial_mse[k] for k in mse)
+            if subset and learning_history[-1]['update']!=state['update']: learning_history.append({'update':int(state['update']),**mse})
+            if subset: write_json(root/'learning-history.json',learning_history)
             engineering_success=(accepted if subset else state['update']>=100 if config.mode=='pilot' else state['update']>0)
             stats=device.memory_stats()
             summary={**summary,'status':'passed' if engineering_success else 'incomplete','updates':int(state['update']),'stop_reason':stop,'device_kind':device.device_kind,'backend':device.platform,
                      'initialization_seconds':initialization_seconds,'compilation_seconds':compile_seconds,'warmup_execution_seconds':warmup_seconds,'steady_update_seconds_mean':float(np.mean(times)) if times else None,
                      'steady_update_seconds_total':sum(times),'validation_seconds_total':sum(validation_times),'best_update':best_update,'best_equal_connection_force_mae_eV_per_A':best,
                      'initial_validation':history[0],'final_validation':history[-1],'learning_initial_mse':initial_mse,'learning_final_mse':mse,'learning_accepted':accepted if subset else None,
+                     'learning_baselines':baseline,'learning_history':learning_history,
                      'checkpoint_new_process_verified':True,'precision':'float64','parameter_count':provenance['parameter_count'],'provenance':provenance,
                      'peak_device_memory_bytes':stats.get('peak_bytes_in_use') if stats else None,'memory_collection_method':'JAX device.memory_stats; unavailable when backend returns None',
                      'resume_scope':'Pinned CPU environment tested to 1e-10; GPU/cross-platform bitwise reproducibility unverified'}
