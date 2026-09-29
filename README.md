@@ -10,20 +10,20 @@ The planned study uses one electronic-structure reference from [Landscape17](htt
 
 ## Project roadmap
 
-1. **Foundation and proposal:** review the literature, define the claim boundary, inspect the data, and submit the course proposal. This is the current stage.
+1. **Foundation and proposal:** review the literature, define the claim boundary, inspect the data, and submit the course proposal. Proposal submitted.
 2. **Data and baseline:** audit Landscape17, freeze whole-connection train/validation/test splits and exact reference-branch relaxation starts, and verify an energy-derived baseline.
 3. **Model comparisons:** train the direct-force and consistency-trained variants under matched protocols, then add the same-split MACE reference.
 4. **Evaluation and analysis:** run paired relaxations, physical-consistency checks, accuracy and compute comparisons, uncertainty analysis, and paracetamol replication.
 5. **Reporting and paper:** prepare the midterm and final course reports, release reproducible code and results, and develop a manuscript from the completed evidence.
 
-The plan may be refined as pilot measurements and mentor feedback reveal what is feasible. No model has been trained yet; the repository contains no experimental results.
+The plan may be refined as pilot measurements and mentor feedback reveal what is feasible. Current stage: audited data and an implemented energy-derived baseline. Both tiny-subset learning attempts failed the predeclared force criterion; the full pilot remains pending. These are engineering diagnostics, not measured support for the research hypothesis.
 
 ## Repository contents
 
-- [Current proposal PDF](proposal.pdf) and [LaTeX source](proposal.tex)
+- [Submitted proposal PDF](Group9.pdf) and [LaTeX source](proposal.tex)
 - [Research field guide PDF](Research_Field_Guide.pdf) and [editable guide](FIELD_GUIDE.md)
 - [Claim-by-claim evidence audit](CLAIM_AUDIT.md)
 - [Landscape17 raw pathway sample](data/landscape17_sample/README.md), with source attribution and checksums
 - `neurips_2019.sty`, the course-provided style used to compile the proposal
 
-Training code, frozen split manifests, configuration files, evaluation scripts, and measured results will be added as those stages begin. The small committed data sample is for exploration; the [full Landscape17 archive](https://ndownloader.figshare.com/files/57341180) is needed for the proposed experiments.
+The Python package,53 verification tests, frozen aspirin manifests and reviewed configurations are implemented. See [run instructions](docs/run-baseline.md), [baseline status](reports/baseline-pilot.md), [physics checks](reports/baseline-verification.md) and the append-only [paper evidence log](reports/PAPER_EVIDENCE_LOG.md). Aspirin preparation passes; paracetamol remains blocked by one unmatched branch. Every new implementation plan requires two independent reviews under [AGENTS.md](AGENTS.md). The small committed data sample is for exploration; the [full Landscape17 archive](https://ndownloader.figshare.com/files/57341180) is needed for the proposed experiments.
