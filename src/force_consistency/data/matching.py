@@ -4,7 +4,7 @@ from typing import Sequence
 import networkx as nx
 import numpy as np
 
-from .geometry import align_records,candidate_pairs,descriptor
+from .geometry import align_records,candidate_pairs,descriptor,chemical_graph
 from .types import FrameRecord,PreparationPolicy
 
 
@@ -16,6 +16,23 @@ class DuplicateAudit:
     label_conflicts: tuple[dict,...]
 
 
+def exact_coordinate_permutation(a,b,policy):
+    """Stored-coordinate identity is independent of an O(3) symmetry winner."""
+    slots={}
+    for i,(species,position) in enumerate(zip(b.species,b.positions)):
+        slots.setdefault((species,tuple(position)),[]).append(i)
+    order=[]
+    for species,position in zip(a.species,a.positions):
+        choices=slots.get((species,tuple(position)))
+        if not choices: return None
+        order.append(choices.pop(0))
+    order=np.array(order,dtype=int)
+    if len(a.species)!=len(b.species): return None
+    ag=nx.to_numpy_array(chemical_graph(a,policy),nodelist=range(len(order)))
+    bg=nx.to_numpy_array(chemical_graph(b,policy),nodelist=order)
+    return order if np.array_equal(ag,bg) else None
+
+
 def audit_duplicates(records: Sequence[FrameRecord],policy: PreparationPolicy) -> DuplicateAudit:
     pairs=[];diagnostics=[];unresolved=[];conflicts=[]
     for i,j in candidate_pairs(records,policy.duplicate_tolerance):
@@ -25,12 +42,14 @@ def audit_duplicates(records: Sequence[FrameRecord],policy: PreparationPolicy) -
             unresolved.append({"records":ids,"reason":r.reason});continue
         if r.rmsd>policy.duplicate_tolerance: continue
         pairs.append(ids)
-        exact=np.array_equal(a.positions,b.positions[r.permutation])
+        exact_order=exact_coordinate_permutation(a,b,policy)
+        exact=exact_order is not None
         fd=float(np.max(np.abs(a.forces@r.rotation-b.forces[r.permutation])))
         ed=abs(a.energy-b.energy)
-        d={"records":ids,"rmsd":r.rmsd,"exact_stored_positions":exact,"energy_difference_eV":ed,"aligned_force_difference_eV_per_A":fd}
+        exact_fd=float(np.max(np.abs(a.forces-b.forces[exact_order]))) if exact else None
+        d={"records":ids,"rmsd":r.rmsd,"exact_stored_positions":exact,"exact_permutation":exact_order.tolist() if exact else None,"exact_force_difference_eV_per_A":exact_fd,"energy_difference_eV":ed,"aligned_force_difference_eV_per_A":fd}
         diagnostics.append(d)
-        if exact and (ed>policy.exact_energy_tolerance or np.max(np.abs(a.forces-b.forces[r.permutation]))>policy.exact_force_tolerance): conflicts.append(d)
+        if exact and (ed>policy.exact_energy_tolerance or exact_fd>policy.exact_force_tolerance): conflicts.append(d)
     return DuplicateAudit(tuple(pairs),tuple(diagnostics),tuple(unresolved),tuple(conflicts))
 
 

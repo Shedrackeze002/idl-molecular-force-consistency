@@ -130,3 +130,31 @@ def test_learning_identity_and_resume_gates():
     ids=['first','second']
     with pytest.raises(ValueError,match='subset'): verify_learning_subset(ids,'stale')
     with pytest.raises(ValueError,match='baseline'): validate_run_configuration(RunConfig('data','split','run',mode='learning_check',resume_checkpoint='old.msgpack'))
+
+
+def test_resumed_selection_keeps_earlier_best_and_exact_tie(tmp_path,monkeypatch):
+    import force_consistency.train as training
+    from force_consistency.data.prepare import export_prepared,load_training_bundle
+    from force_consistency.runs import load_checkpoint
+    from force_consistency.models.energy import EnergyModel
+    from force_consistency.models.backbone import ModelConfig
+    from test_splits_prepare import fixture,empty_duplicates,UNIT_EVIDENCE
+    from force_consistency.data.types import PreparationPolicy
+    rs,inv,ends=fixture();data=tmp_path/'data'
+    m=export_prepared(rs,directory=data,inventory=inv,endpoints=ends,duplicates=empty_duplicates(),policy=PreparationPolicy(),molecule='aspirin',unit_evidence=UNIT_EVIDENCE)
+    scores=iter([1.,.5,2.,2.,.5]);actual=training.validate
+    def controlled(*a,**kw):
+        metrics=actual(*a,**kw);metrics['equal_connection_force_mae_eV_per_A']=next(scores);return metrics
+    monkeypatch.setattr(training,'validate',controlled)
+    config=training.RunConfig(str(data),m['split_hash'],str(tmp_path/'first'),mode='integration',max_updates=2,validation_interval=1,wall_seconds=120,model={'features':4,'iterations':1,'radial_basis':4})
+    first=training.train(config);assert first['status']=='passed' and first['best_update']==1
+    resumed=training.train(replace(config,run_directory=str(tmp_path/'resumed'),max_updates=3,resume_checkpoint=str(tmp_path/'first/last.msgpack')))
+    assert resumed['status']=='passed' and resumed['best_update']==1 and resumed['best_equal_connection_force_mae_eV_per_A']==.5
+    history=json.loads((tmp_path/'resumed/validation.json').read_text())
+    assert [h['update'] for h in history]==[0,1,2,3]
+    prepared=load_training_bundle(data,expected_split_hash=m['split_hash']);batch,_=training.sample_training_batch(prepared,training.new_sampler_state(0),4)
+    model=EnergyModel(ModelConfig(**config.model));template=training.initialize_state(model,batch,prepared.normalization,0,.001)
+    original=load_checkpoint(tmp_path/'first/best.msgpack',first['provenance'],template=template)
+    restored=load_checkpoint(tmp_path/'resumed/best.msgpack',resumed['provenance'],template=template)
+    assert restored['update']==original['update']==1
+    for a,b in zip(jax.tree.leaves(original['params']),jax.tree.leaves(restored['params'])): np.testing.assert_array_equal(a,b)

@@ -13,3 +13,9 @@ Reviews are authorized. Delegating implementation or sending messages to other u
 ## Paper evidence
 
 Keep meaningful findings in the append-only `reports/PAPER_EVIDENCE_LOG.md`. Record stable IDs, exact source or run paths and checksums, metric/matching conventions, verification status, limitations, and the next required check. Separate data observations, implementation diagnostics, method decisions and untested hypotheses from measured model results. Add corrections as linked entries rather than silently overwriting earlier observations.
+
+User reaffirmation, 29 September 2026: document every experiment and trial, whether it succeeds or fails, to preserve a balanced research trail for the paper. Before running an experiment, log its rationale, fixed settings, controls and acceptance rule, with the reviewed plan/configuration. Append its actual result, failure/stop reason, artifact identities and limits afterward. Preserve unsuccessful, blocked and abandoned attempts; never replace them with a selected successful run. Distinguish an unexecuted proposal from an executed trial. Summarize implementation/regression trials with their test evidence without treating them as scientific comparisons.
+
+## Project memory
+
+User instruction, 29 September 2026: save findings as work proceeds and use the existing Obsidian CLI when helpful. The `hermes` vault lives under `/Users/shedrackeze/Library/Mobile Documents/iCloud~md~obsidian/Documents/hermes`. Codex notes are in `Codex/IDL MLIP Project/`: `Project Hub.md` holds current state/navigation and `Research Findings.md` links paper-facing observations to evidence IDs. Use the Obsidian CLI for vault changes. Keep authoritative numbers, run identities and corrections in the repository evidence log; refresh the hub when project gates change. Do not treat an old note as current until checked against repository artifacts.

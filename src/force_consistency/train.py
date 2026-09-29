@@ -9,13 +9,14 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import optax
+from flax import serialization
 
 from .data.prepare import load_training_bundle,write_json
 from .data.splits import canonical_hash
 from .metrics import partition_batch,validate
 from .models.backbone import ModelConfig
 from .models.energy import EnergyModel,energy_and_forces
-from .runs import assert_finite,code_provenance,load_checkpoint,require_backend,save_checkpoint
+from .runs import assert_finite,code_provenance,load_checkpoint,load_run_control,require_backend,save_checkpoint
 
 
 @dataclass(frozen=True)
@@ -128,7 +129,10 @@ def train(config):
                         'config_computation_hash':canonical_hash({k:v for k,v in asdict(config).items() if k not in ('data_directory','run_directory','resume_checkpoint','max_updates','wall_seconds')}),
                         'backend':device.platform,'device_kind':device.device_kind,'precision':'float64','parameter_count':sum(v.size for v in jax.tree.leaves(state['params'])),'normalization':asdict(bundle.normalization)}
             write_json(root/'provenance.json',provenance)
-            if config.resume_checkpoint: state=load_checkpoint(config.resume_checkpoint,provenance,template=state)
+            restored_control=None
+            if config.resume_checkpoint:
+                state=load_checkpoint(config.resume_checkpoint,provenance,template=state)
+                restored_control=load_run_control(config.resume_checkpoint,provenance)
             initialization_seconds=time.perf_counter()-start
             step=build_step(model,bundle.normalization,config.learning_rate);predict=jax.jit(lambda p,b:energy_and_forces(p,b,model=model))
             t=time.perf_counter();compiled_step=step.lower(state['params'],state['optimizer'],b).compile();compile_seconds=time.perf_counter()-t
@@ -148,14 +152,30 @@ def train(config):
                       'zero_energy_residual_mse_eV2':float(np.mean(bundle.train.energy_residual[subset]**2)),
                       'subset_mean_energy_mse_eV2':float(np.var(bundle.train.energy_residual[subset]))} if subset else None
             learning_history=[{'update':int(state['update']),**initial_mse}] if subset else []
-            best=float('inf');best_update=None;history=[];losses=[];times=[];validation_times=[]
+            best=restored_control['best_score'] if restored_control else float('inf')
+            best_update=restored_control['best_update'] if restored_control else None
+            best_payload=restored_control['best_state'] if restored_control else None
+            history=restored_control['validation_history'] if restored_control else []
+            losses=[];times=[];validation_times=[]
+            def control():
+                return {'best_score':best,'best_update':best_update,'best_state':best_payload,'validation_history':history}
+            if restored_control:
+                selected=serialization.from_bytes(state,best_payload)
+                # A selected checkpoint cannot inherit history from its future.
+                selected_control={**control(),'validation_history':[h for h in history if h['update']<=best_update]}
+                save_checkpoint(root/'best.msgpack',selected,provenance,run_control=selected_control)
             def evaluate():
-                nonlocal best,best_update
+                nonlocal best,best_update,best_payload
                 t=time.perf_counter();m=validate(state['params'],bundle,model,config.batch_size,predict=predict);validation_times.append(time.perf_counter()-t)
                 if m['record_count']==0: raise ValueError('Empty primary validation')
-                m['update']=int(state['update']);history.append(m);write_json(root/'validation.json',history)
+                m['update']=int(state['update'])
+                if history and history[-1]['update']==state['update']: history[-1]=m
+                else: history.append(m)
+                write_json(root/'validation.json',history)
                 score=m['equal_connection_force_mae_eV_per_A']
-                if score<best: best=score;best_update=int(state['update']);save_checkpoint(root/'best.msgpack',state,provenance)
+                if score<best:
+                    best=score;best_update=int(state['update']);best_payload=serialization.to_bytes(state)
+                    save_checkpoint(root/'best.msgpack',state,provenance,run_control=control())
             evaluate();stop='max_updates';accepted=False
             while state['update']<config.max_updates:
                 # Leave room for exhaustive final validation, reload and file writes.
@@ -169,14 +189,14 @@ def train(config):
                 assert_finite((params,opt,metrics));state={**state,'params':params,'optimizer':opt,'update':state['update']+1,'sampler_rng_json':json.dumps(new_rng,sort_keys=True)}
                 losses.append({'update':int(state['update']),**{k:float(v) for k,v in metrics.items()}})
                 if state['update']%config.validation_interval==0:
-                    evaluate();write_json(root/'losses.json',losses);save_checkpoint(root/'last.msgpack',state,provenance)
+                    evaluate();write_json(root/'losses.json',losses);save_checkpoint(root/'last.msgpack',state,provenance,run_control=control())
                     print(json.dumps({'update':state['update'],'loss':losses[-1]['scaled_loss'],'validation_force_mae':history[-1]['equal_connection_force_mae_eV_per_A'],'elapsed_seconds':time.perf_counter()-start}),flush=True)
                     if subset:
                         mse=subset_mse(state['params'],bundle.train,subset,predict,config.batch_size)
                         learning_history.append({'update':int(state['update']),**mse});write_json(root/'learning-history.json',learning_history)
                         if all(mse[k]<.1*initial_mse[k] for k in mse): accepted=True;stop='learning_acceptance';break
             if history[-1]['update']!=state['update']: evaluate()
-            save_checkpoint(root/'last.msgpack',state,provenance);write_json(root/'losses.json',losses)
+            save_checkpoint(root/'last.msgpack',state,provenance,run_control=control());write_json(root/'losses.json',losses)
             probe=partition_batch(bundle.train,np.arange(min(config.batch_size,len(bundle.train.record_ids))));e,f=predict(state['params'],probe);np.savez(root/'checkpoint-reference.npz',energy=np.array(e),forces=np.array(f))
             subprocess.run([sys.executable,'-m','force_consistency.train','--probe',str(root.resolve())],check=True,capture_output=True)
             mse=subset_mse(state['params'],bundle.train,subset,predict,config.batch_size) if subset else None

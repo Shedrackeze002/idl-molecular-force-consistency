@@ -40,22 +40,38 @@ def atomic_write(path,data):
     os.replace(temp,path)
 
 
-def save_checkpoint(path,state,provenance):
+def save_checkpoint(path,state,provenance,*,run_control=None):
     assert_parameter_dtype(state['params']);assert_finite(state)
     payload=serialization.to_bytes(state)
-    envelope={'payload':payload,'sha256':hashlib.sha256(payload).hexdigest(),'provenance':json.dumps(provenance,sort_keys=True,separators=(',',':'))}
+    control=serialization.msgpack_serialize(run_control)
+    envelope={'payload':payload,'sha256':hashlib.sha256(payload).hexdigest(),'provenance':json.dumps(provenance,sort_keys=True,separators=(',',':')),
+              'control_payload':control,'control_sha256':hashlib.sha256(control).hexdigest()}
     atomic_write(path,serialization.msgpack_serialize(envelope))
 
 
-def load_checkpoint(path,expected_provenance,*,template):
+def _read_checkpoint(path,expected_provenance):
     try:
         envelope=serialization.msgpack_restore(Path(path).read_bytes())
         if envelope['provenance']!=json.dumps(expected_provenance,sort_keys=True,separators=(',',':')): raise ValueError('Checkpoint provenance mismatch')
         if hashlib.sha256(envelope['payload']).hexdigest()!=envelope['sha256']: raise ValueError('Checkpoint payload mismatch')
-        state=serialization.from_bytes(template,envelope['payload'])
-        assert_parameter_dtype(state['params']);assert_finite(state)
-        return state
+        if 'control_payload' in envelope and hashlib.sha256(envelope['control_payload']).hexdigest()!=envelope['control_sha256']: raise ValueError('Checkpoint selection metadata mismatch')
+        return envelope
     except (KeyError,TypeError,UnicodeError) as exc: raise ValueError('Invalid checkpoint') from exc
+
+
+def load_checkpoint(path,expected_provenance,*,template):
+    envelope=_read_checkpoint(path,expected_provenance)
+    state=serialization.from_bytes(template,envelope['payload'])
+    assert_parameter_dtype(state['params']);assert_finite(state)
+    return state
+
+
+def load_run_control(path,expected_provenance):
+    envelope=_read_checkpoint(path,expected_provenance)
+    control=serialization.msgpack_restore(envelope['control_payload']) if 'control_payload' in envelope else None
+    if control is None: raise ValueError('Checkpoint lacks historical selection state; training resume is unsupported')
+    assert_finite(control)
+    return control
 
 
 def code_provenance(root):

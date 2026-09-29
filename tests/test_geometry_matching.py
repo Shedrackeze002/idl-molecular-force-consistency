@@ -45,6 +45,19 @@ def test_exact_same_positions_reject_conflicting_labels():
     assert audit_duplicates([a,b],PreparationPolicy()).label_conflicts
 
 
+def test_symmetric_exact_positions_do_not_hide_conflicting_labels():
+    from force_consistency.data.matching import audit_duplicates
+    positions=.63*np.array([[0,0,0],[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]])+1
+    a=frame('methane',positions,('C','H','H','H','H'))
+    b=replace(a,record_id='conflict',energy=1.)
+    out=audit_duplicates([a,b],PreparationPolicy())
+    assert out.diagnostics[0]['exact_stored_positions'] and out.label_conflicts
+    # An exact row reordering also requires the exact coordinate mapping.
+    order=np.array([3,0,4,1,2]);forces=a.forces[order].copy();forces[0,0]+=1.
+    c=replace(a,record_id='force-conflict',species=tuple(a.species[i] for i in order),positions=a.positions[order],forces=forces)
+    assert audit_duplicates([a,c],PreparationPolicy()).label_conflicts
+
+
 def test_descriptor_screen_includes_boundary_and_reordered_pairs():
     from force_consistency.data.geometry import candidate_pairs, align_records
     a=frame('a');p=a.positions.copy();p[1,0]+=1e-5
