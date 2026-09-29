@@ -1,0 +1,180 @@
+{
+  "molecule": "aspirin",
+  "connection": "44",
+  "named_endpoint_pair": [
+    "4",
+    "4"
+  ],
+  "branches": {
+    "plus": {
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+      "source_sha256": "7fec786b4345417739e4ca27cdcade1ef46215efc5b75053dcd03cab36952b23",
+      "energy_eV": -17647.30627961511,
+      "force_max_eV_per_A": 0.00467094,
+      "scores_without_descriptor_shortlist": {
+        "0": {
+          "rmsd": 0.4965669353498392,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "8a2c7abacc04958b3b674b8412e7ab8be8a6ec5e57c0abf789c05f2b50060e7a",
+          "reference_energy_eV": -17647.61300676573
+        },
+        "1": {
+          "rmsd": 0.9267924840128137,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "3d6c27301862b836e7ace6259d42eef0c6a18f5f99a8537f5709d7778c5d75f1",
+          "reference_energy_eV": -17647.571943419767
+        },
+        "10": {
+          "rmsd": 0.7287350586087165,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fd7037ce8d10ef3be40a89e09592e9148fddf4d4123c2b0aa316720607dac621",
+          "reference_energy_eV": -17647.332656946175
+        },
+        "2": {
+          "rmsd": 0.9622815387280623,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "4ea865f6f34a05065c67b2913f7b49b8131ebd99530316fac70c45cd23eb3340",
+          "reference_energy_eV": -17647.44200566824
+        },
+        "3": {
+          "rmsd": 1.070320274935758,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d926d49f6c72987aef9ef134f692e76be3cb0ca858413099bf239a07dd78fb09",
+          "reference_energy_eV": -17647.433553493684
+        },
+        "4": {
+          "rmsd": 0.0029672080649860042,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "4b6a831bcea8505d93ecdf3eb01d600c47569fee096cdf02d1d45c2b8d0e1a33",
+          "reference_energy_eV": -17647.30629577135
+        },
+        "5": {
+          "rmsd": 1.51452594013235,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d9fd0a30d95db13f2330eb2d2591bad24c8b92a10a8c57f7f7ce855ad7dca380",
+          "reference_energy_eV": -17647.29144978451
+        },
+        "6": {
+          "rmsd": 1.223764451472686,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "f8ce96626e29164d8d6d21dd7fdac9330835ed1f313ccad2f1b6b15c849132ee",
+          "reference_energy_eV": -17647.128132489765
+        },
+        "7": {
+          "rmsd": 1.2705943734654206,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "b6a62b0018b69790c25d87a070d020f4d5afc3029437680458268c77438b389f",
+          "reference_energy_eV": -17647.397014587335
+        },
+        "8": {
+          "rmsd": 1.5271039614077537,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "c7aa1c15e6236b3204327c8520c5e2817c0e960229f70b944c4c6d90470d8ef4",
+          "reference_energy_eV": -17647.389106433275
+        },
+        "9": {
+          "rmsd": 1.1901334303977096,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "b3ab7a6a1f09ba4841b2a650d637789408884644a4777a9841bf059f1b056a06",
+          "reference_energy_eV": -17646.96818339648
+        }
+      }
+    },
+    "minus": {
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_132.xyz",
+      "source_sha256": "731df2b55c13b4f911c57443ab231eb43d282ea2eb91c377251a32bedee1761f",
+      "energy_eV": -17647.33265675025,
+      "force_max_eV_per_A": 0.00144636,
+      "scores_without_descriptor_shortlist": {
+        "0": {
+          "rmsd": 0.4848763712288659,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "8a2c7abacc04958b3b674b8412e7ab8be8a6ec5e57c0abf789c05f2b50060e7a",
+          "reference_energy_eV": -17647.61300676573
+        },
+        "1": {
+          "rmsd": 0.9227266021431658,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "3d6c27301862b836e7ace6259d42eef0c6a18f5f99a8537f5709d7778c5d75f1",
+          "reference_energy_eV": -17647.571943419767
+        },
+        "10": {
+          "rmsd": 0.0010850393883316384,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fd7037ce8d10ef3be40a89e09592e9148fddf4d4123c2b0aa316720607dac621",
+          "reference_energy_eV": -17647.332656946175
+        },
+        "2": {
+          "rmsd": 1.1278662770662058,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "4ea865f6f34a05065c67b2913f7b49b8131ebd99530316fac70c45cd23eb3340",
+          "reference_energy_eV": -17647.44200566824
+        },
+        "3": {
+          "rmsd": 0.7121617120131933,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d926d49f6c72987aef9ef134f692e76be3cb0ca858413099bf239a07dd78fb09",
+          "reference_energy_eV": -17647.433553493684
+        },
+        "4": {
+          "rmsd": 0.7279738169836115,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "4b6a831bcea8505d93ecdf3eb01d600c47569fee096cdf02d1d45c2b8d0e1a33",
+          "reference_energy_eV": -17647.30629577135
+        },
+        "5": {
+          "rmsd": 1.3537251172511273,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d9fd0a30d95db13f2330eb2d2591bad24c8b92a10a8c57f7f7ce855ad7dca380",
+          "reference_energy_eV": -17647.29144978451
+        },
+        "6": {
+          "rmsd": 1.16807036719904,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "f8ce96626e29164d8d6d21dd7fdac9330835ed1f313ccad2f1b6b15c849132ee",
+          "reference_energy_eV": -17647.128132489765
+        },
+        "7": {
+          "rmsd": 1.2093375340875572,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "b6a62b0018b69790c25d87a070d020f4d5afc3029437680458268c77438b389f",
+          "reference_energy_eV": -17647.397014587335
+        },
+        "8": {
+          "rmsd": 1.3773883795533193,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "c7aa1c15e6236b3204327c8520c5e2817c0e960229f70b944c4c6d90470d8ef4",
+          "reference_energy_eV": -17647.389106433275
+        },
+        "9": {
+          "rmsd": 1.2455863181138906,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "b3ab7a6a1f09ba4841b2a650d637789408884644a4777a9841bf059f1b056a06",
+          "reference_energy_eV": -17646.96818339648
+        }
+      }
+    }
+  }
+}

@@ -123,3 +123,31 @@ The retained, checksum-verified archive parses into **8,874 records**: 8,813 pat
 **Additional source caveat:** the Figshare v1 metadata explicitly states that Hessian eigenvalues require multiplication by **9442.713128494901** to obtain eV/angstrom squared. Hessians are outside this baseline pipeline; future Hessian analysis must retain that conversion rather than silently reusing the stored values.
 
 **Next check:** finish full-archive symmetry matching, duplicate screening and eligible connection coverage before model-ready export.
+
+### DATA-006: one paracetamol branch fails the frozen destination criterion
+
+**Status:** full raw-data geometry audit, before any fitting. The declared 0.05 angstrom threshold was not adjusted after observing this case.
+
+Of 92 branch endpoints, 91 have a unique accepted reference class: all 74 aspirin branches and 17 of 18 paracetamol branches. The remaining source is `Landscape17/paracetamol/SteepestDescent/01_2/coordsplus_138.xyz`. Its closest chemically aligned reference is minimum 1, at RMSD **0.06431211546693098 angstrom**, above the frozen preparation threshold. Its maximum force component is **0.01034903 eV/angstrom**, with energy **-14023.35601746059 eV** under the source-grounded unit assignment.
+
+Against minima 0/1/2/3, complete chemically constrained orthogonal-alignment RMSDs are **0.34597055528879134 / 0.06431211546693098 / 1.4095231220018807 / 1.3724159316498081 angstrom**. This is an unmatched archive endpoint under our rule, not evidence of a learned-model failure, a new minimum, or corrupted labels.
+
+The complete duplicate screen found **zero** accepted pairs within **1e-5 angstrom**, with no incomplete candidates or exact-label conflicts. This narrow threshold does not establish absence of broader geometric similarity or correlated frames.
+
+**Evidence:** checksum-verified `data/Landscape17.zip`; `reports/landscape17-endpoints.json` and `reports/landscape17-duplicates.json`; `configs/preparation.json`; the unit manifest. Matching uses full graph-isomorphism enumeration and orthogonal alignment; the candidate screen is mathematically conservative. Both prepared arrays and matching code still require independent implementation review.
+
+**Consequence:** paracetamol model-ready export remains blocked; do not delete this connection or relax the threshold to obtain a passing audit. Aspirin can be prepared independently if all its own gates pass, since the first baseline pilot is aspirin-only. A separate reviewed decision is needed to resolve the paracetamol destination contract before its replication experiments.
+
+### DATA-006A: complete-score provenance supplement
+
+The complete (unshortlisted) paracetamol 01_2 branch/reference comparisons quoted in DATA-006 are now retained in `reports/landscape17-paracetamol-01_2-complete-endpoint-check.json`, including source hashes, full alignment status, and all reference scores. The general endpoint report records null for references rejected by the conservative descriptor screen; it should not be cited as the source of an uncomputed full alignment score.
+
+### DATA-007: geometric destinations can differ from filename endpoint pairs
+
+**Status:** full-archive data observation under the frozen chemically constrained matching policy; before fitting.
+
+For aspirin, connection directory `44` uniquely associates with TS filename `coordsts_4_4.xyz`, but its archived branch terminals match references 4 and 10. Connection `66` associates with `coordsts_6_6.xyz`, while the branch terminals match references 6 and 9. All four destinations satisfy the frozen 0.05 angstrom identification criterion. Every other fully matched connection's geometric pair agrees with its named endpoint pair in this check.
+
+**Evidence:** `reports/landscape17-aspirin-44-complete-endpoint-check.json`, `reports/landscape17-aspirin-66-complete-endpoint-check.json`, and the full endpoint report. Complete comparisons include source and reference hashes, distances, energies and forces. The grouping identity is unchanged: each directory still contributes both branches and its uniquely identified TS.
+
+**Consequence:** keep the named pair as source metadata, but derive destination classes and minimum training/seen memberships from the verified branch geometry. Filenames alone are insufficient to establish branch destinations. This does not establish corrupted data, a new physical connection, or incorrect source-paper conclusions; the result is conditional on our matching and reference-class conventions.
