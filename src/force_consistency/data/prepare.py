@@ -97,7 +97,7 @@ def export_prepared(records,*,directory,inventory,endpoints,duplicates,policy,mo
     return payload
 
 
-def load_training_bundle(directory,*,expected_split_hash):
+def _validated_manifest(directory,*,expected_split_hash):
     directory=Path(directory);m=json.loads((directory/'manifest.json').read_text());identity=m.pop('identity')
     if canonical_hash(m)!=identity: raise PreparationError('Manifest identity mismatch')
     m['identity']=identity
@@ -110,15 +110,28 @@ def load_training_bundle(directory,*,expected_split_hash):
     verify_units(m['unit_evidence'])
     if canonical_hash(m['unit_evidence'])!=m['unit_evidence_hash']: raise PreparationError('Unit evidence identity mismatch')
     if any(v.get('status')!='matched' for v in m['endpoints'].values()): raise PreparationError('Unresolved preparation gate')
-    partitions={}
-    for part in ('train','validation','validation_minima_diagnostics'):
-        info=m['partitions'][part]
-        if info['molecule']!=m['molecule']: raise PreparationError('Mixed molecule arrays')
-        with np.load(directory/f'{part}.npz',allow_pickle=False) as file:
-            a={k:file[k] for k in info['arrays']}
-        if any(array_identity(v)!=info['arrays'][k] or not np.isfinite(v).all() for k,v in a.items()): raise PreparationError('Array identity mismatch')
-        n=len(info['record_ids'])
-        if any(len(v)!=n for v in a.values()): raise PreparationError('Array count mismatch')
-        for v in a.values(): v.setflags(write=False)
-        partitions[part]=PreparedPartition(**a,record_ids=tuple(info['record_ids']),memberships=info['memberships'])
+    return m
+
+
+def _load_partition(directory,m,part):
+    info=m['partitions'][part]
+    if info['molecule']!=m['molecule']: raise PreparationError('Mixed molecule arrays')
+    with np.load(Path(directory)/f'{part}.npz',allow_pickle=False) as file:
+        a={k:file[k] for k in info['arrays']}
+    if any(array_identity(v)!=info['arrays'][k] or not np.isfinite(v).all() for k,v in a.items()): raise PreparationError('Array identity mismatch')
+    n=len(info['record_ids'])
+    if any(len(v)!=n for v in a.values()): raise PreparationError('Array count mismatch')
+    for v in a.values(): v.setflags(write=False)
+    return PreparedPartition(**a,record_ids=tuple(info['record_ids']),memberships=info['memberships'])
+
+
+def load_training_partition(directory,*,expected_split_hash):
+    """Diagnostic access: validate manifest and open train.npz only."""
+    m=_validated_manifest(directory,expected_split_hash=expected_split_hash)
+    return _load_partition(directory,m,'train'),m,Normalization(**m['normalization'])
+
+
+def load_training_bundle(directory,*,expected_split_hash):
+    m=_validated_manifest(directory,expected_split_hash=expected_split_hash)
+    partitions={part:_load_partition(directory,m,part) for part in ('train','validation','validation_minima_diagnostics')}
     return PreparedBundle(**partitions,manifest=m,normalization=Normalization(**m['normalization']))
