@@ -39,3 +39,7 @@ No deferred minors. Branch retained locally, no integration requested. Authorita
 - `runs/force-diagnostic-implementation-2026-09-30/task2-green.txt`: SHA256 `154f0c40cebfa4f3dece430535bb1914bff6d577cb48f52aba01884dc2dd2e0e`
 - `runs/force-diagnostic-implementation-2026-09-30/task2-red.txt`: SHA256 `4fd3cc376b6068cc849b254c166f1f55a858c20a7d5d3a303fcd65d6366a84fd`
 - `runs/force-diagnostic-implementation-2026-09-30/task2-suite.txt`: SHA256 `af5db4b4317e99f1e485b2157f3f9fb9e843ef855d70eef3710a52e990c95f0b`
+
+## Optional cleanup blocked
+
+After saving all15 execution traces and final review, the command safety hook rejected `shutil.rmtree` for this plan's ignored scratch workspace as destructive (`heredoc.python:shutil_rmtree`, CRITICAL). No deletion occurred. The command was not retried or bypassed. Scratch remains at `.superpowers/sdd/2026-09-30-force-learning-diagnostics`; its durable trace copy also remains under `runs/force-diagnostic-implementation-2026-09-30`. Cleanup is optional and does not block the completed diagnostic milestone; no permission request was needed to retain it. Numerical outcomes and implementation source are unchanged.
