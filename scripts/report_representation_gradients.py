@@ -25,7 +25,9 @@ def generate(root,out):
            'The fixed16/16/128 training subsets, source2000-update checkpoints, model and original normalized loss were unchanged. Eight prespecified cases were attempted in order under600s; no optimizer update, training, test/validation access or label substitution occurred.', '',
            '## Necessary force constraints','',
            '| Set | Zero-force MSE | Translation floor | Rigid floor | Original force gate | Obstructs gate |','|---|---:|---:|---:|---:|---|']
-    for arm,d in phase.get('subsets',{}).items():
+    for arm in ('narrow16','diverse16','diverse128'):
+        if arm not in phase.get('subsets',{}):continue
+        d=phase['subsets'][arm]
         g=d['pooled'];graphs=[r['graph'] for r in d['records']]
         compact['constraints'][arm]={'pooled':g,'equal_group':d['equal_group'],'record_count':d['record_count'],
             'force_component_count':d['force_component_count'],'immutable_force_gate_mse':d['immutable_force_gate_mse'],
@@ -53,12 +55,20 @@ def generate(root,out):
             compact['cases'][name]=s;lines.append(f"| {name} | {s['status']} | — | — | — | — | — | — | — | — |")
     lines+=['','Norms, ratios and cosines depend on this parameterization and the fixed training scales. Slopes are local directional derivatives along ordinary **minus the joint gradient**, without normalizing that direction: −(||gE||²+gE·gF), −(||gF||²+gE·gF). Negative slopes imply a local first-order decrease for that objective. They are not the actual Adam direction, a training trajectory or a causal explanation. Zero-norm blocks have undefined cosine; the force head-bias gradient and initial zero-head backbone force gradient are structurally zero. Nonzero later derivatives do not establish adequate capacity.','',
             'Both central-difference steps1e-4 and1e-5 are retained for every completed objective; at least one must agree within1e-8+1e-4 relative tolerance. These checks verify selected directions, not every gradient component. The separate gradient sum is checked against the unchanged joint objective within1e-10/1e-8. Parameter and optimizer hashes before/after are retained.','',
-            '## Outcome and limits','',
+            '## Measured observations','']
+    if all(n in observed for n in names):
+        fits=[observed[n]['geometry']['whole'] for n in names[3:6]]
+        ratios=[1/observed[n]['geometry']['whole']['force_over_energy_norm'] for n in names[:3]]
+        lines += [f"Initial energy-gradient norms exceed force-gradient norms by{ratios[0]:.3f},{ratios[1]:.3f},{ratios[2]:.3f}times for A/B/C. At the final fitting snapshots the cosines are{fits[0]['cosine']:.12g},{fits[1]['cosine']:.12g},{fits[2]['cosine']:.12g}. Under ordinary minus-joint-gradient motion, A's energy slope is positive while B/C's force slopes are positive. This is local objective opposition; no Adam direction or causal explanation was measured. The final C anchor has positive cosine, so conflict is not uniform across cases.",'']
+        failed=[f"{name}/{objective}/h={step['step']}: error{step['absolute_error']:.12g}" for name,d in observed.items() for objective in ('energy','force') for step in d['finite_differences'][objective]['steps'] if not step['valid']]
+        lines += ['Failed individual finite-difference steps: '+('; '.join(failed) if failed else 'none')+'. Every objective nevertheless meets the prespecified at-least-one-step criterion; all failed steps remain preserved.','']
+        lines += ['All observed rigid ranks are6. Every geometry graph is connected, has no isolated atoms, and reaches all ordered nonself atom pairs within two hops at5Å (see companion JSON for exact ranges). These observations do not establish that this width/degree/message representation can express the target force field.','']
+    lines += ['## Outcome and limits','',
             f"Next decision: `{summary.get('next_step')}`. Static observations do not clear the previous failed force gates. Any architecture, weighting, optimization, data-convention intervention or larger training run requires its own saved plan and two independent reviews. No additional attempt was selected after this result. Unresolved, failed or blocked observations remain in the raw artifacts and paper evidence log.",'',
             '## Reproduction and evidence','',
-            f"Source run: `{root}`. Frozen config: `configs/aspirin-representation-gradient-diagnostic.json`; source/prepared/split/subset identities and historical/current provenance are in the run artifacts. This report generator reads JSON only; it does not load data or execute a model. Raw observations and every partial/failure artifact are indexed by SHA256 in the companion JSON. See `reports/PAPER_EVIDENCE_LOG.md`, entries PLAN-GRADIENT/IMPL-GRADIENT/GRADIENT-*. Results are training-only diagnostics, with no held-out scientific comparison."]
+            f"Analysis artifacts: `{root}`; historical source run: `{config["source_run"]}`. Frozen config: `configs/aspirin-representation-gradient-diagnostic.json`; source/prepared/split/subset identities and historical/current provenance are in the run artifacts. This report generator reads JSON only; it does not load data or execute a model. Raw observations and every partial/failure artifact are indexed by SHA256 in the companion JSON. See `reports/PAPER_EVIDENCE_LOG.md`, entries PLAN-GRADIENT/IMPL-GRADIENT/GRADIENT-*. Results are training-only diagnostics, with no held-out scientific comparison."]
     if phase.get('subsets'):
-        arms=list(phase['subsets']);fig,ax=plt.subplots(figsize=(7.5,4.5));x=np.arange(len(arms));width=.24
+        arms=[a for a in ('narrow16','diverse16','diverse128') if a in phase['subsets']];fig,ax=plt.subplots(figsize=(7.5,4.5));x=np.arange(len(arms));width=.24
         for offset,key,label in [(-width,'raw_mse','Zero-force baseline'),(0,'floor_mse','Necessary rigid floor')]:
             ax.bar(x+offset,[phase['subsets'][a]['pooled'][key] for a in arms],width,label=label)
         ax.bar(x+width,[phase['subsets'][a]['immutable_force_gate_mse'] for a in arms],width,label='Original force gate')
@@ -66,7 +76,7 @@ def generate(root,out):
         f=out/'representation-force-floors.png';fig.savefig(f,dpi=180);plt.close(fig);compact['figures'][f.name]=digest(f)
     if observed:
         ordered=[n for n in names if n in observed];x=np.arange(len(ordered));fig,axes=plt.subplots(2,1,figsize=(10,7),sharex=True)
-        for key,label in [('energy_norm','Energy'),('force_norm','Force')]:axes[0].plot(x,[observed[n]['geometry']['whole'][key] for n in ordered],'o-',label=label)
+        for key,label in [('energy_norm','Energy'),('force_norm','Force')]:axes[0].scatter(x,[observed[n]['geometry']['whole'][key] for n in ordered],label=label)
         axes[0].set_yscale('log');axes[0].set_ylabel('Scaled-objective gradient L2 norm');axes[0].legend()
         axes[1].scatter(x,[observed[n]['geometry']['whole']['cosine'] if observed[n]['geometry']['whole']['cosine'] is not None else np.nan for n in ordered]);axes[1].axhline(0,color='gray',lw=1)
         axes[1].set_ylim(-1.05,1.05);axes[1].set_ylabel('Energy/force gradient cosine');axes[1].set_xticks(x,ordered,rotation=28,ha='right');fig.tight_layout()

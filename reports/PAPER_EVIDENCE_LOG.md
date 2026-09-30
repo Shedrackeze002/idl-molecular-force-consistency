@@ -1194,3 +1194,1785 @@ Prospective rationale/settings: unchanged scaled energy and force objectives,7-f
 ## IMPL-GRADIENT-003 — Source/controller engineering validation and execution preflight
 
 Missing-controller RED preserved. All11controller tests passed8.46s: complete31hash allowlist/settings precede train loader; real source arrays/checkpoints/predictions/fresh hashes verify; rehashed corrupt checkpoint/config/arrays reject; case order/counts, immutable state, partial exceptions, pre-attempt budget blocks, protected output and CLI execution-status semantics pass. Full suite114passed115.04s. Production controller checks600s from before preflight, preserves partial gradient and both-step observations, and blocks pending cases without training. The exact frozen config will execute once after committing this tested code. Outcome remains unknown; no extra attempt/tuning/pilot authorized. Report generation is observational JSON-only presentation.
+
+## GRADIENT-EXECUTION-PRE — Frozen analysis preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "config": {
+    "backend": "cpu",
+    "data_directory": "data/processed/aspirin",
+    "decomposition_atol": 1e-10,
+    "decomposition_rtol": 1e-08,
+    "direction_seed": 20260930,
+    "direction_zero_tolerance": 1e-12,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "fd_atol": 1e-08,
+    "fd_rtol": 0.0001,
+    "fd_steps": [
+      0.0001,
+      1e-05
+    ],
+    "gradient_identity_atol": 1e-10,
+    "gradient_identity_rtol": 1e-08,
+    "learning_rate": 0.001,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "output_reserve_seconds": 10,
+    "prediction_constraint_atol": 1e-08,
+    "run_directory": "runs/aspirin-representation-gradient-2026-09-30",
+    "seed": 0,
+    "source_run": "runs/aspirin-data-coverage-2026-09-30",
+    "source_sha256": {
+      "config.json": "3575dad49acf97b8f780f953a397c776cb5f3dd96729f1e6236837d8e99a5f64",
+      "diverse128/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse128/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "diverse128/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse128/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "diverse128/history.json": "2e037af82e7fae42f7811fb661b39202b331bb42e8499ec45c0c3ba73d18629f",
+      "diverse128/last.msgpack": "7305113575499ebe51ca3e30b87d5bb644888b913b845e3fee5b95e222f4f6c3",
+      "diverse128/provenance.json": "1502d258d63cf8a69e9ee67fcd9852855b9dbc3deb2010c33010d8b56db81063",
+      "diverse128/reference.npz": "5ebb9dfb89f2c5df095a8d6f1dfe5fa2e1901b6dcfcf3159b417ccad5b724afd",
+      "diverse128/summary.json": "0e374b8ed313f8004aec6219af3b2e45f0a868082f00ced907a6f4c9d8b88a8b",
+      "diverse16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "diverse16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse16/fitting-inputs.npz": "ae6550bbda77af6eb1617a859cc8ce118ab90c6bd109c3a25b0d3827faf9a65c",
+      "diverse16/history.json": "f9b66c8e496ba8ca82d626df2a38980f41c7dc1edf28bb97f21028a8aa8fc367",
+      "diverse16/last.msgpack": "7156487d43587f9cdfe563f14db79948d465b0bf43995ff67e07e3c6ac180d8f",
+      "diverse16/provenance.json": "80bed026608d4455f4ab81a1fbc17520c511a1772c39fc448eada96f6dd34791",
+      "diverse16/reference.npz": "f48c42e9697e2c93a6a8393c1378d3faecf1ad08a3c598518cf39fafae2c1c85",
+      "diverse16/summary.json": "af772ad611b5d153b85265861375419df80f2b93c20407c0304f6ca9876fb5e6",
+      "narrow16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "narrow16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "narrow16/fitting-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/history.json": "9970a673c501b566e8f8de0b83581ce81f40cba9a71a2547111f9fe46b0af812",
+      "narrow16/last.msgpack": "b5c792314ea6b34d46bc5b2b104abbc7b1e647fd6c81cea55ec49e94b18cb6b7",
+      "narrow16/provenance.json": "5de39bfac0af7376beee7e9790b6028443cff7d8d3983006b4a1ba0b5617b6ad",
+      "narrow16/reference.npz": "95f1258fba9882b7c7ae600f704f0465e7c6011ef149d2127ccf5a414ee9ecaa",
+      "narrow16/summary.json": "c3b0aa387b7cbd2cc57723e6232677eea19abb3f03dc1834cd8cdf1b32128452",
+      "provenance.json": "b60d13789966f2ce2fbb11a3c4de73f0886f2e952ba9e0254892c35c554f7dcc",
+      "subsets.json": "d3c3db7a92f3ffb0748039f63d7a0734bf38214032037ab67780d6182ad764b6",
+      "summary.json": "54e7f6d7e9995dbca90bdca3417457b075e99037dc9ecd6d6a1c0647ac102a9f"
+    },
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "svd_rcond": 1e-12,
+    "wall_seconds": 600
+  },
+  "limits": "One bounded execution; no retries or training",
+  "source_config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3"
+}
+```
+
+## GRADIENT-PHASE-A-PRE — Necessary constraints preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Projection/reconstruction checks, saved prediction leakage<=1e-8 and raw-MSE decomposition1e-10/1e-8; original gates unchanged",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "subsets": {
+    "anchor_identity": "338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c",
+    "ordered_groups": [
+      "01",
+      "23",
+      "77",
+      "58_2",
+      "44",
+      "22",
+      "78_2",
+      "01_2"
+    ],
+    "prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "rank_denominators": {
+      "minus": 122,
+      "plus": 110
+    },
+    "rank_numerators": {
+      "minus": [
+        0,
+        15,
+        31,
+        46,
+        62,
+        77,
+        93,
+        108
+      ],
+      "plus": [
+        1,
+        16,
+        32,
+        47,
+        63,
+        78,
+        94,
+        110
+      ]
+    },
+    "selection": {
+      "01": {
+        "minus": {
+          "pool_count": 123,
+          "ranks": [
+            0,
+            15,
+            31,
+            46,
+            62,
+            77,
+            93,
+            108
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz"
+        },
+        "plus": {
+          "pool_count": 111,
+          "ranks": [
+            1,
+            16,
+            32,
+            47,
+            63,
+            78,
+            94,
+            110
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+            "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz"
+        }
+      },
+      "01_2": {
+        "minus": {
+          "pool_count": 124,
+          "ranks": [
+            0,
+            15,
+            31,
+            46,
+            63,
+            78,
+            94,
+            109
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz"
+        },
+        "plus": {
+          "pool_count": 95,
+          "ranks": [
+            1,
+            14,
+            27,
+            40,
+            54,
+            67,
+            80,
+            94
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+            "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+        }
+      },
+      "22": {
+        "minus": {
+          "pool_count": 87,
+          "ranks": [
+            0,
+            11,
+            22,
+            32,
+            44,
+            54,
+            66,
+            76
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz"
+        },
+        "plus": {
+          "pool_count": 89,
+          "ranks": [
+            1,
+            13,
+            26,
+            38,
+            50,
+            62,
+            75,
+            88
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+            "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz"
+        }
+      },
+      "23": {
+        "minus": {
+          "pool_count": 83,
+          "ranks": [
+            0,
+            10,
+            21,
+            31,
+            42,
+            52,
+            63,
+            73
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz"
+        },
+        "plus": {
+          "pool_count": 72,
+          "ranks": [
+            1,
+            10,
+            21,
+            30,
+            41,
+            50,
+            61,
+            71
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+            "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz"
+        }
+      },
+      "44": {
+        "minus": {
+          "pool_count": 133,
+          "ranks": [
+            0,
+            16,
+            34,
+            50,
+            67,
+            83,
+            101,
+            117
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz"
+        },
+        "plus": {
+          "pool_count": 95,
+          "ranks": [
+            1,
+            14,
+            27,
+            40,
+            54,
+            67,
+            80,
+            94
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+            "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz"
+        }
+      },
+      "58_2": {
+        "minus": {
+          "pool_count": 107,
+          "ranks": [
+            0,
+            13,
+            27,
+            40,
+            54,
+            67,
+            81,
+            94
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz"
+        },
+        "plus": {
+          "pool_count": 79,
+          "ranks": [
+            1,
+            11,
+            23,
+            33,
+            45,
+            55,
+            67,
+            78
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz"
+        }
+      },
+      "77": {
+        "minus": {
+          "pool_count": 101,
+          "ranks": [
+            0,
+            12,
+            25,
+            38,
+            51,
+            63,
+            76,
+            89
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz"
+        },
+        "plus": {
+          "pool_count": 104,
+          "ranks": [
+            1,
+            15,
+            30,
+            44,
+            59,
+            73,
+            88,
+            103
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+            "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz"
+        }
+      },
+      "78_2": {
+        "minus": {
+          "pool_count": 95,
+          "ranks": [
+            0,
+            12,
+            24,
+            35,
+            48,
+            59,
+            72,
+            83
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz"
+        },
+        "plus": {
+          "pool_count": 79,
+          "ranks": [
+            1,
+            11,
+            23,
+            33,
+            45,
+            55,
+            67,
+            78
+          ],
+          "record_ids": [
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+            "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+          ],
+          "small_set_record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz"
+        }
+      }
+    },
+    "selection_seed": 20260930,
+    "split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "subsets": {
+      "diverse128": {
+        "anchor_fit_overlap_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+        ],
+        "identity": "b667e61ebf7c44e88695466f2a2ba44451a87f9adb76728658e4ae3926715da9",
+        "indices": [
+          37,
+          52,
+          68,
+          83,
+          99,
+          114,
+          130,
+          145,
+          161,
+          176,
+          192,
+          207,
+          223,
+          238,
+          254,
+          270,
+          1606,
+          1616,
+          1627,
+          1637,
+          1648,
+          1658,
+          1669,
+          1679,
+          1690,
+          1699,
+          1710,
+          1719,
+          1730,
+          1739,
+          1750,
+          1760,
+          4137,
+          4149,
+          4162,
+          4175,
+          4188,
+          4200,
+          4213,
+          4226,
+          4239,
+          4253,
+          4268,
+          4282,
+          4297,
+          4311,
+          4326,
+          4341,
+          3611,
+          3624,
+          3638,
+          3651,
+          3665,
+          3678,
+          3692,
+          3705,
+          3719,
+          3729,
+          3741,
+          3751,
+          3763,
+          3773,
+          3785,
+          3796,
+          2440,
+          2456,
+          2474,
+          2490,
+          2507,
+          2523,
+          2541,
+          2557,
+          2574,
+          2587,
+          2600,
+          2613,
+          2627,
+          2640,
+          2653,
+          2667,
+          1430,
+          1441,
+          1452,
+          1462,
+          1474,
+          1484,
+          1496,
+          1506,
+          1518,
+          1530,
+          1543,
+          1555,
+          1567,
+          1579,
+          1592,
+          1605,
+          4342,
+          4354,
+          4366,
+          4377,
+          4390,
+          4401,
+          4414,
+          4425,
+          4438,
+          4448,
+          4460,
+          4470,
+          4482,
+          4492,
+          4504,
+          4515,
+          410,
+          425,
+          441,
+          456,
+          473,
+          488,
+          504,
+          519,
+          535,
+          548,
+          561,
+          574,
+          588,
+          601,
+          614,
+          628
+        ],
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+        ]
+      },
+      "diverse16": {
+        "anchor_fit_overlap_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz"
+        ],
+        "identity": "3c77271af9509a980fc7f462710475535ba047a3467bd71106706867315060a4",
+        "indices": [
+          37,
+          161,
+          1616,
+          1699,
+          4162,
+          4268,
+          3651,
+          3751,
+          2507,
+          2627,
+          1484,
+          1579,
+          4414,
+          4504,
+          519,
+          628
+        ],
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+        ]
+      },
+      "narrow16": {
+        "anchor_fit_overlap_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+        ],
+        "identity": "338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c",
+        "indices": [
+          37,
+          52,
+          68,
+          83,
+          99,
+          114,
+          130,
+          145,
+          161,
+          176,
+          192,
+          207,
+          223,
+          238,
+          254,
+          270
+        ],
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+        ]
+      }
+    }
+  }
+}
+```
+
+## GRADIENT-PHASE-A-RESULT — Necessary constraint outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "artifact_sha256": "ed8ff3e418c136c7b8e24777658a62ff5aba0ab5fbe5891d35cbcf862d16134b",
+  "pooled": {
+    "diverse128": {
+      "compatible_mse": 0.014083939185454,
+      "floor_fraction_of_zero_force": 6.413411977582667e-07,
+      "floor_mse": 9.03261621934256e-09,
+      "floor_obstructs_gate": false,
+      "gate": 0.001408394821807022,
+      "raw_mse": 0.014083948218070219,
+      "translation_mse": 6.1526045585488705e-09
+    },
+    "diverse16": {
+      "compatible_mse": 0.01793965469434784,
+      "floor_fraction_of_zero_force": 5.310908753795357e-07,
+      "floor_mse": 9.527591975644952e-09,
+      "floor_obstructs_gate": false,
+      "gate": 0.0017939664221939815,
+      "raw_mse": 0.017939664221939815,
+      "translation_mse": 5.8688520855158395e-09
+    },
+    "narrow16": {
+      "compatible_mse": 0.010133553332115677,
+      "floor_fraction_of_zero_force": 7.646880861894121e-07,
+      "floor_mse": 7.749013429412125e-09,
+      "floor_obstructs_gate": false,
+      "gate": 0.0010133561081129107,
+      "raw_mse": 0.010133561081129106,
+      "translation_mse": 4.644641210085968e-09
+    }
+  },
+  "status": "completed"
+}
+```
+
+## GRADIENT-CASE-01-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "fresh-A-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "update": 0
+}
+```
+
+## GRADIENT-CASE-01-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 2.6062803330132738,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "871edf2e85cd8fdb5fdb9fc7d6119729217bacc08d4753e1a21f817e31f67cbc",
+    "partial.json": "dee75a5af21c7806b348c1929cab1543b294d3b11c863385464d0d093a11acbf",
+    "prospective.json": "49e76563d5c0e66561756d4aed61e344ee176a3de6e8863234598ad9d92040d3",
+    "summary.json": "e368f7bb5e0f60865e932f56f7a90c169a80d17857b816782ffa4117de6bcf99"
+  },
+  "state_hashes_after": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "state_hashes_before": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "e368f7bb5e0f60865e932f56f7a90c169a80d17857b816782ffa4117de6bcf99",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-02-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "fresh-B-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "update": 0
+}
+```
+
+## GRADIENT-CASE-02-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.08751545893028378,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "f2a23f14002b4da1bb3d2653e47b7fadf8f63c4c1f051f61194bc30066520cba",
+    "partial.json": "abdcaa23b7054550fb280cbf1cae22be9376852c46f1d54d93962a526b339a69",
+    "prospective.json": "8e53f321235b0a68e03011e182557e7bafde4c965a1adb51ca68db199d807c79",
+    "summary.json": "932362c1d7e180a4454dad3e95d628c55892df82bc1ceb1eb3f000c5be214d0e"
+  },
+  "state_hashes_after": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "state_hashes_before": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "932362c1d7e180a4454dad3e95d628c55892df82bc1ceb1eb3f000c5be214d0e",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-03-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "fresh-C-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 128,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "update": 0
+}
+```
+
+## GRADIENT-CASE-03-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.6467581250471994,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "86e590a45e3bc5b8a896ab184ccaa4622b5200c62d909fef256955d779640fa1",
+    "partial.json": "adfa1b2ecab15ace385fdb5ae6ee21a4f61f183cb3732855da02c6c7d96b3d6c",
+    "prospective.json": "903e3e3622af7ee9fe1016e9a762f12b6eba0577d6e8cdb0acfbcbba09d96641",
+    "summary.json": "8c52ef2f528d9af3a7c448057e8e5d489bdaa55a9327980f342fbe751862384c"
+  },
+  "state_hashes_after": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "state_hashes_before": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "8c52ef2f528d9af3a7c448057e8e5d489bdaa55a9327980f342fbe751862384c",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-04-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "final-A-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "517e4854dfbaeafca9d37c054436aaad12b031e2cef430389e0fe86b1bcdff99",
+    "params": "66d7a8fa4dc158428dcbed6c78c8bd57213337160939b50bd2c127e8ff885643"
+  },
+  "update": 2000
+}
+```
+
+## GRADIENT-CASE-04-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.08842833305243403,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "76baa62b97b3d99e15f3ad9ef36dd11e01a1b91c55325664104cf6aa8a72d315",
+    "partial.json": "0235d07bac59cd238774d4903a56cebd36e4fe12d9efd1454ade4f43559e1dd6",
+    "prospective.json": "e137e849baf7ad2e212e41a0759ff9a198fd018d65fb100541539a376ffdb3b9",
+    "summary.json": "0f0a6c02febf58e86f87aa18a9506c993ba2f1e6aa0bb999243cbf1a5c531e02"
+  },
+  "state_hashes_after": {
+    "optimizer": "517e4854dfbaeafca9d37c054436aaad12b031e2cef430389e0fe86b1bcdff99",
+    "params": "66d7a8fa4dc158428dcbed6c78c8bd57213337160939b50bd2c127e8ff885643"
+  },
+  "state_hashes_before": {
+    "optimizer": "517e4854dfbaeafca9d37c054436aaad12b031e2cef430389e0fe86b1bcdff99",
+    "params": "66d7a8fa4dc158428dcbed6c78c8bd57213337160939b50bd2c127e8ff885643"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "0f0a6c02febf58e86f87aa18a9506c993ba2f1e6aa0bb999243cbf1a5c531e02",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-05-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "final-B-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "update": 2000
+}
+```
+
+## GRADIENT-CASE-05-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.0853824169607833,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "a4475e427b8a6671390a01ce1820ba09703a39924e43b5b38dc44011996d0b38",
+    "partial.json": "9765b1d85caecd49f6f19e720b8176d4c1687727aa21700743f90857822462f9",
+    "prospective.json": "cea7b82f42e72392574721204c996745dbb2e4f815da3ec44522e4621cebc18b",
+    "summary.json": "4a3659c9755b83419599cc89b1a199cdd02fbe524b3610c90fa3272146457f32"
+  },
+  "state_hashes_after": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "state_hashes_before": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "4a3659c9755b83419599cc89b1a199cdd02fbe524b3610c90fa3272146457f32",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-06-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "final-C-fitting",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 128,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "update": 2000
+}
+```
+
+## GRADIENT-CASE-06-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.6350165409967303,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "0e57685416e8bbae6a626b4ffa275d4de772a68047c6cc97eaad0ca251520e2e",
+    "partial.json": "4228f1c4ad536f2e77d477a39e43d5456869bd83b33f83da661f0d941a45fb5f",
+    "prospective.json": "915c2f830a403c87045d5e36e6820f80580066837853f05a544361c86131844c",
+    "summary.json": "979fbba5e20e2e5b52d5840841713b5004882c2e166f391676c4d5c7b77e6000"
+  },
+  "state_hashes_after": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "state_hashes_before": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "979fbba5e20e2e5b52d5840841713b5004882c2e166f391676c4d5c7b77e6000",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-07-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "final-B-anchor",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "update": 2000
+}
+```
+
+## GRADIENT-CASE-07-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.09102804190479219,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "18fea2408fc7ce2b320639042c6f23e515a63f722744f5874b2104a8614284d4",
+    "partial.json": "2a1c278c160badfe320dae1ad1877dc8ee14082a8a86d91c069c6c20b3c3ae64",
+    "prospective.json": "9bb2a18c0b89f02fff7730ba3b55f032239f473f464ab771a0bb72b449924891",
+    "summary.json": "82efdcc9d90a887556fcb7189246bac5be111a060caed1e3a39af39f75528663"
+  },
+  "state_hashes_after": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "state_hashes_before": {
+    "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+    "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "82efdcc9d90a887556fcb7189246bac5be111a060caed1e3a39af39f75528663",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-CASE-08-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "acceptance": "Joint gradient identity, at least one of both FD steps per objective, immutable parameter/optimizer hashes; no learning gate change",
+  "case": "final-C-anchor",
+  "config_hash": "302b32fdb0e22c79e47d399902e8765f4dd6f7566ffb0ec59622af1d1d2f63c3",
+  "rationale": "Local split loss gradients at frozen incoming parameters",
+  "record_count": 16,
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "source_hashes": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "update": 2000
+}
+```
+
+## GRADIENT-CASE-08-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "elapsed_seconds": 0.08587008400354534,
+  "executed": true,
+  "failure_reason": null,
+  "retained_artifacts": {
+    "observations.json": "34774a60fcb8fd8d06139eaa2228fe5a337d32cd3389a391f22f3841f76fecc5",
+    "partial.json": "d3d6c277e20a041bb5077e2ed7d32b62c4b12a88dfd366a77ec10b6dc5edfbc4",
+    "prospective.json": "70f5ca3fdbba3942b0a45e12731a920bc30717bc62e380d3c4217030f1c678ae",
+    "summary.json": "71ba6b8f6f70b55d679f73e8274774714c00c69e16ac1bca280ed537ab64a27d"
+  },
+  "state_hashes_after": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "state_hashes_before": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "summary_sha256": "71ba6b8f6f70b55d679f73e8274774714c00c69e16ac1bca280ed537ab64a27d",
+  "verification_valid": true
+}
+```
+
+## GRADIENT-EXECUTION-RESULT — Frozen analysis outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "case_statuses": {
+    "final-A-fitting": "completed",
+    "final-B-anchor": "completed",
+    "final-B-fitting": "completed",
+    "final-C-anchor": "completed",
+    "final-C-fitting": "completed",
+    "fresh-A-fitting": "completed",
+    "fresh-B-fitting": "completed",
+    "fresh-C-fitting": "completed"
+  },
+  "elapsed_seconds": 8.960575666977093,
+  "execution_valid": true,
+  "failure_reason": null,
+  "next_step": "separately_review_intervention_from_local_evidence",
+  "phase_A_status": "completed",
+  "status": "completed",
+  "summary_sha256": "6d0027b14169bfaa72a6117d786412b8d0909a916ae13f4e0aa562d384907e16"
+}
+```
+
+## FINDING-GRADIENT-001 — Necessary symmetry floor does not obstruct the force gates
+
+One frozen analysis completed8.960575666977093s, execution revision b68b017. For A/B/C, pooled rigid-floor MSE7.749013429412125e-09/9.527591975644952e-09/9.03261621934256e-09 eV²/Å² versus unchanged gates0.0010133561081129107/0.0017939664221939815/0.001408394821807022. Every floor is far below its gate; necessary translation/rotation constraints alone do not explain the failed fitting. All sampled rigid ranks6; every strict5Å graph connected/no isolates/two-hop reach1; no pairs within1e-8Å of cutoff. Connectivity is not capacity/integrability sufficiency. Raw labels/gates unchanged; no calculator error or generalization claim.
+
+## FINDING-GRADIENT-002 — Scaled energy dominance at initialization and local opposition after fitting
+
+At fresh A/B/C, energy parameter-gradient norms247.20812241730232/47.75515555607004/72.4114827715311; force norms0.5877787788899789/0.9816442915714093/0.5319166048734169. Initial backbone energy/force gradients structurally zero because the head is zero; force bias derivative structurally zero throughout.
+
+At final fitting A/B/C, whole-tree energy-force cosine-0.9645968197169623/-0.9924599548492967/-0.7056331347992232 (full precision in companion/raw JSON is authoritative). Raw ordinary minus-joint-gradient directional slopes are positive for A energy, B force and C force: local objective opposition. C's original-anchor cosine is positive0.3297979, so this pattern is not uniform across all observations. Parameterization and original scales matter; no actual Adam update direction or training-trajectory causality was measured. This motivates a separately reviewed loss/optimization control before assuming more data/capacity is the solution; it does not prove the failure's cause or clear any learning gate.
+
+## FINDING-GRADIENT-003 — Directional verification with preserved unsuccessful step
+
+All8case gradient-sum checks passed (largest component difference5.717648576819556e-15); all16objective directional checks met the predeclared at-least-one-step criterion. Of32individual steps,31passed. Final-C-fitting energy step1e-4 failed: error0.0002249861811485232 versus autodiff1.3307488075266263; step1e-5 passed with error2.2498705722906465e-06. Both are retained without retry/tuning. FD verifies selected directions, not every component. All incoming parameter/optimizer hashes unchanged; all31historical source hashes unchanged and historical predictions reproduced exactly. Full pilot remains pending; no training, optimizer application or test access occurred.
+
+## GRADIENT-REPORT-001 — Balanced report and measured figures
+
+Saved `reports/representation-gradient-diagnostics.md/json` and2figures, visually inspected after changing norm plots to separate points (fixed cases are not a trajectory). Generator reads preserved JSON only. Exact source and figure/generator identities are in companion JSON; retrospective interpretation supplements the per-phase/case prospective/outcome entries above. Independent final implementation/evidence review pending.
+
+```json
+{
+  "compact_evidence_sha256": "27cb8d51072a8bb74fc2962c8b47355af76207bee6b3075040c723792d57152e",
+  "figures": {
+    "representation-force-floors.png": "db621e3145c5ee89492e871d379bde090cbad74979f049ad6b02b37dac799455",
+    "representation-gradient-geometry.png": "38121a40550c1bce278b6d85b014d037e53681fdf12442bd579169310fbabaa7"
+  },
+  "generator_sha256": "3eb27f40704fe53292f7446a71a9c30fb40a5bc5ac69d04daf8515caeeb7613f",
+  "report_sha256": "bf067a2246a170ba1a7fc98fabd3a679513d2dce9339b4db6e05d7e514dd788c",
+  "summary_sha256": "6d0027b14169bfaa72a6117d786412b8d0909a916ae13f4e0aa562d384907e16"
+}
+```
+
+## MEMORY-GRADIENT-001 — Project navigation refresh and verification correction
+
+Obsidian hub/findings updated through CLI after repository outcomes, originals backed up in retained workspace. First readback assertion failed because the hub uses grouped FINDING-GRADIENT-001/002/003 rather than a standalone FINDING-GRADIENT-003 string. The write succeeded. Read-only verification of the correct grouped ID and report link passed for both notes; no duplicate append/rewrite occurred. This failed engineering assertion is preserved, not a research failure. Final independent review remains pending.
