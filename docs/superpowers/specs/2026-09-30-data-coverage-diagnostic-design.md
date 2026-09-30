@@ -1,0 +1,43 @@
+# Data coverage diagnostic design
+
+30 September 2026. Status: proposed and unexecuted. User asked whether increasing example count could help, then requested an action plan. Goal: test whether the narrow connection coverage of the failed16-frame gate contributes to weak real-force learning, without changing model capacity, loss scales or optimization settings. This diagnostic extends the existing training-only flow; it does not authorize a full pilot or scientific comparison.
+
+## Evidence and chosen approach
+
+HYPOTHESIS-001 and DIAGNOSTIC-002/003/004 in `reports/PAPER_EVIDENCE_LOG.md`: the easy shared-backbone teacher passes, but real fullbatch16 fitting ends with force MSE0.007240959200598679 and fraction0.7145522825221747. The original16 all come from connection01. These results neither prove a capacity problem nor rule out a data-coverage effect.
+
+Three approaches considered: immediately enlarge the model (does not test the user's data question); train all4891 examples (larger cost and many simultaneous changes); bounded, matched data-coverage controls (selected). Native implementation remains the established method. Two independent reviewers must clear this design and plan before execution; this turn produces planning artifacts only.
+
+## Fixed experimental matrix
+
+| Arm | Fitting frames | Connection support | Purpose |
+|---|---:|---|---|
+| A narrow16 replay | Original16, unchanged order/hash | 01 | Reproduce the prior fullbatch control under current diagnostic code |
+| B diverse16 | 2 frames per connection, one per branch | Same8 specified below | Equal count, broader connection coverage |
+| C diverse128 | 16 frames per connection,8 per branch | Exactly B's8 connections | More records within fixed connection support |
+
+Support group order: `01,23,77,58_2,44,22,78_2,01_2`. Selection is label-blind: always01 plus first7 elements of PCG64(20260930) permutation of sorted remaining25 training group strings. No group redraw based on labels or results. All subsets contain training-path records only; no minima, transition states, validation or test records.
+
+To reduce trajectory-position confounding, derive eight original ordinal ranks for each branch from connection01's original16IDs, divided by its branch pool length minus1. For each selected group's branch, transfer these ranks by integer half-up rounding: `(2*original_rank*(new_pool_count-1)+original_denominator)//(2*original_denominator)`. Fail if fewer than8 distinct target ranks, invalid path naming, mixed membership or any ID outside the frozen training partition; no replacement group or relaxed rule. Diverse128 takes all8 mapped records from each branch of each group. Diverse16 takes mapped rank-slot i from both branches of ordered group i, i=0..7. Both diverse arms therefore share approximately the original branch-rank distribution; diverse128 repeats that distribution in each group. Rank is an ordinal proxy, not physical reaction-coordinate distance or matched force difficulty.
+
+Diverse16 is nested in diverse128, and all original16 also belong to diverse128. Diverse16 overlaps only2 original16 frames; the other14 are not fitted by B, though still members of the global training partition. Save per-run fitting overlap and separate seen/not-fitted anchor metrics. Anchor scores are engineering transfer diagnostics, not held-out scientific generalization. Nested data is a comparison control, not statistical independence.
+
+Planned exact IDs/indices/hashes are frozen in `manifests/aspirin-data-coverage-subsets-planned.json`, identity `8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47`. It was generated from source subset and prepared metadata without reading label arrays or initializing a model. Runtime selection must reproduce every ID/order/hash and status remains planned until execution artifacts exist.
+
+## Training and compute controls
+
+All arms: original prepared identity/split, original train-derived normalization; seed0, zero head,16features, degree1,2iterations,8radial basis,5A cutoff, float64, Adam1e-3. Fresh identical initial parameters/optimizer state in every arm, with matching initial parameter and optimizer hashes asserted; no reuse of trained A/B parameters. Deterministic full-subset gradients and exactly one Adam update per full pass. A/B use one16-frame batch. C sequentially accumulates weighted gradients over eight16-frame chunks at the SAME parameters, then applies Adam ONCE. No eight separate optimizer updates, random sampling or new loss weights. Test against true full-batch gradients/Adam including uneven final chunks. Extract a shared normalized-loss helper from `train.py` without changing its mathematics.
+
+Each arm: max2000 optimizer updates,1800s wall budget including its initialization, compilation, warmup, evaluation and verification; checks between operations with reserved time for final outputs, not hard interruption. No early stop on learning acceptance: retain the first observed passing scheduled update (not an unmeasured threshold-crossing time), finish matched2000-update budget unless operational failure/wall cap. Three caps total90min, not a runtime prediction. No GPU dependency/change; local CPU diagnostic first. C processes8times more frame exposures per optimizer update than A/B, so equal-update/epoch comparisons are not equal-compute comparisons. Report measured checkpoints on both update and elapsed-time axes, without interpolating unmeasured metric values or claiming exact equal-time matching. Record frame exposures, actual evaluation counts, compilation/warmup and synchronized train/evaluation time. Do not increase caps after seeing outcomes.
+
+## Metrics, gates and interpretation
+
+At0,every100updates,250 and final, exhaustively score each fitting subset and the fixed original16 (including fitted/not-fitted anchor partitions). Save energy MSE, force-component MSE/RMSE, per-group values, pooled/equal-group values, zero-force/zero-energy/mean-energy baselines, absolute units and fractions against immutable own initial values. Avoid computing ratios for empty partitions or zero initial error; label null and gate invalid. Fit gate: BOTH fitting-subset final MSEs<0.10 own initial values. Anchor gate: BOTH original16 final MSEs<0.10 original16 immutable seed0 zero-head initial values (energy0.061298358531283896, force0.010133561081129106). Save gates separately. Passing either is not a scientific accuracy claim or automatic satisfaction of the old batch4 protocol.
+
+A must reach2000 updates and reproduce prior initial/final/all100-update fitting metrics with atol1e-10,rtol1e-8 plus same config/data/precision. If replay/identity/finite/checkpoint verification fails or a wall cap prevents completion, block B/C explicitly and diagnose implementation first. Once A is verified, execute B then C exactly once regardless of a finite B learning failure; B operational failure or incomplete budget blocks C. Any nonfinite control stops its run with its last verified finite state/history. Fresh-process checkpoint reproduction covers ALL fitting frames and original16 via microbatches; maximum absolute prediction error<=1e-10. Probe opens saved inputs only, never general bundle/held-out loaders.
+
+Evidence patterns: B improvement is compatible with useful broader coverage, but record difficulty also changed. C improvement relative to B is compatible with useful extra within-connection coverage at fixed group support, with additional computation. Passing fit but failing anchors does not close the original gap. If C passes BOTH gates at full budget, it is a candidate for a separately reviewed baseline training-protocol amendment. If C fails either, preserve the result and return to architecture/gradient investigation. No sweep, additional seed, capacity/loss/lr change, longer budget, full pilot or test evaluation follows automatically. This is n=1 per condition, not causal or statistical proof.
+
+## Artifacts and preservation
+
+Before each arm, append rationale/config/selection/acceptance/caps to the evidence log; afterward append metrics/status/stop reason/hashes/limits. Retain config, selected source/array identities, fitting and anchor IDs with overlap flags, every metric history, final optimizer checkpoint, verification, timing, failure and blocked summaries. Root execution validity and each learning gate are distinct. All prior failures remain untouched. Save compact tracked results/report and curves, archive large inputs/checkpoints under a protected fresh run directory. Refresh Obsidian only after measured outcomes exist, through the CLI. Preserve review folders/logs/ledgers per AGENTS.md; no cleanup deletion.

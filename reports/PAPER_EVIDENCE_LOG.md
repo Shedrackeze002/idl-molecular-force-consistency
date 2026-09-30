@@ -381,3 +381,23 @@ Independent gpt-6-astra review identified no critical, important or minor defect
 ## METHOD-005 — Retain review folders and logs
 
 User instruction, 30 September 2026: leave review folders in place; they help preserve review history. The diagnostic scratch workspace remains retained, alongside its durable execution archive. `AGENTS.md` now instructs future work to preserve review packages, logs and ledgers after completion and avoid automatic cleanup. This is a workflow preference, not a new experiment or change to reported outcomes.
+
+## HYPOTHESIS-001 — Training-set quantity versus diversity (30 September 2026)
+
+User question: would increasing the number of examples help? Current source subset was rechecked: all16 path frames come from aspirin connection01, eight from each descent branch; subset identity `338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c`. This narrow geometry coverage is a limitation of the engineering diagnostic, not a newly measured explanation for its failure. More varied training connections might improve nonlinear fitting, but no experiment has established that here. The observed failure is on training examples, so extra examples alone are not a guaranteed remedy.
+
+The general distinction between poor training fit and data-limited generalization is supported by Goodfellow, Bengio and Courville, Deep Learning, chapter11 sections11.3/11.5: https://www.deeplearningbook.org/contents/guidelines.html . That guidance is not a molecular-force benchmark or proof about this model.
+
+Proposed, unexecuted diagnostic: compare narrow versus diverse training-only subsets before attributing the failure to model capacity; separately examine a larger diverse subset (illustratively128 examples) with matched model/loss settings, explicit exposure/compute accounting and evaluation on the unchanged original16 alongside the expanded subset. Exact sampling, subset identities, budgets and acceptance rules need a saved plan and two independent reviews before execution. Keep held-out arrays unopened and preserve the original failures. No larger-data run or new scientific result occurred in this discussion.
+
+## PLAN-COVERAGE-001 — Prospective data-diversity and quantity controls
+
+Status: saved plan, unexecuted; two independent reviews pending. User requested a next-step plan following HYPOTHESIS-001. Spec `docs/superpowers/specs/2026-09-30-data-coverage-diagnostic-design.md`; implementation plan `docs/superpowers/plans/2026-09-30-data-coverage-diagnostic.md`; fixed candidate settings `configs/aspirin-data-coverage-diagnostic.json`. Planned subset manifest identity `8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47` includes exact IDs/indices/hashes for original16, diverse16 and nested diverse128.
+
+Label-blind planning preflight read prepared metadata and original IDs only, with PCG64(20260930), fixed support01/23/77/58_2/44/22/78_2/01_2, rational half-up transfer of original within-branch ordinal ranks. All selected branches have sufficient distinct ranks; subset sizes16/16/128 verified, both16sets nested in128. No labels were fitted, no model initialized, no product code changed and no training run occurred. This preflight verifies proposed selection feasibility, not learned performance.
+
+Plan holds model/loss/scales/seed/Adam fixed; all arms use deterministic full-subset updates, with128 accumulated over8microbatches then one Adam update. Fresh original16 replay guards source/optimizer consistency before other arms. Fitting and unchanged original16 gates are separate; diverse16 fits only2anchor frames and128 fits all16. Computational cost and record difficulty differ, so outcomes cannot establish pure sample-count causality or scientific generalization. Per-arm2000updates/1800s, no learning early stop or tuning. Full pilot remains pending regardless of this planning preflight. Append reviewer decisions before implementation and each prospective/actual trial if later executed.
+
+## PLAN-COVERAGE-002 — Both independent plan reviews cleared
+
+Scientific and engineering reviewers independently verified the proposed subset selection, canonical identities, frozen replay artifacts and comparison controls. Both found no material blocker. Decisions/limitations are saved in `docs/reviews/2026-09-30-data-coverage-plan-review.md`. Engineering clarifications incorporated: matching initial parameter/optimizer hashes across arms, sequential microbatch accumulation, and first observed passing scheduled update rather than an exact crossing time. IDs, budgets, gates and settings are unchanged. No implementation or training started; all prospective outcomes remain unknown. This review completion is not learning success or full-pilot authorization.
