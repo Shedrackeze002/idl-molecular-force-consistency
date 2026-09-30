@@ -2681,9 +2681,9 @@
     "representation-force-floors.png": "db621e3145c5ee89492e871d379bde090cbad74979f049ad6b02b37dac799455",
     "representation-gradient-geometry.png": "38121a40550c1bce278b6d85b014d037e53681fdf12442bd579169310fbabaa7"
   },
-  "generator_sha256": "3eb27f40704fe53292f7446a71a9c30fb40a5bc5ac69d04daf8515caeeb7613f",
+  "generator_sha256": "f94d924cfa67a0aa608795ac233d23c6d1a74a0b1c23f3b11de5d104a56e875b",
   "matplotlib_version": "3.11.2",
-  "report_sha256": "bf067a2246a170ba1a7fc98fabd3a679513d2dce9339b4db6e05d7e514dd788c",
+  "report_sha256": "d426910c2151d1e736f3b93922dd1946a27d8e031a3a677a91d3d326032bd45a",
   "sources": {
     "cases.json": "4787ed41450f61183cb465338eff594810f16a24bacacf37131bb684155c6a44",
     "config.json": "0c609dc6ab929d2c51f4178ebeba353d9cf661c1f89474f175bfb2acff17e936",

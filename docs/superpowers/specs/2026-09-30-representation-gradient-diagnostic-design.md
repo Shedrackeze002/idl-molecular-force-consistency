@@ -49,3 +49,7 @@ Frozen config, saved implementation plan and two reviews; CLI `diagnose-gradient
 ## Review clarifications (both reviewers cleared; no protocol change)
 
 The source hash map must contain the complete required31-file allowlist; reject omitted pins before any prepared-array load. Enforce prediction leakage as max(abs(P F_model)) in force-component units eV/Å; normalized-column dot products are separate descriptive values. Report force-gradient norm divided by energy-gradient norm explicitly, and raw-descent derivatives as -(||g_E||²+g_E·g_F) and -(||g_F||²+g_E·g_F). These statistics depend on parameterization and fixed loss scales; directional finite differences check selected directions, not every component. Start the budget timer before all source checks. Branch metadata comes from the validated numeric_path parser. These clarify implementation/reporting and do not change frozen sources, cases, tolerances or caps.
+
+## Execution update
+
+Completed once on production revision b68b017,8.9605757s, all8cases/PhaseA verified. Initial proposed status above records design history; outcomes are now in reports/representation-gradient-diagnostics.md/json and the append-only evidence log. Independent final review found two failure-handling/reporting bugs; both fixed with regressions and117passing final tests. Research artifacts unchanged; full pilot/interventions remain pending separate reviewed plans.

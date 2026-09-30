@@ -2,7 +2,9 @@
 
 Execution status: **completed**; 8.961s. Learning acceptance remains false; full pilot pending.
 
-The fixed16/16/128 training subsets, source2000-update checkpoints, model and original normalized loss were unchanged. Eight prespecified cases were attempted in order under600s; no optimizer update, training, test/validation access or label substitution occurred.
+The protocol fixes the16/16/128 training subsets, source2000-update checkpoints, model and original normalized loss. 8 of 8 prespecified cases were attempted in order under600s; it permits no optimizer update, training, test/validation access or label substitution.
+
+Phase A status: **completed**.
 
 ## Necessary force constraints
 
@@ -33,13 +35,13 @@ Norms, ratios and cosines depend on this parameterization and the fixed training
 
 Both central-difference steps1e-4 and1e-5 are retained for every completed objective; at least one must agree within1e-8+1e-4 relative tolerance. These checks verify selected directions, not every gradient component. The separate gradient sum is checked against the unchanged joint objective within1e-10/1e-8. Parameter and optimizer hashes before/after are retained.
 
+16 of 16 recorded objectives meet the prespecified at-least-one-step criterion. Failed individual finite-difference steps: final-C-fitting/energy/h=0.0001: error 0.000224986181149. All failed steps remain preserved.
+
 ## Measured observations
 
-Initial energy-gradient norms exceed force-gradient norms by420.580,48.648,136.133times for A/B/C. At the final fitting snapshots the cosines are-0.964596819717,-0.992459954849,-0.705633134799. Under ordinary minus-joint-gradient motion, A's energy slope is positive while B/C's force slopes are positive. This is local objective opposition; no Adam direction or causal explanation was measured. The final C anchor has positive cosine, so conflict is not uniform across cases.
+Initial energy/force gradient norm ratios for A/B/C: 420.58021, 48.648126, 136.13315. At the final fitting snapshots the cosines are -0.964596819717, -0.992459954849, -0.705633134799. Raw joint-descent energy slopes for A/B/C: 0.005957217, -0.014573868, -0.92478742; force slopes: -0.014642671, 0.0048535072, 0.034212736. Positive slopes denote a local first-order increase for that objective. Final C anchor cosine: 0.3297979. No Adam direction or causal explanation was measured.
 
-Failed individual finite-difference steps: final-C-fitting/energy/h=0.0001: error0.000224986181149. Every objective nevertheless meets the prespecified at-least-one-step criterion; all failed steps remain preserved.
-
-All observed rigid ranks are6. Every geometry graph is connected, has no isolated atoms, and reaches all ordered nonself atom pairs within two hops at5Å (see companion JSON for exact ranges). These observations do not establish that this width/degree/message representation can express the target force field.
+Observed rigid ranks: [6]. Graph connected-component range: 1–1; isolated-atom range: 0–0; two-hop reach fraction range: 1–1. These observations do not establish that this width/degree/message representation can express the target force field.
 
 ## Outcome and limits
 

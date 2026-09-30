@@ -183,7 +183,10 @@ def diagnose_gradients(config):
         verify_source_hashes(config);check_budget();summary['source_hashes_unchanged']=True
         summary['execution_valid']=all(v['status']=='completed' for v in summary['cases'].values())
         summary['status']='completed' if summary['execution_valid'] else 'failed'
-        summary['next_step']='separately_review_source_model_target_contract' if any(v['floor_obstructs_gate'] for v in phase['subsets'].values()) else 'separately_review_intervention_from_local_evidence'
+        if not summary['execution_valid']:
+            summary['next_step']='resolve_verification_or_operational_failure'
+        else:
+            summary['next_step']='separately_review_source_model_target_contract' if any(v['floor_obstructs_gate'] for v in phase['subsets'].values()) else 'separately_review_intervention_from_local_evidence'
     except Exception as exc:
         summary['failure_reason']=f'{type(exc).__name__}: {exc}'
         if phase['status']=='running':phase.update(status='failed',failure_reason=summary['failure_reason'])

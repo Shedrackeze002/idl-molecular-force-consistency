@@ -17,12 +17,16 @@ def generate(root,out):
     summary=read(root/'summary.json');phase=read(root/'phase-A.json');config=read(root/'config.json')
     names=['fresh-A-fitting','fresh-B-fitting','fresh-C-fitting','final-A-fitting','final-B-fitting','final-C-fitting','final-B-anchor','final-C-anchor']
     observed={name:read(root/name/'observations.json') for name in names if (root/name/'observations.json').exists()}
+    attempted=sum(bool(case.get('executed')) for case in summary['cases'].values())
+    verified=bool(summary['execution_valid'] and phase['status']=='completed' and
+                  all(n in observed and observed[n]['verification_valid'] and summary['cases'][n]['status']=='completed' for n in names))
     compact={'execution':{k:v for k,v in summary.items() if k!='cases'},'constraints':{},'cases':{},
              'sources':{str(p.relative_to(root)):digest(p) for p in sorted(root.rglob('*')) if p.is_file()},
              'generator_sha256':digest(__file__),'matplotlib_version':matplotlib.__version__,'figures':{}}
     lines=['# Frozen representation and loss-gradient diagnostics','',
            f"Execution status: **{summary['status']}**; {summary['elapsed_seconds']:.3f}s. Learning acceptance remains false; full pilot pending.",'',
-           'The fixed16/16/128 training subsets, source2000-update checkpoints, model and original normalized loss were unchanged. Eight prespecified cases were attempted in order under600s; no optimizer update, training, test/validation access or label substitution occurred.', '',
+           f"The protocol fixes the16/16/128 training subsets, source2000-update checkpoints, model and original normalized loss. {attempted} of 8 prespecified cases were attempted in order under600s; it permits no optimizer update, training, test/validation access or label substitution.", '',
+           f"Phase A status: **{phase['status']}**.",'',
            '## Necessary force constraints','',
            '| Set | Zero-force MSE | Translation floor | Rigid floor | Original force gate | Obstructs gate |','|---|---:|---:|---:|---:|---|']
     for arm in ('narrow16','diverse16','diverse128'):
@@ -55,14 +59,23 @@ def generate(root,out):
             compact['cases'][name]=s;lines.append(f"| {name} | {s['status']} | — | — | — | — | — | — | — | — |")
     lines+=['','Norms, ratios and cosines depend on this parameterization and the fixed training scales. Slopes are local directional derivatives along ordinary **minus the joint gradient**, without normalizing that direction: −(||gE||²+gE·gF), −(||gF||²+gE·gF). Negative slopes imply a local first-order decrease for that objective. They are not the actual Adam direction, a training trajectory or a causal explanation. Zero-norm blocks have undefined cosine; the force head-bias gradient and initial zero-head backbone force gradient are structurally zero. Nonzero later derivatives do not establish adequate capacity.','',
             'Both central-difference steps1e-4 and1e-5 are retained for every completed objective; at least one must agree within1e-8+1e-4 relative tolerance. These checks verify selected directions, not every gradient component. The separate gradient sum is checked against the unchanged joint objective within1e-10/1e-8. Parameter and optimizer hashes before/after are retained.','',
-            '## Measured observations','']
-    if all(n in observed for n in names):
+            ]
+    objectives=[d['finite_differences'][objective] for d in observed.values() for objective in ('energy','force')]
+    passed=sum(bool(o['valid'] and any(step['valid'] for step in o['steps'])) for o in objectives)
+    failed=[f"{name}/{objective}/h={step['step']}: error {step['absolute_error']:.12g}" for name,d in observed.items() for objective in ('energy','force') for step in d['finite_differences'][objective]['steps'] if not step['valid']]
+    lines += [f"{passed} of {len(objectives)} recorded objectives meet the prespecified at-least-one-step criterion. Failed individual finite-difference steps: "+('; '.join(failed) if failed else 'none recorded')+'. All failed steps remain preserved.','']
+    if not verified:
+        lines += ['Unverified observations are retained in the tables and raw artifacts; verified scientific interpretation is withheld until verification/operational failures are resolved.','']
+    if verified:
+        lines += ['## Measured observations','']
         fits=[observed[n]['geometry']['whole'] for n in names[3:6]]
-        ratios=[1/observed[n]['geometry']['whole']['force_over_energy_norm'] for n in names[:3]]
-        lines += [f"Initial energy-gradient norms exceed force-gradient norms by{ratios[0]:.3f},{ratios[1]:.3f},{ratios[2]:.3f}times for A/B/C. At the final fitting snapshots the cosines are{fits[0]['cosine']:.12g},{fits[1]['cosine']:.12g},{fits[2]['cosine']:.12g}. Under ordinary minus-joint-gradient motion, A's energy slope is positive while B/C's force slopes are positive. This is local objective opposition; no Adam direction or causal explanation was measured. The final C anchor has positive cosine, so conflict is not uniform across cases.",'']
-        failed=[f"{name}/{objective}/h={step['step']}: error{step['absolute_error']:.12g}" for name,d in observed.items() for objective in ('energy','force') for step in d['finite_differences'][objective]['steps'] if not step['valid']]
-        lines += ['Failed individual finite-difference steps: '+('; '.join(failed) if failed else 'none')+'. Every objective nevertheless meets the prespecified at-least-one-step criterion; all failed steps remain preserved.','']
-        lines += ['All observed rigid ranks are6. Every geometry graph is connected, has no isolated atoms, and reaches all ordered nonself atom pairs within two hops at5Å (see companion JSON for exact ranges). These observations do not establish that this width/degree/message representation can express the target force field.','']
+        ratios=[observed[n]['geometry']['whole']['force_over_energy_norm'] for n in names[:3]]
+        inverse=[fmt(1/v) if v else 'undefined' for v in ratios]
+        lines += [f"Initial energy/force gradient norm ratios for A/B/C: {', '.join(inverse)}. At the final fitting snapshots the cosines are {fits[0]['cosine']:.12g}, {fits[1]['cosine']:.12g}, {fits[2]['cosine']:.12g}. Raw joint-descent energy slopes for A/B/C: {', '.join(fmt(g['energy_raw_joint_descent_slope']) for g in fits)}; force slopes: {', '.join(fmt(g['force_raw_joint_descent_slope']) for g in fits)}. Positive slopes denote a local first-order increase for that objective. Final C anchor cosine: {fmt(observed['final-C-anchor']['geometry']['whole']['cosine'])}. No Adam direction or causal explanation was measured.",'']
+    if phase['status']=='completed' and compact['constraints']:
+        ranks=sorted({rank for d in compact['constraints'].values() for rank in d['ranks']})
+        graphs=[r['graph'] for d in phase['subsets'].values() for r in d['records']]
+        lines += [f"Observed rigid ranks: {ranks}. Graph connected-component range: {min(g['connected_components'] for g in graphs)}–{max(g['connected_components'] for g in graphs)}; isolated-atom range: {min(g['isolated_atoms'] for g in graphs)}–{max(g['isolated_atoms'] for g in graphs)}; two-hop reach fraction range: {min(g['two_hop_fraction'] for g in graphs):.12g}–{max(g['two_hop_fraction'] for g in graphs):.12g}. These observations do not establish that this width/degree/message representation can express the target force field.",'']
     lines += ['## Outcome and limits','',
             f"Next decision: `{summary.get('next_step')}`. Static observations do not clear the previous failed force gates. Any architecture, weighting, optimization, data-convention intervention or larger training run requires its own saved plan and two independent reviews. No additional attempt was selected after this result. Unresolved, failed or blocked observations remain in the raw artifacts and paper evidence log.",'',
             '## Reproduction and evidence','',

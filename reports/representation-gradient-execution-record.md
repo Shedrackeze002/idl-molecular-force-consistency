@@ -47,3 +47,61 @@ Hashes capture this stage; later final-review/progress updates are appended sepa
 ```
 
 Final independent review pending; no completed milestone claim until its findings are resolved.
+
+## Final review and completion
+
+Fresh reviewer resumed after a usage-limit interruption. Two Important failure-routing/reporting bugs were reproduced with failing engineering fixtures and repaired in one author pass.14focused tests passed11.01s; final whole suite117passed126.17s. No Critical/minors/declined behaviors. Successful numerical/raw/figure artifacts unchanged; JSON-only report regenerated with actual attempt/verification counts. No research rerun. Full review: docs/reviews/2026-09-30-representation-gradient-final-review.md.
+
+```json
+{
+  "compact_evidence_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+  "final_suite": "117passed126.17s",
+  "generator_sha256": "f94d924cfa67a0aa608795ac233d23c6d1a74a0b1c23f3b11de5d104a56e875b",
+  "report_sha256": "d426910c2151d1e736f3b93922dd1946a27d8e031a3a677a91d3d326032bd45a",
+  "research_repeated": false,
+  "review_sha256": "b8ed7e236598805506632c156af28e74815c5ce0be9582ea032de18ef7466245",
+  "verification_logs": {
+    "final-fixes-green.log": "2e0e7c3fb944fbdacbdcb9d41654d539096261068d58c06261811bfd899e9cda",
+    "final-fixes-suite.log": "07d9b4c519b63c705f3b9c246aa73d374aee09271ec145b32b51ae1af12bf4e8",
+    "final-report-red.log": "7630442897605c8c8715748a26496a62753d58037de9254bb3fa08583b923518",
+    "final-routing-green.log": "e5128813d83681255ee0ac7f661e2cdc5bc4d2593317b45fe16f439f94b960fa",
+    "final-routing-red.log": "7b22689ade69ce1c9f90a13d303574d484c8a6c21239412dd6877b677691ecc7"
+  }
+}
+```
+
+## Final navigation and retained ledger
+
+Both Obsidian notes updated/read back with117tests and completed author-verified review repairs; originals/intermediate/final snapshots retained. Final source/raw/report/generator/figure/state identities reconciled again.
+
+```json
+{
+  "completion-ledger.md": "91c8f5e5fa340058d787e665aec715cf7392c5a10c29a21ac77fc3edee1e402c",
+  "obsidian-findings-final.md": "6bd66aed1d08ea6901d9e043c8c5387a21e1e968f9f62473a24a50501b4ef6ce",
+  "obsidian-hub-final.md": "631e58cc613aceb62ce554cd0a890280665fd3d1a535b695adb72159fc7cfdc5"
+}
+```
+
+```text
+# SDD ledger — plan: docs/superpowers/plans/2026-09-30-representation-gradient-diagnostic.md
+
+Base ec55c73; native execution on existing codex/landscape17-baseline branch, preserve proposal.pdf deletion and Group9.pdf.
+Ruling: Explicit user Proceed authorizes next bounded read-only parameter investigation; two reviews cleared concrete saved protocol. No repeated approval of reversible diagnostics; training/model/loss/label interventions remain outside this authorization.
+Ruling: Preserve all workspaces/logs, no cleanup/merge/push.
+Preflight Task1->Task3: projection/graph return JSON metadata plus NumPy vectors; controller serializes arrays only as lists, raw labels unchanged.
+Preflight Task2->Task3: snapshot summaries finite/JSON, source params/optimizer hashes unchanged; controller owns timer/blocked case records.
+Review rulings: complete31source allowlist, maxabs projected leakage, parameterization-dependent norms, named force/energy ratio and raw descent slope; branch parser and preflight budget fixed. No material settings amendment.
+Task1 started.
+Task1 RED: missing representation module; GREEN13/13 and full suite95/95. Analytic/least-squares and graph checks match expected output. Task2 tests written and missing-helper RED observed, implementation now under focused verification.
+Task 1: complete (commits c7249e7..cb9b01d, tests: .venv/bin/pytest -q tests/test_representation.py → 13 passed in 0.08s)
+Task2: missing-helper RED, initial7tests GREEN; budget-retention extension RED (did not raise), GREEN8new plus8coverage=16/16. Full suite114/114115.04s including controller. Config-private callbacks carry budget/partial evidence, no frozen-protocol change.
+Task3: missing-controller RED;11/11GREEN including live frozen-source preflight and rehashed corrupt cases. Full114/114 before research; source/settings/arrays/fresh/final/reference verification complete in engineering check. Research remains unexecuted until committed-code single invocation.
+Task 2: complete (commits cb9b01d..b68b017, tests: .venv/bin/pytest -q tests/test_gradient_diagnostics.py tests/test_coverage.py → 16 passed in 30.26s)
+Task3 production exact config executed ONCE on b68b017: all8cases/phaseA valid,8.9605757s, no retry/training, all31sources unchanged. Necessary floors low; final fitting local opposition; finalCenergy large FD step fails/small step passes. All observations/failed step preserved. Both final figures visually checked, raw/compact hashes reconciled. Final reviewer pending.
+Task 3: complete (commits 03c1946..cd1a0a6, tests: .venv/bin/pytest -q → 114 passed in 113.05s (0:01:53))
+Final review: fresh reviewer interrupted by usage limit, resumed after explicit user Proceed.31sources/38raw/all8cases reconciled; two Important failure-routing/report-verification defects, no Critical/minors/declined behavior. Reviewer exact summation assertion initially failed1.65e-24; relative tolerance passed.
+Final fix pass: routing regression RED5.45s;2report regressions RED0.55s; both repairs14focused GREEN11.01s. Full suite in progress. No production rerun. Report numerical cases/constraints/raw/figures identical after JSON-only regeneration; previous report retained.
+Final: fixed invalid-execution next_step — test_failed_snapshot_blocks_intervention_recommendation RED→GREEN, suite117/117126.17s.
+Final: fixed misleading failure-report claims — test_failed_final_objective_is_not_reported_as_verified and test_preflight_failure_does_not_invent_attempts_or_verification RED→GREEN, suite117/117126.17s.
+Final: no Critical/minors/declined behaviors; review complete with author-verified fixes, no second review or production rerun. Keep branch as-is, preserve workspaces/user changes per existing user instruction.
+```

@@ -2976,3 +2976,43 @@ Saved `reports/representation-gradient-diagnostics.md/json` and2figures, visuall
 ## MEMORY-GRADIENT-001 — Project navigation refresh and verification correction
 
 Obsidian hub/findings updated through CLI after repository outcomes, originals backed up in retained workspace. First readback assertion failed because the hub uses grouped FINDING-GRADIENT-001/002/003 rather than a standalone FINDING-GRADIENT-003 string. The write succeeded. Read-only verification of the correct grouped ID and report link passed for both notes; no duplicate append/rewrite occurred. This failed engineering assertion is preserved, not a research failure. Final independent review remains pending.
+
+## IMPL-GRADIENT-004 — Independent review, interrupted review and balanced reporting repairs
+
+Fresh independent final reviewer reconciled31sources/38raw artifacts/all8cases and supported retained successful observations. First reviewer turn stopped at usage limit; after user explicitly said proceed, the reviewer resumed and completed. No production diagnostic was repeated. Reviewer's exact pooled-sum assertion initially failed by ±1.6543612251060553e-24; a1e-15relative check passed, ordinary summation rounding rather than numerical research discrepancy. Focused review32original tests passed; concurrently authored routing regression failed as expected (1failed32passed10.75s).
+
+Two Important defects: invalid snapshot execution still recommended intervention; failure/preflight reports could claim eight attempts and universal FD success. Author routing regression first failed5.45s; two report regressions first failed0.55s. After one fix pass, all14focused controller/report tests passed11.01s. Invalid execution now routes to repair; report counts/gated interpretation derive from actual outcomes. No Critical/Minor findings, no declined behaviors. Full suite pending at this entry; final completion follows verified suite. Successful raw research observations, settings, figures and previous failed steps are unchanged. Review details in `docs/reviews/2026-09-30-representation-gradient-final-review.md`.
+
+## IMPL-GRADIENT-005 — Final verified implementation and preserved research evidence
+
+Full final suite117passed126.17s after both Important fixes. No remaining Critical/Important review findings; no minors or declined behaviors. Independent reviewer assessed the pre-fix research evidence; author verified the two repairs through RED-to-GREEN and full suite, without a second review. The one research execution, all31historical source hashes, all38raw artifact hashes, all8case/constraint numbers and both visually inspected figures are unchanged. Previous report/generator identities in GRADIENT-REPORT-001 are historical; these refreshed identities supersede presentation hashes only. No learning gate cleared, no training/model/loss/label change, no extra attempt/pilot. Next: separately review a controlled loss/optimization investigation; local opposition is evidence, not causal attribution. Keep branch/records/user proposal changes.
+
+```json
+{
+  "compact_evidence_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+  "final_suite": "117passed126.17s",
+  "generator_sha256": "f94d924cfa67a0aa608795ac233d23c6d1a74a0b1c23f3b11de5d104a56e875b",
+  "report_sha256": "d426910c2151d1e736f3b93922dd1946a27d8e031a3a677a91d3d326032bd45a",
+  "research_repeated": false,
+  "review_sha256": "b8ed7e236598805506632c156af28e74815c5ce0be9582ea032de18ef7466245",
+  "verification_logs": {
+    "final-fixes-green.log": "2e0e7c3fb944fbdacbdcb9d41654d539096261068d58c06261811bfd899e9cda",
+    "final-fixes-suite.log": "07d9b4c519b63c705f3b9c246aa73d374aee09271ec145b32b51ae1af12bf4e8",
+    "final-report-red.log": "7630442897605c8c8715748a26496a62753d58037de9254bb3fa08583b923518",
+    "final-routing-green.log": "e5128813d83681255ee0ac7f661e2cdc5bc4d2593317b45fe16f439f94b960fa",
+    "final-routing-red.log": "7b22689ade69ce1c9f90a13d303574d484c8a6c21239412dd6877b677691ecc7"
+  }
+}
+```
+
+## MEMORY-GRADIENT-002 — Final navigation and artifact reconciliation
+
+Obsidian hub/findings finalized through CLI and read back;117tests/review repairs/next reviewed control agree with repository state. Original/intermediate/final notes retained. Final31source/38raw/report/generator/2figure hashes and8immutable state cases reconcile; no numerical trial repeated.
+
+```json
+{
+  "completion-ledger.md": "91c8f5e5fa340058d787e665aec715cf7392c5a10c29a21ac77fc3edee1e402c",
+  "obsidian-findings-final.md": "6bd66aed1d08ea6901d9e043c8c5387a21e1e968f9f62473a24a50501b4ef6ce",
+  "obsidian-hub-final.md": "631e58cc613aceb62ce554cd0a890280665fd3d1a535b695adb72159fc7cfdc5"
+}
+```

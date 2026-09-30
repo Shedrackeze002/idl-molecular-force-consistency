@@ -101,3 +101,21 @@ def test_cli_exit_uses_execution_validity(tmp_path,monkeypatch,capsys):
     assert main(['diagnose-gradients','--config',str(c)])==0
     monkeypatch.setattr(runs,'diagnose_gradients',lambda c:{'execution_valid':False,'status':'failed'})
     assert main(['diagnose-gradients','--config',str(c)])==1
+
+
+def test_failed_snapshot_blocks_intervention_recommendation(tmp_path,monkeypatch,sources):
+    """An invalid derivative observation must route to repair, not an intervention."""
+    c=json.loads(CONFIG.read_text());c['run_directory']=str(tmp_path/'diagnostic');c.pop('evidence_log')
+    monkeypatch.setattr(runs,'load_gradient_sources',lambda config,check:sources)
+    execute=runs.execute_gradient_cases
+    def fail_verification(root,cases,model,norm,config,check):
+        def invalid_snapshot(state,partition,model,norm,config):
+            return {'verification_valid':False,'record_ids':list(partition.record_ids),'record_count':len(partition.record_ids)}
+        return execute(root,cases,model,norm,config,check,invalid_snapshot)
+    monkeypatch.setattr(runs,'execute_gradient_cases',fail_verification)
+    result=runs.diagnose_gradients(c)
+    assert not result['execution_valid']
+    assert result['cases']['fresh-A-fitting']['status']=='failed'
+    assert all(result['cases'][name]['status']=='blocked' for name in runs.CASE_NAMES[1:])
+    assert (tmp_path/'diagnostic'/'fresh-A-fitting'/'observations.json').exists()
+    assert result['next_step']=='resolve_verification_or_operational_failure'
