@@ -1,0 +1,11 @@
+{
+  "all_pin_bytes_verified": true,
+  "committed_exposures_proposed": 3072000,
+  "config_canonical_sha256": "e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198",
+  "pin_count": 326,
+  "prior_pin_count": 301,
+  "score_points": 64,
+  "source_pin_manifest_sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+  "status": "planning_only_unexecuted",
+  "updates_proposed": 24000
+}

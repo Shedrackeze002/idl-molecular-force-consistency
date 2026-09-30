@@ -1,0 +1,189 @@
+{
+  "files": [
+    {
+      "archive": "workspace/2026-09-30-width-rate-design.md",
+      "bytes": 11598,
+      "sha256": "85aa8a9ba0ea8eb1f6ff85969076d0d506f43b4a10c5a566daf7db0f3b5b444c",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/2026-09-30-width-rate-design.md"
+    },
+    {
+      "archive": "workspace/2026-09-30-width-rate.md",
+      "bytes": 13130,
+      "sha256": "e9fdde084bae1bc9f3628ed6577e5d6752e8387fbe1eaf61c1452071851d46e7",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/2026-09-30-width-rate.md"
+    },
+    {
+      "archive": "workspace/amended-2026-09-30-width-rate-design.md",
+      "bytes": 13753,
+      "sha256": "32d1db955d5dd7680c8300e50f08753354b558e2d99b23587723e53e38f02342",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/amended-2026-09-30-width-rate-design.md"
+    },
+    {
+      "archive": "workspace/amended-2026-09-30-width-rate.md",
+      "bytes": 15432,
+      "sha256": "3b29fb0d01e2a493b9a233ccde1b1a71941e86ed1bffa2eff1b60bdfeb5bec81",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/amended-2026-09-30-width-rate.md"
+    },
+    {
+      "archive": "workspace/amended-aspirin-width-rate-diagnostic.json",
+      "bytes": 2724,
+      "sha256": "b23c2fe17c42ae7212ee53dc28ea0f0ce86c7d4a89877988a7ecf1733542dacc",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/amended-aspirin-width-rate-diagnostic.json"
+    },
+    {
+      "archive": "workspace/amended-aspirin-width-rate-source-pins.json",
+      "bytes": 46225,
+      "sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/amended-aspirin-width-rate-source-pins.json"
+    },
+    {
+      "archive": "workspace/amendment-static-check.json",
+      "bytes": 414,
+      "sha256": "30706b9b1989b36611acc40b986703ee911c5cddfb085b4fc0d6c6de6e3e5095",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/amendment-static-check.json"
+    },
+    {
+      "archive": "workspace/aspirin-width-rate-diagnostic.json",
+      "bytes": 2724,
+      "sha256": "569796a409e40741e05b42244a3294e2b97d00fbac98ba7b87151edfbaa71790",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/aspirin-width-rate-diagnostic.json"
+    },
+    {
+      "archive": "workspace/aspirin-width-rate-source-pins.json",
+      "bytes": 43398,
+      "sha256": "1434c123828bb2e22db6e8d00753cfde0224fa9dcb158eff2c3b63ca6501b334",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/aspirin-width-rate-source-pins.json"
+    },
+    {
+      "archive": "workspace/final-2026-09-30-width-rate-design.md",
+      "bytes": 13883,
+      "sha256": "552b782927996399e978712d4dbe685814afa61532e1e4666feb956c016db440",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-2026-09-30-width-rate-design.md"
+    },
+    {
+      "archive": "workspace/final-2026-09-30-width-rate-plan-review.md",
+      "bytes": 5770,
+      "sha256": "080ce660f0e27061da1fb0fa28a0d6f75257b3c78643944b338ab43f3ddb13a8",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-2026-09-30-width-rate-plan-review.md"
+    },
+    {
+      "archive": "workspace/final-2026-09-30-width-rate.md",
+      "bytes": 15574,
+      "sha256": "f93a8a02406df3951ef01cc33788139a24defcd3ff0cb25f5fc8f681adb5c9dc",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-2026-09-30-width-rate.md"
+    },
+    {
+      "archive": "workspace/final-aspirin-width-rate-diagnostic.json",
+      "bytes": 2724,
+      "sha256": "b23c2fe17c42ae7212ee53dc28ea0f0ce86c7d4a89877988a7ecf1733542dacc",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-aspirin-width-rate-diagnostic.json"
+    },
+    {
+      "archive": "workspace/final-aspirin-width-rate-source-pins.json",
+      "bytes": 46225,
+      "sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-aspirin-width-rate-source-pins.json"
+    },
+    {
+      "archive": "workspace/final-planning-verification.json",
+      "bytes": 624,
+      "sha256": "12d4393d163be239b80c8fd26ccc62a57328e4d89cd7ae979596a1a85e6df78d",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/final-planning-verification.json"
+    },
+    {
+      "archive": "workspace/first-review-author-rulings.md",
+      "bytes": 4627,
+      "sha256": "2cf1ef4e1ac51527a095148fe67b13f2266bb9429ed62639d552683606300d34",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/first-review-author-rulings.md"
+    },
+    {
+      "archive": "workspace/historical-control-planning-check.json",
+      "bytes": 1546,
+      "sha256": "7d377d515ee3b0740b3494da52d201077e36bec5e00ba08021ef94453d3649ee",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/historical-control-planning-check.json"
+    },
+    {
+      "archive": "workspace/historical-control-planning-check.txt",
+      "bytes": 1224,
+      "sha256": "d31a919c8a0c98323df130bf0cc75d1a6a5d4bddec0b4c3dd89a5fe2eda19edd",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/historical-control-planning-check.txt"
+    },
+    {
+      "archive": "workspace/obsidian-final-verification.json",
+      "bytes": 176,
+      "sha256": "3506f40c04c31f57bb2c37b72c2105b3038f198124efc92524fa1cf53aece169",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-final-verification.json"
+    },
+    {
+      "archive": "workspace/obsidian-findings-after.md",
+      "bytes": 12408,
+      "sha256": "fd6d6921b37726df23881ba1bb456dc4519c6a09c4e2651d4d1c15001f6b5c82",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-findings-after.md"
+    },
+    {
+      "archive": "workspace/obsidian-findings-before.md",
+      "bytes": 11605,
+      "sha256": "83ec13ac096c6aaac11dbb723f30195fc2834df7533d592205047d8c63a62d31",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-findings-before.md"
+    },
+    {
+      "archive": "workspace/obsidian-findings-pre-final.md",
+      "bytes": 11605,
+      "sha256": "83ec13ac096c6aaac11dbb723f30195fc2834df7533d592205047d8c63a62d31",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-findings-pre-final.md"
+    },
+    {
+      "archive": "workspace/obsidian-hub-after.md",
+      "bytes": 11794,
+      "sha256": "430e9b108167ef4c5ea9b18c459f29aece3aae2584aa3585d0df5bab78d6eae6",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-hub-after.md"
+    },
+    {
+      "archive": "workspace/obsidian-hub-before.md",
+      "bytes": 10378,
+      "sha256": "966c4f073cdf5f0e0d7188b8ef8c1eabf5c6d345bb694eb2bec34e906369085b",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-hub-before.md"
+    },
+    {
+      "archive": "workspace/obsidian-hub-pre-final.md",
+      "bytes": 10378,
+      "sha256": "966c4f073cdf5f0e0d7188b8ef8c1eabf5c6d345bb694eb2bec34e906369085b",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/obsidian-hub-pre-final.md"
+    },
+    {
+      "archive": "workspace/planned-config-identity.txt",
+      "bytes": 65,
+      "sha256": "5d75590412382b1ca091961599daa6dcd33d60b40505196e9f1fc598c8d562bb",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/planned-config-identity.txt"
+    },
+    {
+      "archive": "workspace/progress.md",
+      "bytes": 2515,
+      "sha256": "68f1df17105f20c6c0fef363cd0dfa1ecb06b5cde65a7c95fc34105c5b31a623",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/progress.md"
+    },
+    {
+      "archive": "workspace/review-package.md",
+      "bytes": 554,
+      "sha256": "7a1bb22c7b4aff284d4480e9d48f32b71ca4ab5a24c967ce55e551b26fe35e80",
+      "source": ".superpowers/sdd/2026-09-30-width-rate-plan/review-package.md"
+    }
+  ],
+  "preserved_original_workspace": ".superpowers/sdd/2026-09-30-width-rate-plan",
+  "status": "reviewed_planned_unexecuted",
+  "verification": {
+    "config_canonical_sha256": "e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198",
+    "human_artifact_review": "pending",
+    "new_tests_models_probes_training_executed": false,
+    "obsidian": {
+      "findings_sha256": "fd6d6921b37726df23881ba1bb456dc4519c6a09c4e2651d4d1c15001f6b5c82",
+      "hub_sha256": "430e9b108167ef4c5ea9b18c459f29aece3aae2584aa3585d0df5bab78d6eae6"
+    },
+    "production_root_absent": true,
+    "score_points": 64,
+    "source_pin_count": 326,
+    "source_pins_verified": true,
+    "status": "reviewed_planned_unexecuted",
+    "two_independent_reviews_and_material_rereviews": "cleared_at_plan_level"
+  }
+}

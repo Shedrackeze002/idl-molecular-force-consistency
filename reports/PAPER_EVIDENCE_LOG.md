@@ -11646,3 +11646,37 @@ GDMLpublisherp1 warnsconservativeconstruction doesnotensuretruePES/trajectory an
 
 ## VERIFY-LIT-ACCESS-003 — collection and navigation reconciliation
 Verified all12registeredlocalPDF SHA256identities, fournewcopies byte-identicaltoDownloads, fourfulltext-extractionhashes, 12uniqueIDs/12readingcards/12bibliographyentries, and everypreviousdownloadmanifestentry retained in originalorder beforefourappendedsuccessfuluserintakes. Intake manifestSHA256 `d70d2fdb33b00b6cf184b6f26e932ba1941cd163e96a56ce2ae098cba6bf273f`. ObsidianCLI livebackup/update/readbackverified: HubSHA256 `966c4f073cdf5f0e0d7188b8ef8c1eabf5c6d345bb694eb2bec34e906369085b`; FindingsSHA256 `83ec13ac096c6aaac11dbb723f30195fc2834df7533d592205047d8c63a62d31`. Navigationaccessqueueclosed; numericalgatesunchanged. Verificationrecord:reports/literature/2026-09-30/intake/user-pdfs-2026-09-30/verification.json. This is sourcearchival/metadata/targetedreading, not implementation or experimentamendment; nextimplementationplan stillrequirestworeviews. No training/codechanged, no redundantcode-suite rerun.
+
+## WIDTHRATE-PLAN-001 — proposed crossed width/rate follow-up, unexecuted
+Userproceed authorizes nextliterature-informedplan andtwoindependentreviews. Draftfourfreshcells widths16/32 × fixedAdamLR.001/.0003, unchangedbalancedloss weights/data/seed/modelotherknobs;6000updates each,64prescribedobservations, strictoriginaljointgates. Fresh16/.001 replaysall63previousscheduledrawmeasurements ascontrolevidence; itsrerun is plannednumericalcompatibilityverification, notselectedrerunofafailedhypothesis. Proposedfixedcaps1800sfor16/3600sfor32,total11400s; noGPUassumption. Allfourfreshinitializations, pairedwithinwidth; samezero-headrawpredictions/originalbaselines requiredacrosswidths butdifferentwidthparameterdraws arenotidentical. No generalization/capacitycause/convergenceclaim fromoneseed. Existingpilotstayspendingregardlessdiagnosticacceptance. DraftconfigcanonicalSHA256 `113d98ebdc068cc5fadd24bacab53c73f73a65f804ef4b5f9cfddc1358be816a`; sourcepinsSHA256 `1434c123828bb2e22db6e8d00753cfde0224fa9dcb158eff2c3b63ca6501b334`; 301files verifiednow asplanningcontrols, notnewtraining. Two independentreviews pending.
+
+## WIDTHRATE-PLAN-CHECK-001 — failed schedule assumption and corrected provenance
+FirstJSON-onlyjoined-schedule assertionfailed becauseauthorassumedhistoricalupdate1; actualoriginal22rows includeupdate250, not1. Immediateguessedduplicate0reason wasincorrect andexplicitlycorrected in preservedplanningcheck.txt; actualduplicate2000across22/42histories hasidenticalmetrics. Correctcommon63points:0,250,2001,100..6000; proposedfresh64includesadditional1. No historicalpoint invented/discarded. Passedcorrectedstaticreconciliation, preservedbothattempts in .superpowers/sdd/2026-09-30-width-rate-plan. No model/probe/training/updateexecuted.
+
+## WIDTHRATE-PLAN-AMEND-001 — independent review and material protocol amendment, unexecuted
+
+Scientific review: no Critical/Important findings; engineering review: two Important gaps. Author verified parent helper performs extra historical template/source-prediction work without forwarded deadline callback, and individually atomic history/checkpoint files are not a transaction. Amended plan freezes receipt-defined matched versioned checkpoint/history persistence with interrupted-write tests, runtime-only global/arm context, honest parent started/completed/unknown work accounting (208 source-prediction frames on completed parent operation), and min-remaining-time probes. Added late-stage decay and sequential-timing limitations; expanded immutable source pins to existing source modules except planned CLI plus optimizer report verifier. Initial draft identities retained in WIDTHRATE-PLAN-001 and original workspace. Static-only identities:
+
+```json
+{
+  "all_pin_bytes_verified": true,
+  "committed_exposures_proposed": 3072000,
+  "config_canonical_sha256": "e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198",
+  "pin_count": 326,
+  "prior_pin_count": 301,
+  "score_points": 64,
+  "source_pin_manifest_sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+  "status": "planning_only_unexecuted",
+  "updates_proposed": 24000
+}
+```
+
+Both reviewers requested to re-review material amendment. No code/tests/model/probe/training executed. An author inspection initially guessed three nonexistent helper filenames; corrected using file inventory, no product mutation or numerical work. Full pilot remains pending.
+
+## WIDTHRATE-PLAN-REVIEW-001 — both independent material re-reviews cleared, unexecuted
+
+Scientific reviewer cleared amended plan with no remaining findings; engineering reviewer cleared both Important and dependency Minor gaps and independently rehashed326pins/config/manifest/64point schedule. Author accepted immutable committed-version caution and made intended transaction behavior/test explicit. Review record: docs/reviews/2026-09-30-width-rate-plan-review.md; all drafts preserved. This verifies proposed controls only, not replay equivalence, resource feasibility, transactional implementation or measured learning. Human concrete artifact review pending before native implementation. No new tests/model/probes/training; previous246-test result remains historical. Full pilot pending.
+
+## VERIFY-WIDTHRATE-PLAN-001 — reviewed proposal/navigation/archive reconciled, no execution
+
+Final static check verified326source byte identities, canonical confige64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198,64score points, proposed24000updates/3072000exposures, and absence of proposed production run root. Both independent material re-reviews cleared at plan level. ObsidianCLI livebackups/update/readback passed; HubSHA256 `430e9b108167ef4c5ea9b18c459f29aece3aae2584aa3585d0df5bab78d6eae6`, FindingsSHA256 `fd6d6921b37726df23881ba1bb456dc4519c6a09c4e2651d4d1c15001f6b5c82`. Supplemental archive `reports/execution/width-rate-plan-2026-09-30` preserves28workspace files byte-for-byte; original retained. Archive-manifestSHA256 `7841fe1f8cc9471d943451bf4507c2a0518e3ee520f14779026f707febb5a112`; every archived file hash verified. No implementation/numerical/training/tests executed; latest246test result is prior verified history. Human concrete artifact review pending before native implementation; fullpilotpending.
