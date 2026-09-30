@@ -1,0 +1,19 @@
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_failed_probe_preserves_known_reference_work_and_unknown_verification_work _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-17/test_failed_probe_preserves_kn0')
+
+    def test_failed_probe_preserves_known_reference_work_and_unknown_verification_work(tmp_path):
+        p,m,b,n,s,c,case,base=fixture()
+        def failed(root,context):raise subprocess.CalledProcessError(1,'probe',stderr=b'checkpoint metadata failure')
+        out=wr._run_arm(c,case,s,p,p,m,n,base,{},tmp_path/'tiny',{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=failed)
+        assert not out['execution_valid'] and out['updates']==out['persisted_update']==3
+>       assert out['reference_prediction_frames']==14
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'reference_prediction_frames'
+
+tests/test_width_rate_runs.py:230: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_runs.py::test_failed_probe_preserves_known_reference_work_and_unknown_verification_work
+1 failed, 1 passed, 26 deselected in 11.29s

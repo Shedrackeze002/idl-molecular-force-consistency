@@ -1,0 +1,5 @@
+{
+  "interpretation_valid": false,
+  "contrasts_available": false,
+  "full_pilot": "pending"
+}

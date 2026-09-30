@@ -1,0 +1,72 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_________ test_impossible_global_elapsed_is_rejected_despite_under_cap _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-15/test_impossible_global_elapsed0')
+
+    def test_impossible_global_elapsed_is_rejected_despite_under_cap(tmp_path):
+        c,s,summary=saved_fixture(tmp_path/'runs');summary['elapsed_seconds']=0.
+        (tmp_path/'runs/summary.json').write_text(json.dumps(summary))
+        out=generator().generate(tmp_path/'runs',tmp_path/'out')
+>       assert not out['interpretation_valid'] and not out['contrasts']['available']
+E       assert (not True)
+
+tests/test_width_rate_report.py:180: AssertionError
+__________ test_negative_parent_elapsed_cannot_reconcile_global_time ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-15/test_negative_parent_elapsed_c0')
+
+    def test_negative_parent_elapsed_cannot_reconcile_global_time(tmp_path):
+        c,s,summary=saved_fixture(tmp_path/'runs');summary['parent_work']['elapsed_seconds']=-20.
+        (tmp_path/'runs/summary.json').write_text(json.dumps(summary))
+        # Coherently edit the raw work ledger too; finite nonnegative durations are a constraint.
+        events=json.loads((tmp_path/'runs/preflight-work.json').read_text());events[0]['elapsed_seconds']=-20.
+        (tmp_path/'runs/preflight-work.json').write_text(json.dumps(events))
+        out=generator().generate(tmp_path/'runs',tmp_path/'out')
+>       assert not out['interpretation_valid'] and not out['contrasts']['available']
+E       assert (not True)
+
+tests/test_width_rate_report.py:190: AssertionError
+___ test_interrupted_preflight_counts_completed_width_once_and_marks_unknown ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-15/test_interrupted_preflight_cou0')
+
+    def test_interrupted_preflight_counts_completed_width_once_and_marks_unknown(tmp_path):
+        c=config();s=verify_width_rate_sources(c);root=tmp_path/'runs';root.mkdir()
+        (root/'config.json').write_text(json.dumps(c));(root/'sources.json').write_text(json.dumps(s))
+        events=[{'operation':'historical_parent_preflight','status':'started','historical_template_initializations':None,'completed_source_prediction_frames':None,'elapsed_seconds':0.},
+          {'operation':'historical_parent_preflight','status':'completed','historical_template_initializations':1,'completed_source_prediction_frames':208,'elapsed_seconds':1.},
+          {'operation':'shared_training_initialization','features':16,'status':'started','completed_initializations':None},
+          {'operation':'shared_training_initialization','features':16,'status':'completed','completed_initializations':1,'elapsed_seconds':2.},
+          {'operation':'shared_training_initialization','features':32,'status':'started','completed_initializations':None}]
+        summary={'status':'failed','execution_valid':False,'full_pilot':'pending','elapsed_seconds':5.,'preflight_work':events,
+                 'arms':{case['name']:{'case':case,'status':'blocked','executed':False,'execution_valid':False} for case in c['cases']}}
+        (root/'summary.json').write_text(json.dumps(summary));(root/'preflight-work.json').write_text(json.dumps(events))
+        out=generator().generate(root,tmp_path/'out');counts=out['actual_counts']
+>       assert counts['shared_training_initializations_completed']==1
+E       assert 0 == 1
+
+tests/test_width_rate_report.py:205: AssertionError
+_ test_coherently_rehashed_nonreplay_initial_metrics_must_match_pinned_original _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-15/test_coherently_rehashed_nonre0')
+
+    def test_coherently_rehashed_nonreplay_initial_metrics_must_match_pinned_original(tmp_path):
+        c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';name=c['cases'][1]['name'];arm=summary['arms'][name];child=root/name
+        arm['history'][0]=copy.deepcopy(arm['history'][2]);arm['history'][0].update(update=0,frame_exposures=0)
+        (child/'histories/6000.json').write_text(json.dumps(arm['history']))
+        receipt=json.loads((child/'commit.json').read_text());receipt['history_sha256']=digest(child/'histories/6000.json')
+        (child/'commit.json').write_text(json.dumps(receipt));arm['checkpoint_verification']['history_sha256']=receipt['history_sha256']
+        contract=json.loads((child/'checkpoint-contract.json').read_text());contract['commit']=receipt;(child/'checkpoint-contract.json').write_text(json.dumps(contract))
+        (child/'checkpoint-verification.json').write_text(json.dumps(arm['checkpoint_verification']));(child/'summary.json').write_text(json.dumps(arm));(root/'summary.json').write_text(json.dumps(summary))
+        out=generator().generate(root,tmp_path/'out')
+>       assert not out['interpretation_valid'] and not out['contrasts']['available']
+E       assert (not True)
+
+tests/test_width_rate_report.py:221: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_report.py::test_impossible_global_elapsed_is_rejected_despite_under_cap
+FAILED tests/test_width_rate_report.py::test_negative_parent_elapsed_cannot_reconcile_global_time
+FAILED tests/test_width_rate_report.py::test_interrupted_preflight_counts_completed_width_once_and_marks_unknown
+FAILED tests/test_width_rate_report.py::test_coherently_rehashed_nonreplay_initial_metrics_must_match_pinned_original
+4 failed, 33 deselected in 5.25s

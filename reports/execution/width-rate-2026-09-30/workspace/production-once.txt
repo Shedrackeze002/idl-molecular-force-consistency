@@ -1,0 +1,6 @@
+{
+  "status": "failed",
+  "execution_valid": false,
+  "full_pilot": "pending",
+  "failure_reason": null
+}

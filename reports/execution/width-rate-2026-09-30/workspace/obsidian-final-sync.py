@@ -1,0 +1,21 @@
+from pathlib import Path
+import subprocess,json,hashlib
+root=Path('/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex');w=root/'.superpowers/sdd/2026-09-30-width-rate'
+base=['/usr/local/bin/obsidian','vault=33d8d7721b3249d4'];hashes={}
+for title,key in [('Project Hub','hub'),('Research Findings','findings')]:
+ path='Codex/IDL MLIP Project/'+title+'.md';old=subprocess.check_output(base+['read','path='+path],text=True)
+ before=w/f'obsidian-{key}-final-before.md'
+ if before.exists():raise ValueError('Preserve existing snapshots')
+ before.write_text(old)
+ if key=='hub':
+  old=old.replace('completion of the approved once-only width/rate matrix and final saved-evidence reconciliation','a separately reviewed recovery/replacement amendment for the stopped width/rate diagnostic')
+  addition='''\n\n## Current status — 1 October 2026, final width/rate record\n\nThe approved once-only matrix stopped after the first cell reached 6000 persisted updates (768000 exposures). All 63 historical common measurements matched exactly, but fresh checkpoint verification failed because JSON converts integer historical keys to strings and changes their sorted order. The other three cells are blocked. Both original fitting and fully fitted anchor joint learning gates fail; no width/rate comparison or full-pilot clearance.\n\nAuthor repairs passed 327 tests in 212.53s, including a real tiny fresh-process metadata regression; failed production was never restarted or re-probed. Independent reviewer reconciled all 145 raw report artifact hashes and the four-panel figure. Known parent reference work is 144 frames; failed child work and duration remain unknown. Two Minor report wording limitations are preserved in the final review; terminal-window summaries are unavailable for the invalid trial.\n\nRepository authority: `reports/PAPER_EVIDENCE_LOG.md` (WIDTHRATE-FAIL-001, WIDTHRATE-ENG-003, VERIFY-WIDTHRATE-FINAL-001, WIDTHRATE-REPORT-001), `reports/width-rate-diagnostics.json/md`, `reports/width-rate-execution-record.md`, `docs/reviews/2026-09-30-width-rate-final-review.md`. Original runs/review folders retained; durable archive `reports/execution/width-rate-2026-09-30`. Next step: separately reviewed recovery/replacement amendment, not an automatic retry. Earlier running/pending-review notes describe earlier stages and are superseded by this current status.\n'''
+ else:
+  addition='''\n\n- WIDTHRATE-FAIL-001: once-only first cell completed 6000 persisted updates/768000 exposures and exactly replayed 63 historical common measurements, then failed fresh checkpoint metadata verification. Three cells blocked; raw failed checkpoint/history unchanged, no restore or numerical retry. The integer-to-string sorted-key mechanism explains rejection without establishing successful restoration.\n- WIDTHRATE-ENG-003 / VERIFY-WIDTHRATE-FINAL-001: all inadequate/failed engineering trials retained. Author metadata and failure-accounting repairs, plus three report provenance guards, passed 327 final tests in 212.53s; this does not retrospectively validate production.\n- WIDTHRATE-REPORT-001: independent saved-only reconciliation of 145 artifacts and figure. Fitting energy/force original fractions 0.3220330430785254 / 0.45318885284127763; fully fitted anchors 0.10905757620503544 / 0.42746961258301264. Both strict joint gates fail. No factorial contrast, capacity/optimizer-cause finding, generalization result, terminal-window summary or pilot clearance. Parent reference144 known; failed probe work/duration unknown. Repository is numerical authority; see final execution/review records for all limits and deferred Minor wording notes.\n'''
+ wanted=old.rstrip()+addition
+ subprocess.run(base+['create','path='+path,'content='+wanted,'overwrite'],check=True,capture_output=True,text=True)
+ actual=subprocess.check_output(base+['read','path='+path],text=True)
+ if actual.strip()!=wanted.strip():raise ValueError('Readback mismatch')
+ (w/f'obsidian-{key}-final-after.md').write_text(actual);hashes[key]=hashlib.sha256(actual.encode()).hexdigest()
+(w/'obsidian-final-verification.json').write_text(json.dumps(hashes,indent=2,sort_keys=True)+'\n')
+print('Final Obsidian state saved; both readbacks verified:',json.dumps(hashes))

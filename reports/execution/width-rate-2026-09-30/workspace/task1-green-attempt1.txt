@@ -1,0 +1,22 @@
+.............F                                                           [100%]
+=================================== FAILURES ===================================
+_______ test_pair_initial_hashes_and_zero_moments_and_original_baselines _______
+
+    def test_pair_initial_hashes_and_zero_moments_and_original_baselines():
+        from test_coverage import seven_case
+        from force_consistency import width_rate_runs as wr
+        from force_consistency.coverage_runs import coverage_metrics,_state_hashes
+        import jax
+        import numpy as np
+        p,m,b,n,s=seven_case();base=coverage_metrics(s['params'],p,p,m,3);records=[]
+        result=wr.initialize_width_states(config(),p,p,n,base,wr.ExecutionContext(120.),records.append)
+>       assert set(result)=={16,32} and len(records)==2
+E       AssertionError: assert ({16, 32} == {16, 32}
+E         
+E         Use -v to get more diff and 4 == 2)
+E        +  where 4 = len([{'operation': 'shared_training_initialization', 'features': 16, 'status': 'started', 'completed_initializations': Non...ration': 'shared_training_initialization', 'features': 32, 'status': 'completed', 'completed_initializations': 1, ...}])
+
+tests/test_width_rate_preflight.py:93: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_preflight.py::test_pair_initial_hashes_and_zero_moments_and_original_baselines
+1 failed, 13 passed in 8.96s

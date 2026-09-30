@@ -1,0 +1,27 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+____________ test_oracle_receipt_bounds_are_independently_checkable ____________
+
+    def test_oracle_receipt_bounds_are_independently_checkable():
+        p,m,b,n,s,c,case,base=fixture();batches=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        oracle=wr.first_step_oracle(s,batches,b,m,n,.001,c['loss_weights'],wr.ExecutionContext(120.))
+>       assert 0<=oracle['receipt']['state_maximum_tolerance_fraction']<=1
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'state_maximum_tolerance_fraction'
+
+tests/test_width_rate_runs.py:212: KeyError
+___ test_oracle_pass_claim_with_excessive_normalized_discrepancy_is_rejected ___
+
+    def test_oracle_pass_claim_with_excessive_normalized_discrepancy_is_rejected():
+        c,s,a=valid_arm();a['oracle_verification']['state_maximum_tolerance_fraction']=2.
+>       assert not generator().verified_arm(a,c,s)
+E       AssertionError: assert not True
+E        +  where True = <function verified_arm at 0x118d0a980>({'case': {'features': 16, 'learning_rate': 0.001, 'name': 'width16-lr1e-3', 'wall_seconds': 1800}, 'status': 'completed', 'executed': True, 'execution_valid': True, ...}, {'adam': {'b1': 0.9, 'b2': 0.999, 'eps': 1e-08, 'eps_root': 0.0, ...}, 'anchor_frame_count': 16, 'backend': 'cpu', 'ca...'wall_seconds': 3600}, {'features': 32, 'learning_rate': 0.0003, 'name': 'width32-lr3e-4', 'wall_seconds': 3600}], ...}, {'config_identity': 'e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198', 'pin_manifest_identity': '621e...rature/2026-09-30/papers/painn2021.pdf': 'dde25433fd28ff0cc34664c57b070cfcdec662d90f03bb164f4c455b0b638e13', ...}, ...})
+E        +    where <function verified_arm at 0x118d0a980> = <module 'width_rate_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'>.verified_arm
+E        +      where <module 'width_rate_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'> = generator()
+
+tests/test_width_rate_report.py:169: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_runs.py::test_oracle_receipt_bounds_are_independently_checkable
+FAILED tests/test_width_rate_report.py::test_oracle_pass_claim_with_excessive_normalized_discrepancy_is_rejected
+2 failed, 57 deselected in 7.13s

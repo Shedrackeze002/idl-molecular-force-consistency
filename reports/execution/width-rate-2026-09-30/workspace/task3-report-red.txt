@@ -1,0 +1,897 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                                         [100%]
+=================================== FAILURES ===================================
+______ test_valid_complete_failure_is_reportable_without_pilot_clearance _______
+
+    def test_valid_complete_failure_is_reportable_without_pilot_clearance():
+>       c,s,a=valid_arm();m=generator();assert m.verified_arm(a,c,s)
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f7b320>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[schedule] __________
+
+damage = 'schedule'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f12ba0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[duplicate] _________
+
+damage = 'duplicate'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1094c45f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[baseline] __________
+
+damage = 'baseline'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a635400>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[source1] __________
+
+damage = 'source1'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f497f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_edited_or_incomplete_saved_claim_is_rejected[pins] ____________
+
+damage = 'pins'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a6344d0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[receipt] __________
+
+damage = 'receipt'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a815dc0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[features] __________
+
+damage = 'features'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a636e10>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_edited_or_incomplete_saved_claim_is_rejected[rate] ____________
+
+damage = 'rate'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a817080>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[support] __________
+
+damage = 'support'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1094c4aa0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[updates] __________
+
+damage = 'updates'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a0385f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[persisted] _________
+
+damage = 'persisted'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f7a5d0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[attempted] _________
+
+damage = 'attempted'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10961dfd0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+____________ test_edited_or_incomplete_saved_claim_is_rejected[cap] ____________
+
+damage = 'cap'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a039280>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[charged] __________
+
+damage = 'charged'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a6371d0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_edited_or_incomplete_saved_claim_is_rejected[norm] ____________
+
+damage = 'norm'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10aeeb9b0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[warmup] ___________
+
+damage = 'warmup'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1086d8c50>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[oracle] ___________
+
+damage = 'oracle'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10aeeb620>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_edited_or_incomplete_saved_claim_is_rejected[oracle_count] ________
+
+damage = 'oracle_count'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f49340>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_edited_or_incomplete_saved_claim_is_rejected[state] ___________
+
+damage = 'state'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1097aac60>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[precision] _________
+
+damage = 'precision'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f74560>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[rawgate] __________
+
+damage = 'rawgate'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1094c60f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[weighted] __________
+
+damage = 'weighted'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x108f79cd0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_edited_or_incomplete_saved_claim_is_rejected[pergroup] __________
+
+damage = 'pergroup'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1097aa990>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_edited_or_incomplete_saved_claim_is_rejected[equalgroup] _________
+
+damage = 'equalgroup'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a5032c0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_edited_or_incomplete_saved_claim_is_rejected[overlap] __________
+
+damage = 'overlap'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','baseline','source1','pins','receipt','features','rate','support','updates','persisted','attempted','cap','charged','norm','warmup','oracle','oracle_count','state','precision','rawgate','weighted','pergroup','equalgroup','overlap'])
+    def test_edited_or_incomplete_saved_claim_is_rejected(damage):
+>       c,s,a=valid_arm();m=generator()
+                            ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a817680>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_four_complete_cells_only_and_positive_denominators ____________
+
+    def test_four_complete_cells_only_and_positive_denominators():
+>       m=generator();c,s,a=valid_arm();arms={case['name']:{**valid_arm(case)[2],'interpretation_valid':True} for case in c['cases']}
+          ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10a817710>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+____ test_generate_reconciles_saved_pairs_and_matrix_ancestry[history_pair] ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-12/test_generate_reconciles_saved0')
+damage = 'history_pair'
+
+    @pytest.mark.parametrize('damage',['history_pair','copied_summary','swapped_initial','global_cap'])
+    def test_generate_reconciles_saved_pairs_and_matrix_ancestry(tmp_path,damage):
+>       c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';m=generator()
+                                                                          ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x109c61bb0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___ test_generate_reconciles_saved_pairs_and_matrix_ancestry[copied_summary] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-12/test_generate_reconciles_saved1')
+damage = 'copied_summary'
+
+    @pytest.mark.parametrize('damage',['history_pair','copied_summary','swapped_initial','global_cap'])
+    def test_generate_reconciles_saved_pairs_and_matrix_ancestry(tmp_path,damage):
+>       c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';m=generator()
+                                                                          ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10961ec30>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__ test_generate_reconciles_saved_pairs_and_matrix_ancestry[swapped_initial] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-12/test_generate_reconciles_saved2')
+damage = 'swapped_initial'
+
+    @pytest.mark.parametrize('damage',['history_pair','copied_summary','swapped_initial','global_cap'])
+    def test_generate_reconciles_saved_pairs_and_matrix_ancestry(tmp_path,damage):
+>       c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';m=generator()
+                                                                          ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10aba4170>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_____ test_generate_reconciles_saved_pairs_and_matrix_ancestry[global_cap] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-12/test_generate_reconciles_saved3')
+damage = 'global_cap'
+
+    @pytest.mark.parametrize('damage',['history_pair','copied_summary','swapped_initial','global_cap'])
+    def test_generate_reconciles_saved_pairs_and_matrix_ancestry(tmp_path,damage):
+>       c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';m=generator()
+                                                                          ^^^^^^^^^^^
+
+tests/test_width_rate_report.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_report.py:14: in generator
+    spec=importlib.util.spec_from_file_location('width_rate_report','scripts/report_width_rate.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10821be90>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_report_runs_without_importing_jax_or_loading_arrays ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-12/test_report_runs_without_impor0')
+
+    def test_report_runs_without_importing_jax_or_loading_arrays(tmp_path):
+        c,s,summary=saved_fixture(tmp_path/'runs')
+        code='''import importlib.abc,sys,runpy
+    class RejectNumerics(importlib.abc.MetaPathFinder):
+     def find_spec(self,name,path=None,target=None):
+      if name.split('.')[0] in ('jax','flax','optax','e3x'):raise AssertionError('Numerical import in reporter: '+name)
+    sys.meta_path.insert(0,RejectNumerics())
+    sys.argv=['scripts/report_width_rate.py','--root',sys.argv[1],'--output',sys.argv[2]]
+    runpy.run_path('scripts/report_width_rate.py',run_name='__main__')
+    '''
+        proc=subprocess.run([sys.executable,'-c',code,str(tmp_path/'runs'),str(tmp_path/'out')],capture_output=True,text=True)
+>       assert proc.returncode==0,proc.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<string>", line 7, in <module>
+E           File "<frozen runpy>", line 286, in run_path
+E           File "<frozen runpy>", line 254, in _get_code_from_file
+E         FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py'
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-c', "import ...ch file or directory: \'/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate.py\'\n').returncode
+
+tests/test_width_rate_report.py:154: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_report.py::test_valid_complete_failure_is_reportable_without_pilot_clearance
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[schedule]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[duplicate]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[baseline]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[source1]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[pins]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[receipt]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[features]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[rate]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[support]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[updates]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[persisted]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[attempted]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[cap]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[charged]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[norm]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[warmup]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[oracle]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[oracle_count]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[state]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[precision]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[rawgate]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[weighted]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[pergroup]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[equalgroup]
+FAILED tests/test_width_rate_report.py::test_edited_or_incomplete_saved_claim_is_rejected[overlap]
+FAILED tests/test_width_rate_report.py::test_four_complete_cells_only_and_positive_denominators
+FAILED tests/test_width_rate_report.py::test_generate_reconciles_saved_pairs_and_matrix_ancestry[history_pair]
+FAILED tests/test_width_rate_report.py::test_generate_reconciles_saved_pairs_and_matrix_ancestry[copied_summary]
+FAILED tests/test_width_rate_report.py::test_generate_reconciles_saved_pairs_and_matrix_ancestry[swapped_initial]
+FAILED tests/test_width_rate_report.py::test_generate_reconciles_saved_pairs_and_matrix_ancestry[global_cap]
+FAILED tests/test_width_rate_report.py::test_report_runs_without_importing_jax_or_loading_arrays
+32 failed in 7.57s

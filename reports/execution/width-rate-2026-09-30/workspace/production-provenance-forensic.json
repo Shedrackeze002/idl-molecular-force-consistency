@@ -1,0 +1,16 @@
+{
+  "checkpoint_envelope_payload_hash_valid": true,
+  "checkpoint_sha256": "0bdb9ac0cc56fc90329260a4f41b06b61642a9b7a00d10c40ecace4826df76e2",
+  "explanation": "Original nested historical integer keys sort numerically. JSON converts keys to strings; fresh reader then sorts lexicographically. Strict serialized provenance comparison rejects semantically equal metadata.",
+  "first_differing_byte": 111376,
+  "numerical_probe_or_training_repeated": false,
+  "production_checkpoint_modified": false,
+  "restored_context": "ero_force_mse_eV2_per_A2\":0.014083948218070219}},\"1000\":{\"anchor\":{\"energy_count\":16,\"energy_mse_eV2\":0.007715018146321288,\"energy",
+  "roundtrip_sorted_provenance_sha256": "6cfdc63eba9e09395dcb1bf1b6138a014c41ae14f4baf04e7ca4c2a806261acf",
+  "semantic_json_objects_equal": true,
+  "serialized_provenance_equal": false,
+  "status": "metadata_only_no_numeric_restore",
+  "stored_context": "ero_force_mse_eV2_per_A2\":0.014083948218070219}},\"200\":{\"anchor\":{\"energy_count\":16,\"energy_mse_eV2\":0.020069117815763232,\"energy_",
+  "stored_provenance_sha256": "792c0042819bfc0fb34732abf822d91d6d1b2c994c5f59e5444d51aa1d4e5882",
+  "utc": "2026-09-30T22:30:36.279889+00:00"
+}

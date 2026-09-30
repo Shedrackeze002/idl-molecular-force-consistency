@@ -1,0 +1,37 @@
+# Fresh width/rate execution record
+
+The twice-reviewed plan was approved and implemented natively on retained local branch `codex/landscape17-baseline`. Exactly one production invocation ran at `18d250f06b9cf02ccfcf5637cf4c2f1b0c459e8e`, using frozen configuration `configs/aspirin-width-rate-diagnostic.json` (canonical SHA256 `e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198`) and 326 historical source pins. Scientific/engineering plan reviews and material re-reviews preceded execution.
+
+**Outcome: failed matrix; no width/rate comparison or pilot clearance.** The first cell, width16/LR.001, completed and persisted 6000 updates (768000 fitting exposures), all 64 prescribed scores and 128 discarded warmup exposures. Its independent full-128-frame first-step mixed-gradient/NumPy Adam oracle passed. All 63 historical common raw energy/force measurements matched exactly, maximum difference 0. Final fresh-process checkpoint verification failed. The three remaining cells were correctly blocked. No training or production probe was repeated. Actual matrix elapsed: 694.8040945419998s; first own elapsed: 687.5977456250002s; first shared-initialization charge: .112132083s; first charged elapsed: 687.709877708s.
+
+Both original strict joint learning gates fail. Final fractions of original fitting energy/force MSE: 0.3220330430785254 / 0.45318885284127763. Fully fitted anchor fractions:0.10905757620503544 / 0.42746961258301264. These anchors do not measure generalization. Exact replay is compatibility evidence, not successful checkpoint restoration, convergence, physical recovery or a capacity/optimizer-cause explanation.
+
+## Failure diagnosis and repairs
+
+Metadata bytes explain the checkpoint rejection: integer historical update keys sort numerically in the embedded provenance, become strings in JSON, then sort lexicographically in the strict reader. Stored and round-tripped JSON objects are semantically equal but serialized strings differ at byte 111376 (`200` versus `1000`). The envelope payload hash is intact. No production state was restored, predictions recomputed or raw artifact modified. Final checkpoint SHA256: `0bdb9ac0cc56fc90329260a4f41b06b61642a9b7a00d10c40ecace4826df76e2`; final history: `f1696ecb81bd09de6701bb7b8a5b0af1ec6176e1f8b18ed7d2757e291071eb5d`.
+
+Future runner metadata is normalized once before both serializations; the strict historical loader and mathematical trainer remain unchanged. Completed reference work is recorded before probing, and failed attempted probe work receives unknown status and actual elapsed timing. The old failed record's zero probe duration stays intact but is **unavailable** in derived reporting; 144 completed parent reference frames are hash-bound, while unreceipted child work stays unknown. Parent preflight completed 208 source prediction frames and one historical template initialization; two shared training initializations completed. Initialization work is counted once in actual totals and charged to both paired-cell caps separately.
+
+The independent final reviewer found three additional Important saved-report guards: global sequential duration consistency, interrupted-preflight completed/unknown work, and immutable initial baselines in all cells. Author regressions reproduced all failures and verified fixes. Initial provenance regression was inadequate because its keys sorted identically; adding 200/1000 reproduced the actual failure before repair. All failed/inadequate engineering checks are retained. Preproduction suite: 320 passed in 201.73s. Final focused suite: 66 passed in 86.18s. **Final full suite: 327 passed in 212.53s**, log SHA256: `c86eb1126e999c25a742ed6a3e633325ed98b70fc3966b5a7d8176989b336f6f`. Engineering passes do not validate the failed production checkpoint.
+
+## Independent review and limits
+
+One fresh reviewer independently checked 326 source pins, original saved code hashes during execution, 64 checkpoint/history envelope/control hashes and prefixes, 145 report raw-file hashes, exact 63 replay and every figure panel. No further Critical/Important output inconsistency. Author repair code and test suite were author-verified, not independently rerun. See [final review](../docs/reviews/2026-09-30-width-rate-final-review.md).
+
+Deferred Minor findings: the generic “committed update” axis could mislabel an uncommitted score in another failed-write run (all 64 actual scores are persisted); Markdown boilerplate incorrectly points to terminal summaries. **Correction: `terminal_window` is empty and descriptive 5500→6000 summaries are unavailable for this invalid trial.** No terminal inference is issued.
+
+Every declined scope has a recorded ruling: originally deferred report/figure scope completed; repair-code correctness uses author RED→GREEN/full-suite evidence; physical restoration and blocked-cell outcomes remain unavailable under the no-retry specification; software hash/receipt consistency is not external attestation. Cost: no retrospective checkpoint clearance, no four-cell result and no external execution trust certificate.
+
+Additional execution rulings: use the established feature checkout; normalize only new provenance while preserving historical/raw byte conventions; retain every original failed trial/review workspace; keep the branch locally, without merge/push/cleanup; use separate reviewed amendments for recovery/replacement. Costs are disk space, a later integration decision and pending numerical verification. No frozen scientific setting was amended.
+
+## Preserved evidence and next step
+
+Raw run: `runs/aspirin-width-rate-2026-09-30`; active workspace: `.superpowers/sdd/2026-09-30-width-rate`; durable supplemental archive: `reports/execution/width-rate-2026-09-30`. [Saved partial report](width-rate-diagnostics.md), [numerical/receipt JSON](width-rate-diagnostics.json), [evidence log](PAPER_EVIDENCE_LOG.md), final review and archive preserve unsuccessful, blocked and inadequate-fixture attempts. The archive includes exact original production code recovered from 18d250f, whose 34 code/dependency hashes match saved provenance; current repaired code is separately recorded. Original raw files and review folders remain.
+
+Obsidian CLI backed up both navigation notes, appended final status and verified readback: hub SHA256: `5d41070b493de52b4bb2bbe51a11eca258fdd71290702ce7d1806f270e38c3c5`; findings SHA256: `f0099d715dce7a55ee7972382b0f33d3b436f4f447ab46a757a5a9d826a2c170`. Earlier running notes are explicitly superseded. Repository records remain the numerical authority.
+
+Next research step: a separate prospective recovery/replacement amendment, with two independent scientific/engineering reviews before numerical execution. This failed matrix supplies no wider-model or lower-rate comparison. Full training pilot remains pending.
+
+## Final preservation verification
+
+Archive contains all 145 raw files in a 15976151-byte CRC/entry-set/SHA-verified ZIP, 88 byte-verified finalized workspace files, and 118 separately verified synthetic reviewer reproduction files. Raw ZIP SHA256 `7c574ed1f1d40ba2697268188a794d8720cbbafc5fd0127e4cbaa9aa8e706b43`; final manifest SHA256 `d9c2bfadfbd71a6e6ea633000c838a9a0e78308f08931996e32bb94a6ea89028`. Exact original production code, failed engineering checks, both Obsidian backup/readback pairs and review reproductions are preserved. Original raw/workspace/reproduction folders remain. Archived original outputs may retain trailing whitespace to preserve their exact bytes.

@@ -1,0 +1,8 @@
+{
+  "raw_files": 145,
+  "workspace_files": 85,
+  "raw_zip_bytes": 15976151,
+  "raw_zip_sha256": "7c574ed1f1d40ba2697268188a794d8720cbbafc5fd0127e4cbaa9aa8e706b43",
+  "manifest_sha256": "ea1e306cfa0a069bda1a2bfd6d9175818928d5073ffb5e79c76abf2cf71e9ee1",
+  "synthetic_reproduction_files": 118
+}

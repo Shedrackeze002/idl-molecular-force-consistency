@@ -1,0 +1,12 @@
+{
+  "control_files_sha256": {
+    "configs/aspirin-width-rate-diagnostic.json": "b23c2fe17c42ae7212ee53dc28ea0f0ce86c7d4a89877988a7ecf1733542dacc",
+    "configs/aspirin-width-rate-source-pins.json": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+    "docs/reviews/2026-09-30-width-rate-plan-review.md": "080ce660f0e27061da1fb0fa28a0d6f75257b3c78643944b338ab43f3ddb13a8",
+    "docs/superpowers/plans/2026-09-30-width-rate.md": "f93a8a02406df3951ef01cc33788139a24defcd3ff0cb25f5fc8f681adb5c9dc",
+    "docs/superpowers/specs/2026-09-30-width-rate-design.md": "552b782927996399e978712d4dbe685814afa61532e1e4666feb956c016db440"
+  },
+  "production_root_absent": true,
+  "source_pin_count": 326,
+  "status": "implementation_verified_controls_production_pending"
+}

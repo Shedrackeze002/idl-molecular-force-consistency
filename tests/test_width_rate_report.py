@@ -131,7 +131,11 @@ def saved_fixture(root):
     summary={'status':'completed','execution_valid':True,'full_pilot':'pending','elapsed_seconds':4010.,'arms':arms,
              'parent_work':{'status':'completed','historical_template_initializations':1,'completed_source_prediction_frames':208,'elapsed_seconds':2.},
              'shared_initializations':{str(width):{'features':width,'status':'completed','completed_initializations':1,'elapsed_seconds':2.,
-                 'baseline_prediction_frames':144,'initial_state_hashes':arms[f'width{width}-lr1e-3']['initial_state_hashes'],'parameter_count':100 if width==16 else 200} for width in (16,32)}}
+                 'baseline_prediction_frames':144,'initial_metrics':s['original_baselines'],'initial_state_hashes':arms[f'width{width}-lr1e-3']['initial_state_hashes'],'parameter_count':100 if width==16 else 200} for width in (16,32)}}
+    parent={**summary['parent_work'],'operation':'historical_parent_preflight'}
+    shared={k:{**v,'operation':'shared_training_initialization'} for k,v in summary['shared_initializations'].items()}
+    summary['parent_work']=parent;summary['shared_initializations']=shared
+    (root/'preflight-work.json').write_text(json.dumps([parent,*shared.values()]))
     (root/'summary.json').write_text(json.dumps(summary));return c,s,summary
 
 @pytest.mark.parametrize('damage',['history_pair','copied_summary','swapped_initial','global_cap'])
@@ -167,3 +171,65 @@ runpy.run_path('scripts/report_width_rate.py',run_name='__main__')
 def test_oracle_pass_claim_with_excessive_normalized_discrepancy_is_rejected():
     c,s,a=valid_arm();a['oracle_verification']['state_maximum_tolerance_fraction']=2.
     assert not generator().verified_arm(a,c,s)
+
+
+def test_impossible_global_elapsed_is_rejected_despite_under_cap(tmp_path):
+    c,s,summary=saved_fixture(tmp_path/'runs');summary['elapsed_seconds']=0.
+    (tmp_path/'runs/summary.json').write_text(json.dumps(summary))
+    out=generator().generate(tmp_path/'runs',tmp_path/'out')
+    assert not out['interpretation_valid'] and not out['contrasts']['available']
+
+
+def test_negative_parent_elapsed_cannot_reconcile_global_time(tmp_path):
+    c,s,summary=saved_fixture(tmp_path/'runs');summary['parent_work']['elapsed_seconds']=-20.
+    (tmp_path/'runs/summary.json').write_text(json.dumps(summary))
+    # Coherently edit the raw work ledger too; finite nonnegative durations are a constraint.
+    events=json.loads((tmp_path/'runs/preflight-work.json').read_text());events[0]['elapsed_seconds']=-20.
+    (tmp_path/'runs/preflight-work.json').write_text(json.dumps(events))
+    out=generator().generate(tmp_path/'runs',tmp_path/'out')
+    assert not out['interpretation_valid'] and not out['contrasts']['available']
+
+
+def test_interrupted_preflight_counts_completed_width_once_and_marks_unknown(tmp_path):
+    c=config();s=verify_width_rate_sources(c);root=tmp_path/'runs';root.mkdir()
+    (root/'config.json').write_text(json.dumps(c));(root/'sources.json').write_text(json.dumps(s))
+    events=[{'operation':'historical_parent_preflight','status':'started','historical_template_initializations':None,'completed_source_prediction_frames':None,'elapsed_seconds':0.},
+      {'operation':'historical_parent_preflight','status':'completed','historical_template_initializations':1,'completed_source_prediction_frames':208,'elapsed_seconds':1.},
+      {'operation':'shared_training_initialization','features':16,'status':'started','completed_initializations':None},
+      {'operation':'shared_training_initialization','features':16,'status':'completed','completed_initializations':1,'elapsed_seconds':2.},
+      {'operation':'shared_training_initialization','features':32,'status':'started','completed_initializations':None}]
+    summary={'status':'failed','execution_valid':False,'full_pilot':'pending','elapsed_seconds':5.,'preflight_work':events,
+             'arms':{case['name']:{'case':case,'status':'blocked','executed':False,'execution_valid':False} for case in c['cases']}}
+    (root/'summary.json').write_text(json.dumps(summary));(root/'preflight-work.json').write_text(json.dumps(events))
+    out=generator().generate(root,tmp_path/'out');counts=out['actual_counts']
+    assert counts['shared_training_initializations_completed']==1
+    assert counts['parent_work']['historical_template_initializations']==1
+    assert counts['parent_work']['completed_source_prediction_frames']==208
+    assert counts['unknown_pending_preflight_operations']==['shared_training_initialization:width32']
+    assert not counts['work_counts_complete'] and counts['synchronized_updates']==0
+
+
+def test_coherently_rehashed_nonreplay_initial_metrics_must_match_pinned_original(tmp_path):
+    c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';name=c['cases'][1]['name'];arm=summary['arms'][name];child=root/name
+    arm['history'][0]=copy.deepcopy(arm['history'][2]);arm['history'][0].update(update=0,frame_exposures=0)
+    (child/'histories/6000.json').write_text(json.dumps(arm['history']))
+    receipt=json.loads((child/'commit.json').read_text());receipt['history_sha256']=digest(child/'histories/6000.json')
+    (child/'commit.json').write_text(json.dumps(receipt));arm['checkpoint_verification']['history_sha256']=receipt['history_sha256']
+    contract=json.loads((child/'checkpoint-contract.json').read_text());contract['commit']=receipt;(child/'checkpoint-contract.json').write_text(json.dumps(contract))
+    (child/'checkpoint-verification.json').write_text(json.dumps(arm['checkpoint_verification']));(child/'summary.json').write_text(json.dumps(arm));(root/'summary.json').write_text(json.dumps(summary))
+    out=generator().generate(root,tmp_path/'out')
+    assert not out['interpretation_valid'] and not out['contrasts']['available']
+
+
+def test_legacy_failed_probe_retains_bound_reference_work_and_unknown_duration(tmp_path):
+    c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';name=c['cases'][0]['name'];arm=summary['arms'][name];child=root/name
+    arm.update(status='failed',execution_valid=False,checkpoint_new_process_verified=False,probe_stderr='ValueError: Checkpoint provenance mismatch',probe_seconds=0.)
+    arm.pop('reference_prediction_frames');arm.pop('checkpoint_verification')
+    (child/'checkpoint-verification.json').unlink()
+    (child/'summary.json').write_text(json.dumps(arm));summary.update(status='failed',execution_valid=False)
+    (root/'summary.json').write_text(json.dumps(summary))
+    out=generator().generate(root,tmp_path/'out');counts=out['actual_counts']
+    assert counts['unknown_probe_cells']==[name] and not counts['work_counts_complete']
+    assert out['arms'][name]['derived_reference_prediction_frames']==144
+    assert out['arms'][name]['derived_probe_seconds'] is None
+    assert out['arms'][name]['probe_seconds']==0. # original failed receipt preserved

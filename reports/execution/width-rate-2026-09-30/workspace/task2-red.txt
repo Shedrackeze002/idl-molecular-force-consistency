@@ -1,0 +1,344 @@
+FFFFFFFFFFFFFFFFFFFFFF                                                   [100%]
+=================================== FAILURES ===================================
+_ test_transaction_interruption_preserves_matched_previous_receipt[checkpoint] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_transaction_interruption_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11190c6b0>
+failure = 'checkpoint'
+
+    @pytest.mark.parametrize('failure',['checkpoint','history','receipt'])
+    def test_transaction_interruption_preserves_matched_previous_receipt(tmp_path,monkeypatch,failure):
+>       p,m,b,n,s,c,case,base=fixture();wr.commit_state(tmp_path,s,[{'update':0}],{},n)
+                                        ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'commit_state'
+
+tests/test_width_rate_runs.py:29: AttributeError
+__ test_transaction_interruption_preserves_matched_previous_receipt[history] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_transaction_interruption_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1138ea7e0>
+failure = 'history'
+
+    @pytest.mark.parametrize('failure',['checkpoint','history','receipt'])
+    def test_transaction_interruption_preserves_matched_previous_receipt(tmp_path,monkeypatch,failure):
+>       p,m,b,n,s,c,case,base=fixture();wr.commit_state(tmp_path,s,[{'update':0}],{},n)
+                                        ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'commit_state'
+
+tests/test_width_rate_runs.py:29: AttributeError
+__ test_transaction_interruption_preserves_matched_previous_receipt[receipt] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_transaction_interruption_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x113bec050>
+failure = 'receipt'
+
+    @pytest.mark.parametrize('failure',['checkpoint','history','receipt'])
+    def test_transaction_interruption_preserves_matched_previous_receipt(tmp_path,monkeypatch,failure):
+>       p,m,b,n,s,c,case,base=fixture();wr.commit_state(tmp_path,s,[{'update':0}],{},n)
+                                        ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'commit_state'
+
+tests/test_width_rate_runs.py:29: AttributeError
+________________ test_committed_versions_cannot_be_overwritten _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_committed_versions_cannot0')
+
+    def test_committed_versions_cannot_be_overwritten(tmp_path):
+>       p,m,b,n,s,c,case,base=fixture();wr.commit_state(tmp_path,s,[{'update':0}],{},n)
+                                        ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'commit_state'
+
+tests/test_width_rate_runs.py:47: AttributeError
+_______ test_independent_numpy_adam_matches_mixed_force_energy_multistep _______
+
+    def test_independent_numpy_adam_matches_mixed_force_energy_multistep():
+        p,m,b,n,state,c,case,base=fixture();chunks=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        step=build_weighted_step(m,n,.001,c['loss_weights']);params=state['params'];opt=state['optimizer']
+        weights=c['loss_weights']
+        def loss(pp):
+            e,f=energy_and_forces(pp,b,model=m)
+            return weights['energy']*jax.numpy.mean((e-b['energy'])**2)/n.energy_loss_scale_eV**2+weights['force']*jax.numpy.mean((f-b['forces'])**2)/n.force_loss_scale_eV_per_A**2
+        grad=jax.jit(jax.grad(loss))
+        for count in (1,2,3):
+>           gradient=grad(params);rp,ro=wr.independent_adam_step(params,opt,gradient,.001)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'independent_adam_step'
+
+tests/test_width_rate_runs.py:62: AttributeError
+_____________ test_approved_width_rate_first_step_oracle[0.001-16] _____________
+
+features = 16, rate = 0.001
+
+    @pytest.mark.parametrize('features',[16,32])
+    @pytest.mark.parametrize('rate',[.001,.0003])
+    def test_approved_width_rate_first_step_oracle(features,rate):
+        p,m,b,n,s,c,case,base=fixture()
+        from force_consistency.models.backbone import ModelConfig
+        from force_consistency.models.energy import EnergyModel
+        from force_consistency.train import initialize_state
+        model=EnergyModel(ModelConfig(**{**config()['model'],'features':features}));state=initialize_state(model,b,n,0,rate)
+        chunks=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        before=_state_hashes(state)
+>       oracle=wr.first_step_oracle(state,chunks,b,model,n,rate,c['loss_weights'],wr.ExecutionContext(120.))
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'first_step_oracle'
+
+tests/test_width_rate_runs.py:78: AttributeError
+_____________ test_approved_width_rate_first_step_oracle[0.001-32] _____________
+
+features = 32, rate = 0.001
+
+    @pytest.mark.parametrize('features',[16,32])
+    @pytest.mark.parametrize('rate',[.001,.0003])
+    def test_approved_width_rate_first_step_oracle(features,rate):
+        p,m,b,n,s,c,case,base=fixture()
+        from force_consistency.models.backbone import ModelConfig
+        from force_consistency.models.energy import EnergyModel
+        from force_consistency.train import initialize_state
+        model=EnergyModel(ModelConfig(**{**config()['model'],'features':features}));state=initialize_state(model,b,n,0,rate)
+        chunks=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        before=_state_hashes(state)
+>       oracle=wr.first_step_oracle(state,chunks,b,model,n,rate,c['loss_weights'],wr.ExecutionContext(120.))
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'first_step_oracle'
+
+tests/test_width_rate_runs.py:78: AttributeError
+____________ test_approved_width_rate_first_step_oracle[0.0003-16] _____________
+
+features = 16, rate = 0.0003
+
+    @pytest.mark.parametrize('features',[16,32])
+    @pytest.mark.parametrize('rate',[.001,.0003])
+    def test_approved_width_rate_first_step_oracle(features,rate):
+        p,m,b,n,s,c,case,base=fixture()
+        from force_consistency.models.backbone import ModelConfig
+        from force_consistency.models.energy import EnergyModel
+        from force_consistency.train import initialize_state
+        model=EnergyModel(ModelConfig(**{**config()['model'],'features':features}));state=initialize_state(model,b,n,0,rate)
+        chunks=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        before=_state_hashes(state)
+>       oracle=wr.first_step_oracle(state,chunks,b,model,n,rate,c['loss_weights'],wr.ExecutionContext(120.))
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'first_step_oracle'
+
+tests/test_width_rate_runs.py:78: AttributeError
+____________ test_approved_width_rate_first_step_oracle[0.0003-32] _____________
+
+features = 32, rate = 0.0003
+
+    @pytest.mark.parametrize('features',[16,32])
+    @pytest.mark.parametrize('rate',[.001,.0003])
+    def test_approved_width_rate_first_step_oracle(features,rate):
+        p,m,b,n,s,c,case,base=fixture()
+        from force_consistency.models.backbone import ModelConfig
+        from force_consistency.models.energy import EnergyModel
+        from force_consistency.train import initialize_state
+        model=EnergyModel(ModelConfig(**{**config()['model'],'features':features}));state=initialize_state(model,b,n,0,rate)
+        chunks=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+        before=_state_hashes(state)
+>       oracle=wr.first_step_oracle(state,chunks,b,model,n,rate,c['loss_weights'],wr.ExecutionContext(120.))
+               ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'first_step_oracle'
+
+tests/test_width_rate_runs.py:78: AttributeError
+_____ test_matrix_learning_failure_continues_but_execution_failure_blocks ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_matrix_learning_failure_c0')
+
+    def test_matrix_learning_failure_continues_but_execution_failure_blocks(tmp_path):
+        c=config();calls=[]
+        def runner(case):
+            calls.append(case['name']);return {'status':'completed','executed':True,'execution_valid':True,'fit_gate':{'accepted':False},'anchor_gate':{'accepted':False}}
+>       out=wr.execute_width_rate_matrix(tmp_path/'learning',c,runner,lambda:None,wr.ExecutionContext(120.))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'execute_width_rate_matrix'
+
+tests/test_width_rate_runs.py:88: AttributeError
+________ test_matrix_source_failure_and_summary_write_failure_retained _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_matrix_source_failure_and0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1171ffa40>
+
+    def test_matrix_source_failure_and_summary_write_failure_retained(tmp_path,monkeypatch):
+        c=config();calls=[]
+        def verify():raise ValueError('source changed')
+>       out=wr.execute_width_rate_matrix(tmp_path/'source',c,lambda case:calls.append(case),verify,wr.ExecutionContext(120.))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'execute_width_rate_matrix'
+
+tests/test_width_rate_runs.py:100: AttributeError
+___________ test_tiny_fresh_runner_transaction_and_exhaustive_probe ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_tiny_fresh_runner_transac0')
+
+    def test_tiny_fresh_runner_transaction_and_exhaustive_probe(tmp_path):
+        p,m,b,n,s,c,case,base=fixture();before=_state_hashes(s)
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},tmp_path/'tiny',{'engineering_fixture':True},wr.ExecutionContext(120.).for_arm(120.,.25),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:119: AttributeError
+_______ test_probe_rejects_prediction_preserving_state_corruption[count] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_probe_rejects_prediction_0')
+damage = 'count'
+
+    @pytest.mark.parametrize('damage',['count','normalization','features','dtype','checkpoint_sha'])
+    def test_probe_rejects_prediction_preserving_state_corruption(tmp_path,damage):
+        p,m,b,n,s,c,case,base=fixture();root=tmp_path/'tiny'
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},root,{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:133: AttributeError
+___ test_probe_rejects_prediction_preserving_state_corruption[normalization] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_probe_rejects_prediction_1')
+damage = 'normalization'
+
+    @pytest.mark.parametrize('damage',['count','normalization','features','dtype','checkpoint_sha'])
+    def test_probe_rejects_prediction_preserving_state_corruption(tmp_path,damage):
+        p,m,b,n,s,c,case,base=fixture();root=tmp_path/'tiny'
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},root,{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:133: AttributeError
+_____ test_probe_rejects_prediction_preserving_state_corruption[features] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_probe_rejects_prediction_2')
+damage = 'features'
+
+    @pytest.mark.parametrize('damage',['count','normalization','features','dtype','checkpoint_sha'])
+    def test_probe_rejects_prediction_preserving_state_corruption(tmp_path,damage):
+        p,m,b,n,s,c,case,base=fixture();root=tmp_path/'tiny'
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},root,{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:133: AttributeError
+_______ test_probe_rejects_prediction_preserving_state_corruption[dtype] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_probe_rejects_prediction_3')
+damage = 'dtype'
+
+    @pytest.mark.parametrize('damage',['count','normalization','features','dtype','checkpoint_sha'])
+    def test_probe_rejects_prediction_preserving_state_corruption(tmp_path,damage):
+        p,m,b,n,s,c,case,base=fixture();root=tmp_path/'tiny'
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},root,{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:133: AttributeError
+__ test_probe_rejects_prediction_preserving_state_corruption[checkpoint_sha] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_probe_rejects_prediction_4')
+damage = 'checkpoint_sha'
+
+    @pytest.mark.parametrize('damage',['count','normalization','features','dtype','checkpoint_sha'])
+    def test_probe_rejects_prediction_preserving_state_corruption(tmp_path,damage):
+        p,m,b,n,s,c,case,base=fixture();root=tmp_path/'tiny'
+>       out=wr._run_arm(c,case,s,p,p,m,n,base,{},root,{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute '_run_arm'
+
+tests/test_width_rate_runs.py:133: AttributeError
+______________ test_arm_failure_retains_partial_truth[interrupt] _______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_arm_failure_retains_parti0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1172a9d90>
+kind = 'interrupt'
+
+    @pytest.mark.parametrize('kind',['interrupt','nonfinite','replay','timeout','global_cap'])
+    def test_arm_failure_retains_partial_truth(tmp_path,monkeypatch,kind):
+        p,m,b,n,s,c,case,base=fixture();historical={};now=[0.]
+        context=wr.ExecutionContext(120.,clock=lambda:now[0]).for_arm(120.,0.)
+>       real=wr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'build_weighted_step'
+
+tests/test_width_rate_runs.py:156: AttributeError
+______________ test_arm_failure_retains_partial_truth[nonfinite] _______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_arm_failure_retains_parti1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x113af8c80>
+kind = 'nonfinite'
+
+    @pytest.mark.parametrize('kind',['interrupt','nonfinite','replay','timeout','global_cap'])
+    def test_arm_failure_retains_partial_truth(tmp_path,monkeypatch,kind):
+        p,m,b,n,s,c,case,base=fixture();historical={};now=[0.]
+        context=wr.ExecutionContext(120.,clock=lambda:now[0]).for_arm(120.,0.)
+>       real=wr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'build_weighted_step'
+
+tests/test_width_rate_runs.py:156: AttributeError
+________________ test_arm_failure_retains_partial_truth[replay] ________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_arm_failure_retains_parti2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x117234a70>
+kind = 'replay'
+
+    @pytest.mark.parametrize('kind',['interrupt','nonfinite','replay','timeout','global_cap'])
+    def test_arm_failure_retains_partial_truth(tmp_path,monkeypatch,kind):
+        p,m,b,n,s,c,case,base=fixture();historical={};now=[0.]
+        context=wr.ExecutionContext(120.,clock=lambda:now[0]).for_arm(120.,0.)
+>       real=wr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'build_weighted_step'
+
+tests/test_width_rate_runs.py:156: AttributeError
+_______________ test_arm_failure_retains_partial_truth[timeout] ________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_arm_failure_retains_parti3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x117212780>
+kind = 'timeout'
+
+    @pytest.mark.parametrize('kind',['interrupt','nonfinite','replay','timeout','global_cap'])
+    def test_arm_failure_retains_partial_truth(tmp_path,monkeypatch,kind):
+        p,m,b,n,s,c,case,base=fixture();historical={};now=[0.]
+        context=wr.ExecutionContext(120.,clock=lambda:now[0]).for_arm(120.,0.)
+>       real=wr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'build_weighted_step'
+
+tests/test_width_rate_runs.py:156: AttributeError
+______________ test_arm_failure_retains_partial_truth[global_cap] ______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-7/test_arm_failure_retains_parti4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1171fd010>
+kind = 'global_cap'
+
+    @pytest.mark.parametrize('kind',['interrupt','nonfinite','replay','timeout','global_cap'])
+    def test_arm_failure_retains_partial_truth(tmp_path,monkeypatch,kind):
+        p,m,b,n,s,c,case,base=fixture();historical={};now=[0.]
+        context=wr.ExecutionContext(120.,clock=lambda:now[0]).for_arm(120.,0.)
+>       real=wr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.width_rate_runs' has no attribute 'build_weighted_step'
+
+tests/test_width_rate_runs.py:156: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_runs.py::test_transaction_interruption_preserves_matched_previous_receipt[checkpoint]
+FAILED tests/test_width_rate_runs.py::test_transaction_interruption_preserves_matched_previous_receipt[history]
+FAILED tests/test_width_rate_runs.py::test_transaction_interruption_preserves_matched_previous_receipt[receipt]
+FAILED tests/test_width_rate_runs.py::test_committed_versions_cannot_be_overwritten
+FAILED tests/test_width_rate_runs.py::test_independent_numpy_adam_matches_mixed_force_energy_multistep
+FAILED tests/test_width_rate_runs.py::test_approved_width_rate_first_step_oracle[0.001-16]
+FAILED tests/test_width_rate_runs.py::test_approved_width_rate_first_step_oracle[0.001-32]
+FAILED tests/test_width_rate_runs.py::test_approved_width_rate_first_step_oracle[0.0003-16]
+FAILED tests/test_width_rate_runs.py::test_approved_width_rate_first_step_oracle[0.0003-32]
+FAILED tests/test_width_rate_runs.py::test_matrix_learning_failure_continues_but_execution_failure_blocks
+FAILED tests/test_width_rate_runs.py::test_matrix_source_failure_and_summary_write_failure_retained
+FAILED tests/test_width_rate_runs.py::test_tiny_fresh_runner_transaction_and_exhaustive_probe
+FAILED tests/test_width_rate_runs.py::test_probe_rejects_prediction_preserving_state_corruption[count]
+FAILED tests/test_width_rate_runs.py::test_probe_rejects_prediction_preserving_state_corruption[normalization]
+FAILED tests/test_width_rate_runs.py::test_probe_rejects_prediction_preserving_state_corruption[features]
+FAILED tests/test_width_rate_runs.py::test_probe_rejects_prediction_preserving_state_corruption[dtype]
+FAILED tests/test_width_rate_runs.py::test_probe_rejects_prediction_preserving_state_corruption[checkpoint_sha]
+FAILED tests/test_width_rate_runs.py::test_arm_failure_retains_partial_truth[interrupt]
+FAILED tests/test_width_rate_runs.py::test_arm_failure_retains_partial_truth[nonfinite]
+FAILED tests/test_width_rate_runs.py::test_arm_failure_retains_partial_truth[replay]
+FAILED tests/test_width_rate_runs.py::test_arm_failure_retains_partial_truth[timeout]
+FAILED tests/test_width_rate_runs.py::test_arm_failure_retains_partial_truth[global_cap]
+22 failed in 9.23s

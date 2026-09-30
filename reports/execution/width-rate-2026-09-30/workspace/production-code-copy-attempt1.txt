@@ -1,0 +1,1 @@
+First code-copy attempt stopped before completion: git show rejected an absolute new_code_sha256 key as a repository path. Converted absolute workspace keys to relative repository paths; every recovered original byte now matches saved provenance. No numerical computation or raw artifact mutation.

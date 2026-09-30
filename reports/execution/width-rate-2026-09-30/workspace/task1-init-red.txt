@@ -1,0 +1,159 @@
+FFFFFFFFFFFFFF                                                           [100%]
+=================================== FAILURES ===================================
+_____________ test_contract_coherent_rebase_before_arrays[weights] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d077d0>
+change = 'weights'
+
+    @pytest.mark.parametrize('change',['weights','width','baseline','extra','pins'])
+    def test_contract_coherent_rebase_before_arrays(monkeypatch,change):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:15: ImportError
+______________ test_contract_coherent_rebase_before_arrays[width] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d3fe90>
+change = 'width'
+
+    @pytest.mark.parametrize('change',['weights','width','baseline','extra','pins'])
+    def test_contract_coherent_rebase_before_arrays(monkeypatch,change):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:15: ImportError
+____________ test_contract_coherent_rebase_before_arrays[baseline] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d3c260>
+change = 'baseline'
+
+    @pytest.mark.parametrize('change',['weights','width','baseline','extra','pins'])
+    def test_contract_coherent_rebase_before_arrays(monkeypatch,change):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:15: ImportError
+______________ test_contract_coherent_rebase_before_arrays[extra] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d07da0>
+change = 'extra'
+
+    @pytest.mark.parametrize('change',['weights','width','baseline','extra','pins'])
+    def test_contract_coherent_rebase_before_arrays(monkeypatch,change):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:15: ImportError
+______________ test_contract_coherent_rebase_before_arrays[pins] _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d509e0>
+change = 'pins'
+
+    @pytest.mark.parametrize('change',['weights','width','baseline','extra','pins'])
+    def test_contract_coherent_rebase_before_arrays(monkeypatch,change):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:15: ImportError
+_______ test_pin_replacement_and_missing_file_before_arrays[replacement] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-1/test_pin_replacement_and_missi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d53a10>
+damage = 'replacement'
+
+    @pytest.mark.parametrize('damage',['replacement','missing'])
+    def test_pin_replacement_and_missing_file_before_arrays(tmp_path,monkeypatch,damage):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:27: ImportError
+_________ test_pin_replacement_and_missing_file_before_arrays[missing] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-1/test_pin_replacement_and_missi1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d532f0>
+damage = 'missing'
+
+    @pytest.mark.parametrize('damage',['replacement','missing'])
+    def test_pin_replacement_and_missing_file_before_arrays(tmp_path,monkeypatch,damage):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:27: ImportError
+__________________ test_historical_duplicate_2000_must_match ___________________
+
+    def test_historical_duplicate_2000_must_match():
+>       from force_consistency.width_rate_contract import join_histories
+E       ModuleNotFoundError: No module named 'force_consistency.width_rate_contract'
+
+tests/test_width_rate_preflight.py:38: ModuleNotFoundError
+_________________ test_historical_schedule_contains_250_not_1 __________________
+
+    def test_historical_schedule_contains_250_not_1():
+>       from force_consistency.width_rate_contract import join_histories,verify_width_rate_sources
+E       ModuleNotFoundError: No module named 'force_consistency.width_rate_contract'
+
+tests/test_width_rate_preflight.py:44: ModuleNotFoundError
+________________ test_parent_deadline_and_unknown_work[before] _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d52e70>
+kind = 'before'
+
+    @pytest.mark.parametrize('kind',['before','after','interrupt'])
+    def test_parent_deadline_and_unknown_work(monkeypatch,kind):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:55: ImportError
+_________________ test_parent_deadline_and_unknown_work[after] _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d52a50>
+kind = 'after'
+
+    @pytest.mark.parametrize('kind',['before','after','interrupt'])
+    def test_parent_deadline_and_unknown_work(monkeypatch,kind):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:55: ImportError
+_______________ test_parent_deadline_and_unknown_work[interrupt] _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d3c8c0>
+kind = 'interrupt'
+
+    @pytest.mark.parametrize('kind',['before','after','interrupt'])
+    def test_parent_deadline_and_unknown_work(monkeypatch,kind):
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:55: ImportError
+_____ test_arm_context_uses_smaller_remaining_charge_and_global_allowance ______
+
+    def test_arm_context_uses_smaller_remaining_charge_and_global_allowance():
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:75: ImportError
+_______ test_pair_initial_hashes_and_zero_moments_and_original_baselines _______
+
+    def test_pair_initial_hashes_and_zero_moments_and_original_baselines():
+        from test_coverage import seven_case
+>       from force_consistency import width_rate_runs as wr
+E       ImportError: cannot import name 'width_rate_runs' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_preflight.py:87: ImportError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_preflight.py::test_contract_coherent_rebase_before_arrays[weights]
+FAILED tests/test_width_rate_preflight.py::test_contract_coherent_rebase_before_arrays[width]
+FAILED tests/test_width_rate_preflight.py::test_contract_coherent_rebase_before_arrays[baseline]
+FAILED tests/test_width_rate_preflight.py::test_contract_coherent_rebase_before_arrays[extra]
+FAILED tests/test_width_rate_preflight.py::test_contract_coherent_rebase_before_arrays[pins]
+FAILED tests/test_width_rate_preflight.py::test_pin_replacement_and_missing_file_before_arrays[replacement]
+FAILED tests/test_width_rate_preflight.py::test_pin_replacement_and_missing_file_before_arrays[missing]
+FAILED tests/test_width_rate_preflight.py::test_historical_duplicate_2000_must_match
+FAILED tests/test_width_rate_preflight.py::test_historical_schedule_contains_250_not_1
+FAILED tests/test_width_rate_preflight.py::test_parent_deadline_and_unknown_work[before]
+FAILED tests/test_width_rate_preflight.py::test_parent_deadline_and_unknown_work[after]
+FAILED tests/test_width_rate_preflight.py::test_parent_deadline_and_unknown_work[interrupt]
+FAILED tests/test_width_rate_preflight.py::test_arm_context_uses_smaller_remaining_charge_and_global_allowance
+FAILED tests/test_width_rate_preflight.py::test_pair_initial_hashes_and_zero_moments_and_original_baselines
+14 failed in 0.14s

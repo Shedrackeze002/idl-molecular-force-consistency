@@ -1,0 +1,10 @@
+{
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "settings": {
+    "hw.logicalcpu": null,
+    "hw.memsize": null,
+    "hw.physicalcpu": null,
+    "machdep.cpu.brand_string": null
+  },
+  "utc": "2026-09-30T22:07:52.111398+00:00"
+}

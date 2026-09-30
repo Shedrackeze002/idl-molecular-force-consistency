@@ -1,0 +1,40 @@
+..............F                                                          [100%]
+=================================== FAILURES ===================================
+_______ test_real_preflight_uses_only_training_arrays_and_frozen_support _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x117f5f0e0>
+
+    def test_real_preflight_uses_only_training_arrays_and_frozen_support(monkeypatch):
+        from force_consistency import width_rate_runs as wr
+        import numpy as np
+        original=np.load
+        def guarded(path,*a,**kw):
+            assert 'validation' not in str(path) and 'test.npz' not in str(path)
+            return original(path,*a,**kw)
+        monkeypatch.setattr(np,'load',guarded);records=[]
+>       result=wr.width_rate_preflight(config(),wr.ExecutionContext(120.),records.append)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_preflight.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = {'adam': {'b1': 0.9, 'b2': 0.999, 'eps': 1e-08, 'eps_root': 0.0, ...}, 'anchor_frame_count': 16, 'backend': 'cpu', 'ca...'wall_seconds': 3600}, {'features': 32, 'learning_rate': 0.0003, 'name': 'width32-lr3e-4', 'wall_seconds': 3600}], ...}
+context = <force_consistency.width_rate_runs.ExecutionContext object at 0x118559f70>
+save_partial = <built-in method append of list object at 0x1185ad5c0>
+
+    def width_rate_preflight(config,context,save_partial):
+        context.check_budget();sources=verify_width_rate_sources(config);context.check_budget()
+        # Static existing source/control checks see the unmodified historical config.
+        historical=sources['historical_config'];verify_convergence_sources(historical);context.check_budget()
+        parent,record=parent_operation(historical,context,save_partial)
+        train,manifest,norm,selected,ancestry,calibration=parent
+        if manifest['identity']!=config['expected_prepared_identity'] or manifest['split_hash']!=config['expected_split_hash'] or canonical_hash(selected)!=config['expected_subsets_identity']:
+>           raise ValueError('Prepared/subset identity changed')
+E           ValueError: Prepared/subset identity changed
+
+src/force_consistency/width_rate_runs.py:107: ValueError
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_preflight.py::test_real_preflight_uses_only_training_arrays_and_frozen_support
+1 failed, 14 passed in 19.29s

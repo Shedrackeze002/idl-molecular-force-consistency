@@ -1,0 +1,9 @@
+{
+  "elapsed_seconds": 201.73,
+  "execution": "pending_once_only",
+  "log_sha256": "ca88be108d63b1ab667e3fed726a3683becf1729b02648dc763b94596d043005",
+  "run_directory": "runs/aspirin-width-rate-2026-09-30",
+  "status": "passed",
+  "tests": 320,
+  "utc": "2026-09-30T22:11:03.328858+00:00"
+}

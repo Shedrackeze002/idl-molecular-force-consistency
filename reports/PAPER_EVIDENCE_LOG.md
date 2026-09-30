@@ -11700,3 +11700,275 @@ Author found the report could trust an oracle pass label despite an excessive st
 ## VERIFY-WIDTHRATE-PREPROD-001 — full implementation suite passes before fixed production
 
 320passed in201.73s; full output preserved .superpowers/sdd/2026-09-30-width-rate/preproduction-full-suite-attempt1.txt, SHA256 `ca88be108d63b1ab667e3fed726a3683becf1729b02648dc763b94596d043005`. Both oracle bound regressions now pass; all prior failures retained. Approved frozen config and326historical pins unchanged; no scientific production yet. Native code committed before exactly one matrix launch; human approval and both plan/material re-reviews complete. Local hardware counters were unavailable through sandboxed sysctl and are saved as unavailable, not inferred. CPU/float64 execution enforced at launch. Full pilot remains pending.
+
+## WIDTHRATE-PRE-001 — fixed matrix preregistered before numerical work
+
+Frozen one-seed width/rate sensitivity; fitted anchors, full pilot pending.
+
+```json
+{
+  "acceptance": "Original strict joint E/F<.1 raw initial MSE on both fitting and fully fitted anchors; no pilot clearance",
+  "config": {
+    "adam": {
+      "b1": 0.9,
+      "b2": 0.999,
+      "eps": 1e-08,
+      "eps_root": 0.0,
+      "nesterov": false
+    },
+    "anchor_frame_count": 16,
+    "backend": "cpu",
+    "cases": [
+      {
+        "features": 16,
+        "learning_rate": 0.001,
+        "name": "width16-lr1e-3",
+        "wall_seconds": 1800
+      },
+      {
+        "features": 16,
+        "learning_rate": 0.0003,
+        "name": "width16-lr3e-4",
+        "wall_seconds": 1800
+      },
+      {
+        "features": 32,
+        "learning_rate": 0.001,
+        "name": "width32-lr1e-3",
+        "wall_seconds": 3600
+      },
+      {
+        "features": 32,
+        "learning_rate": 0.0003,
+        "name": "width32-lr3e-4",
+        "wall_seconds": 3600
+      }
+    ],
+    "checkpoint_prediction_atol": 1e-10,
+    "data_directory": "data/processed/aspirin",
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "fitting_frame_count": 128,
+    "gate_fraction": 0.1,
+    "historical_config": "configs/aspirin-convergence-budget.json",
+    "loss_weights": {
+      "energy": 0.014584365670390719,
+      "force": 1.9854156343296092
+    },
+    "max_updates": 6000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-width-rate-2026-09-30",
+    "score_updates": [
+      0,
+      1,
+      100,
+      200,
+      250,
+      300,
+      400,
+      500,
+      600,
+      700,
+      800,
+      900,
+      1000,
+      1100,
+      1200,
+      1300,
+      1400,
+      1500,
+      1600,
+      1700,
+      1800,
+      1900,
+      2000,
+      2001,
+      2100,
+      2200,
+      2300,
+      2400,
+      2500,
+      2600,
+      2700,
+      2800,
+      2900,
+      3000,
+      3100,
+      3200,
+      3300,
+      3400,
+      3500,
+      3600,
+      3700,
+      3800,
+      3900,
+      4000,
+      4100,
+      4200,
+      4300,
+      4400,
+      4500,
+      4600,
+      4700,
+      4800,
+      4900,
+      5000,
+      5100,
+      5200,
+      5300,
+      5400,
+      5500,
+      5600,
+      5700,
+      5800,
+      5900,
+      6000
+    ],
+    "seed": 0,
+    "small_window_relative_change": 0.01,
+    "source_pin_manifest": "configs/aspirin-width-rate-source-pins.json",
+    "source_pin_manifest_sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "terminal_window_updates": 500,
+    "total_wall_seconds": 11400
+  },
+  "config_identity": "e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198",
+  "rationale": "Fresh width/rate sensitivity after all original6000-update continuations failed joint gates; 16/.001 is numerical replay control"
+}
+```
+
+## WIDTHRATE-width16-lr1e-3-PRE — cell starts
+
+Frozen one-seed width/rate sensitivity; fitted anchors, full pilot pending.
+
+```json
+{
+  "case": {
+    "features": 16,
+    "learning_rate": 0.001,
+    "name": "width16-lr1e-3",
+    "wall_seconds": 1800
+  },
+  "fresh_count": 0,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "717b74705326d1b5b271b135f2b967b0df9c8061f7808497bf17d02b0848ef54"
+  }
+}
+```
+
+## WIDTHRATE-REVIEW-RUNNING-001 — independent metadata-only review findings
+
+Fresh whole-branch reviewer reproduced two Important saved-report guard/accounting defects while the once-only production continues: an impossible controller elapsed0 is accepted despite four1000ssequential arms, and interrupted preflight receipts can contain a completed width16/unknown width32 initialization while report defaults count0/no unknown cells. These concern interpretation/accounting, not stored training trajectories or frozen settings. Author accepts investigation; fix/report reconciliation will occur in one author regression pass without research rerun. Reviewer temporary fixtures are metadata only; production untouched. Exact findings and rulings will be preserved in final review record. Current first full128reference/independentAdam oracle passed; matrix incomplete, no scientific acceptance claimed.
+
+## WIDTHRATE-width16-lr1e-3-RESULT — cell result retained
+
+Frozen one-seed width/rate sensitivity; fitted anchors, full pilot pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.10905757620503544,
+      "force_mse_eV2_per_A2": 0.42746961258301264
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "attempted_updates": 6000,
+  "execution_valid": false,
+  "failure_reason": "CalledProcessError: Command '['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-m', 'force_consistency.width_rate_runs', '--probe', '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/runs/aspirin-width-rate-2026-09-30/width16-lr1e-3']' returned non-zero exit status 1.",
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.3220330430785254,
+      "force_mse_eV2_per_A2": 0.45318885284127763
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "persisted_update": 6000,
+  "status": "failed",
+  "summary_sha256": "d800c92a332ec95787ef66dfbf8e76f02ac3b003bb7eebee880f1cc4cf1294b7",
+  "updates": 6000
+}
+```
+
+## WIDTHRATE-RESULT-001 — matrix stopped; every cell retained
+
+Frozen one-seed width/rate sensitivity; fitted anchors, full pilot pending.
+
+```json
+{
+  "arms": {
+    "width16-lr1e-3": "failed",
+    "width16-lr3e-4": "blocked",
+    "width32-lr1e-3": "blocked",
+    "width32-lr3e-4": "blocked"
+  },
+  "elapsed_seconds": 694.8040945419998,
+  "execution_valid": false,
+  "failure_reason": null,
+  "final_receipt": "runs/aspirin-width-rate-2026-09-30/summary.json",
+  "status": "failed"
+}
+```
+
+## WIDTHRATE-FAIL-001 — once-only production failed at fresh checkpoint metadata gate
+
+The approved matrix started once at production revision `18d250f` and stopped with exit 1. The first cell completed/persisted all 6000 updates (768000 fitting exposures), retained all 64 prescribed observations and passed the independent full-128-frame first-step oracle. Its 63 common historical raw energy/force measurements match exactly (maximum difference 0). Final fitting energy/force fractions are 0.3220330430785254 / 0.45318885284127763; fully fitted anchor fractions are 0.10905757620503544 / 0.42746961258301264. Both original strict joint gates fail. The other three cells are blocked; no factorial comparisons or pilot clearance are available. Matrix elapsed 694.8040945419998 seconds.
+
+Metadata-only autopsy in `.superpowers/sdd/2026-09-30-width-rate/production-provenance-forensic.json` found semantically equal provenance but unequal serialized key ordering: integer historical update keys sort numerically in the checkpoint, then sort lexicographically as strings after JSON reading. First differing byte 111376 (`200` versus `1000`); the envelope payload hash is intact. This explains rejection, without restoring the model or verifying its predictions. Final checkpoint SHA256 `0bdb9ac0cc56fc90329260a4f41b06b61642a9b7a00d10c40ecace4826df76e2`; final history SHA256 `f1696ecb81bd09de6701bb7b8a5b0af1ec6176e1f8b18ed7d2757e291071eb5d`. Raw artifacts remain unchanged. No research probe or training rerun; a later recovery/replacement requires its own reviewed amendment.
+
+Independent reviewer also identified Important failure accounting: the original failed summary records probe time as 0 and omits completed parent reference frames. Hash-bound reference and contract establish 144 completed parent reference frames; failed child synchronized work and exact elapsed probe time are unavailable, not zero. Derived reporting retains the original receipts and marks child work unknown.
+
+## WIDTHRATE-ENG-003 — final review regressions and repair rationale
+
+Independent final review found three Important report guards: impossible global elapsed accounting, missing completed/unknown preflight operations on interrupted initialization, and coherently rehashed non-replay update-0 metrics not bound to original baselines. Four author regressions failed before repair; 37 report checks passed in 17.90 seconds afterward. Also reproduced the failed-probe accounting gap and legacy report omission. Initial provenance test passed because its keys had identical numerical/lexical order; the test was corrected to include 200/1000, then failed at the strict fresh-process provenance gate in 9.94 seconds. All intermediate unsuccessful and inadequate-fixture checks remain in the workspace.
+
+Repairs normalize provenance once to JSON string keys before both metadata and checkpoint serialization, record completed reference frames immediately, record attempted/unknown probe work and elapsed duration on exception, bind every initial raw baseline, and count preflight operations from their latest receipt. No frozen scientific controls or historical source modules changed. Author verification is pending the final focused/full logs; repairs do not retrospectively validate the failed production checkpoint.
+
+## VERIFY-WIDTHRATE-FINAL-001 — author repairs verified; failed trial status unchanged
+
+Final focused runner/report suite: **66 passed in 86.18 seconds**. Final full suite: **327 passed in 212.53 seconds**, log `.superpowers/sdd/2026-09-30-width-rate/post-review-full-suite.txt`; SHA256 `c86eb1126e999c25a742ed6a3e633325ed98b70fc3966b5a7d8176989b336f6f`. All new repair regressions were observed failing before the author fix; scientific configuration/pins unchanged. These engineering fixtures do not rerun or validate the failed production checkpoint. Original production code/dependency files were recovered from18d250f:34files exactly match saved provenance; first archival attempt failed on absolute-versus-relative Git paths, corrected without raw mutation and retained as a log.
+
+## WIDTHRATE-REPORT-001 — independent saved-only final reconciliation
+
+Generated `reports/width-rate-diagnostics.json/md` and `reports/figures/width-rate-curves.png` from saved failed outputs without numerical imports or array loading. Exit1 is the expected signal of execution-invalid input, not a report-generation crash. Independent reviewer reconciled145raw artifact hashes, all64observations/63exacthistoricalmatches, originalgates,144completedparentreferenceframes,2sharedinitializations and unknownfailedchildwork. Matrixfailed/3blocked; interpretationfalse,contrastsunavailable, fullpilotpeding. No additionalCritical/Important output inconsistency. Authorrepairedcode and327checksuite remain authorverified, not independently rerun.
+
+Output SHA256: JSON548158a2e36515a847af63c326e237ac456a65fa7ec1bf5a9064b7a0397efd1a; figurecb73691d372d29b4e290f5a1d7268cfa9d3c8eeb531c48224654eef2966e7560; Markdown1d9813c12c19ec5de3d253ceb2e98122a076b27fae8188a9ccead8170dfff482. Original production code hashes were immutable duringexecution; current isolatedrunner source was repaired only afterstop and is separately identifiable.
+
+Two deferredMinor notes retained in `docs/reviews/2026-09-30-width-rate-final-review.md`: genericcommitted-updateaxis could mislabel an unpersistedscore in anotherfailurecase (all64actualscores persisted); reportboilerplate says terminalchanges are in JSON, butterminal_windowisemptybecauseexecutionisinvalid. **Correction: no terminalsummary is issued for thistrial.** Neither authornorreviewer restorescheckpointorinfersblockedcelloutcomes. Nextresearchsteprequires separate reviewed recovery/replacement amendment; noautomaticretry.
+
+## WIDTHRATE-NAV-001 — final current-state navigation saved
+
+Obsidian CLI backups and readbacks verified: hub SHA256 `5d41070b493de52b4bb2bbe51a11eca258fdd71290702ce7d1806f270e38c3c5`; findings SHA256 `f0099d715dce7a55ee7972382b0f33d3b436f4f447ab46a757a5a9d826a2c170`. Failed once-only trial, 327 author checks, independent saved-output review, unavailable contrasts and separately reviewed next amendment now recorded. Repository remains numerical authority.
+
+## ARCHIVE-WIDTHRATE-001 — complete balanced execution trail preserved
+
+Durable archive `reports/execution/width-rate-2026-09-30` contains 145 unchanged raw files, 88 finalized workspace files and 118 synthetic reviewer reproduction files. ZIP CRC, exact entry sets and every byte SHA verified; original folders retained. Raw ZIP SHA256 `7c574ed1f1d40ba2697268188a794d8720cbbafc5fd0127e4cbaa9aa8e706b43`; final manifest `d9c2bfadfbd71a6e6ea633000c838a9a0e78308f08931996e32bb94a6ea89028`. The finalized snapshot includes production revision18d250f code with all34source/dependency hashes verified, current post-run repair hashes, failed RED/inadequate-fixture logs, final327-test proof, metadata autopsy and Obsidian backups/readbacks.
+
+The failed first cell is not checkpoint-verified despite exact historical replay. Three cells remain blocked, four-cell contrasts and descriptive terminal summaries unavailable, full pilot pending. No numerical retry or physical restore was performed. The next research step is a separate reviewed recovery/replacement amendment. User proposal artifacts and every original review folder are preserved.

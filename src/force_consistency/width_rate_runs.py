@@ -228,11 +228,14 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
             for role,p in [('fitting',fitting),('anchor',anchor)]}
     prov={**provenance,'config_identity':canonical_hash(config),'case':case,'normalization':asdict(norm),'original_baselines':original_baselines,
           'inputs':inputs,'initial_state_hashes':before,'precision':'float64','backend':'cpu','model':asdict(model.config)}
-    history=[];times=[];evaluation_times=[];committed=None;replayed=[];replay_error=0.
+    # JSON stringifies nested integer keys. Normalize once before both the metadata
+    # file and strict checkpoint envelope serialization, preserving their identity.
+    prov=json.loads(json.dumps(prov,allow_nan=False))
+    history=[];times=[];evaluation_times=[];committed=None;replayed=[];replay_error=0.;probe_start=None
     out={'status':'failed','executed':True,'execution_valid':False,'full_pilot':'pending','case':case,'updates':0,'attempted_updates':0,
          'persisted_update':None,'pending_update_unknown':False,'frame_exposures':0,'history':history,'original_baselines':original_baselines,
          'warmup_frame_exposures':0,'warmup_work_status':'not_started','oracle_work_status':'not_started','oracle_verified':False,
-         'checkpoint_new_process_verified':False,'source_hashes_unchanged':False,'provenance':prov,'initial_state_hashes':before,'initial_raw_state_hashes':_state_hashes(initial),
+         'probe_work_status':'not_started','checkpoint_new_process_verified':False,'source_hashes_unchanged':False,'provenance':prov,'initial_state_hashes':before,'initial_raw_state_hashes':_state_hashes(initial),
          'parameter_count':sum(np.asarray(x).size for x in jax.tree.leaves(initial['params'])),'fitting_frame_count':fit_count,'anchor_frame_count':anchor_count,
          'shared_initialization_seconds':context.shared_initialization_seconds,'compile_seconds':0.,'first_step_reference_seconds':0.,'warmup_seconds':0.,'probe_seconds':0.,'checkpoint_seconds':0.}
     def score():
@@ -275,11 +278,12 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
         context.check_budget();references={}
         for role,p in [('fitting',fitting),('anchor',anchor)]:
             context.check_budget();e,f=_partition_predictions(state['params'],p,model,config['microbatch_size']);references[f'{role}_energy']=e;references[f'{role}_forces']=f
-        np.savez(root/'reference.npz',**references);context.check_budget()
+        np.savez(root/'reference.npz',**references);out['reference_prediction_frames']=fit_count+anchor_count;context.check_budget()
         contract={'case':case,'update':config['max_updates'],'normalization':asdict(norm),'state_hashes':canonical_state_hashes(state),
                   'commit':committed,'inputs':inputs,'input_files_sha256':prov['input_files_sha256'],'reference_sha256':digest(root/'reference.npz'),'config_identity':canonical_hash(config)}
         atomic_json(root/'checkpoint-contract.json',contract);context.check_budget();t=context.clock()
-        receipt=probe_runner(root,context);out['probe_seconds']=context.clock()-t;context.check_budget()
+        probe_start=t;out['probe_work_status']='started'
+        receipt=probe_runner(root,context);out.update(probe_seconds=context.clock()-probe_start,probe_work_status='completed');context.check_budget()
         if (receipt.get('status')!='passed' or receipt.get('update')!=config['max_updates'] or receipt.get('adam_count')!=config['max_updates']
             or receipt.get('state_hashes')!=contract['state_hashes'] or receipt.get('checkpoint_sha256')!=committed['checkpoint_sha256']
             or receipt.get('normalization')!=asdict(norm) or receipt.get('case')!=case or receipt.get('config_identity')!=canonical_hash(config)):
@@ -290,6 +294,7 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
         if not isinstance(exc,(Exception,KeyboardInterrupt,SystemExit)):raise
         out.update(status='incomplete' if isinstance(exc,(WallBudget,subprocess.TimeoutExpired)) else 'failed',execution_valid=False,
                    failure_reason=f'{type(exc).__name__}: {exc}',stop_reason='wall_budget' if isinstance(exc,(WallBudget,subprocess.TimeoutExpired)) else 'failure')
+        if out['probe_work_status']=='started':out.update(probe_work_status='unknown',probe_seconds=context.clock()-probe_start)
         if isinstance(exc,subprocess.CalledProcessError):out['probe_stderr']=(exc.stderr.decode() if isinstance(exc.stderr,bytes) else str(exc.stderr))[-4000:]
         for field in ('oracle_work_status','warmup_work_status'):
             if out[field]=='started':out[field]='unknown'

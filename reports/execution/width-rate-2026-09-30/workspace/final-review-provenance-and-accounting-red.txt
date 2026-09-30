@@ -1,0 +1,62 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_failed_probe_preserves_known_reference_work_and_unknown_verification_work _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-18/test_failed_probe_preserves_kn0')
+
+    def test_failed_probe_preserves_known_reference_work_and_unknown_verification_work(tmp_path):
+        p,m,b,n,s,c,case,base=fixture()
+        def failed(root,context):raise subprocess.CalledProcessError(1,'probe',stderr=b'checkpoint metadata failure')
+        out=wr._run_arm(c,case,s,p,p,m,n,base,{},tmp_path/'tiny',{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=failed)
+        assert not out['execution_valid'] and out['updates']==out['persisted_update']==3
+>       assert out['reference_prediction_frames']==14
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'reference_prediction_frames'
+
+tests/test_width_rate_runs.py:230: KeyError
+__ test_legacy_failed_probe_retains_bound_reference_work_and_unknown_duration __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-18/test_legacy_failed_probe_retai0')
+
+    def test_legacy_failed_probe_retains_bound_reference_work_and_unknown_duration(tmp_path):
+        c,s,summary=saved_fixture(tmp_path/'runs');root=tmp_path/'runs';name=c['cases'][0]['name'];arm=summary['arms'][name];child=root/name
+        arm.update(status='failed',execution_valid=False,checkpoint_new_process_verified=False,probe_stderr='ValueError: Checkpoint provenance mismatch',probe_seconds=0.)
+        arm.pop('reference_prediction_frames');arm.pop('checkpoint_verification')
+        (child/'checkpoint-verification.json').unlink()
+        (child/'summary.json').write_text(json.dumps(arm));summary.update(status='failed',execution_valid=False)
+        (root/'summary.json').write_text(json.dumps(summary))
+        out=generator().generate(root,tmp_path/'out');counts=out['actual_counts']
+>       assert counts['unknown_probe_cells']==[name] and not counts['work_counts_complete']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'unknown_probe_cells'
+
+tests/test_width_rate_report.py:232: KeyError
+----------------------------- Captured stderr call -----------------------------
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib:__init__.py:577 /Users/shedrackeze/.matplotlib is not a writable directory
+WARNING  matplotlib:__init__.py:596 Matplotlib created a temporary cache directory at /var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/matplotlib-a7k0vt8u because there was an issue with the default path (/Users/shedrackeze/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_runs.py::test_failed_probe_preserves_known_reference_work_and_unknown_verification_work
+FAILED tests/test_width_rate_report.py::test_legacy_failed_probe_retains_bound_reference_work_and_unknown_duration
+2 failed, 1 passed, 63 deselected in 22.72s

@@ -211,3 +211,21 @@ def test_oracle_receipt_bounds_are_independently_checkable():
     oracle=wr.first_step_oracle(s,batches,b,m,n,.001,c['loss_weights'],wr.ExecutionContext(120.))
     assert 0<=oracle['receipt']['state_maximum_tolerance_fraction']<=1
     assert 0<=oracle['receipt']['prediction_maximum_tolerance_fraction']<=1
+
+
+def test_nested_integer_history_provenance_roundtrips_in_fresh_process(tmp_path):
+    p,m,b,n,s,c,case,base=fixture()
+    provenance={'historical':{0:base,100:base,200:base,1000:base,2000:base,2001:base},'source':'engineering-only'}
+    out=wr._run_arm(c,case,s,p,p,m,n,base,{},tmp_path/'tiny',provenance,wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+    assert out['execution_valid'],out.get('failure_reason')
+    saved=json.loads((tmp_path/'tiny/provenance.json').read_text())
+    assert set(saved['historical'])=={'0','100','200','1000','2000','2001'}
+
+
+def test_failed_probe_preserves_known_reference_work_and_unknown_verification_work(tmp_path):
+    p,m,b,n,s,c,case,base=fixture()
+    def failed(root,context):raise subprocess.CalledProcessError(1,'probe',stderr=b'checkpoint metadata failure')
+    out=wr._run_arm(c,case,s,p,p,m,n,base,{},tmp_path/'tiny',{},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=failed)
+    assert not out['execution_valid'] and out['updates']==out['persisted_update']==3
+    assert out['reference_prediction_frames']==14
+    assert out['probe_work_status']=='unknown' and out['probe_seconds']>=0

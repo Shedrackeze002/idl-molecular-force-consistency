@@ -83,6 +83,7 @@ def verified_arm(arm,config,sources):
         if not close(arm['steady_update_seconds_total']/6000,arm['steady_update_seconds_mean']):return False
         h=arm['history']
         if [r['update'] for r in h]!=expected_updates():return False
+        if any(not close(h[0]['metrics'][r][k],base[r][k]) for r in ROLES for k in MSE_KEYS):return False
         for row in h:
             if row['frame_exposures']!=row['update']*128 or not _metrics_valid(row['metrics'],inputs):return False
             for role,label in [('fitting','fit_gate'),('anchor','anchor_gate')]:
@@ -133,6 +134,40 @@ def _saved_arm_valid(root,arm,c,sources):
     except (OSError,KeyError,TypeError,ValueError):return False
 
 
+def preflight_accounting(summary,events):
+    """Latest event per actual operation; started/completed events are not two executions."""
+    latest={}
+    for event in events:
+        operation=event.get('operation')
+        if operation=='historical_parent_preflight':key=operation
+        elif operation=='shared_training_initialization':key=operation+':width'+str(event['features'])
+        else:continue
+        latest[key]=event
+    if not latest:
+        if summary.get('parent_work'):latest['historical_parent_preflight']=summary['parent_work']
+        for width,event in summary.get('shared_initializations',{}).items():latest['shared_training_initialization:width'+width]=event
+    parent=latest.get('historical_parent_preflight')
+    shared={str(e['features']):e for key,e in latest.items() if key.startswith('shared_training_initialization:')}
+    unknown=[key for key,e in latest.items() if e.get('status') in ('started','unknown')]
+    completed=sum(e.get('completed_initializations') or 0 for e in shared.values() if e.get('status')=='completed')
+    return {'parent_work':parent,'shared_initializations':shared,'shared_training_initializations_completed':completed,
+            'unknown_pending_preflight_operations':unknown,'work_counts_complete':not unknown and parent is not None and set(shared)=={'16','32'}}
+
+
+
+def bound_reference_frames(child,arm,c):
+    """Recover completed parent reference work from saved bindings, never run arrays."""
+    if not arm.get('executed'):return 0
+    try:
+        contract=read(child/'checkpoint-contract.json');receipt,_=resolve_commit(child)
+        prov=arm['provenance'];inputs=prov['inputs']
+        if (contract['commit']!=receipt or contract['case']!=arm['case'] or contract['config_identity']!=canonical_hash(c)
+            or contract['inputs']!=inputs or contract['reference_sha256']!=digest(child/'reference.npz')
+            or contract['input_files_sha256']!=prov['input_files_sha256']
+            or any(digest(child/f'{r}-inputs.npz')!=prov['input_files_sha256'][r] for r in ROLES)):return None
+        return sum(len(inputs[r]['record_ids']) for r in ROLES)
+    except (OSError,KeyError,TypeError,ValueError):return None
+
 def generate(root,output):
     root=Path(root);output=Path(output);output.mkdir(parents=True,exist_ok=True);errors=[]
     c=read(root/'config.json');validate_contract(c);sources=verify_width_rate_sources(c)
@@ -144,21 +179,31 @@ def generate(root,output):
         file=child/'failure.json' if (child/'failure.json').exists() else child/'summary.json'
         arm=read(file) if file.exists() else original
         valid=arm==original and _saved_arm_valid(child,arm,c,sources)
-        arms[name]={**arm,'interpretation_valid':valid};verified[name]=valid
+        probe_unknown=not arm.get('checkpoint_new_process_verified') and (bool(arm.get('probe_stderr')) or arm.get('probe_work_status') in ('started','unknown','completed'))
+        arms[name]={**arm,'interpretation_valid':valid,'derived_reference_prediction_frames':bound_reference_frames(child,arm,c),
+                    'derived_probe_work_unknown':probe_unknown,'derived_probe_seconds':None if probe_unknown and 'probe_work_status' not in arm else arm.get('probe_seconds')}
+        verified[name]=valid
         if not valid:errors.append(name+': incomplete or invalid saved execution/ancestry')
     matrix_valid=all(verified.values()) and summary.get('execution_valid') and summary.get('status')=='completed' and summary.get('full_pilot')=='pending'
     elapsed=summary.get('elapsed_seconds')
     if not finite(elapsed) or not 0<=elapsed<c['total_wall_seconds']:matrix_valid=False;errors.append('Global budget missing or exceeded')
+    events=read(root/'preflight-work.json') if (root/'preflight-work.json').exists() else summary.get('preflight_work',[])
+    accounting=preflight_accounting(summary,events)
     try:
         parent=summary['parent_work'];shared=summary['shared_initializations']
+        if not (root/'preflight-work.json').exists() or accounting['parent_work']!=parent or accounting['shared_initializations']!=shared:raise ValueError('Raw preflight receipt mismatch')
+        if not finite(parent['elapsed_seconds']) or parent['elapsed_seconds']<0:raise ValueError('Parent elapsed invalid')
         if parent['status']!='completed' or parent['completed_source_prediction_frames']!=208 or parent['historical_template_initializations']!=1:raise ValueError('Parent work mismatch')
         if set(shared)!={'16','32'}:raise ValueError('Shared initialization count mismatch')
         for width in (16,32):
-            init=shared[str(width)];paired=[arms[f'width{width}-lr1e-3'],arms[f'width{width}-lr3e-4']]
-            if (init['status']!='completed' or init['features']!=width or init['completed_initializations']!=1 or init['baseline_prediction_frames']!=144
+            init=shared[str(width)];paired=[a for a in (arms[f'width{width}-lr1e-3'],arms[f'width{width}-lr3e-4']) if a.get('executed')]
+            if (not finite(init['elapsed_seconds']) or init['elapsed_seconds']<0 or init['status']!='completed' or init['features']!=width or init['completed_initializations']!=1 or init['baseline_prediction_frames']!=144
+                or any(not close(init['initial_metrics'][r][k],sources['original_baselines'][r][k]) for r in ROLES for k in MSE_KEYS)
                 or any(a['initial_state_hashes']!=init['initial_state_hashes'] or a['parameter_count']!=init['parameter_count']
                        or not close(a['shared_initialization_seconds'],init['elapsed_seconds']) for a in paired)):raise ValueError('Paired initialization identity/accounting mismatch')
         if shared['32']['parameter_count']<=shared['16']['parameter_count']:raise ValueError('Width parameter count mismatch')
+        minimum_elapsed=sum(a.get('elapsed_seconds',0.) for a in arms.values())+sum(e['elapsed_seconds'] for e in shared.values())+parent['elapsed_seconds']
+        if elapsed+1e-6<minimum_elapsed:raise ValueError('Global elapsed contradicts sequential actual work')
     except (KeyError,TypeError,ValueError):matrix_valid=False;errors.append('Shared/parent initialization provenance is incomplete or inconsistent')
     if errors:matrix_valid=False
     contrast_arms=arms if matrix_valid else {n:{**a,'interpretation_valid':False} for n,a in arms.items()}
@@ -174,8 +219,11 @@ def generate(root,output):
             'committed_updates':sum(a.get('persisted_update') or 0 for a in arms.values()),'committed_frame_exposures':sum(a.get('persisted_frame_exposures',0) for a in arms.values()),
             'synchronized_frame_exposures':sum(a.get('frame_exposures',0) for a in arms.values()),'discarded_warmup_frames':sum(a.get('warmup_frame_exposures',0) for a in arms.values()),
             'unknown_pending_cells':[n for n,a in arms.items() if a.get('pending_update_unknown') or a.get('oracle_work_status')=='unknown' or a.get('warmup_work_status')=='unknown'],
-            'shared_training_initializations_completed':sum(v.get('completed_initializations') or 0 for v in summary.get('shared_initializations',{}).values()),
-            'parent_work':summary.get('parent_work',summary.get('preflight_work'))}
+            'known_parent_reference_prediction_frames':sum(a['derived_reference_prediction_frames'] or 0 for a in arms.values()),
+            'unknown_probe_cells':[n for n,a in arms.items() if a['derived_probe_work_unknown']],
+            'shared_training_initializations_completed':accounting['shared_training_initializations_completed'],
+            'parent_work':accounting['parent_work'],'unknown_pending_preflight_operations':accounting['unknown_pending_preflight_operations'],
+            'work_counts_complete':accounting['work_counts_complete'] and not any(a.get('pending_update_unknown') or a.get('oracle_work_status')=='unknown' or a.get('warmup_work_status')=='unknown' or a['derived_probe_work_unknown'] for a in arms.values())}
     artifacts={str(p.relative_to(root)):digest(p) for p in sorted(root.rglob('*')) if p.is_file()}
     result={'status':summary.get('status'),'interpretation_valid':bool(matrix_valid),'execution_valid':summary.get('execution_valid',False),'full_pilot':'pending',
             'config':c,'config_identity':CONFIG_ID,'sources':sources,'arms':arms,'arm_verification':verified,'contrasts':contrasts,'terminal_window':terminal,
@@ -186,7 +234,8 @@ def generate(root,output):
                       'Sequential wall times depend on order, compiler cache and system load; no architecture-efficiency ranking.',
                       'Width changes initialization shape, parameter count and optimization geometry together.',
                       'Original strict joint gates are unchanged. No automatic winner, candidate or full-pilot clearance.',
-                      'Boundary caps cannot forcibly cancel in-flight work; incomplete cells retain data, contrasts unavailable.']}
+                      'Boundary caps cannot forcibly cancel in-flight work; incomplete cells retain data, contrasts unavailable.',
+                      'Failed legacy probe timing recorded as zero is unavailable in derived accounting; unreceipted child work stays unknown. Raw receipts are preserved.']}
     (output/'width-rate-diagnostics.json').write_text(json.dumps(result,indent=2,sort_keys=True,allow_nan=False)+'\n')
     lines=['# Fresh width and fixed-rate diagnostic','',f"Saved execution status: **{result['status']}**; interpretation valid: **{result['interpretation_valid']}**. Full pilot: **pending**.",'',
            '| Cell | Saved updates | Persisted updates | Raw fitted E MSE | Raw fitted F MSE | Joint fitting gate | Joint anchor gate | Verified |',
