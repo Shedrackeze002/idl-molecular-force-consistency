@@ -4045,3 +4045,5044 @@ Task2 final focused23passed10.67s; expanded27passed11.41s (task2-green-final.log
 ## OPTSTEP-ENGINEERING-005 — Report and whole-suite gates before production
 
 JSON-only report RED6failed0.04s (missing generator); GREEN6passed8.75s. Report derives actual FD/probe counts from retained cells/steps/probes, preserves unavailable/started-unconfirmed work, rejects forged verification success, and never promotes probe outcomes to learning/full-pilot acceptance. Full regression suite185passed124.95s (full-before-production.log), including152prior checks; diff whitespace check passed. Exact research configuration has not run yet. Code will be committed before its single invocation. Obsidian sandbox CLI initially could not connect; authorized scoped CLI read succeeded with host access, both notes backed up in retained workspace. No vault content changed yet.
+
+## OPTSTEP-EXECUTION-PRE — Frozen optimizer diagnostics preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "config": {
+    "adam": {
+      "b1": 0.9,
+      "b2": 0.999,
+      "eps": 1e-08,
+      "eps_root": 0.0,
+      "nesterov": false
+    },
+    "arms": {
+      "balanced": {
+        "energy": 0.014584365670390719,
+        "force": 1.9854156343296092
+      },
+      "force-only": {
+        "energy": 0.0,
+        "force": 2.0
+      },
+      "replay": {
+        "energy": 1.0,
+        "force": 1.0
+      }
+    },
+    "backend": "cpu",
+    "calibration_case": "fresh-C-fitting",
+    "calibration_energy_norm": 72.41148277153111,
+    "calibration_force_norm": 0.531916604873417,
+    "calibration_path": "reports/representation-gradient-diagnostics.json",
+    "calibration_ratio": 136.13314964807924,
+    "calibration_run": "runs/aspirin-representation-gradient-2026-09-30",
+    "calibration_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+    "cases": [
+      "replay",
+      "balanced",
+      "force-only"
+    ],
+    "data_directory": "data/processed/aspirin",
+    "diagnostic_wall_seconds": 600,
+    "direction_zero_tolerance": 0.0,
+    "directions": [
+      "stateful_adam",
+      "reset_adam_matched_norm",
+      "steepest_matched_norm"
+    ],
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "fd_atol": 1e-08,
+    "fd_rtol": 0.0001,
+    "fd_steps": [
+      0.0001,
+      1e-05
+    ],
+    "gate_fraction": 0.1,
+    "gradient_atol": 1e-10,
+    "gradient_rtol": 1e-08,
+    "learning_rate": 0.001,
+    "loss_balance_compact_path": "reports/loss-balance-diagnostics.json",
+    "loss_balance_compact_sha256": "c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f",
+    "loss_balance_run": "runs/aspirin-loss-balance-2026-09-30",
+    "loss_balance_sha256": {
+      "balanced/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "balanced/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "balanced/config.json": "446d95ef952249d64ca5598d2c9ad713af96c7758b87190b5beab2a1ec4da589",
+      "balanced/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "balanced/history.json": "3d5f8541f36996b67cc061a753dbeafdf110d76a14306964ced5388b03973384",
+      "balanced/last.msgpack": "bdc60383661ec8000d1d5e76918560390432d194e0b169eb2758729dce97e099",
+      "balanced/provenance.json": "46bc63737b77c3aec012432ee0a41f1324319e1b4185fe0556d5dc83d42d13d7",
+      "balanced/reference.npz": "a87b9890d8ea7df874a182a70573b146afc795a36a2566c4966a3b2d2cd3466e",
+      "balanced/summary.json": "abde4733a1119ade837775fedb5ed93ef5fcebbd2543cce1b51bde1305005aa9",
+      "config.json": "56952e95c9b605fa5fbfd3d84a30fd8679ccc928690f529b738ae778bca2422b",
+      "force-only/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "force-only/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "force-only/config.json": "52bcb13d741a24cdde22644245f0bc9a8a20704aa9bf62640887e61ef8b99d18",
+      "force-only/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "force-only/history.json": "3eedbee2a881391caf0c01dc811f586ce77f1785f56e8e71e35b8b8a0a12b269",
+      "force-only/last.msgpack": "3b90337de97438f9ac5e83143265403a9fce59a175cac5653cec9e5077e00224",
+      "force-only/provenance.json": "ee3745b7beec73306168cbdc94588ac940a29be770fdda780d0fe9dacfe9bfe3",
+      "force-only/reference.npz": "07f5aacc1cbe91b57f21de888f14416ace7a10b3f45496184eec5adfaf3ad600",
+      "force-only/summary.json": "42e9158b66498ee9365911abeb697257ccdae6448a58743bebb850ce801cef7e",
+      "provenance.json": "8e45255e0daa5b7e0f52cb12d05f612470724edb451a310bdf699d621e839ae2",
+      "replay/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "replay/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "replay/config.json": "ce9bed374dd8e43ee0d3f742e11ded968aa6ecb998b2a3a7023739c8fdcde105",
+      "replay/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "replay/history.json": "a0dec9c24f1a4d0b38fcff61e66bf28bc979c99e7dd5c04c01bbbc354f0b73a5",
+      "replay/last.msgpack": "1966c79103e542e9bcf2b7deceebf0102e182a7b1532b3398c46281bdc53a831",
+      "replay/provenance.json": "ccae192660c6b4adb657cd30d58fdb2c2482fbbddea011e0b042464e7eddc88c",
+      "replay/reference.npz": "5ebb9dfb89f2c5df095a8d6f1dfe5fa2e1901b6dcfcf3159b417ccad5b724afd",
+      "replay/summary.json": "125f303c78710b7697d6e829da82e2903c8b4f2760c165825fb3fb4b99b5237b",
+      "subsets.json": "d3c3db7a92f3ffb0748039f63d7a0734bf38214032037ab67780d6182ad764b6",
+      "summary.json": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+    },
+    "max_updates": 2000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "probe_scales": [
+      0.1,
+      1.0
+    ],
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-optimizer-step-2026-09-30",
+    "seed": 0,
+    "source_run": "runs/aspirin-data-coverage-2026-09-30",
+    "source_sha256": {
+      "config.json": "3575dad49acf97b8f780f953a397c776cb5f3dd96729f1e6236837d8e99a5f64",
+      "diverse128/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse128/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "diverse128/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse128/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "diverse128/history.json": "2e037af82e7fae42f7811fb661b39202b331bb42e8499ec45c0c3ba73d18629f",
+      "diverse128/last.msgpack": "7305113575499ebe51ca3e30b87d5bb644888b913b845e3fee5b95e222f4f6c3",
+      "diverse128/provenance.json": "1502d258d63cf8a69e9ee67fcd9852855b9dbc3deb2010c33010d8b56db81063",
+      "diverse128/reference.npz": "5ebb9dfb89f2c5df095a8d6f1dfe5fa2e1901b6dcfcf3159b417ccad5b724afd",
+      "diverse128/summary.json": "0e374b8ed313f8004aec6219af3b2e45f0a868082f00ced907a6f4c9d8b88a8b",
+      "diverse16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "diverse16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse16/fitting-inputs.npz": "ae6550bbda77af6eb1617a859cc8ce118ab90c6bd109c3a25b0d3827faf9a65c",
+      "diverse16/history.json": "f9b66c8e496ba8ca82d626df2a38980f41c7dc1edf28bb97f21028a8aa8fc367",
+      "diverse16/last.msgpack": "7156487d43587f9cdfe563f14db79948d465b0bf43995ff67e07e3c6ac180d8f",
+      "diverse16/provenance.json": "80bed026608d4455f4ab81a1fbc17520c511a1772c39fc448eada96f6dd34791",
+      "diverse16/reference.npz": "f48c42e9697e2c93a6a8393c1378d3faecf1ad08a3c598518cf39fafae2c1c85",
+      "diverse16/summary.json": "af772ad611b5d153b85265861375419df80f2b93c20407c0304f6ca9876fb5e6",
+      "narrow16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "narrow16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "narrow16/fitting-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/history.json": "9970a673c501b566e8f8de0b83581ce81f40cba9a71a2547111f9fe46b0af812",
+      "narrow16/last.msgpack": "b5c792314ea6b34d46bc5b2b104abbc7b1e647fd6c81cea55ec49e94b18cb6b7",
+      "narrow16/provenance.json": "5de39bfac0af7376beee7e9790b6028443cff7d8d3983006b4a1ba0b5617b6ad",
+      "narrow16/reference.npz": "95f1258fba9882b7c7ae600f704f0465e7c6011ef149d2127ccf5a414ee9ecaa",
+      "narrow16/summary.json": "c3b0aa387b7cbd2cc57723e6232677eea19abb3f03dc1834cd8cdf1b32128452",
+      "provenance.json": "b60d13789966f2ce2fbb11a3c4de73f0886f2e952ba9e0254892c35c554f7dcc",
+      "subsets.json": "d3c3db7a92f3ffb0748039f63d7a0734bf38214032037ab67780d6182ad764b6",
+      "summary.json": "54e7f6d7e9995dbca90bdca3417457b075e99037dc9ecd6d6a1c0647ac102a9f"
+    },
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "validation_interval": 100,
+    "wall_seconds": 1800
+  },
+  "config_hash": "5e10be5e29633022a450076553ff17f59f7e34fcc3cf54a564647043a036ccc2",
+  "limits": "Exactly3savedstates; no research retry or training;600s boundary cap"
+}
+```
+
+## OPTSTEP-CASE-01-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "case": "replay",
+  "config_hash": "5e10be5e29633022a450076553ff17f59f7e34fcc3cf54a564647043a036ccc2",
+  "directions": [
+    "stateful_adam",
+    "reset_adam_matched_norm",
+    "steepest_matched_norm"
+  ],
+  "fd_steps": [
+    0.0001,
+    1e-05
+  ],
+  "fitting_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "limits": "Temporary local displacements only; no committed updates, winner selection or learning/pilot clearance",
+  "scales": [
+    0.1,
+    1.0
+  ],
+  "source_update": 2000,
+  "state_hashes": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "weights": {
+    "energy": 1.0,
+    "force": 1.0
+  }
+}
+```
+
+## OPTSTEP-CASE-01-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "artifact_sha256": {
+    "observations.json": "afe41c645bd6241be729fd41a1d7df8a256d86222c4bb3052d8b8c58a1cb3278",
+    "partial.json": "afe41c645bd6241be729fd41a1d7df8a256d86222c4bb3052d8b8c58a1cb3278",
+    "prospective.json": "59341366cb041de254656535bfad5d3d18ca288ce2f31495c4c07f8d2a5790c9",
+    "summary.json": "a92a86fd2a7245822383e544e67ebc9592dee43782144270fd3e5d38f218be2d"
+  },
+  "compute": {
+    "completed_frame_evaluations": {
+      "fd": 1728,
+      "gradient_energy": 144,
+      "gradient_force": 144,
+      "probe": 864,
+      "reference_builder": 128,
+      "source_predictions": 144,
+      "weighted_gradient": 128
+    },
+    "operations": [
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "reference_builder",
+        "completed_frames": 128,
+        "planned_frames": 128,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      }
+    ]
+  },
+  "counts": {
+    "fd_cells": 12,
+    "fd_steps": 24,
+    "probes": 6
+  },
+  "executed": true,
+  "failure_reason": null,
+  "state_hashes_after": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "state_hashes_before": {
+    "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+    "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "verification_valid": true
+}
+```
+
+## OPTSTEP-CASE-02-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "case": "balanced",
+  "config_hash": "5e10be5e29633022a450076553ff17f59f7e34fcc3cf54a564647043a036ccc2",
+  "directions": [
+    "stateful_adam",
+    "reset_adam_matched_norm",
+    "steepest_matched_norm"
+  ],
+  "fd_steps": [
+    0.0001,
+    1e-05
+  ],
+  "fitting_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "limits": "Temporary local displacements only; no committed updates, winner selection or learning/pilot clearance",
+  "scales": [
+    0.1,
+    1.0
+  ],
+  "source_update": 2000,
+  "state_hashes": {
+    "optimizer": "dea2d079b2a0bdd295152c55e134de429d6d75ddb9610ea93ec737cda1d45405",
+    "params": "25483221ba39fa383cd989491f04e43089bd553928354a3056ba9b4e0b3330de"
+  },
+  "weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  }
+}
+```
+
+## OPTSTEP-CASE-02-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "artifact_sha256": {
+    "observations.json": "12be229893b45f77d232b4c7ab875ea7f805d638ed6706fdd96323df14df371e",
+    "partial.json": "12be229893b45f77d232b4c7ab875ea7f805d638ed6706fdd96323df14df371e",
+    "prospective.json": "11f1fd9cdd4848d875ac9955818c243648f33c0ef83be71dfdc22b6bff9479f3",
+    "summary.json": "eb552e1804d90190b5d44a0caaa00f106df32ea8410e4e83ac2174dc52bd97e5"
+  },
+  "compute": {
+    "completed_frame_evaluations": {
+      "fd": 1728,
+      "gradient_energy": 144,
+      "gradient_force": 144,
+      "probe": 864,
+      "reference_builder": 128,
+      "source_predictions": 144,
+      "weighted_gradient": 128
+    },
+    "operations": [
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "reference_builder",
+        "completed_frames": 128,
+        "planned_frames": 128,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      }
+    ]
+  },
+  "counts": {
+    "fd_cells": 12,
+    "fd_steps": 24,
+    "probes": 6
+  },
+  "executed": true,
+  "failure_reason": null,
+  "state_hashes_after": {
+    "optimizer": "dea2d079b2a0bdd295152c55e134de429d6d75ddb9610ea93ec737cda1d45405",
+    "params": "25483221ba39fa383cd989491f04e43089bd553928354a3056ba9b4e0b3330de"
+  },
+  "state_hashes_before": {
+    "optimizer": "dea2d079b2a0bdd295152c55e134de429d6d75ddb9610ea93ec737cda1d45405",
+    "params": "25483221ba39fa383cd989491f04e43089bd553928354a3056ba9b4e0b3330de"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "verification_valid": true
+}
+```
+
+## OPTSTEP-CASE-03-PRE — Case preregistered
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "case": "force-only",
+  "config_hash": "5e10be5e29633022a450076553ff17f59f7e34fcc3cf54a564647043a036ccc2",
+  "directions": [
+    "stateful_adam",
+    "reset_adam_matched_norm",
+    "steepest_matched_norm"
+  ],
+  "fd_steps": [
+    0.0001,
+    1e-05
+  ],
+  "fitting_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "limits": "Temporary local displacements only; no committed updates, winner selection or learning/pilot clearance",
+  "scales": [
+    0.1,
+    1.0
+  ],
+  "source_update": 2000,
+  "state_hashes": {
+    "optimizer": "5a1a5b60f53b32db88eebe22475db2b8ae7799145658ce842618bd1d6d3203e9",
+    "params": "0e4dd54f6de15a4440dcafcfb23a1df7afae375953d51f1f92d00f7b2984ef33"
+  },
+  "weights": {
+    "energy": 0.0,
+    "force": 2.0
+  }
+}
+```
+
+## OPTSTEP-CASE-03-RESULT — Case outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "artifact_sha256": {
+    "observations.json": "a0ebb2ecbd1e57396b46d65569ae1850ef6cfa917a7559cf4c5c292779fab730",
+    "partial.json": "a0ebb2ecbd1e57396b46d65569ae1850ef6cfa917a7559cf4c5c292779fab730",
+    "prospective.json": "8f1724df10f3b1c0d228b17218223a17f90a6c9a67189fbf6a6b2cd6369a6405",
+    "summary.json": "e5864c1ce659662f8c62b67b0d3c68fa321ba4c1a72b9735663bc43127d2b9f4"
+  },
+  "compute": {
+    "completed_frame_evaluations": {
+      "fd": 1728,
+      "gradient_energy": 144,
+      "gradient_force": 144,
+      "probe": 864,
+      "reference_builder": 128,
+      "source_predictions": 144,
+      "weighted_gradient": 128
+    },
+    "operations": [
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_energy",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "gradient_force",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "weighted_gradient",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "reference_builder",
+        "completed_frames": 128,
+        "planned_frames": 128,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "fd",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "source_predictions",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "fitting",
+        "status": "completed"
+      },
+      {
+        "category": "probe",
+        "completed_frames": 16,
+        "planned_frames": 16,
+        "role": "anchor",
+        "status": "completed"
+      }
+    ]
+  },
+  "counts": {
+    "fd_cells": 12,
+    "fd_steps": 24,
+    "probes": 6
+  },
+  "executed": true,
+  "failure_reason": null,
+  "state_hashes_after": {
+    "optimizer": "5a1a5b60f53b32db88eebe22475db2b8ae7799145658ce842618bd1d6d3203e9",
+    "params": "0e4dd54f6de15a4440dcafcfb23a1df7afae375953d51f1f92d00f7b2984ef33"
+  },
+  "state_hashes_before": {
+    "optimizer": "5a1a5b60f53b32db88eebe22475db2b8ae7799145658ce842618bd1d6d3203e9",
+    "params": "0e4dd54f6de15a4440dcafcfb23a1df7afae375953d51f1f92d00f7b2984ef33"
+  },
+  "status": "completed",
+  "stop_reason": null,
+  "verification_valid": true
+}
+```
+
+## OPTSTEP-EXECUTION-RESULT — Frozen optimizer diagnostic outcome
+
+Frozen training-only diagnostics; no optimizer update or learning acceptance.
+
+```json
+{
+  "case_statuses": {
+    "balanced": "completed",
+    "force-only": "completed",
+    "replay": "completed"
+  },
+  "elapsed_seconds": 15.104326874949038,
+  "execution_valid": true,
+  "failure_reason": null,
+  "next_step": "separately_review_followup_from_local_evidence",
+  "source_hashes_unchanged": true,
+  "status": "completed",
+  "summary_sha256": "3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b"
+}
+```
+
+## FINDING-OPTSTEP-001 — Once-only frozen optimizer observations
+
+Measured research: one invocation at codefef6197, exact reviewed configs/aspirin-optimizer-step-diagnostic.json. All3cases completed in15.104326874949038s within600s;100raw+2compact source hashes unchanged;36FDcells/72steps/18probes,0committed training exposures. Parameter/optimizer hashes unchanged ineachcase; sourceupdate/Adamcount2000, proposed2001discarded. Manual moments/delta and referencebuilder passed. Raw summarySHA256 `3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b`; compactSHA256 `333000d73c50b454c13960745fb89e06298052e17058294537f71ff38a87f92e`. See every metric/block/FDstep in raw case observations and reports/optimizer-step-diagnostics.json.
+
+At scale1, saved-state Adam fitting force MSE relative changes: {"balanced": -0.00011973294957468017, "force-only": -0.00014439968447732543, "replay": -7.1773320751145064e-06}. These are tiny local reductions, not gate clearance/convergence/causality. Replay anchor force increases slightly; balanced and force-only anchors decrease. Both reference directions at the balanced and force-only fitting endpoints have negative force slopes, yet every prescribed finite fitting force probe (scales0.1/1) increases force MSE. UnitFDs support the local derivatives under locked tolerance, exposing limits of inferring finite-step benefit from local slopes. Equal whole-tree norms do not equalize parameter displacement/compute. No winner chosen or persistent update. Force-only headbias weightedgradient and direction remainzero; absoluteenergy errors are preserved, no recentering. Fully fitted anchor,one seed,no generalization/capacity theorem. Original learning failures/fullpilotpending remain.
+
+## FINDING-OPTSTEP-002 — Preserve all failed FD steps
+
+All36cells passed the preregistered at-least-one-of-both criterion. Four largerh1e-4 steps failed: replay/steepest/fitting/energy; balanced/steepest/fitting/energy andforce; force-only/steepest/fitting/force. Correspondingh1e-5 steps passed. All72steprecords are retained without selecting a replacement run or hiding failed steps. Max errors are listed in saved records; FD tolerance passage does not certify near-zero derivative signs. All18temporarypoints retained; no numerical retry. Negative slopes plus finite increases at prescribed distances are local nonlinear observations, not evidence that another optimizer would fail in training.
+
+## VERIFY-OPTSTEP-001 — Post-run reconciliation and plot inspection
+
+Controller valid,100raw+2compact hashes rechecked separately after production. Sourcepredictions208parent+432loss; percase completedframes: energygradient144,forcegradient144,weightedgradient128,referencebuilder128,sourcepredictions144,FD1728,probe864. Across3cases totaldiagnosticpasses10480 under recorded category convention; no incomplete operations. Figures optimizer-step-force.png/energy.png visually inspected: allprescribedpoints, bothroles, readablelabels, differences fromsource inpercent, axesindependent perpanel. Report generation succeeded with temporary matplotlibcache after sandbox cache warnings, not a numerical failure. No hidden heldout evaluation. Independent final review pending; originalstates2000unchanged.
