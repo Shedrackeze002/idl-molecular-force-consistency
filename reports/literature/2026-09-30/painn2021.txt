@@ -1,0 +1,765 @@
+   Equivariant Message Passing for the Prediction of Tensorial Properties and
+                             Molecular Spectra
+
+
+                                Kristof T. Schütt 1 2 Oliver T. Unke 1 2 Michael Gastegger 1 3
+
+
+                           Abstract                              ory quickly become prohibitive for large systems and the
+                                                                 prediction of accurate spectra.
+       Message passing neural networks have become a
+       method of choice for learning on graphs, in par-          Recently, machine learning potentials (Behler, 2016; Unke
+       ticular the prediction of chemical properties and         et al., 2020; von Lilienfeld et al., 2020) have gained popu-
+       the acceleration of molecular dynamics studies.           larity for studying systems ranging from small molecules
+       While they readily scale to large training data sets,     at high levels of theory (Chmiela et al., 2018; Wester-
+       previous approaches have proven to be less data           mayr et al., 2020) to systems with thousands or millions
+       efficient than kernel methods. We identify lim-           of atoms (Morawietz et al., 2016; Bartók et al., 2018; Lu
+       itations of invariant representations as a major          et al., 2020). In particular, message-passing neural net-
+       reason and extend the message passing formu-              works (Gilmer et al., 2017) (MPNNs) yield accurate pre-
+       lation to rotationally equivariant representations.       dictions for chemical properties across chemical compound
+       On this basis, we propose the polarizable atom            space and can handle large amounts of training data. Albeit
+       interaction neural network (PAI NN) and improve           MPNNs have significantly increased in accuracy over the
+       on common molecule benchmarks over previous               years (as well as in computational cost), kernel methods
+       networks, while reducing model size and infer-            with manually crafted features (Chmiela et al., 2017; Chris-
+       ence time. We leverage the equivariant atomwise           tensen et al., 2020; Bartók et al., 2010) have still proven to
+       representations obtained by PAI NN for the predic-        perform better when only small training sets are available.
+       tion of tensorial properties. Finally, we apply this      While molecules are often represented as graphs, they are
+       to the simulation of molecular spectra, achieving         in fact interacting particles in a continuous 3d space. Con-
+       speedups of 4-5 orders of magnitude compared to           sequently, SchNet (Schütt et al., 2017) modeled message
+       the electronic structure reference.                       passes as continuous-filter convolutions over that space, al-
+                                                                 beit with rotationally invariant filters. As Miller et al. (2020)
+                                                                 pointed out, this leads to a loss of relevant directional, equiv-
+1. Introduction                                                  ariant information. Klicpera et al. (2020a) have introduced
+                                                                 directional message-passing, the angular information here is
+Studying dynamics of chemical systems allows insight into        restricted to the messages while the representation of nodes
+processes such as reactions or the folding of proteins, and      (atoms) remains rotationally invariant. While equivariant
+constitutes a fundamental challenge in computational chem-       convolutions have been successfully applied in computer
+istry. Since the motion of atoms is governed by the laws of      vision (Cohen & Welling, 2017; Weiler et al., 2018b; Wor-
+quantum mechanics, accurate ab initio molecular dynam-           rall & Brostow, 2018), previous approaches to molecular
+ics (MD) simulations may require solving the Schrödinger        prediction (Thomas et al., 2018; Anderson et al., 2019) have
+equation for millions of time steps. While the exact solution    not reached the accuracy of their rotationally invariant coun-
+is infeasible to compute for all but the smallest systems,       terparts.
+even fast approximations such as density functional the-
+                                                                 In this work, we propose rotationally equivariant message
+   1
+    Machine Learning Group, Technische Universität Berlin,      passing and the polarizable atom interaction neural network
+10587 Berlin, Germany 2 Berlin Institute for the Foundations     (PAI NN) architecture as one instance of it. We examine the
+of Learning and Data, 10587 Berlin, Germany 3 BASLEARN
+– TU Berlin / BASF Joint Lab for Machine Learning,               limited capability of rotation-invariant representations to
+10587 Berlin, Germany.         Correspondence to: Kristof        propagate directional information and show that equivariant
+T. Schütt <kristof.schuett@tu-berlin.de>, Michael Gastegger     representations do not suffer from this issue. PAI NN out-
+<michael.gastegger@tu-berlin.de>.                                performs invariant message passing networks on common
+                                                                 molecular benchmarks and performs at small sample sizes
+Proceedings of the 38 th International Conference on Machine
+Learning, PMLR 139, 2021. Copyright 2021 by the author(s).       on par with kernel methods that have been deemed to be
+                 Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+more data-efficient than neural networks. Beyond that, the          tensor products ⊗ are calculated along the spatial dimen-
+rotationally equivariant representation of PAI NN enables           sion. All other operations are calculated along the feature
+the prediction of tensorial properties which we apply to the        dimension, if not stated otherwise. We write the Hadamard
+ring-polymer MD simulation of infrared and Raman spec-              product as ◦.
+tra. By an acceleration of 4-5 orders of magnitude, PAI NN
+makes the simulation of these spectra feasible, reducing the        3.1. Message passing for 3d-embedded graphs
+runtime in one case from projected 25 years to one hour.
+                                                                     MPNNs build complex representations of nodes within
+                                                                     their local neighborhood in a graph through a repeated
+2. Related work                                                      exchange of messages followed by updates of node fea-
+Behler & Parrinello (2007) introduced neural network po-             tures. Here, we consider graphs embbedded in 3d Euclidean
+tentials taking atom-centered symmetry functions based               space, where edges are specified by the relative positions
+on distances and angles as features. Graph neural net-              ~rij = ~rj − ~ri of nodes i, j within a local neighborhood
+works (Scarselli et al., 2008) for molecular graphs (Du-             N (i) = {j | k~rij k ≤ rcut }. In a chemistry context, this
+venaud et al., 2015; Kearnes et al., 2016) and 3d geome-             agrees with the fact that a large part of the energy variations
+tries (Schütt et al., 2017; Gilmer et al., 2017; Schütt et al.,    can be attributed to local interactions, often conceptualized
+2018; Unke & Meuwly, 2019; Lubbers et al., 2018) do not              as bond lengths and angles. Thus, only nodes within that
+require such manually crafted features, but learn embed-             range can interact directly, so the number of messages does
+dings of atom types and use graph convolutions or, more              not scale quadratically with the number of the nodes. A
+general, message passing (Gilmer et al., 2017), to model             general MPNN for embedded graphs can be written as
+atom interactions based on interatomic distances. Klicpera                                     X
+et al. (2020a) introduced directional message passing by                            mt+1
+                                                                                      i    =         Mt (sti , stj , ~rij )      (1)
+                                                                                             j∈N (i)
+including additional angular information in the message.
+                                                                                     st+1           sti , mt+1
+                                                                                                               
+                                                                                      i   = Ut             i     .                (2)
+Steerable CNNs (Cohen & Welling, 2017; Weiler et al.,
+2018a) allow to build equivariant filter banks according            with the update and message functions Ut and Mt , respec-
+to known symmetries of associated feature types. While              tively (Gilmer et al., 2017). Many neural network potentials
+these approaches work on grids, architectures such as Tensor        and even conventional CNNs can be cast in this general
+Field Networks (Thomas et al., 2018), Cormorant (Ander-             framework. Rotational invariance of the representation can
+son et al., 2019) and N EQU IP (Batzner et al., 2021) use           be ensured by choosing rotationally invariant message and
+equivariant convolutions based on spherical harmonics (SH)          update functions, which by definition need to fulfill
+and Clebsch-Gordon (CG) transforms for point clouds. Kon-
+dor & Trivedi (2018) have described a general framework on                                  f (~x) = f (R ~x),                    (3)
+equivariance and convolutions in neural networks focusing
+on irreducible representations. In contrast, PAI NN models          for any rotation matrix R ∈ R3×3 .
+equivariant interactions in Cartesian space which is con-
+ceptually simpler and does not require tensor contractions          3.2. Building equivariant MPNNs
+with CG coefficients. A similar approach was proposed by
+Jing et al. (2021) with the GVP-GNN. Both approaches are            To obtain more expressive representations of local environ-
+designed for distinct applications resulting in crucial differ-     ments, neurons do not have to be scalar, but can be geometric
+ences in the design of the neural network architectures, most       objects such as vectors and tensors (Hinton et al., 2011; Co-
+notably the message functions. The GVP-GNN has been                 hen & Welling, 2017; Thomas et al., 2018; Anderson et al.,
+designed for single-point protein sequence predictions, e.g.,       2019). For the purpose of this work, we restrict ourselves to
+allowing the use of non-smooth components. In contrast,             scalar and vectorial representations sti and ~vit , respectively,
+PAI NN is designed for simulations with millions of infer-          such that a corresponding message pass can be written as
+ence steps, requiring a fast message function and a smoothly                               X
+differentiable model.                                                         mv,t+1
+                                                                              ~  i    =         M~ t (st , st , ~vt , ~vt , ~rij )
+                                                                                                       i j        i     j          (4)
+                                                                                          j∈N (i)
+
+3. Equivariant message passing                                      Message and update functions for scalar features can be
+                                                                    defined analogously. Rotational equivariance of vector fea-
+Notation. To clearly distinguish between the two con-
+                                                                    tures ~vit+1 can be ensured by employing rotationally equiv-
+cepts, we write feature vectors as x ∈ RF x1 and vectors in
+                                                                    ariant functions U~ t and M
+                                                                                              ~ t , fulfilling
+3d coordinate space as ~r ∈ R1x3 . Vectorial features will be
+written as ~x ∈ RF x3 . Norms k · k, scalar products h·, ·i and
+                                                                                           R ~f (~x) = ~f (R ~x)                  (5)
+                  Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+
+Table 1. Comparison of expressiveness and computational com-
+plexity of distances, angles and directions for a simple message
+function of the oxygen atom of a water molecule.
+    Features        Distances         Angles           Directions
+
+
+
+      H2 O                                                            Figure 1. Illustration of message passing using angles and direc-
+                                                                      tions for two structures. All edges within the cutoff range (dashed
+                                                                      lines) have equal length. The representations of the blue and red
+  Message M at
+                    X              X    X             X       ~ij
+                                                              r       node are the same using angles (left), while directions allow to
+                          k~
+                           rij k               αjik
+     atom i        j∈Ni            j∈Ni k∈Ni                 k~
+                                                              rij k   distinguish both structures (right).
+                                                      j∈Ni
+
+   Scaling with
+    neighbors        O(|N |)         O(|N |2 )         O(|N |)
+                                                                      Tab. 1 compares three simplified message functions for the
+ Resolve change
+                       yes              no                no          example of a water molecule. Using a distance-based mes-
+   of k~r1j k
+                                                                      sage function, the representation of the atom 1 (oxygen) is
+ Resolve change
+    of α213
+                        no              yes               yes         able to resolve changing bond lengths to atoms 2 and 3 (hy-
+                                                                      drogens), however it is not sensitive to changes of the bond
+                                                                      angle. On the other hand, using the angle directly as part of
+                                                                      the message function can not resolve the distances. There-
+for any rotation matrix R ∈ R3×3 , where the matrix-vector
+                                                                      fore, a combination of distances and angles is required to
+product is applied over the spatial dimension. This consti-
+                                                                      obtain a more expressive message function (Klicpera et al.,
+tutes essentially a linearity constraint for directional infor-
+                                                                      2020a). Unfortunately, including angles in the messages
+mation. Therefore, any nonlinearities of the model need
+                                                                      scales O(|N |2 ) with the number of neighbors. Alterna-
+to be applied to scalar features. In particular, equivariant
+                                                                      tively, directions to neighboring atoms may be used as mes-
+MPNNs may use the following operations:                                       ~ t (~rij ) = ~rij /k~rij k. Employing the update function
+                                                                      sages M
+                                                                      Ut (m) = kmk2 , this is related to angles as follows:
+   • Any (nonlinear) function of scalars: f (s)
+                                                                                     2
+                                                                        N                    X  ~rij                         N
+                                                                                                                             N X
+   • Scaling of vectors: s ◦ ~v                                        X    ~rij                            ~rik             X
+                                                                                         =               ,               =             cos αjik .
+                                                                           k~rij k                 k~rij k k~rik k
+   • Linear combinations of equivariant vectors: W~v                   j=1                   j,k                             j=1 k=1
+
+   • Scalar products: s = k~vk2 , s = h~v1 , ~v2 i                    Thus, using equivariant messages, the runtime complexity
+                                                                      remains O(|N |) while angular information can be resolved.
+   • Vector products: ~v1 × ~v2                                       Note that this update function contracts the equivariant mes-
+                                                                      sages to a rotationally invariant representation.
+Thus, directional information is preserved during message
+passing while invariant representations can be recovered              Beyond the computational benefits, equivariant representa-
+from scalar products to obtain rotationally invariant predic-         tions allow to propagate directional information beyond the
+tions.                                                                neighborhood which is not possible in the invariant case.
+                                                                      Fig. 1 illustrates this at a minimal example, where four
+                                                                      atoms are arranged in an equidistant chain with the cutoff
+3.3. Limits of rotationally invariant representations
+                                                                      chosen such that only neighboring atoms are within range.
+In the following, we examine the expressiveness of invariant          We observe that for the two arrangements the angles are
+and equivariant representations at the example of simple              equal as well (Fig. 1, left). Therefore, they are indistinguish-
+2d molecular structures. To ensure rotational invariance              able for invariant message passing with distances and angles.
+of a predicted property, the message function is often re-            In contrast, the equivariant representations differ in sign of
+stricted to depend only on rotationally invariant inputs such         their components (Fig. 1, right). When contracting them to
+as distances (Schütt et al., 2017; Lubbers et al., 2018) or          invariant representations, as in the previous example, this
+angles (Klicpera et al., 2020a;b). While a single pass is lim-        information is lost. However, we may instead retain equiv-
+ited to interactions within a local environment, successive           ariance in the representation and design a message function
+message passes are supposed to construct more complex                  ~
+                                                                      Mt that does not only propagate directions to neighboring
+representations and propagate local information beyond the            atoms, but those of equivariant representations as well. This
+neighborhood. This raises the question whether rotation-              enables the efficient propagation of directional information
+ally invariant representations of atomic environments hi are          by scaling linearly with the number of neighbors and keep-
+sufficient here.                                                      ing the required cutoff small.
+                  Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+Note that neither many-body representations, using angles,              4.1. Representation
+dihedral angles etc., nor equivariant representations corre-
+                                                                        The inputs to PAI NN are the nuclear charges Zi ∈ N and
+sponding to a multipole expansion are complete. It has been
+                                                                         positions ~ri ∈ R3 for each atom i. Similar to previous ap-
+shown that even when including up to 4-body invariants,
+                                                                         proaches, the invariant atom representations are initialized
+there are structures with as few as eight atoms which cannot
+                                                                         to learned embeddings of the atom type s0i = aZi ∈ RF ×1 .
+be distinguished (Pozdnyakov et al., 2020) and that a many-
+                                                                        We keep the number of features F constant throughout
+body expansion up to n-body contributions is necessary to
+                                                                         the network. The equivariant representations are set to
+guarantee convergence for a system consisting of n atoms
+                                                                        ~vi0 = ~0 ∈ RF ×3 , since there is no directional information
+(Hermann et al., 2007). The same holds for multipole ex-
+                                                                         available initially.
+pansions, where scalars and vectors correspond to the 0th
+and 1st order. Thus, even spherical harmonics expansions                Next, we define message and update functions as introduced
+with less than infinite degree are unable to represent arbi-            in Sec. 3. We use a residual structure of interchanging mes-
+trary equivariant n-body functions. Instead, a practically              sage and update blocks (Fig. 2a), resulting in coupled scalar
+sufficient and computationally efficient approach for the               and vectorial representations. For the residual of the scalar
+problem at hand is desirable.                                           message function, we adopt the feature-wise, continuous-
+                                                                        filter convolutions introduced by Schütt et al. (2017)
+In the following, we propose a neural network architec-
+ture that takes advantage of these properties. It over-                               ∆sm
+                                                                                        i = (φs (s) ∗ Ws )i                             (7)
+comes the limitations of invariant representations discussed                                X
+                                                                                          =     φs (sj ) ◦ Ws (k~rij k),
+above, which we will demonstrate at the example of an
+                                                                                                 j
+organometallic compound in Section 5.3.2.
+                                                                        where φs consists of atomwise layers as shown in Fig. 2b.
+                                                                        The roationally-invariant filters Ws are linear combinations
+4. Polarizable atom interaction neural                                  of radial basis functions sin( rnπ   k~rij k)/k~rij k as proposed
+                                                                                                         cut
+   network (PAI NN)                                                     by Klicpera et al. (2020a) with 1 ≤ n ≤ 20. Additionally,
+The potential energy surface E(Z1 , . . . , ZN , ~r1 , . . . , ~rN ),   we apply a cosine cutoff to the filters (Behler, 2011).
+with nuclear charges Zi ∈ N and atom positions ~ri ∈ R3                 Analogously, we use continuous-filter convolutions for the
+exhibits certain symmetries. Generally, they include invari-            residual of the equivariant message function
+ance of the energy towards the permutation of atom indices                                X
+i, as well as rotations and translations of the molecule. A                      ∆~vim =      ~vj ◦ φvv (sj ) ◦ Wvv (k~rij k)  (8)
+                                                                                            j
+neural network potential should encode these constraints to
+ensure the symmetries of the predicted energy surface and
+                                                                                            X
+                                                                                                             0               ~rij
+                                                                                        +       φvs (sj ) ◦ Wvs (k~rij k)           ,
+increase data efficiency. A common inductive bias of the                                    j
+                                                                                                                            k~rij k
+neural network potential is a decomposition     of the energy
+into atomwise contributions E =
+                                      PN
+                                             (s                        where the first term is a convolution
+                                                                                                           P of an invariant filter
+                                        i=1     i ), where an
+output network  predicts energy contributions from atoms               with scaled, equivariant features j ~vj ◦ φs (sj ), related to
+embedded within their chemical environment, represented                 the gating proposed by Weiler et al. (2018a) as an equivari-
+by si ∈ RF (Behler & Parrinello, 2007; Bartók et al., 2013).           ant nonlinearity. This propagates directional information
+                                                                        obtained in previous message passes to neighboring atoms.
+While properties of chemical compounds may be such ro-                  The second term is a convolution of invariant features with
+tationally invariant scalars, they can also be equivariant              an equivariant filter. This can be derived as the gradient of
+tensorial properties, e.g. the multipole expansion of the               an invariant filter
+electron density                                                                                                      ~rij
+                                                                                                         0
+                                                                                    ∇Wvs (k~rij k) = Wvs   (k~rij k)         .
+                                                                                                                     k~rij k
+                                                                                 0
+                           µ>~r + ~r> Q~r + . . . ,
+               n(~r) = q + ~                                     (6)    Since Wvs  (k~rij k) is another invariant filter, we can model it
+                                                                        directly without taking the derivative. Furthermore, we use
+                                                                        a shared network φ to perform the transform of all message
+                                                                        functions and split the features afterwards (see Fig. 2b).
+with charge q, dipole ~
+                      µ, quadrupole Q and so on. Similarly,
+one can interpret invariant and equivariant atomwise rep-               After the features-wise message blocks, the update blocks
+resentations as local charges and dipole moments of atom-               are applied atomwise across features. The residual of the
+centered multipole expansions (Gastegger et al., 2020). We              scalar update function is given by
+leverage this in Section 4.2 to predict tensorial molecular
+                                                                                    ∆sui = ass (si , kV~vi k)                           (9)
+properties. We coin our proposed architecture polarizable
+atom interaction neural network (PAI NN).                                                + asv (si , kV~vi k) hU~vi , V~vi i.
+                  Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+
+
+
+Figure 2. The architecture of PAI NN with the full architecture (a) as well as the message (b) and update blocks (c) of the equivariant
+message passing. In all experiments, we use 128 features for si and ~
+                                                                    vi throughout the architecture. Other layer sizes are annotated in grey.
+
+
+                                                                        tensors of order M that can be constructed using a rank-1
+                                                                        tensor decomposition
+
+                                                                                   X R
+                                                                                   N X
+                                                                             T =             λ(si )~ν (~vi )k,1 ⊗ · · · ⊗ ~ν (~vi )k,M .   (11)
+                                                                                   i=1 k=1
+
+                                                                        The scalar and vectorial components of this decomposition
+                                                                        can be obtained from an output network of gated equivari-
+                                                                        ant blocks, as shown in Fig. 3. These components again
+                                                                        make use gated equivariant nonlinearities (Weiler et al.,
+                                                                        2018b) and show similarities to geometric vector percep-
+                Figure 3. Gated equivariant block.                      trons (GVP) (Jing et al., 2021). However, while GVP blocks
+                                                                        are used as message functions, PAI NN keeps the pairwise
+Again, we use a scaling functions computed by a shared                  message functions comparatively lightweight. Instead com-
+network a(si , kV~vi k) as nonlinearity. In this case, the norm         plex transformations are restricted to the atomwise update
+of a linear combination of features is also used to obtain              function and tensor output network.
+the scaling, thus, coupling the scalar representations with             Depending on the chemical property of interest, one may
+contracted equivariant features. In a second term, we use               want to include additional constraints or replace ~νk,m with
+the scalar product of two linear combinations of equivariant            the atom positions to include the global molecular geom-
+features. Similarly, we define the residual for the equivariant         etry. In the following, we demonstrate how this can be
+features                                                                employed for two tensorial properties that are important for
+                                                                        the simulation of molecular spectra.
+                ∆~viu = avv (si , kV~vi k) U~vi ,             (10)
+                                                                        The molecular dipole moment ~   µ is the response of the molec-
+which is again a nonlinear scaling of linearly combined                 ular energy to an electric field ∇F~ E and, at the same time,
+equivariant features.                                                   the first moment of the electron density (see Eq. 6). It is
+                                                                        often predicted using latent atomic charges (Gastegger et al.,
+4.2. Prediction of tensorial properties                                 2017):
+                                                                                                  N
+PAI NN is able to predict scalar properties using atomwise                                       X
+                                                                                            µ=
+                                                                                            ~         qatom (si )~
+                                                                                                                 ri .             (12)
+output layers of rotationally invariant representations si , in
+                                                                                                      i=1
+the same manner as previous approaches (Schütt et al., 2017;
+Unke & Meuwly, 2019). Beyond that, the additional equiv-                This assumes the center of mass at ~r = ~0 for brevity. While
+ariant representations enable the prediction of equivariant             this only leverages invariant representations, we can take
+                   Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+advantage of the equivariant features of PAI NN. In this                  as implemented by S CH N ET PACK. The remaining proper-
+picture, the molecular dipole is constructed from polarized               ties are predicted as sums over atomic contributions. PAI NN
+atoms, i.e. both atomic dipoles and charges (Veit et al.,                 is trained on 110k examples while 10k molecules are used as
+2020), yielding                                                           a validation set for decaying the learning rate and early stop-
+                                                                          ping. The remaining data is used as test set and results are
+                     N
+                     X                                                    averaged over three random splits. For the isotropic polar-
+                µ=
+                ~           µatom (~vi ) + qatom (si )~
+                            ~                         ri .         (13)   izability α, we first observed validation MAEs of 0.054 a0 .
+                      i=1                                                 Upon closer inspection, we notice that for this property both
+In terms of Eq. 11, this is a simple case with M = 1, R = 2,              the squared loss as well as the MAE can be reduced when
+where the first term predicts the latent local dipoles and                minimizing the MAE directly (as done by Klicpera et al.
+the second term computes the dipole generated by the local                (2020b)). This yields both validation and test MAEs of
+charges.                                                                  0.045a0 that are comparable to those of D IME N ET ++.
+
+As an example with order M = 2, we consider the polariz-                  Tab. 2 shows the mean absolute error (MAE) of PAI NN
+ability tensor, which describes the response of the molecular             for 12 target properties of QM9 in comparison with pre-
+dipole to an electric field JF~ (~
+                                 µ) = HF~ (E). We construct               vious approaches. S CH N ET (Schütt et al., 2017) and
+polarizability tensors using                                              P HYS N ET (Unke & Meuwly, 2019) are MPNNs with
+                                                                          distance-based interactions, D IME N ET++ (Klicpera et al.,
+         N
+         X                                                                2020b) includes additional angular information and is an
+    α=          α0 (si ) I3 + ~ν (~vi ) ⊗ r~i + r~i ⊗ ~ν (~vi ),   (14)   improved variant of D IME N ET (Klicpera et al., 2020a).
+          i=1                                                             L1N ET (Miller et al., 2020) and C ORMORANT (Ander-
+                                                                          son et al., 2019) are equivariant neural networks based on
+where the first term of the sum models isotropic, atomwise                spherical harmonics and Clebsch-Gordon coefficients.
+polarizabilities. The other two terms add the anisotropic
+components of the polarizability tensor. Similar to the                   PAI NN achieves state-of-the-art results in six target prop-
+charges in Eq. 13, here the atom positions are used to incor-             erties and yields comparable results to D IME N ET++ on
+porate the global structure of the molecule.                              another two targets. On the remaining properties, PAI NN
+                                                                          achieves the second best results after D IME N ET++. Note
+                                                                          that PAI NN using about 600k parameters is significantly
+5. Results                                                                smaller than D IME N ET++ with about 1.8M parameters. For
+PAI NN has been implemented using P Y T ORCH (Paszke                      random batches of 50 molecules from QM9, the inference
+et al., 2019) and S CH N ET PACK (Schütt et al., 2018). All              time is reduced from 45 ms to 13 ms, i.e. an improvement
+models use F = 128 and two output layers as shown in                      of more than 70%, when comparing PAI NN to the reference
+Fig. 2 (blue) with the type of output layers depending on                 implementation of D IME N ET++1 using an NVIDIA V100.
+the property of interest. They were trained using the Adam
+optimizer (Kingma & Ba, 2014), the squared loss and weight                5.2. Molecular dynamics trajectories
+decay λ = 0.01 (Loshchilov & Hutter, 2019), if not stated                 We evaluate the ability to predict combined energies and
+otherwise. We decay the learning rate by a factor of 0.5 if the           forces on the MD17 benchmark (Chmiela et al., 2017) in-
+validation loss plateaus. We apply exponential smoothing                  cluding molecular dynamics trajectories of small organic
+with factor 0.9 to the validation loss to reduce the impact of            molecules. While the atomic forces could be predicted di-
+fluctuations which are particularly common when training                  rectly from vectorial features, we employ the gradients of
+with both energies and forces. Please refer to the supplement             the energy model F~i = −∂E/∂~ri to ensure conservation
+for further details on training parameters.                               of energy. This property is crucial to run stable molecular
+                                                                          dynamics simulations. To demonstrate the data efficiency of
+5.1. Chemical compound space                                              PAI NN, we use the more challenging setting with 1k known
+We use the QM9 dataset of ≈130k small organic                             structures of which we use 950 for training and 50 for val-
+molecules (Ramakrishnan et al., 2014) with up to nine heavy               idation, where a separate model is trained for each trajec-
+atoms to evaluate the performance of PAI NN for the predic-               tory. Tab. 3 shows the comparison with S GDML (Chmiela
+tion of scalar properties across chemical compound space.                 et al., 2018) and N EQU IP (Batzner et al., 2021), which
+We predict the magnitude of the dipole moment using Eq. 13                were trained on forces only, as well as S CH N ET, P HYS -
+and the electronic spatial extent by                                      N ET, D IME N ET and FCHL19 (Christensen et al., 2020),
+                                                                          that were trained on a combined loss of energies and forces.
+                              N
+                              X                                           Christensen & von Lilienfeld (2020) have found that the en-
+                    R2 =             qatom (si )k~ri k2 ,                    1
+                                                                                 https://github.com/klicperajo/dimenet
+                               i=1
+                  Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+
+Table 2. Mean absolute errors on QM9 dataset for various chemical properties. Results for PAI NN are averaged over three random splits.
+Best in bold.
+                          Target    Unit     S CH N ET   P HYS N ET     D IME N ET ++       C ORMORANT        L1N ET      PAI NN
+                          µ         D           0.033         0.053             0.030                 0.038     0.043      0.012
+                          α         a30         0.235         0.062             0.044                 0.085     0.088      0.045
+                          HOMO     meV            41          32.9              24.6                    34      46.0       27.6
+                          LUMO     meV            34          24.7              19.5                    38      34.6       20.4
+                          ∆        meV            63          42.5              32.6                    38      67.5       45.7
+                          hR2 i     a20         0.073         0.765             0.331                 0.961     0.354      0.066
+                          ZPVE      meV            1.7         1.39              1.21                  2.03      1.56       1.28
+                          U0        meV             14         8.15              6.32                    22     13.46       5.85
+                          U         meV             19         8.34              6.28                    21     13.83       5.83
+                          H         meV             14         8.42              6.53                    21     14.36       5.98
+                          G         meV             14         9.40              7.56                    20     13.99       7.35
+                                     cal
+                          cv        mol K       0.033         0.028             0.023                 0.026     0.031      0.024
+
+
+
+Table 3. Mean absolute errors on MD17 dataset for energy and force predictions in kcal/mol and kcal/mol/Å, respectively. Batzner et al.
+(2021) only reported force errors for N EQU IP. Results for PAI NN are averaged over three random splits. Best in bold.
+                                            S GDML      N EQU IP      PAI NN    S CH N ET      P HYS N ET    D IME N ET     FCHL19        PAI NN
+                                                 trained on forces only                            trained on energies & forces
+                                   energy      0.19           –       0.167         0.37           0.230          0.204         0.182      0.159
+           A SPIRIN
+                                   forces      0.68       0.348       0.338         1.35           0.605          0.499         0.478      0.371
+                                   energy      0.07           –       0.064         0.08           0.059          0.064         0.054      0.063
+           E THANOL
+                                   forces      0.33       0.208       0.224         0.39           0.160          0.230         0.136      0.230
+                                   energy      0.10           –       0.100         0.13           0.094          0.104         0.081      0.091
+           M ALONDIALDEHYDE
+                                   forces      0.41       0.337       0.344         0.66           0.319          0.383         0.245      0.319
+                                   energy      0.12           –       0.116         0.16           0.142          0.122         0.117      0.117
+           N APHTHALENE
+                                   forces      0.11       0.096       0.077         0.58           0.310          0.215         0.151      0.083
+                                   energy      0.12           –       0.116         0.20           0.126          0.134         0.114      0.114
+           S ALICYLIC ACID
+                                   forces      0.28       0.238       0.195         0.85           0.337          0.374         0.221      0.209
+                                   energy      0.10           –       0.095         0.12           0.100          0.102         0.098      0.097
+           T OLUENE
+                                   forces      0.14       0.101       0.094         0.57           0.191          0.216         0.203      0.102
+                                   energy      0.11           –       0.106         0.14           0.108          0.115         0.104      0.104
+           U RACIL
+                                   forces      0.24       0.172       0.139         0.56           0.218          0.301         0.105      0.140
+
+
+
+ergies of MD17 are noisy. Thus, depending on the molecule
+                                                                               Table 4. Ablation study for the prediction of energies [kcal/mol]
+and chosen tradeoff, using energies for training is not always
+                                                                               and forces [kcal/mol/Å] for aspirin trajectories from MD17.
+beneficial. For this reason, we train two PAI NN models per
+                                                                                 Ablation                     # params    F        energy MAE      force MAE
+trajectory: only on forces and on a combined loss includ-
+                                                                                 no ablation                  588.3k      128           0.159          0.371
+ing energy with a force error weight of ρ = 0.95. PAI NN
+                                                                                 no scalar product of         589.1k      134           0.173          0.420
+achieves the lowest mean absolute errors for 12 out 14 tar-                      vector features in Eq. 8
+gets on models trained only on forces and exhibits errors in                     no vector propagation        589.2k      135           0.183          0.441
+                                                                                 (Wvv = 0 in Eq. 7)
+a similar range as Gaussian regression with the FCHL19                           remove both                  590.1k      142           0.200          0.507
+kernel. Overall, PAI NN performs best or equal to FCHL19                         no vector features           590.3k      174           0.449          1.194
+on 9 out of 14 targets. This demonstrates that equivariant
+neural networks approaches such as PAI NN are able to com-
+pete with kernel methods in the small data regime, while
+being able to scale to large data sets at the same time.                       Table 4 show the results for the various ablations. The num-
+                                                                               ber of parameters is kept approximately constant by raising
+5.3. Advantages of equivariant features                                        the number of node features F accordingly. We observe that
+5.3.1. A BLATION STUDIES                                                       all ablated components contribute to the final accuracy of
+                                                                               the model, where the convolution over equivariant features
+We evaluate the impact of equivariant vector features at the                   in the message function has a slightly larger impact. This
+example of the aspirin MD trajectory from the previous                         component also enables the propagation of directional in-
+section. Compared to the full model, we remove the scalar                      formation, which will be examined in Sec. 5.3.2. Finally,
+product of vector features in Eq. 9 from the update block and                  we remove all vector features from the model, resulting in
+the convolution over vector features in Eq. 8 (i.e., Wvv = 0).                 an invariant model. Despite keeping the number of param-
+                 Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+                                                                      for rcut = 2.5 Å. In contrast, the equivariant environment
+                                                                      representation of PAI NN allows to faithfully reproduce the
+                                                                      torsional energy profile even for very small cutoffs.
+
+                                                                      5.4. Molecular Spectra
+                                                                      We apply PAI NN to the efficient computation of infrared
+                                                                      and Raman spectra of ethanol and aspirin. Although these
+                                                                      spectra can in principle be obtained from a single molecular
+                                                                      structure via the harmonic oscillator approximation, such an
+                                                                      approach tends to neglect important effects, e.g. different
+                                                                      molecular conformations (Thomas et al., 2013). In order to
+                                                                      obtain high quality spectra, molecular dynamics simulations
+                                                                      have to be performed, requiring the prediction of forces at
+                                                                      each time step. Additionally, one needs to compute dipole
+                                                                      moments and polarizabilities along the generated trajectory.
+Figure 4. Rotational energy profile of substituted ferrocene ob-      The infrared and Raman spectra are obtained as the Fourier
+tained by varying the rotation angle θ while keeping all bond         transform of the time auto-correlation functions of the re-
+distances fixed at their equilibrium values (H: white, C: black, F:   spective property. Using electronic structure methods, such
+purple, Fe: grey). For small cutoffs rcut (dashed grey circles),      simulations become prohibitively expensive due to the large
+MPNNs with scalar feature representations are unable to represent     number of successive computations required. Since nuclear
+information about θ.                                                  quantum effects (NQE) need to be considered to obtain high
+                                                                      quality spectra (Sauceda et al., 2021), ring-polymer molec-
+                                                                      ular dynamics (RPMD) simulations need to be performed,
+eters constant by increasing the number of atoms features             which treat multiple copies of a molecule simultaneously
+to F = 174, the mean absolute error of the forces increases           and further increase computational cost.
+beyond 1 kcal/mol/Å.                                                 We train a joined model for energies, forces, dipole moments
+                                                                      and polarizability tensors on 8k ethanol conformations using
+5.3.2. P ROPAGATION OF DIRECTIONAL INFORMATION IN                     additional 1k molecules each as validation and test set. A
+        SUBSTITUTED FERROCENE
+                                                                      second model is trained for aspirin with 16k training exam-
+To demonstrate the advantages of equivariant over invariant           ples and 2k molecules for validation and testing. Energies
+representations in practice, we consider a ferrocene deriva-          and forces are predicted as described above for MD17. The
+tive where one hydrogen atom in each cyclopentadienyl                 dipole moments and polarizability tensors are obtained as
+ring is substituted by fluorine (see Fig. 4). This molecule           described in Section 4.2, employing two gated equivariant
+has been chosen as it features small energy fluctuations              blocks each yielding atomwise scalars and vectors, that are
+(<1 kcal/mol) when the rings rotate relative to each other.           used to compute the outputs as described in Eqs. 13 and 14.
+Since the torsional energy profile depends mainly on the              The joined model exhibits accurate predictions for energy,
+orientation of the distant fluorine atoms (measured by the            forces, dipole moments and polarizabilities, as shown in the
+rotation angle θ), it is a challenging prediction target for          inset table of Fig 5. To evaluate the importance of equiv-
+models without equivariant representations. Fig. 4 shows              ariant features for the dipole prediction, we have trained an
+the predicted energy profiles for a full rotation of the cy-          alternative model using only latent partial charges, but no
+clopentadienyl ring using cutoffs rcut ∈ {2.5, 3.0, 4.0} Å.          local dipoles. The results show that predicting molecular
+All models are trained on energies of 10k structures sam-             dipoles using vector features (Eq. 13) reduces the mean abs.
+pling thermal fluctuations (300 K) and ring rotations of              error by more than 50%, reaching 0.009 D compared to
+substituted ferrocene. Another 1k structures are used for             0.020 D using only scalars and positions (Eq. 12). Simu-
+validation. SchNet (Schütt et al., 2017), which uses scalar          lated infrared and Raman spectra using classical MD and
+features, predicts a flat energy profile for rcut ≤ 3.0 Å,           RPMD with 64 replicas and the respective PAI NN mod-
+because it is unable to resolve θ. Although it is possible            els are shown for both molecules in Fig. 5, alongside har-
+to encode the relevant information when using a larger cut-           monic spectra obtained with the electronic structure refer-
+off, the learned representation seems to be susceptible to            ence and, for ethanol, experimental spectra recorded in the
+noise, as indicated by the deviations of the predicted energy         gas phase (Linstrom & Mallard, 2020; Kiefer, 2017).
+profile. Since DimeNet (Klicpera et al., 2020a) includes              The peak positions and intensities of ethanol infrared spec-
+terms that explicitly depend on angles between triplets of            tra (Fig. 5a, top) computed with classical MD and PAI NN
+atoms, θ can be resolved for smaller cutoffs, but still fails
+                 Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+
+
+
+Figure 5. IR (top) and Raman (bottom) spectra of ethanol and aspirin. Spectra calculated with the reference method using the harmonic
+oscillator approximation are shown in black (QM harmonic). The inset table shows the mean absolute errors on the respective test set.
+
+
+agree closely with the static electronic structure reference,       molecular properties. Thereby, equivariant message pass-
+e.g. in the C-H and O-H stretching regions at 3000 cm−1             ing allows us to significantly reduce both model size and
+and 3900 cm−1 . This indicates, that PAI NN faithfully re-          inference time compared to directional message-passing
+produces the original electronic structure method in general.       while retaining accuracy. Finally, we have demonstrated
+However, when compared to experiment, both spectra are              that PAI NN can be applied to the prediction of tensorial
+shifted towards higher frequencies. The PAI NN RPMD                 properties, which we leverage to accelerate the simulation
+spectrum, on the other hand shows excellent agreement with          of molecular spectra by 4-5 orders of magnitude – from
+experiment, illustrating the importance of NQEs. Similar            years to hours.
+observations can be made for the ethanol Raman spectrum
+                                                                     In future work, the equivariant representation of PAI NN
+(Fig. 5a, bottom), where the PAI NN RMPD spectrum once
+                                                                     as well as the ability to predict tensorial properties may be
+again offers the most faithful reproduction of the experiment.
+                                                                     leveraged in generative models of 3d geometries (Gebauer
+We observe similar trends for aspirin (Fig. 5b). RPMD spec-
+                                                                     et al., 2019; Köhler et al., 2019; Simm et al., 2020) or the
+tra are once again shifted to lower frequencies while the
+                                                                     prediction of wavefunctions (Hegde & Bowen, 2017; Schütt
+classical MD closely resembles the static electronic struc-
+                                                                     et al., 2019; Hermann et al., 2020). We see further applica-
+ture spectrum.
+                                                                     tions of equivariant message passing in 3d shape recognition
+PAI NN reduces the time required to obtain these spectra             and graph embedding (Goyal & Ferrara, 2018).
+by several orders of magnitude. For ethanol, an individual
+                                                                     Many challenges remain for the fast and accurate prediction
+reference computation takes ≈ 140 seconds compared to
+                                                                     of molecular properties, e.g. modeling of enzymatic active
+14 ms for a PAI NN evaluation on a V100 GPU. This corre-
+                                                                     sites or surface reactions. To describe such phenomena,
+sponds to a reduction of the overall simulation time from
+                                                                     highly accurate reference methods are required. Due to their
+400 days to approximately one hour. The speedup offered
+                                                                     computational cost, reference data generation can become a
+by PAI NN is even more pronounced for aspirin, where a
+                                                                     bottleneck, making data-efficient MPNNs such as PAI NN
+simulation that would have taken 25 years (3140 seconds /
+                                                                     invaluable for future chemistry research.
+step) now takes one hour (15 ms / step).
+
+6. Conclusions                                                       Acknowledgements
+                                                                    KTS and OTU acknowledge support by the Federal Min-
+We have given general guidelines to design equivariant
+                                                                    istry of Education and Research (BMBF) for BIFOLD
+MPNNs and discussed the advantages of equivariant repre-
+                                                                    (01IS18037A). OTU acknowledges funding from the Swiss
+sentations over angular features in terms of computational
+                                                                    National Science Foundation (Grant No. P2BSP2 188147).
+efficiency as well as their ability to propagate directional
+                                                                    MG works at the BASLEARN – TU Berlin/BASF Joint Lab
+information. On this basis, we have proposed PAI NN that
+                                                                    for Machine Learning, co-financed by TU Berlin and BASF
+yields fast and accurate predictions of scalar and tensorial
+                                                                    SE.
+                Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+References                                                      Duvenaud, D. K., Maclaurin, D., Iparraguirre, J., Bom-
+                                                                  barell, R., Hirzel, T., Aspuru-Guzik, A., and Adams, R. P.
+Anderson, B., Hy, T. S., and Kondor, R. Cormorant: Co-
+                                                                  Convolutional networks on graphs for learning molecular
+ variant Molecular Neural Networks. Advances in Neural
+                                                                  fingerprints. Advances in Neural Information Processing
+ Information Processing Systems, 32:14537–14546, 2019.
+                                                                 Systems, 28:2224–2232, 2015.
+Bartók, A. P., Payne, M. C., Kondor, R., and Csányi, G.
+  Gaussian approximation potentials: The accuracy of            Gastegger, M., Behler, J., and Marquetand, P. Machine
+  quantum mechanics, without the electrons. Phys. Rev.            learning molecular dynamics for the simulation of in-
+  Lett., 104(13):136403, 2010.                                    frared spectra. Chem. Sci., 8(10):6924–6935, 2017.
+
+Bartók, A. P., Kondor, R., and Csányi, G. On representing     Gastegger, M., Schütt, K. T., and Müller, K.-R. Machine
+  chemical environments. Phys. Rev. B, 87(18):184115,             learning of solvent effects on molecular spectra and reac-
+  2013.                                                           tions. arXiv preprint arXiv:2010.14942, 2020.
+
+Bartók, A. P., Kermode, J., Bernstein, N., and Csányi, G.     Gebauer, N., Gastegger, M., and Schütt, K. Symmetry-
+  Machine learning a general-purpose interatomic potential        adapted generation of 3d point sets for the targeted dis-
+  for silicon. Phys. Rev. X, 8(4):041048, 2018.                   covery of molecules. Advances in Neural Information
+                                                                  Processing Systems, pp. 7564–7576, 2019.
+Batzner, S., Smidt, T. E., Sun, L., Mailoa, J. P., Kornbluth,
+  M., Molinari, N., and Kozinsky, B. SE (3)-Equivariant         Gilmer, J., Schoenholz, S. S., Riley, P. F., Vinyals, O.,
+  Graph Neural Networks for Data-Efficient and Accurate           and Dahl, G. E. Neural message passing for quantum
+  Interatomic Potentials. arXiv preprint arXiv:2101.03164,        chemistry. Interational Conference on Machine Learning,
+  2021.                                                           2017.
+
+Behler, J. Atom-centered symmetry functions for construct-      Goyal, P. and Ferrara, E. Graph embedding techniques,
+  ing high-dimensional neural network potentials. J. Chem.        applications, and performance: A survey. Knowledge-
+  Phys, 134(7):074106, 2011.                                     Based Systems, 151:78–94, 2018.
+
+Behler, J. Perspective: Machine learning potentials for         Hegde, G. and Bowen, R. C. Machine-learned approxima-
+  atomistic simulations. J. Chem. Phys, 145(17):170901,           tions to Density Functional Theory Hamiltonians. Sci.
+  2016.                                                           Rep., 7(1):1–11, 2017.
+Behler, J. and Parrinello, M. Generalized neural-network        Hermann, A., Krawczyk, R. P., Lein, M., Schwerdtfeger,
+  representation of high-dimensional potential-energy sur-        P., Hamilton, I. P., and Stewart, J. J. Convergence of
+  faces. Phys. Rev. Lett., 98(14):146401, 2007.                   the many-body expansion of interaction potentials: From
+                                                                  van der waals to covalent and metallic systems. Physical
+Chmiela, S., Tkatchenko, A., Sauceda, H. E., Poltavsky, I.,
+                                                                  Review A, 76(1):013202, 2007.
+  Schütt, K. T., and Müller, K.-R. Machine Learning of
+  Accurate Energy-Conserving Molecular Force Fields. Sci.       Hermann, J., Schätzle, Z., and Noé, F. Deep-neural-network
+  Adv., 3(5):e1603015, 2017.                                      solution of the electronic Schrödinger equation. Nat.
+Chmiela, S., Sauceda, H. E., Müller, K.-R., and Tkatchenko,      Chem., 12(10):891–897, 2020.
+  A. Towards exact molecular dynamics simulations with
+                                                                Hinton, G. E., Krizhevsky, A., and Wang, S. D. Transform-
+  machine-learned force fields. Nat. Commun., 9(1):3887,
+                                                                  ing auto-encoders. International Conference on Artificial
+  2018. doi: 10.1038/s41467-018-06169-2.
+                                                                  Neural Networks, pp. 44–51, 2011.
+Christensen, A. S. and von Lilienfeld, O. A. On the role of
+  gradients for machine learning of molecular energies and      Jing, B., Eismann, S., Suriana, P., Townshend, R. J. L.,
+  forces. Mach. Learn.: Sci. Technol., 1(4):045018, 2020.          and Dror, R. Learning from protein structure with ge-
+                                                                   ometric vector perceptrons. In International Confer-
+Christensen, A. S., Bratholm, L. A., Faber, F. A., and Ana-        ence on Learning Representations, 2021. URL https:
+  tole von Lilienfeld, O. FCHL revisited: Faster and more          //openreview.net/forum?id=1YLJDvSx6J4.
+  accurate quantum machine learning. J. Chem. Phys, 152
+  (4):044107, 2020.                                             Kearnes, S., McCloskey, K., Berndl, M., Pande, V., and
+                                                                  Riley, P. Molecular graph convolutions: moving beyond
+Cohen, T. S. and Welling, M. Steerable CNNs. International        fingerprints. J. Comput. Aided Mol. Des., 30(8):595–608,
+  Conference on Learning Representations, 2017.                   2016.
+                Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+Kiefer, J. Simultaneous acquisition of the polarized and            deep learning library. arXiv preprint arXiv:1912.01703,
+  depolarized Raman signal with a single detector. Anal.            2019.
+  Chem., 89(11):5725–5728, 2017.
+                                                                  Pozdnyakov, S. N., Willatt, M. J., Bartók, A. P., Ortner, C.,
+Kingma, D. P. and Ba, J. Adam: A method for Stochastic              Csányi, G., and Ceriotti, M. Incompleteness of atomic
+  Optimization. arXiv preprint arXiv:1412.6980, 2014.               structure representations. Physical Review Letters, 125
+                                                                    (16):166001, 2020.
+Klicpera, J., Groß, J., and Günnemann, S. Directional
+  message passing for molecular graphs. International             Ramakrishnan, R., Dral, P. O., Rupp, M., and Von Lilienfeld,
+  Conference on Learning Representations, 2020a.                    O. A. Quantum chemistry structures and properties of
+Klicpera, J., Groß, J., and Günnemann, S. Fast and                 134 kilo molecules. Sci. Data, 1(1):1–7, 2014.
+  Uncertainty-Aware Directional Message Passing for Non-
+                                                                  Sauceda, H. E., Vassilev-Galindo, V., Chmiela, S., Müller,
+  Equilibrium Molecules. Machine Learning for Molecules
+                                                                    K.-R., and Tkatchenko, A. Dynamical strengthening
+  Workshop at NeurIPS, 2020b.
+                                                                    of covalent and non-covalent molecular interactions by
+Köhler, J., Klein, L., and Noé, F. Equivariant Flows: sam-        nuclear quantum effects at finite temperature. Nat. Com-
+  pling configurations for multi-body systems with sym-             mun., 12(1):1–10, 2021.
+  metric energies. Proceedings of the 37th International
+  Conference on Machine Learning, 2019.                           Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M., and
+                                                                    Monfardini, G. The graph neural network model. IEEE
+Kondor, R. and Trivedi, S. On the Generalization of Equiv-          Trans. Neural Netw., 20(1):61–80, 2008.
+  ariance and Convolution in Neural Networks to the Ac-
+  tion of Compact Groups. International Conference on             Schütt, K., Kindermans, P.-J., Sauceda, H. E., Chmiela, S.,
+  Machine Learning, pp. 2747–2755, 2018.                            Tkatchenko, A., and Müller, K.-R. SchNet: A continuous-
+                                                                    filter convolutional neural network for modeling quantum
+Linstrom, P. and Mallard, W. G.       NIST Chemistry                interactions. Advances in Neural Information Processing
+  WebBook NIST Standard Reference Database Number                   Systems, pp. 991–1001, 2017.
+  69. National Institute of Standards and Technology,
+  doi:10.18434/T4D303, (retrieved September 24, 2020),            Schütt, K., Kessel, P., Gastegger, M., Nicoli, K., Tkatchenko,
+  Gaithersburg MD, 20899, 2020.                                     A., and Müller, K.-R. SchNetPack: A deep learning
+                                                                    toolbox for atomistic systems. J. Chem. Theory Comput.,
+Loshchilov, I. and Hutter, F. Decoupled weight decay regu-          15(1):448–455, 2018.
+  larization. International Conference on Learning Repre-
+  sentations, 2019.                                               Schütt, K., Gastegger, M., Tkatchenko, A., Müller, K.-R.,
+                                                                    and Maurer, R. J. Unifying machine learning and quan-
+Lu, D., Wang, H., Chen, M., Liu, J., Lin, L., Car, R., Jia, W.,     tum chemistry with a deep neural network for molecular
+  Zhang, L., et al. 86 PFLOPS Deep Potential Molecular              wavefunctions. Nat. Commun., 10(1):1–10, 2019.
+  Dynamics simulation of 100 million atoms with ab initio
+  accuracy. arXiv preprint arXiv:2004.11658, 2020.                Schütt, K. T., Arbabzadah, F., Chmiela, S., Müller, K. R.,
+                                                                    and Tkatchenko, A. Quantum-chemical insights from
+Lubbers, N., Smith, J. S., and Barros, K. Hierarchical mod-
+                                                                    deep tensor neural networks. Nat. Commun., 8, 2017. doi:
+  eling of molecular energies using a deep neural network.
+                                                                    10.1038/ncomms13890.
+  J. Chem. Phys, 148(24):241715, 2018.
+
+Miller, B. K., Geiger, M., Smidt, T. E., and Noé,                Schütt, K. T., Sauceda, H. E., Kindermans, P.-J.,
+ F. Relevance of rotationally equivariant convolutions              Tkatchenko, A., and Müller, K.-R. SchNet–A deep learn-
+ for predicting molecular properties. arXiv preprint                ing architecture for molecules and materials. J. Chem.
+ arXiv:2008.08461, 2020.                                            Phys, 148(24):241722, 2018.
+
+Morawietz, T., Singraber, A., Dellago, C., and Behler, J.         Simm, G. N., Pinsler, R., Csányi, G., and Hernández-Lobato,
+ How van der Waals interactions determine the unique                J. M. Symmetry-Aware Actor-Critic for 3D Molecular
+ properties of water. Proc. Natl. Acad. Sci., 113(30):8368–         Design. arXiv preprint arXiv:2011.12747, 2020.
+ 8373, 2016.
+                                                                  Thomas, M., Brehm, M., Fligg, R., Vöhringer, P., and Kirch-
+Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J.,          ner, B. Computing vibrational spectra from ab initio
+  Chanan, G., Killeen, T., Lin, Z., Gimelshein, N., Antiga,         molecular dynamics. Phys. Chem. Chem. Phys., 15(18):
+  L., et al. Pytorch: An imperative style, high-performance         6608–6622, 2013.
+                Equivariant Message Passing for the Prediction of Tensorial Properties and Molecular Spectra
+
+Thomas, N., Smidt, T., Kearnes, S., Yang, L., Li, L.,
+  Kohlhoff, K., and Riley, P. Tensor field networks:
+  Rotation-and translation-equivariant neural networks for
+  3D point clouds. arXiv preprint arXiv:1802.08219, 2018.
+Unke, O. T. and Meuwly, M. PhysNet: A Neural Network
+  for Predicting Energies, Forces, Dipole Moments, and
+  Partial Charges. J. Chem. Theory Comput., 15(6):3678–
+  3693, 2019.
+Unke, O. T., Chmiela, S., Sauceda, H. E., Gastegger, M.,
+  Poltavsky, I., Schütt, K. T., Tkatchenko, A., and Müller,
+  K.-R. Machine Learning Force Fields. arXiv preprint
+  arXiv:2010.07067, 2020.
+
+Veit, M., Wilkins, D. M., Yang, Y., DiStasio Jr, R. A., and
+  Ceriotti, M. Predicting molecular dipole moments by
+  combining atomic partial charges and atomic dipoles. J.
+  Chem. Phys., 153(2):024113, 2020.
+von Lilienfeld, O. A., Müller, K.-R., and Tkatchenko, A.
+  Exploring chemical compound space with quantum-based
+  machine learning. Nat. Rev. Chem., 4(7):347–358, 2020.
+Weiler, M., Geiger, M., Welling, M., Boomsma, W., and
+ Cohen, T. S. 3D Steerable CNNs: Learning Rotation-
+ ally Equivariant Features in Volumetric Data. Advances
+ in Neural Information Processing Systems, 31:10381–
+ 10392, 2018a.
+Weiler, M., Hamprecht, F. A., and Storath, M. Learning
+ Steerable Filters for Rotation Equivariant CNNs. Pro-
+ ceedings of the IEEE Conference on Computer Vision
+ and Pattern Recognition, pp. 849–858, 2018b.
+Westermayr, J., Gastegger, M., and Marquetand, P. Combin-
+ ing SchNet and SHARC: The SchNarc machine learning
+ approach for excited-state dynamics. J. Phys. Chem. Lett.,
+ 11(10):3828–3834, 2020.
+
+Worrall, D. and Brostow, G. CubeNet: Equivariance to 3D
+ Rotation and Translation. Proceedings of the European
+ Conference on Computer Vision (ECCV), pp. 567–584,
+ 2018.
+

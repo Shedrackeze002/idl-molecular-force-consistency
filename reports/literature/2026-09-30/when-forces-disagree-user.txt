@@ -1,0 +1,1288 @@
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+000
+001
+      W HEN F ORCES D ISAGREE : A DATA -F REE FAST D IAG -
+002   NOSTIC FROM I NTERNAL C ONSISTENCY OF D IRECT-
+003
+004   F ORCE N EURAL N ETWORK P OTENTIALS
+005
+006
+       Anonymous authors
+007
+       Paper under double-blind review
+008
+009
+010
+011                                                A BSTRACT
+012
+013            Direct-force neural network potentials (NNIPs) offer superior speed for atomistic
+014            simulations, but their reliability is limited by the lack of a fast and data-free uncer-
+015            tainty estimate to monitor the impact of non-conservativity and prediction errors.
+016            While ensembles are data-free but slow, and other single-model methods often re-
+017            quire training data, we introduce an approach that combines the advantages of both.
+018
+               Our metric is derived from the internal disagreement between a model’s directly
+               predicted force and its energy-gradient-derived force, motivated by our finding that
+019
+               a model’s internal self-consistency is more critical for algorithmic stability than
+020
+               its external accuracy. We then identify an asymmetric failure mode inherent to
+021            the direct-force architecture that this metric can diagnose, and also show a strong
+022            monotonic correlation between the disagreement and the true force error across
+023            diverse materials and out-of-distribution structures. We propose the link between
+024            internal disagreement and practical reliability is a consequence of inter-head influ-
+025            ence via the shared graph neural network embedding. We provide direct evidence
+026            for this mechanism by showing that fine-tuning the conservative force pathway on
+027            adversarial data that maximizes this internal disagreement measurably improves
+028            the stability of simulations driven only by the direct force. The metric serves as
+029
+               a versatile and out-of-the-box tool that is competitive with expensive ensembles,
+               offering both an on-the-fly assessment of model reliability and a principled method
+030
+               for generating targeted data to improve the stability of direct-force models.
+031
+032
+033
+034   1   I NTRODUCTION
+035
+036   Direct-force neural network interatomic potentials (NNIPs) are increasingly favored for their com-
+037   putational efficiency in large-scale atomistic simulations (Gasteiger et al., 2021; Liao et al., 2024;
+038   Neumann et al., 2024; Rhodes et al., 2025). This speed, however, comes at the cost of reliability. By
+039
+      decoupling the force prediction from a scalar potential, direct-force models are not guaranteed to
+      be energy-conserving, leading to known algorithmic instabilities in molecular dynamics (MD) (Bigi
+040
+      et al., 2025) and poor performance in property prediction tasks that depend on the potential energy
+041
+      surface (PES) curvature (Póta et al., 2024; Loew et al., 2025). Hybrid integration schemes like
+042   Multiple-Time-Stepping (MTS), where conservative forces are used to correct direct forces at a
+043   certain frequency during simulations, have been shown to successfully stabilize the simulations while
+044   mostly recover the speed of direct forces (Bigi et al., 2025). However, even with such schemes, a lack
+045   of a fast and effective metric to monitor a model’s reliability (e.g., the impact of non-conservativity
+046   and prediction errors) in real-time still remains.
+047
+      Current uncertainty quantification (UQ) methods present a difficult trade-off for developing such a
+048   metric: model ensembles are data-free but computationally prohibitive, while faster single-model
+049   methods often require access to the original training data. This work aims develop a universal
+050   monitoring metric for direct-force models that combines the advantages of both paradigms. To do
+051   so, we first investigate the fundamental principles that govern simulation stability since direct-force
+052   models are known for its unstability (Fu et al., 2024; Bigi et al., 2025). While the work of Fu et al.
+053   (2023; 2024) established that static force accuracy is an insufficient metric for dynamics and proposed
+      that conservativity are one of the key requirements for reliable NNIPs, the relative importance of
+
+
+                                                          1
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+054
+      conservativity compared to accuracy has not been directly demonstrated. Our investigation leads to a
+055   series of discoveries that provide this missing evidence.
+056
+057   We first provide empirical proof that a model’s internal self-consistency is more critical for algorithmic
+058
+      stability than its external accuracy, confirming and building upon the principles laid out by Fu et al.
+      (2023; 2024). This finding motivates our use of an internal disagreement metric, the Force Delta
+059
+060
+      (U∆ ), which is the difference between a model’s direct force prediction, F̂nc , and its internally
+061
+      self-consistent, energy-derived force, F̂c . Using this metric, we then identify an Asymmetric Failure
+      Mechanism inherent to the pre-trained dual-output direct-force architecture. We also find that U∆
+062
+      is a more consistent predictor of instability than the direct force error magnitude against references
+063
+      alone. We propose the link between this internal metric and practical reliability is a consequence
+064   of inter-head influence via the shared GNN embedding, and we provide direct evidence for this
+065   mechanism by demonstrating that fine-tuning the conservative force pathway measurably improves
+066   the stability of simulations driven only by the direct force.
+067
+      Our contributions are as follows:
+068
+069          • We provide the first direct, experimental proof that for simulation stability, a model’s internal
+070            self-consistency is more critical than its external accuracy.
+071
+             • We introduce the Force Delta (U∆ ) as a versatile, data-free UQ metric that identifies an
+072
+               Asymmetric Failure Mechanism inherent to direct-force architectures with competitive
+073
+               performances with expensive ensembles.
+074
+075
+             • We provide three-layered evidence for inter-head influence in direct-force models: (1)
+               correlational evidence where the magnitude of the error in the two forces (one from the
+076
+               energy and the other from the force head) is correlated and captured by U∆ , (2) predictive
+077
+               evidence where the magnitude of F̂c ’s error predicts the pathological character of the F̂nc ’s
+078
+               error that causes energy drift, and (3) causal evidence where finetuning F̂c improves F̂nc ’s
+079
+               stability.
+080
+081          • We present a complete workflow, using U∆ to generate targeted data to iteratively improve
+082
+               the stability of both pre-trained and already fine-tuned direct-force models.
+083
+084   2    BACKGROUND AND RELATED WORK
+085
+086   Machine Learning Interatomic Potential Machine Learning Interatomic Potentials (MLIPs) aim
+087   to approximate the quantum mechanical potential energy surface (PES) with the efficiency of classical
+088   force fields. Early influential models were descriptor-based, first mapping local atomic environments
+089   to a set of fixed, hand-crafted feature vectors (descriptors) which were then fed into a simple machine
+090   learning model. Seminal examples in this class include Behler-Parrinello Neural Networks (Behler &
+091
+      Parrinello, 2007), Gaussian Approximation Potentials (GAP) (Bartók et al., 2010), Spectral Neighbor
+      Analysis Potentials (SNAP) (Thompson et al., 2015), and Moment Tensor Potentials (MTP) (Shapeev,
+092
+      2016).
+093
+094   A subsequent generation of models moved towards end-to-end deep learning, using neural networks to
+095   learn the feature representation directly from atomic coordinates. Architectures like ANI (Smith et al.,
+096   2017) and SchNet (Schütt, 2017) were foundational in this area, often building upon the message-
+097
+      passing framework of Graph Neural Networks (GNNs) (Gilmer, 2017; Battaglia, 2018). The current
+      state-of-the-art is dominated by E(3)-equivariant GNNs, which build in physical symmetries (roto-
+098
+      translational equivariance) directly into the network architecture. This inductive bias significantly
+099
+      improves data efficiency and generalization (Musil, 2021). Foundational equivariant architectures
+100   include Tensor Field Networks (Thomas, 2018), NequIP (Batzner et al., 2022), MACE (Batatia,
+101   2022), and Allegro (Musaelian, 2023). The success of these models has spurred the development of
+102   large-scale, pre-trained “foundation models” for atomistic simulation, such as CHGNet (Deng, 2023)
+103   and the direct-force models used in this work.
+104
+105   Direct-Force Architectures. The drive for computational efficiency has popularized direct-force
+106   architectures in many state-of-the-art models (Gasteiger et al., 2021; Batatia, 2022; Liao et al., 2024;
+107   Neumann et al., 2024; Rhodes et al., 2025). In contrast to conservative models, these architectures
+      predict atomic forces as a direct, equivariant vector output of the GNN, rather than computing
+
+
+                                                          2
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+108
+      them as the gradient of a predicted scalar energy. This approach can yield significant performance
+109   benefits, including faster training and inference and lower memory usage, as it often avoids the
+110   computational cost of a backward pass (i.e., backpropagation) through the network (Gasteiger
+111   et al., 2021). Architecturally, these models typically use a shared GNN encoder to generate atomic
+112   representations, which are then fed to separate output heads. The first head predicts the direct,
+113   non-conservative force, F̂nc , as a direct equivariant vector output. The second head predicts a scalar
+114   energy, Ê. The conservative force, F̂c , is the gradient of this energy, F̂c = −∇R Ê.
+115
+116   A key assumption of the direct-force paradigm is that the faster F̂nc can serve as a sufficient substitute
+117   for the computationally more expensive F̂c , which requires a backward pass through the network.
+118   Consequently, the conservative force pathway is typically ignored during training. The model
+119
+      is instead trained by minimizing a joint loss function on the energy and the direct forces, which
+      encourages both accuracy on Density Functional Theory (DFT) targets and, implicitly, consistency
+120
+      between the two pathways:
+121
+122
+                                  L = λE LE (Ê, EDFT ) + λF LF (F̂nc , FDFT )                              (1)
+123
+124
+125   The Consequences of Non-Conservativity. The efficiency gain of using F̂nc comes at the expense
+126   of guaranteed energy conservation (Chmiela, 2017). This lack of an underlying potential violates the
+127   assumptions of algorithms that navigate the Potential Energy Surface (PES). Symplectic integrators
+128   used in MD assume forces are the exact gradient of a potential to conserve the Hamiltonian (Hairer,
+129   2006; Leimkuhler & Reich, 2004; Tuckerman, 2023). Non-conservative forces lead to unphysical
+130
+      energy drift and instabilities in NVE simulations due to its nature of not being an exact spatial gradient
+      of any potential (Bigi et al., 2025; Fu et al., 2024). This non-conservativity also creates artifacts
+131
+      in NVT simulations that are difficult or impossible to correct with thermostats without disrupting
+132
+      dynamical or structural properties Bigi et al. (2025). Similarly, gradient-based optimizers require a
+133   consistent PES for stable convergence (Nocedal & Wright, 2006), leading to more fragile geometry
+134   optimization using non-conservative forces compared to conservative forces Bigi et al. (2025).
+135
+136
+      Requirements for Stable and Accurate MLIPs A growing body of work has established that the
+137
+      requirements for a reliable MLIP go far beyond simple accuracy on a static test set. The seminal
+138
+      work of Fu et al. (2023) provided the first large-scale benchmark demonstrating that static force error
+139   is often an insufficient metric for predicting the dynamic stability of a simulation. This exposed a
+140   critical gap between how models are benchmarked and how they are used in practice. However, a
+141   clear and direct experimental validation of the relative importance of conservativity and accuracy
+142   against a DFT reference is still lacking. By designing experiments that isolate the effects of accuracy
+143   from self-consistency, we provide the first direct, quantitative evidence for the relative importance of
+144   conservativity compared to accuracy.
+145
+146   The Limitations of Existing UQ Methods. Quantifying uncertainty is crucial for monitoring
+147   reliability (Abdar et al., 2021; Musil et al., 2023). Deep ensembles remain the standard for epis-
+148   temic uncertainty (Lakshminarayanan et al., 2017), but their high computational cost (typically
+149   5-10x) is prohibitive for large-scale simulations (Wen & Tadmor, 2020). Single-model Bayesian
+150   approaches (Gal & Ghahramani, 2016; Vandermause et al., 2020) often require modified training.
+151   Data-dependent methods (e.g., distance in latent space) (Hirschfeld et al., 2020; Podryabinkin &
+152   Shapeev, 2017) are unsuitable for foundation models as they require access to massive datasets and
+153   can perform poorly on heterogeneous data (Tan et al., 2023; Jablonka et al., 2021; Wang et al., 2023).
+154
+      A fast, data-free metric derived from the model’s internal physics is needed.
+155
+156
+      3    M ETHODS
+157
+158
+159   Force Definitions and Metrics. A direct-force NNIP provides two distinct force predictions. The
+160   first is the direct, non-conservative force, F̂nc , which is the direct equivariant vector output of the
+161   model’s force head. The second is the conservative force, F̂c , which is derived from the model’s
+      own learned potential energy surface, Ê, via the chain rule: F̂c = −∇R Ê. We define our primary
+
+
+                                                          3
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+162
+      diagnostic, the Force Delta (U∆ ), as the root-mean-square difference between these two predictions:
+163
+                                             v
+164                                          u
+                                             u 1 X   N
+165                             U∆ (R) =     t         ∥F̂nc,i (R) − F̂c,i (R)∥2                       (2)
+166                                             3N i=1
+167
+      To validate this metric, we compare it against two true error metrics calculated
+168
+169             q to Pa ground-truth DFT force, FDFT .
+      with respect                                               The non-conservative error is
+                    1     N                            2
+170   εnc =        3N     i=1 ∥F̂nc,i (R) − FDFT,i (R)∥ , and the conservative error is εc  =
+      q
+171       1
+            PN                              2
+172      3N  i=1 ∥F̂c,i (R) − FDFT,i (R)∥ .
+
+173
+174   Models and Systems. We use a suite of publicly available, pre-trainead direct-force models,
+175
+      primarily from the Orb (Neumann et al., 2024; Rhodes et al., 2025) and EquiformerV2 (Liao
+      et al., 2024) families. Our test set includes a diverse range of systems, including crystalline solids
+176
+      (e.g., ice, LGPS, Mg17 Al12 ), a liquid water box, surface, and molecules, designed to probe model
+177
+      performance on both in- and out-of-distribution structures. DFT calculations for ground-truth forces
+178   were performed with VASP using the PBE functional. Further details on all models, systems, and
+179   DFT parameters are in the Appendix.
+180
+181   Simulation Protocols. Molecular dynamics simulations were performed in both the microcanonical
+182   (NVE) and canonical (NVT) ensembles using the Velocity Verlet integrator. NVE simulations were
+183   used to assess energy conservation and drift, while NVT simulations were used to test for other
+184   artifacts, such as temperature fluctuations. Further details are in the Appendix
+185
+186   Adversarial Generation of OOD Structures. To efficiently generate challenging OOD configu-
+187   rations, we employ a differentiable adversarial attack (Schwalbe-Koda et al., 2021). Starting from
+188   equilibrium structures, we iteratively perturb the atomic positions r to find configurations that are both
+189   physically plausible (low energy) and maximally inconsistent. This is achieved by updating positions
+190
+      along a composite gradient that simultaneously maximizes our diagnostic, U∆ , while minimizing the
+191   predicted energy, Ê:
+192                                       rnew = rold + α∇r U∆ − β∇r Ê                                      (3)
+193   where α and β are the respective learning rates. This process efficiently drives the system towards
+194   high-uncertainty, low-energy regions where the model’s internal physics is most stressed.
+195
+196
+      4     R ESULTS
+197
+198
+      Our results are presented in four parts. We first experimentally establish that for stable simulations, a
+199
+      model’s self-consistency is more critical than its external accuracy. We then introduce the Force Delta,
+200   U∆ , use it to identify the asymmetric failure mode, and validate it as a robust diagnostic for both
+201   conservative and direct force errors. Building on this, we show that U∆ is a more consistent indicator
+202   of algorithmic instability than standard error metrics. Finally, we provide final direct evidence for
+203   the underlying inter-head mechanism by using U∆ -maximized data in fine-tuning experiments to
+204   demonstrably improve model stability.
+205
+206   4.1   E XPERIMENTAL INVESTIGATION OF SIMULATION STABILITY REQUIREMENTS
+207
+208   We employ DFT calculations to quantitatively investigate the relative importance of accuracy against
+209   FDFT compared to conservativity during the energy drift in NVE simulations. To isolate the effects of
+210   accuracy from self-consistency, we perform a series of NVE simulations on a liquid water box, with
+211
+      consistent findings for other systems presented in the Appendix. The results, shown in Figure 1, reveal
+      a clear hierarchy. First, we compare a simulation driven by the accurate but non-conservative force
+212
+213
+      (F̂nc ) of the orb-v3-direct-inf-mpa model to one driven by its less accurate but internally
+214
+      self-consistent conservative force (F̂c ) obtained by backpropagating predicted energy to obtain its
+215   negative spatial derivative of the same model. The F̂nc -driven simulation is unstable, while the
+      F̂c -driven run is perfectly stable, providing direct proof that self-consistency (i.e., forces being an
+
+
+                                                          4
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+216
+      exact gradient of model’s predicted energy) is more critical than accuracy. This confirms that the
+217
+      small error of F̂nc against FDFT during NVE accumulates and causes the drift. No matter how close
+218
+      F̂nc is to an exact gradient of DFT energy (FDFT ), it will never be an exact gradient of any potential
+219
+      and therefore produces artifact. On the other hand, F̂c of orb-v3-direct-inf-mpa, while
+220
+      being inaccurate compared to FDFT , produces a stable simulations since it satisfies the symplectic
+221
+      requirements of the integrator by being an exact gradient of its own predicted energy. In other words,
+222
+      F̂c is self-consistent with its own potential energy landscape.
+223
+224   The effects of energy drift also leads to larger temperature fluctuations compared to simulations
+225   with inaccurate F̂c in NVT as shown in the Appendix. Bigi et al. (2025) have demonstrated that
+226   this artifact in NVT is difficult or impossible to contain using a thermostat without disrupting
+227   dynamical properties. This finding provides direct evidence for the necessity of conservativity and
+228
+      the fundamental justification for hybrid integration schemes, such as the Multiple-Time-Stepping
+      (MTS) method proposed by Bigi et al. (2025), which leverage the stability of the conservative force
+229
+      to correct the trajectory of the direct force. Furthermore, these experiments establish the scientific
+230
+      motivation for a diagnostic that can probe these internal model properties.
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248   Figure 1: Energy evolution during NVE simulations of a liquid water box (15 Å side length). The run
+249   driven by the self-consistent and smooth but less accurate F̂c (green) is stable. In contrast, the run
+250   driven by the more accurate but non-conservative F̂nc (orange) is unstable.
+251
+252
+253   4.2     T HE F ORCE D ELTA : A DIAGNOSTIC FOR FORCE ERRORS
+254
+255   Having established the requirements for simulation stability, we now validate the Force Delta, U∆ ,
+256   as a diagnostic for the model properties that govern these principles. A key to understanding U∆ ’s
+257   utility is the inherent asymmetry in how the two force predictions are generated and supervised.
+258
+259   4.2.1    T HE ASYMMETRIC FAILURE MECHANISM
+260
+      The dual-output architecture of direct-force models leads to a predictable, asymmetric failure mode
+261
+      when the model is pushed out-of-distribution (OOD). This arises from two factors: asymmetric
+262
+      supervision and the mathematical properties of differentiation. The direct force, F̂nc , is strongly
+263
+      regularized by direct supervision on vector force DFT data. In contrast, the model’s energy, Ê, is only
+264
+      weakly supervised by scalar values, which is insufficient to regularize the curvature of the potential
+265   energy surface. Moreover, mathematically, differentiation acts as a high-pass filter, meaning that
+266
+      any small and high-frequency “ripples” in the under-regularized Ê (i.e., non-smooth curvature) are
+267
+      amplified into large-magnitude errors in its gradient, F̂c .
+268
+269   This mechanism predicts that as a model goes OOD, the error in the conservative force, εc , should
+      grow much more rapidly than the error in the non-conservative force, εnc . This large discrepancy in
+
+
+                                                         5
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+270
+      error magnitudes is the key to understanding the utility of the Force Delta. Since U∆ = ∥F̂nc − F̂c ∥,
+271   it can be rewritten in terms of the respective error vectors as U∆ = ∥⃗εnc − ε⃗c ∥. When the conservative
+272   error dominates such that ∥⃗εc ∥ ≫ ∥⃗εnc ∥, the smaller term becomes negligible, and the expression
+273   simplifies to U∆ ≈ ∥ − ε⃗c ∥ = εc . The Force Delta thus becomes a direct and precise mathematical
+274   proxy for the error in the conservative force. We test this by using adversarial attacks to efficiently
+275   generate OOD structures. As shown in Figure 2a, we observe a strong correlation between U∆ and
+276   εc for the orb-v3-direct-20-mpa model on several crystalline systems. This result, which is
+277   consistent across tested models in the Orb and EqV2 families and most systems for OOD structures
+278   from both adversarial attack and high runaway temperatures during NVE (see Appendix), provides
+279
+      empirical evidence for the asymmetric failure mechanism and establishes U∆ as a reliable probe of
+      the model’s internal physical breakdown.
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+              (a) U∆ vs. Conservative Error (εc )                 (b) U∆ vs. Non-Conservative Error (εnc )
+294
+      Figure 2: The Force Delta (U∆ ) as a robust indicator of force errors for out-of-distribution structures
+295   generated via an adversarial attack on the orb-v3-direct-20-mpa model. Initial configurations
+296   were obtained from Materials Project (Jain et al., 2013) and geometrically-optimized using the model
+297   (a) U∆ shows a near-perfect correlation with the conservative force error, εc . The Spearman’s rank
+298   correlation for ice (rs = 0.99), LGPS (rs = 0.88), and Mg17 Al12 (rs = 1.00) demonstrates the
+299   asymmetric failure mechanism. (b) U∆ also maintains a strong positive correlation (ice (rs = 0.91),
+300   LGPS (rs = 1.00), and Mg17 Al12 (rs = 1.00)) with the direct, non-conservative force error, εnc ,
+301   establishing its utility as a general UQ metric.
+302
+303   4.2.2   F ORCE D ELTA AS A GENERAL UQ METRIC FOR FORCE ERROR
+304
+305   After demonstrating U∆ is a strong indicator of the model’s internal conservative force error, we now
+306   investigate its utility as a practical UQ metric for the non-conservative force error that is used due
+307   to its superior inference speed, εnc . A strong correlation between these two errors would suggest
+308   a deeper connection between the model’s two prediction heads. We first test this relationship on a
+309
+      diverse benchmark set of ten systems, including crystalline solids, surface, and molecules to represent
+      both in- and out-of-distribution data for the pre-trained models (see Appendix for dataset and model
+310
+      details). As shown in Table 1, the single-model U∆ exhibits a strong correlation with εnc , and its
+311
+      performance is competitive with, or superior to, the expensive multi-model ensemble variance of
+312   force predictions, Uvar . It is crucial to note that these ad-hoc collection of models are not “deep
+313   ensembles" in the strictest sense, as they were not co-trained with varied initializations on an identical
+314   dataset. However, they represent the most direct ensemble-based UQ approach available to a user
+315   working with publicly available, pre-trained models. Furthermore, combining all 12 models into
+316   a single ensemble would be physically and statistically invalid. The variance would be dominated
+317   by the systematic bias between the different ground-truth DFT methods used for training (DFT vs.
+318   DFT+D3) rather than true epistemic uncertainty.
+319   To further test the robustness of this relationship in high-uncertainty regimes, we analyzed the
+320   correlation on OOD structures generated via our adversarial attack. As shown for a representative
+321   model in Figure 2b, U∆ maintains a strong positive correlation with εnc , even as the model is pushed
+322   far from its training distribution. This result is consistent across most models and systems we tested.
+323   For the eqV2-dens-31M-mp model, the correlations between U∆ and εnc appear to be weaker
+      than the orb models. This could be attributed to the different relative weights between each head
+
+
+                                                          6
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+324
+      (λF : λE ratio) between each model family. The ratio is 1 for orb and 25 for eqV2, hence the F̂nc
+325   of the eqV2 model being more robust and the resulting weaker correlations (see Appendix for full
+326   correlation tables).
+327
+328
+      For a few specific systems (e.g., MoF5, aspirin), the correlation is weak or even negative. This is
+      because the true error of the initial equilibrium structure was already substantial (see Appendix).
+329
+      Consequently, the adversarial attack, while still finding high-uncertainty configurations, did not
+330
+      produce as dramatic an increase in error, which can weaken the calculated correlation coefficient.
+331   Crucially, the Force Delta for these points is consistently high, correctly flagging them as unreliable.
+332   This shows the metric functions as an effective “failure detector" for applications like active learning
+333   or molecular dynamics (MD) monitoring, where identifying failure is often more important than
+334   perfect error prediction.
+335
+      Since U∆ has a near-perfect correlation with the conservative force error (εc ), this means that εc is
+336
+      a reliable indicator of the direct force head’s prediction error (εnc ). This finding provides the first,
+337
+      correlational evidence for inter-head influence, where the state of one prediction pathway (Ê which
+338
+      gives F̂c ) informs on the other (F̂nc ), all captured by their disagreement U∆ . This establishes U∆ as
+339
+      a reliable and robust UQ metric for the direct force predictions used in a wide range of applications
+340   such as geometry optimization and property prediction.
+341
+342
+343   Table 1: Spearman’s rank correlation (rs ) comparing the single-model U∆ against the ad-hoc
+344   ensemble variance Uvar as predictors of the non-conservative force error, εnc , on a diverse benchmark
+345   set. The reported single-model’s rs value is the average of rs between U∆ and εnc on the ten systems
+346   over models. Full details are in the Appendix.
+347
+348    Model Family                    Avg. rs (Single-Model U∆ )       rs (Ensemble Uvar )     Relative Cost
+349    Orb (5 models)                          0.70 ± 0.04                      0.73                ≈ 5×
+350    EquiformerV2 (7 models)                 0.91 ± 0.02                      0.79                ≈ 7×
+351
+352
+353
+354
+355   4.3   U∆ AS A CONSISTENT INDICATOR OF ALGORITHMIC INSTABILITY
+356
+357   We now test the ability of U∆ to diagnose the practical consequence of these errors: algorithmic
+358   instability on four systems (ice, LGPS, Mg17 Al12 , and water box). While the accumulated error,
+359
+      εnc , is the direct physical cause of energy drift in NVE simulations, we find its predictive power
+      is complex and model-dependent. For models in a fragile state where εnc becomes large (e.g.,
+360
+      orb-d3-xs-v2), its magnitude correlates well with drift and all metrics (εnc , εc , U∆ , and energy
+361
+      drift) are well-correlated (see Appendix). However, for robust, pre-trained models, εnc often operates
+362   in a low-error regime where its correlation with instability is not guaranteed.
+363
+364   Our results reveal a clear distinction between the predictive power of the external error magnitude
+365
+      and the internal inconsistency in this critical low-error regime. For strongly-regularized models like
+      the OrbV3 family, the correlation between the average εnc during a simulation and the resulting
+366
+      energy drift is weak and noisy, as shown in Figure 3a. In contrast, Figure 3b shows that the average
+367
+      Force Delta, U∆ , exhibits a more consistent positive correlation with the energy drift. For other
+368   models like eqV2-dens-31M-mp, all metrics happen to be well-correlated (see Appendix for a
+369   full analysis). This demonstrates that while the predictive power of εnc ’s magnitude is inconsistent
+370   across different model architectures and training regimes, the internal inconsistency, U∆ , is a more
+371   reliable indicator of the pathological character of the error that governs the severity of the instability,
+372   an artifact difficult to monitor and suppress without distrupting dynamical and structural properties in
+373   NVT simulations (Bigi et al., 2025). In fact, the mean error of the conservative forces (εc ) has the
+374   strongest correlation (rs = 0.97) with the energy drift in simulations performed using F̂nc . Since U∆
+375   has a strong correlation with εc (also with rs = 0.97), it also predicts energy drift as well as εc . This
+376   provides predictive evidence for inter-head influence, where the state of the model’s internal physics
+377   and the error of the other (energy) head is a more consistent probe of its reliability than the accuracy
+      of the head used in the simulations (F̂nc ) alone.
+
+
+                                                          7
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+            (a) Drift vs. Non-Conservative Error (εnc )                (b) Drift vs. Force Delta (U∆ )
+391
+392   Figure 3: The Force Delta (U∆ ) as a consistent indicator of algorithmic instability for robust
+393   direct OrbV3 (orb-v3-direct-inf-mpa and orb-v3-direct-20-mpa) models. Each
+394   point represents a 10-ps NVE simulation. (a) In the low-error regime, the magnitude of the non-
+395   conservative force error, εnc , shows a weak and noisy correlation with the total energy drift (rs =
+396   0.24). (b) In the same set of simulations, the internal inconsistency, U∆ , shows a more consistent
+397   positive correlation with the energy drift (rs = 0.91). A full analysis of all models is in the Appendix.
+398
+399
+400   4.4    S TABILITY- IMPROVING FINETUNING EXPERIMENTS
+401
+402   The strong correlations observed between the model’s internal inconsistency and its practical reliability
+403   suggest a deep connection between the energy and force prediction heads. We propose that this
+404   inter-head influence is mediated by the shared GNN embedding. To provide direct, causal evidence
+405   for this mechanism, we perform a series of fine-tuning experiments using data generated from our
+406   adversarial attack on U∆ . If our hypothesis is correct, then improving the internal physics of the
+407   model by training its conservative pathway should have a direct, measurable effect on the stability
+408   of simulations driven only by the direct F̂nc force. Note that we have to always finetune the direct
+409   force head F̂nc here to avoid degradation since the pre-trained models were trained on F̂nc and the
+410   simulations are typically performed using F̂nc .
+411   We test this on the orb-v3-direct-inf-mpa model with the ice system. As shown in Figure 4,
+412   finetuning the model on just 100 adversarial structures leads to a clear and stepwise improvement
+413   in stability. Fine-tuning only the F̂nc head reduces the energy drift compared to the pre-trained
+414   baseline. Critically, fine-tuning both the F̂c and F̂nc heads (i.e., conservative fine-tuning) further
+415
+      reduces the drift in the F̂nc -driven simulation. This provides direct evidence that improving the
+416   quality of the model’s internal energy landscape improves the non-conservative character of the direct
+417   forces. Furthermore, we demonstrate the iterative utility of our method by performing a second
+418   adversarial attack on this improved model to generate a new set of 100 structures. Fine-tuning on
+419   this “2nd generation” data nearly eliminates the long-term energy drift. These results confirm the
+420   inter-head influence mechanism and validate our method as a principled way to generate targeted
+421   data for improving model’s stability.
+422
+423
+424   5     D ISCUSSION
+425
+426   Our results, from the error correlations to finetuning experiments, all point to a single unifying
+427   mechanism: inter-head influence via the shared GNN embedding. The state of the model’s internal
+428   physics, represented by F̂c , is not independent of the direct force prediction, F̂nc . This finding
+429   is consistent with and provides a deeper explanation for previous observations that pre-training a
+430   model on its direct-force head provides a more effective starting point for subsequently training the
+431   conservative-force pathway (Bigi et al., 2025; Fu et al., 2024). Our work reveals both the diagnostic
+      and improvement sides of this phenomenon: the observable state of one head is a sensitive probe
+
+
+                                                          8
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+      Figure 4: Stepwise reduction in NVE energy drift for the orb-v3-direct-inf-mpa model on
+448
+      the ice system after fine-tuning on U∆ -maximized data. Each bar represents the total drift after 10
+449
+      ps. Fine-tuning both heads (F̂c & F̂nc ) is more effective than fine-tuning F̂nc alone, and a second
+450
+      generation of fine-tuning provides further improvement. Consistent results for another model are in
+451   the Appendix.
+452
+453
+454
+455
+456
+      of the hidden, pathological character of the error in the other, and finetuning one head improves the
+457
+      performance of the other head.
+458
+459   This understanding establishes the Force Delta, U∆ , which measures the disagreement between two
+460   heads as a versatile tool for improving the reliability of the entire workflow of direct-force MLIPs. If
+461
+      the two forces do not agree, at least one of them is wrong against DFT, then the error of the other
+      force could also be large in magnitude as shown by correlational evidence in Section 4.2.2, or could
+462
+      have large non-conservative character that causes artifacts as shown by predictive evidence in Section
+463
+      4.3 or both. It serves as an on-the-fly monitor for MD simulations (both NVE and NVT) to detect the
+464   onset of non-conservative artifacts that can corrupt dynamical properties. For geometry optimizations
+465   and property predictions, it acts as a fast, data-free prerequisite check on the trustworthiness of the
+466   underlying PES. Furthermore, as our fine-tuning experiments demonstrate, it provides a data-efficient
+467   method for generating targeted OOD structures to improve the stability of both pre-trained and already
+468   fine-tuned models.
+469
+      The demonstrated stability improvements from our fine-tuning workflow have direct implications for
+470   advanced simulation methods. The Multiple-Time-Stepping (MTS) scheme proposed by Bigi et al.
+471
+      (2025), for instance, relies on the accuracy of both the direct force F̂nc and the corrective conservative
+472
+      force F̂c . Our work establishes the Force Delta, U∆ , as an essential real-time monitor for this scheme,
+473
+      as a large U∆ signals that at least one of these forces has become unreliable. Furthermore, by using
+474   our method to create a more stable base model, we can logically infer that the MTS algorithm
+475   would require less frequent corrective steps. This would lead to a significant increase in the overall
+476   simulation speed without sacrificing stability, directly addressing a key challenge in the field.
+477
+      Finally, it is essential to acknowledge the limitations of this approach, which also point to future
+478
+      directions. Due to its disagreement-based nature, U∆ cannot detect “consensus failures” where both
+479
+      force predictions are concurrently wrong, a rare but possible scenario we observed for a specific
+480   model-system pair (MoF5) in the Appendix. Furthermore, in the highly consistent, low-error regime,
+481   the magnitude of all metrics (U∆ , εc , and εnc ) is small, and correlations with instability may be
+482   dominated by numerical noise; differentiating between near-zero uncertainty and noise remains
+483   a challenge for any metric. Lastly, U∆ is suitable for ranking uncertainty, which is the primary
+484   requirement for failure detection and active learning. However, it is not calibrated; the magnitude of
+485   U∆ is not a direct predictor of the magnitude of εnc . Calibrated error estimation would still require
+      system-specific validation (Kuleshov et al., 2018) and represents a key area for future work.
+
+
+                                                          9
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+486
+      LLM U SAGE
+487
+488
+      For the paper, an LLM was employed solely as a grammar-checking and writing refinement tool. Its
+489   use was limited to improving the clarity and coherence of the written language.
+490
+491
+492   R EFERENCES
+493   Moloud Abdar, Farhad Pourpanah, Sadiq Hussain, Dana Rezazadegan, Ling Liu, Mohammad
+494    Ghasemian, et al. A review of uncertainty quantification in deep learning: Techniques, applications
+495    and challenges. Information Fusion, 76:243–297, 2021.
+496
+497   Albert P Bartók, Mike C Payne, Risi Kondor, and Gábor Csányi. Gaussian approximation potentials:
+498
+        The accuracy of quantum mechanics, without the electrons. Physical Review Letters, 104(13):
+        136403, 2010.
+499
+500   Ilyes et al. Batatia. Mace: Higher order equivariant message passing neural networks for fast and
+501      accurate force fields. Advances in Neural Information Processing Systems, 2022.
+502
+503   Peter W et al. Battaglia. Relational inductive biases, deep learning, and graph networks. arXiv
+504
+        preprint arXiv:1806.01261, 2018.
+505   Simon Batzner, Albert Musaelian, Lixin Sun, Mario Geiger, Jonathan P Mailoa, et al. E (3)-
+506     equivariant graph neural networks for data-efficient and accurate interatomic potentials. Nature
+507     communications, 13(1):2453, 2022.
+508
+509   Jörg Behler and Michele Parrinello. Generalized neural-network representation of high-dimensional
+510
+        potential-energy surfaces. Physical Review Letters, 98(14):146401, 2007.
+511   Filippo Bigi, Marcel F Langer, and Michele Ceriotti. The dark side of the forces: assessing non-
+512      conservative force models for atomistic machine learning. Proceedings of the 42nd International
+513     Conference on Machine Learning, 2025.
+514
+515   Stefan Chmiela, Valentin Vassilev-Galindo, Oliver T Unke, Adil Kabylda, Huziel E Sauceda, Alexan-
+516     dre Tkatchenko, and Klaus-Robert Müller. Accurate global machine learning force fields for
+517
+        molecules with hundreds of atoms. Science Advances, 9(2):eadf0873, 2023.
+518   Stefan et al. Chmiela. Machine learning of accurate energy-conserving molecular force fields. Science
+519     advances, 3(5):e1603015, 2017.
+520
+521   Bowen et al. Deng. Chgnet as a pretrained universal neural network potential for charge-informed
+522     atomistic modelling. Nature Machine Intelligence, 5(9):1031–1041, 2023.
+523
+      Xiang Fu, Zhenghao Wu, Wujie Wang, Tian Xie, Sinan Keten, Rafael Gomez-Bombarelli, and Tommi
+524     Jaakkola. Forces are not enough: Benchmark and critical evaluation for machine learning force
+525     fields with molecular simulations. Transactions on Machine Learning Research, 2023.
+526
+527   Yuchao Fu, Tian Lan, et al. Learning smooth and expressive interatomic potentials for physical
+528     property prediction. arXiv preprint arXiv:2502.12147, 2024.
+529
+      Yarin Gal and Zoubin Ghahramani. Dropout as a bayesian approximation: Representing model
+530     uncertainty in deep learning. In International Conference on Machine Learning, pp. 1050–1059.
+531     PMLR, 2016.
+532
+533   Johannes Gasteiger, Florian Becker, and Kristof T Schütt. Gemnet: Universal directional graph neural
+534     networks for molecules. Advances in Neural Information Processing Systems, 34:6790–6800,
+535
+        2021.
+536   Justin et al. Gilmer. Neural message passing for quantum chemistry. In International conference on
+537     machine learning, pp. 1263–1272, 2017.
+538
+539   Ernst et al. Hairer. Geometric numerical integration: structure-preserving algorithms for ordinary
+        differential equations. Springer, 2006.
+
+
+                                                       10
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+540
+      Cas van der Hirschfeld, Giulio Imbalzano, and Michele Ceriotti. Uncertainty quantification in
+541     atomistic machine learning. The Journal of Chemical Physics, 153(10), 2020.
+542
+543   Kevin Maik Jablonka, Greeshma M Jothiappan, Shen Wang, Berend Smit, and Berend Yoo. Bias free
+544     multiobjective active learning for materials design and discovery. Nature Communications, 12(1):
+545     2312, 2021.
+546
+      Anubhav Jain, Shyue Ping Ong, Geoffroy Hautier, Wei Chen, William Davidson Richards, Stephen
+547     Dacek, Shreyas Cholia, Dan Gunter, David Skinner, Gerbrand Ceder, et al. Commentary: The
+548     materials project: A materials genome approach to accelerating materials innovation. Apl Materials,
+549    1(1), 2013.
+550
+551   Georg Kresse and Jürgen Furthmüller. Efficient iterative schemes for ab initio total-energy calculations
+552     using a plane-wave basis set. Physical Review B, 54(16):11169, 1996.
+553   Volodymyr Kuleshov, Nathan Fenner, and Stefano Ermon. Accurate uncertainties for deep learning
+554     using calibrated regression. In International conference on machine learning, pp. 2796–2804.
+555     PMLR, 2018.
+556
+557   Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell. Simple and scalable predictive
+558     uncertainty estimation using deep ensembles. In Advances in Neural Information Processing
+559
+        Systems, pp. 6402–6413, 2017.
+560   Ask Hjorth Larsen et al. The atomic simulation environment—a python library for working with
+561     atoms. Journal of Physics: Condensed Matter, 29(27):273002, 2017.
+562
+563   Benedict Leimkuhler and Sebastian Reich. Simulating Hamiltonian dynamics, volume 14. Cambridge
+564     university press, 2004.
+565
+      Yi-Lun Liao, Brandon Liu, H. T. Pao, Yuchao Zhao, Bryan Wood, C. Lawrence Zitnick, and Tess
+566     Smidt. Equiformerv2: Improved equivariant transformer for scaling to higher-degree representa-
+567     tions. In The Twelfth International Conference on Learning Representations, 2024.
+568
+569   Antoine Loew, Dewen Sun, Hai-Chen Wang, Silvana Botti, and Miguel AL Marques. Universal
+570     machine learning interatomic potentials are ready for phonons. npj Computational Materials, 11
+571
+       (1):178, 2025.
+572   Jason M Munro, Katherine Latimer, Matthew K Horton, Shyam Dwaraknath, and Kristin A Persson.
+573     An improved symmetry-based approach to reciprocal space path selection in band structure
+574     calculations. npj Computational Materials, 6(1):112, 2020.
+575
+576   Albert et al. Musaelian. Learning local equivariant representations for large-scale atomistic dynamics.
+577
+        Nature Communications, 14(1):579, 2023.
+578   Félix Musil et al. Uncertainty quantification and active learning of machine-learning interatomic
+579     potentials for molecular dynamics simulations. Current Opinion in Chemical Engineering, 39:
+580     100902, 2023.
+581
+582   Felix et al. Musil. Physics-inspired structural representations for molecules and materials. Chemical
+583
+        Reviews, 121(16):9759–9815, 2021.
+584   Mark Neumann, James Gin, Benjamin Rhodes, Steven Bennett, Zhiyi Li, Hitarth Choubisa, Arthur
+585    Hussey, and Jonathan Godwin. Orb: A fast, scalable neural network potential. arXiv preprint
+586    arXiv:2410.22570, 2024.
+587
+588   Jorge Nocedal and Stephen Wright. Numerical optimization. Springer Science & Business Media,
+589
+        2006.
+590   John P Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized gradient approximation made
+591     simple. Physical Review Letters, 77(18):3865, 1996.
+592
+593   Evgeny V Podryabinkin and Alexander V Shapeev. Active learning of linearly parameterized
+        interatomic potentials. Computational Materials Science, 140:171–180, 2017.
+
+
+                                                        11
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+594
+      Balázs Póta, Paramvir Ahlawat, Gábor Csányi, and Michele Simoncelli. Thermal conductivity
+595     predictions with foundation atomistic models. arXiv preprint arXiv:2408.00755, 2024.
+596
+597   Benjamin Rhodes, Sander Vandenhaute, Vaidotas Šimkus, James Gin, Jonathan Godwin, Tim Duig-
+598     nan, and Mark Neumann. Orb-v3: atomistic simulation at scale. arXiv preprint arXiv:2504.06231,
+599     2025.
+600
+601
+      Kristof T et al. Schütt. Schnet: A continuous-filter convolutional neural network for modeling
+        quantum interactions. Advances in neural information processing systems, 30, 2017.
+602
+603   Daniel Schwalbe-Koda, Aik Rui Tan, and Rafael Gómez-Bombarelli. Differentiable sampling of
+604     molecular geometries with uncertainty-based adversarial attacks. Nature Communications, 12(1):
+605     5035, 2021.
+606
+607   Alexander V Shapeev. Moment tensor potentials: A class of systematically improvable interatomic
+608     potentials. Multiscale Modeling & Simulation, 14(3):1153–1173, 2016.
+609
+      Justin S Smith, Olexandr Isayev, and Adrian E Roitberg. Ani-1: an extensible neural network
+610     potential with dft accuracy at force field computational cost. Chemical Science, 8(4):3192–3203,
+611     2017.
+612
+613   Aik Rui Tan, Shingo Urata, Samuel Goldman, Johannes CB Dietschreit, and Rafael Gómez-
+614     Bombarelli. Single-model uncertainty quantification in neural network potentials does not consis-
+615     tently outperform model ensembles. arXiv preprint arXiv:2305.01754, 2023.
+616
+      Nathaniel et al. Thomas. Tensor field networks: Rotation-and translation-equivariant neural networks
+617
+        for 3d point clouds. arXiv preprint arXiv:1802.08219, 2018.
+618
+619   Aidan P Thompson, Laura P Swiler, Christian R Trott, Stephen M Foiles, and Garritt J Tucker.
+620     Spectral neighbor analysis method for automated generation of quantum-accurate interatomic
+621     potentials. Journal of Computational Physics, 285:316–330, 2015.
+622
+      Richard Tran, Janice Lan, Muhammed Shuaibi, Brandon M Wood, Siddharth Goyal, Abhishek Das,
+623
+        Javier Heras-Domingo, Adeesh Kolluru, Ammar Rizvi, Nima Shoghi, et al. The open catalyst 2022
+624
+        (oc22) dataset and challenges for oxide electrocatalysts. ACS Catalysis, 13(5):3066–3084, 2023.
+625
+626   Mark E Tuckerman. Statistical Mechanics: Theory and Molecular Simulation. Oxford University
+627    Press, 2023.
+628
+629   Jonathan Vandermause, Steven B Torrisi, Simon Batzner, Yu Xie, Lixin Sun, Alexie M Kolpak, and
+630
+        Boris Kozinsky. On-the-fly active learning of interpretable bayesian force fields for atomistic rare
+        events. npj Computational Materials, 6(1):20, 2020.
+631
+632   Yiqi Wang, Xinyue Wang, Raymond A Adomaitis, and Dongxia Liu. Rethinking the implementation
+633     of an uncertainty-aware deep learning framework for materials property prediction. Digital
+634     Chemical Engineering, 7:100097, 2023.
+635
+636   Mingjian Wen and Ellad B Tadmor. Uncertainty quantification in machine learning potentials: A
+637    framework and application to amorphous carbon. npj Computational Materials, 6(1):124, 2020.
+638
+639
+640
+      A     A PPENDIX
+641
+642
+      A.1     C OMPUTATIONAL D ETAILS
+643
+      A.1.1    M ODEL D ETAILS
+644
+645   We utilized 12 pre-trained NNIPs, all of which have the MPTraj data as part of their training dataset.
+646   This is to ensure all crystalline solids in the benchmark test set used to compare ad-hoc ensemble’s UQ
+647   (Uvar ) represent in-distribution of all models. The models spanning two major families of equivariant
+      GNN architectures:
+
+
+                                                       12
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+648
+      O RB M ODELS
+649
+650   The five Orb models (Neumann et al., 2024; Rhodes et al., 2025) used were:
+651
+652           • orb-d3-xs-v2
+653           • orb-d3-v2
+654           • orb-d3-sm-v2
+655
+              • orb-v3-direct-inf-mpa
+656
+657
+              • orb-v3-direct-20-mpa
+658
+      E QUIFORMERV2 M ODELS
+659
+660   The seven EquiformerV2 models (Liao et al., 2024) used were:
+661
+662           • eqV2_dens_31M_mp
+663           • eqV2_dens_153M_mp
+664           • eqV2_dens_86M_mp
+665
+              • eqV2_31M_mp
+666
+667           • eqV2_31M_omat_mp_salex
+668           • eqV2_153M_omat_mp_salex
+669           • eqV2_86M_omat_mp_salex
+670
+671   Detailed studies often used orb-v3-direct-20-mpa and eqV2_dens_31M_mp as represen-
+672   tatives.
+673
+674   A.1.2    M ATERIALS D ETAILS
+675
+      Our test set comprised 10 systems spanning solids (Mg17 Al12 , LGPS, ice, and MoF-5) taken from
+676   Materials Project (Jain et al., 2013), surface (CaPd – NH2 ) taken from OC22 (Tran et al., 2023),
+677   and molecules (Ac-Ala3-NHMe, stachyose, aspirin, paracetamol, and DHA taken from the MD22
+678   dataset (Chmiela et al., 2023). The test set for benchmarking U∆ against ensemble’s Uvar were taken
+679   directly from the mentioned publicly available databases.
+680
+681   A.1.3    DFT C ALCULATION D ETAILS
+682
+683
+      All ground-truth Density Functional Theory (DFT) calculations were performed with the Vienna
+      Ab initio Simulation Package (VASP) (Kresse & Furthmüller, 1996). We used the PBE exchange-
+684
+      correlation functional (Perdew et al., 1996). Calculation parameters were consistent with Materials
+685
+      Project protocols (Jain et al., 2013; Munro et al., 2020).
+686
+687   A.1.4    MD S IMULATION D ETAILS
+688
+689   NVE simulations were performed using the Atomic Simulation Environment (ASE) (Larsen et al.,
+690   2017). We used the Velocity Verlet integrator with a timestep of 0.5 fs for all simulations. For each
+691   system-model pair, the initial configuration taken from a corresponding database, relaxed through
+692   geometry optimization with force threshold 0.05 eV/Å using the model, and finally equilibrated
+693   at NVT 300 K (except for ice which is equlibrated at 200 K). The Nose-Hoover thermostat with
+694
+      ttime = 10 fs was used to contain temperature fluctuation from non-conservative artifacts Bigi
+      et al. (2025). All NVE simulations start from the last frame of the corresponding NVT-equilibrated
+695
+      frames.
+696
+697
+      A.2     A DDITIONAL R ESULTS
+698
+699   A.2.1    A DDITIONAL R ESULTS FOR S IMULATION S TABILITY R EQUIREMENTS
+700
+701   This section provides supplementary results that demonstrate the generality of the findings presented
+      in Section 4.1.
+
+
+                                                       13
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+702
+      NVE Simulations on Additional Systems. The hierarchy of stability requirements observed for the
+703   liquid water box holds for other systems. Figure 5 shows the results of equivalent NVE simulations
+704   for ice and Mg17 Al12 crystalline structures using the same set of Orb models. In both cases, the
+705   simulation driven by the self-consistent and smooth F̂c of the orb-v3-direct-inf-mpa model
+706   is the most stable. The simulation driven by the more accurate but non-conservative F̂nc of the same
+707   model exhibits significant energy drift.
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721                            (a)                                             (b)
+722
+      Figure 5: Energy evolution during NVE simulations, confirming the stability requirements for (a)
+723
+      an ice crystal and (b) a Mg17 Al12 crystal. In both systems, the run driven by the self-consistent and
+724
+      smooth F̂c (blue) is the most stable, while the non-conservative F̂nc run (red) and the conservative
+725
+      but discontinuous run (green) are unstable.
+726
+727
+728   Temperature Fluctuations in NVT Simulations. The non-conservative error of F̂nc also creates
+729   artifacts in NVT simulations. an NVT simulation of the liquid water box driven by F̂nc exhibits signif-
+730   icantly larger temperature fluctuations (19.9 K stddev) compared to an equivalent simulation driven by
+731   the inaccurate self-consistent F̂c (10.6 K stddev) of the same orb-v3-direct-inf-mpa, even
+732   when using the same thermostat (Nose-Hoover with τ = 200 fs). This demonstrates that the thermo-
+733   stat must work harder to counteract the unphysical energy being introduced by the non-conservative
+734   forces, which, as noted by Bigi et al. (2025), can disrupt the system’s true structural and dynamical
+735   properties.
+736
+737   A.2.2    D ETAILED C ORRELATION A NALYSIS : U∆ AS A P ROXY FOR εc AND εnc
+738
+      Table 2 provides the complete Spearman correlation results supporting the analysis in Section 4.2.1
+739
+      and 4.2.2. It demonstrates the consistently strong correlation between U∆ and εc across the dynamic
+740
+      range, validating U∆ as a proxy for the internal physical error. It also shows the strong correlation
+741   between U∆ and εnc during OOD exploration (adversarial attacks and NVE) and the use of U∆ as a
+742   UQ metric for εnc (section 4.2.2).
+743
+744
+      A.3     D ETAILED C ORRELATION A NALYSIS FOR E NERGY D RIFT P REDICTION
+745
+746   This section provides the complete data and a more detailed analysis of the relationship between
+747   different error metrics and the total energy drift (∆Edrift ) observed in NVE simulations. While
+748   the main text presents the key finding—that the internal inconsistency, U∆ , is a more consistent
+749   indicator of instability than the external error magnitude, εnc —this appendix details the model- and
+750   system-dependent nuances that support this conclusion.
+751   As shown in figures 6 and 7, for the strongly-regularized orbv3 models, we observe the most complex
+752   behavior. In this low-εnc regime, the magnitude of the external error is a noisy and inconsistent
+753   predictor of drift. In contrast, the internal metrics, εc and U∆ , maintain a more consistent positive
+754   correlation, making them more reliable indicators of the pathological character of the error that leads
+755   to instability. For the less-regularized orb-d3-xs-v2 model, the system enters a more fragile state
+      where εnc becomes large, and as a result, all metrics (εnc , εc , and U∆ ) become strongly correlated
+
+
+                                                        14
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+756   Table 2: Spearman’s rank correlation coefficients (rs ) between the Force Delta (U∆ ) and the two
+757   error metrics (εnc and εc ).
+758
+759                           orb-v3-direct-inf-mpa (adv attack)
+760
+                           System               Group           rs (U∆ , εnc )      rs (U∆ , εc )
+761
+762                        Mg17 Al12            Solid              1.00                  1.00
+763                        LGPS                 Solid              1.00                  1.00
+764                        ice                  Solid              0.91                  0.99
+765
+                           MoF5                 Solid              -0.31                 0.98
+                           CaPd-NH2             Surface            0.58                  1.00
+766
+                           paracetamol          Molecule           0.97                  1.00
+767
+                           stachyose            Molecule           0.93                  1.00
+768                        Ac-Ala3-NHMe         Molecule           0.95                  1.00
+769                        DHA                  Molecule           0.72                  0.99
+770                        aspirin              Molecule           -0.02                 0.98
+771
+772
+                                    orb-v3-direct-inf-mpa (NVE)
+773                       System        Group                   rs (U∆ , εnc )      rs (U∆ , εc )
+774                       Mg17 Al12     Solid                         0.85               0.99
+775                       LGPS          Solid                         0.92               0.93
+776                       ice           Solid                         0.71               0.98
+777                       Water         Liquid (Periodic)             0.88               0.94
+778
+779
+780
+781                            orb-v3-direct-20-mpa (adv attack)
+782                            System     Group      rs (U∆ , εnc )          rs (U∆ , εc )
+783
+784
+                               LGPS       Solid          0.78                   0.99
+                               ice        Solid          0.96                   1.00
+785
+786
+787                                   orb-d3-xs-v2 (adv attack)
+788
+789
+                                System       Group      rs (U∆ , εnc )        rs (U∆ , εc )
+790                             Mg17 Al12    Solid            0.73                0.94
+791                             LGPS         Solid            0.70                0.93
+792                             ice          Solid            0.70                0.99
+793                             MoF5         Solid            -0.24               0.05
+794                                eqV2-dens-31M-mp (adv attack)
+795
+796
+                             System          Group          rs (U∆ , εnc )        rs (U∆ , εc )
+797                          ice             Solid                0.84               0.99
+798                          Mg17 Al12       Solid                0.42               0.98
+799                          LGPS            Solid                0.18               0.99
+800                          CaPd-NH2        Surface              0.23               1.00
+801
+                             aspirin         Molecule             0.44               0.99
+                             paracetamol     Molecule             0.08               0.98
+802
+803
+804
+805
+806   with each other and with the energy drift. Finally, for the EquiformerV2 model, which has a
+807   strongly regularized F̂nc pathway, we observe that all metrics are again well-correlated, even though
+808   εnc remains low. This complex landscape of correlations underscores the main conclusion: while the
+809   predictive power of εnc ’s magnitude is model- and regime-dependent, the internal inconsistency, U∆ ,
+      serves as a more consistent indicator of algorithmic instability across these different scenarios.
+
+
+                                                         15
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822         (a) Drift vs. Non-Conservative Error (εnc )              (b) Drift vs. Force Delta (U∆ )
+823
+      Figure 6: The Force Delta (U∆ ) as a consistent indicator of algorithmic instability for
+824
+      orb-d3-xs-v2 models. Each point represents a 10-ps NVE simulation for each system. (a)
+825   In the low-error regime, the magnitude of the non-conservative force error (b) In the same set of
+826   simulations, the internal inconsistency
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+            (a) Drift vs. Non-Conservative Error (εnc )              (b) Drift vs. Force Delta (U∆ )
+841
+842   Figure 7: The Force Delta (U∆ ) as a consistent indicator of algorithmic instability for
+843   eqV2-dens-31M-mp models. Each point represents a 10-ps NVE simulation for each system. (a)
+844   In the low-error regime, the magnitude of the non-conservative force error (b) In the same set of
+845   simulations, the internal inconsistency
+846
+847
+848   A.4     A DDITIONAL F INE - TUNING R ESULTS
+849
+      To demonstrate the generality of the fine-tuning results presented in Section 4.4, we performed an
+850
+      equivalent experiment on a different model and system: the orb-d3-xs-v2 model on the LGPS
+851
+      crystal. As shown in Figure 8, we observe the same stepwise improvement in stability. The pre-trained
+852
+      model exhibits significant energy drift. Fine-tuning on 100 adversarial data points on the F̂nc head
+853
+      alone reduces the drift, and fine-tuning both the F̂c and F̂nc heads further improves the stability of
+854
+      the F̂nc -driven simulation.
+855
+856   Figure 8 shows the full energy evolution trajectories for the NVE simulations of both the ice and
+857   LGPS systems. The plots clearly illustrate the reduction in both short-term drift and long-term
+858   instability at each stage of the fine-tuning process.
+859
+860
+861
+862
+863
+
+
+
+                                                          16
+      Under review as a conference paper at ICLR 2026
+
+
+
+
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896   Figure 8: Energy drift during NVE simulations for the pre-trained and fine-tuned models. (a) The
+897   orb-v3-direct-inf-mpa model on the ice system. (b) The orb-d3-xs-v2 model on the
+898   LGPS system. Each stage of fine-tuning leads to a more stable trajectory with reduced energy drift
+899   over time for both systems.
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+
+
+
+                                                     17
+
