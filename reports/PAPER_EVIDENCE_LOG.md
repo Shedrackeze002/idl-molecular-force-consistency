@@ -407,3 +407,11 @@ Scientific and engineering reviewers independently verified the proposed subset 
 - Tests first failed because the new coverage module was absent; implementation then passed all 8 coverage/preparation tests in 0.57s. Retained logs: `.superpowers/sdd/2026-09-30-data-coverage-diagnostic/task1-{red,green}.log`.
 - Runtime selection exactly regenerates frozen manifest `8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47`; guards cover duplicate/outside/mixed-role paths, numeric ordering and rank collisions, with no replacement groups. Arbitrary label perturbation leaves selection unchanged.
 - No training run executed yet; optimizer equivalence remains the next required check.
+
+## IMPL-COVERAGE-002 — Gradient and run-control engineering checks
+
+The implementation now shares the original normalized loss without changing its mathematics. Unequal3/3/1 microbatches match full-batch loss, both MSEs, every gradient leaf and two successive Adam parameter/optimizer states within1e-10 absolute/relative tolerance. Nonzero force gradients reach the backbone after a nonzero head update. Sequential accumulation holds incoming parameters fixed and applies Adam once.
+
+All28 coverage/training-contract/previous-diagnostic tests passed in74.20s. New fixtures verify fixed caps despite earlier scheduled gate passage, immutable initial values, fitted/not-fitted anchor scoring, empty null gates, wall/nonfinite failure retention, identical initial parameter/optimizer hashes across subset shapes and all-frame saved-input fresh-process probes. Logs remain under `.superpowers/sdd/2026-09-30-data-coverage-diagnostic/`.
+
+Failed engineering checks preserved: missing helpers in test-first runs; overly exact float ratio assertion (0.049999999999999996 vs0.05), corrected to a tolerance; controller integration fixture used a wrong dataclass field name, corrected after source inspection. These are implementation/fixture trials, not research failures. No new aspirin coverage research arm has run yet.

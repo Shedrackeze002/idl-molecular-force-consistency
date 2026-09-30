@@ -68,12 +68,16 @@ def initialize_state(model,batch,normalization,seed,learning_rate):
             'model_rng':key,'normalization_json':json.dumps(asdict(normalization),sort_keys=True)}
 
 
+def normalized_loss(params,batch,model,normalization):
+    e,f=energy_and_forces(params,batch,model=model)
+    emse=jnp.mean((e-batch['energy'])**2);fmse=jnp.mean((f-batch['forces'])**2)
+    return emse/normalization.energy_loss_scale_eV**2+fmse/normalization.force_loss_scale_eV_per_A**2,{'energy_mse_eV2':emse,'force_mse_eV2_per_A2':fmse}
+
+
 def build_step(model,normalization,learning_rate):
     optimizer=optax.adam(learning_rate)
     def loss(params,batch):
-        e,f=energy_and_forces(params,batch,model=model)
-        emse=jnp.mean((e-batch['energy'])**2);fmse=jnp.mean((f-batch['forces'])**2)
-        return emse/normalization.energy_loss_scale_eV**2+fmse/normalization.force_loss_scale_eV_per_A**2,{'energy_mse_eV2':emse,'force_mse_eV2_per_A2':fmse}
+        return normalized_loss(params,batch,model,normalization)
     @jax.jit
     def step(params,optstate,batch):
         (value,metrics),grads=jax.value_and_grad(loss,has_aux=True)(params,batch)
