@@ -3036,3 +3036,937 @@ Four RED checks failed0.73s for missing report generator and missing raw-calibra
 ## IMPL-BALANCE-003 — Pre-production verification
 
 Report/controller16focused checks passed20.58s. Four metadata characterization checks passed0.55s: even consistently rehashed calibration records with wrong count/update/ordered IDs/state are rejected before the data loader. Full pre-production suite142passed128.27s; the four newly added metadata checks were separately verified afterward (no product code changed). Report consumes saved JSON only, preserves actual attempted/completed/blocked counts and gates interpretation on operational validity. All117prior tests remain green. No production numerical outcome exists at this point. Starting exact reviewed configuration once after local implementation commit; every arm is freshly initialized, controls/gates/source pins remain fixed, and operational/replay failure blocks later arms.
+
+## BALANCE-EXECUTION-PRE — Frozen fixed loss controls preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "config": {
+    "arms": {
+      "balanced": {
+        "energy": 0.014584365670390719,
+        "force": 1.9854156343296092
+      },
+      "force-only": {
+        "energy": 0.0,
+        "force": 2.0
+      },
+      "replay": {
+        "energy": 1.0,
+        "force": 1.0
+      }
+    },
+    "backend": "cpu",
+    "calibration_case": "fresh-C-fitting",
+    "calibration_energy_norm": 72.41148277153111,
+    "calibration_force_norm": 0.531916604873417,
+    "calibration_path": "reports/representation-gradient-diagnostics.json",
+    "calibration_ratio": 136.13314964807924,
+    "calibration_run": "runs/aspirin-representation-gradient-2026-09-30",
+    "calibration_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+    "data_directory": "data/processed/aspirin",
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "gate_fraction": 0.1,
+    "learning_rate": 0.001,
+    "max_updates": 2000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-loss-balance-2026-09-30",
+    "seed": 0,
+    "source_run": "runs/aspirin-data-coverage-2026-09-30",
+    "source_sha256": {
+      "config.json": "3575dad49acf97b8f780f953a397c776cb5f3dd96729f1e6236837d8e99a5f64",
+      "diverse128/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse128/checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+      "diverse128/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse128/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+      "diverse128/history.json": "2e037af82e7fae42f7811fb661b39202b331bb42e8499ec45c0c3ba73d18629f",
+      "diverse128/last.msgpack": "7305113575499ebe51ca3e30b87d5bb644888b913b845e3fee5b95e222f4f6c3",
+      "diverse128/provenance.json": "1502d258d63cf8a69e9ee67fcd9852855b9dbc3deb2010c33010d8b56db81063",
+      "diverse128/reference.npz": "5ebb9dfb89f2c5df095a8d6f1dfe5fa2e1901b6dcfcf3159b417ccad5b724afd",
+      "diverse128/summary.json": "0e374b8ed313f8004aec6219af3b2e45f0a868082f00ced907a6f4c9d8b88a8b",
+      "diverse16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "diverse16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "diverse16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "diverse16/fitting-inputs.npz": "ae6550bbda77af6eb1617a859cc8ce118ab90c6bd109c3a25b0d3827faf9a65c",
+      "diverse16/history.json": "f9b66c8e496ba8ca82d626df2a38980f41c7dc1edf28bb97f21028a8aa8fc367",
+      "diverse16/last.msgpack": "7156487d43587f9cdfe563f14db79948d465b0bf43995ff67e07e3c6ac180d8f",
+      "diverse16/provenance.json": "80bed026608d4455f4ab81a1fbc17520c511a1772c39fc448eada96f6dd34791",
+      "diverse16/reference.npz": "f48c42e9697e2c93a6a8393c1378d3faecf1ad08a3c598518cf39fafae2c1c85",
+      "diverse16/summary.json": "af772ad611b5d153b85265861375419df80f2b93c20407c0304f6ca9876fb5e6",
+      "narrow16/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+      "narrow16/config.json": "dfbdb9129e00a2984341a1efd80e901fda20565d3bcc7cc53ae04d2ed5ac6b51",
+      "narrow16/fitting-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+      "narrow16/history.json": "9970a673c501b566e8f8de0b83581ce81f40cba9a71a2547111f9fe46b0af812",
+      "narrow16/last.msgpack": "b5c792314ea6b34d46bc5b2b104abbc7b1e647fd6c81cea55ec49e94b18cb6b7",
+      "narrow16/provenance.json": "5de39bfac0af7376beee7e9790b6028443cff7d8d3983006b4a1ba0b5617b6ad",
+      "narrow16/reference.npz": "95f1258fba9882b7c7ae600f704f0465e7c6011ef149d2127ccf5a414ee9ecaa",
+      "narrow16/summary.json": "c3b0aa387b7cbd2cc57723e6232677eea19abb3f03dc1834cd8cdf1b32128452",
+      "provenance.json": "b60d13789966f2ce2fbb11a3c4de73f0886f2e952ba9e0254892c35c554f7dcc",
+      "subsets.json": "d3c3db7a92f3ffb0748039f63d7a0734bf38214032037ab67780d6182ad764b6",
+      "summary.json": "54e7f6d7e9995dbca90bdca3417457b075e99037dc9ecd6d6a1c0647ac102a9f"
+    },
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "validation_interval": 100,
+    "wall_seconds": 1800
+  },
+  "config_hash": "50f4b550d178fcd0fb219d97d6658f94774700d1c43182ea765915529b1205f7",
+  "limits": "One exact3armmatrix; no sweep/retry/adaptation; training-only fitted anchor"
+}
+```
+
+## BALANCE-REPLAY-PRE — Arm preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "acceptance": "Original raw energy AND force gates on fitting/anchor; force-only force success reported separately",
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "arm": "replay",
+  "config_hash": "410c77ee6e7a5a5c0b74577455971ecde7a096784bd28c328f9ce77ba515097d",
+  "expected_initial_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "limits": "n=1; anchor fully fitted; fixed whole-tree initialization calibration; force-only energy gauge unconstrained",
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "updates": 2000,
+  "wall_seconds": 1800,
+  "weights": {
+    "energy": 1.0,
+    "force": 1.0
+  }
+}
+```
+
+## BALANCE-REPLAY-RESULT — Arm outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.024702018838049,
+      "force_mse_eV2_per_A2": 0.8769996293603259
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+    "checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+    "config.json": "ce9bed374dd8e43ee0d3f742e11ded968aa6ecb998b2a3a7023739c8fdcde105",
+    "fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+    "history.json": "a0dec9c24f1a4d0b38fcff61e66bf28bc979c99e7dd5c04c01bbbc354f0b73a5",
+    "last.msgpack": "1966c79103e542e9bcf2b7deceebf0102e182a7b1532b3398c46281bdc53a831",
+    "provenance.json": "ccae192660c6b4adb657cd30d58fdb2c2482fbbddea011e0b042464e7eddc88c",
+    "reference.npz": "5ebb9dfb89f2c5df095a8d6f1dfe5fa2e1901b6dcfcf3159b417ccad5b724afd",
+    "summary.json": "125f303c78710b7697d6e829da82e2903c8b4f2760c165825fb3fb4b99b5237b"
+  },
+  "elapsed_seconds": 243.63797516690101,
+  "executed": true,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.08738058573272221,
+      "force_mse_eV2_per_A2": 0.9784403043672875
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "frame_exposures": 256000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000,
+  "warmup_frame_exposures": 128
+}
+```
+
+## BALANCE-BALANCED-PRE — Arm preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "acceptance": "Original raw energy AND force gates on fitting/anchor; force-only force success reported separately",
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "arm": "balanced",
+  "config_hash": "80b5c491bbd77527730318721e456699b553d9097d6f93e2b10e4d9cb2ec8997",
+  "expected_initial_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "limits": "n=1; anchor fully fitted; fixed whole-tree initialization calibration; force-only energy gauge unconstrained",
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "updates": 2000,
+  "wall_seconds": 1800,
+  "weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  }
+}
+```
+
+## BALANCE-BALANCED-RESULT — Arm outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.14981029569238652,
+      "force_mse_eV2_per_A2": 0.5562927944341675
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+    "checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+    "config.json": "446d95ef952249d64ca5598d2c9ad713af96c7758b87190b5beab2a1ec4da589",
+    "fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+    "history.json": "3d5f8541f36996b67cc061a753dbeafdf110d76a14306964ced5388b03973384",
+    "last.msgpack": "bdc60383661ec8000d1d5e76918560390432d194e0b169eb2758729dce97e099",
+    "provenance.json": "46bc63737b77c3aec012432ee0a41f1324319e1b4185fe0556d5dc83d42d13d7",
+    "reference.npz": "a87b9890d8ea7df874a182a70573b146afc795a36a2566c4966a3b2d2cd3466e",
+    "summary.json": "abde4733a1119ade837775fedb5ed93ef5fcebbd2543cce1b51bde1305005aa9"
+  },
+  "elapsed_seconds": 242.5499108750373,
+  "executed": true,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.4220107073579012,
+      "force_mse_eV2_per_A2": 0.6411855899465196
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "frame_exposures": 256000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000,
+  "warmup_frame_exposures": 128
+}
+```
+
+## BALANCE-FORCE-ONLY-PRE — Arm preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "acceptance": "Original raw energy AND force gates on fitting/anchor; force-only force success reported separately",
+  "anchor_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+  ],
+  "arm": "force-only",
+  "config_hash": "bcadd5ed7b1d0f56935c401d1abe8ebcbb2c6e7903b4379a6a7b840ba8593406",
+  "expected_initial_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "limits": "n=1; anchor fully fitted; fixed whole-tree initialization calibration; force-only energy gauge unconstrained",
+  "record_ids": [
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+    "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+    "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+    "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+  ],
+  "updates": 2000,
+  "wall_seconds": 1800,
+  "weights": {
+    "energy": 0.0,
+    "force": 2.0
+  }
+}
+```
+
+## FINDING-BALANCE-001 — Fixed balance improves force error but loses energy acceptance
+
+Replay completed2000updates and exhaustive fresh-process verification; all22both-partition E/F observations matched historical C exactly (maximum MSE difference0). Balanced completed2000updates/256000exposures, same fresh parameter/optimizer hashes, fresh-process verified,242.5499108750373s. Its fitting force fraction0.6411855899465196 (35.88144100534804% reduction from initial) improves over replay0.9784403043672875, while fitting energy fraction0.4220107073579012 fails the unchanged<0.1gate (replay0.08738058573272221 passed energy alone). Anchor E/F fractions0.14981029569238652/0.5562927944341675 also fail joint acceptance. This is a measured fixed-loss tradeoff, n=1fully-fitted train anchor; no causal attribution, tuning selection, capacity verdict or held-out claim. Force-only arm running; no full matrix interpretation yet.
+
+```json
+{
+  "balanced": {
+    "anchor_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.14981029569238652,
+        "force_mse_eV2_per_A2": 0.5562927944341675
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.00612983585312839,
+        "force_mse_eV2_per_A2": 0.0010133561081129107
+      }
+    },
+    "fit_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.4220107073579012,
+        "force_mse_eV2_per_A2": 0.6411855899465196
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.003751676427546992,
+        "force_mse_eV2_per_A2": 0.001408394821807022
+      }
+    }
+  },
+  "balanced_summary_sha256": "abde4733a1119ade837775fedb5ed93ef5fcebbd2543cce1b51bde1305005aa9",
+  "replay": {
+    "anchor_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.024702018838049,
+        "force_mse_eV2_per_A2": 0.8769996293603259
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.00612983585312839,
+        "force_mse_eV2_per_A2": 0.0010133561081129107
+      }
+    },
+    "fit_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.08738058573272221,
+        "force_mse_eV2_per_A2": 0.9784403043672875
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.003751676427546992,
+        "force_mse_eV2_per_A2": 0.001408394821807022
+      }
+    }
+  },
+  "replay_summary_sha256": "125f303c78710b7697d6e829da82e2903c8b4f2760c165825fb3fb4b99b5237b"
+}
+```
+
+## BALANCE-FORCE-ONLY-RESULT — Arm outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 55075.171126502115,
+      "force_mse_eV2_per_A2": 0.5059369229844992
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+    "checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+    "config.json": "52bcb13d741a24cdde22644245f0bc9a8a20704aa9bf62640887e61ef8b99d18",
+    "fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+    "history.json": "3eedbee2a881391caf0c01dc811f586ce77f1785f56e8e71e35b8b8a0a12b269",
+    "last.msgpack": "3b90337de97438f9ac5e83143265403a9fce59a175cac5653cec9e5077e00224",
+    "provenance.json": "ee3745b7beec73306168cbdc94588ac940a29be770fdda780d0fe9dacfe9bfe3",
+    "reference.npz": "07f5aacc1cbe91b57f21de888f14416ace7a10b3f45496184eec5adfaf3ad600",
+    "summary.json": "42e9158b66498ee9365911abeb697257ccdae6448a58743bebb850ce801cef7e"
+  },
+  "elapsed_seconds": 232.94204191700555,
+  "executed": true,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 90243.08877300369,
+      "force_mse_eV2_per_A2": 0.5699438664822202
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "frame_exposures": 256000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000,
+  "warmup_frame_exposures": 128
+}
+```
+
+## BALANCE-EXECUTION-RESULT — Fixed loss matrix outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "arm_statuses": {
+    "balanced": "completed",
+    "force-only": "completed",
+    "replay": "completed"
+  },
+  "balanced_joint_accepted": false,
+  "execution_valid": true,
+  "failure_reason": null,
+  "force_only_force_accepted": false,
+  "next_step": "review_fixed_loss_outcomes_before_new_intervention",
+  "source_hashes_unchanged": true,
+  "status": "completed",
+  "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+}
+```
+
+## FINDING-BALANCE-002 — Force-only improves fitting but fails the unchanged force gate
+
+Exact3arm matrix completed validly; no retries, adaptation, extra updates or test/validation evaluation. Force-only2000updates/256000training exposures,128discarded warmup exposures,232.94204191700555s, same fresh state and exhaustive fresh-process checkpoint verification. Fitting force fraction0.5699438664822202 (43.00561335177798% reduction from initial), anchor force fraction0.5059369229844992 (49.40630770155008% reduction), both remain above0.1. Balanced and force-only acceptance are false; full pilot remains pending. Force-only raw energy fractions90243.08877300369/55075.171126502115 are retained with unchanged offset: absolute energy gauge is unconstrained, and these failures alone do not prove destructive coupling. Removing the energy objective did not resolve force fitting at this fixed budget. No capacity theorem, Adam-causal finding, verdict on other weights/optimizers/budgets or held-out result. Next: review fixed outcomes before another separately twice-reviewed intervention.
+
+```json
+{
+  "all_sources_unchanged": true,
+  "execution_revision": "176af0427b053a5094f8c1e221193defd9a3a507",
+  "force_only": {
+    "anchor_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 55075.171126502115,
+        "force_mse_eV2_per_A2": 0.5059369229844992
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.00612983585312839,
+        "force_mse_eV2_per_A2": 0.0010133561081129107
+      }
+    },
+    "elapsed_seconds": 232.94204191700555,
+    "fit_gate": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 90243.08877300369,
+        "force_mse_eV2_per_A2": 0.5699438664822202
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.003751676427546992,
+        "force_mse_eV2_per_A2": 0.001408394821807022
+      }
+    },
+    "frame_exposures": 256000,
+    "initial_state_hashes": {
+      "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+      "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+    },
+    "warmup_frame_exposures": 128
+  },
+  "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+}
+```
+
+## VERIFY-BALANCE-001 — Saved-artifact reconciliation and retained verifier/report failures
+
+Independent JSON/checkpoint reconciliation verified all31coverage+38raw-calibration+1compact hashes, exact22observations/arm, both fixed initial baselines, ordered input IDs,128fit/16fully-fitted anchor,8064/1008force components, arm coefficient config/provenance agreement, fresh state identities,2000serialized Adam counts/update counters,256000exposures, checkpoint hashes and fresh-process probes, all final raw gates and replay0difference. The first auxiliary reconciliation script failed with KeyError anchor_frame_count: that summary key does not exist; corrected verifier uses saved checkpoint-verification anchor_record_count16. Original failure log retained, corrected reconciliation passed; no research rerun. First report build succeeded with nonblocking font-cache permission warnings, retained. Visual inspection/readback found duplicated historical provenance and broken table rows; regression failed1check9.21s, repair preserves all raw records/hashes and renders equal-group metrics as rows, omits nonmetric flags and redundant provenance copies. Presentation-only rebuild/full final verification follows. Initial replay preflight/initialization overlapped focused verification; observed elapsed times are not clean throughput comparisons.
+
+## REPORT-BALANCE-001 — Verified measured report and navigation
+
+Final147full-suite checks passed117.17s after report regression repair; alloriginal117checks remain covered. JSON-only report rebuilt from saved3arm outcomes, tables/force and energy figures visually inspected; all22scheduled observations retained, no bestcheckpoint/tuning. Compact presentation omits duplicated historical provenance while raw records and complete checksums remain preserved. Both loss-control acceptance flags false; full pilot pending. Source/hash/checkpoint independent reconciliation passed. Obsidian hub/findings refreshed viaCLI with backups/readback; final independent review pending, no production rerun.
+
+```json
+{
+  "compact_sha256": "c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f",
+  "figures": {
+    "loss-balance-energy.png": "720895c780df417c17063514328be70e41cbaca43d191171a3c5101b30e15838",
+    "loss-balance-force.png": "6499f0b7135971a09c06efa26064120191a9f186e12dbd81d2c863fea9ac2250"
+  },
+  "final_suite": "147passed117.17s",
+  "generator_sha256": "405dc96c6f1f77d0112c543df8ecdc8a4255eb033e4c51798343d0c84d5ef5aa",
+  "reconciliation_sha256": "c340a83cf727c94e8c38d0e097399d541735567de4b238069452d244d3fb994a",
+  "report_sha256": "e83aa5dddd6115c8329195b577109803973707cba7ff6f8cc118d83f4375a37a",
+  "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+}
+```

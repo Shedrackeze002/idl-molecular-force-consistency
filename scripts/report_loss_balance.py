@@ -20,7 +20,11 @@ def generate(root,output):
     source=json.loads((root/'summary.json').read_text());config=json.loads((root/'config.json').read_text())
     compact={**source,'config':config,'source_run_directory':str(root),'source_summary_sha256':digest(root/'summary.json'),
         'report_generator_sha256':digest(Path(__file__)),'matplotlib_version':matplotlib.__version__}
-    arms=source['arms'];compact['attempted_arms']=sum(bool(a.get('executed')) for a in arms.values())
+    arms=source['arms'];compact['arms']={n:{k:v for k,v in a.items() if k!='provenance'} for n,a in arms.items()}
+    if (root/'provenance.json').exists():
+        provenance=json.loads((root/'provenance.json').read_text())
+        compact['execution_provenance']={k:v for k,v in provenance.items() if k!='historical_reference'}
+    compact['attempted_arms']=sum(bool(a.get('executed')) for a in arms.values())
     compact['completed_arms']=sum(a.get('status')=='completed' for a in arms.values())
     compact['blocked_arms']=sum(a.get('status')=='blocked' for a in arms.values())
     compact['artifacts_sha256']={str(p.relative_to(root)):digest(p) for p in sorted(root.rglob('*')) if p.is_file()}
@@ -30,7 +34,7 @@ def generate(root,output):
     if any(a.get('history') for a in arms.values()):
         figs=output/'figures';figs.mkdir(exist_ok=True)
         for key,label in zip(KEYS,('Energy','Force')):
-            fig,axes=plt.subplots(2,2,figsize=(10,7),constrained_layout=True)
+            fig,axes=plt.subplots(2,2,figsize=(11,8),constrained_layout=True)
             for row,role in enumerate(('fitting','anchor')):
                 for col,xkey in enumerate(('update','elapsed_seconds')):
                     ax=axes[row,col]
@@ -71,16 +75,17 @@ def generate(root,output):
             if a.get(phase):
                 lines+=['',f'{phase}:','', '| Partition/group | Records | Energy MSE (eV²) | Force MSE (eV²/Å²) |','|---|---:|---:|---:|']
                 for role,metrics in a[phase].items():
-                    if not isinstance(metrics,dict):continue
+                    if not isinstance(metrics,dict) or not all(key in metrics for key in KEYS):continue
                     lines += [f"| {role} | {metrics.get('record_count','—')} | {fmt(metrics.get(KEYS[0]))} | {fmt(metrics.get(KEYS[1]))} |"]
                     for group,values in metrics.get('per_group',{}).items():
                         lines += [f"| {role}/{group} | {values.get('record_count','—')} | {fmt(values.get(KEYS[0]))} | {fmt(values.get(KEYS[1]))} |"]
-                    if 'equal_group' in metrics:lines += [f"Equal-group {role}: `{json.dumps(metrics['equal_group'],sort_keys=True)}`."]
+                    if 'equal_group' in metrics:
+                        values=metrics['equal_group'];lines += [f"| {role}/equal_group | — | {fmt(values.get(KEYS[0]))} | {fmt(values.get(KEYS[1]))} |"]
     lines+=['','## Interpretation and limitations','']
     if not valid:lines += ['Scientific interpretation blocked: execution, source identity or replay failed. Resolve recorded operational failures before comparing arms.',f"Failure: {source.get('failure_reason','see arm records')}."]
     elif balanced:lines += ['The balanced arm passed both raw gates on fitting and anchor at the fixed2000update endpoint. This motivates a separately reviewed pilot amendment; it does not authorize the full pilot or establish held-out performance.']
     else:lines += ['The balanced arm did not clear both joint gates at the fixed endpoint. Retain all three prescribed outcomes and review the measured tradeoffs before any new intervention. Force-only improvement is a separate ablation result.']
-    lines+=['','No causal attribution to Adam, no capacity theorem, no generalization claim: one frozen coefficient pair, one seed and a fully fitted anchor. Equality of initial whole-tree gradient norms does not imply equality of optimizer steps or sustained balance. These results do not decide other weights, architectures, optimizers or larger budgets. All scheduled observations and failed/blocked trials are retained.','',
+    lines+=['','Elapsed times include local runtime effects; focused verification overlapped replay preflight/initialization, so these are recorded timings rather than clean throughput comparisons. No causal attribution to Adam, no capacity theorem, no generalization claim: one frozen coefficient pair, one seed and a fully fitted anchor. Equality of initial whole-tree gradient norms does not imply equality of optimizer steps or sustained balance. These results do not decide other weights, architectures, optimizers or larger budgets. All scheduled observations and failed/blocked trials are retained.','',
         f"Next step: `{source.get('next_step','resolve_execution_failure')}`.",'','## Evidence','',
         f"Run `{root}`; summary SHA256 `{compact['source_summary_sha256']}`; generator SHA256 `{compact['report_generator_sha256']}`.",
         'Complete raw metrics, histories, calibration/source identities, initial hashes, per-group errors and artifact checksums: [loss-balance-diagnostics.json](loss-balance-diagnostics.json). Trial rationale/settings/outcomes/stops: [PAPER_EVIDENCE_LOG.md](PAPER_EVIDENCE_LOG.md), BALANCE entries. Rebuild from JSON only: `.venv/bin/python scripts/report_loss_balance.py`.','']

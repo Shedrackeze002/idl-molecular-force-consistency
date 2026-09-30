@@ -39,3 +39,15 @@ def test_force_only_success_never_promoted_to_joint_or_generalization(tmp_path):
     assert 'Balanced joint acceptance: **False**' in report and 'Force-only force acceptance: **True**' in report
     assert 'absolute energy gauge' in report and 'No causal attribution' in report and 'all 16 anchor records are fitted' in report
     assert 'Full pilot: **pending**' in report
+
+
+def test_compact_report_omits_duplicate_provenance_and_renders_one_metric_table(tmp_path):
+    metric={'record_count':1,'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3,'per_group':{'g':{'record_count':1,'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3}},'equal_group':{'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3}}
+    arm={'status':'completed','executed':True,'execution_valid':True,'updates':2000,'history':[],
+         'initial_metrics':{'fitting':metric,'anchor_fitted_flags':{'a':True}},'provenance':{'historical_reference':{'large_duplicated_history':'fixture'}}}
+    root=tmp_path/'raw';save(root,{'status':'completed','execution_valid':True,'arms':{n:arm for n in ('replay','balanced','force-only')}})
+    out=tmp_path/'reports';generator().generate(root,out)
+    c=json.loads((out/'loss-balance-diagnostics.json').read_text());md=(out/'loss-balance-diagnostics.md').read_text()
+    assert all('provenance' not in a for a in c['arms'].values())
+    assert '| anchor_fitted_flags |' not in md and 'Equal-group fitting:' not in md
+    assert '| fitting/equal_group |' in md and '| fitting/g |' in md
