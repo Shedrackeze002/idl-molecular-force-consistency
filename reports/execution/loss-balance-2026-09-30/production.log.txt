@@ -1,0 +1,71 @@
+{"arm": "replay", "update": 100, "fitting_force_mse": 0.014431123607378374, "anchor_force_mse": 0.00978201136690426, "elapsed_seconds": 17.81250270898454}
+{"arm": "replay", "update": 200, "fitting_force_mse": 0.014134890389165499, "anchor_force_mse": 0.009238481858465937, "elapsed_seconds": 30.16479241696652}
+{"arm": "replay", "update": 250, "fitting_force_mse": 0.01414410156071541, "anchor_force_mse": 0.009202327918365179, "elapsed_seconds": 36.33432833396364}
+{"arm": "replay", "update": 300, "fitting_force_mse": 0.014165334051633357, "anchor_force_mse": 0.00924967455050294, "elapsed_seconds": 42.46310316689778}
+{"arm": "replay", "update": 400, "fitting_force_mse": 0.014117533091359194, "anchor_force_mse": 0.009255174922495593, "elapsed_seconds": 54.22322558390442}
+{"arm": "replay", "update": 500, "fitting_force_mse": 0.014057023767563298, "anchor_force_mse": 0.009218740423038352, "elapsed_seconds": 65.43478154193144}
+{"arm": "replay", "update": 600, "fitting_force_mse": 0.013997662047807145, "anchor_force_mse": 0.009147936068936408, "elapsed_seconds": 76.57066029193811}
+{"arm": "replay", "update": 700, "fitting_force_mse": 0.013971355062935517, "anchor_force_mse": 0.009110193864034725, "elapsed_seconds": 87.72220483398996}
+{"arm": "replay", "update": 800, "fitting_force_mse": 0.014007185825603865, "anchor_force_mse": 0.009121711564790198, "elapsed_seconds": 99.23839949991088}
+{"arm": "replay", "update": 900, "fitting_force_mse": 0.014003565313336169, "anchor_force_mse": 0.009108962433299044, "elapsed_seconds": 111.25295016693417}
+{"arm": "replay", "update": 1000, "fitting_force_mse": 0.013981425991952061, "anchor_force_mse": 0.009085898847207669, "elapsed_seconds": 122.56561241694726}
+{"arm": "replay", "update": 1100, "fitting_force_mse": 0.013981925075457808, "anchor_force_mse": 0.00908360523367108, "elapsed_seconds": 134.0951478339266}
+{"arm": "replay", "update": 1200, "fitting_force_mse": 0.013959105022219497, "anchor_force_mse": 0.00905749578478128, "elapsed_seconds": 145.29194708389696}
+{"arm": "replay", "update": 1300, "fitting_force_mse": 0.013947765557769026, "anchor_force_mse": 0.009041387249489092, "elapsed_seconds": 156.41297545889392}
+{"arm": "replay", "update": 1400, "fitting_force_mse": 0.013921512797499322, "anchor_force_mse": 0.009012003589354738, "elapsed_seconds": 167.5476425839588}
+{"arm": "replay", "update": 1500, "fitting_force_mse": 0.013907377483129696, "anchor_force_mse": 0.008997935235843404, "elapsed_seconds": 179.35119641700294}
+{"arm": "replay", "update": 1600, "fitting_force_mse": 0.01386634960671642, "anchor_force_mse": 0.0089531738853536, "elapsed_seconds": 190.736240291968}
+{"arm": "replay", "update": 1700, "fitting_force_mse": 0.013860606660091233, "anchor_force_mse": 0.008954967742585427, "elapsed_seconds": 203.0987186669372}
+{"arm": "replay", "update": 1800, "fitting_force_mse": 0.013787873885220346, "anchor_force_mse": 0.008917280563445528, "elapsed_seconds": 215.13129916694015}
+{"arm": "replay", "update": 1900, "fitting_force_mse": 0.013809085971831215, "anchor_force_mse": 0.008909542003802406, "elapsed_seconds": 227.27135220891796}
+{"arm": "replay", "update": 2000, "fitting_force_mse": 0.013780302581181741, "anchor_force_mse": 0.00888712931225045, "elapsed_seconds": 239.02432758396026}
+{"arm": "balanced", "update": 100, "fitting_force_mse": 0.013196498058451038, "anchor_force_mse": 0.008727636532744215, "elapsed_seconds": 12.25886437506415}
+{"arm": "balanced", "update": 200, "fitting_force_mse": 0.013000019965648221, "anchor_force_mse": 0.00853526024308367, "elapsed_seconds": 23.518602750031278}
+{"arm": "balanced", "update": 250, "fitting_force_mse": 0.012901951306202575, "anchor_force_mse": 0.0084869391141874, "elapsed_seconds": 29.373816917068325}
+{"arm": "balanced", "update": 300, "fitting_force_mse": 0.012757963065889227, "anchor_force_mse": 0.008429549310040857, "elapsed_seconds": 35.024528666981496}
+{"arm": "balanced", "update": 400, "fitting_force_mse": 0.012403032203054729, "anchor_force_mse": 0.008384112836443584, "elapsed_seconds": 47.0474176669959}
+{"arm": "balanced", "update": 500, "fitting_force_mse": 0.012097314814180497, "anchor_force_mse": 0.008164694664016642, "elapsed_seconds": 58.723159125074744}
+{"arm": "balanced", "update": 600, "fitting_force_mse": 0.0117866336359047, "anchor_force_mse": 0.007828467099438411, "elapsed_seconds": 70.76040100003593}
+{"arm": "balanced", "update": 700, "fitting_force_mse": 0.01147432672420111, "anchor_force_mse": 0.007517924112851994, "elapsed_seconds": 82.54917837504763}
+{"arm": "balanced", "update": 800, "fitting_force_mse": 0.011154110516026274, "anchor_force_mse": 0.007226492284420111, "elapsed_seconds": 94.9541544590611}
+{"arm": "balanced", "update": 900, "fitting_force_mse": 0.010848133784535556, "anchor_force_mse": 0.007032789263198367, "elapsed_seconds": 107.6596725420095}
+{"arm": "balanced", "update": 1000, "fitting_force_mse": 0.010535356979841329, "anchor_force_mse": 0.006778267462762137, "elapsed_seconds": 119.46660058398265}
+{"arm": "balanced", "update": 1100, "fitting_force_mse": 0.010301996282691347, "anchor_force_mse": 0.00660748626557964, "elapsed_seconds": 131.1141402500216}
+{"arm": "balanced", "update": 1200, "fitting_force_mse": 0.010104568384989061, "anchor_force_mse": 0.0064519585914899775, "elapsed_seconds": 143.40607404196635}
+{"arm": "balanced", "update": 1300, "fitting_force_mse": 0.009942123156533299, "anchor_force_mse": 0.006309147738569974, "elapsed_seconds": 155.49357583397068}
+{"arm": "balanced", "update": 1400, "fitting_force_mse": 0.00979798916669636, "anchor_force_mse": 0.006207478955965502, "elapsed_seconds": 168.74795841705054}
+{"arm": "balanced", "update": 1500, "fitting_force_mse": 0.009637567909724809, "anchor_force_mse": 0.006076958040806758, "elapsed_seconds": 180.69348741706926}
+{"arm": "balanced", "update": 1600, "fitting_force_mse": 0.00950643001009423, "anchor_force_mse": 0.0059765855311580945, "elapsed_seconds": 192.18203687504865}
+{"arm": "balanced", "update": 1700, "fitting_force_mse": 0.009376146752092411, "anchor_force_mse": 0.005884429079324743, "elapsed_seconds": 203.395459667081}
+{"arm": "balanced", "update": 1800, "fitting_force_mse": 0.009303750728863754, "anchor_force_mse": 0.005822119543187576, "elapsed_seconds": 214.81618049996905}
+{"arm": "balanced", "update": 1900, "fitting_force_mse": 0.009138694563231515, "anchor_force_mse": 0.005695307441318751, "elapsed_seconds": 226.48860708402935}
+{"arm": "balanced", "update": 2000, "fitting_force_mse": 0.009030424646979587, "anchor_force_mse": 0.005637227011390634, "elapsed_seconds": 237.71685116703156}
+{"arm": "force-only", "update": 100, "fitting_force_mse": 0.013182549236621518, "anchor_force_mse": 0.00874794385529954, "elapsed_seconds": 12.143602499971166}
+{"arm": "force-only", "update": 200, "fitting_force_mse": 0.012911341182590191, "anchor_force_mse": 0.008478881696926543, "elapsed_seconds": 23.686947333975695}
+{"arm": "force-only", "update": 250, "fitting_force_mse": 0.01272628859012673, "anchor_force_mse": 0.00841063950534561, "elapsed_seconds": 29.442991749965586}
+{"arm": "force-only", "update": 300, "fitting_force_mse": 0.012502196594192112, "anchor_force_mse": 0.008342326353246634, "elapsed_seconds": 35.20556829194538}
+{"arm": "force-only", "update": 400, "fitting_force_mse": 0.012058035148637826, "anchor_force_mse": 0.007943013345369647, "elapsed_seconds": 46.64611016691197}
+{"arm": "force-only", "update": 500, "fitting_force_mse": 0.011457580836751647, "anchor_force_mse": 0.007387961659163245, "elapsed_seconds": 58.10518112499267}
+{"arm": "force-only", "update": 600, "fitting_force_mse": 0.010949210903621096, "anchor_force_mse": 0.007051910196467783, "elapsed_seconds": 69.49131058400963}
+{"arm": "force-only", "update": 700, "fitting_force_mse": 0.010525573618507443, "anchor_force_mse": 0.0066752482382147005, "elapsed_seconds": 80.79422670893837}
+{"arm": "force-only", "update": 800, "fitting_force_mse": 0.010180020672256405, "anchor_force_mse": 0.00637924336968179, "elapsed_seconds": 92.25608612492215}
+{"arm": "force-only", "update": 900, "fitting_force_mse": 0.00985625264373666, "anchor_force_mse": 0.006161976419648663, "elapsed_seconds": 103.60523337498307}
+{"arm": "force-only", "update": 1000, "fitting_force_mse": 0.009611408112199283, "anchor_force_mse": 0.006002027143610921, "elapsed_seconds": 114.873135834001}
+{"arm": "force-only", "update": 1100, "fitting_force_mse": 0.00937749549355517, "anchor_force_mse": 0.005876420467811485, "elapsed_seconds": 126.17846570897382}
+{"arm": "force-only", "update": 1200, "fitting_force_mse": 0.009246187095698136, "anchor_force_mse": 0.005808917923630018, "elapsed_seconds": 137.46660316700581}
+{"arm": "force-only", "update": 1300, "fitting_force_mse": 0.009012845340613465, "anchor_force_mse": 0.005680116974724364, "elapsed_seconds": 148.73241683398373}
+{"arm": "force-only", "update": 1400, "fitting_force_mse": 0.008847021987935395, "anchor_force_mse": 0.005596808293295863, "elapsed_seconds": 160.1900096249301}
+{"arm": "force-only", "update": 1500, "fitting_force_mse": 0.008694317757203524, "anchor_force_mse": 0.005509603860556245, "elapsed_seconds": 171.43424549989868}
+{"arm": "force-only", "update": 1600, "fitting_force_mse": 0.008555912966572788, "anchor_force_mse": 0.005420940501749255, "elapsed_seconds": 182.90681770897936}
+{"arm": "force-only", "update": 1700, "fitting_force_mse": 0.0084099044396945, "anchor_force_mse": 0.005353333677783485, "elapsed_seconds": 194.17020574992057}
+{"arm": "force-only", "update": 1800, "fitting_force_mse": 0.00843677178915392, "anchor_force_mse": 0.005489018221278951, "elapsed_seconds": 205.4563852919964}
+{"arm": "force-only", "update": 1900, "fitting_force_mse": 0.008142229091263423, "anchor_force_mse": 0.005190898319069334, "elapsed_seconds": 216.91299491690006}
+{"arm": "force-only", "update": 2000, "fitting_force_mse": 0.008027059902742316, "anchor_force_mse": 0.005126942712261935, "elapsed_seconds": 228.29312754189596}
+{
+  "status": "completed",
+  "execution_valid": true,
+  "balanced_joint_accepted": false,
+  "next_step": "review_fixed_loss_outcomes_before_new_intervention",
+  "full_pilot": "pending",
+  "failure_reason": null
+}

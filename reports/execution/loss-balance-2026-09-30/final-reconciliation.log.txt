@@ -1,0 +1,33 @@
+{
+  "coverage_sources": 31,
+  "calibration_raw": 38,
+  "calibration_compact": 1,
+  "arms": {
+    "balanced": {
+      "status": "completed",
+      "executed": true,
+      "updates": 2000,
+      "history_points": 22,
+      "fresh_process": "passed",
+      "elapsed_seconds": 242.5499108750373
+    },
+    "force-only": {
+      "status": "completed",
+      "executed": true,
+      "updates": 2000,
+      "history_points": 22,
+      "fresh_process": "passed",
+      "elapsed_seconds": 232.94204191700555
+    },
+    "replay": {
+      "status": "completed",
+      "executed": true,
+      "updates": 2000,
+      "history_points": 22,
+      "fresh_process": "passed",
+      "elapsed_seconds": 243.63797516690101
+    }
+  },
+  "matrix_execution_valid": true,
+  "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+}

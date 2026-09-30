@@ -1,0 +1,119 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_partial_and_preflight_reports_preserve_actual_counts[False] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-123/test_partial_and_preflight_rep0')
+attempted = False
+
+    @pytest.mark.parametrize('attempted',[False,True])
+    def test_partial_and_preflight_reports_preserve_actual_counts(tmp_path,attempted):
+        arms={name:{'status':'blocked','executed':False,'updates':0} for name in ('replay','balanced','force-only')}
+        if attempted:arms['replay']={'status':'failed','executed':True,'updates':17,'failure_reason':'wall cap','history':[]}
+        root=tmp_path/'raw';save(root,{'status':'failed','execution_valid':False,'arms':arms,'failure_reason':'fixture failure','next_step':'resolve_execution_failure'})
+>       out=tmp_path/'reports';generator().generate(root,out)
+                               ^^^^^^^^^^^
+
+tests/test_loss_balance_report.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_loss_balance_report.py:9: in generator
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10ddca4e0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_partial_and_preflight_reports_preserve_actual_counts[True] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-123/test_partial_and_preflight_rep1')
+attempted = True
+
+    @pytest.mark.parametrize('attempted',[False,True])
+    def test_partial_and_preflight_reports_preserve_actual_counts(tmp_path,attempted):
+        arms={name:{'status':'blocked','executed':False,'updates':0} for name in ('replay','balanced','force-only')}
+        if attempted:arms['replay']={'status':'failed','executed':True,'updates':17,'failure_reason':'wall cap','history':[]}
+        root=tmp_path/'raw';save(root,{'status':'failed','execution_valid':False,'arms':arms,'failure_reason':'fixture failure','next_step':'resolve_execution_failure'})
+>       out=tmp_path/'reports';generator().generate(root,out)
+                               ^^^^^^^^^^^
+
+tests/test_loss_balance_report.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_loss_balance_report.py:9: in generator
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10ddcbf80>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_force_only_success_never_promoted_to_joint_or_generalization _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-123/test_force_only_success_never_0')
+
+    def test_force_only_success_never_promoted_to_joint_or_generalization(tmp_path):
+        arms={name:{'status':'completed','executed':True,'execution_valid':True,'updates':2000,
+            'fit_gate':{'accepted':False,'fraction_remaining':{'energy_mse_eV2':.8,'force_mse_eV2_per_A2':.05}},
+            'anchor_gate':{'accepted':False,'fraction_remaining':{'energy_mse_eV2':.8,'force_mse_eV2_per_A2':.05}},
+            'history':[]} for name in ('replay','balanced','force-only')}
+        root=tmp_path/'raw';save(root,{'status':'completed','execution_valid':True,'balanced_joint_accepted':False,'force_only_force_accepted':True,'arms':arms,'next_step':'review_fixed_loss_outcomes_before_new_intervention'})
+>       out=tmp_path/'reports';generator().generate(root,out);report=(out/'loss-balance-diagnostics.md').read_text()
+                               ^^^^^^^^^^^
+
+tests/test_loss_balance_report.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_loss_balance_report.py:9: in generator
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10ddc9370>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_loss_balance.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______________ test_raw_calibration_is_rechecked_after_each_arm _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ddcacc0>
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-123/test_raw_calibration_is_rechec0')
+
+    def test_raw_calibration_is_rechecked_after_each_arm(monkeypatch,tmp_path):
+        c=json.loads(CONFIG.read_text());compact=json.loads(Path(c['calibration_path']).read_text())
+        original=runs.sha256
+        def changed(path):
+            if str(path)==str(Path(c['calibration_run'])/'fresh-C-fitting/observations.json'):return 'changed'
+            return original(path)
+        monkeypatch.setattr(runs,'sha256',changed)
+        with pytest.raises(ValueError,match='Calibration raw identity'):
+>           runs.verify_calibration_hashes(c)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'force_consistency.loss_balance_runs' has no attribute 'verify_calibration_hashes'
+
+tests/test_loss_balance_runs.py:117: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_loss_balance_report.py::test_partial_and_preflight_reports_preserve_actual_counts[False]
+FAILED tests/test_loss_balance_report.py::test_partial_and_preflight_reports_preserve_actual_counts[True]
+FAILED tests/test_loss_balance_report.py::test_force_only_success_never_promoted_to_joint_or_generalization
+FAILED tests/test_loss_balance_runs.py::test_raw_calibration_is_rechecked_after_each_arm
+4 failed, 12 deselected in 0.73s

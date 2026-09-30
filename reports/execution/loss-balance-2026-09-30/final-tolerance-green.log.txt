@@ -1,0 +1,71 @@
+...................F......                                               [100%]
+=================================== FAILURES ===================================
+_______ test_frozen_replay_tolerance_rejected_before_loading[tolerance2] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11735ed50>
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-135/test_frozen_replay_tolerance_r2')
+tolerance = {'atol': nan, 'rtol': 1e-08}
+
+    @pytest.mark.parametrize('tolerance',[None,{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+    def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tmp_path,tolerance):
+        c=json.loads(CONFIG.read_text())
+        if tolerance is None:c.pop('replay_tolerance')
+        else:c['replay_tolerance']=tolerance
+        def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+        monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+        with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+        c['run_directory']=str(tmp_path/'run');c.pop('evidence_log')
+>       result=runs.diagnose_loss_balance(c)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_loss_balance_runs.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/loss_balance_runs.py:122: in diagnose_loss_balance
+    root.mkdir(parents=True,exist_ok=True);write_json(root/'config.json',config);stage='preflight'
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/force_consistency/data/prepare.py:58: in write_json
+    Path(path).write_text(json.dumps(payload,sort_keys=True,indent=2,allow_nan=False)+'\n')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:202: in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:432: in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:406: in _iterencode_dict
+    yield from chunks
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:398: in _iterencode_dict
+    yield _floatstr(value)
+          ^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+o = nan, allow_nan = False, _repr = <slot wrapper '__repr__' of 'float' objects>
+_inf = inf, _neginf = -inf
+
+    def floatstr(o, allow_nan=self.allow_nan,
+            _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+        # Check for specials.  Note that this type of test is processor
+        # and/or platform-specific, so do tests which don't depend on the
+        # internals.
+    
+        if o != o:
+            text = 'NaN'
+        elif o == _inf:
+            text = 'Infinity'
+        elif o == _neginf:
+            text = '-Infinity'
+        else:
+            return _repr(o)
+    
+        if not allow_nan:
+>           raise ValueError(
+                "Out of range float values are not JSON compliant: " +
+                repr(o))
+E           ValueError: Out of range float values are not JSON compliant: nan
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:240: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_loss_balance_runs.py::test_frozen_replay_tolerance_rejected_before_loading[tolerance2]
+1 failed, 25 passed in 10.98s

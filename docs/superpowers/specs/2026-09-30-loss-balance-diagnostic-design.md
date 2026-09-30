@@ -35,3 +35,7 @@ Tests: weighted loss/gradient against independently hand-composed energy+coordin
 ## Both-review clarifications (no protocol change)
 
 Both independent reviewers cleared implementation/one execution. Whole-tree energy/force calibration includes energy-only bias norm59.332970471878184 and head-kernel norm41.509293563670504; initially equal whole-tree gradients are not equal shared-parameter gradients. Force-only leaves absolute energy gauge unconstrained; preserve raw gates and never posthoc recenter or interpret its energy failure alone as coupling destruction. Arm config/provenance must explicitly pin selected coefficients and match the factory. Replay uses dynamic default builder; new replay verifier handles both partitions/nested histories. Every fresh arm reconciles BOTH initial fitting and anchor raw MSE with historical fixed baselines. A completed replay with comparison failure retains its artifacts and separate comparison-failure record, blocks candidates. Force-only mixed-derivative witness uses a nonzero head.
+
+## Execution status added after completion
+
+The proposed protocol above was executed once on176af04. All3arms operationallyvalid, replayexact, balancedjoint andforceonlyforce acceptancefalse. Final152tests pass afterauthor-verified exacttolerance guard fix fromindependentreview. No frozen numerical settings changed/retry/newtrial. See reports/loss-balance-execution-record.md and append-only evidence for measuredresults/limits.

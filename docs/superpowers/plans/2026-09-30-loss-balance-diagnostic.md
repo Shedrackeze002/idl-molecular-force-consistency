@@ -30,30 +30,32 @@
 **Files:** create src/force_consistency/loss_balance.py, tests/test_loss_balance.py; modify src/force_consistency/coverage_runs.py run_coverage_arm signature/step selection only.
 **Interfaces:** validate_weights(weights:dict)->tuple[float,float]; weighted_loss(params,batch,model,normalization,weights)->(scalar,raw_metrics); accumulated_weighted_loss_and_grad(params,batches,model,normalization,weights)->((scalar,raw_metrics),grad_tree); build_weighted_step(model,normalization,learning_rate,weights)->step callable with prepare hook; run_coverage_arm(...,*,step_factory=None).
 
-- [ ] Write failing independent weighted objective/gradient and3/3/1chunk tests, witness mixed force-backbone gradients, negative/nonfinite/allzero rejection, positive coefficient sum2, single Adam count/update equality and force-only bias stability. (1,1) exact delegated baseline; incoming trees unchanged.
-- [ ] Watch RED missing helper; implement isolated functions/cache JIT weighted loss, sequential chunk weighting then one Adam apply;1/1 delegate existing builder exactly, no baseline loss changes. Test actual factory injection with tiny2-update/fresh-process run and default monkeypatch regression.
-- [ ] Run .venv/bin/pytest -q tests/test_loss_balance.py tests/test_coverage.py; expect GREEN. Log meaningful failed checks/full suite appropriately; commit scoped.
+- [x] Write failing independent weighted objective/gradient and3/3/1chunk tests, witness mixed force-backbone gradients, negative/nonfinite/allzero rejection, positive coefficient sum2, single Adam count/update equality and force-only bias stability. (1,1) exact delegated baseline; incoming trees unchanged.
+- [x] Watch RED missing helper; implement isolated functions/cache JIT weighted loss, sequential chunk weighting then one Adam apply;1/1 delegate existing builder exactly, no baseline loss changes. Test actual factory injection with tiny2-update/fresh-process run and default monkeypatch regression.
+- [x] Run .venv/bin/pytest -q tests/test_loss_balance.py tests/test_coverage.py; expect GREEN. Log meaningful failed checks/full suite appropriately; commit scoped.
 
 ### Task 2: Frozen calibration, replay, matrix controller and CLI
 
 **Files:** create src/force_consistency/loss_balance_runs.py, tests/test_loss_balance_runs.py; modify cli.py.
 **Interfaces:** balance_preflight(config)->(train,manifest,norm,selected,historical,calibration); verify_balance_replay(current,source,tolerance)->dict; execute_balance_matrix(root,runner,replay)->dict; diagnose_loss_balance(config)->dict. CLI diagnose-loss-balance --config.
 
-- [ ] Tests stale/incomplete31pins or calibration hash precede loader, bad ratio/count/update/IDs/state/weights rejects, historical final not passed as initial; engineering tiny-run fresh hashes/checkpoint probe. Replay both partition/errors/allsource22updates, missing/duplicate/mismatch blocks balanced/control. Protected dirs, partial exceptions retained without collisions, wall/nonfinite/downstream blocked and correct repair nextstep. RED then implementation.
-- [ ] Reuse load_gradient_sources for existing full source checks; verify calibration JSON hash plus complete38raw artifact index under calibration_run before loader and exact formula/source metadata against verified fresh state/subsets. Save current versus historical provenance/config/subsets/source calibration. No calibration rerun or adaptation. Each new arm invokes run_coverage_arm with isolated weights factory, immutable fixed-baseline gates and fresh expected hashes.
-- [ ] Log per-arm rationale/config/controls/gates before running, outcomes/stops/hashes immediately. Incremental root summaries, failed attempted versus blocked distinct. Controller validity all arms finite/fullcap/freshprocess/replay, never defined by learning success. Freshprocess predictions via existing coverage_probe.
-- [ ] Run .venv/bin/pytest -q tests/test_loss_balance_runs.py tests/test_loss_balance.py tests/test_coverage_matrix.py; expect GREEN. Full suite117prior+new before production; commit code/prospective evidence.
+- [x] Tests stale/incomplete31pins or calibration hash precede loader, bad ratio/count/update/IDs/state/weights rejects, historical final not passed as initial; engineering tiny-run fresh hashes/checkpoint probe. Replay both partition/errors/allsource22updates, missing/duplicate/mismatch blocks balanced/control. Protected dirs, partial exceptions retained without collisions, wall/nonfinite/downstream blocked and correct repair nextstep. RED then implementation.
+- [x] Reuse load_gradient_sources for existing full source checks; verify calibration JSON hash plus complete38raw artifact index under calibration_run before loader and exact formula/source metadata against verified fresh state/subsets. Save current versus historical provenance/config/subsets/source calibration. No calibration rerun or adaptation. Each new arm invokes run_coverage_arm with isolated weights factory, immutable fixed-baseline gates and fresh expected hashes.
+- [x] Log per-arm rationale/config/controls/gates before running, outcomes/stops/hashes immediately. Incremental root summaries, failed attempted versus blocked distinct. Controller validity all arms finite/fullcap/freshprocess/replay, never defined by learning success. Freshprocess predictions via existing coverage_probe.
+- [x] Run .venv/bin/pytest -q tests/test_loss_balance_runs.py tests/test_loss_balance.py tests/test_coverage_matrix.py; expect GREEN. Full suite117prior+new before production; commit code/prospective evidence.
 
 ### Task 3: Once-only execution, balanced report, review and navigation
 
 **Files:** create scripts/report_loss_balance.py, tests/test_loss_balance_report.py; reports/loss-balance-diagnostics.md/json/figures/execution record and final review after trials.
 **Interfaces:** report generate(root:Path,output:Path)->None reads savedJSON only; no arrays/model execution.
 
-- [ ] Report tests partial/preflight/blocked counts, force-only force success without joint success, no fictitious causal/held-out claims. RED then derive raw endpoint/gate/status/compute tables and all22curves with scheduled checkpoints; initial+final common baseline and source/calibration/generator/run hashes. Operational invalidity gates scientific interpretation.
-- [ ] Full suite GREEN, then exact reviewed config ONCE: replay -> balanced -> force-only. All outcomes unknown; failures/blocked preserved, no extraattempt. Source/calibration hashes checked again after each arm/end.
-- [ ] Reconcile histories/metrics/gates/counts/init/checkpoints/replay/provenance and raw/compact/hash totals. Generate measured scientific plots, visually inspect, record every failed trial/step and limitations. Update Obsidian via CLI with backups/readback.
-- [ ] Fresh independent final review using most capable model; resolve Important/Critical through RED-to-GREEN/full suite without unreviewed research rerun. Mark plan/ledger complete, archive durable evidence locally, preserve workspaces/branch/user changes.
+- [x] Report tests partial/preflight/blocked counts, force-only force success without joint success, no fictitious causal/held-out claims. RED then derive raw endpoint/gate/status/compute tables and all22curves with scheduled checkpoints; initial+final common baseline and source/calibration/generator/run hashes. Operational invalidity gates scientific interpretation.
+- [x] Full suite GREEN, then exact reviewed config ONCE: replay -> balanced -> force-only. All outcomes unknown; failures/blocked preserved, no extraattempt. Source/calibration hashes checked again after each arm/end.
+- [x] Reconcile histories/metrics/gates/counts/init/checkpoints/replay/provenance and raw/compact/hash totals. Generate measured scientific plots, visually inspect, record every failed trial/step and limitations. Update Obsidian via CLI with backups/readback.
+- [x] Fresh independent final review using most capable model; resolve Important/Critical through RED-to-GREEN/full suite without unreviewed research rerun. Mark plan/ledger complete, archive durable evidence locally, preserve workspaces/branch/user changes.
 
 ## Decision after this milestone
 
 Balanced full gate pass only motivates separately reviewed pilot amendment; mixed E/F outcomes are tradeoffs; force-only success not balanced acceptance. Operational failure requires repair before interpretation. Failure under fixed arms is not a capacity theorem or a negative verdict on other weights/optimizers. No automatic broader training or parameter tuning.
+
+Execution complete30September2026: exactmatrixonce, learninggatesfailed, finalreviewfindingrepaired,152tests pass. Evidence/report/executionrecord retain alloutcomes; no broadertraining authorized.

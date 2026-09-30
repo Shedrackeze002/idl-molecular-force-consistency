@@ -1,0 +1,97 @@
+{
+  "result": "passed",
+  "source_hashes": 31,
+  "raw_calibration_hashes": 38,
+  "compact_hashes": 1,
+  "run_artifact_hashes": 31,
+  "replay_exact_comparisons": 88,
+  "arms": {
+    "replay": {
+      "updates": 2000,
+      "frame_exposures": 256000,
+      "elapsed_seconds": 243.63797516690101,
+      "fit_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.08738058573272221,
+          "force_mse_eV2_per_A2": 0.9784403043672875
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.024702018838049,
+          "force_mse_eV2_per_A2": 0.8769996293603259
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      }
+    },
+    "balanced": {
+      "updates": 2000,
+      "frame_exposures": 256000,
+      "elapsed_seconds": 242.5499108750373,
+      "fit_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.4220107073579012,
+          "force_mse_eV2_per_A2": 0.6411855899465196
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.14981029569238652,
+          "force_mse_eV2_per_A2": 0.5562927944341675
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      }
+    },
+    "force-only": {
+      "updates": 2000,
+      "frame_exposures": 256000,
+      "elapsed_seconds": 232.94204191700555,
+      "fit_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 90243.08877300369,
+          "force_mse_eV2_per_A2": 0.5699438664822202
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 55075.171126502115,
+          "force_mse_eV2_per_A2": 0.5059369229844992
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      }
+    }
+  }
+}

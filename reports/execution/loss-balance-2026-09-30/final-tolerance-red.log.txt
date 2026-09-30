@@ -1,0 +1,120 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_frozen_replay_tolerance_rejected_before_loading[tolerance0] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108e46390>
+tolerance = {'atol': 1.0, 'rtol': 1.0}
+
+    @pytest.mark.parametrize('tolerance',[{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+    def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tolerance):
+        c=json.loads(CONFIG.read_text());c['replay_tolerance']=tolerance
+        def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+        monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+>       with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_loss_balance_runs.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/loss_balance_runs.py:60: in balance_preflight
+    train,manifest,norm,selected,fresh,final,historical=load_gradient_sources(config)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = ({'arms': {'balanced': {'energy': 0.014584365670390719, 'force': 1.9854156343296092}, 'force-only': {'energy': 0.0, 'f...': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', 'calibration_energy_norm': 72.41148277153111, ...},)
+k = {}
+
+>   def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Data opened before frozen replay tolerance check
+
+tests/test_loss_balance_runs.py:145: AssertionError
+_______ test_frozen_replay_tolerance_rejected_before_loading[tolerance1] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10f40a9f0>
+tolerance = {'atol': nan, 'rtol': 1e-08}
+
+    @pytest.mark.parametrize('tolerance',[{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+    def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tolerance):
+        c=json.loads(CONFIG.read_text());c['replay_tolerance']=tolerance
+        def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+        monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+>       with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_loss_balance_runs.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/loss_balance_runs.py:60: in balance_preflight
+    train,manifest,norm,selected,fresh,final,historical=load_gradient_sources(config)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = ({'arms': {'balanced': {'energy': 0.014584365670390719, 'force': 1.9854156343296092}, 'force-only': {'energy': 0.0, 'f...': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', 'calibration_energy_norm': 72.41148277153111, ...},)
+k = {}
+
+>   def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Data opened before frozen replay tolerance check
+
+tests/test_loss_balance_runs.py:145: AssertionError
+_______ test_frozen_replay_tolerance_rejected_before_loading[tolerance2] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10f4ff0b0>
+tolerance = {'atol': 1e-10}
+
+    @pytest.mark.parametrize('tolerance',[{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+    def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tolerance):
+        c=json.loads(CONFIG.read_text());c['replay_tolerance']=tolerance
+        def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+        monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+>       with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_loss_balance_runs.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/loss_balance_runs.py:60: in balance_preflight
+    train,manifest,norm,selected,fresh,final,historical=load_gradient_sources(config)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = ({'arms': {'balanced': {'energy': 0.014584365670390719, 'force': 1.9854156343296092}, 'force-only': {'energy': 0.0, 'f...': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', 'calibration_energy_norm': 72.41148277153111, ...},)
+k = {}
+
+>   def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Data opened before frozen replay tolerance check
+
+tests/test_loss_balance_runs.py:145: AssertionError
+_______ test_frozen_replay_tolerance_rejected_before_loading[tolerance3] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10f4fdd30>
+tolerance = {'atol': 1e-10, 'rtol': 1e-08, 'equal_nan': True}
+
+    @pytest.mark.parametrize('tolerance',[{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+    def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tolerance):
+        c=json.loads(CONFIG.read_text());c['replay_tolerance']=tolerance
+        def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+        monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+>       with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_loss_balance_runs.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/loss_balance_runs.py:60: in balance_preflight
+    train,manifest,norm,selected,fresh,final,historical=load_gradient_sources(config)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = ({'arms': {'balanced': {'energy': 0.014584365670390719, 'force': 1.9854156343296092}, 'force-only': {'energy': 0.0, 'f...': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', 'calibration_energy_norm': 72.41148277153111, ...},)
+k = {}
+
+>   def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Data opened before frozen replay tolerance check
+
+tests/test_loss_balance_runs.py:145: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_loss_balance_runs.py::test_frozen_replay_tolerance_rejected_before_loading[tolerance0]
+FAILED tests/test_loss_balance_runs.py::test_frozen_replay_tolerance_rejected_before_loading[tolerance1]
+FAILED tests/test_loss_balance_runs.py::test_frozen_replay_tolerance_rejected_before_loading[tolerance2]
+FAILED tests/test_loss_balance_runs.py::test_frozen_replay_tolerance_rejected_before_loading[tolerance3]
+4 failed, 17 deselected in 0.84s

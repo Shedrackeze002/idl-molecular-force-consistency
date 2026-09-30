@@ -3970,3 +3970,46 @@ Final147full-suite checks passed117.17s after report regression repair; allorigi
   "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
 }
 ```
+
+## IMPL-BALANCE-004 — Independent final review and replay-tolerance guard repair
+
+Fresh independent gpt-6-astra reviewer confirmed all31coverage+38raw-calibration+compact/report/figure identities,88exactreplay values, input/config/weights, endpoint gates and2000serializedAdamcounts.19focused regressions passed10.65s, two numerical/source-loading fixtures intentionally deselected; fullsuite inspected as author evidence. One Important defect: preflight did not enforce prescribed replay tolerance, permitting altered config to loosen identity acceptance. Current measured configuration used exact1e-10/1e-8 and matched all88values exactly, so actual results remain valid. No Critical/minors. Review in docs/reviews/2026-09-30-loss-balance-final-review.md, witness/reconciliation/logs retained. Declined broaderweights/capacity/optimizer/budgets/heldout/cause/pilot/newproduction judgments remain outside scope, as prescribed.
+
+Author verified root cause: configured tolerance forwarded unchecked. Four preloader regressions failed0.84s; complete five missing/loose/nonfinite/malformed/extra-key regressions failed0.78s. Narrow exacttolerance guard now rejects before source/data access, tests also require allthree arms blocked on altered config. Focused/full outcomes follow. This enforces existing reviewed settings, no material protocol revision or research rerun. Reviewer evaluated pre-fix code and supported measured artifacts; author verification, not a second review, will establish the repair.
+
+## IMPL-BALANCE-004A — Nonfinite fixture contract correction
+
+First repair-focused run retained1failed25passed10.98s. The preloader rejection passed, but the NaN downstream fixture expected saved blocked summaries for a configuration that cannot be serialized by existing strictJSON writer (allow_nan=False). Stack trace identified rejection before config persistence/data loading, not weakened tolerance acceptance. Corrected the engineering assertion: missing/loose/malformed/extra-key JSON configurations save blocked arms; nonfinite input raises strictJSON ValueError before any arm exists. No trainer/source/research change; exactpreflight tolerance enforcement remains. Originalfailed log and corrected outcome retained. This supplements the earlier generic blocked-arm claim for unpersistable nonfinite input.
+
+## IMPL-BALANCE-005 — Final verified review repair and unchanged research evidence
+
+Exacttolerance guard and corrected strictJSON engineering fixtures passed26focused checks11.55s; full152checks passed110.24s. No remaining Critical/Important findings or minors; reviewer independently assessed pre-fix evidence, author verified repair without secondreview. Measuredmatrix executed once, all3arms valid, balancedjoint/forceonlyforce gatesfalse, fullpilotpending; original/recent failedlearning trials retained. All31coverage+38rawcalibration+compact/run/report/generator/figures unchanged after guard repair. No additionaltraining, newweights/adaptation/seed/architecture/budget/GPU/test/validation trial. Next: review fixedlossoutcomes beforeanother separatelytwice-reviewed intervention. Localbranch/reviewfolders preserved; proposal.pdf deletion and Group9.pdf untouched.
+
+```json
+{
+  "compact_sha256": "c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f",
+  "final_suite": "152passed110.24s",
+  "focused": "26passed11.55s",
+  "generator_sha256": "405dc96c6f1f77d0112c543df8ecdc8a4255eb033e4c51798343d0c84d5ef5aa",
+  "logs": {
+    "final-fix-suite.log": "7899a8084a94975ee5a582d823a5784e427e85bbacd190741e559fecb3e191f5",
+    "final-reconciliation.log": "c340a83cf727c94e8c38d0e097399d541735567de4b238069452d244d3fb994a",
+    "final-tolerance-complete-red.log": "4031cf6c5c51e7f4463e1da913c4515ce756f0cc4fae318ea43faf5113e93a51",
+    "final-tolerance-corrected-green.log": "fa2b08ca2668c03cf3aa5fffaf0370c8383576c405fe3c16e78ced35b4263b6d",
+    "final-tolerance-green.log": "dbc261032a720bf6aec18c92f33283748d9b8107301750adb0a77805d9c04c64",
+    "final-tolerance-red.log": "ba2188d431753956b603ec19c7eb2c6b19a28bde437dec0b0fb9347aebc0ea2c"
+  },
+  "report_sha256": "e83aa5dddd6115c8329195b577109803973707cba7ff6f8cc118d83f4375a37a",
+  "research_repeated": false,
+  "review_sha256": "e450ef4e87a20b58d429a8abf16346396161b84f3f291f0f9807a852423bc60e",
+  "summary_sha256": "7d74cb95ae16f7503da5098fcfb0a6b7bbf9f74a6edc975238dac47a154bdd49"
+}
+```
+
+## MEMORY-BALANCE-001 — Final navigation verification and retained assertion failure
+
+Obsidian hub/findings finalized throughCLI, backups/readbacks retained. Hub verified immediately. First findings assertion failed because it searched the entire append-only findings history for any reviewpending text, including an older gradient-stage note followed by its completion. Current loss-control section already correctly stated reviewcomplete/guardrepair/152tests. Scoped currentsection read-only verification passed; no duplicate note append/write occurred. Repository retains authoritative numerical results; navigation agrees on failedlearninggates, pendingpilot and separatelyreviewed nextintervention.
+
+## ARCHIVE-BALANCE-001 — Durable completion records, preserved local workspace
+
+Complete verified execution/review/test/notes/failedcheck records copied to reports/execution/loss-balance-2026-09-30; 47artifact byte/hash identities verified, reviewpackage losslessly compressed and verified. Original workspace/allreviewfolders and allrawruns remain in place. ManifestSHA256 ebab5da3dc451e31c66cbaedd72ffa797143c9e76a5425841f0852e68cb8d8f3. Localbranch retained; no merge/push/cleanup. No new product change after152test green; no numerical research rerun.

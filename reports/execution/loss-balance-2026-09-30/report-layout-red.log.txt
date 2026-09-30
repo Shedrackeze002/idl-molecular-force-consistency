@@ -1,0 +1,31 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_compact_report_omits_duplicate_provenance_and_renders_one_metric_table __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-130/test_compact_report_omits_dupl0')
+
+    def test_compact_report_omits_duplicate_provenance_and_renders_one_metric_table(tmp_path):
+        metric={'record_count':1,'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3,'per_group':{'g':{'record_count':1,'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3}},'equal_group':{'energy_mse_eV2':.2,'force_mse_eV2_per_A2':.3}}
+        arm={'status':'completed','executed':True,'execution_valid':True,'updates':2000,'history':[],
+             'initial_metrics':{'fitting':metric,'anchor_fitted_flags':{'a':True}},'provenance':{'historical_reference':{'large_duplicated_history':'fixture'}}}
+        root=tmp_path/'raw';save(root,{'status':'completed','execution_valid':True,'arms':{n:arm for n in ('replay','balanced','force-only')}})
+        out=tmp_path/'reports';generator().generate(root,out)
+        c=json.loads((out/'loss-balance-diagnostics.json').read_text());md=(out/'loss-balance-diagnostics.md').read_text()
+>       assert all('provenance' not in a for a in c['arms'].values())
+E       assert False
+E        +  where False = all(<generator object test_compact_report_omits_duplicate_provenance_and_renders_one_metric_table.<locals>.<genexpr> at 0x10cc7e260>)
+
+tests/test_loss_balance_report.py:51: AssertionError
+----------------------------- Captured stderr call -----------------------------
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib:__init__.py:577 /Users/shedrackeze/.matplotlib is not a writable directory
+WARNING  matplotlib:__init__.py:596 Matplotlib created a temporary cache directory at /var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/matplotlib-v9orqha0 because there was an issue with the default path (/Users/shedrackeze/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+=========================== short test summary info ============================
+FAILED tests/test_loss_balance_report.py::test_compact_report_omits_duplicate_provenance_and_renders_one_metric_table
+1 failed, 3 deselected in 9.21s

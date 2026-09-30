@@ -137,3 +137,22 @@ def test_calibration_metadata_rejected_even_with_matching_file_hashes(tmp_path,m
     def forbidden(*a,**k):raise AssertionError('Data opened before calibration metadata check')
     monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
     with pytest.raises(ValueError):runs.balance_preflight(c)
+
+
+@pytest.mark.parametrize('tolerance',[None,{'atol':1.,'rtol':1.},{'atol':float('nan'),'rtol':1e-8},{'atol':1e-10},{'atol':1e-10,'rtol':1e-8,'equal_nan':True}])
+def test_frozen_replay_tolerance_rejected_before_loading(monkeypatch,tmp_path,tolerance):
+    c=json.loads(CONFIG.read_text())
+    if tolerance is None:c.pop('replay_tolerance')
+    else:c['replay_tolerance']=tolerance
+    def forbidden(*a,**k):raise AssertionError('Data opened before frozen replay tolerance check')
+    monkeypatch.setattr(runs,'load_gradient_sources',forbidden)
+    with pytest.raises(ValueError,match='Frozen replay tolerance'):runs.balance_preflight(c)
+    c['run_directory']=str(tmp_path/'run');c.pop('evidence_log')
+    # Nonfinite input cannot be persisted as strict JSON; rejection still precedes loading.
+    if tolerance is not None and any(isinstance(v,float) and v!=v for v in tolerance.values()):
+        with pytest.raises(ValueError,match='Out of range float'):runs.diagnose_loss_balance(c)
+        assert all(not (tmp_path/'run'/name).exists() for name in runs.ARMS)
+        return
+    result=runs.diagnose_loss_balance(c)
+    assert not result['execution_valid'] and result['next_step']=='resolve_execution_failure'
+    assert all(a['status']=='blocked' and not a['executed'] for a in result['arms'].values())

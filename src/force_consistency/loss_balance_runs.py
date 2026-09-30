@@ -32,6 +32,7 @@ def verify_calibration_hashes(config):
 
 
 def balance_preflight(config):
+    if config.get('replay_tolerance')!={'atol':1e-10,'rtol':1e-8}:raise ValueError('Frozen replay tolerance mismatch')
     verify_source_hashes(config)
     compact=verify_calibration_hashes(config);root=Path(config['calibration_run'])
     raw=_read(root/'fresh-C-fitting/observations.json');case=compact['cases'][config['calibration_case']]
