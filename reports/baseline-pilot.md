@@ -34,3 +34,8 @@ The initialization amendment explicitly allows only this one additional attempt 
 ## Follow-up diagnosis, 30 September 2026
 
 The two-review diagnostic plan was executed with training-only access. A deliberately representable teacher passed at300updates, while the real-label full-batch control failed at2000updates with force MSE0.007240959200598679, fraction0.7145522825221747 remaining. Frozen-body force-only readout fits also left substantial error. See `reports/force-learning-diagnostics.md` and evidence DIAGNOSTIC-002/003/004. No further tuning or full pilot followed. These new outcomes supplement and preserve both original failures; they do not satisfy the original batch4 gate or establish the scientific hypothesis.
+
+
+## Coverage follow-up, 30 September 2026
+
+The twice-reviewed coverage plan completed original16 replay, diverse16 and nested diverse128 at2,000updates each. All passed execution/reload checks; none passed both fitting or common-anchor learning gates because force error remained above threshold. Larger coverage under this exact model/loss/budget did not resolve acceptance. The full pilot remains pending; next work requires a separately reviewed architecture/loss-gradient plan. See `reports/data-coverage-diagnostics.md` and COVERAGE records in the append-only evidence log. Earlier failures remain unchanged.

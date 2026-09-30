@@ -24,6 +24,9 @@ def main():
     prov=source.get('provenance',{})
     compact['provenance']={k:v for k,v in prov.items() if k not in ('code_files','historical_reference','training_arrays')}
     compact['reference_hashes']=prov.get('historical_reference',{}).get('hashes')
+    compact['report_generator_sha256']=digest(Path(__file__))
+    compact['matplotlib_version']=matplotlib.__version__
+    compact['metric_convention']='Energy MSE averaged over frames; force MSE averaged over all atom-coordinate components; equal-group MSE averages exhaustive group MSEs.'
     compact['source_run_directory']=str(RUN.relative_to(ROOT));compact['source_summary_sha256']=digest(RUN/'summary.json')
     compact['arms']={}
     for name,arm in source['arms'].items():
@@ -73,7 +76,7 @@ def main():
         return f'{v:.8g}' if v is not None else '—'
     for name in NAMES:
         a=compact['arms'][name]
-        lines.append(f"| {name} | {a['updates']} | {ratio(a,'fit_gate',KEYS[0])} | {ratio(a,'fit_gate',KEYS[1])} | {ratio(a,'anchor_gate',KEYS[0])} | {ratio(a,'anchor_gate',KEYS[1])} | {'pass' if a['fit_gate']['accepted'] else 'fail/not valid'} | {'pass' if a['anchor_gate']['accepted'] else 'fail/not valid'} | {a.get('elapsed_seconds',0):.3f} | {a.get('frame_exposures',0)} |")
+        lines.append(f"| {name} | {a['updates']} | {ratio(a,'fit_gate',KEYS[0])} | {ratio(a,'fit_gate',KEYS[1])} | {ratio(a,'anchor_gate',KEYS[0])} | {ratio(a,'anchor_gate',KEYS[1])} | {'pass' if a['fit_gate']['accepted'] else ('fail' if a.get('execution_valid') else 'not evaluated/invalid')} | {'pass' if a['anchor_gate']['accepted'] else ('fail' if a.get('execution_valid') else 'not evaluated/invalid')} | {a.get('elapsed_seconds',0):.3f} | {a.get('frame_exposures',0)} |")
     lines+=['', 'Both energy and force MSE must independently remain below0.10of their immutable initial values to pass a gate. Fit gates use their own subset initial values. All anchor gates use fixed original16initial energy0.061298358531283896eV² and force0.010133561081129106eV²/Å². Empty partitions/zero initial errors yield null ratios and cannot pass.','']
     if compact.get('replay'):
         lines += [f"A replay: {compact['replay']['status']}; maximum absolute MSE difference {compact['replay']['maximum_absolute_mse_difference']:.17g}, using atol1e-10/rtol1e-8 at every historical100-update measurement through2000.",'']
@@ -84,6 +87,10 @@ def main():
             fit=a['final_metrics']['fitting'];anchor=a['final_metrics']['anchor']
             lines += [f"Final fitting E MSE={fit[KEYS[0]]:.17g}, F MSE={fit[KEYS[1]]:.17g}; original16E MSE={anchor[KEYS[0]]:.17g}, F MSE={anchor[KEYS[1]]:.17g}. Compilation={a.get('compilation_seconds',0):.3f}s; warmup={a.get('warmup_seconds',0):.3f}s; synchronized updates={a.get('steady_update_seconds_total',0):.3f}s; scoring={a.get('evaluation_seconds_total',0):.3f}s ({a.get('evaluation_frame_count',0)}frame evaluations). Warmup exposures are separately recorded and excluded from training exposure counts.",'']
         if a.get('failure_reason'): lines += [f"Failure reason: {a['failure_reason']}",'']
+    b=compact['arms']['diverse16']
+    if b.get('final_metrics'):
+        seen=b['final_metrics']['anchor_fitted'];unseen=b['final_metrics']['anchor_not_fitted']
+        lines += [f"B anchor overlap: {seen['record_count']}fitted records, final F MSE={seen[KEYS[1]]:.17g}; {unseen['record_count']}records not fitted by B, final F MSE={unseen[KEYS[1]]:.17g}. Both partitions belong to global training; this is diagnostic transfer, not a held-out benchmark.",'']
     lines += ['## Interpretation and next step','']
     if compact['next_step']=='architecture_gradient_investigation':
         lines += ['C did not pass both gates at the fixed budget. Extra coverage did not resolve the original fitting gate in this comparison. Preserve these results and return to a separately planned architecture/loss-gradient investigation. Partial improvements cannot justify selecting a successful run or relaxing the gate.','']

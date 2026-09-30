@@ -61,3 +61,18 @@ uv run --frozen force-consistency diagnose-learning --config configs/aspirin-for
 This invocation is a reproducibility reference; the completed output directory is protected. A future trial requires a new prospective reviewed protocol and separate directory, rather than silently rerunning or tuning this config. The controller validates historical checkpoint/config/subset hashes and current prepared identity, opens train.npz only, records outcomes in the evidence log, and blocks real-label fitting if the teacher fails. Its `completed` status describes diagnostic execution, not learning acceptance. Control summaries contain synthetic-versus-DFT label type, own-initial MSE thresholds, full-subset histories, input identities, final checkpoints and new-process verification. Teacher energy offset is synthetic0, with original loss scales. It is not a DFT energy prediction.
 
 The diagnostic figure can be regenerated from saved outputs with `python scripts/summarize_force_diagnostics.py` using Matplotlib (generator version recorded in the compact evidence). The original random-head run has no saved intermediate full-subset history, so only its endpoints are plotted. Existing minibatch losses are not substituted for missing full-subset metrics.
+
+
+## Reviewed coverage diagnostics (30 September)
+
+The reviewed original16/diverse16/diverse128 matrix completed all three 2,000-update CPU budgets with matching fresh initial parameter/optimizer hashes. A replay reproduced all21historical measurements (largest absolute MSE difference6.5052130349130266e-18). All fitting/anchor checkpoints passed exhaustive saved-input fresh-process verification. Each arm failed its force gate, despite energy MSE passing its individual threshold. Read [coverage outcomes and limits](../reports/data-coverage-diagnostics.md).
+
+```sh
+uv run --frozen force-consistency diagnose-coverage --config configs/aspirin-data-coverage-diagnostic.json
+```
+
+This is the completed invocation's reproducibility reference; its output directory is protected and must not be reused. The CLI separates valid execution from fitting/anchor acceptance, verifies frozen references/subsets/prepared arrays before fitting, loads train.npz only, and preserves prospective/outcome/blocked evidence. Diverse128 accumulates eight sequential16-frame gradients at unchanged incoming parameters before one Adam update. No learning early stop, resume or budget extension is permitted.
+
+Diverse128 reduced force MSE by2.156% on its fitting subset and12.300% on the unchanged original16anchors; the gate requires90% reduction in both force and energy MSE. It used256,000training-frame exposures versus32,000each for A/B, and256.725s total versus37.417s/33.923s. These are single-seed training diagnostics with changed difficulty and compute, not causal/generalization evidence. Next: separately plan and twice-review an architecture/loss-gradient investigation. The full pilot and scientific model comparisons remain pending.
+
+Rebuild the report and measured-point figures from saved outputs with `.venv/bin/python scripts/report_data_coverage.py`. Full-precision histories, per-group and fitted/not-fitted anchor counts, baselines, timing and artifact hashes are tracked in `reports/data-coverage-diagnostics.json`; all raw inputs/optimizer checkpoints are retained in `runs/aspirin-data-coverage-2026-09-30`.

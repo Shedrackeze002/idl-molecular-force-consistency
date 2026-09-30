@@ -427,3 +427,742 @@ User authorized execution of the saved plan after both independent reviews. Exac
 A is a new2000-update replay of the original16full-batch control, checked against every historical100-update metric. B uses16frames across8connections; C uses128frames across the same8connections, nested with A/B, one accumulated Adam update per full subset. Each arm has1800s including initialization/compile/warmup/scoring/reload, no learning early stop or resume. Fit and common-anchor gates each require both MSEs below0.10immutable initial values. A replay or any operational/short-budget failure blocks downstream; finite learning failure in B permits C. Actual outcomes unknown at preregistration. No extra seed, GPU, scientific arm, full pilot, longer cap, loss/capacity/LR change or test access is authorized by this matrix.
 
 Limitations: one seed per condition; B changes fitted difficulty and overlaps only2anchors; C fits all16anchors and uses8times exposures per update. Save raw units, per-group/overlap/count baselines, scheduled ratios, synchronized timing, frame exposures, checkpoint/source hashes, all failures and blocks. Conclusions are training-only diagnostics, not causal/statistical/generalization evidence. Decision after C requires its BOTH gates; protocol amendment (if passed) or architecture/gradient investigation (if failed) must be separately planned and reviewed.
+
+## COVERAGE-001-PRE — narrow16 trial preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": "Both final anchor MSEs < 0.1 fixed original initial",
+  "config": {
+    "backend": "cpu",
+    "comparison_updates": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "data_directory": "data/processed/aspirin",
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "gate_fraction": 0.1,
+    "learning_rate": 0.001,
+    "max_updates": 2000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "reference_run": "runs/aspirin-force-diagnostics-2026-09-30/real",
+    "reference_sha256": {
+      "checkpoint-verification.json": "24e231afcdd58e5f34a759bf974a87dbe9e01f6d45adffd9324c99b4aa240e7b",
+      "config.json": "d8bfbe676f0e03f0de23bdc2b4b44610f3f5c8f21c67034cb31091b8765ba53f",
+      "history.json": "13488ec9153c6a0a85b7256cc408e14986a78b9e5f66070f60d66234810961a9",
+      "provenance.json": "4c5c05915e11250f3bddabae841469039232a6db03ac316074a8467ccb0913d9",
+      "summary.json": "3bab8e9f66cc747dacb6744cca0b93f316fd8568962fe736c7480b7382f7a650"
+    },
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-data-coverage-2026-09-30",
+    "seed": 0,
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "validation_interval": 100,
+    "wall_seconds": 1800
+  },
+  "fit_gate": "Both final MSEs < 0.1 own initial",
+  "limitations": "n=1; B changes record difficulty; C uses 8x exposures per update; training-only anchor",
+  "rationale": "Replay",
+  "run_directory": "runs/aspirin-data-coverage-2026-09-30/narrow16",
+  "subset": {
+    "anchor_fit_overlap_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+    ],
+    "identity": "338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c",
+    "indices": [
+      37,
+      52,
+      68,
+      83,
+      99,
+      114,
+      130,
+      145,
+      161,
+      176,
+      192,
+      207,
+      223,
+      238,
+      254,
+      270
+    ],
+    "record_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+    ]
+  }
+}
+```
+
+## COVERAGE-001-RESULT — narrow16 trial outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.003516256921364377,
+      "force_mse_eV2_per_A2": 0.7145522825221748
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+    "history.json": "9970a673c501b566e8f8de0b83581ce81f40cba9a71a2547111f9fe46b0af812",
+    "last.msgpack": "b5c792314ea6b34d46bc5b2b104abbc7b1e647fd6c81cea55ec49e94b18cb6b7",
+    "summary.json": "c3b0aa387b7cbd2cc57723e6232677eea19abb3f03dc1834cd8cdf1b32128452"
+  },
+  "elapsed_seconds": 37.41735974990297,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.003516256921364377,
+      "force_mse_eV2_per_A2": 0.7145522825221748
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "frame_exposures": 32000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000
+}
+```
+
+## COVERAGE-002-PRE — diverse16 trial preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": "Both final anchor MSEs < 0.1 fixed original initial",
+  "config": {
+    "backend": "cpu",
+    "comparison_updates": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "data_directory": "data/processed/aspirin",
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "gate_fraction": 0.1,
+    "learning_rate": 0.001,
+    "max_updates": 2000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "reference_run": "runs/aspirin-force-diagnostics-2026-09-30/real",
+    "reference_sha256": {
+      "checkpoint-verification.json": "24e231afcdd58e5f34a759bf974a87dbe9e01f6d45adffd9324c99b4aa240e7b",
+      "config.json": "d8bfbe676f0e03f0de23bdc2b4b44610f3f5c8f21c67034cb31091b8765ba53f",
+      "history.json": "13488ec9153c6a0a85b7256cc408e14986a78b9e5f66070f60d66234810961a9",
+      "provenance.json": "4c5c05915e11250f3bddabae841469039232a6db03ac316074a8467ccb0913d9",
+      "summary.json": "3bab8e9f66cc747dacb6744cca0b93f316fd8568962fe736c7480b7382f7a650"
+    },
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-data-coverage-2026-09-30",
+    "seed": 0,
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "validation_interval": 100,
+    "wall_seconds": 1800
+  },
+  "fit_gate": "Both final MSEs < 0.1 own initial",
+  "limitations": "n=1; B changes record difficulty; C uses 8x exposures per update; training-only anchor",
+  "rationale": "Broader connection support",
+  "run_directory": "runs/aspirin-data-coverage-2026-09-30/diverse16",
+  "subset": {
+    "anchor_fit_overlap_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz"
+    ],
+    "identity": "3c77271af9509a980fc7f462710475535ba047a3467bd71106706867315060a4",
+    "indices": [
+      37,
+      161,
+      1616,
+      1699,
+      4162,
+      4268,
+      3651,
+      3751,
+      2507,
+      2627,
+      1484,
+      1579,
+      4414,
+      4504,
+      519,
+      628
+    ],
+    "record_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+    ]
+  }
+}
+```
+
+## COVERAGE-002-RESULT — diverse16 trial outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.01838750683983036,
+      "force_mse_eV2_per_A2": 0.9387592519896504
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "checkpoint-verification.json": "f39a1a3d6cacfc6eb6418e7a695bb550ac9350bc9e08cd2aa20d80ad256a6295",
+    "history.json": "f9b66c8e496ba8ca82d626df2a38980f41c7dc1edf28bb97f21028a8aa8fc367",
+    "last.msgpack": "7156487d43587f9cdfe563f14db79948d465b0bf43995ff67e07e3c6ac180d8f",
+    "summary.json": "af772ad611b5d153b85265861375419df80f2b93c20407c0304f6ca9876fb5e6"
+  },
+  "elapsed_seconds": 33.923090540920384,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.02669173143721766,
+      "force_mse_eV2_per_A2": 0.8967607042970483
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003622249218106596,
+      "force_mse_eV2_per_A2": 0.0017939664221939815
+    }
+  },
+  "frame_exposures": 32000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000
+}
+```
+
+## COVERAGE-003-PRE — diverse128 trial preregistered (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": "Both final anchor MSEs < 0.1 fixed original initial",
+  "config": {
+    "backend": "cpu",
+    "comparison_updates": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      1500,
+      2000
+    ],
+    "data_directory": "data/processed/aspirin",
+    "early_stopping": false,
+    "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+    "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+    "gate_fraction": 0.1,
+    "learning_rate": 0.001,
+    "max_updates": 2000,
+    "microbatch_size": 16,
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 16,
+      "iterations": 2,
+      "max_degree": 1,
+      "radial_basis": 8
+    },
+    "reference_run": "runs/aspirin-force-diagnostics-2026-09-30/real",
+    "reference_sha256": {
+      "checkpoint-verification.json": "24e231afcdd58e5f34a759bf974a87dbe9e01f6d45adffd9324c99b4aa240e7b",
+      "config.json": "d8bfbe676f0e03f0de23bdc2b4b44610f3f5c8f21c67034cb31091b8765ba53f",
+      "history.json": "13488ec9153c6a0a85b7256cc408e14986a78b9e5f66070f60d66234810961a9",
+      "provenance.json": "4c5c05915e11250f3bddabae841469039232a6db03ac316074a8467ccb0913d9",
+      "summary.json": "3bab8e9f66cc747dacb6744cca0b93f316fd8568962fe736c7480b7382f7a650"
+    },
+    "replay_tolerance": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "run_directory": "runs/aspirin-data-coverage-2026-09-30",
+    "seed": 0,
+    "status": "planned_unexecuted",
+    "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+    "validation_interval": 100,
+    "wall_seconds": 1800
+  },
+  "fit_gate": "Both final MSEs < 0.1 own initial",
+  "limitations": "n=1; B changes record difficulty; C uses 8x exposures per update; training-only anchor",
+  "rationale": "Extra within-connection coverage at matched support",
+  "run_directory": "runs/aspirin-data-coverage-2026-09-30/diverse128",
+  "subset": {
+    "anchor_fit_overlap_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+    ],
+    "identity": "b667e61ebf7c44e88695466f2a2ba44451a87f9adb76728658e4ae3926715da9",
+    "indices": [
+      37,
+      52,
+      68,
+      83,
+      99,
+      114,
+      130,
+      145,
+      161,
+      176,
+      192,
+      207,
+      223,
+      238,
+      254,
+      270,
+      1606,
+      1616,
+      1627,
+      1637,
+      1648,
+      1658,
+      1669,
+      1679,
+      1690,
+      1699,
+      1710,
+      1719,
+      1730,
+      1739,
+      1750,
+      1760,
+      4137,
+      4149,
+      4162,
+      4175,
+      4188,
+      4200,
+      4213,
+      4226,
+      4239,
+      4253,
+      4268,
+      4282,
+      4297,
+      4311,
+      4326,
+      4341,
+      3611,
+      3624,
+      3638,
+      3651,
+      3665,
+      3678,
+      3692,
+      3705,
+      3719,
+      3729,
+      3741,
+      3751,
+      3763,
+      3773,
+      3785,
+      3796,
+      2440,
+      2456,
+      2474,
+      2490,
+      2507,
+      2523,
+      2541,
+      2557,
+      2574,
+      2587,
+      2600,
+      2613,
+      2627,
+      2640,
+      2653,
+      2667,
+      1430,
+      1441,
+      1452,
+      1462,
+      1474,
+      1484,
+      1496,
+      1506,
+      1518,
+      1530,
+      1543,
+      1555,
+      1567,
+      1579,
+      1592,
+      1605,
+      4342,
+      4354,
+      4366,
+      4377,
+      4390,
+      4401,
+      4414,
+      4425,
+      4438,
+      4448,
+      4460,
+      4470,
+      4482,
+      4492,
+      4504,
+      4515,
+      410,
+      425,
+      441,
+      456,
+      473,
+      488,
+      504,
+      519,
+      535,
+      548,
+      561,
+      574,
+      588,
+      601,
+      614,
+      628
+    ],
+    "record_ids": [
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+      "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+      "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+      "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+      "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+      "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+    ]
+  }
+}
+```
+
+## COVERAGE-003-RESULT — diverse128 trial outcome (2026-09-30)
+
+Training-only diagnostic; no scientific generalization claim; full pilot remains pending.
+
+```json
+{
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.024702018838049,
+      "force_mse_eV2_per_A2": 0.8769996293603259
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "artifact_sha256": {
+    "checkpoint-verification.json": "cf07aa2554610daac41ef3e83a1335092e751bf8db7ecc30ccf2cf5128f1a319",
+    "history.json": "2e037af82e7fae42f7811fb661b39202b331bb42e8499ec45c0c3ba73d18629f",
+    "last.msgpack": "7305113575499ebe51ca3e30b87d5bb644888b913b845e3fee5b95e222f4f6c3",
+    "summary.json": "0e374b8ed313f8004aec6219af3b2e45f0a868082f00ced907a6f4c9d8b88a8b"
+  },
+  "elapsed_seconds": 256.7245559170842,
+  "execution_valid": true,
+  "failure_reason": null,
+  "fit_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.08738058573272221,
+      "force_mse_eV2_per_A2": 0.9784403043672875
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "frame_exposures": 256000,
+  "initial_state_hashes": {
+    "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+    "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+  },
+  "status": "completed",
+  "stop_reason": "max_updates",
+  "updates": 2000
+}
+```
+
+## COVERAGE-MATRIX-RESULT — Completed comparison and negative learning result
+
+All3arms completed2,000updates within1800s caps, same initial parameter/optimizer hashes and fresh-process maximum prediction differences0 on every fitting/anchor frame. A replay maximum MSE difference6.5052130349130266e-18 across21historical checkpoints. Valid execution does not mean learning acceptance. All energy individual thresholds passed; all force individual thresholds failed, so every joint fitting and anchor gate failed.
+
+Final force fractions remaining: A fitting/anchor0.7145522825221748; B fitting0.8967607042970483/anchor0.9387592519896504; C fitting0.9784403043672875/anchor0.8769996293603259. C thus reduced fitting force MSE2.156% and original-anchor force MSE12.300%, below the predeclared90% requirement. No gate ever passed at an observed scheduled update.
+
+C cost256,000training-frame exposures and256.7245559170842s versus A32,000/37.41735974990297s and B32,000/33.923090540920384s. Warmup exposures are separately retained. Recorded evaluation counts refer to metric scoring passes; saved-reference and fresh-process probe predictions are additional verification work. B fits2anchor frames (final force MSE0.020278909839792178) and does not fit14(final0.00797498341775791); differing initial difficulty prevents comparing these values as a transfer benefit. All anchors are globally training records.
+
+Interpretation: broader/larger coverage alone under these fixed settings did not clear the force gate. This does not identify capacity, gradient balance or optimization as the cause, establish a sample-count effect, or imply poor scientific generalization. Next is a separately planned/twice-reviewed architecture/loss-gradient investigation. No extra attempt/seed/tuning/GPU/full-pilot/test/scientific comparison followed.
+
+Tracked report/compact evidence and3measured-point figures were generated from preserved raw artifacts; generator checksum and Matplotlib version are in compact JSON. Plot creation succeeded after benign unwritable-cache warnings; source settings/research outputs were unchanged. Both force and overlap figures visually checked; energy figure check pending.
+
+```json
+{
+  "root_summary_sha256": "54e7f6d7e9995dbca90bdca3417457b075e99037dc9ecd6d6a1c0647ac102a9f",
+  "compact_evidence_sha256": "6c5b3233360a6baf9b155162fbae1fdf43b0d1f9b209f79997b468976d40dbb4",
+  "execution_revision": "356a3615e4693010ea9fc38d5874337991eb06dd",
+  "code_fingerprint": "77dd790e53d96fa924de73feb03b812ce611772c5de50dcd63a7c2cd8475852f",
+  "frozen_subset_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47"
+}
+```
