@@ -377,3 +377,7 @@ Figure-generation correction succeeded: original random-head initial/final point
 ## IMPLEMENTATION-005 — Fresh final diagnostic review cleared implementation
 
 Independent gpt-6-astra review identified no critical, important or minor defect. It independently passed12 diagnostic tests in24.56s and matched22run artifact hashes,3figure-input hashes and generator identity. Parent's earlier full suite67/67 remains the full-suite verification; reviewer did not independently rerun all67. Both controls' update counters and outcomes independently matched saved evidence. Full review, explicit exclusions and parent rulings are in `docs/reviews/2026-09-30-diagnostic-final-review.md`. Parent visually inspected the corrected figure; GPU/DFT generalization/capacity/cause remain unverified or unresolved. Budget is checked between operations, not guaranteed by preemptive interruption. No new molecular trial or full pilot followed review.
+
+## METHOD-005 — Retain review folders and logs
+
+User instruction, 30 September 2026: leave review folders in place; they help preserve review history. The diagnostic scratch workspace remains retained, alongside its durable execution archive. `AGENTS.md` now instructs future work to preserve review packages, logs and ledgers after completion and avoid automatic cleanup. This is a workflow preference, not a new experiment or change to reported outcomes.
