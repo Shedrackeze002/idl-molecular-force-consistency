@@ -3016,3 +3016,11 @@ Obsidian hub/findings finalized through CLI and read back;117tests/review repair
   "obsidian-hub-final.md": "631e58cc613aceb62ce554cd0a890280665fd3d1a535b695adb72159fc7cfdc5"
 }
 ```
+
+## PLAN-BALANCE-001 — Prospective controlled fixed loss-balance diagnostic
+
+User Proceed authorizes the next controlled loss-balancing investigation. Saved spec/plan `docs/superpowers/{specs,plans}/2026-09-30-loss-balance-diagnostic*` and frozen config `configs/aspirin-loss-balance-diagnostic.json`; status proposed/unexecuted, two reviews pending. No product code or new numerical training trial yet. Scope:128fitting/16fully-fitted anchor, exact replay -> one fixed train-only initial-gradient balance -> force-only ablation; eachfreshseed0/2000updates/.001Adam/1800s cap, samearchitecture/settings. Calibration uses preserved fresh-C whole-gradient norm ratio136.13314964807924, weights0.014584365670390719/1.9854156343296092 (sum2), no adaptive/sweep/recalibration. All31source hashes and compact diagnostic hash pinned. Original raw energy/force gates remain; force-only force success cannot clear joint learning acceptance. Rationale: test objective tradeoff after low symmetry floors/local opposition; n=1training diagnostic, not Adam-causal/capacity/generalization claim. Failed/blocked outcomes retained prospectively and immediately. Prior missing config filename during exploration was corrected to existing aspirin-data-coverage-diagnostic.json; no state modified.
+
+## PLAN-BALANCE-002 — Both independent plan reviews cleared
+
+Scientific/engineering reviews cleared exact3arm protocol, no material blockers. Independently verified31coverage/38calibrationraw/compacthash/counts/update0/IDs/state/norms/weights and22historicalobservations. Accepted reporting/implementation clarifications in saved spec/review: whole-tree bias inclusion and initial-only calibration, force-only unconstrained absolute energy gauge (no posthocshift), explicit arm weights/factory agreement, dynamic default replay, both-partition replay and initial baseline reconciliation, preserved replay-comparison failure, nonzero-head derivative witness. No settings/arms/caps changed; no new training result yet.
