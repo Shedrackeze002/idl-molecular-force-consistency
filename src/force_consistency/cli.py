@@ -17,6 +17,8 @@ def main(argv=None):
     p=subs.add_parser('train',help='Run a capped, verified energy baseline')
     p.add_argument('--config',required=True,type=Path)
     p.add_argument('--backend',choices=('cpu','gpu'),help='Explicit device requirement; unavailable GPU fails')
+    p=subs.add_parser('diagnose-loss-balance',help='Run reviewed fixed loss-weight controls')
+    p.add_argument('--config',required=True,type=Path)
     p=subs.add_parser('diagnose-gradients',help='Inspect frozen representation and loss gradients')
     p.add_argument('--config',required=True,type=Path)
     p=subs.add_parser('diagnose-coverage',help='Run reviewed training-only coverage matrix')
@@ -33,6 +35,11 @@ def main(argv=None):
         p.add_argument('--output',type=Path)
         if name=='prepare': p.add_argument('--molecule',required=True,choices=('aspirin','paracetamol'))
     args=parser.parse_args(argv)
+    if args.command=='diagnose-loss-balance':
+        from .loss_balance_runs import diagnose_loss_balance
+        summary=diagnose_loss_balance(json.loads(args.config.read_text()))
+        print(json.dumps({k:summary.get(k) for k in ('status','execution_valid','balanced_joint_accepted','next_step','full_pilot','failure_reason')},indent=2))
+        return 0 if summary['execution_valid'] else 1
     if args.command=='diagnose-gradients':
         from .gradient_runs import diagnose_gradients
         summary=diagnose_gradients(json.loads(args.config.read_text()))

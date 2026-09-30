@@ -148,7 +148,7 @@ class WallBudget(Exception):
     pass
 
 
-def run_coverage_arm(config,fitting,anchor,root,provenance):
+def run_coverage_arm(config,fitting,anchor,root,provenance,*,step_factory=None):
     start=time.perf_counter();root=Path(root)
     if root.exists() and any(root.iterdir()): raise ValueError('Run directory is not empty')
     root.mkdir(parents=True,exist_ok=True)
@@ -188,6 +188,9 @@ def run_coverage_arm(config,fitting,anchor,root,provenance):
                     baseline=provenance.get('anchor_initial_mse',initial['anchor'])
                     for k in MSE_KEYS:
                         if not np.isclose(initial['anchor'][k],baseline[k],atol=1e-10,rtol=1e-8): raise ValueError('Immutable anchor baseline mismatch')
+                    expected_fit=provenance.get('fitting_initial_mse',initial['fitting'])
+                    for k in MSE_KEYS:
+                        if not np.isclose(initial['fitting'][k],expected_fit[k],atol=1e-10,rtol=1e-8): raise ValueError('Immutable fitting baseline mismatch')
                     summary['anchor_initial_mse']={k:baseline[k] for k in MSE_KEYS}
                 own=gate_result(metrics['fitting'],initial['fitting'],c['gate_fraction'])
                 common=gate_result(metrics['anchor'],summary['anchor_initial_mse'],c['gate_fraction'])
@@ -203,7 +206,7 @@ def run_coverage_arm(config,fitting,anchor,root,provenance):
                 write_json(root/'history.json',history)
                 return row
             evaluate();check_budget(10+max(eval_times))
-            step=build_accumulated_step(model,norm,c['learning_rate'])
+            step=(step_factory or build_accumulated_step)(model,norm,c['learning_rate'])
             t=time.perf_counter()
             if hasattr(step,'prepare'): step.prepare(state['params'],state['optimizer'],batches)
             summary['compilation_seconds']=time.perf_counter()-t
