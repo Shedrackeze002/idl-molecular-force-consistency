@@ -17,6 +17,8 @@ def main(argv=None):
     p=subs.add_parser('train',help='Run a capped, verified energy baseline')
     p.add_argument('--config',required=True,type=Path)
     p.add_argument('--backend',choices=('cpu','gpu'),help='Explicit device requirement; unavailable GPU fails')
+    p=subs.add_parser('diagnose-coverage',help='Run reviewed training-only coverage matrix')
+    p.add_argument('--config',required=True,type=Path)
     p=subs.add_parser('diagnose-learning',help='Run reviewed training-only learning diagnostics')
     p.add_argument('--config',required=True,type=Path)
     p=subs.add_parser('summarize-run',help='Read saved run results without accessing test data')
@@ -29,6 +31,11 @@ def main(argv=None):
         p.add_argument('--output',type=Path)
         if name=='prepare': p.add_argument('--molecule',required=True,choices=('aspirin','paracetamol'))
     args=parser.parse_args(argv)
+    if args.command=='diagnose-coverage':
+        from .coverage_matrix import diagnose_coverage
+        summary=diagnose_coverage(json.loads(args.config.read_text()))
+        print(json.dumps({k:summary.get(k) for k in ('status','execution_valid','next_step','full_pilot','failure_reason')},indent=2))
+        return 0 if summary['execution_valid'] else 1
     if args.command=='diagnose-learning':
         from .diagnostics import diagnose
         summary=diagnose(json.loads(args.config.read_text()))
