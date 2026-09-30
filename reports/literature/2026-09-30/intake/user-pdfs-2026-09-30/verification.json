@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-30",
+  "status": "verified",
+  "registered_papers": 12,
+  "registered_local_pdf_hashes_verified": 12,
+  "new_exact_source_copies_verified": 4,
+  "new_text_hashes_verified": 4,
+  "prior_download_entries_retained": true,
+  "reading_cards": 12,
+  "bibliography_entries": 12,
+  "intake_manifest_sha256": "d70d2fdb33b00b6cf184b6f26e932ba1941cd163e96a56ce2ae098cba6bf273f",
+  "navigation_sync_sha256": "435caf77cc7d46a103f9fe85cb36aecb08ff72acf22f2bb87718bb78f711afce",
+  "training_or_implementation_changes": false,
+  "scope": "Archival and targeted literature verification only; no code test rerun needed"
+}

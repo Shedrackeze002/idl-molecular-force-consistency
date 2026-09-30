@@ -19,14 +19,16 @@ Our research question remains whether consistency training improves reference st
 
 ### LIT001 — Global properties of the energy landscape: a testing and training arena for machine learned potentials
 
-Vlad Cărare ; Fabian L. Thiemann ; Joe Morrow ; David J. Wales ; Edward O. Pyzer-Knapp ; Luke Dicks. arXiv2508.16425v1; publisher DOI10.1038/s41524-025-01878-x (npj Computational Materials12:9,2026). [Primary source](https://arxiv.org/abs/2508.16425).
-Read: web full author PDF: introduction, landscape results, pathway augmentation, aspirin network and appendix protocols. Local access: web_fulltext_read_local_pdf_failed.
+Vlad Cărare ; Fabian L. Thiemann ; Joe D. Morrow ; David J. Wales ; Edward O. Pyzer-Knapp ; Luke Dicks. npj Computational Materials12:9 (2026), DOI10.1038/s41524-025-01878-x; user-provided publisher PDF; earlier targeted reading used arXiv2508.16425v1. [Primary source](https://www.nature.com/articles/s41524-025-01878-x).
+Read: publisher PDF pp1,6–7: abstract/introduction, Fig4/5/6 mapping and topology, discussion opening; title/year/authors verified visually. Local access: saved_pdf_user_provided.
 
 Source finding: Pointwise accuracy does not ensure recovery of the reference landscape. Pathway augmentation helps, while spurious minima remain in the models studied.
 
 Our inference/action: Use its stationary points and branches to define whole-connection splits and reference-shape recovery. Preserve failures by branch and distinguish not found by a search from demonstrated absence.
 
 Limits: Our128frame fitting diagnosis is smaller and is not its full training or kinetic-transition-network benchmark. Missing-transition-state headlines cannot be transferred to our models.
+
+Saved version: [landscape17-published.pdf](papers/landscape17-published.pdf); SHA256 `f43b0df0e86039acff71f71c79b44c5107cab1ef4880d8d766b6a32f9faf85f7`. Targeted local reading; previous web/version provenance remains in the registry and intake snapshots.
 
 ### LIT002 — The dark side of the forces: assessing non-conservative force models for atomistic machine learning
 
@@ -43,14 +45,16 @@ Saved version: [bigi2025.pdf](papers/bigi2025.pdf); SHA256 `d221817447096c8bc850
 
 ### LIT003 — Harnessing Machine Learning to Enhance Transition State Search with Interatomic Potentials and Generative Models
 
-Qiyuan Zhao ; Yunhong Han ; Duo Zhang ; Jiaxu Wang ; Peichen Zhong ; Taoyong Cui ; Bangchen Yin ; Yirui Cao ; Haojun Jia ; Chenru Duan. Advanced Science12(34):e06240; DOI10.1002/advs.202506240. [Primary source](https://pmc.ncbi.nlm.nih.gov/articles/PMC12442704/).
-Read: primary full HTML: §2.1 workflow, §2.3 direct/autograd comparisons and Hessians, experimental training details. Local access: web_fulltext_read_local_pdf_failed.
+Qiyuan Zhao ; Yunhong Han ; Duo Zhang ; Jiaxu Wang ; Peichen Zhong ; Taoyong Cui ; Bangchen Yin ; Yirui Cao ; Haojun Jia ; Chenru Duan. Advanced Science12(34):e06240 (2025), DOI10.1002/advs.202506240; user-provided publisher PDF. [Primary source](https://pmc.ncbi.nlm.nih.gov/articles/PMC12442704/).
+Read: publisher PDF pp1,5–6: abstract and §2.3 direct/autograd/autograd* force schemes, Fig3 and DFT-Hessian follow-up; earlier primary HTML reading retained. Local access: saved_pdf_user_provided.
 
 Source finding: End-to-end transition-state search is not captured adequately by energy/force errors alone. Direct and energy-gradient force variants differ in Hessian behavior and search outcomes.
 
 Our inference/action: Define a physical success criterion before comparing scalar errors; retain the distinction between intended endpoint recovery and numerical optimizer termination.
 
 Limits: Reactive TS/GSM/Hessian/IRC search is not our conformational minimum-recovery task. Its DFT-Hessian intervention does not validate our planned consistency penalty.
+
+Saved version: [zhao2025-published.pdf](papers/zhao2025-published.pdf); SHA256 `13aca4483cf27ed036a0e3fa12f6025cb4b643c6e7cf24c008b5356d1171af37`. Targeted local reading; previous web/version provenance remains in the registry and intake snapshots.
 
 ### LIT004 — Learning Smooth and Expressive Interatomic Potentials for Physical Property Prediction
 
@@ -106,8 +110,8 @@ Saved version: [gradients2020.pdf](papers/gradients2020.pdf); SHA256 `83fb601349
 
 ### LIT008 — Machine learning of accurate energy-conserving molecular force fields
 
-Stefan Chmiela ; Alexandre Tkatchenko ; Huziel E. Sauceda ; Igor Poltavsky ; Kristof T. Schütt ; Klaus-Robert Müller. Science Advances3(5):e1603015; author arXiv1611.04678v4; DOI10.1126/sciadv.1603015. [Primary source](https://arxiv.org/abs/1611.04678).
-Read: web author PDF: conservative gradient-domain formulation and molecular force-field comparisons. Local access: web_fulltext_read_local_pdf_failed.
+Stefan Chmiela ; Alexandre Tkatchenko ; Huziel E. Sauceda ; Igor Poltavsky ; Kristof T. Schütt ; Klaus-Robert Müller. Science Advances3(5):e1603015,5May2017, DOI10.1126/sciadv.1603015; user-provided publisher PDF (6 article pages + publisher cover); earlier author reading used arXiv1611.04678v4. [Primary source](https://www.science.org/doi/10.1126/sciadv.1603015).
+Read: publisher PDF pp1,4: conservation versus reference accuracy/topology warning; conservative kernel, matched naive-force comparison and sample-count results. Local access: saved_pdf_user_provided.
 
 Source finding: Gradient-domain force learning constructs conservative molecular force fields and an associated energy potential.
 
@@ -115,16 +119,20 @@ Our inference/action: Use as foundational conservative-model context. Force labe
 
 Limits: Kernel training and trajectory data differ from our neural128frame continuation. Force-only energy offset behavior is not by itself proof of a bad force field; our fixed raw joint gate still must be reported unchanged.
 
+Saved version: [gdml2017-published.pdf](papers/gdml2017-published.pdf); SHA256 `1001f6e5eeb57533c2772d9318cf3e07d8fd9c67c524abe2af63bea9eee804b7`. Targeted local reading; previous web/version provenance remains in the registry and intake snapshots.
+
 ### LIT009 — Forces are not Enough: Benchmark and Critical Evaluation for Machine Learning Force Fields with Molecular Simulations
 
-Xiang Fu ; Zhenghao Wu ; Wujie Wang ; Tian Xie ; Sinan Keten ; Rafael Gomez-Bombarelli ; Tommi Jaakkola. TMLR04/2023; author arXiv2210.07237v2,26August2023 (local PDF not saved). [Primary source](https://openreview.net/forum?id=A8pqQipwkt).
-Read: Author full PDF via web: pp1–7, §4 datasets and §5 simulation observables/stability. Local access: web_fulltext_read_local_pdf_failed.
+Xiang Fu ; Zhenghao Wu ; Wujie Wang ; Tian Xie ; Sinan Keten ; Rafael Gomez-Bombarelli ; Tommi Jaakkola. user-provided PDF labelled Published in TMLR (04/2023),31pages, OpenReviewA8pqQipwkt; PDF metadata creation7August2024 is not the publication date; earlier author reading used arXiv2210.07237v2,26August2023. [Primary source](https://openreview.net/forum?id=A8pqQipwkt).
+Read: user-provided published-labelled PDF pp1,6–7: abstract and §5 simulation observables/stability Eq1–5, stable-trajectory conditioning; earlier web author §4–5 pp1–7 reading retained. Local access: saved_pdf_user_provided.
 
 Source finding: Static force accuracy does not align reliably with simulation stability or the structural metrics used by this benchmark.
 
 Our inference/action: Keep an application-specific outcome alongside force errors and retain terminated simulations or relaxations as failures.
 
 Limits: Its MD benchmark is background for evaluation design, not an experimental result for our geometry task or a requirement to expand the project into NVE evaluation.
+
+Saved version: [forces2023-user.pdf](papers/forces2023-user.pdf); SHA256 `bc3b3771d17a69e456daea2e4a5e407beff110d24e7420409659f1807e93c595`. Targeted local reading; previous web/version provenance remains in the registry and intake snapshots.
 
 ### LIT010 — Pushing the limits of unconstrained machine-learned interatomic potentials
 
@@ -173,18 +181,21 @@ Saved version: [when-forces-disagree-user.pdf](papers/when-forces-disagree-user.
 4. Do not use agreement as a correctness certificate. Preserve reference error, consensus failures and whole-connection leakage controls.
 5. Expand citation coverage and verify final publication/status metadata when writing the manuscript. Treat tentative contribution boundaries as hypotheses.
 
-## Access follow-up
+## Access follow-up — resolved
 
-The user-supplied When Forces Disagree PDF resolves the key OpenReview block. Four other PDFs were not saved after bounded public fallbacks. Full primary text was readable through web sources; failures below are transport or automation failures, not established paywalls. CMU credentials may help for publisher editions, but public author PDFs should not need them.
+All four previously missing PDFs were provided by the user on 30 September 2026, matched by title/authors/DOI or forum identity, successfully parsed, visually checked on identification/relevant pages and copied byte-for-byte into `papers/`. All 12 registered papers now have a checksum-verified local PDF. Earlier failed-download attempts remain in the manifest and append-only evidence log; the exact prior reading map and metadata are preserved in [the intake record](intake/user-pdfs-2026-09-30/intake-manifest.json).
 
-- [Landscape17 publisher edition](https://www.nature.com/articles/s41524-025-01878-x), [public author PDF](https://arxiv.org/pdf/2508.16425v1): two locally truncated responses.
-- [Zhao2025 publisher PDF/page](https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.202506240), [open full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12442704/): local purported PDF returned non-PDF content.
-- [GDML publisher edition](https://www.science.org/doi/10.1126/sciadv.1603015), [public author PDF](https://arxiv.org/pdf/1611.04678v4): truncated response, thenHTTP406.
-- [Forces are Not Enough](https://openreview.net/forum?id=A8pqQipwkt), [public author PDF](https://arxiv.org/pdf/2210.07237): OpenReviewHTTP403 and locally truncated author PDF.
-
-All unsuccessful downloads and operational extraction attempts are retained in the manifest/evidence trail. Both saved PIWSL versions remain available; the published paper is used for methods.
-
+Landscape17 is now cited as its 2026 publisher edition, retaining the earlier 2025 preprint reading history. GDML and Zhao are publisher PDFs; Forces Are Not Enough is the user-provided 31-page PDF labelled published in TMLR04/2023. Its 2024 file-creation metadata is not treated as a new publication year or a version equivalence certificate. Separate supplementary files for the publisher articles were not part of this four-PDF request. No access item remains open for these four article PDFs.
 
 ## Execution-status update
 
 The fixed continuation is now completed exactly once: all execution checks pass, all original learning gates fail. No paper-driven schedule/model/loss change was added. See [measured outcomes](../../convergence-budget-diagnostics.md) and [final independent review](../../../docs/reviews/2026-09-30-convergence-budget-final-review.md). The earlier prospective decision above records the pre-run commitment, not unfinished work. Next intervention and novelty assessment remain separate open work.
+
+
+## Local-source method notes — LIT-LOCAL-003
+
+- **GDML, publisher p1/p4:** Energy conservation by construction does not ensure reference-trajectory accuracy; the introduction already warns about spurious critical points. Its conservative-versus-naive-force kernel comparison is prior consistency evidence. Our inference: evaluate reference outcomes alongside mathematical consistency; this is not a new general claim or evidence of our own model's behavior.
+- **Zhao2025, §2.3/p5–6/Fig3:** Direct/autograd/autograd* schemes differ in Hessian behavior and intended-TS success. DFT-level TS optimization improves the direct schemes, and direct forces can perform best in that corrected workflow. Our inference: report the whole workflow and correction cost, avoiding blanket direct-force failure. Reactive TS search is distinct from our conformational minimum recovery; no DFT-Hessian intervention is being added.
+- **Forces Are Not Enough, §5/p6–7:** Observable errors are computed over stable trajectory portions; stability/failure is measured separately. Our inference: later evaluation should retain failure rates and denominators alongside any conditional quality statistic, avoiding a success-only summary. Its MD stability thresholds are task-specific and are not adopted as our relaxation criteria.
+
+These notes refine literature interpretation only. Future implementation or experiment changes require a new plan and two independent reviews. Current failed learning gates and saved numerical results are unchanged.

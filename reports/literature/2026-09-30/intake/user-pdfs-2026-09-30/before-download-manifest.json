@@ -1,0 +1,148 @@
+[
+  {
+    "id": "landscape17",
+    "url": "https://arxiv.org/pdf/2508.16425",
+    "accessed": "2026-09-30",
+    "status": "failed",
+    "failure_reason": "IncompleteRead: IncompleteRead(4194304 bytes read, 2103764 more expected)"
+  },
+  {
+    "id": "bigi2025",
+    "url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/bigi25a/bigi25a.pdf",
+    "accessed": "2026-09-30",
+    "final_url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/bigi25a/bigi25a.pdf",
+    "status": "downloaded",
+    "path": "papers/bigi2025.pdf",
+    "bytes": 1400079,
+    "sha256": "d221817447096c8bc85048f2666ee62223514d6491f0319c0ad6735e8fe71bf4"
+  },
+  {
+    "id": "esen2025",
+    "url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/fu25h/fu25h.pdf",
+    "accessed": "2026-09-30",
+    "final_url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/fu25h/fu25h.pdf",
+    "status": "downloaded",
+    "path": "papers/esen2025.pdf",
+    "bytes": 5166378,
+    "sha256": "4a1cbd7f05f68846f221ac2e07acb41c04123f4db8c6f030f83d56a750afa2c7"
+  },
+  {
+    "id": "painn2021",
+    "url": "https://proceedings.mlr.press/v139/schutt21a/schutt21a.pdf",
+    "accessed": "2026-09-30",
+    "final_url": "https://proceedings.mlr.press/v139/schutt21a/schutt21a.pdf",
+    "status": "downloaded",
+    "path": "papers/painn2021.pdf",
+    "bytes": 1143388,
+    "sha256": "dde25433fd28ff0cc34664c57b070cfcdec662d90f03bb164f4c455b0b638e13"
+  },
+  {
+    "id": "e3x2024",
+    "url": "https://arxiv.org/pdf/2401.07595",
+    "accessed": "2026-09-30",
+    "final_url": "https://arxiv.org/pdf/2401.07595",
+    "status": "downloaded",
+    "path": "papers/e3x2024.pdf",
+    "bytes": 2268958,
+    "sha256": "c198a25a29e0c0001c8d9bc5c72124d816813f81bf91fa9e17be456016557c4d"
+  },
+  {
+    "id": "gradients2020",
+    "url": "https://arxiv.org/pdf/2007.09593",
+    "accessed": "2026-09-30",
+    "final_url": "https://arxiv.org/pdf/2007.09593",
+    "status": "downloaded",
+    "path": "papers/gradients2020.pdf",
+    "bytes": 2012283,
+    "sha256": "83fb601349f18d80542188f4494ec39cd91c2903775d8a290c813950c1e96e21"
+  },
+  {
+    "id": "gdml2017",
+    "url": "https://arxiv.org/pdf/1611.04678",
+    "accessed": "2026-09-30",
+    "status": "failed",
+    "failure_reason": "IncompleteRead: IncompleteRead(2097152 bytes read, 1375402 more expected)"
+  },
+  {
+    "id": "unconstrained2026",
+    "url": "https://arxiv.org/pdf/2601.16195",
+    "accessed": "2026-09-30",
+    "final_url": "https://arxiv.org/pdf/2601.16195",
+    "status": "downloaded",
+    "path": "papers/unconstrained2026.pdf",
+    "bytes": 3359789,
+    "sha256": "a52b92a3988497252b7ce3e1bd200477781a09e69df3175ab7e793638c43e157"
+  },
+  {
+    "id": "forces2023",
+    "url": "https://openreview.net/pdf/51a2290cf774e9ce45197a0ecda54328f1a6dcb1.pdf",
+    "accessed": "2026-09-30",
+    "status": "failed",
+    "failure_reason": "HTTPError: HTTP Error 403: Forbidden"
+  },
+  {
+    "id": "takamoto2025",
+    "url": "https://arxiv.org/pdf/2408.05215",
+    "accessed": "2026-09-30",
+    "final_url": "https://arxiv.org/pdf/2408.05215",
+    "status": "downloaded",
+    "path": "papers/takamoto2025.pdf",
+    "bytes": 1208828,
+    "sha256": "8a35c11f50bb08391099d6d5717d09aa95de3e233599ff9a75e7392362c4288b"
+  },
+  {
+    "id": "when-forces-disagree-user",
+    "status": "user_provided",
+    "source_path": "/Users/shedrackeze/Downloads/25413_When_Forces_Disagree_A_D.pdf",
+    "path": "papers/when-forces-disagree-user.pdf",
+    "bytes": 1156941,
+    "sha256": "711000270c2975933fa452c3b011c8133c718758a0500ce3a3ecd9ea16aaefe3",
+    "accessed": "2026-09-30",
+    "version": "Anonymous manuscript labelled under review as a conference paper at ICLR2026; acceptance/current forum status not inferred",
+    "url": "https://openreview.net/forum?id=cQvBP4TZHe"
+  },
+  {
+    "id": "landscape17-v1",
+    "url": "https://arxiv.org/pdf/2508.16425v1",
+    "accessed": "2026-09-30",
+    "purpose": "bounded public author/publisher fallback after recorded access/transport failures",
+    "status": "failed",
+    "failure_reason": "IncompleteRead: IncompleteRead(6291456 bytes read, 6612 more expected)"
+  },
+  {
+    "id": "gdml2017-v4",
+    "url": "https://arxiv.org/pdf/1611.04678v4",
+    "accessed": "2026-09-30",
+    "purpose": "bounded public author/publisher fallback after recorded access/transport failures",
+    "status": "failed",
+    "failure_reason": "HTTPError: HTTP Error 406: Not Acceptable"
+  },
+  {
+    "id": "forces2023-author",
+    "url": "https://arxiv.org/pdf/2210.07237",
+    "accessed": "2026-09-30",
+    "purpose": "bounded public author/publisher fallback after recorded access/transport failures",
+    "status": "failed",
+    "failure_reason": "IncompleteRead: IncompleteRead(1048576 bytes read, 8898178 more expected)"
+  },
+  {
+    "id": "takamoto2025-published",
+    "url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/takamoto25a/takamoto25a.pdf",
+    "accessed": "2026-09-30",
+    "purpose": "bounded public author/publisher fallback after recorded access/transport failures",
+    "final_url": "https://raw.githubusercontent.com/mlresearch/v267/main/assets/takamoto25a/takamoto25a.pdf",
+    "status": "downloaded",
+    "path": "papers/takamoto2025-published.pdf",
+    "bytes": 996455,
+    "sha256": "dce2edbec058c0dec1df9a744c33d8420d40bdcfdb858cad00ec361a379a8945"
+  },
+  {
+    "id": "zhao2025",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12442704/pdf/ADVS-12-e06240.pdf",
+    "accessed": "2026-09-30",
+    "purpose": "bounded public author/publisher fallback after recorded access/transport failures",
+    "final_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12442704/pdf/ADVS-12-e06240.pdf",
+    "status": "failed",
+    "failure_reason": "ValueError: Response is not a complete PDF"
+  }
+]
