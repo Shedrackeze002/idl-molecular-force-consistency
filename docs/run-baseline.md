@@ -76,3 +76,16 @@ This is the completed invocation's reproducibility reference; its output directo
 Diverse128 reduced force MSE by2.156% on its fitting subset and12.300% on the unchanged original16anchors; the gate requires90% reduction in both force and energy MSE. It used256,000training-frame exposures versus32,000each for A/B, and256.725s total versus37.417s/33.923s. These are single-seed training diagnostics with changed difficulty and compute, not causal/generalization evidence. Next: separately plan and twice-review an architecture/loss-gradient investigation. The full pilot and scientific model comparisons remain pending.
 
 Rebuild the report and measured-point figures from saved outputs with `.venv/bin/python scripts/report_data_coverage.py`. Full-precision histories, per-group and fitted/not-fitted anchor counts, baselines, timing and artifact hashes are tracked in `reports/data-coverage-diagnostics.json`; all raw inputs/optimizer checkpoints are retained in `runs/aspirin-data-coverage-2026-09-30`.
+
+
+## Reviewed saved-Adam continuation (30 September)
+
+The fixed replay/balanced/force-only continuation completed exactly once, taking each actual saved 2000-update Adam state to 6000 without resetting moments/counters or rebasing original gates. Each arm added 4000 updates/512000 committed exposures; all 42 scheduled observations, first-step oracles, fresh-process checkpoint receipts and source checks pass. Execution is valid but every joint learning gate and the separate force-only force gate fail. All terminal fitting-force changes exceed the descriptive 1% window threshold; convergence is not established. Full pilot remains pending.
+
+```sh
+uv run --frozen force-consistency diagnose-convergence-budget --config configs/aspirin-convergence-budget.json
+```
+
+This records the completed invocation; its output directory is protected and must not be reused. Saved-state continuation is confined to this separately reviewed diagnostic, not generic learning-check resume. Shared trainer behavior remains unchanged. A further intervention needs a new prospective, twice-reviewed plan; no retry or adaptive extension is automatic.
+
+Read [exact outcomes](../reports/convergence-budget-diagnostics.md), [execution/review record](../reports/convergence-budget-execution-record.md), [primary literature reading map](../reports/literature/2026-09-30/READING_MAP.md) and the evidence log. Report regeneration from saved records uses `.venv/bin/python scripts/report_convergence.py`; it performs no research fitting or numerical rerun. Final full suite passed 246 tests in 242.34 seconds.

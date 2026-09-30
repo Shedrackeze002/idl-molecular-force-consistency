@@ -1,0 +1,60 @@
+...........FFF..........                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_saved_moment_continuation_matches_uninterrupted_without_rebase ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-152/test_saved_moment_continuation0')
+
+    def test_saved_moment_continuation_matches_uninterrupted_without_rebase(tmp_path):
+        p,m,n,c,s,wanted,base,oracle=fixture();before=_state_hashes(s)
+        out=cr.run_convergence_arm(c,s,p,p,m,n,base,oracle,tmp_path/'arm',{'engineering_fixture':True})
+>       assert out['execution_valid'],out.get('failure_reason')
+E       AssertionError: CalledProcessError: Command '['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-m', 'force_consistency.convergence_runs', '--probe', '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-152/test_saved_moment_continuation0/arm']' returned non-zero exit status 1.
+E       assert False
+
+tests/test_convergence.py:63: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "balanced", "update": 2, "fitting_force_mse": 0.00016484682345695712, "elapsed_seconds": 0.005994625040329993}
+{"arm": "balanced", "update": 3, "fitting_force_mse": 0.0001648160125099585, "elapsed_seconds": 0.08072329103015363}
+{"arm": "balanced", "update": 4, "fitting_force_mse": 0.0001647881038347667, "elapsed_seconds": 0.08776954107452184}
+{"arm": "balanced", "update": 5, "fitting_force_mse": 0.0001647632293861784, "elapsed_seconds": 0.09446179098449647}
+_ test_fresh_process_rejects_prediction_preserving_checkpoint_corruption[count] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-152/test_fresh_process_rejects_pre0')
+damage = 'count'
+
+    @pytest.mark.parametrize('damage',['count','normalization'])
+    def test_fresh_process_rejects_prediction_preserving_checkpoint_corruption(tmp_path,damage):
+        p,m,n,c,s,wanted,base,oracle=fixture();root=tmp_path/'arm'
+        out=cr.run_convergence_arm(c,s,p,p,m,n,base,oracle,root,{})
+>       assert out['execution_valid']
+E       assert False
+
+tests/test_convergence.py:78: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "balanced", "update": 2, "fitting_force_mse": 0.00016484682345695712, "elapsed_seconds": 0.007563000079244375}
+{"arm": "balanced", "update": 3, "fitting_force_mse": 0.0001648160125099585, "elapsed_seconds": 0.08096912503242493}
+{"arm": "balanced", "update": 4, "fitting_force_mse": 0.0001647881038347667, "elapsed_seconds": 0.08778487506788224}
+{"arm": "balanced", "update": 5, "fitting_force_mse": 0.0001647632293861784, "elapsed_seconds": 0.09363800007849932}
+_ test_fresh_process_rejects_prediction_preserving_checkpoint_corruption[normalization] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-152/test_fresh_process_rejects_pre1')
+damage = 'normalization'
+
+    @pytest.mark.parametrize('damage',['count','normalization'])
+    def test_fresh_process_rejects_prediction_preserving_checkpoint_corruption(tmp_path,damage):
+        p,m,n,c,s,wanted,base,oracle=fixture();root=tmp_path/'arm'
+        out=cr.run_convergence_arm(c,s,p,p,m,n,base,oracle,root,{})
+>       assert out['execution_valid']
+E       assert False
+
+tests/test_convergence.py:78: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "balanced", "update": 2, "fitting_force_mse": 0.00016484682345695712, "elapsed_seconds": 0.006952458992600441}
+{"arm": "balanced", "update": 3, "fitting_force_mse": 0.0001648160125099585, "elapsed_seconds": 0.07636683399323374}
+{"arm": "balanced", "update": 4, "fitting_force_mse": 0.0001647881038347667, "elapsed_seconds": 0.08301287505310029}
+{"arm": "balanced", "update": 5, "fitting_force_mse": 0.0001647632293861784, "elapsed_seconds": 0.08999095903709531}
+=========================== short test summary info ============================
+FAILED tests/test_convergence.py::test_saved_moment_continuation_matches_uninterrupted_without_rebase
+FAILED tests/test_convergence.py::test_fresh_process_rejects_prediction_preserving_checkpoint_corruption[count]
+FAILED tests/test_convergence.py::test_fresh_process_rejects_prediction_preserving_checkpoint_corruption[normalization]
+3 failed, 21 passed in 58.68s

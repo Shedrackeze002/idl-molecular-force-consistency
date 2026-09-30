@@ -80,3 +80,39 @@ def test_actual_historical_pins_are_verified_without_loading_arrays():
     m=generator();assert m.verify_historical_pins(c,sources)
     c['calibration_sha256']='0'*64
     assert not m.verify_historical_pins(c,sources)
+
+
+@pytest.mark.parametrize('damage',['end','support','schedule'])
+def test_report_cannot_redefine_frozen_completion_contract(damage):
+    c,a=valid_arm()
+    if damage=='end':
+        c.update(end_update=5900,additional_updates=3900)
+        a.update(updates=5900,additional_updates=3900,attempted_updates=3900,persisted_update=5900,additional_frame_exposures=499200,frame_exposures=755200,evaluation_passes=41,evaluation_frame_count=5904)
+        a['history'].pop();a['checkpoint_verification'].update(update=5900,adam_count=5900)
+    elif damage=='support':
+        a.update(fitting_frame_count=64,warmup_frame_exposures=64,additional_frame_exposures=256000,frame_exposures=384000,evaluation_frame_count=3360)
+        a['checkpoint_verification']['fitting_record_count']=64
+        for row in a['history']:
+            row['frame_exposures']=row['update']*64;row['additional_frame_exposures']=(row['update']-2000)*64
+    else:
+        c['validation_interval']=200;a['history']=[x for x in a['history'] if x['update'] in (2000,2001) or x['update']%200==0]
+        a['evaluation_passes']=22;a['evaluation_frame_count']=3168
+    assert not generator().verified_arm(a,c)
+
+
+def test_local_copies_cannot_rebase_baselines_or_replace_oracle():
+    c=json.loads(Path('configs/aspirin-convergence-budget.json').read_text());sources=json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/sources.json').read_text());records={n:json.loads((Path(c['optimizer_diagnostic_run'])/n/'summary.json').read_text()) for n in ('replay','balanced','force-only')}
+    m=generator();assert m.verified_control_copies(c,sources,records)
+    bad=copy.deepcopy(sources);bad['arms']['replay']['initial_metrics']['fitting']['force_mse_eV2_per_A2']*=1000
+    assert not m.verified_control_copies(c,bad,records)
+    bad=copy.deepcopy(records);bad['replay']['probes'][1]['metrics']['fitting']['force_mse_eV2_per_A2']*=.01
+    assert not m.verified_control_copies(c,sources,bad)
+    bad=copy.deepcopy(sources);bad['normalization']['energy_loss_scale_eV']*=2
+    assert not m.verified_control_copies(c,bad,records)
+
+
+@pytest.mark.parametrize('elapsed',[3900.,4001.,float('nan'),None])
+def test_root_wall_cap_cannot_be_bypassed_by_success_status(elapsed):
+    m=generator();c,a=valid_arm();c['total_wall_seconds']=3900
+    assert not m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':elapsed},c)
+    assert m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':3899.},c)

@@ -231,11 +231,11 @@
         "Tommi Jaakkola"
       ],
       "year": 2023,
-      "version_read": "TMLR2023; author arXiv2210.07237 (versioned author PDF not saved locally)",
+      "version_read": "TMLR04/2023; author arXiv2210.07237v2,26August2023",
       "primary_url": "https://openreview.net/forum?id=A8pqQipwkt",
       "publisher_or_author_fallback": "https://arxiv.org/abs/2210.07237",
       "accessed": "2026-09-30",
-      "read_sections": "OpenReview primary PDF retrieved by web: benchmark systems, stability and simulation-specific metrics; author abstract/metadata",
+      "read_sections": "author full PDF via web: pp1–7, §4 datasets and §5 simulation observables/stability; no local complete PDF",
       "source_claim": "Static force accuracy does not align reliably with simulation stability or the structural metrics used by this benchmark.",
       "our_inference_or_action": "Keep an application-specific outcome alongside force errors and retain terminated simulations or relaxations as failures.",
       "transfer_limits": "Its MD benchmark is background for evaluation design, not an experimental result for our geometry task or a requirement to expand the project into NVE evaluation.",

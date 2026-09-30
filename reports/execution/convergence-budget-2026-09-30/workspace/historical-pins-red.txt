@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_actual_historical_pins_are_verified_without_loading_arrays ________
+
+    def test_actual_historical_pins_are_verified_without_loading_arrays():
+        c=json.loads(Path('configs/aspirin-convergence-budget.json').read_text());sources=json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/sources.json').read_text())
+>       m=generator();assert m.verify_historical_pins(c,sources)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verify_historical_pins'
+
+tests/test_convergence_report.py:80: AttributeError
+----------------------------- Captured stderr call -----------------------------
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib:__init__.py:577 /Users/shedrackeze/.matplotlib is not a writable directory
+WARNING  matplotlib:__init__.py:596 Matplotlib created a temporary cache directory at /var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/matplotlib-8s19m3xr because there was an issue with the default path (/Users/shedrackeze/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+=========================== short test summary info ============================
+FAILED tests/test_convergence_report.py::test_actual_historical_pins_are_verified_without_loading_arrays
+1 failed in 10.33s

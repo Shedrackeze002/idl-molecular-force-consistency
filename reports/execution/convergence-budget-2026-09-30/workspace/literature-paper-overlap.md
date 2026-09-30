@@ -1,0 +1,7 @@
+# Supplied paper overlap — user manuscript,2026-09-30
+
+The user-provided anonymous manuscript is kept byte-for-byte in the literature paper folder. Visual check of PDFp8 confirms §4.4: direct force pathway must also be fine-tuned; compared against direct-only tuning, training both pathways reduces reported MD drift. Abstract shorthand must not become a claim that conservative-only tuning was performed.
+
+§4.2.2 mentions weak/negative correlations for some systems including aspirin; authors attribute this to substantial initial equilibrium error. This is relevant to our aspirin scope, but is not a prediction for our trained models. §5 explicitly notes consensus failures (both predictions concurrently wrong), weak/noisy low-error correlations, and lack of calibration. Small disagreement is not a correctness certificate; large disagreement does not identify which pathway is wrong.
+
+Our inference: record reference-force accuracy, predicted-energy/force consistency and physical endpoint recovery separately. Include derivative/evaluation cost in any future diagnostic timing. The distinction we can investigate is matched-accuracy/cost, held-out whole-connection reference-minimum recovery; no novelty claim is established yet. Compare the exact penalty with PIWSL Taylor/spatial losses and this manuscript's supervised fine-tuning objective before direct-force implementation. No new intervention is authorized by this note.

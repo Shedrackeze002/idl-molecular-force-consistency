@@ -1,0 +1,801 @@
+FFFFFFFFFFFFFFFFFFF                                                      [100%]
+=================================== FAILURES ===================================
+_____________ test_exact_completed_record_and_no_rebased_baseline ______________
+
+    def test_exact_completed_record_and_no_rebased_baseline():
+>       c,a=valid_arm();m=generator();assert m.verified_arm(a,c)
+                          ^^^^^^^^^^^
+
+tests/test_convergence_report.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d748f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_incomplete_or_forged_completion_cannot_pass[schedule] __________
+
+damage = 'schedule'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d76180>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_incomplete_or_forged_completion_cannot_pass[duplicate] __________
+
+damage = 'duplicate'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d75520>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_incomplete_or_forged_completion_cannot_pass[count] ____________
+
+damage = 'count'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d76cc0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_incomplete_or_forged_completion_cannot_pass[additional] _________
+
+damage = 'additional'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d77e00>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_incomplete_or_forged_completion_cannot_pass[attempted] __________
+
+damage = 'attempted'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d3f440>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_incomplete_or_forged_completion_cannot_pass[globalexposure] _______
+
+damage = 'globalexposure'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d97410>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_incomplete_or_forged_completion_cannot_pass[localexposure] ________
+
+damage = 'localexposure'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d94ad0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_incomplete_or_forged_completion_cannot_pass[oracle] ___________
+
+damage = 'oracle'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d95880>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_incomplete_or_forged_completion_cannot_pass[receipt] ___________
+
+damage = 'receipt'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d960f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_incomplete_or_forged_completion_cannot_pass[source] ___________
+
+damage = 'source'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d94830>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_incomplete_or_forged_completion_cannot_pass[warmup] ___________
+
+damage = 'warmup'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d97350>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_incomplete_or_forged_completion_cannot_pass[rawgate] ___________
+
+damage = 'rawgate'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x107365f10>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_incomplete_or_forged_completion_cannot_pass[nonfinite] __________
+
+damage = 'nonfinite'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x107367230>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+____________ test_incomplete_or_forged_completion_cannot_pass[norm] ____________
+
+damage = 'norm'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d94980>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_incomplete_or_forged_completion_cannot_pass[persisted] __________
+
+damage = 'persisted'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d97500>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_incomplete_or_forged_completion_cannot_pass[elapsed] ___________
+
+damage = 'elapsed'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+                   ^^^^^^^^^^^
+
+tests/test_convergence_report.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d95610>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_terminal_window_signed_math_zero_missing_and_no_theorem _________
+
+    def test_terminal_window_signed_math_zero_missing_and_no_theorem():
+>       m=generator();c,a=valid_arm();h=copy.deepcopy(a['history'])
+          ^^^^^^^^^^^
+
+tests/test_convergence_report.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d3e7e0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_____________ test_partial_preflight_report_preserves_zero_counts ______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-154/test_partial_preflight_report_0')
+
+    def test_partial_preflight_report_preserves_zero_counts(tmp_path):
+>       m=generator();root=tmp_path/'run';root.mkdir();c,a=valid_arm();c.update(terminal_window_updates=500,small_window_relative_change=.01)
+          ^^^^^^^^^^^
+
+tests/test_convergence_report.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_convergence_report.py:9: in generator
+    spec=importlib.util.spec_from_file_location('convergence_report','scripts/report_convergence.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d77200>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_convergence_report.py::test_exact_completed_record_and_no_rebased_baseline
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[schedule]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[duplicate]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[count]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[additional]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[attempted]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[globalexposure]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[localexposure]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[oracle]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[receipt]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[source]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[warmup]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[rawgate]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[nonfinite]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[norm]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[persisted]
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[elapsed]
+FAILED tests/test_convergence_report.py::test_terminal_window_signed_math_zero_missing_and_no_theorem
+FAILED tests/test_convergence_report.py::test_partial_preflight_report_preserves_zero_counts
+19 failed in 0.12s

@@ -117,8 +117,8 @@ Limits: Kernel training and trajectory data differ from our neural128frame conti
 
 ### LIT009 — Forces are not Enough: Benchmark and Critical Evaluation for Machine Learning Force Fields with Molecular Simulations
 
-Xiang Fu ; Zhenghao Wu ; Wujie Wang ; Tian Xie ; Sinan Keten ; Rafael Gomez-Bombarelli ; Tommi Jaakkola. TMLR2023; author arXiv2210.07237 (versioned author PDF not saved locally). [Primary source](https://openreview.net/forum?id=A8pqQipwkt).
-Read: OpenReview primary PDF retrieved by web: benchmark systems, stability and simulation-specific metrics; author abstract/metadata. Local access: web_fulltext_read_local_pdf_failed.
+Xiang Fu ; Zhenghao Wu ; Wujie Wang ; Tian Xie ; Sinan Keten ; Rafael Gomez-Bombarelli ; Tommi Jaakkola. TMLR04/2023; author arXiv2210.07237v2,26August2023 (local PDF not saved). [Primary source](https://openreview.net/forum?id=A8pqQipwkt).
+Read: Author full PDF via web: pp1–7, §4 datasets and §5 simulation observables/stability. Local access: web_fulltext_read_local_pdf_failed.
 
 Source finding: Static force accuracy does not align reliably with simulation stability or the structural metrics used by this benchmark.
 
@@ -183,3 +183,8 @@ The user-supplied When Forces Disagree PDF resolves the key OpenReview block. Fo
 - [Forces are Not Enough](https://openreview.net/forum?id=A8pqQipwkt), [public author PDF](https://arxiv.org/pdf/2210.07237): OpenReviewHTTP403 and locally truncated author PDF.
 
 All unsuccessful downloads and operational extraction attempts are retained in the manifest/evidence trail. Both saved PIWSL versions remain available; the published paper is used for methods.
+
+
+## Execution-status update
+
+The fixed continuation is now completed exactly once: all execution checks pass, all original learning gates fail. No paper-driven schedule/model/loss change was added. See [measured outcomes](../../convergence-budget-diagnostics.md) and [final independent review](../../../docs/reviews/2026-09-30-convergence-budget-final-review.md). The earlier prospective decision above records the pre-run commitment, not unfinished work. Next intervention and novelty assessment remain separate open work.

@@ -1,0 +1,37 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_controller_summary_write_failure_is_independently_recorded_and_blocks __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-156/test_controller_summary_write_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1121bc2c0>
+
+    def test_controller_summary_write_failure_is_independently_recorded_and_blocks(tmp_path,monkeypatch):
+        real=cr.atomic_json
+        def fail(path,value):
+            if Path(path)==tmp_path/'replay/summary.json':raise OSError('summary device failure')
+            return real(path,value)
+        monkeypatch.setattr(cr,'atomic_json',fail)
+        def runner(name,path):
+            path.mkdir();return {'status':'completed','execution_valid':True,'additional_updates':1,'additional_frame_exposures':7}
+>       out=cr.execute_convergence_matrix(tmp_path,runner)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_convergence.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/convergence_runs.py:250: in execute_convergence_matrix
+    out[name]=result;atomic_json(path/'summary.json',result);atomic_json(root/'arms.json',out)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-156/test_controller_summary_write_0/replay/summary.json')
+value = {'status': 'completed', 'execution_valid': True, 'additional_updates': 1, 'additional_frame_exposures': 7, ...}
+
+    def fail(path,value):
+>       if Path(path)==tmp_path/'replay/summary.json':raise OSError('summary device failure')
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: summary device failure
+
+tests/test_convergence.py:159: OSError
+=========================== short test summary info ============================
+FAILED tests/test_convergence.py::test_controller_summary_write_failure_is_independently_recorded_and_blocks
+1 failed in 0.99s

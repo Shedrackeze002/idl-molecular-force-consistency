@@ -1,0 +1,52 @@
+..........F......F.                                                      [100%]
+=================================== FAILURES ===================================
+___________ test_incomplete_or_forged_completion_cannot_pass[source] ___________
+
+damage = 'source'
+
+    @pytest.mark.parametrize('damage',['schedule','duplicate','count','additional','attempted','globalexposure','localexposure','oracle','receipt','source','warmup','rawgate','nonfinite','norm','persisted','elapsed'])
+    def test_incomplete_or_forged_completion_cannot_pass(damage):
+        c,a=valid_arm()
+        if damage=='schedule':a['history'].pop(5)
+        elif damage=='duplicate':a['history'][2]['update']=2001
+        elif damage=='count':a['updates']=5999
+        elif damage=='additional':a['additional_updates']=4001
+        elif damage=='attempted':a['pending_update_unknown']=True
+        elif damage=='globalexposure':a['frame_exposures']=512000
+        elif damage=='localexposure':a['additional_frame_exposures']=768000
+        elif damage=='oracle':a['oracle_verified']=False
+        elif damage=='receipt':a['checkpoint_verification']['adam_count']=5999
+        elif damage=='source':a['source_state_hashes_after']['params']='d'*64
+        elif damage=='warmup':a['warmup_frame_exposures']=0
+        elif damage=='rawgate':a['fit_gate']['accepted']=True
+        elif damage=='nonfinite':a['history'][-1]['metrics']['fitting']['force_mse_eV2_per_A2']=float('nan')
+        elif damage=='norm':a['checkpoint_verification']['normalization']={}
+        elif damage=='persisted':a['persisted_update']=5500
+        elif damage=='elapsed':a['elapsed_seconds']=1201
+>       assert not generator().verified_arm(a,c)
+E       AssertionError: assert not True
+E        +  where True = <function verified_arm at 0x10b951800>({'status': 'completed', 'executed': True, 'execution_valid': True, 'source_hashes_unchanged': True, ...}, {'start_update': 2000, 'end_update': 6000, 'additional_updates': 4000, 'validation_interval': 100, ...})
+E        +    where <function verified_arm at 0x10b951800> = <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'>.verified_arm
+E        +      where <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'> = generator()
+
+tests/test_convergence_report.py:54: AssertionError
+_________ test_terminal_window_signed_math_zero_missing_and_no_theorem _________
+
+    def test_terminal_window_signed_math_zero_missing_and_no_theorem():
+        m=generator();c,a=valid_arm();h=copy.deepcopy(a['history'])
+        for row in h:
+            if row['update']==5500:row['metrics']['fitting']['energy_mse_eV2']=2.
+            if row['update']==6000:row['metrics']['fitting']['energy_mse_eV2']=2.01
+>       v=m.terminal_window(h,500)['fitting']['energy_mse_eV2'];assert v['relative_reduction']==pytest.approx(-.005) and v['label']=='small terminal-window change'
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (0.0 == -0.005 ± 5.0e-09
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: -0.005 ± 5.0e-09)
+
+tests/test_convergence_report.py:62: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_convergence_report.py::test_incomplete_or_forged_completion_cannot_pass[source]
+FAILED tests/test_convergence_report.py::test_terminal_window_signed_math_zero_missing_and_no_theorem
+2 failed, 17 passed in 10.16s

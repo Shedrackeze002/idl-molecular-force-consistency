@@ -48,7 +48,8 @@ def gate(metrics,baseline,fraction):
 def verified_arm(a,c):
     try:
         start,end=c['start_update'],c['end_update'];extra=end-start;fit=a['fitting_frame_count'];anchor=a['anchor_frame_count']
-        if (a.get('status')!='completed' or not a.get('executed') or not a.get('execution_valid') or a.get('stop_reason')!='fixed_budget'
+        if (start!=2000 or end!=6000 or extra!=4000 or c['validation_interval']!=100 or fit!=128 or anchor!=16
+            or c['continuation_wall_seconds']!=1200 or a.get('status')!='completed' or not a.get('executed') or not a.get('execution_valid') or a.get('stop_reason')!='fixed_budget'
             or not a.get('source_hashes_unchanged') or a.get('source_state_hashes_before')!=a.get('source_state_hashes_after')
             or not a.get('source_state_hashes_before') or not a.get('warmup_source_unchanged') or not a.get('oracle_verified')
             or not a.get('checkpoint_new_process_verified') or a.get('pending_update_unknown') or extra!=c['additional_updates']
@@ -93,11 +94,33 @@ def verify_historical_pins(c,sources):
     except (OSError,KeyError,TypeError,ValueError):return False
 
 
+def verified_control_copies(c,sources,records):
+    """New control copies must equal the pinned immutable originals, not each other alone."""
+    try:
+        historical=Path(c['optimizer_diagnostic_run'])
+        if sources!=json.loads((historical/'sources.json').read_text()):return False
+        oldconfig=json.loads((historical/'config.json').read_text())
+        if any(c.get(k)!=v for k,v in oldconfig.items() if k!='run_directory'):return False
+        expected={n:json.loads((historical/n/'summary.json').read_text()) for n in NAMES}
+        return records==expected
+    except (OSError,KeyError,TypeError,ValueError):return False
+
+
+def verified_root_budget(source,c):
+    return bool(c.get('total_wall_seconds')==3900 and finite(source.get('elapsed_seconds')) and 0<=source['elapsed_seconds']<3900)
+
+
+def frozen_configuration(c):
+    expected={'start_update':2000,'end_update':6000,'additional_updates':4000,'validation_interval':100,
+              'continuation_wall_seconds':1200,'total_wall_seconds':3900,'terminal_window_updates':500,'small_window_relative_change':.01}
+    return all(c.get(k)==v for k,v in expected.items())
+
+
 def verify_files(root,source,c):
     """Tie all report assertions to saved raw records and historical pins."""
     try:
         sources=json.loads((root/'sources.json').read_text());records=json.loads((root/'optimizer-records.json').read_text())
-        if not verify_historical_pins(c,sources):return False
+        if not verify_historical_pins(c,sources) or not verified_control_copies(c,sources,records):return False
         for name,a in source['arms'].items():
             path=root/name;ac=json.loads((path/'config.json').read_text());prov=json.loads((path/'provenance.json').read_text())
             if (ac!={**c,'normalization':prov['normalization'],'arm':name,'loss_weights':c['arms'][name]}
@@ -121,7 +144,7 @@ def generate(root,output):
              'report_generator_sha256':digest(__file__),'full_pilot':'pending','matplotlib_version':matplotlib.__version__}
     arm_configs={n:{**c,'normalization':a.get('provenance',{}).get('normalization',c.get('normalization',{})),
                     'loss_weights':c.get('arms',{}).get(n,c.get('loss_weights',{}))} for n,a in arms.items()}
-    compact['interpretation_valid']=bool(s.get('status')=='completed' and s.get('execution_valid') and s.get('source_hashes_unchanged')
+    compact['interpretation_valid']=bool(frozen_configuration(c) and verified_root_budget(s,c) and s.get('status')=='completed' and s.get('execution_valid') and s.get('source_hashes_unchanged')
         and set(arms)==set(NAMES) and all(verified_arm(a,arm_configs[n]) for n,a in arms.items()) and verify_files(root,s,c))
     compact['learning_accepted']=bool(compact['interpretation_valid'] and any(arms[n]['fit_gate']['accepted'] and arms[n]['anchor_gate']['accepted'] for n in ('replay','balanced')))
     compact['force_only_force_accepted']=bool(compact['interpretation_valid'] and all(arms['force-only']['final_metrics'][r][KEYS[1]]/arms['force-only']['original_baselines'][r][KEYS[1]]<c['gate_fraction'] for r in ROLES))
@@ -142,7 +165,7 @@ def generate(root,output):
                     if points:ax.plot(*zip(*points),marker='.',lw=1,label='Prescribed observations')
                     initial=a.get('original_baselines',{}).get(r,{}).get(key)
                     if initial is not None:ax.axhline(initial*c['gate_fraction'],ls='--',color='#b44942',label='Original 10% gate')
-                    ax.set_title(f'{name}: '+('128 fitting' if r=='fitting' else '16 fitted anchor'));ax.set_xlabel('Cumulative committed updates');ax.set_ylabel(f'Raw {label} MSE');ax.grid(alpha=.2);ax.legend(fontsize=7)
+                    ax.set_title(f'{name}: '+('128 fitting' if r=='fitting' else '16 fitted anchor'));ax.set_xlabel('Cumulative committed updates');ax.set_ylabel('Energy MSE (eV²)' if label=='energy' else 'Force MSE (eV²/Å²)');ax.grid(alpha=.2);ax.legend(fontsize=7)
             fig.suptitle(f'Fixed continuation: {label} — every scheduled observation')
             path=figures/f'convergence-budget-{label}.png';fig.savefig(path,dpi=170);plt.close(fig);plots.append(path)
     compact['figures_sha256']={str(p.relative_to(output)):digest(p) for p in plots}

@@ -1,0 +1,157 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_________ test_report_cannot_redefine_frozen_completion_contract[end] __________
+
+damage = 'end'
+
+    @pytest.mark.parametrize('damage',['end','support','schedule'])
+    def test_report_cannot_redefine_frozen_completion_contract(damage):
+        c,a=valid_arm()
+        if damage=='end':
+            c.update(end_update=5900,additional_updates=3900)
+            a.update(updates=5900,additional_updates=3900,attempted_updates=3900,persisted_update=5900,additional_frame_exposures=499200,frame_exposures=755200,evaluation_passes=41,evaluation_frame_count=5904)
+            a['history'].pop();a['checkpoint_verification'].update(update=5900,adam_count=5900)
+        elif damage=='support':
+            a.update(fitting_frame_count=64,warmup_frame_exposures=64,additional_frame_exposures=256000,frame_exposures=384000,evaluation_frame_count=3360)
+            a['checkpoint_verification']['fitting_record_count']=64
+            for row in a['history']:
+                row['frame_exposures']=row['update']*64;row['additional_frame_exposures']=(row['update']-2000)*64
+        else:
+            c['validation_interval']=200;a['history']=[x for x in a['history'] if x['update'] in (2000,2001) or x['update']%200==0]
+            a['evaluation_passes']=22;a['evaluation_frame_count']=3168
+>       assert not generator().verified_arm(a,c)
+E       AssertionError: assert not True
+E        +  where True = <function verified_arm at 0x109240a40>({'status': 'completed', 'executed': True, 'execution_valid': True, 'source_hashes_unchanged': True, ...}, {'start_update': 2000, 'end_update': 5900, 'additional_updates': 3900, 'validation_interval': 100, ...})
+E        +    where <function verified_arm at 0x109240a40> = <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'>.verified_arm
+E        +      where <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'> = generator()
+
+tests/test_convergence_report.py:100: AssertionError
+----------------------------- Captured stderr call -----------------------------
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib:__init__.py:577 /Users/shedrackeze/.matplotlib is not a writable directory
+WARNING  matplotlib:__init__.py:596 Matplotlib created a temporary cache directory at /var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/matplotlib-k7akc0qt because there was an issue with the default path (/Users/shedrackeze/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+_______ test_report_cannot_redefine_frozen_completion_contract[support] ________
+
+damage = 'support'
+
+    @pytest.mark.parametrize('damage',['end','support','schedule'])
+    def test_report_cannot_redefine_frozen_completion_contract(damage):
+        c,a=valid_arm()
+        if damage=='end':
+            c.update(end_update=5900,additional_updates=3900)
+            a.update(updates=5900,additional_updates=3900,attempted_updates=3900,persisted_update=5900,additional_frame_exposures=499200,frame_exposures=755200,evaluation_passes=41,evaluation_frame_count=5904)
+            a['history'].pop();a['checkpoint_verification'].update(update=5900,adam_count=5900)
+        elif damage=='support':
+            a.update(fitting_frame_count=64,warmup_frame_exposures=64,additional_frame_exposures=256000,frame_exposures=384000,evaluation_frame_count=3360)
+            a['checkpoint_verification']['fitting_record_count']=64
+            for row in a['history']:
+                row['frame_exposures']=row['update']*64;row['additional_frame_exposures']=(row['update']-2000)*64
+        else:
+            c['validation_interval']=200;a['history']=[x for x in a['history'] if x['update'] in (2000,2001) or x['update']%200==0]
+            a['evaluation_passes']=22;a['evaluation_frame_count']=3168
+>       assert not generator().verified_arm(a,c)
+E       AssertionError: assert not True
+E        +  where True = <function verified_arm at 0x1092532e0>({'status': 'completed', 'executed': True, 'execution_valid': True, 'source_hashes_unchanged': True, ...}, {'start_update': 2000, 'end_update': 6000, 'additional_updates': 4000, 'validation_interval': 100, ...})
+E        +    where <function verified_arm at 0x1092532e0> = <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'>.verified_arm
+E        +      where <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'> = generator()
+
+tests/test_convergence_report.py:100: AssertionError
+_______ test_report_cannot_redefine_frozen_completion_contract[schedule] _______
+
+damage = 'schedule'
+
+    @pytest.mark.parametrize('damage',['end','support','schedule'])
+    def test_report_cannot_redefine_frozen_completion_contract(damage):
+        c,a=valid_arm()
+        if damage=='end':
+            c.update(end_update=5900,additional_updates=3900)
+            a.update(updates=5900,additional_updates=3900,attempted_updates=3900,persisted_update=5900,additional_frame_exposures=499200,frame_exposures=755200,evaluation_passes=41,evaluation_frame_count=5904)
+            a['history'].pop();a['checkpoint_verification'].update(update=5900,adam_count=5900)
+        elif damage=='support':
+            a.update(fitting_frame_count=64,warmup_frame_exposures=64,additional_frame_exposures=256000,frame_exposures=384000,evaluation_frame_count=3360)
+            a['checkpoint_verification']['fitting_record_count']=64
+            for row in a['history']:
+                row['frame_exposures']=row['update']*64;row['additional_frame_exposures']=(row['update']-2000)*64
+        else:
+            c['validation_interval']=200;a['history']=[x for x in a['history'] if x['update'] in (2000,2001) or x['update']%200==0]
+            a['evaluation_passes']=22;a['evaluation_frame_count']=3168
+>       assert not generator().verified_arm(a,c)
+E       AssertionError: assert not True
+E        +  where True = <function verified_arm at 0x109253b00>({'status': 'completed', 'executed': True, 'execution_valid': True, 'source_hashes_unchanged': True, ...}, {'start_update': 2000, 'end_update': 6000, 'additional_updates': 4000, 'validation_interval': 200, ...})
+E        +    where <function verified_arm at 0x109253b00> = <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'>.verified_arm
+E        +      where <module 'convergence_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_convergence.py'> = generator()
+
+tests/test_convergence_report.py:100: AssertionError
+_________ test_local_copies_cannot_rebase_baselines_or_replace_oracle __________
+
+    def test_local_copies_cannot_rebase_baselines_or_replace_oracle():
+        c=json.loads(Path('configs/aspirin-convergence-budget.json').read_text());sources=json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/sources.json').read_text());records={n:json.loads((Path(c['optimizer_diagnostic_run'])/n/'summary.json').read_text()) for n in ('replay','balanced','force-only')}
+>       m=generator();assert m.verified_control_copies(c,sources,records)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verified_control_copies'
+
+tests/test_convergence_report.py:105: AttributeError
+_______ test_root_wall_cap_cannot_be_bypassed_by_success_status[3900.0] ________
+
+elapsed = 3900.0
+
+    @pytest.mark.parametrize('elapsed',[3900.,4001.,float('nan'),None])
+    def test_root_wall_cap_cannot_be_bypassed_by_success_status(elapsed):
+        m=generator();c,a=valid_arm();c['total_wall_seconds']=3900
+>       assert not m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':elapsed},c)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verified_root_budget'
+
+tests/test_convergence_report.py:117: AttributeError
+_______ test_root_wall_cap_cannot_be_bypassed_by_success_status[4001.0] ________
+
+elapsed = 4001.0
+
+    @pytest.mark.parametrize('elapsed',[3900.,4001.,float('nan'),None])
+    def test_root_wall_cap_cannot_be_bypassed_by_success_status(elapsed):
+        m=generator();c,a=valid_arm();c['total_wall_seconds']=3900
+>       assert not m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':elapsed},c)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verified_root_budget'
+
+tests/test_convergence_report.py:117: AttributeError
+_________ test_root_wall_cap_cannot_be_bypassed_by_success_status[nan] _________
+
+elapsed = nan
+
+    @pytest.mark.parametrize('elapsed',[3900.,4001.,float('nan'),None])
+    def test_root_wall_cap_cannot_be_bypassed_by_success_status(elapsed):
+        m=generator();c,a=valid_arm();c['total_wall_seconds']=3900
+>       assert not m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':elapsed},c)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verified_root_budget'
+
+tests/test_convergence_report.py:117: AttributeError
+________ test_root_wall_cap_cannot_be_bypassed_by_success_status[None] _________
+
+elapsed = None
+
+    @pytest.mark.parametrize('elapsed',[3900.,4001.,float('nan'),None])
+    def test_root_wall_cap_cannot_be_bypassed_by_success_status(elapsed):
+        m=generator();c,a=valid_arm();c['total_wall_seconds']=3900
+>       assert not m.verified_root_budget({'status':'completed','execution_valid':True,'elapsed_seconds':elapsed},c)
+                   ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'convergence_report' has no attribute 'verified_root_budget'
+
+tests/test_convergence_report.py:117: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_convergence_report.py::test_report_cannot_redefine_frozen_completion_contract[end]
+FAILED tests/test_convergence_report.py::test_report_cannot_redefine_frozen_completion_contract[support]
+FAILED tests/test_convergence_report.py::test_report_cannot_redefine_frozen_completion_contract[schedule]
+FAILED tests/test_convergence_report.py::test_local_copies_cannot_rebase_baselines_or_replace_oracle
+FAILED tests/test_convergence_report.py::test_root_wall_cap_cannot_be_bypassed_by_success_status[3900.0]
+FAILED tests/test_convergence_report.py::test_root_wall_cap_cannot_be_bypassed_by_success_status[4001.0]
+FAILED tests/test_convergence_report.py::test_root_wall_cap_cannot_be_bypassed_by_success_status[nan]
+FAILED tests/test_convergence_report.py::test_root_wall_cap_cannot_be_bypassed_by_success_status[None]
+8 failed, 20 deselected in 21.86s
