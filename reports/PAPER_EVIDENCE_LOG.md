@@ -4029,3 +4029,15 @@ Both independent reviews cleared exact3case protocol/oneexecution with no materi
 ## OPTSTEP-ENGINEERING-001 — Numeric diagnostic RED/GREEN
 
 Task1 test-first collection failed as intended for missing optimizer_diagnostics (task1-red.log); no numerical research ran. Implemented saved Adam moments/count+1/epsilon independent formula, equal-norm hypothetical controls, both unit-direction FD steps/objectives/roles, fixed probes and synchronized started/completed per-chunk work records. Focused engineering checks: 5 passed in7.66s (task1-green.log). Scalar, quadratic and seven-frame model witnesses verify zero-gradient/nonzero-momentum behavior, weighted/builder identity, immutable states,12FDcells/24steps/6probes and168FD/84probe completed frame passes. These are engineering checks, not Landscape17 research outcomes. Sources unchanged; production remains unexecuted. Next: strict source controller.
+
+## OPTSTEP-ENGINEERING-002 — Controller source schema correction
+
+Task2 RED: missing optimizer_runs,1collectionerror0.05s. First focused run:22passed/1failed8.71s. The real preflight rejected compact provenance because the report intentionally omits historical_reference and per-arm provenance; independent raw/compact comparisons now use those exact documented projections, while checking full historical raw provenance separately. Auxiliary read-only schema inspection also queried a nonexistent compact execution key (KeyError), corrected by reading report generator. No production/model probes ran; all source bytes preserved. Rehashed invalid metadata remains an engineering rejection trial. Focused retry pending.
+
+## OPTSTEP-ENGINEERING-003 — Selected subset identity schema
+
+Second focused run22passed/1failed11.15s (task2-green-corrected.log): selected subset payload carries no identity key; planned manifest identity is separately verified by parent preflight. Corrected the extra source-provenance comparison to the frozen expected_subsets_identity already audited against planned manifest, retaining exact selected-payload comparison. This failed at a source gate before new checkpoint probes; no scientific result. Retry pending.
+
+## OPTSTEP-ENGINEERING-004 — Source/controller verification GREEN
+
+Task2 final focused23passed10.67s; expanded27passed11.41s (task2-green-final.log/task2-expanded.log). Real read-only preflight checks100raw+2compact identities,128fitting/16anchor memberships/input arrays, three final Adam/update2000 states, original initial/final raw metrics, saved predictions and immutable source files. Completed prediction accounting208parent+432loss-source frames. Engineering corruptions of settings/pins/rehashedweights/rehashedsavedpositions/loadedAdamcount fail, and interruption retains started-unconfirmed work; invalid/exception/budget case blocks later cases while retaining partials. Full matrix unexecuted; no research conclusions from these tests. Next: JSON-only report and whole-suite verification before exact once-only research invocation.
