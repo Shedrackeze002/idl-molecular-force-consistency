@@ -1,6 +1,7 @@
 """Rebuild local optimizer observations from saved JSON only, including failed work."""
 import hashlib
 import json
+import math
 from pathlib import Path
 import matplotlib
 matplotlib.use('Agg')
@@ -29,11 +30,40 @@ def verified(case):
     if case.get('status')!='completed' or not case.get('verification_valid') or case.get('state_hashes_before')!=case.get('state_hashes_after'):return False
     if not all(case.get(k,{}).get('valid') for k in ('adam_identity','weighted_gradient_identity','builder_identity')):return False
     if case.get('counts')!=counts(case) or case.get('training_frame_exposures')!=0:return False
-    for d in case.get('directions',{}).values():
-        for r in d.get('roles',{}).values():
+    directions=case.get('directions',{})
+    if set(directions)!=set(DIRECTIONS):return False
+    target=directions['stateful_adam'].get('norm')
+    if not isinstance(target,(int,float)) or not math.isfinite(target) or target<0:return False
+    expected_probes=[]
+    for name in DIRECTIONS:
+        d=directions[name];status=d.get('status');norm=d.get('norm')
+        if status=='unavailable':
+            reason=d.get('reason')
+            if name=='stateful_adam' or reason not in ('zero_target_norm','zero_reference_norm') or d.get('roles')!={} or norm is not None:return False
+            if (reason=='zero_target_norm')!=(target==0):return False
+            continue
+        if status not in ('available','zero_direction') or not isinstance(norm,(int,float)) or not math.isfinite(norm):return False
+        if status=='zero_direction':
+            if name!='stateful_adam' or target!=0 or norm!=0:return False
+        elif norm<=0 or not math.isclose(norm,target,abs_tol=1e-10,rel_tol=1e-8):return False
+        if set(d.get('roles',{}))!={'fitting','anchor'}:return False
+        for r in d['roles'].values():
             fd=r.get('finite_differences',{})
-            if fd.get('status')=='not_applicable_zero_direction':continue
-            if not fd.get('valid') or not all(c.get('valid') and any(s.get('valid') for s in c.get('steps',[])) for c in fd.get('objectives',{}).values()):return False
+            if status=='zero_direction':
+                if fd.get('status')!='not_applicable_zero_direction' or fd.get('valid') is not None or fd.get('objectives')!={}:return False
+                continue
+            if fd.get('status')!='completed' or not fd.get('valid') or set(fd.get('objectives',{}))!={'energy','force'}:return False
+            for cell in fd['objectives'].values():
+                steps=cell.get('steps',[])
+                if [x.get('step') for x in steps]!=[1e-4,1e-5] or not cell.get('valid') or not any(x.get('valid') for x in steps):return False
+        expected_probes.extend((name,scale) for scale in (.1,1.))
+    actual=[(p.get('direction'),p.get('scale')) for p in case.get('probes',[])]
+    if len(actual)!=len(expected_probes) or set(actual)!=set(expected_probes):return False
+    for p in case['probes']:
+        if set(p.get('roles',{}))!={'fitting','anchor'}:return False
+        for role in ('fitting','anchor'):
+            m=p.get('metrics',{}).get(role,{})
+            if any(not isinstance(m.get(k),(int,float)) or not math.isfinite(m[k]) or m[k]<0 for k in KEYS):return False
     return True
 
 

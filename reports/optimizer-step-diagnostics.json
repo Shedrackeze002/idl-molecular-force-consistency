@@ -21304,7 +21304,7 @@
   "matplotlib_version": "3.11.2",
   "metric_convention": "Raw energy MSE over frames; force MSE over atom-coordinate components; immutable original baseline fractions; fully fitted anchor. Local normalized loss derivatives and counterfactual displacements.",
   "next_step": "separately_review_followup_from_local_evidence",
-  "report_generator_sha256": "53d9447e39e39e7b02838fc31a3d8c6a672cd1b2b13a0c2366bcbc2377b2ff8d",
+  "report_generator_sha256": "7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a",
   "source_hashes_unchanged": true,
   "source_run_directory": "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/runs/aspirin-optimizer-step-2026-09-30",
   "source_summary_sha256": "3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b",

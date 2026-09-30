@@ -86,7 +86,7 @@ These verified local slopes and fixed finite displacements describe the three sa
 
 Completed model/gradient frame passes by category: `{"fd": 5184, "gradient_energy": 432, "gradient_force": 432, "loss_source_predictions": 432, "parent_source_predictions": 208, "probe": 2592, "reference_builder": 384, "source_predictions": 432, "weighted_gradient": 384}`. Opaque parent source verification and reference-builder work count only after synchronized completion; interrupted operations retain unknown partial work. These counts are diagnostic passes, not hardware FLOPs or training exposures.
 
-Source summary SHA256 `3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b`; report generator SHA256 `53d9447e39e39e7b02838fc31a3d8c6a672cd1b2b13a0c2366bcbc2377b2ff8d`.
+Source summary SHA256 `3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b`; report generator SHA256 `7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a`.
 Complete raw/per-group/equal-group/overlap metrics, original fractions, weighted losses, both FD steps, block geometry, failed/partial work and all file checksums: [optimizer-step-diagnostics.json](optimizer-step-diagnostics.json). Trial trail: [PAPER_EVIDENCE_LOG.md](PAPER_EVIDENCE_LOG.md), OPTSTEP entries.
 
 ![optimizer-step-energy](figures/optimizer-step-energy.png)

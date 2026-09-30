@@ -26,28 +26,30 @@
 **Create:** src/force_consistency/optimizer_diagnostics.py; tests/test_optimizer_diagnostics.py.
 **Interfaces:** adam_directions(params,optstate,gradient,learning_rate)->(directions,verification); direction_geometry(ge,gf,direction,weights)->dict; analyze_optimizer_snapshot(state,fitting,anchor,model,norm,weights,config)->dict.
 
-- [ ] Testfirst RED: manualnonzero mu/nu/count Adam leaves/counter2001 inclbiascorrection/eps; weightedquadraticdirection/slopes/samenorm/negativegradient; zero/missingdirections; finiteFDwrongsignreject; fixedstate/counter hashes; tiny nonzero-head model weightedgradient/fittingandanchordirections/allprobes saved withoriginalbaselines.
-- [ ] Implement minimalnumerichelpers, reuse splitgradients/weightedaccumulator/referencebuilder and coverage_metrics; allgradients/chunks atfixedparams, exactthree directions andtwoscales, unitFDbothsteps andobjectives, callbacks preservepartialcells/counts. Snapshotstateparameters/optimizer untouched; prospectiveintermediateoptimizer discarded.
-- [ ] Run .venv/bin/pytest -q tests/test_optimizer_diagnostics.py; expectedGREEN. LogRED/GREEN evidence andscopedcommit.
+- [x] Testfirst RED: manualnonzero mu/nu/count Adam leaves/counter2001 inclbiascorrection/eps; weightedquadraticdirection/slopes/samenorm/negativegradient; zero/missingdirections; finiteFDwrongsignreject; fixedstate/counter hashes; tiny nonzero-head model weightedgradient/fittingandanchordirections/allprobes saved withoriginalbaselines.
+- [x] Implement minimalnumerichelpers, reuse splitgradients/weightedaccumulator/referencebuilder and coverage_metrics; allgradients/chunks atfixedparams, exactthree directions andtwoscales, unitFDbothsteps andobjectives, callbacks preservepartialcells/counts. Snapshotstateparameters/optimizer untouched; prospectiveintermediateoptimizer discarded.
+- [x] Run .venv/bin/pytest -q tests/test_optimizer_diagnostics.py; expectedGREEN. LogRED/GREEN evidence andscopedcommit.
 
 ### Task 2: Source-gated case controller and CLI
 
 **Create:** src/force_consistency/optimizer_runs.py; tests/test_optimizer_runs.py. **Modify:** cli.py only.
 **Interfaces:** verify_optimizer_sources(config); optimizer_preflight(config,check_budget)->(fitting,anchor,model,norm,states,source_record); execute_optimizer_cases(...)->dict; diagnose_optimizer_steps(config)->dict.
 
-- [ ] RED tests omitted/staleallowlists/compact/controlsettings beforeloader; real preflight sourceconfig/records/hashes and rehashedincorrectweights/count/arrays rejected; no checkpoint sourcewrite. Protectedroots, uncaughtexception/partial FD failure/wallblocked/unavailable directions andrepairroute; exactnewCLI validity andpendingpilot.
-- [ ] Implement strictfrozennumericconfig and31newsourcegates then existing balance_preflight69gates/data. Reconcile historicalsourceconfig/compact/references and2000counters/baselines; loadstates againsthistoricalprov/template only. Savedpredictionallframeverification. Current/historicalcode separate.
-- [ ] Preregister controller/cases withsourcehashes/inputweights/directions/settings/gates/limits beforeexecution; incrementalpartial/status/summary andactualcounts, caseoutcomes/hasheseachtime,100raw+2compact endchecks. Budgetbefore/aftermajorpreflight andchunks; no sourcefilewrites/research retry.
-- [ ] Run .venv/bin/pytest -q tests/test_optimizer_runs.py tests/test_optimizer_diagnostics.py; expectedGREEN. Full152prior+new GREEN beforeoneproduction, commitcode/evidence.
+- [x] RED tests omitted/staleallowlists/compact/controlsettings beforeloader; real preflight sourceconfig/records/hashes and rehashedincorrectweights/count/arrays rejected; no checkpoint sourcewrite. Protectedroots, uncaughtexception/partial FD failure/wallblocked/unavailable directions andrepairroute; exactnewCLI validity andpendingpilot.
+- [x] Implement strictfrozennumericconfig and31newsourcegates then existing balance_preflight69gates/data. Reconcile historicalsourceconfig/compact/references and2000counters/baselines; loadstates againsthistoricalprov/template only. Savedpredictionallframeverification. Current/historicalcode separate.
+- [x] Preregister controller/cases withsourcehashes/inputweights/directions/settings/gates/limits beforeexecution; incrementalpartial/status/summary andactualcounts, caseoutcomes/hasheseachtime,100raw+2compact endchecks. Budgetbefore/aftermajorpreflight andchunks; no sourcefilewrites/research retry.
+- [x] Run .venv/bin/pytest -q tests/test_optimizer_runs.py tests/test_optimizer_diagnostics.py; expectedGREEN. Full152prior+new GREEN beforeoneproduction, commitcode/evidence.
 
 ### Task 3: Frozen once-only diagnostic and balanced report
 
 **Create:** scripts/report_optimizer_steps.py; tests/test_optimizer_report.py; reports/optimizer-step-diagnostics.md/json/figures/executionrecord/finalreview.
 
-- [ ] Report RED tests preflightzeroattempts/partialblocked, failedFD/probe gating, zero/unavailable counts, falselearningclaims. JSON-only rawloss/fractions/slopes/displacements/FDallcells/compute/source/attemptcounts, no bestdirection orfictitiouszero count updates.
-- [ ] Fullsuite GREEN thenexactreviewedconfig ONCE. Reconcileallsource/state/hash/cellcounts/objectives/manualAdam/builderequality/FD/probes; retainall failures, no retries/retraining. Generateplots, visuallyinspect, appendfindings/limitations/hashes.
-- [ ] ObsidianCLIbackup/update/scopedreadback; independentfreshfinalreview (mostcapablemodel) andauthorverified Important/Criticalrepairs withRED->GREEN/fullsuite, no unreviewednumericalrerun. Markplan/ledgercomplete, durablearchive/localcommit, retainworkspaces/userchanges/branch.
+- [x] Report RED tests preflightzeroattempts/partialblocked, failedFD/probe gating, zero/unavailable counts, falselearningclaims. JSON-only rawloss/fractions/slopes/displacements/FDallcells/compute/source/attemptcounts, no bestdirection orfictitiouszero count updates.
+- [x] Fullsuite GREEN thenexactreviewedconfig ONCE. Reconcileallsource/state/hash/cellcounts/objectives/manualAdam/builderequality/FD/probes; retainall failures, no retries/retraining. Generateplots, visuallyinspect, appendfindings/limitations/hashes.
+- [x] ObsidianCLIbackup/update/scopedreadback; independentfreshfinalreview (mostcapablemodel) andauthorverified Important/Criticalrepairs withRED->GREEN/fullsuite, no unreviewednumericalrerun. Markplan/ledgercomplete, durablearchive/localcommit, retainworkspaces/userchanges/branch.
 
 ## Next decision
 
 Onlyvalidlocaloutcomes can motivate a separatelyreviewed followup. Hypotheticalfeasibleimprovement is notgateclearance; noautomaticlongertraining/optimizer/capacitychange. Fullpilot andscientificcomparisonpending.
+
+Execution status: completed30September2026. Three once-only frozen cases verified; full193tests passed125.07s after one author-verified report-completeness repair. Independent technicalreview and response-delivery limitation recorded in docs/reviews/2026-09-30-optimizer-step-final-review.md. No new training or automatic followup authorized.
