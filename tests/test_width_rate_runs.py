@@ -204,3 +204,10 @@ def test_cli_dispatches_frozen_width_rate_configuration(monkeypatch):
     from force_consistency.cli import main
     monkeypatch.setattr(wr,'diagnose_width_rate',lambda c:{'status':'completed','execution_valid':True,'full_pilot':'pending'})
     assert main(['diagnose-width-rate','--config','configs/aspirin-width-rate-diagnostic.json'])==0
+
+
+def test_oracle_receipt_bounds_are_independently_checkable():
+    p,m,b,n,s,c,case,base=fixture();batches=[partition_batch(p,np.arange(i,min(i+3,7))) for i in (0,3,6)]
+    oracle=wr.first_step_oracle(s,batches,b,m,n,.001,c['loss_weights'],wr.ExecutionContext(120.))
+    assert 0<=oracle['receipt']['state_maximum_tolerance_fraction']<=1
+    assert 0<=oracle['receipt']['prediction_maximum_tolerance_fraction']<=1

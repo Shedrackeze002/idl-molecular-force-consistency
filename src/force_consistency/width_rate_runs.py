@@ -144,6 +144,12 @@ def _trees_close(actual,wanted):
     return maximum
 
 
+def _tolerance_fraction(actual,wanted):
+    fractions=[float(np.max(np.abs(np.asarray(a)-np.asarray(b))/(1e-10+1e-8*np.abs(np.asarray(b)))))
+               for a,b in zip(jax.tree.leaves(actual),jax.tree.leaves(wanted),strict=True)]
+    return max(fractions,default=0.)
+
+
 def first_step_oracle(state,batches,fullbatch,model,norm,rate,weights,context):
     context.check_budget();start=context.clock();validate_state(state,norm,0);before=canonical_state_hashes(state)
     def loss(params):
@@ -162,7 +168,9 @@ def first_step_oracle(state,batches,fullbatch,model,norm,rate,weights,context):
     if canonical_state_hashes(state)!=before:raise ValueError('Oracle mutated fresh initial state')
     return {'state':candidate,'reference_params':rp,'gradient':gradient,
             'receipt':{'status':'passed','count':1,'state_maximum_absolute_difference':discrepancy,
-                'prediction_maximum_absolute_difference':prediction_error,'atol':1e-10,'rtol':1e-8,
+                'prediction_maximum_absolute_difference':prediction_error,
+                'state_maximum_tolerance_fraction':_tolerance_fraction((ap,ao),(rp,ro)),
+                'prediction_maximum_tolerance_fraction':_tolerance_fraction(predicted,reference),'atol':1e-10,'rtol':1e-8,
                 'fullbatch_reference_frames':len(fullbatch['energy']),'accumulated_proposal_frames':sum(len(b['energy']) for b in batches),
                 'prediction_reference_frames':2*len(fullbatch['energy']),'discarded':True,
                 'initial_state_hashes':before,'proposed_state_hashes':canonical_state_hashes(candidate),
@@ -224,7 +232,7 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
     out={'status':'failed','executed':True,'execution_valid':False,'full_pilot':'pending','case':case,'updates':0,'attempted_updates':0,
          'persisted_update':None,'pending_update_unknown':False,'frame_exposures':0,'history':history,'original_baselines':original_baselines,
          'warmup_frame_exposures':0,'warmup_work_status':'not_started','oracle_work_status':'not_started','oracle_verified':False,
-         'checkpoint_new_process_verified':False,'source_hashes_unchanged':False,'provenance':prov,'initial_state_hashes':before,
+         'checkpoint_new_process_verified':False,'source_hashes_unchanged':False,'provenance':prov,'initial_state_hashes':before,'initial_raw_state_hashes':_state_hashes(initial),
          'parameter_count':sum(np.asarray(x).size for x in jax.tree.leaves(initial['params'])),'fitting_frame_count':fit_count,'anchor_frame_count':anchor_count,
          'shared_initialization_seconds':context.shared_initialization_seconds,'compile_seconds':0.,'first_step_reference_seconds':0.,'warmup_seconds':0.,'probe_seconds':0.,'checkpoint_seconds':0.}
     def score():
@@ -241,6 +249,8 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
         if asdict(model.config)!={**config['model'],'features':case['features']}:raise ValueError('Cell model features/config mismatch')
         atomic_json(root/'config.json',config);atomic_json(root/'case.json',case);atomic_json(root/'provenance.json',prov)
         for role,p in [('fitting',fitting),('anchor',anchor)]:np.savez(root/f'{role}-inputs.npz',**_arrays(p))
+        prov['input_files_sha256']={role:digest(root/f'{role}-inputs.npz') for role in ('fitting','anchor')}
+        atomic_json(root/'provenance.json',prov)
         metrics=score()
         batches=[partition_batch(fitting,np.arange(i,min(i+config['microbatch_size'],fit_count))) for i in range(0,fit_count,config['microbatch_size'])]
         full=partition_batch(fitting,np.arange(fit_count));context.check_budget();out['oracle_work_status']='started'
@@ -267,7 +277,7 @@ def _run_arm(config,case,initial,fitting,anchor,model,normalization,original_bas
             context.check_budget();e,f=_partition_predictions(state['params'],p,model,config['microbatch_size']);references[f'{role}_energy']=e;references[f'{role}_forces']=f
         np.savez(root/'reference.npz',**references);context.check_budget()
         contract={'case':case,'update':config['max_updates'],'normalization':asdict(norm),'state_hashes':canonical_state_hashes(state),
-                  'commit':committed,'inputs':inputs,'reference_sha256':digest(root/'reference.npz'),'config_identity':canonical_hash(config)}
+                  'commit':committed,'inputs':inputs,'input_files_sha256':prov['input_files_sha256'],'reference_sha256':digest(root/'reference.npz'),'config_identity':canonical_hash(config)}
         atomic_json(root/'checkpoint-contract.json',contract);context.check_budget();t=context.clock()
         receipt=probe_runner(root,context);out['probe_seconds']=context.clock()-t;context.check_budget()
         if (receipt.get('status')!='passed' or receipt.get('update')!=config['max_updates'] or receipt.get('adam_count')!=config['max_updates']
@@ -337,6 +347,7 @@ def _probe_saved(root):
         with np.load(root/f'{role}-inputs.npz',allow_pickle=False) as data:
             if set(data.files)!=set(meta['arrays']) or any(array_identity(data[k])!=meta['arrays'][k] for k in data.files):raise ValueError('Probe input arrays mismatch')
             parts[role]=PreparedPartition(**{k:np.array(data[k]) for k in data.files},record_ids=tuple(meta['record_ids']),memberships=meta['memberships'])
+    if contract['normalization']!=asdict(norm) or contract['input_files_sha256']!=prov['input_files_sha256'] or any(digest(root/f'{r}-inputs.npz')!=prov['input_files_sha256'][r] for r in ('fitting','anchor')):raise ValueError('Probe physical input-file/normalization contract mismatch')
     if contract['inputs']!=prov['inputs'] or contract['reference_sha256']!=digest(root/'reference.npz'):raise ValueError('Probe reference/input identity mismatch')
     anchor=parts['anchor'];batch=partition_batch(anchor,np.arange(min(config['microbatch_size'],len(anchor.record_ids))))
     template=initialize_state(model,batch,norm,config['seed'],case['learning_rate']);receipt,history=resolve_commit(root)

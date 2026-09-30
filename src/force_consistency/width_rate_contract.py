@@ -66,7 +66,8 @@ def verify_width_rate_sources(config):
             'pins':pins['files_sha256'],'historical':historical,'original_baselines':original_baselines,
             'historical_config':read(config['historical_config']),
             'historical_initial_state_hashes':oldsummary['initial_state_hashes'],
-            'historical_inputs':read(OLD_ROOT/'balanced/provenance.json')['inputs']}
+            'historical_inputs':read(OLD_ROOT/'balanced/provenance.json')['inputs'],
+            'normalization':read(OLD_ROOT/'balanced/config.json')['normalization']}
 
 
 def resolve_commit(root):
