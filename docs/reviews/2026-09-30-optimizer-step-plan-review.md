@@ -1,0 +1,9 @@
+# Independent optimizer-step plan reviews
+
+30September2026, before implementation. Scientific and engineering reviewers independently cleared saved spec/plan/config; no material blocker. Both verified100raw+2compact identities,31losscompactindex,3checkpoint update/Adamcount2000, finitefloat64 params/moments/nonnegativevariance, sourceweights/inputarrays/initidentities/scales/22points/exposures and failedlearninggates. LockedOptax0.2.8 defaults/manual count+1 formula confirmed.
+
+Scientific clarifications: fit-derived directions applied tobothobjectives/roles; equalwhole-normnotperparameter orcompute matching, artificialreset directionnotresettraining/causalproof, FDpassnotcertifiedsign nearzero, anchorfullyfitted. One read-only decoder initiallyraisedKeyError:update by missingnestedpayload, correctedverificationpassed; no numericalprobes/tests/sourcewrites.
+
+Engineering clarifications accepted: strictnewroot/arm JSONcontrols/identities beforeparentarrays; preserved sourcewall1800 vsdiagnosticcap600; opaqueparent/prebuilder recordcompletedcounts onlyafterreturn, interruptedcallstarted/unconfirmed. Perchunk synchronizedwrappers instrumentnewpredictions/gradient/FD/probes. Fullavailablecases36FDcells/72individualsteps/18probes, actualcountsfromrecords, unavailablecellsneverpassed. Testsnonzero moments/count2000->2001/reset0->1/epsilon andzerogradient/nonzeromomentum.
+
+Followup resolved engineeringitem1: itsinitialwording requiringchunkinstrumentationinsideoldparentloader was too strong. Existingbalance_preflight canremainopaque, budgetbefore/after,208completedsourcepredictionframesonlyafterreturn, started/unconfirmedifinterrupted; declaredbetweenoperationcap acceptsnoncancellability. Newlossourcepredictionsperchunk, allnewJSONgatesbeforeparentarrays. Clearforimplementation/onefrozenexecution, nonumericprotocolchange. Revieweragreementnotguarantee; independentfinalimplementation/evidencereviewafterexecution remainsrequired.
