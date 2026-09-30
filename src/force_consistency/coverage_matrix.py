@@ -41,6 +41,47 @@ def _blocked(root,name,reason):
     return result
 
 
+def _failed_arm(root,name,exc):
+    """Record an attempted arm without replacing existing research artifacts."""
+    path=Path(root)/name;path.mkdir(parents=True,exist_ok=True)
+    previous={};history=[];read_errors=[]
+    for filename in ('summary.json','history.json'):
+        file=path/filename
+        if file.exists():
+            try:
+                saved=json.loads(file.read_text())
+                if filename=='summary.json' and isinstance(saved,dict): previous=saved
+                elif filename=='history.json' and isinstance(saved,list): history=saved
+            except (OSError,ValueError) as error:
+                read_errors.append(f'{filename}: {type(error).__name__}: {error}')
+    update=previous.get('updates',0)
+    if history and isinstance(history[-1],dict): update=history[-1].get('update',update)
+    result={**previous,'status':'failed','executed':True,'execution_valid':False,'updates':update,
+            'stop_reason':'uncaught_runner_exception','failure_reason':f'{type(exc).__name__}: {exc}',
+            'controller_exception':True,'fit_gate':previous.get('fit_gate',{'accepted':False}),
+            'anchor_gate':previous.get('anchor_gate',{'accepted':False})}
+    if history: result['history']=history
+    if previous: result['prior_summary_status']=previous.get('status')
+    if read_errors: result['artifact_read_errors']=read_errors
+    # A completed/failed arm summary is immutable evidence. The controller's
+    # additional failure gets a separate artifact and is reflected at root.
+    write_json(path/'controller-failure.json',result)
+    if not (path/'summary.json').exists(): write_json(path/'summary.json',result)
+    return result
+
+
+def _retain_or_block(root,name,reason,exc):
+    path=Path(root)/name
+    if not path.exists(): return _blocked(root,name,reason)
+    summary=path/'summary.json'
+    if summary.exists():
+        try:
+            saved=json.loads(summary.read_text())
+            if isinstance(saved,dict): return saved
+        except (OSError,ValueError): pass
+    return _failed_arm(root,name,exc)
+
+
 def execute_matrix(root,runner,replay):
     root=Path(root);root.mkdir(parents=True,exist_ok=True)
     result={'status':'failed','execution_valid':False,'full_pilot':'pending','arms':{}}
@@ -57,7 +98,7 @@ def execute_matrix(root,runner,replay):
         except Exception as exc:
             blocked_reason=f'{name}_replay_or_execution_failure'
             result['failure_reason']=f'{type(exc).__name__}: {exc}'
-            if name not in result['arms']: result['arms'][name]=_blocked(root,name,blocked_reason)
+            if name not in result['arms']: result['arms'][name]=_failed_arm(root,name,exc)
     result['execution_valid']=blocked_reason is None
     result['status']='completed' if result['execution_valid'] else 'failed'
     c=result['arms']['diverse128']
@@ -110,6 +151,7 @@ def diagnose_coverage(config):
     root=Path(config['run_directory'])
     if root.exists() and any(root.iterdir()): raise ValueError('Run directory is not empty')
     root.mkdir(parents=True,exist_ok=True);write_json(root/'config.json',config)
+    stage='preflight'
     try:
         p,manifest,norm,selected,reference,historic_prov=coverage_preflight(config)
         prov={**code_provenance(Path(__file__).resolve().parents[2]),'dataset_identity':manifest['identity'],'split_hash':manifest['split_hash'],
@@ -135,14 +177,17 @@ def diagnose_coverage(config):
             details['artifact_sha256']={n:sha256(root/name/n) for n in ('summary.json','history.json','last.msgpack','checkpoint-verification.json') if (root/name/n).exists()}
             append_coverage_evidence(config,f'COVERAGE-00{number}-RESULT',f'{name} trial outcome',details)
             return result
+        stage='execution'
         result=execute_matrix(root,run,lambda arm:verify_replay(arm,reference,config['max_updates'],config['replay_tolerance']))
         result['provenance']=prov
         for name,arm in result['arms'].items():
+            if arm.get('controller_exception'):
+                append_coverage_evidence(config,f'COVERAGE-00{ARMS.index(name)+1}-EXCEPTION',f'{name} interrupted attempt retained',arm)
             if not arm.get('executed'):
                 append_coverage_evidence(config,f'COVERAGE-00{ARMS.index(name)+1}-BLOCKED',f'{name} not executed',arm)
     except Exception as exc:
         result={'status':'failed','execution_valid':False,'full_pilot':'pending','failure_reason':f'{type(exc).__name__}: {exc}',
-                'arms':{name:_blocked(root,name,'preflight_failure') for name in ARMS},'next_step':'resolve_execution_failure'}
-        append_coverage_evidence(config,'COVERAGE-PREFLIGHT-FAILED','Matrix preflight failure retained',result)
+                'arms':{name:_retain_or_block(root,name,f'{stage}_failure',exc) for name in ARMS},'next_step':'resolve_execution_failure'}
+        append_coverage_evidence(config,f'COVERAGE-{stage.upper()}-FAILED',f'Matrix {stage} failure retained',result)
     write_json(root/'summary.json',result)
     return result

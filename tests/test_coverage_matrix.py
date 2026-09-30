@@ -116,3 +116,44 @@ def test_cli_matrix_with_real_train_only_preparation_and_fresh_probes(tmp_path):
     assert main(['diagnose-coverage','--config',str(config_file)])==1
     failed=json.loads((tmp_path/'corrupt/summary.json').read_text())
     assert all(not a['executed'] for a in failed['arms'].values()) and 'identity' in failed['failure_reason'].lower()
+
+
+@pytest.mark.parametrize('saved_result',[False,True])
+def test_runner_exception_retains_partial_or_completed_artifacts(tmp_path,saved_result):
+    from force_consistency.coverage_matrix import execute_matrix
+    from force_consistency.data.prepare import write_json
+    root=tmp_path/'matrix'
+    original={'status':'completed','execution_valid':True,'executed':True,'updates':3,'history':[{'update':3}],
+              'fit_gate':{'accepted':False},'anchor_gate':{'accepted':False}}
+    def runner(name,expected):
+        path=root/name;path.mkdir(parents=True)
+        write_json(path/'history.json',[{'update':3}])
+        (path/'last.msgpack').write_bytes(b'preserved witness checkpoint')
+        if saved_result: write_json(path/'summary.json',original)
+        raise OSError('Original interrupted output failure')
+    result=execute_matrix(root,runner,lambda a:{'status':'passed'})
+    assert result['status']=='failed' and 'Original interrupted output failure' in result['failure_reason']
+    arm=result['arms']['narrow16']
+    assert arm['status']=='failed' and arm['executed'] and arm['updates']==3
+    assert all(result['arms'][n]['status']=='blocked' for n in ('diverse16','diverse128'))
+    assert (root/'narrow16/last.msgpack').read_bytes()==b'preserved witness checkpoint'
+    assert json.loads((root/'narrow16/history.json').read_text())==[{'update':3}]
+    if saved_result: assert json.loads((root/'narrow16/summary.json').read_text())==original
+    assert json.loads((root/'summary.json').read_text())['status']=='failed'
+
+
+def test_outer_failure_preserves_completed_arm_and_blocks_only_unexecuted(tmp_path,monkeypatch):
+    import force_consistency.coverage_matrix as cm
+    from force_consistency.data.prepare import write_json
+    c=json.loads(Path('configs/aspirin-data-coverage-diagnostic.json').read_text());c.pop('evidence_log')
+    root=tmp_path/'outer';c['run_directory']=str(root)
+    original={'status':'completed','execution_valid':True,'executed':True,'updates':2000}
+    def unexpected(root,runner,replay):
+        path=Path(root)/'narrow16';path.mkdir();write_json(path/'summary.json',original)
+        raise OSError('Interrupted matrix bookkeeping')
+    monkeypatch.setattr(cm,'execute_matrix',unexpected)
+    result=cm.diagnose_coverage(c)
+    assert result['status']=='failed' and 'Interrupted matrix bookkeeping' in result['failure_reason']
+    assert result['arms']['narrow16']==original
+    assert json.loads((root/'narrow16/summary.json').read_text())==original
+    assert all(result['arms'][name]['status']=='blocked' for name in ('diverse16','diverse128'))

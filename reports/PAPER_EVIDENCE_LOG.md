@@ -1166,3 +1166,9 @@ Tracked report/compact evidence and3measured-point figures were generated from p
   "frozen_subset_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47"
 }
 ```
+
+## IMPL-COVERAGE-004 — Independent review and handled-failure retention repair
+
+Independent final reviewer regenerated preflight, checked all saved hashes/history/init/overlap counts and recomputed final MSE within1e-14; measured matrix remains trustworthy. One Important bug: a runner exception after creating artifacts could be masked by directory collision, losing root/downstream failure records. Three regressions first failed, then passed in0.50s after a single controller-only fix; independent follow-up also passed3tests. Existing summaries/history/checkpoints stay preserved; attempted failure and blocked arms are distinct. Raw production research runs were not changed or repeated.
+
+Full final regression suite82passed in98.94s; fresh review cleared all Critical/Important findings, with no minors. All3figures now visually checked (completes COVERAGE-MATRIX-RESULT pending energy check). Review/rulings and test/log identities: `docs/reviews/2026-09-30-data-coverage-final-review.md`, `reports/data-coverage-execution-record.md`. Both failed initial assertions/fixtures and the final retention regressions remain preserved. Obsidian hub/findings refreshed through CLI with original notes backed up; numerical authority remains repository evidence. All workspaces/packages/logs retained. Local branch only; full pilot/new architecture trials remain pending separate reviewed plans.
