@@ -1,0 +1,13 @@
+{
+  "current_code_identities_verified": true,
+  "interpreter": ".venv/bin/python",
+  "numerical_research_retry": false,
+  "original_user_changes_preserved": true,
+  "pins_verified": 326,
+  "previous_attempt_failure": "System python3 could not import force_consistency (ModuleNotFoundError); no verification was performed by that attempt. Corrected interpreter; all assertions above now passed. Local reversible commit occurred before successful recheck; no push or merge.",
+  "production_checkpoint_revalidated": false,
+  "raw_files_verified": 145,
+  "revision_verified": "6caec28a65eced19888b8a4f3fc8be90ee8ccecf",
+  "status": "passed",
+  "workspace_original_and_archive_files_verified": 88
+}
