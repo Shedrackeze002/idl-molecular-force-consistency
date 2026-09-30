@@ -401,3 +401,9 @@ Plan holds model/loss/scales/seed/Adam fixed; all arms use deterministic full-su
 ## PLAN-COVERAGE-002 — Both independent plan reviews cleared
 
 Scientific and engineering reviewers independently verified the proposed subset selection, canonical identities, frozen replay artifacts and comparison controls. Both found no material blocker. Decisions/limitations are saved in `docs/reviews/2026-09-30-data-coverage-plan-review.md`. Engineering clarifications incorporated: matching initial parameter/optimizer hashes across arms, sequential microbatch accumulation, and first observed passing scheduled update rather than an exact crossing time. IDs, budgets, gates and settings are unchanged. No implementation or training started; all prospective outcomes remain unknown. This review completion is not learning success or full-pilot authorization.
+
+### IMPL-COVERAGE-001 — Frozen subset implementation verification (2026-09-30)
+- Type: engineering check, not a trained-model finding. User authorized unchanged reviewed plan execution.
+- Tests first failed because the new coverage module was absent; implementation then passed all 8 coverage/preparation tests in 0.57s. Retained logs: `.superpowers/sdd/2026-09-30-data-coverage-diagnostic/task1-{red,green}.log`.
+- Runtime selection exactly regenerates frozen manifest `8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47`; guards cover duplicate/outside/mixed-role paths, numeric ordering and rank collisions, with no replacement groups. Arbitrary label perturbation leaves selection unchanged.
+- No training run executed yet; optimizer equivalence remains the next required check.
