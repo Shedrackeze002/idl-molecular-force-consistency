@@ -1,0 +1,334 @@
+# Review package: e1679d1..4c7108d
+
+## Commits
+4c7108d Require complete optimizer probe reports and verify final repair
+
+## Files changed
+ .../2026-09-30-optimizer-step-final-review.md      | 11 +++++++
+ .../plans/2026-09-30-optimizer-step-diagnostic.md  | 22 +++++++------
+ .../2026-09-30-optimizer-step-diagnostic-design.md |  2 ++
+ reports/PAPER_EVIDENCE_LOG.md                      |  8 +++++
+ reports/optimizer-step-diagnostics.json            |  2 +-
+ reports/optimizer-step-diagnostics.md              |  2 +-
+ reports/optimizer-step-execution-record.md         |  2 +-
+ scripts/report_optimizer_steps.py                  | 38 +++++++++++++++++++---
+ tests/test_optimizer_report.py                     | 31 ++++++++++++++++--
+ 9 files changed, 98 insertions(+), 20 deletions(-)
+
+## Diff
+diff --git a/docs/reviews/2026-09-30-optimizer-step-final-review.md b/docs/reviews/2026-09-30-optimizer-step-final-review.md
+new file mode 100644
+index 0000000..b968c36
+--- /dev/null
++++ b/docs/reviews/2026-09-30-optimizer-step-final-review.md
+@@ -0,0 +1,11 @@
++# Frozen optimizer diagnostic final review
++
++Independent reviewer optstep_final_review, fresh context, gpt-6-astra/high, base0a02b43 ->e1679d1. Read-only scope: design/plan/code/tests/current rawresearch and reporting, no production retry or source mutation.
++
++Reviewer delivered: focused33tests passed20.93s. Reconciled100raw+2compact pins, rawreportartifact/generator hashes,36FDcells/72steps/18probes, matching directionnorms/blockslopes/bothroles/objectives, manual/builder identities and immutable statehashes. Exactlyfourh1e-4FDfailures retained, eachh1e-5passed. No production numerical defect identified.
++
++One **Important** issue: report verified() accepted missing prescribed directions/roles/objectives/steps/probes if counts were reset to match an empty matrix. This could incorrectly mark incomplete savedJSON interpretation-valid. Source numerical matrix itself is complete.
++
++Author independently reproduced eight variants (directions/stateful/role/objective/step/probe/scale/unavailable_reason),8failed9.32s in final-report-schema-red.log. One repair pass: exactthree directions, status/norm/reason/role rules, bothobjective/twoh coverage, zero-directionFD not-applicable, exactunique prescribedscale coverage for every available/zero direction, finite nonnegative rawprobeMSEs. Explicit unavailable controls remain distinguishable. Focused14passed9.89s (final-report-schema-green.log); fullsuite193passed125.07s. Complete source/rawartifact/report-matrix reconciliation passed after savedJSON-only rebuild. Report rebuild from savedJSON only; no numerical research retry.
++
++Reviewer session hit account usage limit when sending its final response, after delivering the finding, focused test evidence and numerical reconciliation. Its delivered technical messages are the review evidence; no formal final-clearance response is claimed. Author repair validation follows the executing-plans one-fix-pass rule; no automatic independent re-review or research repetition. No other Critical/Important finding was delivered. All records retained.
+diff --git a/docs/superpowers/plans/2026-09-30-optimizer-step-diagnostic.md b/docs/superpowers/plans/2026-09-30-optimizer-step-diagnostic.md
+index 07b7c8d..65661bd 100644
+--- a/docs/superpowers/plans/2026-09-30-optimizer-step-diagnostic.md
++++ b/docs/superpowers/plans/2026-09-30-optimizer-step-diagnostic.md
+@@ -19,35 +19,37 @@
+ 2. Equal-norm reset/steepest controls are artificial local directions; no training reset, causal/capacity/convergence/generalization claim or bestdirectionselection.
+ 3. Complete100raw+2compact gates beforearrays, allmetadata/state/input/protocol/FD/scales/tolerances strict; verify originals unchanged before/after allcases.
+ 4. Directional FD verifies BOTH scaledobjectives onfitting/anchor along fitting-derived unitdirections; bothhresults retained, at-leastone gate; zero/unavailable directions explicit.
+ 5. Partial/budget/invalidcase/preflight failure preservesexactattemptcounts/artifacts andblocksnextcases; reportcannotpromote counterfactualgate tolearning/pilotacceptance.
+ 
+ ### Task 1: Numeric directions and frozen snapshot analysis
+ 
+ **Create:** src/force_consistency/optimizer_diagnostics.py; tests/test_optimizer_diagnostics.py.
+ **Interfaces:** adam_directions(params,optstate,gradient,learning_rate)->(directions,verification); direction_geometry(ge,gf,direction,weights)->dict; analyze_optimizer_snapshot(state,fitting,anchor,model,norm,weights,config)->dict.
+ 
+-- [ ] Testfirst RED: manualnonzero mu/nu/count Adam leaves/counter2001 inclbiascorrection/eps; weightedquadraticdirection/slopes/samenorm/negativegradient; zero/missingdirections; finiteFDwrongsignreject; fixedstate/counter hashes; tiny nonzero-head model weightedgradient/fittingandanchordirections/allprobes saved withoriginalbaselines.
+-- [ ] Implement minimalnumerichelpers, reuse splitgradients/weightedaccumulator/referencebuilder and coverage_metrics; allgradients/chunks atfixedparams, exactthree directions andtwoscales, unitFDbothsteps andobjectives, callbacks preservepartialcells/counts. Snapshotstateparameters/optimizer untouched; prospectiveintermediateoptimizer discarded.
+-- [ ] Run .venv/bin/pytest -q tests/test_optimizer_diagnostics.py; expectedGREEN. LogRED/GREEN evidence andscopedcommit.
++- [x] Testfirst RED: manualnonzero mu/nu/count Adam leaves/counter2001 inclbiascorrection/eps; weightedquadraticdirection/slopes/samenorm/negativegradient; zero/missingdirections; finiteFDwrongsignreject; fixedstate/counter hashes; tiny nonzero-head model weightedgradient/fittingandanchordirections/allprobes saved withoriginalbaselines.
++- [x] Implement minimalnumerichelpers, reuse splitgradients/weightedaccumulator/referencebuilder and coverage_metrics; allgradients/chunks atfixedparams, exactthree directions andtwoscales, unitFDbothsteps andobjectives, callbacks preservepartialcells/counts. Snapshotstateparameters/optimizer untouched; prospectiveintermediateoptimizer discarded.
++- [x] Run .venv/bin/pytest -q tests/test_optimizer_diagnostics.py; expectedGREEN. LogRED/GREEN evidence andscopedcommit.
+ 
+ ### Task 2: Source-gated case controller and CLI
+ 
+ **Create:** src/force_consistency/optimizer_runs.py; tests/test_optimizer_runs.py. **Modify:** cli.py only.
+ **Interfaces:** verify_optimizer_sources(config); optimizer_preflight(config,check_budget)->(fitting,anchor,model,norm,states,source_record); execute_optimizer_cases(...)->dict; diagnose_optimizer_steps(config)->dict.
+ 
+-- [ ] RED tests omitted/staleallowlists/compact/controlsettings beforeloader; real preflight sourceconfig/records/hashes and rehashedincorrectweights/count/arrays rejected; no checkpoint sourcewrite. Protectedroots, uncaughtexception/partial FD failure/wallblocked/unavailable directions andrepairroute; exactnewCLI validity andpendingpilot.
+-- [ ] Implement strictfrozennumericconfig and31newsourcegates then existing balance_preflight69gates/data. Reconcile historicalsourceconfig/compact/references and2000counters/baselines; loadstates againsthistoricalprov/template only. Savedpredictionallframeverification. Current/historicalcode separate.
+-- [ ] Preregister controller/cases withsourcehashes/inputweights/directions/settings/gates/limits beforeexecution; incrementalpartial/status/summary andactualcounts, caseoutcomes/hasheseachtime,100raw+2compact endchecks. Budgetbefore/aftermajorpreflight andchunks; no sourcefilewrites/research retry.
+-- [ ] Run .venv/bin/pytest -q tests/test_optimizer_runs.py tests/test_optimizer_diagnostics.py; expectedGREEN. Full152prior+new GREEN beforeoneproduction, commitcode/evidence.
++- [x] RED tests omitted/staleallowlists/compact/controlsettings beforeloader; real preflight sourceconfig/records/hashes and rehashedincorrectweights/count/arrays rejected; no checkpoint sourcewrite. Protectedroots, uncaughtexception/partial FD failure/wallblocked/unavailable directions andrepairroute; exactnewCLI validity andpendingpilot.
++- [x] Implement strictfrozennumericconfig and31newsourcegates then existing balance_preflight69gates/data. Reconcile historicalsourceconfig/compact/references and2000counters/baselines; loadstates againsthistoricalprov/template only. Savedpredictionallframeverification. Current/historicalcode separate.
++- [x] Preregister controller/cases withsourcehashes/inputweights/directions/settings/gates/limits beforeexecution; incrementalpartial/status/summary andactualcounts, caseoutcomes/hasheseachtime,100raw+2compact endchecks. Budgetbefore/aftermajorpreflight andchunks; no sourcefilewrites/research retry.
++- [x] Run .venv/bin/pytest -q tests/test_optimizer_runs.py tests/test_optimizer_diagnostics.py; expectedGREEN. Full152prior+new GREEN beforeoneproduction, commitcode/evidence.
+ 
+ ### Task 3: Frozen once-only diagnostic and balanced report
+ 
+ **Create:** scripts/report_optimizer_steps.py; tests/test_optimizer_report.py; reports/optimizer-step-diagnostics.md/json/figures/executionrecord/finalreview.
+ 
+-- [ ] Report RED tests preflightzeroattempts/partialblocked, failedFD/probe gating, zero/unavailable counts, falselearningclaims. JSON-only rawloss/fractions/slopes/displacements/FDallcells/compute/source/attemptcounts, no bestdirection orfictitiouszero count updates.
+-- [ ] Fullsuite GREEN thenexactreviewedconfig ONCE. Reconcileallsource/state/hash/cellcounts/objectives/manualAdam/builderequality/FD/probes; retainall failures, no retries/retraining. Generateplots, visuallyinspect, appendfindings/limitations/hashes.
+-- [ ] ObsidianCLIbackup/update/scopedreadback; independentfreshfinalreview (mostcapablemodel) andauthorverified Important/Criticalrepairs withRED->GREEN/fullsuite, no unreviewednumericalrerun. Markplan/ledgercomplete, durablearchive/localcommit, retainworkspaces/userchanges/branch.
++- [x] Report RED tests preflightzeroattempts/partialblocked, failedFD/probe gating, zero/unavailable counts, falselearningclaims. JSON-only rawloss/fractions/slopes/displacements/FDallcells/compute/source/attemptcounts, no bestdirection orfictitiouszero count updates.
++- [x] Fullsuite GREEN thenexactreviewedconfig ONCE. Reconcileallsource/state/hash/cellcounts/objectives/manualAdam/builderequality/FD/probes; retainall failures, no retries/retraining. Generateplots, visuallyinspect, appendfindings/limitations/hashes.
++- [x] ObsidianCLIbackup/update/scopedreadback; independentfreshfinalreview (mostcapablemodel) andauthorverified Important/Criticalrepairs withRED->GREEN/fullsuite, no unreviewednumericalrerun. Markplan/ledgercomplete, durablearchive/localcommit, retainworkspaces/userchanges/branch.
+ 
+ ## Next decision
+ 
+ Onlyvalidlocaloutcomes can motivate a separatelyreviewed followup. Hypotheticalfeasibleimprovement is notgateclearance; noautomaticlongertraining/optimizer/capacitychange. Fullpilot andscientificcomparisonpending.
++
++Execution status: completed30September2026. Three once-only frozen cases verified; full193tests passed125.07s after one author-verified report-completeness repair. Independent technicalreview and response-delivery limitation recorded in docs/reviews/2026-09-30-optimizer-step-final-review.md. No new training or automatic followup authorized.
+diff --git a/docs/superpowers/specs/2026-09-30-optimizer-step-diagnostic-design.md b/docs/superpowers/specs/2026-09-30-optimizer-step-diagnostic-design.md
+index eeb1085..bc10b82 100644
+--- a/docs/superpowers/specs/2026-09-30-optimizer-step-diagnostic-design.md
++++ b/docs/superpowers/specs/2026-09-30-optimizer-step-diagnostic-design.md
+@@ -38,10 +38,12 @@ Negative fitting force slope and lower finite force atfixedscale is local feasib
+ 
+ ## Implementation contract
+ 
+ Isolated optimizer_diagnostics.py numerichelpers and analyze_optimizer_snapshot; optimizer_runs.py strictsource/control orchestration; CLI diagnose-optimizer-step; scripts/report_optimizer_steps.py and focusedtests. Baseline/sharedtrainer/loss/weights unchanged. NativeTDD: explicit scalar/quadraticmoments/oracles, counter+1, epsilon, weightedderivative, equalnorm/zero/unavailable, unitFDsign/decomposition, exactsourcepins/controlsettingsbeforeloader, rehashedbadmetadata/input/state rejection, protectedroot/partial/budgetblocking, immutablehashes and actualcounts/reportfailuregating. Full152prior plusnewtests beforeproduction; commit code thenexactconfigonce. Reportfigures visuallyverified, independentfinalreview withauthorverifiedrepairs, ObsidianCLIbackups/readback, durablearchive andlocalcommits; preserveallrecords.
+ 
+ ## Plan-review clarifications without protocol change
+ 
+ Count synchronized completed frame passes by operation, increment after return/block_until_ready and before finite verification; save started/incomplete operation metadata for interruptions rather than pretending zero actual work or inventing completed frames. Reuse cached objective/gradient functions through isolated per-chunk wrappers for budget/partial accounting; opaque referencebuilder/parentpreflight counts only after complete return, otherwise started-but-unconfirmed status. Counts describe recorded completed model/gradient passes, not identical hardware FLOPs, with0committed training exposures. Source verification passes are separate from case probes.
+ 
+ FD tolerance passage does not certify the sign of a derivative close to numerical tolerance; report numerical slope without declaring a robust sign there. Whole-tree equal norms do not equalize perparameter displacement or compute. No numeric settings, controls or cases changed.
++
++Execution status update30September2026: exact frozen3case matrix executed once atfef6197, all100raw+2compact sources unchanged,36FDcells/72steps/18probes verified under preregisteredcriterion withfourlargerFDfailures retained. No persistent update. Final reporting-schema repair changed no numericconditions or savedresearch;193tests passed125.07s. Balancedlimits and review scope in reports/optimizer-step-execution-record.md.
+diff --git a/reports/PAPER_EVIDENCE_LOG.md b/reports/PAPER_EVIDENCE_LOG.md
+index 7f1a12b..1a9ccbf 100644
+--- a/reports/PAPER_EVIDENCE_LOG.md
++++ b/reports/PAPER_EVIDENCE_LOG.md
+@@ -9079,10 +9079,18 @@ Measured research: one invocation at codefef6197, exact reviewed configs/aspirin
+ 
+ At scale1, saved-state Adam fitting force MSE relative changes: {"balanced": -0.00011973294957468017, "force-only": -0.00014439968447732543, "replay": -7.1773320751145064e-06}. These are tiny local reductions, not gate clearance/convergence/causality. Replay anchor force increases slightly; balanced and force-only anchors decrease. Both reference directions at the balanced and force-only fitting endpoints have negative force slopes, yet every prescribed finite fitting force probe (scales0.1/1) increases force MSE. UnitFDs support the local derivatives under locked tolerance, exposing limits of inferring finite-step benefit from local slopes. Equal whole-tree norms do not equalize parameter displacement/compute. No winner chosen or persistent update. Force-only headbias weightedgradient and direction remainzero; absoluteenergy errors are preserved, no recentering. Fully fitted anchor,one seed,no generalization/capacity theorem. Original learning failures/fullpilotpending remain.
+ 
+ ## FINDING-OPTSTEP-002 — Preserve all failed FD steps
+ 
+ All36cells passed the preregistered at-least-one-of-both criterion. Four largerh1e-4 steps failed: replay/steepest/fitting/energy; balanced/steepest/fitting/energy andforce; force-only/steepest/fitting/force. Correspondingh1e-5 steps passed. All72steprecords are retained without selecting a replacement run or hiding failed steps. Max errors are listed in saved records; FD tolerance passage does not certify near-zero derivative signs. All18temporarypoints retained; no numerical retry. Negative slopes plus finite increases at prescribed distances are local nonlinear observations, not evidence that another optimizer would fail in training.
+ 
+ ## VERIFY-OPTSTEP-001 — Post-run reconciliation and plot inspection
+ 
+ Controller valid,100raw+2compact hashes rechecked separately after production. Sourcepredictions208parent+432loss; percase completedframes: energygradient144,forcegradient144,weightedgradient128,referencebuilder128,sourcepredictions144,FD1728,probe864. Across3cases totaldiagnosticpasses10480 under recorded category convention; no incomplete operations. Figures optimizer-step-force.png/energy.png visually inspected: allprescribedpoints, bothroles, readablelabels, differences fromsource inpercent, axesindependent perpanel. Report generation succeeded with temporary matplotlibcache after sandbox cache warnings, not a numerical failure. No hidden heldout evaluation. Independent final review pending; originalstates2000unchanged.
++
++## OPTSTEP-FINAL-REVIEW-001 — Independent review and verified reporting repair
++
++Fresh gpt-6-astra/high review at0a02b43..e1679d1 delivered33focusedtests passed20.93s and independent100raw+2compact/36FD/72steps/18probes/norm/blocksum/manual/builder/hash reconciliation; no numerical research defect identified. One Important report-completeness defect: empty/missing direction/role/objective/step/probe coverage with recomputedcounts could falsely pass report interpretation guard. Author eightvariant RED8failed9.32s; one strictschema repair pass GREEN14passed9.89s. Explicit zero/NA/unavailable states retained; complete probe matrix required, no fictitious success from omissions. Fullsuite and JSON-only report rebuild pending; numerical execution not repeated. Reviewer final-response failed dueaccountusage after delivering technicalfindings/reconciliation; record scopes what was received and does not claim formal independentclearance. See docs/reviews/2026-09-30-optimizer-step-final-review.md. CLI backup/updates of bothObsidiannotes verified; repository numericalauthority unchanged.
++
++## OPTSTEP-REPORT-002 — Final report-only repair verified
++
++Full193tests passed125.07s (full-after-review.log); no failures, prior152checks retained. SavedJSON-only rebuild remains interpretation-valid with36FDcells/72steps/18probes;100raw+2compact andall18rawoutputfiles independently hash-reconciled;0unknownoperations/0committedtraining. CompactcurrentSHA256 `f841592a80e09b205b5422d196fa22088d704d63a03693e1d143ae806be53fc5`; generatorSHA256 `7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a`. This newreport identity supersedes initial compactidentity in FINDING-OPTSTEP-001 solely because completenessguard/generator changed; rawsummary/sources remainidentical. Figures unchanged byteforbyte after rebuild, already visually inspected. No independentformalclearance asserted beyond deliveredtechnicalreview andauthorverifiedrepair. Pilotpending; nextinterventionrequiresseparatereview.
+diff --git a/reports/optimizer-step-diagnostics.json b/reports/optimizer-step-diagnostics.json
+index ae42891..e769856 100644
+--- a/reports/optimizer-step-diagnostics.json
++++ b/reports/optimizer-step-diagnostics.json
+@@ -21297,21 +21297,21 @@
+   "figures_sha256": {
+     "figures/optimizer-step-energy.png": "141fb4d9dc814f236711946631e87921eed80e991eab37261787c4b6723c3fc3",
+     "figures/optimizer-step-force.png": "f944c5e8352c3fb9357c2afd069ae8cc405b517b0680c1079ace248f3379d2a3"
+   },
+   "full_pilot": "pending",
+   "interpretation_valid": true,
+   "learning_accepted": false,
+   "matplotlib_version": "3.11.2",
+   "metric_convention": "Raw energy MSE over frames; force MSE over atom-coordinate components; immutable original baseline fractions; fully fitted anchor. Local normalized loss derivatives and counterfactual displacements.",
+   "next_step": "separately_review_followup_from_local_evidence",
+-  "report_generator_sha256": "53d9447e39e39e7b02838fc31a3d8c6a672cd1b2b13a0c2366bcbc2377b2ff8d",
++  "report_generator_sha256": "7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a",
+   "source_hashes_unchanged": true,
+   "source_run_directory": "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/runs/aspirin-optimizer-step-2026-09-30",
+   "source_summary_sha256": "3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b",
+   "source_verification": {
+     "arms": {
+       "balanced": {
+         "config": {
+           "arm": "balanced",
+           "arms": {
+             "balanced": {
+diff --git a/reports/optimizer-step-diagnostics.md b/reports/optimizer-step-diagnostics.md
+index 5b100ae..f84baeb 100644
+--- a/reports/optimizer-step-diagnostics.md
++++ b/reports/optimizer-step-diagnostics.md
+@@ -79,16 +79,16 @@ Original raw learning gates remain strict <0.1 of immutable initial MSE. A tempo
+ ## Verification, failures and limits
+ 
+ - replay: completed; attempted True; retained counts {'fd_cells': 12, 'fd_steps': 24, 'probes': 6}; failure/stop: none.
+ - balanced: completed; attempted True; retained counts {'fd_cells': 12, 'fd_steps': 24, 'probes': 6}; failure/stop: none.
+ - force-only: completed; attempted True; retained counts {'fd_cells': 12, 'fd_steps': 24, 'probes': 6}; failure/stop: none.
+ 
+ These verified local slopes and fixed finite displacements describe the three saved states. Negative fitting force slope plus lower finite force indicates a feasible local improvement at that point. Positive slope or increase describes the exact saved direction/nonlinearity; one local step cannot establish accumulated optimizer causality. These observations do not establish convergence, capacity limits or eventual gate passage. No future training intervention has been executed.
+ 
+ Completed model/gradient frame passes by category: `{"fd": 5184, "gradient_energy": 432, "gradient_force": 432, "loss_source_predictions": 432, "parent_source_predictions": 208, "probe": 2592, "reference_builder": 384, "source_predictions": 432, "weighted_gradient": 384}`. Opaque parent source verification and reference-builder work count only after synchronized completion; interrupted operations retain unknown partial work. These counts are diagnostic passes, not hardware FLOPs or training exposures.
+ 
+-Source summary SHA256 `3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b`; report generator SHA256 `53d9447e39e39e7b02838fc31a3d8c6a672cd1b2b13a0c2366bcbc2377b2ff8d`.
++Source summary SHA256 `3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b`; report generator SHA256 `7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a`.
+ Complete raw/per-group/equal-group/overlap metrics, original fractions, weighted losses, both FD steps, block geometry, failed/partial work and all file checksums: [optimizer-step-diagnostics.json](optimizer-step-diagnostics.json). Trial trail: [PAPER_EVIDENCE_LOG.md](PAPER_EVIDENCE_LOG.md), OPTSTEP entries.
+ 
+ ![optimizer-step-energy](figures/optimizer-step-energy.png)
+ 
+ ![optimizer-step-force](figures/optimizer-step-force.png)
+diff --git a/reports/optimizer-step-execution-record.md b/reports/optimizer-step-execution-record.md
+index 90d614c..4a9b661 100644
+--- a/reports/optimizer-step-execution-record.md
++++ b/reports/optimizer-step-execution-record.md
+@@ -1,9 +1,9 @@
+ # Frozen optimizer diagnostic execution record
+ 
+ 30 September2026. Exactly one production invocation at code commitfef6197 after two plan reviews and185tests passed124.95s. Local branchcodex/landscape17-baseline; user proposal changes preserved. No resumed training, GPU, heldout evaluation, persistent update or learning acceptance.
+ 
+ Run: runs/aspirin-optimizer-step-2026-09-30. Total15.104326874949038s; totalcap600s, checked betweenoperations. Every3case completed and verified;100raw+2compact source hashes unchanged; immutable incomingAdam/update2000, ephemeral2001discarded. 36FDcells/72steps/18temporaryprobes,0trainingexposures. Fourh1e-4FDsteps failed andcorrespondingh1e-5passed under prescribedcriterion; both retained.
+ 
+ Saved-state Adam fitting force reductions atscale1: replay0.0007177332075114506%, balanced0.011973294957468017%, force-only0.014439968447732543%. No learninggatescleared. Balanced/force-only reference directions have negative infinitesimal fittingforceslopes yet allprescribedfinitefittingforceprobesincreaseerror. This supports checking finite-step behavior and preserving nonlinearity evidence; nocausaloptimizerorcapacityconclusion. Anchorfullyfitted.
+ 
+-Numerical sources andidentities: [optimizer-step-diagnostics.json](optimizer-step-diagnostics.json). Balancedresearchtrail: [PAPER_EVIDENCE_LOG.md](PAPER_EVIDENCE_LOG.md), OPTSTEPentries. Implementation andfailurechecks:185fullsuite preproduction, focusedtasklogs retained. Allthree sourcecheckpoints preserved. Independentfinalreviewpending.
++Numerical sources andidentities: [optimizer-step-diagnostics.json](optimizer-step-diagnostics.json). Balancedresearchtrail: [PAPER_EVIDENCE_LOG.md](PAPER_EVIDENCE_LOG.md), OPTSTEPentries. Implementation andfailurechecks:185fullsuite preproduction, focusedtasklogs retained. Allthree sourcecheckpoints preserved. Independent technical review delivered numerical reconciliation and one Important report-completeness issue. Author reproduced8deletion/corruption regressions, fixed exactmatrix schema, verified14focusedtests and193fulltests125.07s. SavedJSON report rebuilt only; no research repeated. Reviewer could not deliver its formal final response because ofaccountusage after delivering technicalfindings; no formal independentclearance claimed. See [final review record](../docs/reviews/2026-09-30-optimizer-step-final-review.md).
+diff --git a/scripts/report_optimizer_steps.py b/scripts/report_optimizer_steps.py
+index 6afc034..20612a3 100644
+--- a/scripts/report_optimizer_steps.py
++++ b/scripts/report_optimizer_steps.py
+@@ -1,13 +1,14 @@
+ """Rebuild local optimizer observations from saved JSON only, including failed work."""
+ import hashlib
+ import json
++import math
+ from pathlib import Path
+ import matplotlib
+ matplotlib.use('Agg')
+ import matplotlib.pyplot as plt
+ 
+ ROOT=Path(__file__).resolve().parents[1]
+ NAMES=('replay','balanced','force-only')
+ DIRECTIONS=('stateful_adam','reset_adam_matched_norm','steepest_matched_norm')
+ KEYS=('energy_mse_eV2','force_mse_eV2_per_A2')
+ 
+@@ -22,25 +23,54 @@ def cells(case):
+ 
+ def counts(case):
+     cs=cells(case)
+     return {'fd_cells':len(cs),'fd_steps':sum(len(c.get('steps',[])) for c in cs),'probes':len(case.get('probes',[]))}
+ 
+ 
+ def verified(case):
+     if case.get('status')!='completed' or not case.get('verification_valid') or case.get('state_hashes_before')!=case.get('state_hashes_after'):return False
+     if not all(case.get(k,{}).get('valid') for k in ('adam_identity','weighted_gradient_identity','builder_identity')):return False
+     if case.get('counts')!=counts(case) or case.get('training_frame_exposures')!=0:return False
+-    for d in case.get('directions',{}).values():
+-        for r in d.get('roles',{}).values():
++    directions=case.get('directions',{})
++    if set(directions)!=set(DIRECTIONS):return False
++    target=directions['stateful_adam'].get('norm')
++    if not isinstance(target,(int,float)) or not math.isfinite(target) or target<0:return False
++    expected_probes=[]
++    for name in DIRECTIONS:
++        d=directions[name];status=d.get('status');norm=d.get('norm')
++        if status=='unavailable':
++            reason=d.get('reason')
++            if name=='stateful_adam' or reason not in ('zero_target_norm','zero_reference_norm') or d.get('roles')!={} or norm is not None:return False
++            if (reason=='zero_target_norm')!=(target==0):return False
++            continue
++        if status not in ('available','zero_direction') or not isinstance(norm,(int,float)) or not math.isfinite(norm):return False
++        if status=='zero_direction':
++            if name!='stateful_adam' or target!=0 or norm!=0:return False
++        elif norm<=0 or not math.isclose(norm,target,abs_tol=1e-10,rel_tol=1e-8):return False
++        if set(d.get('roles',{}))!={'fitting','anchor'}:return False
++        for r in d['roles'].values():
+             fd=r.get('finite_differences',{})
+-            if fd.get('status')=='not_applicable_zero_direction':continue
+-            if not fd.get('valid') or not all(c.get('valid') and any(s.get('valid') for s in c.get('steps',[])) for c in fd.get('objectives',{}).values()):return False
++            if status=='zero_direction':
++                if fd.get('status')!='not_applicable_zero_direction' or fd.get('valid') is not None or fd.get('objectives')!={}:return False
++                continue
++            if fd.get('status')!='completed' or not fd.get('valid') or set(fd.get('objectives',{}))!={'energy','force'}:return False
++            for cell in fd['objectives'].values():
++                steps=cell.get('steps',[])
++                if [x.get('step') for x in steps]!=[1e-4,1e-5] or not cell.get('valid') or not any(x.get('valid') for x in steps):return False
++        expected_probes.extend((name,scale) for scale in (.1,1.))
++    actual=[(p.get('direction'),p.get('scale')) for p in case.get('probes',[])]
++    if len(actual)!=len(expected_probes) or set(actual)!=set(expected_probes):return False
++    for p in case['probes']:
++        if set(p.get('roles',{}))!={'fitting','anchor'}:return False
++        for role in ('fitting','anchor'):
++            m=p.get('metrics',{}).get(role,{})
++            if any(not isinstance(m.get(k),(int,float)) or not math.isfinite(m[k]) or m[k]<0 for k in KEYS):return False
+     return True
+ 
+ 
+ def generate(root,output):
+     root=Path(root);output=Path(output);output.mkdir(parents=True,exist_ok=True)
+     source=json.loads((root/'summary.json').read_text());config=json.loads((root/'config.json').read_text());cases=source['cases']
+     compact={**source,'config':config,'source_run_directory':str(root),'source_summary_sha256':digest(root/'summary.json'),
+         'report_generator_sha256':digest(__file__),'matplotlib_version':matplotlib.__version__,
+         'learning_accepted':False,'full_pilot':'pending','metric_convention':'Raw energy MSE over frames; force MSE over atom-coordinate components; immutable original baseline fractions; fully fitted anchor. Local normalized loss derivatives and counterfactual displacements.'}
+     compact['interpretation_valid']=bool(source.get('execution_valid') and source.get('source_hashes_unchanged') and set(cases)==set(NAMES) and all(verified(c) for c in cases.values()))
+diff --git a/tests/test_optimizer_report.py b/tests/test_optimizer_report.py
+index 34ea3a4..f6a03e1 100644
+--- a/tests/test_optimizer_report.py
++++ b/tests/test_optimizer_report.py
+@@ -21,32 +21,57 @@ def test_preflight_and_partial_report_actual_counts(tmp_path,attempted):
+     root=tmp_path/'raw';write(root,{'status':'failed','execution_valid':False,'failure_reason':'fixture failure','cases':cases});out=tmp_path/'out';generator().generate(root,out)
+     c=json.loads((out/'optimizer-step-diagnostics.json').read_text());md=(out/'optimizer-step-diagnostics.md').read_text()
+     assert c['attempted_cases']==int(attempted) and c['blocked_cases']==3-int(attempted)
+     assert c['actual_counts']=={'fd_cells':int(attempted),'fd_steps':int(attempted),'probes':0}
+     assert 'Scientific interpretation blocked' in md and 'Full pilot: **pending**' in md
+     assert not c['learning_accepted'] and not c['interpretation_valid']
+     if attempted:assert 'FD interrupted' in md and c['unconfirmed_operations']==1
+ 
+ 
+ def valid_case():
++    metrics={'fitting':{'energy_mse_eV2':.1,'force_mse_eV2_per_A2':.2},'anchor':{'energy_mse_eV2':.1,'force_mse_eV2_per_A2':.2}}
++    roles={r:{'original_baseline_fraction':{'energy_mse_eV2':1.,'force_mse_eV2_per_A2':1.},'source_relative_change':{'energy_mse_eV2':0.,'force_mse_eV2_per_A2':0.}} for r in ('fitting','anchor')}
++    na={'status':'not_applicable_zero_direction','valid':None,'objectives':{}}
+     return {'status':'completed','executed':True,'verification_valid':True,'state_hashes_before':{'p':'x'},'state_hashes_after':{'p':'x'},
+             'adam_identity':{'valid':True},'weighted_gradient_identity':{'valid':True},'builder_identity':{'valid':True},
+-            'counts':{'fd_cells':0,'fd_steps':0,'probes':0},'training_frame_exposures':0,
+-            'directions':{'reset_adam_matched_norm':{'status':'unavailable','reason':'zero_reference_norm','roles':{}}},'probes':[]}
++            'counts':{'fd_cells':0,'fd_steps':0,'probes':2},'training_frame_exposures':0,
++            'directions':{'stateful_adam':{'status':'zero_direction','norm':0.,'roles':{r:{'finite_differences':na} for r in ('fitting','anchor')}},
++                          'reset_adam_matched_norm':{'status':'unavailable','norm':None,'reason':'zero_target_norm','roles':{}},
++                          'steepest_matched_norm':{'status':'unavailable','norm':None,'reason':'zero_target_norm','roles':{}}},
++            'probes':[{'direction':'stateful_adam','scale':s,'metrics':metrics,'roles':roles} for s in (.1,1.)]}
+ 
+ 
+ def test_unavailable_is_preserved_and_not_learning_acceptance(tmp_path):
+     root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'learning_accepted':True,'cases':{n:valid_case() for n in ('replay','balanced','force-only')}})
+     out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text());md=(out/'optimizer-step-diagnostics.md').read_text()
+     assert c['interpretation_valid'] and not c['learning_accepted'] and c['actual_counts']['fd_cells']==0
+-    assert 'unavailable' in md and 'zero_reference_norm' in md and 'fully fitted' in md and 'causal' in md
++    assert 'unavailable' in md and 'zero_target_norm' in md and 'fully fitted' in md and 'causal' in md
+ 
+ 
+ @pytest.mark.parametrize('failure',['fd','hash','builder'])
+ def test_report_gates_forged_success_with_failed_verification(tmp_path,failure):
+     case=valid_case()
+     if failure=='fd':case['directions']['stateful_adam']={'status':'available','roles':{'fitting':{'finite_differences':{'valid':False,'objectives':{'energy':{'valid':False,'steps':[{'valid':False}]}}}}}}
+     if failure=='hash':case['state_hashes_after']={'p':'y'}
+     if failure=='builder':case['builder_identity']['valid']=False
+     root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'cases':{n:case for n in ('replay','balanced','force-only')}})
+     out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text())
+     assert not c['interpretation_valid'] and not c['learning_accepted']
++
++
++@pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
++def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
++    import copy
++    c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
++    assert generator().verified(c)
++    if damage=='directions':c['directions']={};c['probes']=[]
++    if damage=='stateful':c['directions'].pop('stateful_adam')
++    if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
++    if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
++    if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
++    if damage=='probe':c['probes'].pop()
++    if damage=='scale':c['probes'][0]['scale']=.2
++    if damage=='unavailable_reason':
++        c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
++        c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
++    c['counts']=generator().counts(c)
++    assert not generator().verified(c)

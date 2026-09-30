@@ -1,0 +1,35 @@
+{
+  "interpretation_valid": true,
+  "counts": {
+    "fd_cells": 36,
+    "fd_steps": 72,
+    "probes": 18
+  },
+  "raw_source_count": 100,
+  "compact_source_count": 2,
+  "production_invocations": 1,
+  "training_frame_exposures": 0,
+  "raw_artifacts_sha256": {
+    "balanced/observations.json": "12be229893b45f77d232b4c7ab875ea7f805d638ed6706fdd96323df14df371e",
+    "balanced/partial.json": "12be229893b45f77d232b4c7ab875ea7f805d638ed6706fdd96323df14df371e",
+    "balanced/prospective.json": "11f1fd9cdd4848d875ac9955818c243648f33c0ef83be71dfdc22b6bff9479f3",
+    "balanced/summary.json": "eb552e1804d90190b5d44a0caaa00f106df32ea8410e4e83ac2174dc52bd97e5",
+    "cases.json": "44d4bc50c28e3f1a3f6d7f10eb0693d4b12b95e7270bab827f037eea5dccce6a",
+    "config.json": "a05adebe6925cee4e46c4e7fabb6454e7e8dd0672be0117fee1044399b7e7037",
+    "force-only/observations.json": "a0ebb2ecbd1e57396b46d65569ae1850ef6cfa917a7559cf4c5c292779fab730",
+    "force-only/partial.json": "a0ebb2ecbd1e57396b46d65569ae1850ef6cfa917a7559cf4c5c292779fab730",
+    "force-only/prospective.json": "8f1724df10f3b1c0d228b17218223a17f90a6c9a67189fbf6a6b2cd6369a6405",
+    "force-only/summary.json": "e5864c1ce659662f8c62b67b0d3c68fa321ba4c1a72b9735663bc43127d2b9f4",
+    "preflight-partial.json": "c6beff583e71b04573c3cafe7337258e8923841ead57f20c3a5d43a191553c0e",
+    "provenance.json": "ffd88e66edd06e5accf35ae2d61d117acd3f480f203eba1afaf63cfe078434c5",
+    "replay/observations.json": "afe41c645bd6241be729fd41a1d7df8a256d86222c4bb3052d8b8c58a1cb3278",
+    "replay/partial.json": "afe41c645bd6241be729fd41a1d7df8a256d86222c4bb3052d8b8c58a1cb3278",
+    "replay/prospective.json": "59341366cb041de254656535bfad5d3d18ca288ce2f31495c4c07f8d2a5790c9",
+    "replay/summary.json": "a92a86fd2a7245822383e544e67ebc9592dee43782144270fd3e5d38f218be2d",
+    "sources.json": "c6beff583e71b04573c3cafe7337258e8923841ead57f20c3a5d43a191553c0e",
+    "summary.json": "3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b"
+  },
+  "summary_sha256": "3255465553f165b8979475a23681c9a490bef098f05bdb1387e316561cbd4b9b",
+  "report_sha256": "f841592a80e09b205b5422d196fa22088d704d63a03693e1d143ae806be53fc5",
+  "generator_sha256": "7bb82a4ccb58251d9ea76eec81af260e9f736fc0ed6024b8c90720cb0baac68a"
+}

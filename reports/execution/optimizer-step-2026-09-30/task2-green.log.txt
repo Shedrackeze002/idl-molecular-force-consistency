@@ -1,0 +1,33 @@
+.............F.........                                                  [100%]
+=================================== FAILURES ===================================
+_______________ test_real_preflight_immutable_sources_and_counts _______________
+
+    def test_real_preflight_immutable_sources_and_counts():
+>       c=config();fit,anchor,m,n,states,source=runs.optimizer_preflight(c)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_optimizer_runs.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/force_consistency/optimizer_runs.py:98: in optimizer_preflight
+    check_budget();compact,calibration=verify_optimizer_sources(config);sourceconfig,p,arms=_metadata(config,compact,calibration);check_budget()
+                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = {'adam': {'b1': 0.9, 'b2': 0.999, 'eps': 1e-08, 'eps_root': 0.0, ...}, 'arms': {'balanced': {'energy': 0.0145843656703... 'force': 2.0}, 'replay': {'energy': 1.0, 'force': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', ...}
+compact = {'arms': {'balanced': {'anchor_gate': {'accepted': False, 'fraction_remaining': {'energy_mse_eV2': 0.14981029569238652...8f4c18aab338aaee4e45c42f527905e48656f49900239fa701f', ...}, 'attempted_arms': 3, 'balanced_joint_accepted': False, ...}
+calibration = {'cases': {'final-A-fitting': {'finite_differences': {'energy': {'autodiff_directional_derivative': 0.3148463999338109...455', 'representation-gradient-geometry.png': '38121a40550c1bce278b6d85b014d037e53681fdf12442bd579169310fbabaa7'}, ...}
+
+    def _metadata(config,compact,calibration):
+        root=Path(config['loss_balance_run']);c=_read(root/'config.json');p=_read(root/'provenance.json');summary=_read(root/'summary.json')
+        for key,value in c.items():
+            if key!='run_directory' and config.get(key)!=value:raise ValueError(f'Loss-source root setting mismatch: {key}')
+        if not summary['execution_valid'] or summary['status']!='completed' or not summary['source_hashes_unchanged'] or compact['config']!=c or not compact['execution_valid']:
+            raise ValueError('Invalid loss source root/compact')
+        if compact['execution_provenance']!=p or compact['source_summary_sha256']!=sha256(root/'summary.json'):
+>           raise ValueError('Loss compact provenance mismatch')
+E           ValueError: Loss compact provenance mismatch
+
+src/force_consistency/optimizer_runs.py:56: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_optimizer_runs.py::test_real_preflight_immutable_sources_and_counts
+1 failed, 22 passed in 8.71s

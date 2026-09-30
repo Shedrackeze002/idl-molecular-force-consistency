@@ -1,0 +1,238 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_incomplete_or_altered_matrix_cannot_be_interpreted[directions] ______
+
+damage = 'directions'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x1094ea3e0>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x1094ea3e0> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+----------------------------- Captured stderr call -----------------------------
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+------------------------------ Captured log call -------------------------------
+WARNING  matplotlib:__init__.py:577 /Users/shedrackeze/.matplotlib is not a writable directory
+WARNING  matplotlib:__init__.py:596 Matplotlib created a temporary cache directory at /var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/matplotlib-qlm9y5o2 because there was an issue with the default path (/Users/shedrackeze/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+______ test_incomplete_or_altered_matrix_cannot_be_interpreted[stateful] _______
+
+damage = 'stateful'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d78860>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d78860> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+________ test_incomplete_or_altered_matrix_cannot_be_interpreted[role] _________
+
+damage = 'role'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d78d60>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d78d60> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+______ test_incomplete_or_altered_matrix_cannot_be_interpreted[objective] ______
+
+damage = 'objective'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d791c0>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d791c0> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+________ test_incomplete_or_altered_matrix_cannot_be_interpreted[step] _________
+
+damage = 'step'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d789a0>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d789a0> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+________ test_incomplete_or_altered_matrix_cannot_be_interpreted[probe] ________
+
+damage = 'probe'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d78900>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d78900> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+________ test_incomplete_or_altered_matrix_cannot_be_interpreted[scale] ________
+
+damage = 'scale'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d79440>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d79440> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+_ test_incomplete_or_altered_matrix_cannot_be_interpreted[unavailable_reason] __
+
+damage = 'unavailable_reason'
+
+    @pytest.mark.parametrize('damage',['directions','stateful','role','objective','step','probe','scale','unavailable_reason'])
+    def test_incomplete_or_altered_matrix_cannot_be_interpreted(damage):
+        import copy
+        c=copy.deepcopy(json.loads(Path('runs/aspirin-optimizer-step-2026-09-30/replay/observations.json').read_text()))
+        assert generator().verified(c)
+        if damage=='directions':c['directions']={};c['probes']=[]
+        if damage=='stateful':c['directions'].pop('stateful_adam')
+        if damage=='role':c['directions']['stateful_adam']['roles'].pop('anchor')
+        if damage=='objective':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives'].pop('force')
+        if damage=='step':c['directions']['stateful_adam']['roles']['fitting']['finite_differences']['objectives']['energy']['steps'].pop()
+        if damage=='probe':c['probes'].pop()
+        if damage=='scale':c['probes'][0]['scale']=.2
+        if damage=='unavailable_reason':
+            c['directions']['reset_adam_matched_norm']={'status':'unavailable','norm':None,'roles':{}}
+            c['probes']=[p for p in c['probes'] if p['direction']!='reset_adam_matched_norm']
+        c['counts']=generator().counts(c)
+>       assert not generator().verified(c)
+E       AssertionError: assert not True
+E        +  where True = <function verified at 0x107d78ea0>({'adam_count': 2000, 'adam_identity': {'manual_checks': {'delta': {'max_absolute_difference': 1.0842021724855044e-19, .....}, {'category': 'gradient_energy', 'completed_frames': 16, 'planned_frames': 16, 'role': 'fitting', ...}, ...]}, ...})
+E        +    where <function verified at 0x107d78ea0> = <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'>.verified
+E        +      where <module 'optimizer_report' from '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'> = generator()
+
+tests/test_optimizer_report.py:71: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[directions]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[stateful]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[role]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[objective]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[step]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[probe]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[scale]
+FAILED tests/test_optimizer_report.py::test_incomplete_or_altered_matrix_cannot_be_interpreted[unavailable_reason]
+8 failed, 6 deselected in 9.32s

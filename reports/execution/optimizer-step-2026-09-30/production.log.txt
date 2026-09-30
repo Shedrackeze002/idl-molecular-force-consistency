@@ -1,0 +1,7 @@
+{
+  "status": "completed",
+  "execution_valid": true,
+  "next_step": "separately_review_followup_from_local_evidence",
+  "full_pilot": "pending",
+  "failure_reason": null
+}

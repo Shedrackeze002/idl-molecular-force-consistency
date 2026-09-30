@@ -1,0 +1,40 @@
+.............F.........                                                  [100%]
+=================================== FAILURES ===================================
+_______________ test_real_preflight_immutable_sources_and_counts _______________
+
+    def test_real_preflight_immutable_sources_and_counts():
+>       c=config();fit,anchor,m,n,states,source=runs.optimizer_preflight(c)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_optimizer_runs.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = {'adam': {'b1': 0.9, 'b2': 0.999, 'eps': 1e-08, 'eps_root': 0.0, ...}, 'arms': {'balanced': {'energy': 0.0145843656703... 'force': 2.0}, 'replay': {'energy': 1.0, 'force': 1.0}}, 'backend': 'cpu', 'calibration_case': 'fresh-C-fitting', ...}
+check_budget = <function <lambda> at 0x10dad4680>
+save_partial = <function <lambda> at 0x10dad4720>
+
+    def optimizer_preflight(config,check_budget=lambda:None,save_partial=lambda d:None):
+        record={'status':'running','compute':{'operations':[],'completed_frame_evaluations':{}},'raw_source_count':100,'compact_source_count':2}
+        def keep():save_partial(record)
+        def operation(category,frames,fn,numeric=True):
+            check_budget();op={'category':category,'planned_frames':frames,'completed_frames':None,'status':'started'}
+            record['compute']['operations'].append(op);keep();value=fn()
+            if numeric:jax.block_until_ready(value)
+            op.update(status='completed',completed_frames=frames)
+            counts=record['compute']['completed_frame_evaluations'];counts[category]=counts.get(category,0)+frames
+            keep()
+            if numeric:assert_finite(value)
+            check_budget();return value
+        check_budget();compact,calibration=verify_optimizer_sources(config);sourceconfig,p,arms=_metadata(config,compact,calibration);check_budget()
+        # All new control metadata gates above precede the existing prepared-array loader.
+        train,manifest,norm,selected,historical,cal=operation('parent_source_predictions',208,lambda:balance_preflight(config),False)
+        if p['normalization']!=asdict(norm) or p['dataset_identity']!=manifest['identity'] or p['split_hash']!=manifest['split_hash'] or p['precision']!='float64' or p['backend']!='cpu':
+            raise ValueError('Loss source dataset/normalization mismatch')
+>       if _read(Path(config['loss_balance_run'])/'subsets.json')!=selected or p['frozen_subsets_identity']!=selected['identity']:
+                                                                                                             ^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'identity'
+
+src/force_consistency/optimizer_runs.py:103: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_optimizer_runs.py::test_real_preflight_immutable_sources_and_counts
+1 failed, 22 passed in 11.15s

@@ -1,0 +1,196 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+____________ test_preflight_and_partial_report_actual_counts[False] ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_preflight_and_partial_rep0')
+attempted = False
+
+    @pytest.mark.parametrize('attempted',[False,True])
+    def test_preflight_and_partial_report_actual_counts(tmp_path,attempted):
+        cases={n:{'status':'blocked','executed':False} for n in ('replay','balanced','force-only')}
+        if attempted:cases['replay']={'status':'failed','executed':True,'failure_reason':'FD interrupted','counts':{'fd_cells':100,'fd_steps':999,'probes':666},'directions':{'stateful_adam':{'roles':{'fitting':{'finite_differences':{'objectives':{'energy':{'steps':[{'valid':False}]}}}}}}},'compute':{'operations':[{'status':'started','completed_frames':None}],'completed_frame_evaluations':{}}}
+>       root=tmp_path/'raw';write(root,{'status':'failed','execution_valid':False,'failure_reason':'fixture failure','cases':cases});out=tmp_path/'out';generator().generate(root,out)
+                                                                                                                                                        ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1075cedb0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+____________ test_preflight_and_partial_report_actual_counts[True] _____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_preflight_and_partial_rep1')
+attempted = True
+
+    @pytest.mark.parametrize('attempted',[False,True])
+    def test_preflight_and_partial_report_actual_counts(tmp_path,attempted):
+        cases={n:{'status':'blocked','executed':False} for n in ('replay','balanced','force-only')}
+        if attempted:cases['replay']={'status':'failed','executed':True,'failure_reason':'FD interrupted','counts':{'fd_cells':100,'fd_steps':999,'probes':666},'directions':{'stateful_adam':{'roles':{'fitting':{'finite_differences':{'objectives':{'energy':{'steps':[{'valid':False}]}}}}}}},'compute':{'operations':[{'status':'started','completed_frames':None}],'completed_frame_evaluations':{}}}
+>       root=tmp_path/'raw';write(root,{'status':'failed','execution_valid':False,'failure_reason':'fixture failure','cases':cases});out=tmp_path/'out';generator().generate(root,out)
+                                                                                                                                                        ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1075965a0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_unavailable_is_preserved_and_not_learning_acceptance ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_unavailable_is_preserved_0')
+
+    def test_unavailable_is_preserved_and_not_learning_acceptance(tmp_path):
+        root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'learning_accepted':True,'cases':{n:valid_case() for n in ('replay','balanced','force-only')}})
+>       out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text());md=(out/'optimizer-step-diagnostics.md').read_text()
+                           ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1075cf380>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_report_gates_forged_success_with_failed_verification[fd] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_report_gates_forged_succe0')
+failure = 'fd'
+
+    @pytest.mark.parametrize('failure',['fd','hash','builder'])
+    def test_report_gates_forged_success_with_failed_verification(tmp_path,failure):
+        case=valid_case()
+        if failure=='fd':case['directions']['stateful_adam']={'status':'available','roles':{'fitting':{'finite_differences':{'valid':False,'objectives':{'energy':{'valid':False,'steps':[{'valid':False}]}}}}}}
+        if failure=='hash':case['state_hashes_after']={'p':'y'}
+        if failure=='builder':case['builder_identity']['valid']=False
+        root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'cases':{n:case for n in ('replay','balanced','force-only')}})
+>       out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text())
+                           ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x107b69370>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_report_gates_forged_success_with_failed_verification[hash] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_report_gates_forged_succe1')
+failure = 'hash'
+
+    @pytest.mark.parametrize('failure',['fd','hash','builder'])
+    def test_report_gates_forged_success_with_failed_verification(tmp_path,failure):
+        case=valid_case()
+        if failure=='fd':case['directions']['stateful_adam']={'status':'available','roles':{'fitting':{'finite_differences':{'valid':False,'objectives':{'energy':{'valid':False,'steps':[{'valid':False}]}}}}}}
+        if failure=='hash':case['state_hashes_after']={'p':'y'}
+        if failure=='builder':case['builder_identity']['valid']=False
+        root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'cases':{n:case for n in ('replay','balanced','force-only')}})
+>       out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text())
+                           ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x107b69340>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_report_gates_forged_success_with_failed_verification[builder] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-145/test_report_gates_forged_succe2')
+failure = 'builder'
+
+    @pytest.mark.parametrize('failure',['fd','hash','builder'])
+    def test_report_gates_forged_success_with_failed_verification(tmp_path,failure):
+        case=valid_case()
+        if failure=='fd':case['directions']['stateful_adam']={'status':'available','roles':{'fitting':{'finite_differences':{'valid':False,'objectives':{'energy':{'valid':False,'steps':[{'valid':False}]}}}}}}
+        if failure=='hash':case['state_hashes_after']={'p':'y'}
+        if failure=='builder':case['builder_identity']['valid']=False
+        root=tmp_path/'raw';write(root,{'status':'completed','execution_valid':True,'source_hashes_unchanged':True,'cases':{n:case for n in ('replay','balanced','force-only')}})
+>       out=tmp_path/'out';generator().generate(root,out);c=json.loads((out/'optimizer-step-diagnostics.json').read_text())
+                           ^^^^^^^^^^^
+
+tests/test_optimizer_report.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_optimizer_report.py:8: in generator
+    spec=importlib.util.spec_from_file_location('optimizer_report','scripts/report_optimizer_steps.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x107b69d00>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_optimizer_steps.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_optimizer_report.py::test_preflight_and_partial_report_actual_counts[False]
+FAILED tests/test_optimizer_report.py::test_preflight_and_partial_report_actual_counts[True]
+FAILED tests/test_optimizer_report.py::test_unavailable_is_preserved_and_not_learning_acceptance
+FAILED tests/test_optimizer_report.py::test_report_gates_forged_success_with_failed_verification[fd]
+FAILED tests/test_optimizer_report.py::test_report_gates_forged_success_with_failed_verification[hash]
+FAILED tests/test_optimizer_report.py::test_report_gates_forged_success_with_failed_verification[builder]
+6 failed in 0.04s
