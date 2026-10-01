@@ -1,0 +1,510 @@
+.............................FFFFFFF............FFFFFFFFFF               [100%]
+=================================== FAILURES ===================================
+_________ test_raced_destination_never_receives_failure_record[False] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_raced_destination_never_r0')
+symlink = False
+
+    @pytest.mark.parametrize('symlink',[False,True])
+    def test_raced_destination_never_receives_failure_record(tmp_path,symlink):
+        v=source(tmp_path);root=tmp_path/'run';before={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()};calls=[]
+        def guard():
+            if symlink:root.symlink_to(v['source_root'],target_is_directory=True)
+            else:root.mkdir()
+            return v
+        out=module()._recover(v['config'],root,guard,lambda *a:calls.append(a))
+>       assert not (root/'controller-failure.json').exists() and calls==[]
+E       AssertionError: assert (not True)
+E        +  where True = exists()
+E        +    where exists = (PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_raced_destination_never_r0/run') / 'controller-failure.json').exists
+
+tests/test_width_rate_recovery.py:193: AssertionError
+__________ test_raced_destination_never_receives_failure_record[True] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_raced_destination_never_r1')
+symlink = True
+
+    @pytest.mark.parametrize('symlink',[False,True])
+    def test_raced_destination_never_receives_failure_record(tmp_path,symlink):
+        v=source(tmp_path);root=tmp_path/'run';before={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()};calls=[]
+        def guard():
+            if symlink:root.symlink_to(v['source_root'],target_is_directory=True)
+            else:root.mkdir()
+            return v
+        out=module()._recover(v['config'],root,guard,lambda *a:calls.append(a))
+>       assert not (root/'controller-failure.json').exists() and calls==[]
+E       AssertionError: assert (not True)
+E        +  where True = exists()
+E        +    where exists = (PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_raced_destination_never_r1/run') / 'controller-failure.json').exists
+
+tests/test_width_rate_recovery.py:193: AssertionError
+________________ test_allowance_crosses_deadline_before_launch _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_allowance_crosses_deadlin0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x115208350>
+
+    def test_allowance_crosses_deadline_before_launch(tmp_path,monkeypatch):
+        v=source(tmp_path);m=module();armed=[False];ticks=[0];calls=[];real=m.atomic
+        def atomic(path,data):
+            real(path,data)
+            if Path(path).name=='probe-work.json':armed[0]=True
+        def clock():
+            if armed[0]:ticks[0]+=1
+            return 121. if ticks[0]>=2 else 0.
+        monkeypatch.setattr(m,'atomic',atomic)
+        out=m._recover(v['config'],tmp_path/'run',lambda:v,lambda *a:calls.append(a),clock=clock)
+>       assert calls==[] and out['probe_attempts']==0 and out['new_work']['prediction_frames']==0
+E       AssertionError: assert ([(PosixPath('.../run'), -1.0)] == []
+E         
+E         Left contains one more item: (PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_allowance_crosses_deadlin0/run'), -1.0)
+E         Use -v to get more diff)
+
+tests/test_width_rate_recovery.py:208: AssertionError
+_________ test_launch_rejects_nonpositive_timeout_without_process[0.0] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_launch_rejects_nonpositiv0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1151bfbc0>
+timeout = 0.0
+
+    @pytest.mark.parametrize('timeout',[0.,-1.])
+    def test_launch_rejects_nonpositive_timeout_without_process(tmp_path,monkeypatch,timeout):
+        m=module();calls=[];monkeypatch.setattr(m.subprocess,'run',lambda *a,**k:calls.append(k))
+>       with pytest.raises(TimeoutError):m._launch(tmp_path,timeout)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_launch_rejects_nonpositiv0')
+timeout = 0.0
+
+    def _launch(root,timeout):
+        env={**os.environ,'JAX_PLATFORMS':'cpu'}
+        completed=subprocess.run([sys.executable,'-m','force_consistency.width_rate_runs','--probe',str((Path(root)/'verification-copy').resolve())],env=env,capture_output=True,timeout=timeout,check=True)
+>       atomic(Path(root)/'probe-stdout.txt',completed.stdout);atomic(Path(root)/'probe-stderr.txt',completed.stderr)
+                                             ^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'stdout'
+
+src/force_consistency/width_rate_recovery.py:125: AttributeError
+________ test_launch_rejects_nonpositive_timeout_without_process[-1.0] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_launch_rejects_nonpositiv1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1140e32c0>
+timeout = -1.0
+
+    @pytest.mark.parametrize('timeout',[0.,-1.])
+    def test_launch_rejects_nonpositive_timeout_without_process(tmp_path,monkeypatch,timeout):
+        m=module();calls=[];monkeypatch.setattr(m.subprocess,'run',lambda *a,**k:calls.append(k))
+>       with pytest.raises(TimeoutError):m._launch(tmp_path,timeout)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_launch_rejects_nonpositiv1')
+timeout = -1.0
+
+    def _launch(root,timeout):
+        env={**os.environ,'JAX_PLATFORMS':'cpu'}
+        completed=subprocess.run([sys.executable,'-m','force_consistency.width_rate_runs','--probe',str((Path(root)/'verification-copy').resolve())],env=env,capture_output=True,timeout=timeout,check=True)
+>       atomic(Path(root)/'probe-stdout.txt',completed.stdout);atomic(Path(root)/'probe-stderr.txt',completed.stderr)
+                                             ^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'stdout'
+
+src/force_consistency/width_rate_recovery.py:125: AttributeError
+_________ test_failed_child_preserves_complete_available_logs[timeout] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114108380>
+kind = 'timeout'
+
+    @pytest.mark.parametrize('kind',['timeout','failed'])
+    def test_failed_child_preserves_complete_available_logs(tmp_path,monkeypatch,kind):
+        m=module();stdout=b'full stdout'*1000;stderr=b'full stderr'*1000
+        error=subprocess.TimeoutExpired('probe',1,output=stdout,stderr=stderr) if kind=='timeout' else subprocess.CalledProcessError(1,'probe',output=stdout,stderr=stderr)
+        def run(*a,**k):raise error
+        monkeypatch.setattr(m.subprocess,'run',run)
+        with pytest.raises(type(error)) as caught:m._launch(tmp_path,1.)
+>       assert caught.value is error and (tmp_path/'probe-stdout.txt').read_bytes()==stdout and (tmp_path/'probe-stderr.txt').read_bytes()==stderr
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co0/probe-stdout.txt')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co0/probe-stdout.txt'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_________ test_failed_child_preserves_complete_available_logs[failed] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114960fb0>
+kind = 'failed'
+
+    @pytest.mark.parametrize('kind',['timeout','failed'])
+    def test_failed_child_preserves_complete_available_logs(tmp_path,monkeypatch,kind):
+        m=module();stdout=b'full stdout'*1000;stderr=b'full stderr'*1000
+        error=subprocess.TimeoutExpired('probe',1,output=stdout,stderr=stderr) if kind=='timeout' else subprocess.CalledProcessError(1,'probe',output=stdout,stderr=stderr)
+        def run(*a,**k):raise error
+        monkeypatch.setattr(m.subprocess,'run',run)
+        with pytest.raises(type(error)) as caught:m._launch(tmp_path,1.)
+>       assert caught.value is error and (tmp_path/'probe-stdout.txt').read_bytes()==stdout and (tmp_path/'probe-stderr.txt').read_bytes()==stderr
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co1/probe-stdout.txt')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_child_preserves_co1/probe-stdout.txt'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+________ test_failed_records_validate_timing_and_work[negative_elapsed] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_records_validate_t0')
+damage = 'negative_elapsed'
+
+    @pytest.mark.parametrize('damage',['negative_elapsed','negative_probe','fake_completed','unknown_count','not_started_count'])
+    def test_failed_records_validate_timing_and_work(tmp_path,damage):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.TimeoutExpired('probe',1)
+        module()._recover(v['config'],root,lambda:v,fail);s=json.loads((root/'controller-failure.json').read_text())
+        if damage=='negative_elapsed':s['elapsed_seconds']=-5.
+        elif damage=='negative_probe':s['probe_seconds']=-10.
+        elif damage=='fake_completed':s.update(probe_work_status='completed');s['new_work']['prediction_frames']=999
+        elif damage=='unknown_count':s['new_work']['prediction_frames']=999
+        else:s.update(probe_work_status='not_started',probe_attempts=0)
+        write(root/'controller-failure.json',s);out=reporter()._generate(v,root,tmp_path/'out')
+>       assert out['verification_errors'] and not out['work_accounting_valid']
+E       assert ([])
+
+tests/test_width_rate_recovery_report.py:82: AssertionError
+_________ test_failed_records_validate_timing_and_work[negative_probe] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_records_validate_t1')
+damage = 'negative_probe'
+
+    @pytest.mark.parametrize('damage',['negative_elapsed','negative_probe','fake_completed','unknown_count','not_started_count'])
+    def test_failed_records_validate_timing_and_work(tmp_path,damage):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.TimeoutExpired('probe',1)
+        module()._recover(v['config'],root,lambda:v,fail);s=json.loads((root/'controller-failure.json').read_text())
+        if damage=='negative_elapsed':s['elapsed_seconds']=-5.
+        elif damage=='negative_probe':s['probe_seconds']=-10.
+        elif damage=='fake_completed':s.update(probe_work_status='completed');s['new_work']['prediction_frames']=999
+        elif damage=='unknown_count':s['new_work']['prediction_frames']=999
+        else:s.update(probe_work_status='not_started',probe_attempts=0)
+        write(root/'controller-failure.json',s);out=reporter()._generate(v,root,tmp_path/'out')
+>       assert out['verification_errors'] and not out['work_accounting_valid']
+E       assert ([])
+
+tests/test_width_rate_recovery_report.py:82: AssertionError
+_________ test_failed_records_validate_timing_and_work[fake_completed] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_records_validate_t2')
+damage = 'fake_completed'
+
+    @pytest.mark.parametrize('damage',['negative_elapsed','negative_probe','fake_completed','unknown_count','not_started_count'])
+    def test_failed_records_validate_timing_and_work(tmp_path,damage):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.TimeoutExpired('probe',1)
+        module()._recover(v['config'],root,lambda:v,fail);s=json.loads((root/'controller-failure.json').read_text())
+        if damage=='negative_elapsed':s['elapsed_seconds']=-5.
+        elif damage=='negative_probe':s['probe_seconds']=-10.
+        elif damage=='fake_completed':s.update(probe_work_status='completed');s['new_work']['prediction_frames']=999
+        elif damage=='unknown_count':s['new_work']['prediction_frames']=999
+        else:s.update(probe_work_status='not_started',probe_attempts=0)
+        write(root/'controller-failure.json',s);out=reporter()._generate(v,root,tmp_path/'out')
+>       assert out['verification_errors'] and not out['work_accounting_valid']
+E       assert ([])
+
+tests/test_width_rate_recovery_report.py:82: AssertionError
+_________ test_failed_records_validate_timing_and_work[unknown_count] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_records_validate_t3')
+damage = 'unknown_count'
+
+    @pytest.mark.parametrize('damage',['negative_elapsed','negative_probe','fake_completed','unknown_count','not_started_count'])
+    def test_failed_records_validate_timing_and_work(tmp_path,damage):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.TimeoutExpired('probe',1)
+        module()._recover(v['config'],root,lambda:v,fail);s=json.loads((root/'controller-failure.json').read_text())
+        if damage=='negative_elapsed':s['elapsed_seconds']=-5.
+        elif damage=='negative_probe':s['probe_seconds']=-10.
+        elif damage=='fake_completed':s.update(probe_work_status='completed');s['new_work']['prediction_frames']=999
+        elif damage=='unknown_count':s['new_work']['prediction_frames']=999
+        else:s.update(probe_work_status='not_started',probe_attempts=0)
+        write(root/'controller-failure.json',s);out=reporter()._generate(v,root,tmp_path/'out')
+>       assert out['verification_errors'] and not out['work_accounting_valid']
+E       assert ([])
+
+tests/test_width_rate_recovery_report.py:82: AssertionError
+_______ test_failed_records_validate_timing_and_work[not_started_count] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_records_validate_t4')
+damage = 'not_started_count'
+
+    @pytest.mark.parametrize('damage',['negative_elapsed','negative_probe','fake_completed','unknown_count','not_started_count'])
+    def test_failed_records_validate_timing_and_work(tmp_path,damage):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.TimeoutExpired('probe',1)
+        module()._recover(v['config'],root,lambda:v,fail);s=json.loads((root/'controller-failure.json').read_text())
+        if damage=='negative_elapsed':s['elapsed_seconds']=-5.
+        elif damage=='negative_probe':s['probe_seconds']=-10.
+        elif damage=='fake_completed':s.update(probe_work_status='completed');s['new_work']['prediction_frames']=999
+        elif damage=='unknown_count':s['new_work']['prediction_frames']=999
+        else:s.update(probe_work_status='not_started',probe_attempts=0)
+        write(root/'controller-failure.json',s);out=reporter()._generate(v,root,tmp_path/'out')
+>       assert out['verification_errors'] and not out['work_accounting_valid']
+E       assert ([])
+
+tests/test_width_rate_recovery_report.py:82: AssertionError
+_______ test_interrupted_root_produces_incomplete_report[False-missing] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces0')
+terminal = 'missing', launch = False
+
+    @pytest.mark.parametrize('terminal',['missing','corrupt'])
+    @pytest.mark.parametrize('launch',[False,True])
+    def test_interrupted_root_produces_incomplete_report(tmp_path,terminal,launch):
+        v,root=saved(tmp_path)
+        for name in ('summary.json','controller-completion.json','verification-copy/checkpoint-verification.json'):(root/name).unlink()
+        if launch:write(root/'probe-work.json',{'status':'started','phase':'launch_intent','attempt':1})
+        else:(root/'probe-work.json').unlink()
+        if terminal=='corrupt':(root/'summary.json').write_text('{broken')
+>       result=reporter()._generate(v,root,tmp_path/'out')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_width_rate_recovery.py:14: in _generate
+    root=Path(root);output=Path(output);errors=[];file=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json';summary=read(file)
+                                                                                                                                                                    ^^^^^^^^^^
+src/force_consistency/width_rate_contract.py:20: in read
+    def read(path):return json.loads(Path(path).read_text())
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces0/run/summary.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces0/run/summary.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_______ test_interrupted_root_produces_incomplete_report[False-corrupt] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces1')
+terminal = 'corrupt', launch = False
+
+    @pytest.mark.parametrize('terminal',['missing','corrupt'])
+    @pytest.mark.parametrize('launch',[False,True])
+    def test_interrupted_root_produces_incomplete_report(tmp_path,terminal,launch):
+        v,root=saved(tmp_path)
+        for name in ('summary.json','controller-completion.json','verification-copy/checkpoint-verification.json'):(root/name).unlink()
+        if launch:write(root/'probe-work.json',{'status':'started','phase':'launch_intent','attempt':1})
+        else:(root/'probe-work.json').unlink()
+        if terminal=='corrupt':(root/'summary.json').write_text('{broken')
+>       result=reporter()._generate(v,root,tmp_path/'out')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_width_rate_recovery.py:14: in _generate
+    root=Path(root);output=Path(output);errors=[];file=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json';summary=read(file)
+                                                                                                                                                                    ^^^^^^^^^^
+src/force_consistency/width_rate_contract.py:20: in read
+    def read(path):return json.loads(Path(path).read_text())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x10ab9f020>, s = '{broken', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:354: JSONDecodeError
+________ test_interrupted_root_produces_incomplete_report[True-missing] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces2')
+terminal = 'missing', launch = True
+
+    @pytest.mark.parametrize('terminal',['missing','corrupt'])
+    @pytest.mark.parametrize('launch',[False,True])
+    def test_interrupted_root_produces_incomplete_report(tmp_path,terminal,launch):
+        v,root=saved(tmp_path)
+        for name in ('summary.json','controller-completion.json','verification-copy/checkpoint-verification.json'):(root/name).unlink()
+        if launch:write(root/'probe-work.json',{'status':'started','phase':'launch_intent','attempt':1})
+        else:(root/'probe-work.json').unlink()
+        if terminal=='corrupt':(root/'summary.json').write_text('{broken')
+>       result=reporter()._generate(v,root,tmp_path/'out')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_width_rate_recovery.py:14: in _generate
+    root=Path(root);output=Path(output);errors=[];file=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json';summary=read(file)
+                                                                                                                                                                    ^^^^^^^^^^
+src/force_consistency/width_rate_contract.py:20: in read
+    def read(path):return json.loads(Path(path).read_text())
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces2/run/summary.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces2/run/summary.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+________ test_interrupted_root_produces_incomplete_report[True-corrupt] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_interrupted_root_produces3')
+terminal = 'corrupt', launch = True
+
+    @pytest.mark.parametrize('terminal',['missing','corrupt'])
+    @pytest.mark.parametrize('launch',[False,True])
+    def test_interrupted_root_produces_incomplete_report(tmp_path,terminal,launch):
+        v,root=saved(tmp_path)
+        for name in ('summary.json','controller-completion.json','verification-copy/checkpoint-verification.json'):(root/name).unlink()
+        if launch:write(root/'probe-work.json',{'status':'started','phase':'launch_intent','attempt':1})
+        else:(root/'probe-work.json').unlink()
+        if terminal=='corrupt':(root/'summary.json').write_text('{broken')
+>       result=reporter()._generate(v,root,tmp_path/'out')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_width_rate_recovery.py:14: in _generate
+    root=Path(root);output=Path(output);errors=[];file=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json';summary=read(file)
+                                                                                                                                                                    ^^^^^^^^^^
+src/force_consistency/width_rate_contract.py:20: in read
+    def read(path):return json.loads(Path(path).read_text())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x10ab9f020>, s = '{broken', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:354: JSONDecodeError
+____________ test_failed_after_completed_child_still_binds_receipt _____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-29/test_failed_after_completed_ch0')
+
+    def test_failed_after_completed_child_still_binds_receipt(tmp_path):
+        v,root=saved(tmp_path);s=json.loads((root/'summary.json').read_text());s.update(status='failed',verification_valid=False,failure_reason='later controller failure');write(root/'controller-failure.json',s)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and out['work_accounting_valid'] and out['new_work']['prediction_frames']==14
+                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'work_accounting_valid'
+
+tests/test_width_rate_recovery_report.py:102: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery.py::test_raced_destination_never_receives_failure_record[False]
+FAILED tests/test_width_rate_recovery.py::test_raced_destination_never_receives_failure_record[True]
+FAILED tests/test_width_rate_recovery.py::test_allowance_crosses_deadline_before_launch
+FAILED tests/test_width_rate_recovery.py::test_launch_rejects_nonpositive_timeout_without_process[0.0]
+FAILED tests/test_width_rate_recovery.py::test_launch_rejects_nonpositive_timeout_without_process[-1.0]
+FAILED tests/test_width_rate_recovery.py::test_failed_child_preserves_complete_available_logs[timeout]
+FAILED tests/test_width_rate_recovery.py::test_failed_child_preserves_complete_available_logs[failed]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_records_validate_timing_and_work[negative_elapsed]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_records_validate_timing_and_work[negative_probe]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_records_validate_timing_and_work[fake_completed]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_records_validate_timing_and_work[unknown_count]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_records_validate_timing_and_work[not_started_count]
+FAILED tests/test_width_rate_recovery_report.py::test_interrupted_root_produces_incomplete_report[False-missing]
+FAILED tests/test_width_rate_recovery_report.py::test_interrupted_root_produces_incomplete_report[False-corrupt]
+FAILED tests/test_width_rate_recovery_report.py::test_interrupted_root_produces_incomplete_report[True-missing]
+FAILED tests/test_width_rate_recovery_report.py::test_interrupted_root_produces_incomplete_report[True-corrupt]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_after_completed_child_still_binds_receipt
+17 failed, 41 passed in 11.53s

@@ -1,0 +1,472 @@
+FFFFFFFFFFFFFFFFFFFFFFFFF                                                [100%]
+=================================== FAILURES ===================================
+__________ test_source_provenance_only_transformation_and_old_reader ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_source_provenance_only_tr0')
+
+    def test_source_provenance_only_transformation_and_old_reader(tmp_path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';before={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_______ test_corrupt_or_semantically_changed_envelope_rejected[payload] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_corrupt_or_semantically_c0')
+field = 'payload'
+
+    @pytest.mark.parametrize('field',['payload','control_payload','provenance'])
+    def test_corrupt_or_semantically_changed_envelope_rejected(tmp_path,field):
+        v=source(tmp_path);raw=v['source_root']/'snapshots/0.msgpack';e=msgpack.unpackb(raw.read_bytes(),raw=False);e[field]='{}' if field=='provenance' else b'corrupt';raw.write_bytes(msgpack.packb(e,use_bin_type=True))
+>       with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+                                       ^^^^^^^^
+
+tests/test_width_rate_recovery.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+___ test_corrupt_or_semantically_changed_envelope_rejected[control_payload] ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_corrupt_or_semantically_c1')
+field = 'control_payload'
+
+    @pytest.mark.parametrize('field',['payload','control_payload','provenance'])
+    def test_corrupt_or_semantically_changed_envelope_rejected(tmp_path,field):
+        v=source(tmp_path);raw=v['source_root']/'snapshots/0.msgpack';e=msgpack.unpackb(raw.read_bytes(),raw=False);e[field]='{}' if field=='provenance' else b'corrupt';raw.write_bytes(msgpack.packb(e,use_bin_type=True))
+>       with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+                                       ^^^^^^^^
+
+tests/test_width_rate_recovery.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+______ test_corrupt_or_semantically_changed_envelope_rejected[provenance] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_corrupt_or_semantically_c2')
+field = 'provenance'
+
+    @pytest.mark.parametrize('field',['payload','control_payload','provenance'])
+    def test_corrupt_or_semantically_changed_envelope_rejected(tmp_path,field):
+        v=source(tmp_path);raw=v['source_root']/'snapshots/0.msgpack';e=msgpack.unpackb(raw.read_bytes(),raw=False);e[field]='{}' if field=='provenance' else b'corrupt';raw.write_bytes(msgpack.packb(e,use_bin_type=True))
+>       with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+                                       ^^^^^^^^
+
+tests/test_width_rate_recovery.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+____ test_coherent_staged_rehash_cannot_bypass_original_audit[config.json] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca0')
+path = 'config.json'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+__ test_coherent_staged_rehash_cannot_bypass_original_audit[provenance.json] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca1')
+path = 'provenance.json'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_ test_coherent_staged_rehash_cannot_bypass_original_audit[fitting-inputs.npz] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca2')
+path = 'fitting-inputs.npz'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+___ test_coherent_staged_rehash_cannot_bypass_original_audit[reference.npz] ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca3')
+path = 'reference.npz'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+__ test_coherent_staged_rehash_cannot_bypass_original_audit[histories/0.json] __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca4')
+path = 'histories/0.json'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_ test_coherent_staged_rehash_cannot_bypass_original_audit[snapshots/0.msgpack] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca5')
+path = 'snapshots/0.msgpack'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+____ test_coherent_staged_rehash_cannot_bypass_original_audit[commit.json] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca6')
+path = 'commit.json'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_ test_coherent_staged_rehash_cannot_bypass_original_audit[checkpoint-contract.json] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_coherent_staged_rehash_ca7')
+path = 'checkpoint-contract.json'
+
+    @pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
+    def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+______ test_interrupted_copy_does_not_publish_complete_receipt[snapshots] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_interrupted_copy_does_not0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10951d070>
+boundary = 'snapshots'
+
+    @pytest.mark.parametrize('boundary',['snapshots','histories','commit.json','copy-transformation.json'])
+    def test_interrupted_copy_does_not_publish_complete_receipt(tmp_path,monkeypatch,boundary):
+>       v=source(tmp_path);m=module();real=m.atomic;root=tmp_path/'copy'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+______ test_interrupted_copy_does_not_publish_complete_receipt[histories] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_interrupted_copy_does_not1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10951d970>
+boundary = 'histories'
+
+    @pytest.mark.parametrize('boundary',['snapshots','histories','commit.json','copy-transformation.json'])
+    def test_interrupted_copy_does_not_publish_complete_receipt(tmp_path,monkeypatch,boundary):
+>       v=source(tmp_path);m=module();real=m.atomic;root=tmp_path/'copy'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_____ test_interrupted_copy_does_not_publish_complete_receipt[commit.json] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_interrupted_copy_does_not2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1094f32c0>
+boundary = 'commit.json'
+
+    @pytest.mark.parametrize('boundary',['snapshots','histories','commit.json','copy-transformation.json'])
+    def test_interrupted_copy_does_not_publish_complete_receipt(tmp_path,monkeypatch,boundary):
+>       v=source(tmp_path);m=module();real=m.atomic;root=tmp_path/'copy'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_ test_interrupted_copy_does_not_publish_complete_receipt[copy-transformation.json] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_interrupted_copy_does_not3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10950b980>
+boundary = 'copy-transformation.json'
+
+    @pytest.mark.parametrize('boundary',['snapshots','histories','commit.json','copy-transformation.json'])
+    def test_interrupted_copy_does_not_publish_complete_receipt(tmp_path,monkeypatch,boundary):
+>       v=source(tmp_path);m=module();real=m.atomic;root=tmp_path/'copy'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+________________ test_existing_copy_and_unsafe_symlink_rejected ________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_existing_copy_and_unsafe_0')
+
+    def test_existing_copy_and_unsafe_symlink_rejected(tmp_path):
+>       v=source(tmp_path);m=module();root=tmp_path/'copy';m._stage_copy(v,root,lambda:None)
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+______________ test_public_contract_and_all_pins_without_numerics ______________
+
+    def test_public_contract_and_all_pins_without_numerics():
+>       from force_consistency.width_rate_recovery_contract import verify_recovery_sources
+E       ModuleNotFoundError: No module named 'force_consistency.width_rate_recovery_contract'
+
+tests/test_width_rate_recovery.py:95: ModuleNotFoundError
+________________ test_controller_one_child_and_separate_effort _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_one_child_and_0')
+
+    def test_controller_one_child_and_separate_effort(tmp_path):
+>       v=source(tmp_path);m=module();calls=[];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+________ test_controller_failure_work_accounting_and_no_retry[failure] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_failure_work_a0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109b233e0>
+kind = 'failure'
+
+    @pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
+    def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
+>       v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+________ test_controller_failure_work_accounting_and_no_retry[timeout] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_failure_work_a1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109b21790>
+kind = 'timeout'
+
+    @pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
+    def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
+>       v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+__________ test_controller_failure_work_accounting_and_no_retry[cap] ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_failure_work_a2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109b23890>
+kind = 'cap'
+
+    @pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
+    def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
+>       v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+______ test_controller_failure_work_accounting_and_no_retry[sourcechange] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_failure_work_a3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109b21970>
+kind = 'sourcechange'
+
+    @pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
+    def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
+>       v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_________ test_controller_failure_work_accounting_and_no_retry[output] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_controller_failure_work_a4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1087ec110>
+kind = 'output'
+
+    @pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
+    def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
+>       v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
+                             ^^^^^^^^
+
+tests/test_width_rate_recovery.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+_________________ test_tiny_real_copied_state_in_fresh_process _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-22/test_tiny_real_copied_state_in0')
+
+    def test_tiny_real_copied_state_in_fresh_process(tmp_path):
+>       v=source(tmp_path,real=True);m=module();root=tmp_path/'run'
+                                       ^^^^^^^^
+
+tests/test_width_rate_recovery.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   def module():from force_consistency import width_rate_recovery as m;return m
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ImportError: cannot import name 'width_rate_recovery' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)
+
+tests/test_width_rate_recovery.py:46: ImportError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery.py::test_source_provenance_only_transformation_and_old_reader
+FAILED tests/test_width_rate_recovery.py::test_corrupt_or_semantically_changed_envelope_rejected[payload]
+FAILED tests/test_width_rate_recovery.py::test_corrupt_or_semantically_changed_envelope_rejected[control_payload]
+FAILED tests/test_width_rate_recovery.py::test_corrupt_or_semantically_changed_envelope_rejected[provenance]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[config.json]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[provenance.json]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[fitting-inputs.npz]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[reference.npz]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[histories/0.json]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[snapshots/0.msgpack]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[commit.json]
+FAILED tests/test_width_rate_recovery.py::test_coherent_staged_rehash_cannot_bypass_original_audit[checkpoint-contract.json]
+FAILED tests/test_width_rate_recovery.py::test_interrupted_copy_does_not_publish_complete_receipt[snapshots]
+FAILED tests/test_width_rate_recovery.py::test_interrupted_copy_does_not_publish_complete_receipt[histories]
+FAILED tests/test_width_rate_recovery.py::test_interrupted_copy_does_not_publish_complete_receipt[commit.json]
+FAILED tests/test_width_rate_recovery.py::test_interrupted_copy_does_not_publish_complete_receipt[copy-transformation.json]
+FAILED tests/test_width_rate_recovery.py::test_existing_copy_and_unsafe_symlink_rejected
+FAILED tests/test_width_rate_recovery.py::test_public_contract_and_all_pins_without_numerics
+FAILED tests/test_width_rate_recovery.py::test_controller_one_child_and_separate_effort
+FAILED tests/test_width_rate_recovery.py::test_controller_failure_work_accounting_and_no_retry[failure]
+FAILED tests/test_width_rate_recovery.py::test_controller_failure_work_accounting_and_no_retry[timeout]
+FAILED tests/test_width_rate_recovery.py::test_controller_failure_work_accounting_and_no_retry[cap]
+FAILED tests/test_width_rate_recovery.py::test_controller_failure_work_accounting_and_no_retry[sourcechange]
+FAILED tests/test_width_rate_recovery.py::test_controller_failure_work_accounting_and_no_retry[output]
+FAILED tests/test_width_rate_recovery.py::test_tiny_real_copied_state_in_fresh_process
+25 failed in 4.78s

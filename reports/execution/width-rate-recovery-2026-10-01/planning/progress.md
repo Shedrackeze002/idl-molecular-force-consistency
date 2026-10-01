@@ -1,0 +1,11 @@
+# Recovery plan ledger — 2026-10-01
+
+User authorized preparing the separately reviewed recovery plan. Scope: bounded existing-checkpoint validation amendment; no product implementation or production numerical action during planning. New written amendment and implementation plan satisfy the standing two-review rule; written artifact review precedes a fresh numerical verification. Native implementation retained. Preserve original failed trial and every review folder. No training retry.
+
+Alternatives: copy-only final checkpoint verification (recommended cheapest direct test of diagnosed metadata failure); full fresh replacement matrix (rejected at this stage because validation repair can be tested before repeating completed training); leave checkpoint unverified and train remaining cells (rejected because matrix ancestry would remain incomplete).
+
+Read-only source checks: all145failed raw files match final report; envelope payload/control hash and semantic provenance checked without restoration/predictions. Draft config and recovery pins written as planned/unexecuted. Obsidian CLI unavailable: read failed and app launch failed; retain exact errors, repository authority unaffected. Live navigation refresh pending, no direct vault edit.
+
+First reviewers failed at account quota without reviewing; after human “proceed” and reset, both retried and statically reviewed current files. Engineering Important: prelaunch audit must reconstruct all10staged artifact/delta/receipt expectations from pinned original bytes before child-started/numerical work. Accepted and amended; no existing verifier change. Scientific/engineering Minor accounting/role/deadline clarifications accepted. Material revision sent to both reviewers. Config/pin identities unchanged.
+Authorization ruling: latest explicit proceed followed the concrete bounded zero-training/one-verifier/180s design and authorizes that step once two reviews/re-reviews and engineering checks pass; no repeated human approval or new training implied. This takes precedence over a mechanical extra artifact approval loop.
+Obsidian third attempt: explicit app path launch failed kLSNoExecutableErr(-10827), despite files present. Read-only fallback current vault notes match final original-trial state. No direct vault edits; new navigation refresh pending CLI availability.

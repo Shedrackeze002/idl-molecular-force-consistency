@@ -1,0 +1,10 @@
+{
+  "full_suite_count": 388,
+  "full_suite_seconds": 253.19,
+  "full_suite_log_sha256": "f5be49a55a0e1712fc0efb41f6b84c8c6180e7905fa32d7108ff238f37006b29",
+  "focused_count": 61,
+  "focused_seconds": 11.36,
+  "source_pins": 163,
+  "historical_pins": 326,
+  "production_unexecuted": true
+}

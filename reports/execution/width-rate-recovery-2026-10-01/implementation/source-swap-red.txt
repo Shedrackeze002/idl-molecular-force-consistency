@@ -1,0 +1,17 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_source_reference_swap_after_guard_is_rejected ______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-27/test_source_reference_swap_aft0')
+
+    def test_source_reference_swap_after_guard_is_rejected(tmp_path):
+        v=source(tmp_path);v['source_files_sha256']={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
+        (v['source_root']/'reference.npz').write_bytes(b'swapped after verified guard')
+>       with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_width_rate_recovery.py:182: Failed
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery.py::test_source_reference_swap_after_guard_is_rejected
+1 failed, 28 deselected in 0.05s

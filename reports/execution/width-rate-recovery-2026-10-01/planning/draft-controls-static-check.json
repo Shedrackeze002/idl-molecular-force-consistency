@@ -1,0 +1,17 @@
+{
+  "config_canonical_sha256": "55c63996e555fad2c65edb38525dcd27f022188650ee255353b24e20a83c487c",
+  "control_hash_valid": true,
+  "date_utc": "2026-09-30T23:07:47.386595+00:00",
+  "failed_raw_files_verified": 145,
+  "metadata_objects_equal": true,
+  "new_probe_or_training": false,
+  "obsidian_cli_attempts": [
+    "read failed: CLI cannot find running Obsidian",
+    "open -a Obsidian failed: application not found"
+  ],
+  "payload_hash_valid": true,
+  "phase": "planning_only",
+  "pin_manifest_sha256": "f7fff5b24a9e2eae365a97924d720d996d9c60321c39fc00711d307a03e5a4d4",
+  "proposal_changes_preserved": true,
+  "recovery_pins_verified": 163
+}

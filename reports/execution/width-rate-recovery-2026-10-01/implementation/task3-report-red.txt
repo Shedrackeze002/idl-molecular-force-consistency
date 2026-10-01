@@ -1,0 +1,570 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+___________ test_distinct_valid_copy_never_promotes_failed_original ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_distinct_valid_copy_never0')
+
+    def test_distinct_valid_copy_never_promotes_failed_original(tmp_path):
+>       v,root=saved(tmp_path);result=reporter()._generate(v,root,tmp_path/'out')
+                                      ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfd8560>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_coherently_edited_report_receipts_or_claims_rejected[promote] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_0')
+damage = 'promote'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfed1f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_coherently_edited_report_receipts_or_claims_rejected[count] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_1')
+damage = 'count'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfee6f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_coherently_edited_report_receipts_or_claims_rejected[time] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_2')
+damage = 'time'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10c0040e0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_coherently_edited_report_receipts_or_claims_rejected[code] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_3')
+damage = 'code'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10c005130>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_coherently_edited_report_receipts_or_claims_rejected[oldwork] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_4')
+damage = 'oldwork'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10c006720>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_coherently_edited_report_receipts_or_claims_rejected[oldtime] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_5')
+damage = 'oldtime'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10c0400e0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_coherently_edited_report_receipts_or_claims_rejected[receipt] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_6')
+damage = 'receipt'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfed4f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_______ test_coherently_edited_report_receipts_or_claims_rejected[copy] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_7')
+damage = 'copy'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfda660>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+____ test_coherently_edited_report_receipts_or_claims_rejected[completion] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_coherently_edited_report_8')
+damage = 'completion'
+
+    @pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
+    def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
+        v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
+        if damage=='promote':summary['original_outcome']['execution_valid']=True
+        elif damage=='count':summary['new_work']['prediction_frames']=999
+        elif damage=='time':summary['elapsed_seconds']=999
+        elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
+        elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
+        elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
+        elif damage=='receipt':
+            p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
+        elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
+        else:(root/'controller-completion.json').unlink()
+        write(root/'summary.json',summary)
+        # Also rehash completion for summary mutations: source-derived semantics must win.
+        marker=root/'controller-completion.json'
+        if marker.exists():
+            import hashlib
+            b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
+>       out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
+            ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10bfdaba0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_failed_probe_work_and_old_incompleteness_are_preserved __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_failed_probe_work_and_old0')
+
+    def test_failed_probe_work_and_old_incompleteness_are_preserved(tmp_path):
+        v=source(tmp_path);root=tmp_path/'run'
+        def fail(*args):raise subprocess.CalledProcessError(1,'probe',stderr=b'failure')
+        module()._recover(v['config'],root,lambda:v,fail)
+>       result=reporter()._generate(v,root,tmp_path/'out')
+               ^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_width_rate_recovery_report.py:13: in reporter
+    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
+                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10c005ca0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_width_rate_recovery.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________________ test_saved_only_report_import_denies_numerics _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_saved_only_report_import_0')
+
+    def test_saved_only_report_import_denies_numerics(tmp_path):
+        v,root=saved(tmp_path);v['source_root']=str(v['source_root']);write(tmp_path/'source-object.json',v)
+        code='''import importlib.abc,sys,importlib.util,json
+    from pathlib import Path
+    class Deny(importlib.abc.MetaPathFinder):
+     def find_spec(self,name,path=None,target=None):
+      if name.split('.')[0] in ('jax','flax','optax','e3x','numpy'):raise AssertionError(name)
+    sys.meta_path.insert(0,Deny())
+    s=importlib.util.spec_from_file_location('report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+    v=json.load(open(sys.argv[1]));v['source_root']=Path(v['source_root']);m._generate(v,Path(sys.argv[2]),Path(sys.argv[3]))
+    '''
+>       subprocess.run([sys.executable,'-c',code,str(tmp_path/'source-object.json'),str(root),str(tmp_path/'out')],capture_output=True,check=True)
+
+tests/test_width_rate_recovery_report.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-c', "import importlib.abc,sys,imp...var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_saved_only_report_import_0/out'],)
+kwargs = {'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-c', "import importlib.abc,sys,importlib.util,json\nfrom pathlib import Path\nclass Deny(importlib.abc.MetaPathFinder):\n def find_spec(self,name,path=None,target=None):\n  if name.split('.')[0] in ('jax','flax','optax','e3x','numpy'):raise AssertionError(name)\nsys.meta_path.insert(0,Deny())\ns=importlib.util.spec_from_file_location('report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\nv=json.load(open(sys.argv[1]));v['source_root']=Path(v['source_root']);m._generate(v,Path(sys.argv[2]),Path(sys.argv[3]))\n", '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_saved_only_report_import_0/source-object.json', '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_saved_only_report_import_0/run', '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-26/test_saved_only_report_import_0/out']' returned non-zero exit status 1.
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:571: CalledProcessError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery_report.py::test_distinct_valid_copy_never_promotes_failed_original
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[promote]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[count]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[time]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[code]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[oldwork]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[oldtime]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[receipt]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[copy]
+FAILED tests/test_width_rate_recovery_report.py::test_coherently_edited_report_receipts_or_claims_rejected[completion]
+FAILED tests/test_width_rate_recovery_report.py::test_failed_probe_work_and_old_incompleteness_are_preserved
+FAILED tests/test_width_rate_recovery_report.py::test_saved_only_report_import_denies_numerics
+12 failed in 0.44s

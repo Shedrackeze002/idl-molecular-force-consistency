@@ -1,0 +1,35 @@
+{
+  "config": {
+    "anchor_frame_count": 7,
+    "checkpoint_prediction_atol": 1e-10,
+    "expected_source_control_sha256": "e4ff5e7d7a7f08e9800a3e25cb774533cb20040df30b6ba10f956f9acd0eb3f7",
+    "expected_source_payload_sha256": "9092e69f5d988789c2e84fa61df3ded5217031ee6707982b9920685de7e7d75f",
+    "expected_update": 0,
+    "fitting_frame_count": 7,
+    "new_training_updates": 0,
+    "recovery_role": "copied_checkpoint_verification_only",
+    "total_wall_seconds": 120.0
+  },
+  "config_identity": "10a07a012be418ca5a902f2f156660a6a0e21e78819ac29b794f4a23070cfbca",
+  "elapsed_seconds": 0.00011529200128279626,
+  "ended_at_utc": "2026-10-01T13:51:45.243710+00:00",
+  "external_failure_record": "/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/width-rate-recovery-unowned-9l6_t81t.json",
+  "failure_reason": "FileExistsError: [Errno 17] File exists: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-32/test_raced_destination_never_r0/run'",
+  "full_pilot": "pending",
+  "new_work": {
+    "optimizer_proposals": 0,
+    "prediction_frames": 0,
+    "template_initializations": 0,
+    "template_initializer_frames": 0,
+    "training_updates": 0,
+    "warmup_frames": 0
+  },
+  "probe_attempts": 0,
+  "probe_seconds": 0.0,
+  "probe_work_status": "not_started",
+  "role": "copied_checkpoint_verification_only",
+  "started_at_utc": "2026-10-01T13:51:45.243645+00:00",
+  "status": "failed",
+  "timestamp_provenance": "parent UTC wall clock; durations use monotonic clock",
+  "verification_valid": false
+}

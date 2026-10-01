@@ -1,0 +1,19 @@
+{
+  "historical_pins_verified": 326,
+  "initial_collection_manifest_sha256": "f81024d7c7d6a38fa0c030ce4246f2d6de52dcf71832188454c03f4b6c95d2c5",
+  "initial_collection_note": "External count0 corrected; original manifest/verification/script retained",
+  "manifest_sha256": "bed37303b048bc3bec2961d093de851f5f07e2310bd25d9f8e2922484792321b",
+  "numerical_reexecution": false,
+  "original_raw_unchanged": 145,
+  "originals_retained": true,
+  "raw_file_count": 19,
+  "raw_zip_sha256": "e708b7c55b404ef2a2e9bb7ce2bd904be3f1968d81d7271fc81acf2e74f9b17c",
+  "recovery_pins_verified": 163,
+  "reviewer_reproduction_count": 104,
+  "synthetic_external_failure_count": 15,
+  "user_changes_preserved": true,
+  "workspace_counts": {
+    "implementation": 32,
+    "planning": 5
+  }
+}

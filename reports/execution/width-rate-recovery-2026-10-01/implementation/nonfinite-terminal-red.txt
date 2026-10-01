@@ -1,0 +1,59 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_nonfinite_corrupt_terminal_is_reported_without_json_crash ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-33/test_nonfinite_corrupt_termina0')
+
+    def test_nonfinite_corrupt_terminal_is_reported_without_json_crash(tmp_path):
+        v,root=saved(tmp_path);text=(root/'summary.json').read_text();s=json.loads(text);s.update(status='failed',verification_valid=False,elapsed_seconds=float('nan'));(root/'controller-failure.json').write_text(json.dumps(s))
+>       out=reporter()._generate(v,root,tmp_path/'out')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_width_rate_recovery_report.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_width_rate_recovery.py:83: in _generate
+    output.mkdir(parents=True,exist_ok=True);(output/'width-rate-recovery-verification.json').write_text(json.dumps(result,indent=2,sort_keys=True,allow_nan=False)+'\n')
+                                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:202: in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:432: in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:406: in _iterencode_dict
+    yield from chunks
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:398: in _iterencode_dict
+    yield _floatstr(value)
+          ^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+o = nan, allow_nan = False, _repr = <slot wrapper '__repr__' of 'float' objects>
+_inf = inf, _neginf = -inf
+
+    def floatstr(o, allow_nan=self.allow_nan,
+            _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+        # Check for specials.  Note that this type of test is processor
+        # and/or platform-specific, so do tests which don't depend on the
+        # internals.
+    
+        if o != o:
+            text = 'NaN'
+        elif o == _inf:
+            text = 'Infinity'
+        elif o == _neginf:
+            text = '-Infinity'
+        else:
+            return _repr(o)
+    
+        if not allow_nan:
+>           raise ValueError(
+                "Out of range float values are not JSON compliant: " +
+                repr(o))
+E           ValueError: Out of range float values are not JSON compliant: nan
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py:240: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery_report.py::test_nonfinite_corrupt_terminal_is_reported_without_json_crash
+1 failed in 0.25s

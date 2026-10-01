@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "verification_valid": true,
+  "probe_attempts": 1,
+  "elapsed_seconds": 5.668380625000282,
+  "failure_reason": null
+}

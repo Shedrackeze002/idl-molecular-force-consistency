@@ -1,0 +1,23 @@
+.F.                                                                      [100%]
+=================================== FAILURES ===================================
+_________ test_started_intent_budget_exhaustion_is_known_not_launched __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-24/test_started_intent_budget_exh0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1072b23c0>
+
+    def test_started_intent_budget_exhaustion_is_known_not_launched(tmp_path,monkeypatch):
+        v=source(tmp_path);m=module();real=m.atomic;now=[0.];calls=[]
+        def write_and_exhaust(path,data):
+            real(path,data)
+            if Path(path).name=='probe-work.json':now[0]=121.
+        monkeypatch.setattr(m,'atomic',write_and_exhaust)
+        out=m._recover(v['config'],tmp_path/'run',lambda:v,lambda *a:calls.append(a),clock=lambda:now[0])
+>       assert calls==[] and out['probe_attempts']==0 and out['probe_work_status']=='not_started'
+E       assert ([] == []
+E         
+E         Use -v to get more diff and 1 == 0)
+
+tests/test_width_rate_recovery.py:162: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_width_rate_recovery.py::test_started_intent_budget_exhaustion_is_known_not_launched
+1 failed, 2 passed, 25 deselected in 0.65s

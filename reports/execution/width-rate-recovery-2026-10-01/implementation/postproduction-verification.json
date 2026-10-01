@@ -1,0 +1,22 @@
+{
+  "copied_checkpoint_sha256": "855917271e9cd533829ecdf27b6760df84b2400fc980f82505f5b7eb9a82f22f",
+  "elapsed_seconds": 5.668380625000282,
+  "ended_at_utc": "2026-10-01T13:58:39.089487+00:00",
+  "historical_pins_verified": 326,
+  "maximum_absolute_error": 0.0,
+  "new_work": {
+    "optimizer_proposals": 0,
+    "prediction_frames": 144,
+    "template_initializations": 1,
+    "template_initializer_frames": 16,
+    "training_updates": 0,
+    "warmup_frames": 0
+  },
+  "original_raw_files_unchanged": 145,
+  "probe_attempts": 1,
+  "probe_seconds": 4.785355457999685,
+  "recovery_pins_verified": 163,
+  "started_at_utc": "2026-10-01T13:58:33.421148+00:00",
+  "status": "passed",
+  "verification_valid": true
+}

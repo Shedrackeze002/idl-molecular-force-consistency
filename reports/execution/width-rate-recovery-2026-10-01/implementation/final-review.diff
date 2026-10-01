@@ -1,0 +1,546 @@
+diff --git a/scripts/report_width_rate_recovery.py b/scripts/report_width_rate_recovery.py
+new file mode 100644
+index 0000000..2e84605
+--- /dev/null
++++ b/scripts/report_width_rate_recovery.py
+@@ -0,0 +1,57 @@
++"""Separate saved-byte recovery validation, never retroactive matrix clearance."""
++import argparse
++import json
++import math
++from pathlib import Path
++import sys
++sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
++from force_consistency.width_rate_contract import canonical_hash,digest,read
++from force_consistency.width_rate_recovery_contract import ROLE,verify_recovery_sources
++from force_consistency.width_rate_recovery import _audit_copy,valid_child,original_effort,original_outcome,code_record
++
++
++def _generate(v,root,output):
++    root=Path(root);output=Path(output);errors=[];file=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json';summary=read(file)
++    valid=summary.get('verification_valid') is True and summary.get('status')=='passed'
++    try:
++        if summary['role']!=ROLE or summary['config']!=v['config'] or summary['config_identity']!=canonical_hash(v['config']):raise ValueError('Recovery controls/role changed')
++        if summary['original_effort']!=original_effort(v) or summary['original_outcome']!=original_outcome(v):raise ValueError('Original failed outcome/effort changed')
++        if summary['code']['files_sha256']!=code_record()['files_sha256']:raise ValueError('Executed numerical/audit code changed')
++        _audit_copy(v,root,read(root/'copy-transformation.json'),True)
++        if valid:
++            elapsed=summary['elapsed_seconds'];completion=read(root/'controller-completion.json')
++            if (not isinstance(elapsed,(int,float)) or isinstance(elapsed,bool) or not math.isfinite(elapsed)
++                or not 0<=elapsed<=completion['elapsed_seconds']<v['config']['total_wall_seconds']
++                or completion['status']!='passed' or completion['summary_sha256']!=digest(root/'summary.json')
++                or summary['probe_attempts']!=1 or summary['probe_work_status']!='completed' or summary['full_pilot']!='pending'
++                or not math.isfinite(summary['probe_seconds']) or not 0<=summary['probe_seconds']<=elapsed):raise ValueError('Controller timing/attempt/completion mismatch')
++            if valid_child(v,root,summary['child_receipt'])!=summary['new_work']:raise ValueError('Completed child work mismatch')
++        elif summary.get('probe_attempts') not in (0,1):raise ValueError('Unreviewed additional attempts')
++    except (OSError,ValueError,KeyError,TypeError) as exc:valid=False;errors.append(str(exc))
++    result={**summary,'role':ROLE,'verification_valid':bool(valid),'original_outcome':original_outcome(v),'original_effort':original_effort(v),
++        'combined_work_counts_complete':False,'contrasts_available':False,'full_pilot':'pending','verification_errors':errors,
++        'source_root':str(v['source_root']),'recovery_root':str(root),'report_generator_sha256':digest(__file__),
++        'artifacts_sha256':{str(p.relative_to(root)):digest(p) for p in sorted(root.rglob('*')) if p.is_file()},
++        'limits':['A passing copy receipt reproduces saved endpoint predictions under the pinned implementation; it is not DFT accuracy or physical recovery.',
++                  'Original matrix remains failed, original learning gates failed and three cells blocked; no hybrid matrix, contrasts, winner or pilot clearance.',
++                  'Original child work/duration remains unknown; original and recovery effort are separate, never complete combined totals or efficiency evidence.',
++                  'No new training, optimizer proposal, warmup, curve remeasurement or held-out evaluation. Future matrix work needs a separate reviewed plan.']}
++    output.mkdir(parents=True,exist_ok=True);(output/'width-rate-recovery-verification.json').write_text(json.dumps(result,indent=2,sort_keys=True,allow_nan=False)+'\n')
++    lines=['# Copied-checkpoint recovery verification','',f"Recovery status: **{summary.get('status')}**; copied verification valid: **{valid}**.",'',
++           f"New training updates: **0**. Numerical verifier attempts: **{summary.get('probe_attempts')}**. Completed/unknown new work: `{json.dumps(summary.get('new_work'),sort_keys=True)}`.",'',
++           f"Controller elapsed: {summary.get('elapsed_seconds')} seconds; measured verifier elapsed: {summary.get('probe_seconds')} seconds. Later report/archive work is outside the controller cap.",'',
++           'The original matrix remains **failed**, both original learning gates **failed**, three cells **blocked**, contrasts **unavailable**, full pilot **pending**. This separate receipt is never grafted onto the old trial.','',
++           'Original accounting is inherited completely in the JSON, including per-arm oracle/evaluation/reference work and parent/shared initialization receipts. The old failed verifier duration and unreceipted work remain unavailable; combined accounting is incomplete.','']
++    if errors:lines+=['Verification errors:']+['- '+e for e in errors]+['']
++    lines+=['- '+limit for limit in result['limits']]
++    (output/'width-rate-recovery-verification.md').write_text('\n'.join(lines)+'\n');return result
++
++
++def generate(root,output):
++    config=read(Path(root)/'config.json');v=verify_recovery_sources(config)
++    if Path(root).resolve()!=Path(config['run_directory']).resolve():raise ValueError('Unreviewed recovery root')
++    return _generate(v,root,output)
++
++
++if __name__=='__main__':
++    parser=argparse.ArgumentParser();parser.add_argument('--root',type=Path,required=True);parser.add_argument('--output',type=Path,default=Path('reports'));a=parser.parse_args();r=generate(a.root,a.output);print(json.dumps({k:r[k] for k in ('verification_valid','contrasts_available','full_pilot')},indent=2));raise SystemExit(0 if r['verification_valid'] else 1)
+diff --git a/src/force_consistency/width_rate_recovery.py b/src/force_consistency/width_rate_recovery.py
+new file mode 100644
+index 0000000..f6e8faf
+--- /dev/null
++++ b/src/force_consistency/width_rate_recovery.py
+@@ -0,0 +1,171 @@
++"""Opaque checkpoint-copy audit and one bounded fresh verifier; no numerical imports."""
++import argparse
++import copy
++import hashlib
++import importlib.metadata
++import json
++import math
++import os
++from pathlib import Path
++import platform
++import subprocess
++import sys
++import tempfile
++import time
++import msgpack
++from .width_rate_contract import canonical_hash,digest,read,safe_path
++from .width_rate_recovery_contract import CONFIG_ID,ROLE,validate,verify_recovery_sources
++
++
++def json_bytes(value):return (json.dumps(value,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
++def atomic(path,data):
++    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
++    with tempfile.NamedTemporaryFile(dir=path.parent,delete=False) as f:
++        f.write(data);f.flush();os.fsync(f.fileno());temporary=f.name
++    os.replace(temporary,path)
++
++
++def _expected(v):
++    source=v['source_root'];c=v['config'];receipt=v['source_receipt'];prov=v['provenance'];contract=v['source_contract']
++    original=(safe_path(source,receipt['checkpoint'])).read_bytes()
++    if hashlib.sha256(original).hexdigest()!=receipt['checkpoint_sha256']:raise ValueError('Source checkpoint changed')
++    envelope=msgpack.unpackb(original,raw=False)
++    if set(envelope)!={'payload','sha256','provenance','control_payload','control_sha256'}:raise ValueError('Envelope fields changed')
++    for field,key,expected in [('payload','sha256','expected_source_payload_sha256'),('control_payload','control_sha256','expected_source_control_sha256')]:
++        if not isinstance(envelope[field],bytes) or hashlib.sha256(envelope[field]).hexdigest()!=envelope[key] or envelope[key]!=c[expected]:raise ValueError('Opaque state/control changed')
++    if json.loads(envelope['provenance'])!=prov:raise ValueError('Semantic provenance changed')
++    envelope['provenance']=json.dumps(prov,sort_keys=True,separators=(',',':'),allow_nan=False)
++    checkpoint=msgpack.packb(envelope,use_bin_type=True);new_receipt={**receipt,'checkpoint_sha256':hashlib.sha256(checkpoint).hexdigest()}
++    new_contract={**contract,'commit':new_receipt}
++    names=['config.json','case.json','provenance.json','fitting-inputs.npz','anchor-inputs.npz','reference.npz',receipt['history']]
++    data={name:safe_path(source,name).read_bytes() for name in names}
++    if hashlib.sha256(data[receipt['history']]).hexdigest()!=receipt['history_sha256']:raise ValueError('Source history changed')
++    data.update({receipt['checkpoint']:checkpoint,'commit.json':json_bytes(new_receipt),'checkpoint-contract.json':json_bytes(new_contract)})
++    for name in data:
++        if 'source_files_sha256' in v and digest(safe_path(source,name))!=v['source_files_sha256'][name]:raise ValueError('Source swapped after guard: '+name)
++    transformation={'status':'completed','role':ROLE,'config_identity':canonical_hash(c),'source_root':str(source),
++        'source_checkpoint_sha256':receipt['checkpoint_sha256'],'copied_checkpoint_sha256':new_receipt['checkpoint_sha256'],
++        'source_history_sha256':receipt['history_sha256'],'payload_sha256':envelope['sha256'],'control_sha256':envelope['control_sha256'],
++        'source_files_sha256':{name:digest(safe_path(source,name)) for name in data},
++        'copied_files_sha256':{name:hashlib.sha256(b).hexdigest() for name,b in data.items()},'allowed_changes':['envelope.provenance','commit.checkpoint_sha256','contract.commit.checkpoint_sha256']}
++    return data,transformation
++
++
++def _audit_copy(v,root,transformation,allow_probe_receipt=False):
++    root=Path(root);child=root/'verification-copy';data,expected=_expected(v)
++    if transformation!=expected:raise ValueError('Transformation receipt changed')
++    if child.is_symlink() or root.is_symlink():raise ValueError('Symlinked copy root')
++    files={str(p.relative_to(child)) for p in child.rglob('*') if p.is_file() or p.is_symlink()}
++    permitted=set(data)|({'checkpoint-verification.json'} if allow_probe_receipt else set())
++    if not set(data)<=files or not files<=permitted:raise ValueError('Staged file set incomplete or substituted')
++    for name,wanted in data.items():
++        path=child/name
++        if path.is_symlink() or any(p.is_symlink() for p in path.parents if p!=child.parent) or safe_path(child,name).read_bytes()!=wanted:raise ValueError('Staged bytes/deltas changed: '+name)
++    return expected
++
++
++def _stage_copy(v,root,check_budget):
++    root=Path(root);child=root/'verification-copy'
++    if child.exists() or child.is_symlink():raise ValueError('Protected copied artifact already exists')
++    check_budget();data,t=_expected(v);child.mkdir(parents=True)
++    for name,b in data.items():
++        if name=='commit.json':continue
++        check_budget();atomic(safe_path(child,name),b)
++    check_budget();atomic(child/'commit.json',data['commit.json'])
++    # Candidate audit first, completed receipt publication second, published audit third.
++    _audit_copy(v,root,t);check_budget();atomic(root/'copy-transformation.json',json_bytes(t))
++    _audit_copy(v,root,read(root/'copy-transformation.json'));return t
++
++
++def stage_recovery_copy(config,root,check_budget):
++    v=verify_recovery_sources(config)
++    if Path(root).resolve()!=Path(config['run_directory']).resolve() or Path(root).exists() or Path(root).is_symlink():raise ValueError('Unreviewed/existing output root')
++    return _stage_copy(v,root,check_budget)
++
++
++def audit_recovery_copy(config,root,*,allow_probe_receipt=False):
++    v=verify_recovery_sources(config)
++    if Path(root).resolve()!=Path(config['run_directory']).resolve():raise ValueError('Unreviewed audit root')
++    return _audit_copy(v,root,read(Path(root)/'copy-transformation.json'),allow_probe_receipt)
++
++
++def original_effort(v):
++    report=v['old_report']
++    return {'actual_counts':copy.deepcopy(report['actual_counts']),'shared_initializations':copy.deepcopy(report.get('shared_initializations',{})),
++            'per_arm':{name:{k:copy.deepcopy(value) for k,value in arm.items() if any(s in k for s in ('frame','update','seconds','work_status','evaluation_pass','oracle_verification'))} for name,arm in report['arms'].items()}}
++
++
++def original_outcome(v):
++    report=v['old_report']
++    return {k:copy.deepcopy(report[k]) for k in ('status','execution_valid','interpretation_valid','full_pilot')}|{'arms':{n:{k:copy.deepcopy(a.get(k)) for k in ('status','fit_gate','anchor_gate')} for n,a in report['arms'].items()}}
++
++
++def code_record():
++    names=['src/force_consistency/width_rate_recovery.py','src/force_consistency/width_rate_recovery_contract.py','src/force_consistency/width_rate_runs.py','src/force_consistency/width_rate_contract.py','uv.lock']
++    return {'files_sha256':{n:digest(n) for n in names if Path(n).exists()},'python':platform.python_version(),'executable':sys.executable,
++            'revision':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
++            'dependencies':{name:importlib.metadata.version(name) for name in ('jax','jaxlib','flax','optax','e3x','numpy','msgpack')}}
++
++
++def valid_child(v,root,result):
++    c=v['config'];receipt=read(Path(root)/'verification-copy/commit.json');case=read(v['source_root']/'case.json');config=read(v['source_root']/'config.json')
++    expected={'status':'passed','update':c['expected_update'],'adam_count':c['expected_update'],'normalization':v['provenance']['normalization'],'state_hashes':receipt['state_hashes'],
++        'checkpoint_sha256':receipt['checkpoint_sha256'],'history_sha256':receipt['history_sha256'],'case':case,'config_identity':canonical_hash(config),
++        'fitting_record_count':c['fitting_frame_count'],'anchor_record_count':c['anchor_frame_count'],'tolerance':c['checkpoint_prediction_atol'],'precision':'float64',
++        'template_initializations':1,'template_initializer_frames':min(config['microbatch_size'],c['anchor_frame_count']),'prediction_frames':c['fitting_frame_count']+c['anchor_frame_count']}
++    value=result.get('maximum_absolute_error')
++    if any(result.get(k)!=val for k,val in expected.items()) or not isinstance(value,(int,float)) or isinstance(value,bool) or not math.isfinite(value) or not 0<=value<=c['checkpoint_prediction_atol']:raise ValueError('Child receipt mismatch')
++    if result!=read(Path(root)/'verification-copy/checkpoint-verification.json'):raise ValueError('Saved child receipt changed')
++    return {'training_updates':0,'optimizer_proposals':0,'warmup_frames':0,'template_initializations':1,'template_initializer_frames':expected['template_initializer_frames'],'prediction_frames':expected['prediction_frames']}
++
++
++def _launch(root,timeout):
++    env={**os.environ,'JAX_PLATFORMS':'cpu'}
++    completed=subprocess.run([sys.executable,'-m','force_consistency.width_rate_runs','--probe',str((Path(root)/'verification-copy').resolve())],env=env,capture_output=True,timeout=timeout,check=True)
++    atomic(Path(root)/'probe-stdout.txt',completed.stdout);atomic(Path(root)/'probe-stderr.txt',completed.stderr)
++    return read(Path(root)/'verification-copy/checkpoint-verification.json')
++
++
++def _recover(config,root,guard,probe_runner,*,clock=time.perf_counter):
++    root=Path(root)
++    if root.exists() or root.is_symlink():raise ValueError('Protected recovery root already exists')
++    start=clock();deadline=start+config['total_wall_seconds'];probe_start=None;v=None
++    def check():
++        if clock()>=deadline:raise TimeoutError('Recovery boundary cap exhausted')
++    out={'role':ROLE,'status':'failed','verification_valid':False,'config_identity':canonical_hash(config),'config':config,'full_pilot':'pending',
++         'probe_attempts':0,'probe_work_status':'not_started','probe_seconds':0.,'new_work':{'training_updates':0,'optimizer_proposals':0,'warmup_frames':0,'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0}}
++    try:
++        check();v=guard();check();root.mkdir(parents=True);out.update(original_effort=original_effort(v),original_outcome=original_outcome(v),code=code_record())
++        atomic(root/'config.json',json_bytes(config));atomic(root/'prospective.json',json_bytes(out))
++        _stage_copy(v,root,check);v=guard();_audit_copy(v,root,read(root/'copy-transformation.json'));check()
++        out.update(probe_attempts=1,probe_work_status='started');atomic(root/'probe-work.json',json_bytes({'status':'started','phase':'launch_intent','attempt':1}));check();probe_start=clock()
++        result=probe_runner(root,deadline-probe_start);out['probe_seconds']=clock()-probe_start;out['child_receipt']=result
++        out['new_work']=valid_child(v,root,result);out['probe_work_status']='completed';atomic(root/'probe-work.json',json_bytes({'status':'completed','attempt':1,'new_work':out['new_work'],'elapsed_seconds':out['probe_seconds']}))
++        check();v=guard();_audit_copy(v,root,read(root/'copy-transformation.json'),True);check();out.update(status='passed',verification_valid=True,elapsed_seconds=clock()-start)
++        atomic(root/'summary.json',json_bytes(out));check()
++        atomic(root/'controller-completion.json',json_bytes({'status':'passed','summary_sha256':digest(root/'summary.json'),'elapsed_seconds':clock()-start}));check()
++    except BaseException as exc:
++        if not isinstance(exc,(Exception,KeyboardInterrupt,SystemExit)):raise
++        if out['probe_work_status']=='started':
++            if probe_start is None:out.update(probe_work_status='not_started',probe_attempts=0)
++            else:
++                out.update(probe_work_status='unknown',probe_seconds=clock()-probe_start)
++                out['new_work'].update(template_initializations=None,template_initializer_frames=None,prediction_frames=None)
++        out.update(status='incomplete' if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else 'failed',verification_valid=False,failure_reason=f'{type(exc).__name__}: {exc}',elapsed_seconds=clock()-start)
++        if isinstance(exc,subprocess.CalledProcessError):out['probe_stderr']=(exc.stderr.decode(errors='replace') if isinstance(exc.stderr,bytes) else str(exc.stderr))[-4000:]
++        if root.exists():
++            try:atomic(root/'controller-failure.json',json_bytes(out))
++            except Exception as persistence:out['failure_record_error']=str(persistence)
++    return out
++
++
++def recover_width_rate(config):
++    validate(config)
++    with Path(config['evidence_log']).open('a') as f:f.write('\n## WIDTHRATE-RECOVERY-PRE-001 — one copied checkpoint verification\n\nZero training; one180s child attempt; original failed matrix preserved. Config '+CONFIG_ID+'; original checkpoint '+config['expected_source_checkpoint_sha256']+'.\n')
++    out=_recover(config,Path(config['run_directory']),lambda:verify_recovery_sources(config),_launch)
++    with Path(config['evidence_log']).open('a') as f:f.write('\n## WIDTHRATE-RECOVERY-RESULT-001 — separate verifier outcome retained\n\n```json\n'+json.dumps(out,indent=2,sort_keys=True,allow_nan=False)+'\n```\n')
++    return out
++
++
++if __name__=='__main__':
++    parser=argparse.ArgumentParser();parser.add_argument('--config',type=Path,required=True);args=parser.parse_args();out=recover_width_rate(read(args.config));print(json.dumps({k:out.get(k) for k in ('status','verification_valid','probe_attempts','elapsed_seconds','failure_reason')},indent=2));raise SystemExit(0 if out['verification_valid'] else 1)
+diff --git a/src/force_consistency/width_rate_recovery_contract.py b/src/force_consistency/width_rate_recovery_contract.py
+new file mode 100644
+index 0000000..7a09481
+--- /dev/null
++++ b/src/force_consistency/width_rate_recovery_contract.py
+@@ -0,0 +1,38 @@
++"""Frozen recovery provenance. No numerical imports or array loading."""
++from pathlib import Path
++from .width_rate_contract import canonical_hash,digest,read,safe_path,resolve_commit,verify_width_rate_sources,expected_updates
++
++CONFIG_ID='55c63996e555fad2c65edb38525dcd27f022188650ee255353b24e20a83c487c'
++PINS_ID='f7fff5b24a9e2eae365a97924d720d996d9c60321c39fc00711d307a03e5a4d4'
++ROLE='copied_checkpoint_verification_only'
++
++
++def validate(config):
++    if canonical_hash(config)!=CONFIG_ID:raise ValueError('Unreviewed recovery configuration')
++
++
++def verify_recovery_sources(config):
++    validate(config);repo=Path.cwd().resolve();manifest=safe_path(repo,config['recovery_pin_manifest'])
++    if digest(manifest)!=PINS_ID:raise ValueError('Recovery pin map changed')
++    pins=read(manifest)['files_sha256']
++    if len(pins)!=163:raise ValueError('Recovery pin count mismatch')
++    for name,want in pins.items():
++        path=safe_path(repo,name)
++        if Path(name).is_symlink() or digest(path)!=want:raise ValueError('Recovery source changed: '+name)
++    original=read(config['original_width_rate_config']);verify_width_rate_sources(original)
++    if canonical_hash(original)!=config['original_width_rate_config_identity']:raise ValueError('Original config changed')
++    source=safe_path(repo,config['failed_run_directory'])/config['source_cell'];receipt,history=resolve_commit(source)
++    if (receipt['checkpoint_sha256']!=config['expected_source_checkpoint_sha256'] or receipt['history_sha256']!=config['expected_source_history_sha256']
++        or receipt['state_hashes']!=config['expected_source_state_hashes'] or receipt['update']!=6000
++        or [r['update'] for r in history]!=expected_updates()):raise ValueError('Original endpoint changed')
++    prov=read(source/'provenance.json');contract=read(source/'checkpoint-contract.json');case=read(source/'case.json')
++    if (contract['commit']!=receipt or contract['state_hashes']!=receipt['state_hashes'] or contract['inputs']!=prov['inputs'] or contract['case']!=case
++        or contract['normalization']!=prov['normalization'] or contract['config_identity']!=canonical_hash(original) or read(source/'config.json')!=original
++        or contract['input_files_sha256']!=prov['input_files_sha256'] or contract['reference_sha256']!=digest(source/'reference.npz')
++        or any(digest(source/f'{r}-inputs.npz')!=prov['input_files_sha256'][r] for r in ('fitting','anchor'))
++        or [len(prov['inputs'][r]['record_ids']) for r in ('fitting','anchor')]!=[128,16]):raise ValueError('Source input/reference contract changed')
++    report=read('reports/width-rate-diagnostics.json')
++    if report['status']!='failed' or report['execution_valid'] or report['interpretation_valid'] or report['full_pilot']!='pending':raise ValueError('Original failure status changed')
++    destination=Path(config['run_directory']);resolved=safe_path(repo,str(destination))
++    if destination.is_symlink() or resolved==source or resolved.is_relative_to(source.parent) or resolved.is_relative_to(repo/'reports/execution'):raise ValueError('Unsafe recovery root')
++    return {'config':config,'source_root':source,'source_receipt':receipt,'source_contract':contract,'provenance':prov,'old_report':report,'source_files_sha256':{str(Path(name).relative_to(source.relative_to(repo))):want for name,want in pins.items() if Path(name).is_relative_to(source.relative_to(repo))}}
+diff --git a/tests/test_width_rate_recovery.py b/tests/test_width_rate_recovery.py
+new file mode 100644
+index 0000000..bef57e9
+--- /dev/null
++++ b/tests/test_width_rate_recovery.py
+@@ -0,0 +1,182 @@
++"""Metadata trust, honest one-attempt accounting, and one tiny engineering restore."""
++import copy
++import json
++from pathlib import Path
++import subprocess
++import sys
++import hashlib
++import msgpack
++import pytest
++
++
++def h(b):return hashlib.sha256(b).hexdigest()
++def write(p,v):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(v,sort_keys=True))
++def source(tmp_path,real=False):
++    base=tmp_path/'source';base.mkdir();config={'max_updates':0,'seed':0,'microbatch_size':3,'model':{'features':4,'iterations':1,'radial_basis':4,'max_degree':1,'cutoff_A':5.,'energy_readout_init':'zero'}}
++    case={'name':'tiny','features':4,'learning_rate':.001,'wall_seconds':120.};statehash={'params':'p','optimizer':'o'}
++    prov={'historical':{200:{'m':2},1000:{'m':3}},'normalization':{},'case':case,'config_identity':h(json.dumps(config,sort_keys=True,separators=(',',':')).encode()),'inputs':{r:{'record_ids':list(range(7))} for r in ('fitting','anchor')}}
++    for role in ('fitting','anchor'):(base/f'{role}-inputs.npz').write_bytes(('opaque-'+role).encode())
++    (base/'reference.npz').write_bytes(b'opaque-reference')
++    raw=msgpack.packb({'payload':b'opaque-state','sha256':h(b'opaque-state'),'control_payload':b'\xc0','control_sha256':h(b'\xc0'),'provenance':json.dumps(prov,sort_keys=True,separators=(',',':'))},use_bin_type=True)
++    if real:
++        from test_coverage import seven_case
++        from force_consistency.coverage_runs import _arrays,_partition_predictions
++        from force_consistency.width_rate_runs import canonical_state_hashes
++        from force_consistency.data.prepare import array_identity
++        from force_consistency.runs import save_checkpoint
++        from dataclasses import asdict
++        import numpy as np
++        part,model,batch,norm,state=seven_case();config['model']=asdict(model.config);statehash=canonical_state_hashes(state)
++        inputs={r:{'record_ids':list(part.record_ids),'memberships':part.memberships,'arrays':{k:array_identity(v) for k,v in _arrays(part).items()}} for r in ('fitting','anchor')}
++        prov.update(normalization=asdict(norm),model=asdict(model.config),inputs=inputs,config_identity=h(json.dumps(config,sort_keys=True,separators=(',',':')).encode()))
++        for role in ('fitting','anchor'):np.savez(base/f'{role}-inputs.npz',**_arrays(part))
++        e,f=_partition_predictions(state['params'],part,model,3);np.savez(base/'reference.npz',fitting_energy=e,anchor_energy=e,fitting_forces=f,anchor_forces=f)
++        temp=base/'original.msgpack';save_checkpoint(temp,state,prov);raw=temp.read_bytes()
++    prov['input_files_sha256']={r:h((base/f'{r}-inputs.npz').read_bytes()) for r in ('fitting','anchor')}
++    # Re-embed integer keys after adding the file identities.
++    env=msgpack.unpackb(raw,raw=False);env['provenance']=json.dumps(prov,sort_keys=True,separators=(',',':'));raw=msgpack.packb(env,use_bin_type=True)
++    write(base/'config.json',config);write(base/'case.json',case);write(base/'provenance.json',prov);(base/'snapshots').mkdir();(base/'snapshots/0.msgpack').write_bytes(raw);write(base/'histories/0.json',[{'update':0}])
++    receipt={'update':0,'checkpoint':'snapshots/0.msgpack','history':'histories/0.json','checkpoint_sha256':h(raw),'history_sha256':h((base/'histories/0.json').read_bytes()),'state_hashes':statehash};write(base/'commit.json',receipt)
++    contract={'case':case,'config_identity':prov['config_identity'],'update':0,'normalization':prov['normalization'],'state_hashes':statehash,'commit':receipt,'inputs':prov['inputs'],'input_files_sha256':prov['input_files_sha256'],'reference_sha256':h((base/'reference.npz').read_bytes())};write(base/'checkpoint-contract.json',contract)
++    c={'expected_update':0,'fitting_frame_count':7,'anchor_frame_count':7,'expected_source_payload_sha256':env['sha256'],'expected_source_control_sha256':env['control_sha256'],'total_wall_seconds':120.,'checkpoint_prediction_atol':1e-10,'recovery_role':'copied_checkpoint_verification_only','new_training_updates':0}
++    report={'status':'failed','execution_valid':False,'interpretation_valid':False,'full_pilot':'pending','actual_counts':{'work_counts_complete':False,'known_parent_reference_prediction_frames':14,'unknown_probe_cells':['tiny']},'arms':{'tiny':{'status':'failed','fit_gate':{'accepted':False},'anchor_gate':{'accepted':False},'evaluation_frame_count':14,'oracle_metrics_prediction_frames':14,'oracle_verification':{'prediction_reference_frames':14},'derived_probe_seconds':None}},'shared_initializations':{}}
++    return {'config':c,'source_root':base,'source_receipt':receipt,'source_contract':contract,'provenance':json.loads((base/'provenance.json').read_text()),'old_report':report}
++
++
++def module():from force_consistency import width_rate_recovery as m;return m
++
++def passed(root,v):
++    receipt=json.loads((root/'verification-copy/commit.json').read_text());cfg=json.loads((v['source_root']/'config.json').read_text());case=json.loads((v['source_root']/'case.json').read_text())
++    r={'status':'passed','update':0,'adam_count':0,'normalization':v['provenance']['normalization'],'state_hashes':receipt['state_hashes'],'checkpoint_sha256':receipt['checkpoint_sha256'],'history_sha256':receipt['history_sha256'],'case':case,'config_identity':v['source_contract']['config_identity'],'fitting_record_count':7,'anchor_record_count':7,'maximum_absolute_error':0.,'tolerance':1e-10,'precision':'float64','template_initializations':1,'template_initializer_frames':3,'prediction_frames':14}
++    write(root/'verification-copy/checkpoint-verification.json',r);return r
++
++
++def test_source_provenance_only_transformation_and_old_reader(tmp_path):
++    v=source(tmp_path);m=module();root=tmp_path/'copy';before={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
++    transformation=m._stage_copy(v,root,lambda:None);m._audit_copy(v,root,transformation)
++    original=msgpack.unpackb((v['source_root']/'snapshots/0.msgpack').read_bytes(),raw=False);copied=msgpack.unpackb((root/'verification-copy/snapshots/0.msgpack').read_bytes(),raw=False)
++    assert original['payload']==copied['payload'] and original['control_payload']==copied['control_payload']
++    assert copied['provenance']==json.dumps(v['provenance'],sort_keys=True,separators=(',',':')) and original['provenance']!=copied['provenance']
++    assert before=={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
++    from force_consistency.runs import _read_checkpoint
++    with pytest.raises(ValueError,match='provenance'):_read_checkpoint(v['source_root']/'snapshots/0.msgpack',v['provenance'])
++    _read_checkpoint(root/'verification-copy/snapshots/0.msgpack',v['provenance'])
++
++@pytest.mark.parametrize('field',['payload','control_payload','provenance'])
++def test_corrupt_or_semantically_changed_envelope_rejected(tmp_path,field):
++    v=source(tmp_path);raw=v['source_root']/'snapshots/0.msgpack';e=msgpack.unpackb(raw.read_bytes(),raw=False);e[field]='{}' if field=='provenance' else b'corrupt';raw.write_bytes(msgpack.packb(e,use_bin_type=True));v['source_receipt']['checkpoint_sha256']=h(raw.read_bytes())
++    with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
++
++@pytest.mark.parametrize('path',['config.json','provenance.json','fitting-inputs.npz','reference.npz','histories/0.json','snapshots/0.msgpack','commit.json','checkpoint-contract.json'])
++def test_coherent_staged_rehash_cannot_bypass_original_audit(tmp_path,path):
++    v=source(tmp_path);m=module();root=tmp_path/'copy';t=m._stage_copy(v,root,lambda:None);target=root/'verification-copy'/path;target.write_bytes(target.read_bytes()+b' ')
++    t['copied_files_sha256'][path]=h(target.read_bytes());write(root/'copy-transformation.json',t)
++    with pytest.raises(ValueError):m._audit_copy(v,root,t)
++
++@pytest.mark.parametrize('boundary',['snapshots','histories','commit.json','copy-transformation.json'])
++def test_interrupted_copy_does_not_publish_complete_receipt(tmp_path,monkeypatch,boundary):
++    v=source(tmp_path);m=module();real=m.atomic;root=tmp_path/'copy'
++    def fail(path,data):
++        if boundary in str(path):raise OSError('injected stage interruption')
++        return real(path,data)
++    monkeypatch.setattr(m,'atomic',fail)
++    with pytest.raises(OSError):m._stage_copy(v,root,lambda:None)
++    assert not (root/'copy-transformation.json').exists()
++
++
++def test_existing_copy_and_unsafe_symlink_rejected(tmp_path):
++    v=source(tmp_path);m=module();root=tmp_path/'copy';m._stage_copy(v,root,lambda:None)
++    with pytest.raises(ValueError):m._stage_copy(v,root,lambda:None)
++    (root/'verification-copy/reference.npz').unlink();(root/'verification-copy/reference.npz').symlink_to(v['source_root']/'reference.npz')
++    with pytest.raises(ValueError):m._audit_copy(v,root,json.loads((root/'copy-transformation.json').read_text()))
++
++
++def test_public_contract_and_all_pins_without_numerics():
++    from force_consistency.width_rate_recovery_contract import verify_recovery_sources
++    c=json.loads(Path('configs/aspirin-width-rate-recovery.json').read_text());v=verify_recovery_sources(c)
++    assert v['source_receipt']['update']==6000
++    for field in ('total_wall_seconds','expected_update','expected_source_checkpoint_sha256','recovery_role'):
++        bad=copy.deepcopy(c);bad[field]=0
++        with pytest.raises(ValueError):verify_recovery_sources(bad)
++
++
++def test_controller_one_child_and_separate_effort(tmp_path):
++    v=source(tmp_path);m=module();calls=[];root=tmp_path/'run'
++    def probe(root,timeout):calls.append(timeout);return passed(root,v)
++    out=m._recover(v['config'],root,lambda:v,probe)
++    assert out['verification_valid'] and out['status']=='passed' and len(calls)==1
++    assert out['new_work']=={'training_updates':0,'optimizer_proposals':0,'warmup_frames':0,'template_initializations':1,'template_initializer_frames':3,'prediction_frames':14}
++    assert not out['original_effort']['actual_counts']['work_counts_complete'] and not out['original_outcome']['execution_valid']
++    with pytest.raises(ValueError):m._recover(v['config'],root,lambda:v,probe)
++
++@pytest.mark.parametrize('kind',['failure','timeout','cap','sourcechange','output'])
++def test_controller_failure_work_accounting_and_no_retry(tmp_path,monkeypatch,kind):
++    v=source(tmp_path);m=module();calls=[];guards=[0];now=[0.];root=tmp_path/'run'
++    def guard():
++        guards[0]+=1
++        if kind=='cap':now[0]+=121.
++        if kind=='sourcechange' and guards[0]>2:raise ValueError('source changed')
++        return v
++    def probe(root,timeout):
++        calls.append(timeout);now[0]+=5.
++        if kind=='failure':raise subprocess.CalledProcessError(1,'probe',stderr=b'failure')
++        if kind=='timeout':raise subprocess.TimeoutExpired('probe',timeout)
++        return passed(root,v)
++    if kind=='output':
++        real=m.atomic
++        def fail(path,data):
++            if Path(path).name=='summary.json':raise OSError('final write')
++            return real(path,data)
++        monkeypatch.setattr(m,'atomic',fail)
++    out=m._recover(v['config'],root,guard,probe,clock=lambda:now[0])
++    assert not out['verification_valid'] and len(calls)<=1
++    if kind in ('failure','timeout'):assert out['probe_work_status']=='unknown' and out['probe_seconds']==5. and out['new_work']['prediction_frames'] is None
++    if kind in ('sourcechange','output'):assert out['new_work']['prediction_frames']==14
++
++
++def test_tiny_real_copied_state_in_fresh_process(tmp_path):
++    v=source(tmp_path,real=True);m=module();root=tmp_path/'run'
++    def probe(root,timeout):
++        child=root/'verification-copy';subprocess.run([sys.executable,'-c','from force_consistency.width_rate_runs import _probe_saved; _probe_saved('+repr(str(child))+')'],check=True,capture_output=True,timeout=timeout)
++        return json.loads((child/'checkpoint-verification.json').read_text())
++    out=m._recover(v['config'],root,lambda:v,probe)
++    assert out['verification_valid'],out.get('failure_reason')
++
++
++def test_corrupted_copy_never_reaches_child(tmp_path,monkeypatch):
++    v=source(tmp_path);m=module();real=m._stage_copy;calls=[]
++    def stage(*args):
++        t=real(*args);p=Path(args[1])/'verification-copy/reference.npz';p.write_bytes(b'coherently changed');t['copied_files_sha256']['reference.npz']=h(p.read_bytes());write(Path(args[1])/'copy-transformation.json',t);return t
++    monkeypatch.setattr(m,'_stage_copy',stage)
++    out=m._recover(v['config'],tmp_path/'run',lambda:v,lambda *a:calls.append(a))
++    assert not out['verification_valid'] and out['probe_attempts']==0 and calls==[]
++
++
++def test_started_intent_budget_exhaustion_is_known_not_launched(tmp_path,monkeypatch):
++    v=source(tmp_path);m=module();real=m.atomic;now=[0.];calls=[]
++    def write_and_exhaust(path,data):
++        real(path,data)
++        if Path(path).name=='probe-work.json':now[0]=121.
++    monkeypatch.setattr(m,'atomic',write_and_exhaust)
++    out=m._recover(v['config'],tmp_path/'run',lambda:v,lambda *a:calls.append(a),clock=lambda:now[0])
++    assert calls==[] and out['probe_attempts']==0 and out['probe_work_status']=='not_started'
++    assert out['new_work']['prediction_frames']==0
++
++
++def test_metadata_guards_and_envelope_inspection_import_no_numerics():
++    code='''import importlib.abc,sys,json
++class Deny(importlib.abc.MetaPathFinder):
++ def find_spec(self,name,path=None,target=None):
++  if name.split('.')[0] in ('jax','flax','optax','e3x','numpy'):raise AssertionError('Numerical import: '+name)
++sys.meta_path.insert(0,Deny())
++from force_consistency.width_rate_recovery import _expected
++from force_consistency.width_rate_recovery_contract import verify_recovery_sources
++v=verify_recovery_sources(json.load(open('configs/aspirin-width-rate-recovery.json')));_expected(v)
++'''
++    subprocess.run([sys.executable,'-c',code],check=True,capture_output=True)
++
++
++def test_source_reference_swap_after_guard_is_rejected(tmp_path):
++    v=source(tmp_path);v['source_files_sha256']={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
++    (v['source_root']/'reference.npz').write_bytes(b'swapped after verified guard')
++    with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+diff --git a/tests/test_width_rate_recovery_report.py b/tests/test_width_rate_recovery_report.py
+new file mode 100644
+index 0000000..33ed5bc
+--- /dev/null
++++ b/tests/test_width_rate_recovery_report.py
+@@ -0,0 +1,68 @@
++"""Synthetic saved-record recovery reports, never scientific trials."""
++import copy
++import importlib.util
++from pathlib import Path
++import json
++import subprocess
++import sys
++import pytest
++from test_width_rate_recovery import source,module,passed,write
++
++
++def reporter():
++    spec=importlib.util.spec_from_file_location('recovery_report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
++
++
++def saved(tmp_path):
++    v=source(tmp_path);root=tmp_path/'run';module()._recover(v['config'],root,lambda:v,lambda root,timeout:passed(root,v));return v,root
++
++
++def test_distinct_valid_copy_never_promotes_failed_original(tmp_path):
++    v,root=saved(tmp_path);result=reporter()._generate(v,root,tmp_path/'out')
++    assert result['verification_valid'] and result['role']=='copied_checkpoint_verification_only'
++    assert not result['original_outcome']['execution_valid'] and not result['original_effort']['actual_counts']['work_counts_complete']
++    assert result['new_work']['training_updates']==0 and result['full_pilot']=='pending' and not result['contrasts_available']
++
++@pytest.mark.parametrize('damage',['promote','count','time','code','oldwork','oldtime','receipt','copy','completion'])
++def test_coherently_edited_report_receipts_or_claims_rejected(tmp_path,damage):
++    v,root=saved(tmp_path);summary=json.loads((root/'summary.json').read_text())
++    if damage=='promote':summary['original_outcome']['execution_valid']=True
++    elif damage=='count':summary['new_work']['prediction_frames']=999
++    elif damage=='time':summary['elapsed_seconds']=999
++    elif damage=='code':summary['code']['files_sha256']['uv.lock']='0'*64
++    elif damage=='oldwork':summary['original_effort']['actual_counts']['work_counts_complete']=True
++    elif damage=='oldtime':summary['original_effort']['per_arm']['tiny']['derived_probe_seconds']=3.
++    elif damage=='receipt':
++        p=root/'verification-copy/checkpoint-verification.json';r=json.loads(p.read_text());r['adam_count']=10;write(p,r)
++    elif damage=='copy':(root/'verification-copy/reference.npz').write_bytes(b'changed')
++    else:(root/'controller-completion.json').unlink()
++    write(root/'summary.json',summary)
++    # Also rehash completion for summary mutations: source-derived semantics must win.
++    marker=root/'controller-completion.json'
++    if marker.exists():
++        import hashlib
++        b=json.loads(marker.read_text());b['summary_sha256']=hashlib.sha256((root/'summary.json').read_bytes()).hexdigest();write(marker,b)
++    out=reporter()._generate(v,root,tmp_path/'out');assert not out['verification_valid'] and not out['contrasts_available']
++
++
++def test_failed_probe_work_and_old_incompleteness_are_preserved(tmp_path):
++    v=source(tmp_path);root=tmp_path/'run'
++    def fail(*args):raise subprocess.CalledProcessError(1,'probe',stderr=b'failure')
++    module()._recover(v['config'],root,lambda:v,fail)
++    result=reporter()._generate(v,root,tmp_path/'out')
++    assert not result['verification_valid'] and result['probe_work_status']=='unknown' and result['new_work']['prediction_frames'] is None
++    assert not result['original_effort']['actual_counts']['work_counts_complete']
++
++
++def test_saved_only_report_import_denies_numerics(tmp_path):
++    v,root=saved(tmp_path);v['source_root']=str(v['source_root']);write(tmp_path/'source-object.json',v)
++    code='''import importlib.abc,sys,importlib.util,json
++from pathlib import Path
++class Deny(importlib.abc.MetaPathFinder):
++ def find_spec(self,name,path=None,target=None):
++  if name.split('.')[0] in ('jax','flax','optax','e3x','numpy'):raise AssertionError(name)
++sys.meta_path.insert(0,Deny())
++s=importlib.util.spec_from_file_location('report','scripts/report_width_rate_recovery.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
++v=json.load(open(sys.argv[1]));v['source_root']=Path(v['source_root']);m._generate(v,Path(sys.argv[2]),Path(sys.argv[3]))
++'''
++    subprocess.run([sys.executable,'-c',code,str(tmp_path/'source-object.json'),str(root),str(tmp_path/'out')],capture_output=True,check=True)
