@@ -1,0 +1,8 @@
+{
+  "E1": "accepted: exact runtime contract validation at every entry point",
+  "E2": "accepted: separate original ancestry from new JSON-normalized executable identity",
+  "E3": "accepted: durable block/phase accounting, orphan preservation and independently reconstructed reports",
+  "S1": "accepted: bundled schedule limitation",
+  "S2": "accepted: oriented contrast and zero denominator reason",
+  "S3": "accepted: saved-only analysis cannot change reviewed numerical controls"
+}

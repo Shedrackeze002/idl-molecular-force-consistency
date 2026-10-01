@@ -1,0 +1,176 @@
+FFFFFFFFF                                                                [100%]
+=================================== FAILURES ===================================
+_______ test_partial_report_preserves_known_computed_and_persisted_work ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-59/test_partial_report_preserves_0')
+
+    def test_partial_report_preserves_known_computed_and_persisted_work(tmp_path):
+        c=config();root=tmp_path/'matrix';root.mkdir();lr.atomic_json(root/'config.json',c)
+        lr.atomic_json(root/'code.json',{'code_files':{}})
+        for arm in c['arms']:
+            p=root/arm;p.mkdir();lr.atomic_json(p/'summary.json',{'status':'failed','execution_valid':False,
+                'additional_updates':2,'additional_frame_exposures':256,'persisted_additional_updates':1,
+                'attempted_additional_updates':3,'pending_update_unknown':True})
+        lr.atomic_json(root/'raw-artifacts.json',{str(p.relative_to(root)):lr.digest(p) for p in root.rglob('*') if p.is_file()})
+        r=lr.build_report(root)
+        assert not r['execution_valid'] and not r['contrasts_available']
+>       assert r['additional_updates']==4 and r['additional_frame_exposures']==512
+E       assert (0 == 4)
+
+tests/test_late_rate.py:214: AssertionError
+___________ test_saved_constant_arm_cannot_be_used_as_decay_control ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-59/test_saved_constant_arm_cannot0')
+
+    def test_saved_constant_arm_cannot_be_used_as_decay_control(tmp_path):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        assert lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)['execution_valid']
+>       with pytest.raises(ValueError):lr._validated_arm(root,c,expected_arm='late_decay',check_parent=False)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: _validated_arm() got an unexpected keyword argument 'expected_arm'
+
+tests/test_late_rate.py:221: TypeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.027660292005748488}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 1.0304880000039702}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 1.0361890839994885}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 1.0415050000010524}
+___ test_saved_parent_binding_rejects_consistent_wrong_ancestry[checkpoint] ____
+
+damage = 'checkpoint'
+
+    @pytest.mark.parametrize('damage',['checkpoint','baseline','inputs','start'])
+    def test_saved_parent_binding_rejects_consistent_wrong_ancestry(damage):
+        c=config();root=Path(c['parent_directory']);pp=lr.read(root/'provenance.json');receipt=lr.read(root/'commit.json')
+        p={**{k:pp[k] for k in ('model','normalization','inputs','original_baselines')},
+           'source_pins':lr.read(c['source_pins']),'initial_state_hashes':receipt['state_hashes'],
+           'parent_checkpoint_sha256':receipt['checkpoint_sha256'],'parent_provenance_sha256':lr.digest(root/'provenance.json')}
+>       lr._verify_parent_binding(c,p)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_verify_parent_binding'
+
+tests/test_late_rate.py:230: AttributeError
+____ test_saved_parent_binding_rejects_consistent_wrong_ancestry[baseline] _____
+
+damage = 'baseline'
+
+    @pytest.mark.parametrize('damage',['checkpoint','baseline','inputs','start'])
+    def test_saved_parent_binding_rejects_consistent_wrong_ancestry(damage):
+        c=config();root=Path(c['parent_directory']);pp=lr.read(root/'provenance.json');receipt=lr.read(root/'commit.json')
+        p={**{k:pp[k] for k in ('model','normalization','inputs','original_baselines')},
+           'source_pins':lr.read(c['source_pins']),'initial_state_hashes':receipt['state_hashes'],
+           'parent_checkpoint_sha256':receipt['checkpoint_sha256'],'parent_provenance_sha256':lr.digest(root/'provenance.json')}
+>       lr._verify_parent_binding(c,p)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_verify_parent_binding'
+
+tests/test_late_rate.py:230: AttributeError
+_____ test_saved_parent_binding_rejects_consistent_wrong_ancestry[inputs] ______
+
+damage = 'inputs'
+
+    @pytest.mark.parametrize('damage',['checkpoint','baseline','inputs','start'])
+    def test_saved_parent_binding_rejects_consistent_wrong_ancestry(damage):
+        c=config();root=Path(c['parent_directory']);pp=lr.read(root/'provenance.json');receipt=lr.read(root/'commit.json')
+        p={**{k:pp[k] for k in ('model','normalization','inputs','original_baselines')},
+           'source_pins':lr.read(c['source_pins']),'initial_state_hashes':receipt['state_hashes'],
+           'parent_checkpoint_sha256':receipt['checkpoint_sha256'],'parent_provenance_sha256':lr.digest(root/'provenance.json')}
+>       lr._verify_parent_binding(c,p)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_verify_parent_binding'
+
+tests/test_late_rate.py:230: AttributeError
+______ test_saved_parent_binding_rejects_consistent_wrong_ancestry[start] ______
+
+damage = 'start'
+
+    @pytest.mark.parametrize('damage',['checkpoint','baseline','inputs','start'])
+    def test_saved_parent_binding_rejects_consistent_wrong_ancestry(damage):
+        c=config();root=Path(c['parent_directory']);pp=lr.read(root/'provenance.json');receipt=lr.read(root/'commit.json')
+        p={**{k:pp[k] for k in ('model','normalization','inputs','original_baselines')},
+           'source_pins':lr.read(c['source_pins']),'initial_state_hashes':receipt['state_hashes'],
+           'parent_checkpoint_sha256':receipt['checkpoint_sha256'],'parent_provenance_sha256':lr.digest(root/'provenance.json')}
+>       lr._verify_parent_binding(c,p)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_verify_parent_binding'
+
+tests/test_late_rate.py:230: AttributeError
+_______ test_reporting_overrun_invalidates_persisted_scientific_contrast _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-59/test_reporting_overrun_invalid0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114f1a180>
+
+    def test_reporting_overrun_invalidates_persisted_scientific_contrast(tmp_path,monkeypatch):
+        c=config()
+        monkeypatch.chdir(tmp_path);Path('reports').mkdir();root=tmp_path/'run';root.mkdir()
+        r={'execution_valid':True,'contrasts_available':True,'endpoint_contrasts':{'fake':'contrast'},'verification_errors':[]}
+        lr.atomic_json('reports/late-rate-diagnostics.json',r);Path('reports/late-rate-diagnostics.md').write_text('provisional')
+        monkeypatch.setattr(lr.time,'perf_counter',lambda:6001.)
+>       closed=lr._finalize(c,root,0.,r)
+               ^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_finalize'
+
+/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/tests/test_late_rate.py:244: AttributeError
+_ test_child_rejects_nonfinite_reference_or_wrong_contract_arm[nan_reference] __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-59/test_child_rejects_nonfinite_r0')
+damage = 'nan_reference'
+
+    @pytest.mark.parametrize('damage',['nan_reference','contract_arm'])
+    def test_child_rejects_nonfinite_reference_or_wrong_contract_arm(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        assert lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)['execution_valid']
+        contract=lr.read(root/'checkpoint-contract.json')
+        if damage=='nan_reference':
+            with np.load(root/'reference.npz') as ref:values={k:np.array(ref[k]) for k in ref.files}
+            values['fitting_forces'][0,0,0]=np.nan;np.savez(root/'reference.npz',**values)
+            contract['reference_sha256']=lr.digest(root/'reference.npz')
+        else:contract['arm']='late_decay'
+        lr.atomic_json(root/'checkpoint-contract.json',contract)
+>       with pytest.raises((ValueError,FloatingPointError)):lr._probe_saved(root)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, FloatingPointError)
+
+tests/test_late_rate.py:261: Failed
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.01640858399332501}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.3385285419935826}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.34411337500205263}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3493925419898005}
+__ test_child_rejects_nonfinite_reference_or_wrong_contract_arm[contract_arm] __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-59/test_child_rejects_nonfinite_r1')
+damage = 'contract_arm'
+
+    @pytest.mark.parametrize('damage',['nan_reference','contract_arm'])
+    def test_child_rejects_nonfinite_reference_or_wrong_contract_arm(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        assert lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)['execution_valid']
+        contract=lr.read(root/'checkpoint-contract.json')
+        if damage=='nan_reference':
+            with np.load(root/'reference.npz') as ref:values={k:np.array(ref[k]) for k in ref.files}
+            values['fitting_forces'][0,0,0]=np.nan;np.savez(root/'reference.npz',**values)
+            contract['reference_sha256']=lr.digest(root/'reference.npz')
+        else:contract['arm']='late_decay'
+        lr.atomic_json(root/'checkpoint-contract.json',contract)
+>       with pytest.raises((ValueError,FloatingPointError)):lr._probe_saved(root)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, FloatingPointError)
+
+tests/test_late_rate.py:261: Failed
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006411875001504086}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.32752491600695066}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.3332964580040425}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3388127079961123}
+=========================== short test summary info ============================
+FAILED tests/test_late_rate.py::test_partial_report_preserves_known_computed_and_persisted_work
+FAILED tests/test_late_rate.py::test_saved_constant_arm_cannot_be_used_as_decay_control
+FAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[checkpoint]
+FAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[baseline]
+FAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[inputs]
+FAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[start]
+FAILED tests/test_late_rate.py::test_reporting_overrun_invalidates_persisted_scientific_contrast
+FAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[nan_reference]
+FAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[contract_arm]
+9 failed, 33 deselected in 18.64s

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "full_suite": "521 passed405.21s",
+  "focused_repairs": "45passed66.44s",
+  "label_only_post_suite_check": "16passed",
+  "two_amended_plan_reviews": "passed",
+  "final_implementation_review": "cleared",
+  "artifacts_sha256": {
+    "reports/execution/late-rate-2026-10-01/full-final.txt": "2e231045d6f89484e20e3007e6cc254e05a41b38fbdf44e97cdc4c384ccb0572",
+    "reports/execution/late-rate-2026-10-01/label-final-verification.txt": "63efdb113d2818ca5ad6eaec649b5422b31014bb0dd104d220427f8d89871a96",
+    "reports/execution/late-rate-2026-10-01/label-only-correction.json": "6623f5c808f9b15809476e0e26aecccc68ad3137a8eef30135fe5597209dfa06",
+    "docs/reviews/2026-10-01-late-rate-final-followup.md": "cb14d9e2bd6e102aff3db36a138decdd09371e634af2e420ad78eee5e195a1c0",
+    "src/force_consistency/late_rate.py": "bdcb516013a018a95171c1e81626e4983633bc8a88d397b6c5a335773f7741a3"
+  },
+  "production_invocations": 0
+}

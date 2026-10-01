@@ -489046,3 +489046,185 @@ The initial report was conservative: all four cell records verified, but global 
   "status": "passed"
 }
 ```
+
+## LATE-RATE-PLAN-001 — bounded next lever proposed; not executed
+
+User authorized starting the next lever. Question: fixed late learning-rate reduction vs constant continuation from identical verified width32/.001 update6000 Adam state. Proposed4000 extra updates/arm, unchanged128 fitted/16 fully fitted anchors, original update0 joint.1 acceptance and balanced weights, seed0CPUfloat64. Saved-only error analysis precedes numerical work. Two independent reviews pending; no implementation or training performed. Design/plan/config and parent input pins saved. Existing user PDF changes untouched. Restricted Obsidian read again failed app detection; same installed CLI through permitted host path succeeded. Initial attempted generic skill path did not exist; actual catalog paths read without installation. Existing feature branch retained for authorized continuation.
+
+```json
+{
+  "status": "planned_unexecuted",
+  "artifacts_sha256": {
+    "docs/superpowers/specs/2026-10-01-late-rate-design.md": "87f911ab5e7f7612a2935bf2f62b4405cde9b1a47df18706779bca7a84b7cec2",
+    "docs/superpowers/plans/2026-10-01-late-rate.md": "a60d3463b26342c5ec07a9338bfa146384441b87f89813844cc35347bfe7711b",
+    "configs/aspirin-late-rate.json": "690173c68507499204ac67fcb005428014ce69915b58621563d01c9d483008dc",
+    "reports/execution/late-rate-2026-10-01/source-pins.json": "55fb10bef1abc25783d8b6376dbfcb4896da71db1f6216210a01249224b42e30"
+  }
+}
+```
+
+## LATE-RATE-PLAN-AMEND-001 — independent review amendments; unexecuted
+
+Scientific review passed with three clarifications; engineering review found three Important specification gaps. Author accepted all six against actual saved checkpoint APIs and amended the design/plan without changing rates, support, budgets or learning criteria. Follow-up review pending. No code/model/training execution.
+
+```json
+{
+  "rulings": {
+    "E1": "accepted: exact runtime contract validation at every entry point",
+    "E2": "accepted: separate original ancestry from new JSON-normalized executable identity",
+    "E3": "accepted: durable block/phase accounting, orphan preservation and independently reconstructed reports",
+    "S1": "accepted: bundled schedule limitation",
+    "S2": "accepted: oriented contrast and zero denominator reason",
+    "S3": "accepted: saved-only analysis cannot change reviewed numerical controls"
+  },
+  "artifacts_sha256": {
+    "docs/reviews/2026-10-01-late-rate-author-rulings.json": "9b4d1a9b0c1f258fdbf658d104d67361853576f86168c06565f741f137849a52",
+    "docs/superpowers/specs/2026-10-01-late-rate-design.md": "b29226945ee5aed91b69166b2a8e3b699aefcacec11d5c6a03ffb8fccb9068ad",
+    "docs/superpowers/plans/2026-10-01-late-rate.md": "1deffd24d55b0f6a5817ee292db639cffb5182adc6e9e188bb280dd94b540c1e",
+    "docs/reviews/2026-10-01-late-rate-scientific-plan.md": "51413a299cb3508dce79d74ccbc4c22c01489f1de39019513d1b444eca2c18b8",
+    "docs/reviews/2026-10-01-late-rate-engineering-plan.md": "b4141ae3d6d40d2c07e70ebd92c50bb7fd5c87fc3d61e5159f9f9710c9f5a2b8"
+  }
+}
+```
+
+## LATE-RATE-REVIEW-001 — two independent amended plan reviews cleared
+
+Both follow-up reviewers clear implementation, with no remaining material issue and no numerical protocol drift. This permits implementation/verification, not a claim of successful training. Native implementation will retain original ancestry and all failed trials.
+
+```json
+{
+  "docs/reviews/2026-10-01-late-rate-engineering-plan-followup.md": "9cfe9c234db0bc3928f6d32be3b4821c6c8a8689b148553cfce46bcd13c6d94a",
+  "docs/reviews/2026-10-01-late-rate-scientific-plan-followup.md": "565659239e1609210576609eceaed33e8e27ea6f2ecd134081960e169b2391b0"
+}
+```
+
+## LATE-RATE-SAVED-OBSERVATIONS-001 — saved-only residual/spike analysis
+
+Extracted existing reference predictions and labels: zero new training updates and zero model prediction frames. Original fitting MSE reconstructs from eight disjoint groups and energy residual squared mean plus centered variance. All raw per-record/per-group data and update1900/2000/2100 saved. This descriptive analysis does not alter the frozen rates or establish a spike mechanism.
+
+```json
+{
+  "artifact": "reports/execution/late-rate-2026-10-01/saved-residual-analysis.json",
+  "sha256": "ac1b069db2f9e32d9bb7e2cc35cfaea3bee29d77b364585aaba77ab1faeb9cbc",
+  "endpoint": {
+    "energy_mse_eV2": 0.007645024080897856,
+    "signed_mean_energy_error_eV": 0.00010676910405428564,
+    "mean_energy_error_squared_eV2": 1.1399641580554872e-08,
+    "centered_energy_error_variance_eV2": 0.007645012681256275,
+    "force_mse_eV2_per_A2": 0.005490094610835327
+  },
+  "group_reconstruction_error": 0.0,
+  "sampled_peak_update": 2000
+}
+```
+
+## LATE-RATE-ENGINEERING-001 — test-first implementation trials
+
+Task1 missing-module RED,19passing GREEN; Task2 six missing-API failures then25passing; Task3 seven missing-report-API failures then33passing. These deliberate failed engineering checks remain preserved; they are not failed scientific training runs. Actual tiny numerical fixtures test nonzero moments,8001rate boundary, independent NumPy arithmetic, real fresh subprocess, interruptions, orphan publication and corrupted reports. Actual parent6000 checkpoint restored and144prediction frames reproduced exactly in focused test, with no training continuation. Full regression and fresh final source review pending.
+
+```json
+{
+  "task1-red.txt": {
+    "sha256": "9428eddbb018fbee2143e423f869cedcd7d63ec9fa34867481baee6670742692",
+    "tail": "port late_rate as lr\nE   ImportError: cannot import name 'late_rate' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)\n=========================== short test summary info ============================\nERROR tests/test_late_rate.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.05s\n"
+  },
+  "task2-red.txt": {
+    "sha256": "3f04dfdfbf1b63515d8a8027e6da727f4b1ca9223f79ed50ad5798a3dcdf35d2",
+    "tail": "ate_boundary_and_real_child[7999]\nFAILED tests/test_late_rate.py::test_interrupted_unscored_work_keeps_persisted_receipt\nFAILED tests/test_late_rate.py::test_orphan_checkpoint_does_not_advance_persisted_count\nFAILED tests/test_late_rate.py::test_probe_rejects_prediction_preserving_wrong_count\nFAILED tests/test_late_rate.py::test_parent_ancestry_and_predictions_restore\n6 failed, 19 passed in 5.67s\n"
+  },
+  "task2-green-attempt.txt": {
+    "sha256": "b5552cf3915b1e2a4e4c583a528c38817b4db8c125cd24d7f233656fb1b27d61",
+    "tail": ".........................                                                [100%]\n25 passed in 22.90s\n"
+  },
+  "task3-green-attempt.txt": {
+    "sha256": "5e0ad804ff31aba865889a07d522b089b13292b5da3d2b39fa5aae85db71305e",
+    "tail": ".................................                                        [100%]\n33 passed in 48.69s\n"
+  },
+  "task3-red.txt": {
+    "sha256": "977c5a26c86572c86edd0109e26e4c85cb14fa53107e83020299f65517b41528",
+    "tail": "ts/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[child]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[input]\nFAILED tests/test_late_rate.py::test_endpoint_contrast_orientation_and_zero_denominator\nFAILED tests/test_late_rate.py::test_saved_report_recognizes_valid_execution_with_failed_learning\n7 failed, 26 passed in 48.30s\n"
+  },
+  "task1-green.txt": {
+    "sha256": "ca297b4167ea52f7a0e7e3fb4defd206e74168ef515dfd8fecdf753aeb5acf97",
+    "tail": "...................                                                      [100%]\n19 passed in 0.04s\n"
+  }
+}
+```
+
+## LATE-RATE-REVIEW-REPAIR-001 — fresh review defects reproduced and repaired before production
+
+Initial full suite passed509tests375.90s, but independent reviewer found four Important reporting/accounting/lineage gaps. Author verified roots: fallback counters defaulted to zero; final time check preceded reports/evidence; local arm name was self-validating; local ancestry was not linked to frozen source. Accepted focused repairs and saved RED9 failures, GREEN42 tests, then an additional scoring-accounting RED1 failure now repaired. Both Minor fingerprint/finite-reference checks addressed; revision is recorded ancestry while executable hashes remain authority after documentation commits. No numerical protocol change and no production training. Original review/reproduction and all logs retained. Final focused/full checks and bounded follow-up pending.
+
+```json
+{
+  "review-repair-red.txt": {
+    "sha256": "108d32e5455700f48bc5adb4bed6b3585f1d0c5b93ae810fadbaca3d901ae8dc",
+    "tail": "_saved_parent_binding_rejects_consistent_wrong_ancestry[checkpoint]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[baseline]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[inputs]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[start]\nFAILED tests/test_late_rate.py::test_reporting_overrun_invalidates_persisted_scientific_contrast\n7 failed, 33 deselected in 10.35s\n"
+  },
+  "review-repair-green-attempt.txt": {
+    "sha256": "675cd443edc5bb6c916fac61db4d088f5d645379f55794218993224b4138e384",
+    "tail": "..........................................                               [100%]\n42 passed in 61.43s (0:01:01)\n"
+  },
+  "full-preproduction.txt": {
+    "sha256": "fdab713aee0fd9ae851d5781544f294b74987e2ab8fa3017958f38ebd94847bd",
+    "tail": "............................................................ [ 42%]\n........................................................................ [ 56%]\n........................................................................ [ 70%]\n........................................................................ [ 84%]\n........................................................................ [ 99%]\n.....                                                                    [100%]\n509 passed in 375.90s (0:06:15)\n"
+  },
+  "task1-red.txt": {
+    "sha256": "9428eddbb018fbee2143e423f869cedcd7d63ec9fa34867481baee6670742692",
+    "tail": "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_late_rate.py:7: in <module>\n    from force_consistency import late_rate as lr\nE   ImportError: cannot import name 'late_rate' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)\n=========================== short test summary info ============================\nERROR tests/test_late_rate.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.05s\n"
+  },
+  "work-reconciliation-red.txt": {
+    "sha256": "767688f61686fc3b36197e60a04c0ac476d30408ccaeabe5b8ce176a05341313",
+    "tail": ", \"update\": 6002, \"energy_fraction\": 0.6429079779883959, \"force_fraction\": 0.9973047085393837, \"elapsed_seconds\": 1.028802540997276}\n{\"arm\": \"constant\", \"update\": 6003, \"energy_fraction\": 0.7122766922056242, \"force_fraction\": 0.9970908513897014, \"elapsed_seconds\": 1.0342227079963777}\n=========================== short test summary info ============================\nFAILED tests/test_late_rate.py::test_complete_report_reconciles_prediction_work_categories\n1 failed, 2 passed, 42 deselected in 9.04s\n"
+  },
+  "task2-red.txt": {
+    "sha256": "3f04dfdfbf1b63515d8a8027e6da727f4b1ca9223f79ed50ad5798a3dcdf35d2",
+    "tail": "ve_rate_boundary_and_real_child[6000]\nFAILED tests/test_late_rate.py::test_nonzero_moments_survive_rate_boundary_and_real_child[7999]\nFAILED tests/test_late_rate.py::test_interrupted_unscored_work_keeps_persisted_receipt\nFAILED tests/test_late_rate.py::test_orphan_checkpoint_does_not_advance_persisted_count\nFAILED tests/test_late_rate.py::test_probe_rejects_prediction_preserving_wrong_count\nFAILED tests/test_late_rate.py::test_parent_ancestry_and_predictions_restore\n6 failed, 19 passed in 5.67s\n"
+  },
+  "task2-green-attempt.txt": {
+    "sha256": "b5552cf3915b1e2a4e4c583a528c38817b4db8c125cd24d7f233656fb1b27d61",
+    "tail": ".........................                                                [100%]\n25 passed in 22.90s\n"
+  },
+  "task3-green-attempt.txt": {
+    "sha256": "5e0ad804ff31aba865889a07d522b089b13292b5da3d2b39fa5aae85db71305e",
+    "tail": ".................................                                        [100%]\n33 passed in 48.69s\n"
+  },
+  "task3-red.txt": {
+    "sha256": "977c5a26c86572c86edd0109e26e4c85cb14fa53107e83020299f65517b41528",
+    "tail": "sts/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[summary]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[child]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[input]\nFAILED tests/test_late_rate.py::test_endpoint_contrast_orientation_and_zero_denominator\nFAILED tests/test_late_rate.py::test_saved_report_recognizes_valid_execution_with_failed_learning\n7 failed, 26 passed in 48.30s\n"
+  },
+  "task1-green.txt": {
+    "sha256": "ca297b4167ea52f7a0e7e3fb4defd206e74168ef515dfd8fecdf753aeb5acf97",
+    "tail": "...................                                                      [100%]\n19 passed in 0.04s\n"
+  },
+  "review-repair-red-complete.txt": {
+    "sha256": "0b3a381b279d8b99368767ac053037cbef7e44074431c11df3a0c6495dd7d0ca",
+    "tail": "rent_binding_rejects_consistent_wrong_ancestry[inputs]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[start]\nFAILED tests/test_late_rate.py::test_reporting_overrun_invalidates_persisted_scientific_contrast\nFAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[nan_reference]\nFAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[contract_arm]\n9 failed, 33 deselected in 18.64s\n"
+  }
+}
+```
+
+## LATE-RATE-ENGINEERING-002 — final focused repair verification
+
+45focused tests passed66.44s, including all Important review repairs, valid/overrun closures, source/arm binding, finite-reference rejection and complete prediction-work reconciliation. Full final regression and bounded review follow-up pending; no production training.
+
+```json
+{
+  "artifact": "reports/execution/late-rate-2026-10-01/review-repair-green-final.txt",
+  "sha256": "5e72d8d728558cf4a99dd822f9de6b80877878675e82f1956b80ca505fcdd3a7"
+}
+```
+
+## LATE-RATE-PRODUCTION-GATE-001 — repaired verification and review cleared
+
+Full repaired suite521passed405.21s. Fresh bounded follow-up cleared all four Important and both Minor findings; independent no-training partial-count and post-closure-overrun reproductions agree. Final nonfunctional Markdown label changed after suite: known computed vs verified; tested source snapshot and exact production source identities preserved,16targeted contract/closure checks passed. Numerical/validation logic unchanged. Two amended independent plan reviews and final code gate cleared. Production invocation remains zero at this entry; reviewed once-only config may now launch. Obsidian preproduction CLI backups/append/readback verified.
+
+```json
+{
+  "reports/execution/late-rate-2026-10-01/full-final.txt": "2e231045d6f89484e20e3007e6cc254e05a41b38fbdf44e97cdc4c384ccb0572",
+  "reports/execution/late-rate-2026-10-01/label-final-verification.txt": "63efdb113d2818ca5ad6eaec649b5422b31014bb0dd104d220427f8d89871a96",
+  "reports/execution/late-rate-2026-10-01/label-only-correction.json": "6623f5c808f9b15809476e0e26aecccc68ad3137a8eef30135fe5597209dfa06",
+  "docs/reviews/2026-10-01-late-rate-final-followup.md": "cb14d9e2bd6e102aff3db36a138decdd09371e634af2e420ad78eee5e195a1c0",
+  "src/force_consistency/late_rate.py": "bdcb516013a018a95171c1e81626e4983633bc8a88d397b6c5a335773f7741a3"
+}
+```

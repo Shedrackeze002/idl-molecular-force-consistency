@@ -1,0 +1,91 @@
+{
+  "arm_wall_seconds": 2700,
+  "arms": [
+    "constant",
+    "late_decay"
+  ],
+  "backend": "cpu",
+  "checkpoint_prediction_atol": 1e-10,
+  "early_stopping": false,
+  "end_update": 10000,
+  "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+  "finalization_reserve_seconds": 120,
+  "gate_fraction": 0.1,
+  "learning_rates": {
+    "constant": [
+      [
+        6001,
+        0.001
+      ]
+    ],
+    "late_decay": [
+      [
+        6001,
+        0.0003
+      ],
+      [
+        8001,
+        0.0001
+      ]
+    ]
+  },
+  "loss_weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  },
+  "maximum_invocations": 1,
+  "microbatch_size": 16,
+  "parent_directory": "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3",
+  "run_directory": "runs/aspirin-late-rate-2026-10-01",
+  "score_updates": [
+    6000,
+    6001,
+    6100,
+    6200,
+    6300,
+    6400,
+    6500,
+    6600,
+    6700,
+    6800,
+    6900,
+    7000,
+    7100,
+    7200,
+    7300,
+    7400,
+    7500,
+    7600,
+    7700,
+    7800,
+    7900,
+    8000,
+    8001,
+    8100,
+    8200,
+    8300,
+    8400,
+    8500,
+    8600,
+    8700,
+    8800,
+    8900,
+    9000,
+    9100,
+    9200,
+    9300,
+    9400,
+    9500,
+    9600,
+    9700,
+    9800,
+    9900,
+    10000
+  ],
+  "seed": 0,
+  "source_pins": "reports/execution/late-rate-2026-10-01/source-pins.json",
+  "source_pins_sha256": "55fb10bef1abc25783d8b6376dbfcb4896da71db1f6216210a01249224b42e30",
+  "start_update": 6000,
+  "status": "planned_unexecuted",
+  "total_wall_seconds": 6000
+}

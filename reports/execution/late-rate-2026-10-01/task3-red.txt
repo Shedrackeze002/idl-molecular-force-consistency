@@ -1,0 +1,137 @@
+..........................FFFFFFF                                        [100%]
+=================================== FAILURES ===================================
+_____ test_saved_report_refuses_missing_or_disagreeing_evidence[interior] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_refuses_miss0')
+damage = 'interior'
+
+    @pytest.mark.parametrize('damage',['interior','oracle','summary','child','input'])
+    def test_saved_report_refuses_missing_or_disagreeing_evidence(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       assert lr._validated_arm(root,c)['execution_valid']
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:176: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006586374991456978}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.3325555839983281}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.3383554999891203}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3434994999988703}
+______ test_saved_report_refuses_missing_or_disagreeing_evidence[oracle] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_refuses_miss1')
+damage = 'oracle'
+
+    @pytest.mark.parametrize('damage',['interior','oracle','summary','child','input'])
+    def test_saved_report_refuses_missing_or_disagreeing_evidence(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       assert lr._validated_arm(root,c)['execution_valid']
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:176: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006484957993961871}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.3277635830017971}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.3335578330006683}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3390038329962408}
+______ test_saved_report_refuses_missing_or_disagreeing_evidence[summary] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_refuses_miss2')
+damage = 'summary'
+
+    @pytest.mark.parametrize('damage',['interior','oracle','summary','child','input'])
+    def test_saved_report_refuses_missing_or_disagreeing_evidence(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       assert lr._validated_arm(root,c)['execution_valid']
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:176: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006560041001648642}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.3321996250015218}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.3379052079981193}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3431865829916205}
+_______ test_saved_report_refuses_missing_or_disagreeing_evidence[child] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_refuses_miss3')
+damage = 'child'
+
+    @pytest.mark.parametrize('damage',['interior','oracle','summary','child','input'])
+    def test_saved_report_refuses_missing_or_disagreeing_evidence(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       assert lr._validated_arm(root,c)['execution_valid']
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:176: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006441833000280894}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.33602974998939317}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.3421698329912033}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3475843329943018}
+_______ test_saved_report_refuses_missing_or_disagreeing_evidence[input] _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_refuses_miss4')
+damage = 'input'
+
+    @pytest.mark.parametrize('damage',['interior','oracle','summary','child','input'])
+    def test_saved_report_refuses_missing_or_disagreeing_evidence(tmp_path,damage):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       assert lr._validated_arm(root,c)['execution_valid']
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:176: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.006448458996601403}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.37434162499266677}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.38001779199112207}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.3850554169912357}
+___________ test_endpoint_contrast_orientation_and_zero_denominator ____________
+
+    def test_endpoint_contrast_orientation_and_zero_denominator():
+>       result=lr.metric_contrast(4.,3.)
+               ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'metric_contrast'
+
+tests/test_late_rate.py:190: AttributeError
+______ test_saved_report_recognizes_valid_execution_with_failed_learning _______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-55/test_saved_report_recognizes_v0')
+
+    def test_saved_report_recognizes_valid_execution_with_failed_learning(tmp_path):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+        assert out['execution_valid']
+>       report=lr._validated_arm(root,c)
+               ^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_validated_arm'
+
+tests/test_late_rate.py:199: AttributeError
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.00674425000033807}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 0.3373357090022182}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 0.34294441698875744}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 0.34825116700085346}
+=========================== short test summary info ============================
+FAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[interior]
+FAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[oracle]
+FAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[summary]
+FAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[child]
+FAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[input]
+FAILED tests/test_late_rate.py::test_endpoint_contrast_orientation_and_zero_denominator
+FAILED tests/test_late_rate.py::test_saved_report_recognizes_valid_execution_with_failed_learning
+7 failed, 26 passed in 48.30s

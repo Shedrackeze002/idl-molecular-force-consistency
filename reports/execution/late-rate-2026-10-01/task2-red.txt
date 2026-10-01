@@ -1,0 +1,99 @@
+...................FFFFFF                                                [100%]
+=================================== FAILURES ===================================
+_______ test_nonzero_moments_survive_rate_boundary_and_real_child[6000] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-53/test_nonzero_moments_survive_r0')
+start = 6000
+
+    @pytest.mark.parametrize('start',[6000,7999])
+    def test_nonzero_moments_survive_rate_boundary_and_real_child(tmp_path,start):
+        import jax
+        from test_coverage import close_trees
+        from force_consistency.loss_balance import weighted_loss
+        from force_consistency.metrics import partition_batch
+        from force_consistency.width_rate_runs import independent_adam_step
+        from force_consistency.runs import load_checkpoint
+        c,p=tiny_prepared(start);wanted=copy.deepcopy(p['state']);full=partition_batch(p['fitting'],np.arange(7))
+        gradient=jax.jit(jax.grad(lambda pp:weighted_loss(pp,full,p['model'],p['norm'],lr.WEIGHTS)[0]))
+        for u in range(start+1,start+4):
+            g=gradient(wanted['params']);pp,oo=independent_adam_step(wanted['params'],wanted['optimizer'],g,lr.rate_for_update('late_decay',u))
+            wanted={**wanted,'params':pp,'optimizer':oo,'update':u}
+>       before=lr.state_hashes(p['state'])
+               ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'state_hashes'
+
+tests/test_late_rate.py:100: AttributeError
+_______ test_nonzero_moments_survive_rate_boundary_and_real_child[7999] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-53/test_nonzero_moments_survive_r1')
+start = 7999
+
+    @pytest.mark.parametrize('start',[6000,7999])
+    def test_nonzero_moments_survive_rate_boundary_and_real_child(tmp_path,start):
+        import jax
+        from test_coverage import close_trees
+        from force_consistency.loss_balance import weighted_loss
+        from force_consistency.metrics import partition_batch
+        from force_consistency.width_rate_runs import independent_adam_step
+        from force_consistency.runs import load_checkpoint
+        c,p=tiny_prepared(start);wanted=copy.deepcopy(p['state']);full=partition_batch(p['fitting'],np.arange(7))
+        gradient=jax.jit(jax.grad(lambda pp:weighted_loss(pp,full,p['model'],p['norm'],lr.WEIGHTS)[0]))
+        for u in range(start+1,start+4):
+            g=gradient(wanted['params']);pp,oo=independent_adam_step(wanted['params'],wanted['optimizer'],g,lr.rate_for_update('late_decay',u))
+            wanted={**wanted,'params':pp,'optimizer':oo,'update':u}
+>       before=lr.state_hashes(p['state'])
+               ^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'state_hashes'
+
+tests/test_late_rate.py:100: AttributeError
+____________ test_interrupted_unscored_work_keeps_persisted_receipt ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-53/test_interrupted_unscored_work0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114115100>
+
+    def test_interrupted_unscored_work_keeps_persisted_receipt(tmp_path,monkeypatch):
+        c,p=tiny_prepared();c['end_update']=6005;c['score_updates']=[6000,6001,6005]
+>       real=lr.build_weighted_step
+             ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'build_weighted_step'
+
+tests/test_late_rate.py:114: AttributeError
+___________ test_orphan_checkpoint_does_not_advance_persisted_count ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-53/test_orphan_checkpoint_does_no0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11277a870>
+
+    def test_orphan_checkpoint_does_not_advance_persisted_count(tmp_path,monkeypatch):
+>       c,p=tiny_prepared();real=lr.atomic_json;root=tmp_path/'arm'
+                                 ^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'atomic_json'
+
+tests/test_late_rate.py:134: AttributeError
+_____________ test_probe_rejects_prediction_preserving_wrong_count _____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-53/test_probe_rejects_prediction_0')
+
+    def test_probe_rejects_prediction_preserving_wrong_count(tmp_path):
+        from force_consistency.runs import load_checkpoint,save_checkpoint
+        c,p=tiny_prepared();root=tmp_path/'arm'
+>       out=lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)
+            ^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute '_run_arm'
+
+tests/test_late_rate.py:149: AttributeError
+_________________ test_parent_ancestry_and_predictions_restore _________________
+
+    def test_parent_ancestry_and_predictions_restore():
+>       p=lr.load_parent(config())
+          ^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.late_rate' has no attribute 'load_parent'
+
+tests/test_late_rate.py:158: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_late_rate.py::test_nonzero_moments_survive_rate_boundary_and_real_child[6000]
+FAILED tests/test_late_rate.py::test_nonzero_moments_survive_rate_boundary_and_real_child[7999]
+FAILED tests/test_late_rate.py::test_interrupted_unscored_work_keeps_persisted_receipt
+FAILED tests/test_late_rate.py::test_orphan_checkpoint_does_not_advance_persisted_count
+FAILED tests/test_late_rate.py::test_probe_rejects_prediction_preserving_wrong_count
+FAILED tests/test_late_rate.py::test_parent_ancestry_and_predictions_restore
+6 failed, 19 passed in 5.67s

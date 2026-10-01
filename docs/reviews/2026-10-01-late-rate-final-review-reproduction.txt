@@ -1,0 +1,26 @@
+Bounded final review, 2026-10-01. No training or model evaluation.
+
+Reproduction: construct a temporary root with the real frozen config, code.json
+containing an empty code_files map, an empty raw-artifacts inventory, and both
+arm summary.json files containing execution_valid=false, additional_updates=2,
+additional_frame_exposures=256, persisted_additional_updates=1,
+attempted_additional_updates=3, pending_update_unknown=true. Invoke build_report.
+The genuine source pin map and source files were still verified.
+
+Observed output:
+{'saved_computed_updates': 4, 'reported_updates': 0,
+ 'reported_exposures': 0, 'contrasts_available': False,
+ 'errors': ["constant: FileNotFoundError: .../constant/provenance.json",
+            "late_decay: FileNotFoundError: .../late_decay/provenance.json"]}
+
+This is an incomplete engineering fixture, not a scientific trial. The report
+correctly suppresses contrasts, retains the raw summaries, and incorrectly
+reports aggregate performed work as zero. See I1 in the corresponding review.
+
+Code tracing reproduction for I3: _validated_arm determines its arm from local
+provenance, and validates the saved rates using that value. build_report stores
+the result under the requested directory name without checking the returned arm.
+A copied complete constant arm under late_decay therefore satisfies the same
+local checks; a freshly assembled inventory merely hashes those duplicated files.
+This scenario was traced, not executed, and is distinct from arbitrary edits to
+an already pinned inventory (which the existing inventory guard rejects).

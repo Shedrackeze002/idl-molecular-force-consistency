@@ -1,0 +1,2038 @@
+{
+  "endpoint": {
+    "centered_energy_error_variance_eV2": 0.007645012681256275,
+    "energy_mse_eV2": 0.007645024080897856,
+    "force_mse_eV2_per_A2": 0.005490094610835327,
+    "mean_energy_error_squared_eV2": 1.1399641580554872e-08,
+    "signed_mean_energy_error_eV": 0.00010676910405428564
+  },
+  "endpoint_per_group": {
+    "01": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.004510047927617509,
+      "energy_rmse_eV": 0.06715689039568098,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.003776721127724698,
+      "force_rmse_eV_per_A": 0.06145503337990061,
+      "mean_energy_mse_eV2": 0.011184466862616722,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.061298358531283896,
+      "zero_force_mse_eV2_per_A2": 0.010133561081129106
+    },
+    "01_2": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.005385228792537572,
+      "energy_rmse_eV": 0.0733841181219586,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.005376460711143211,
+      "force_rmse_eV_per_A": 0.07332435278366398,
+      "mean_energy_mse_eV2": 0.014691840198546696,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+        "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.061309625626903314,
+      "zero_force_mse_eV2_per_A2": 0.012643781149752755
+    },
+    "22": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.0015639232435017546,
+      "energy_rmse_eV": 0.03954646941892227,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.002075808007735164,
+      "force_rmse_eV_per_A": 0.045561036069597494,
+      "mean_energy_mse_eV2": 0.00043393794551779054,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+        "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.025654788215940468,
+      "zero_force_mse_eV2_per_A2": 0.0031611763984129714
+    },
+    "23": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.004555309129397936,
+      "energy_rmse_eV": 0.06749303022829792,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.0076433714825032886,
+      "force_rmse_eV_per_A": 0.08742637749846031,
+      "mean_energy_mse_eV2": 0.003272736677958737,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+        "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.01972081939103084,
+      "zero_force_mse_eV2_per_A2": 0.013989886462890417
+    },
+    "44": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.007256325754075716,
+      "energy_rmse_eV": 0.0851840698374744,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.0023140673178116047,
+      "force_rmse_eV_per_A": 0.04810475358851352,
+      "mean_energy_mse_eV2": 0.0037639219993234286,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+        "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.004330088583582667,
+      "zero_force_mse_eV2_per_A2": 0.0027215358535326905
+    },
+    "58_2": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.017427247775792635,
+      "energy_rmse_eV": 0.13201230160781469,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.011497015973700227,
+      "force_rmse_eV_per_A": 0.10722413895061236,
+      "mean_energy_mse_eV2": 0.05609685929773062,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.06930285764299296,
+      "zero_force_mse_eV2_per_A2": 0.047555128919074555
+    },
+    "77": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.015400934927527404,
+      "energy_rmse_eV": 0.12410050333309453,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.00595873285190955,
+      "force_rmse_eV_per_A": 0.07719282901869545,
+      "mean_energy_mse_eV2": 0.04301548832510679,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+        "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.049888904847356544,
+      "zero_force_mse_eV2_per_A2": 0.010461935367549885
+    },
+    "78_2": {
+      "energy_count": 16,
+      "energy_mse_eV2": 0.005061175096732321,
+      "energy_rmse_eV": 0.07114193627342681,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.00527857941415487,
+      "force_rmse_eV_per_A": 0.07265383275612423,
+      "mean_energy_mse_eV2": 0.008175567346002584,
+      "record_count": 16,
+      "record_ids": [
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+        "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+      ],
+      "zero_energy_mse_eV2": 0.008628671364668732,
+      "zero_force_mse_eV2_per_A2": 0.012004580512219374
+    }
+  },
+  "endpoint_per_record": [
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0011797516132136918,
+      "force_mse_eV2_per_A2": 0.007660502083434752,
+      "mean_energy_error_squared_eV2": 0.0011797516132136918,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.034347512474904085
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0001462108010323214,
+      "force_mse_eV2_per_A2": 0.00486024583033932,
+      "mean_energy_error_squared_eV2": 0.0001462108010323214,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+      "signed_mean_energy_error_eV": -0.012091765835986132
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 5.533395337473988e-07,
+      "force_mse_eV2_per_A2": 0.005786404280491712,
+      "mean_energy_error_squared_eV2": 5.533395337473988e-07,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+      "signed_mean_energy_error_eV": 0.000743867954510341
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00015463231553917745,
+      "force_mse_eV2_per_A2": 0.0024294535674982782,
+      "mean_energy_error_squared_eV2": 0.00015463231553917745,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+      "signed_mean_energy_error_eV": -0.012435124267138525
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0021828163203012566,
+      "force_mse_eV2_per_A2": 0.0018887880840767909,
+      "mean_energy_error_squared_eV2": 0.0021828163203012566,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+      "signed_mean_energy_error_eV": 0.04672061986212572
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0038544176117385393,
+      "force_mse_eV2_per_A2": 0.001525366506868082,
+      "mean_energy_error_squared_eV2": 0.0038544176117385393,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+      "signed_mean_energy_error_eV": 0.06208395615405432
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009573099098208719,
+      "force_mse_eV2_per_A2": 0.001218937293551144,
+      "mean_energy_error_squared_eV2": 0.009573099098208719,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+      "signed_mean_energy_error_eV": 0.09784221531736043
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.012116236354213083,
+      "force_mse_eV2_per_A2": 0.00172292833655819,
+      "mean_energy_error_squared_eV2": 0.012116236354213083,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+      "signed_mean_energy_error_eV": 0.11007377686903036
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0037292253063343403,
+      "force_mse_eV2_per_A2": 0.004813246020548311,
+      "mean_energy_error_squared_eV2": 0.0037292253063343403,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.06106738332640707
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005469368279069696,
+      "force_mse_eV2_per_A2": 0.009566452220732928,
+      "mean_energy_error_squared_eV2": 0.005469368279069696,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+      "signed_mean_energy_error_eV": -0.07395517750008918
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004416159165099664,
+      "force_mse_eV2_per_A2": 0.008164933230738183,
+      "mean_energy_error_squared_eV2": 0.004416159165099664,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+      "signed_mean_energy_error_eV": -0.06645418846919782
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0001414792374350931,
+      "force_mse_eV2_per_A2": 0.003519071390529906,
+      "mean_energy_error_squared_eV2": 0.0001414792374350931,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+      "signed_mean_energy_error_eV": -0.011894504505656933
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0014769068445544377,
+      "force_mse_eV2_per_A2": 0.004709260469647504,
+      "mean_energy_error_squared_eV2": 0.0014769068445544377,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+      "signed_mean_energy_error_eV": 0.038430545722828835
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.007772087606698013,
+      "force_mse_eV2_per_A2": 0.0014306261604747205,
+      "mean_energy_error_squared_eV2": 0.007772087606698013,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+      "signed_mean_energy_error_eV": 0.08815944422861349
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.010163378240847192,
+      "force_mse_eV2_per_A2": 0.0005659842116619274,
+      "mean_energy_error_squared_eV2": 0.010163378240847192,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+      "signed_mean_energy_error_eV": 0.10081358162890153
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00978444470806117,
+      "force_mse_eV2_per_A2": 0.0005653383564434261,
+      "mean_energy_error_squared_eV2": 0.00978444470806117,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+      "signed_mean_energy_error_eV": 0.09891635207619198
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.013794568346599714,
+      "force_mse_eV2_per_A2": 0.003137386161957411,
+      "mean_energy_error_squared_eV2": 0.013794568346599714,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.11745028031724622
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0034349565367172304,
+      "force_mse_eV2_per_A2": 0.013387383577904482,
+      "mean_energy_error_squared_eV2": 0.0034349565367172304,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+      "signed_mean_energy_error_eV": -0.058608502256219025
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 3.799437610107544e-05,
+      "force_mse_eV2_per_A2": 0.01858657500816613,
+      "mean_energy_error_squared_eV2": 3.799437610107544e-05,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+      "signed_mean_energy_error_eV": -0.00616395782765225
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00020142775142323714,
+      "force_mse_eV2_per_A2": 0.0070101089128528785,
+      "mean_energy_error_squared_eV2": 0.00020142775142323714,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+      "signed_mean_energy_error_eV": 0.014192524490845071
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.001691379807179739,
+      "force_mse_eV2_per_A2": 0.003768083678306529,
+      "mean_energy_error_squared_eV2": 0.001691379807179739,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+      "signed_mean_energy_error_eV": 0.04112638820975821
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.003551022392334289,
+      "force_mse_eV2_per_A2": 0.001548560583533193,
+      "mean_energy_error_squared_eV2": 0.003551022392334289,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+      "signed_mean_energy_error_eV": 0.05959045554729624
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.003579432485812253,
+      "force_mse_eV2_per_A2": 0.0010005402560058496,
+      "mean_energy_error_squared_eV2": 0.003579432485812253,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+      "signed_mean_energy_error_eV": 0.05982835854185081
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.003660882084754434,
+      "force_mse_eV2_per_A2": 0.000732957715968404,
+      "mean_energy_error_squared_eV2": 0.003660882084754434,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+      "signed_mean_energy_error_eV": 0.06050522361544029
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01941799153583731,
+      "force_mse_eV2_per_A2": 0.005879209549985726,
+      "mean_energy_error_squared_eV2": 0.01941799153583731,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.13934845365427387
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004793770646113607,
+      "force_mse_eV2_per_A2": 0.03260336220009859,
+      "mean_energy_error_squared_eV2": 0.004793770646113607,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+      "signed_mean_energy_error_eV": -0.06923706121806159
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00153399908337109,
+      "force_mse_eV2_per_A2": 0.016006459413829895,
+      "mean_energy_error_squared_eV2": 0.00153399908337109,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+      "signed_mean_energy_error_eV": 0.039166300353378924
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0031944275456673226,
+      "force_mse_eV2_per_A2": 0.00943961633432181,
+      "mean_energy_error_squared_eV2": 0.0031944275456673226,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+      "signed_mean_energy_error_eV": 0.05651926703052086
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0045107926511017155,
+      "force_mse_eV2_per_A2": 0.002178870252743912,
+      "mean_energy_error_squared_eV2": 0.0045107926511017155,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+      "signed_mean_energy_error_eV": 0.0671624348211239
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00381864250822071,
+      "force_mse_eV2_per_A2": 0.0023392576406400427,
+      "mean_energy_error_squared_eV2": 0.00381864250822071,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+      "signed_mean_energy_error_eV": 0.061795165735037155
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0031000942836531633,
+      "force_mse_eV2_per_A2": 0.0023292478600064888,
+      "mean_energy_error_squared_eV2": 0.0031000942836531633,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+      "signed_mean_energy_error_eV": 0.055678490314062606
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0025635640354800824,
+      "force_mse_eV2_per_A2": 0.0023463245737312655,
+      "mean_energy_error_squared_eV2": 0.0025635640354800824,
+      "record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+      "signed_mean_energy_error_eV": 0.05063165053086935
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.03459999216496654,
+      "force_mse_eV2_per_A2": 0.0021601494081365056,
+      "mean_energy_error_squared_eV2": 0.03459999216496654,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.18601073131668114
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.03423846612049474,
+      "force_mse_eV2_per_A2": 0.002439046335712602,
+      "mean_energy_error_squared_eV2": 0.03423846612049474,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+      "signed_mean_energy_error_eV": -0.1850363913409866
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.019314121168874113,
+      "force_mse_eV2_per_A2": 0.017186532952823016,
+      "mean_energy_error_squared_eV2": 0.019314121168874113,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+      "signed_mean_energy_error_eV": -0.1389752538003587
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0052761215996632955,
+      "force_mse_eV2_per_A2": 0.011728998354732366,
+      "mean_energy_error_squared_eV2": 0.0052761215996632955,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+      "signed_mean_energy_error_eV": -0.07263691623178462
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00030751494754514103,
+      "force_mse_eV2_per_A2": 0.00890157730972412,
+      "mean_energy_error_squared_eV2": 0.00030751494754514103,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+      "signed_mean_energy_error_eV": 0.017536104115371265
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006879169535817165,
+      "force_mse_eV2_per_A2": 0.0014484447057507783,
+      "mean_energy_error_squared_eV2": 0.006879169535817165,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+      "signed_mean_energy_error_eV": 0.0829407591948444
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01091712815567241,
+      "force_mse_eV2_per_A2": 0.0006154626988534898,
+      "mean_energy_error_squared_eV2": 0.01091712815567241,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+      "signed_mean_energy_error_eV": 0.10448506187810969
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.011904925274313277,
+      "force_mse_eV2_per_A2": 0.0005089051653639992,
+      "mean_energy_error_squared_eV2": 0.011904925274313277,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+      "signed_mean_energy_error_eV": 0.10910969376876317
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.034713992190417466,
+      "force_mse_eV2_per_A2": 0.002095159112000405,
+      "mean_energy_error_squared_eV2": 0.034713992190417466,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.18631691332355596
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.030684100667083995,
+      "force_mse_eV2_per_A2": 0.004536734059347224,
+      "mean_energy_error_squared_eV2": 0.030684100667083995,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+      "signed_mean_energy_error_eV": -0.17516877766052943
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.017126950269114156,
+      "force_mse_eV2_per_A2": 0.016367250131173225,
+      "mean_energy_error_squared_eV2": 0.017126950269114156,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+      "signed_mean_energy_error_eV": -0.13086997466613248
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0018968631482306681,
+      "force_mse_eV2_per_A2": 0.013870602150736645,
+      "mean_energy_error_squared_eV2": 0.0018968631482306681,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+      "signed_mean_energy_error_eV": -0.04355299241419203
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004791056800964987,
+      "force_mse_eV2_per_A2": 0.01053005717206949,
+      "mean_energy_error_squared_eV2": 0.004791056800964987,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+      "signed_mean_energy_error_eV": 0.06921746023197461
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01029806984830391,
+      "force_mse_eV2_per_A2": 0.0019523389811733837,
+      "mean_energy_error_squared_eV2": 0.01029806984830391,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+      "signed_mean_energy_error_eV": 0.1014794060305041
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.011633258659593087,
+      "force_mse_eV2_per_A2": 0.0005084702696939011,
+      "mean_energy_error_squared_eV2": 0.011633258659593087,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+      "signed_mean_energy_error_eV": 0.10785758508140764
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.011833228289383501,
+      "force_mse_eV2_per_A2": 0.0004899968232616551,
+      "mean_energy_error_squared_eV2": 0.011833228289383501,
+      "record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+      "signed_mean_energy_error_eV": 0.10878064299030182
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.04410071300265781,
+      "force_mse_eV2_per_A2": 0.014367687398856476,
+      "mean_energy_error_squared_eV2": 0.04410071300265781,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.21000169761851406
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.03191021327124807,
+      "force_mse_eV2_per_A2": 0.015371553174806115,
+      "mean_energy_error_squared_eV2": 0.03191021327124807,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+      "signed_mean_energy_error_eV": -0.1786343003771898
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01897449700376104,
+      "force_mse_eV2_per_A2": 0.011977999344209034,
+      "mean_energy_error_squared_eV2": 0.01897449700376104,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+      "signed_mean_energy_error_eV": -0.13774794736677945
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004933117232585715,
+      "force_mse_eV2_per_A2": 0.015803303418441196,
+      "mean_energy_error_squared_eV2": 0.004933117232585715,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+      "signed_mean_energy_error_eV": -0.0702361533156943
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00167317146950244,
+      "force_mse_eV2_per_A2": 0.007941821497538396,
+      "mean_energy_error_squared_eV2": 0.00167317146950244,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+      "signed_mean_energy_error_eV": 0.04090441870388137
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009269406800261719,
+      "force_mse_eV2_per_A2": 0.004125781347685721,
+      "mean_energy_error_squared_eV2": 0.009269406800261719,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+      "signed_mean_energy_error_eV": 0.0962777585959588
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.018758234851183875,
+      "force_mse_eV2_per_A2": 0.0013067076670533148,
+      "mean_energy_error_squared_eV2": 0.018758234851183875,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+      "signed_mean_energy_error_eV": 0.13696070550046052
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.020698134487559645,
+      "force_mse_eV2_per_A2": 0.00160648418732763,
+      "mean_energy_error_squared_eV2": 0.020698134487559645,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+      "signed_mean_energy_error_eV": 0.14386846244941817
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0782833708446898,
+      "force_mse_eV2_per_A2": 0.00579492020941147,
+      "mean_energy_error_squared_eV2": 0.0782833708446898,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.27979165613843776
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0219257328465695,
+      "force_mse_eV2_per_A2": 0.04533167642357242,
+      "mean_energy_error_squared_eV2": 0.0219257328465695,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+      "signed_mean_energy_error_eV": -0.14807340357596127
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0010681688415285003,
+      "force_mse_eV2_per_A2": 0.04602330065150726,
+      "mean_energy_error_squared_eV2": 0.0010681688415285003,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+      "signed_mean_energy_error_eV": -0.03268285240808244
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0017121051751492842,
+      "force_mse_eV2_per_A2": 0.009902898888370497,
+      "mean_energy_error_squared_eV2": 0.0017121051751492842,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+      "signed_mean_energy_error_eV": 0.04137759266981689
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005586539750259155,
+      "force_mse_eV2_per_A2": 0.0017855172318363454,
+      "mean_energy_error_squared_eV2": 0.005586539750259155,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+      "signed_mean_energy_error_eV": 0.07474315855153002
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006338610521787105,
+      "force_mse_eV2_per_A2": 0.0010525185953115547,
+      "mean_energy_error_squared_eV2": 0.006338610521787105,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+      "signed_mean_energy_error_eV": 0.07961539123678979
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006873813484459757,
+      "force_mse_eV2_per_A2": 0.0008106049176894183,
+      "mean_energy_error_squared_eV2": 0.006873813484459757,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+      "signed_mean_energy_error_eV": 0.08290846449223238
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006730134829478734,
+      "force_mse_eV2_per_A2": 0.0007494806255868123,
+      "mean_energy_error_squared_eV2": 0.006730134829478734,
+      "record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+      "signed_mean_energy_error_eV": 0.08203739896826773
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01089367727109491,
+      "force_mse_eV2_per_A2": 0.002800003092587485,
+      "mean_energy_error_squared_eV2": 0.01089367727109491,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.10437278031697206
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.010397685917824646,
+      "force_mse_eV2_per_A2": 0.001615847468943251,
+      "mean_energy_error_squared_eV2": 0.010397685917824646,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+      "signed_mean_energy_error_eV": -0.10196904391934175
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.008328918088496446,
+      "force_mse_eV2_per_A2": 0.001364564742880297,
+      "mean_energy_error_squared_eV2": 0.008328918088496446,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+      "signed_mean_energy_error_eV": -0.09126290642148345
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.007733081820748633,
+      "force_mse_eV2_per_A2": 0.0013269057629444743,
+      "mean_energy_error_squared_eV2": 0.007733081820748633,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+      "signed_mean_energy_error_eV": -0.08793794300953732
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.008236548383178296,
+      "force_mse_eV2_per_A2": 0.0012768181890426547,
+      "mean_energy_error_squared_eV2": 0.008236548383178296,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+      "signed_mean_energy_error_eV": -0.09075543170068828
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0012499601347806088,
+      "force_mse_eV2_per_A2": 0.008097068329390706,
+      "mean_energy_error_squared_eV2": 0.0012499601347806088,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+      "signed_mean_energy_error_eV": 0.03535477527549297
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005308214039899625,
+      "force_mse_eV2_per_A2": 0.0015998433388986347,
+      "mean_energy_error_squared_eV2": 0.005308214039899625,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+      "signed_mean_energy_error_eV": 0.07285749130940225
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006329228122428273,
+      "force_mse_eV2_per_A2": 0.0013899535305731884,
+      "mean_energy_error_squared_eV2": 0.006329228122428273,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+      "signed_mean_energy_error_eV": 0.07955644614000976
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.014272467254410523,
+      "force_mse_eV2_per_A2": 0.005181720931783239,
+      "mean_energy_error_squared_eV2": 0.014272467254410523,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.11946743177289165
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.013714141410950103,
+      "force_mse_eV2_per_A2": 0.0013724463618534145,
+      "mean_energy_error_squared_eV2": 0.013714141410950103,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+      "signed_mean_energy_error_eV": -0.11710739264004687
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.013332683061658527,
+      "force_mse_eV2_per_A2": 0.0022040446225152213,
+      "mean_energy_error_squared_eV2": 0.013332683061658527,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+      "signed_mean_energy_error_eV": -0.11546723804464419
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.01143203591877339,
+      "force_mse_eV2_per_A2": 0.002569825548060217,
+      "mean_energy_error_squared_eV2": 0.01143203591877339,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+      "signed_mean_energy_error_eV": -0.10692069920634353
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004826980246084024,
+      "force_mse_eV2_per_A2": 0.002623117459621705,
+      "mean_energy_error_squared_eV2": 0.004826980246084024,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+      "signed_mean_energy_error_eV": -0.0694764726082436
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 3.2424550915021873e-06,
+      "force_mse_eV2_per_A2": 0.001452461131484991,
+      "mean_energy_error_squared_eV2": 3.2424550915021873e-06,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+      "signed_mean_energy_error_eV": -0.0018006818407209496
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 2.6833971784323525e-05,
+      "force_mse_eV2_per_A2": 0.0011454118716918771,
+      "mean_energy_error_squared_eV2": 2.6833971784323525e-05,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+      "signed_mean_energy_error_eV": 0.0051801517144118014
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 1.5513968007633966e-05,
+      "force_mse_eV2_per_A2": 0.0010050447027143185,
+      "mean_energy_error_squared_eV2": 1.5513968007633966e-05,
+      "record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+      "signed_mean_energy_error_eV": 0.003938777476277883
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0004051602863468799,
+      "force_mse_eV2_per_A2": 0.010320397643239552,
+      "mean_energy_error_squared_eV2": 0.0004051602863468799,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.020128593749859425
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00031056053420409864,
+      "force_mse_eV2_per_A2": 0.0011484060007223486,
+      "mean_energy_error_squared_eV2": 0.00031056053420409864,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+      "signed_mean_energy_error_eV": -0.01762272777421528
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00020084639711387517,
+      "force_mse_eV2_per_A2": 0.0014124168093342198,
+      "mean_energy_error_squared_eV2": 0.00020084639711387517,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+      "signed_mean_energy_error_eV": -0.014172028687307797
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 4.280358535939932e-06,
+      "force_mse_eV2_per_A2": 0.002424934273952786,
+      "mean_energy_error_squared_eV2": 4.280358535939932e-06,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+      "signed_mean_energy_error_eV": -0.0020689027371870172
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0008034595282606199,
+      "force_mse_eV2_per_A2": 0.0036280131284504888,
+      "mean_energy_error_squared_eV2": 0.0008034595282606199,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+      "signed_mean_energy_error_eV": 0.028345361671014535
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.002761252629191056,
+      "force_mse_eV2_per_A2": 0.00045153272946901296,
+      "mean_energy_error_squared_eV2": 0.002761252629191056,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+      "signed_mean_energy_error_eV": 0.052547622488472834
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0032565385890877094,
+      "force_mse_eV2_per_A2": 0.0009693200291795899,
+      "mean_energy_error_squared_eV2": 0.0032565385890877094,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+      "signed_mean_energy_error_eV": 0.05706608966003987
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.003737088879056469,
+      "force_mse_eV2_per_A2": 0.0007132279157615173,
+      "mean_energy_error_squared_eV2": 0.003737088879056469,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+      "signed_mean_energy_error_eV": 0.06113173381359692
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0003172760236917391,
+      "force_mse_eV2_per_A2": 0.002105919775153435,
+      "mean_energy_error_squared_eV2": 0.0003172760236917391,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.01781224364564271
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0003125539016893532,
+      "force_mse_eV2_per_A2": 0.001057066706337608,
+      "mean_energy_error_squared_eV2": 0.0003125539016893532,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+      "signed_mean_energy_error_eV": -0.0176791940339302
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00010380458703395682,
+      "force_mse_eV2_per_A2": 0.002584124187480227,
+      "mean_energy_error_squared_eV2": 0.00010380458703395682,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+      "signed_mean_energy_error_eV": -0.010188453613476228
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.00016853399325902034,
+      "force_mse_eV2_per_A2": 0.0034163666362069293,
+      "mean_energy_error_squared_eV2": 0.00016853399325902034,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+      "signed_mean_energy_error_eV": 0.012982064291129525
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0020785857546643995,
+      "force_mse_eV2_per_A2": 0.0008286188467247045,
+      "mean_energy_error_squared_eV2": 0.0020785857546643995,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+      "signed_mean_energy_error_eV": 0.04559150967739936
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0031240316123012403,
+      "force_mse_eV2_per_A2": 0.0007538097560406867,
+      "mean_energy_error_squared_eV2": 0.0031240316123012403,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+      "signed_mean_energy_error_eV": 0.05589303724348177
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0035914132214321065,
+      "force_mse_eV2_per_A2": 0.0007066781328596584,
+      "mean_energy_error_squared_eV2": 0.0035914132214321065,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+      "signed_mean_energy_error_eV": 0.05992840079154546
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0038473856001596074,
+      "force_mse_eV2_per_A2": 0.0006920955528498587,
+      "mean_energy_error_squared_eV2": 0.0038473856001596074,
+      "record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+      "signed_mean_energy_error_eV": 0.062027297217915334
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.007221398157945794,
+      "force_mse_eV2_per_A2": 0.005731703825368349,
+      "mean_energy_error_squared_eV2": 0.007221398157945794,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.08497881005254071
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0076364607896744156,
+      "force_mse_eV2_per_A2": 0.0021923771896421576,
+      "mean_energy_error_squared_eV2": 0.0076364607896744156,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+      "signed_mean_energy_error_eV": -0.08738684563293503
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006800179346753769,
+      "force_mse_eV2_per_A2": 0.004628577396204365,
+      "mean_energy_error_squared_eV2": 0.006800179346753769,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+      "signed_mean_energy_error_eV": -0.08246319995460866
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004947451094306369,
+      "force_mse_eV2_per_A2": 0.007543752092749405,
+      "mean_energy_error_squared_eV2": 0.004947451094306369,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+      "signed_mean_energy_error_eV": -0.0703381197808583
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0005580753710180836,
+      "force_mse_eV2_per_A2": 0.006975473858138024,
+      "mean_energy_error_squared_eV2": 0.0005580753710180836,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+      "signed_mean_energy_error_eV": -0.023623618922977985
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004474481367324418,
+      "force_mse_eV2_per_A2": 0.0048667615870659695,
+      "mean_energy_error_squared_eV2": 0.004474481367324418,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+      "signed_mean_energy_error_eV": 0.06689156424635634
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009566995942164631,
+      "force_mse_eV2_per_A2": 0.0008952802166505197,
+      "mean_energy_error_squared_eV2": 0.009566995942164631,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+      "signed_mean_energy_error_eV": 0.0978110215781669
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.011751418652284818,
+      "force_mse_eV2_per_A2": 0.0005150384325409156,
+      "mean_energy_error_squared_eV2": 0.011751418652284818,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+      "signed_mean_energy_error_eV": 0.10840396050091905
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.002129257159018127,
+      "force_mse_eV2_per_A2": 0.009193321967701416,
+      "mean_energy_error_squared_eV2": 0.002129257159018127,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.046143874555764464
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0002829847904645233,
+      "force_mse_eV2_per_A2": 0.004034293077337137,
+      "mean_energy_error_squared_eV2": 0.0002829847904645233,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+      "signed_mean_energy_error_eV": -0.016822151778667416
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0006397423070318582,
+      "force_mse_eV2_per_A2": 0.013587455437663352,
+      "mean_energy_error_squared_eV2": 0.0006397423070318582,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+      "signed_mean_energy_error_eV": 0.02529312766408809
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0031228165910540504,
+      "force_mse_eV2_per_A2": 0.011120020760016038,
+      "mean_energy_error_squared_eV2": 0.0031228165910540504,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+      "signed_mean_energy_error_eV": 0.0558821670218152
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004186223069791795,
+      "force_mse_eV2_per_A2": 0.008242786815826316,
+      "mean_energy_error_squared_eV2": 0.004186223069791795,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+      "signed_mean_energy_error_eV": 0.06470102835188785
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004497042605042468,
+      "force_mse_eV2_per_A2": 0.0032587162556734855,
+      "mean_energy_error_squared_eV2": 0.004497042605042468,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+      "signed_mean_energy_error_eV": 0.06705999258158674
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006408437892396816,
+      "force_mse_eV2_per_A2": 0.000907713923932017,
+      "mean_energy_error_squared_eV2": 0.006408437892396816,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+      "signed_mean_energy_error_eV": 0.0800527194565982
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.006755836411445196,
+      "force_mse_eV2_per_A2": 0.0007639977899684553,
+      "mean_energy_error_squared_eV2": 0.006755836411445196,
+      "record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+      "signed_mean_energy_error_eV": 0.08219389522005388
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005381761637774116,
+      "force_mse_eV2_per_A2": 0.0069246336751239285,
+      "mean_energy_error_squared_eV2": 0.005381761637774116,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+      "signed_mean_energy_error_eV": -0.07336049098645753
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0022074968393141015,
+      "force_mse_eV2_per_A2": 0.01708609500001129,
+      "mean_energy_error_squared_eV2": 0.0022074968393141015,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+      "signed_mean_energy_error_eV": -0.046984006207581974
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 3.846690123217662e-09,
+      "force_mse_eV2_per_A2": 0.010363545886554599,
+      "mean_energy_error_squared_eV2": 3.846690123217662e-09,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+      "signed_mean_energy_error_eV": -6.20216907478155e-05
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.0005076078888737723,
+      "force_mse_eV2_per_A2": 0.0031172269845688985,
+      "mean_energy_error_squared_eV2": 0.0005076078888737723,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+      "signed_mean_energy_error_eV": 0.022530155100970173
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.002466682782774954,
+      "force_mse_eV2_per_A2": 0.002364670150008624,
+      "mean_energy_error_squared_eV2": 0.002466682782774954,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+      "signed_mean_energy_error_eV": 0.04966571033192774
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005324859610530364,
+      "force_mse_eV2_per_A2": 0.0010532809775864863,
+      "mean_energy_error_squared_eV2": 0.005324859610530364,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+      "signed_mean_energy_error_eV": 0.07297163565749615
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.008481131428614374,
+      "force_mse_eV2_per_A2": 0.0012258499074410622,
+      "mean_energy_error_squared_eV2": 0.008481131428614374,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+      "signed_mean_energy_error_eV": 0.09209305852568028
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.010020134700131873,
+      "force_mse_eV2_per_A2": 0.0014563897021873777,
+      "mean_energy_error_squared_eV2": 0.010020134700131873,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+      "signed_mean_energy_error_eV": 0.10010062287584365
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004691480986360344,
+      "force_mse_eV2_per_A2": 0.0041693533773682345,
+      "mean_energy_error_squared_eV2": 0.004691480986360344,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+      "signed_mean_energy_error_eV": -0.06849438653174685
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.005055961442653681,
+      "force_mse_eV2_per_A2": 0.008859492161146315,
+      "mean_energy_error_squared_eV2": 0.005055961442653681,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+      "signed_mean_energy_error_eV": -0.07110528421048383
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.004795044668244467,
+      "force_mse_eV2_per_A2": 0.009699487149146972,
+      "mean_energy_error_squared_eV2": 0.004795044668244467,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+      "signed_mean_energy_error_eV": -0.06924626104162207
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 3.605110885482614e-05,
+      "force_mse_eV2_per_A2": 0.014242261580250347,
+      "mean_energy_error_squared_eV2": 3.605110885482614e-05,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+      "signed_mean_energy_error_eV": 0.006004257560666942
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.008361699165344584,
+      "force_mse_eV2_per_A2": 0.003173254225392558,
+      "mean_energy_error_squared_eV2": 0.008361699165344584,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+      "signed_mean_energy_error_eV": 0.0914423269899918
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009442395808048787,
+      "force_mse_eV2_per_A2": 0.0011782457480668373,
+      "mean_energy_error_squared_eV2": 0.009442395808048787,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+      "signed_mean_energy_error_eV": 0.09717199086181566
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009517089792964924,
+      "force_mse_eV2_per_A2": 0.000559909533621896,
+      "mean_energy_error_squared_eV2": 0.009517089792964924,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+      "signed_mean_energy_error_eV": 0.09755557284422517
+    },
+    {
+      "centered_energy_error_variance_eV2": 0.0,
+      "energy_mse_eV2": 0.009874258973425854,
+      "force_mse_eV2_per_A2": 0.0005496753198159591,
+      "mean_energy_error_squared_eV2": 0.009874258973425854,
+      "record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz",
+      "signed_mean_energy_error_eV": 0.09936930599247362
+    }
+  ],
+  "limits": [
+    "Sparse saved observations do not locate every spike or establish its mechanism.",
+    "Residual mean/variance is descriptive; raw MSE gates are unchanged.",
+    "This analysis does not amend the frozen schedule."
+  ],
+  "new_prediction_frames": 0,
+  "new_training_updates": 0,
+  "per_group_reconstruction_max_error": 0.0,
+  "spike": {
+    "adjacent_observations": [
+      {
+        "fitting": {
+          "energy_mse_eV2": 0.01052412526171488,
+          "force_mse_eV2_per_A2": 0.00808555623591565
+        },
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.003314341925597075,
+            "energy_rmse_eV": 0.057570321569338785,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.005511303964891373,
+            "force_rmse_eV_per_A": 0.07423815706825819,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          },
+          "01_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.004799521551114525,
+            "energy_rmse_eV": 0.06927857930929679,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.007861491700569526,
+            "force_rmse_eV_per_A": 0.08866505343465104,
+            "mean_energy_mse_eV2": 0.014691840198546696,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061309625626903314,
+            "zero_force_mse_eV2_per_A2": 0.012643781149752755
+          },
+          "22": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0044614384437823675,
+            "energy_rmse_eV": 0.06679400005825649,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0035620851215791382,
+            "force_rmse_eV_per_A": 0.05968320636141408,
+            "mean_energy_mse_eV2": 0.00043393794551779054,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.025654788215940468,
+            "zero_force_mse_eV2_per_A2": 0.0031611763984129714
+          },
+          "23": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.007069504792305349,
+            "energy_rmse_eV": 0.08408034724182191,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.010862830897633688,
+            "force_rmse_eV_per_A": 0.10422490536159622,
+            "mean_energy_mse_eV2": 0.003272736677958737,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.01972081939103084,
+            "zero_force_mse_eV2_per_A2": 0.013989886462890417
+          },
+          "44": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0025595491261902023,
+            "energy_rmse_eV": 0.0505919867784435,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0033392323148902256,
+            "force_rmse_eV_per_A": 0.05778609101583378,
+            "mean_energy_mse_eV2": 0.0037639219993234286,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.004330088583582667,
+            "zero_force_mse_eV2_per_A2": 0.0027215358535326905
+          },
+          "58_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.03458745012091716,
+            "energy_rmse_eV": 0.1859770150338938,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.01781029666518742,
+            "force_rmse_eV_per_A": 0.13345522344662056,
+            "mean_energy_mse_eV2": 0.05609685929773062,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.06930285764299296,
+            "zero_force_mse_eV2_per_A2": 0.047555128919074555
+          },
+          "77": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.024022262344302527,
+            "energy_rmse_eV": 0.15499116860099652,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.008608603878306198,
+            "force_rmse_eV_per_A": 0.0927825623611797,
+            "mean_energy_mse_eV2": 0.04301548832510679,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.049888904847356544,
+            "zero_force_mse_eV2_per_A2": 0.010461935367549885
+          },
+          "78_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0033789337895098297,
+            "energy_rmse_eV": 0.05812859700276474,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0071286053442676375,
+            "force_rmse_eV_per_A": 0.08443106859603068,
+            "mean_energy_mse_eV2": 0.008175567346002584,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.008628671364668732,
+            "zero_force_mse_eV2_per_A2": 0.012004580512219374
+          }
+        },
+        "update": 1900
+      },
+      {
+        "fitting": {
+          "energy_mse_eV2": 0.7445412171827791,
+          "force_mse_eV2_per_A2": 0.008304939228618045
+        },
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.6386770326743985,
+            "energy_rmse_eV": 0.7991727176739697,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.005688833494937961,
+            "force_rmse_eV_per_A": 0.07542435611218674,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          },
+          "01_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.6716866285926861,
+            "energy_rmse_eV": 0.8195649020014742,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.008157353225932239,
+            "force_rmse_eV_per_A": 0.090318066996212,
+            "mean_energy_mse_eV2": 0.014691840198546696,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061309625626903314,
+            "zero_force_mse_eV2_per_A2": 0.012643781149752755
+          },
+          "22": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.5971239268780275,
+            "energy_rmse_eV": 0.7727379419169396,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0037435709150441445,
+            "force_rmse_eV_per_A": 0.061184727792514895,
+            "mean_energy_mse_eV2": 0.00043393794551779054,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.025654788215940468,
+            "zero_force_mse_eV2_per_A2": 0.0031611763984129714
+          },
+          "23": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.6499589450229752,
+            "energy_rmse_eV": 0.806200313211906,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.010898140228968437,
+            "force_rmse_eV_per_A": 0.10439415802126303,
+            "mean_energy_mse_eV2": 0.003272736677958737,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.01972081939103084,
+            "zero_force_mse_eV2_per_A2": 0.013989886462890417
+          },
+          "44": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.7715137231694168,
+            "energy_rmse_eV": 0.878358539076963,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0036682674750990007,
+            "force_rmse_eV_per_A": 0.06056622388013802,
+            "mean_energy_mse_eV2": 0.0037639219993234286,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.004330088583582667,
+            "zero_force_mse_eV2_per_A2": 0.0027215358535326905
+          },
+          "58_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.9968031339463836,
+            "energy_rmse_eV": 0.9984002874330434,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.01792595947534368,
+            "force_rmse_eV_per_A": 0.13388786156834262,
+            "mean_energy_mse_eV2": 0.05609685929773062,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.06930285764299296,
+            "zero_force_mse_eV2_per_A2": 0.047555128919074555
+          },
+          "77": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.8339769342052618,
+            "energy_rmse_eV": 0.9132233758534993,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.008829069392954306,
+            "force_rmse_eV_per_A": 0.09396312783722297,
+            "mean_energy_mse_eV2": 0.04301548832510679,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.049888904847356544,
+            "zero_force_mse_eV2_per_A2": 0.010461935367549885
+          },
+          "78_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.7965894129730828,
+            "energy_rmse_eV": 0.8925185785030376,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.007528319620664599,
+            "force_rmse_eV_per_A": 0.08676588973015029,
+            "mean_energy_mse_eV2": 0.008175567346002584,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.008628671364668732,
+            "zero_force_mse_eV2_per_A2": 0.012004580512219374
+          }
+        },
+        "update": 2000
+      },
+      {
+        "fitting": {
+          "energy_mse_eV2": 0.01085083010690519,
+          "force_mse_eV2_per_A2": 0.007823744829222537
+        },
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0039645035543778755,
+            "energy_rmse_eV": 0.06296430381079327,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.005361000659288416,
+            "force_rmse_eV_per_A": 0.07321885453411857,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          },
+          "01_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0054269075484194235,
+            "energy_rmse_eV": 0.07366754745761137,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.007676140875763325,
+            "force_rmse_eV_per_A": 0.0876135884196243,
+            "mean_energy_mse_eV2": 0.014691840198546696,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061309625626903314,
+            "zero_force_mse_eV2_per_A2": 0.012643781149752755
+          },
+          "22": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0036675680823351252,
+            "energy_rmse_eV": 0.06056044981945829,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0034593519658189173,
+            "force_rmse_eV_per_A": 0.058816255965667495,
+            "mean_energy_mse_eV2": 0.00043393794551779054,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.025654788215940468,
+            "zero_force_mse_eV2_per_A2": 0.0031611763984129714
+          },
+          "23": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.007139976788916246,
+            "energy_rmse_eV": 0.0844983833509035,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.010608848578763833,
+            "force_rmse_eV_per_A": 0.10299926494283264,
+            "mean_energy_mse_eV2": 0.003272736677958737,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.01972081939103084,
+            "zero_force_mse_eV2_per_A2": 0.013989886462890417
+          },
+          "44": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0032721788556730677,
+            "energy_rmse_eV": 0.05720296194842595,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.003274470152713221,
+            "force_rmse_eV_per_A": 0.057222986226805925,
+            "mean_energy_mse_eV2": 0.0037639219993234286,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.004330088583582667,
+            "zero_force_mse_eV2_per_A2": 0.0027215358535326905
+          },
+          "58_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.03692749360896493,
+            "energy_rmse_eV": 0.19216527680349782,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0168231020636274,
+            "force_rmse_eV_per_A": 0.12970390149732353,
+            "mean_energy_mse_eV2": 0.05609685929773062,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.06930285764299296,
+            "zero_force_mse_eV2_per_A2": 0.047555128919074555
+          },
+          "77": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.02273698871213047,
+            "energy_rmse_eV": 0.1507878931218633,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.008398599832981943,
+            "force_rmse_eV_per_A": 0.09164387504346345,
+            "mean_energy_mse_eV2": 0.04301548832510679,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.049888904847356544,
+            "zero_force_mse_eV2_per_A2": 0.010461935367549885
+          },
+          "78_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0036710237044243876,
+            "energy_rmse_eV": 0.06058897345577319,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.006988444504823233,
+            "force_rmse_eV_per_A": 0.0835969168380224,
+            "mean_energy_mse_eV2": 0.008175567346002584,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.008628671364668732,
+            "zero_force_mse_eV2_per_A2": 0.012004580512219374
+          }
+        },
+        "update": 2100
+      }
+    ],
+    "sampled_peak_update": 2000
+  },
+  "status": "saved_only"
+}

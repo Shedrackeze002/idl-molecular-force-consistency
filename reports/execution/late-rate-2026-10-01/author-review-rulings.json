@@ -1,0 +1,8 @@
+{
+  "I1": "accepted; known/receipt/unknown counters and all prediction work retained",
+  "I2": "accepted; post-report/evidence cap closure separate from immutable inventory",
+  "I3": "accepted; expected arm and contract fields bound",
+  "I4": "accepted; saved-only frozen-parent comparator in strict child/report",
+  "M1": "addressed; fingerprint/lock consistency, recorded revision policy",
+  "M2": "addressed; finite reference/actual prediction checks"
+}

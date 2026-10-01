@@ -1,0 +1,27 @@
+..F                                                                      [100%]
+=================================== FAILURES ===================================
+__________ test_complete_report_reconciles_prediction_work_categories __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-61/test_complete_report_reconcile0')
+
+    def test_complete_report_reconciles_prediction_work_categories(tmp_path):
+        c,p=tiny_prepared();root=tmp_path/'arm'
+        assert lr._run_arm(c,'constant',p,root,lr.time.perf_counter()+120,probe_runner=tiny_probe)['execution_valid']
+        r=lr._validated_arm(root,c,check_parent=False)
+        assert r['work']['scoring_prediction_frames']==56
+        assert r['work']['reference_prediction_frames']==14
+        assert r['child_work']['prediction_frames']==14
+        s=lr.read(root/'summary.json');s['scoring_prediction_frames']=0;lr.atomic_json(root/'summary.json',s)
+>       with pytest.raises(ValueError):lr._validated_arm(root,c,check_parent=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_late_rate.py:290: Failed
+----------------------------- Captured stdout call -----------------------------
+{"arm": "constant", "update": 6000, "energy_fraction": 0.8642591113837509, "force_fraction": 0.9993348766504788, "elapsed_seconds": 0.027583625007537194}
+{"arm": "constant", "update": 6001, "energy_fraction": 0.6960879092207212, "force_fraction": 0.9981509805008799, "elapsed_seconds": 1.0230312080093427}
+{"arm": "constant", "update": 6002, "energy_fraction": 0.6429079779883959, "force_fraction": 0.9973047085393837, "elapsed_seconds": 1.028802540997276}
+{"arm": "constant", "update": 6003, "energy_fraction": 0.7122766922056242, "force_fraction": 0.9970908513897014, "elapsed_seconds": 1.0342227079963777}
+=========================== short test summary info ============================
+FAILED tests/test_late_rate.py::test_complete_report_reconciles_prediction_work_categories
+1 failed, 2 passed, 42 deselected in 9.04s
