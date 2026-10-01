@@ -13668,3 +13668,10 @@ Scientific0Critical/0Important/1Minor, engineering0Critical/2Important/0Minor. B
 ## WIDTHRATE-REPLACEMENT-REVIEW-002 — material plan clearance
 
 Both independent reviewers cleared the amended prospective design (0 Critical/Important/remaining Minor). Both accepted engineering gaps are resolved in the plan, not yet in implemented code. Scientific controls and config/pin identities unchanged. Review: docs/reviews/2026-10-01-width-rate-replacement-plan-review.md. Execution remains pending implementation, regression/full-suite checks and fresh final review. No numerical action in planning or log inventory.
+
+## WIDTHRATE-REPLACEMENT-ENGINEERING-001 — pure boundary checks
+
+Task1 prospective guard implementation;13 focused checks passed in2.84s, no arrays/training. Initial RED13failures: feature absent. First GREEN10passed/3failed exposed recovery schema field mistake and wrong test lock basename; corrected against saved schema/manifest. Original/recovery immutable sources rechecked by518+326+163guards. New config rejected before numerical imports; old numerical preflight receives exact original config. Protected existing/symlink/raced roots remain untouched. Raw logs retained:
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt: SHA256 a04333375ffc00814b683e5b9d7b2fedaa71c4d461a0338511504a404056a042
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt: SHA256 59acec7a6a1456ae9cabf936341f3a2aa35494920967606c0c133549ca349be6
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt: SHA256 2397da710e6cdd76ac86ae1f69f0edd91fb0f319bc7791bf1bfa1ffd0d5c73f0
