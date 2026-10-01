@@ -13709,3 +13709,71 @@ Controller fallback1RED→1GREEN preserves completed/failed earlier cells rather
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-complete.txt: SHA256 3cd5b01bf8230e093633c66d00b5b600b7d6def48d938f0d28b75dbdd789ef43
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task3-late-regressions-green.txt: SHA256 295acaf84513c2ff1dab46a791deeb7388b2e5f4e48db191243b566e4a949819
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task3-red.txt: SHA256 d150688f968fb0b98c2200f99b0378d102373797bf9ede02a9b2ab1ccc61513f
+
+## WIDTHRATE-REPLACEMENT-FINALREVIEW-001 — five material gaps preserved before production
+
+Frozen pre-review full455passed312.34s; fresh reviewer found0Critical/5Important/0Minor on83f3eb0. All accepted against retained pure-metadata reproductions. No production root/action. Findings/rulings in docs/reviews/2026-10-01-width-rate-replacement-final-review.md; all negative verifier/report/controller examples preserved. One author repair pass with RED→GREEN and full suite required; no code rereview.
+
+Ownership engineering alternative: macOS directory FD is openable but /dev/fd/3/saved fails FileNotFoundError; native dir_fd read succeeds. Abandon filesystem pseudo-path anchoring, use directory-handle persistence/process-local anchored working-directory boundaries; no numerical action. This was an engineering feasibility check, not research model data.
+- /private/tmp/width-rate-replacement-review-83f3eb0/contradictory-counts/result.json: SHA256 fbe96e9e9ab78e1205cb09c2b88d95b0cdf61564bb23e098af65a0ffbd182a8f
+- /private/tmp/width-rate-replacement-review-83f3eb0/contradictory-counts.log: SHA256 fbe96e9e9ab78e1205cb09c2b88d95b0cdf61564bb23e098af65a0ffbd182a8f
+- /private/tmp/width-rate-replacement-review-83f3eb0/contradictory-counts.py: SHA256 c7480cba08837bedd125b5a8ec5d022d64c3f72f1fec11ad91059b2082051d71
+- /private/tmp/width-rate-replacement-review-83f3eb0/ownership/result.json: SHA256 1a711aca838d828e710f0aa2ba1cc56f2e54bd342846c3ccaf5bb801bb5c96f1
+- /private/tmp/width-rate-replacement-review-83f3eb0/ownership.log: SHA256 1a711aca838d828e710f0aa2ba1cc56f2e54bd342846c3ccaf5bb801bb5c96f1
+- /private/tmp/width-rate-replacement-review-83f3eb0/ownership.py: SHA256 8700b4e822ee26356277fa39d8a5001c9bdd0339d8105092b224b9134ce80c0d
+- /private/tmp/width-rate-replacement-review-83f3eb0/reproduce.log: SHA256 e1f11c12e07d5aeed3821146976cfd436657756d694f4dc66ca8cbdbfcc5c6f4
+- /private/tmp/width-rate-replacement-review-83f3eb0/reproduce.py: SHA256 5622d0a55b63230faede155f478aaad00f58d57ef4129d55fa218391c97aa7ed
+- /private/tmp/width-rate-replacement-review-83f3eb0/results.json: SHA256 dbfd9564df568c04125431cf8f7202316747dd4a7c3e3a3cbaab7f678d6d6f84
+
+## WIDTHRATE-REPLACEMENT-ENGINEERING-004 — author repairs verified before single production invocation
+
+All five material final-review findings accepted; one author repair pass, no code rereview. Final full476tests passed335.52s; physical518source pins verified unchanged; proposed production root absent. The structured test-results/test-trials records preserve every retained engineering log and current tested code hashes. Review findings, regression reproductions and abandoned directory pseudo-path approach remain preserved. No scientific updates were performed by these engineering regressions. Additional attempted static read src/force_consistency/checkpoints.py was absent; engine exports resolved from its imports, no mutation or numerical action. Freeze-record helper initially stopped before any output write because it named a nonexistent separate contract test file; actual pure-contract tests reside in test_width_rate_replacement.py. Corrected the metadata list, no code or numerical change.
+
+```json
+{
+  "code_sha256": {
+    "scripts/report_width_rate_replacement.py": "67efe288b5879c5be5a785d1e96995fe90c7a70c5b6fe7140f3012b450bd0634",
+    "src/force_consistency/width_rate_replacement.py": "1ba6486808718e99abc853ce5ae0051c692c591aff5e3a4fcfd82b6abb30769b",
+    "src/force_consistency/width_rate_replacement_contract.py": "d060f420c6b7432a213afacc44d858ae164932930bf6c350a76c432ae5b4df81",
+    "tests/test_width_rate_replacement.py": "1b1a92ad5e66d9c11abd5d0ece7b9c06da40583401b6a4c22cc9dc0e3f4837c5",
+    "tests/test_width_rate_replacement_report.py": "66397876bec0e2153f08ceb6c23f9c8ac4cb2e11664f493ea132294582a9c83a",
+    "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+  },
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "elapsed_seconds": 335.52,
+  "exit_code": 0,
+  "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-after-author-repairs.txt",
+  "log_sha256": "64b907d46ca94693959014a7c80d5010f62cab7127cd980cbbab70f51f775ebf",
+  "passed": 476,
+  "schema": "replacement-test-results-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "status": "passed"
+}
+```
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-coverage-green.txt: SHA256 0bcb657498516ad47955b91bbb1bb80b7362d3e424ff478bb7f512086ecfbb14
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-green.txt: SHA256 e30afb1049573f5bf2e65dc560b8e3854aee18f60d1a51afc6d99a2186849deb
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-red.txt: SHA256 189e9a58e3e115b43454b3495533e9f07f71d76e2819560aa7db48ee0ba5731d
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-ownership-green.txt: SHA256 929c878b9adfc8205d7d7d6dee3b4987bcf7661c75ce2624d88d52612aad7e5c
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-payload-green.txt: SHA256 634b9c0c1b5f0d9df593f4cdc54c2f3f0ddc59cfc39e1a76d8ba196e437b5613
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-repair-focused.txt: SHA256 e093f448a466edebba8dc3bfb42441c592576fbf7687db43d77e703e260a93cd
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-review-red.txt: SHA256 61ff41255c958700dcc3ffc421410f1dfc65f68c26315cde52e80afc37b76594
+- .superpowers/sdd/2026-10-01-width-rate-replacement/final-schema-counts-green.txt: SHA256 0165fb0db7e435fa611ca32f2a2f75a061d6e5ee89d1a0c50f05cdb1911b02e3
+- .superpowers/sdd/2026-10-01-width-rate-replacement/focused-before-review.txt: SHA256 629d863e92fe77c9b4210b9df6d9918d083db5f27f1e67f05d82d42f1cc25163
+- .superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-after-author-repairs.txt: SHA256 64b907d46ca94693959014a7c80d5010f62cab7127cd980cbbab70f51f775ebf
+- .superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-before-review.txt: SHA256 f2afe699850679f63975a9da50a29a792cc017b5481e47b201e10e5f53ca13c1
+- .superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-final-before-review.txt: SHA256 799df38184ba67cec10d831cda69a42e594f8b4e1c8c85e28a4c2f2f2bcdbdc5
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt: SHA256 a04333375ffc00814b683e5b9d7b2fedaa71c4d461a0338511504a404056a042
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt: SHA256 59acec7a6a1456ae9cabf936341f3a2aa35494920967606c0c133549ca349be6
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt: SHA256 2397da710e6cdd76ac86ae1f69f0edd91fb0f319bc7791bf1bfa1ffd0d5c73f0
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-green.txt: SHA256 e712bd952fcdd7c7ab1870dd661ed56bfbbf579c0930ded2a15f51010ee71f2d
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-red.txt: SHA256 cbaef168c8df545879939f09070e133053033f3792b6fa37336f5a92ec9ec0cf
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-attempt1.txt: SHA256 9ed97e741928681488246315e7949c72ec3f45e5496a2df81beed9418b4655e4
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-complete.txt: SHA256 ad9d1e278d7b0eb110785171d3f7c35dca4e76b74f705b0bd049f7a7e3a891ec
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-live-and-known-red.txt: SHA256 a4d3f5425c3f1b99febe102e15a89d0f5a16937d1471c5e15dd15d68ca738c49
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt: SHA256 9edf2670bbd04479a4e16b203cb11448a341e32ea3f35a49ee92838d325649d7
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-coverage-roles-red.txt: SHA256 3daaca145d26072d493c898bd568ba02243e630cd917f1869a8ba894f50e0a80
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-failed-time-red.txt: SHA256 a7687a97a07d396e1bdbc296d62481b003f8ae3552b48392c6c1cf2e00508907
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-attempt1.txt: SHA256 37a69a98097a7be418adcc246273b4ebe1f85121de6fc6b4e85b998c790074dc
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-complete.txt: SHA256 3cd5b01bf8230e093633c66d00b5b600b7d6def48d938f0d28b75dbdd789ef43
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-late-regressions-green.txt: SHA256 295acaf84513c2ff1dab46a791deeb7388b2e5f4e48db191243b566e4a949819
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-red.txt: SHA256 d150688f968fb0b98c2200f99b0378d102373797bf9ede02a9b2ab1ccc61513f

@@ -4,12 +4,15 @@ import hashlib
 import importlib.util
 import json
 import math
+import re
+import subprocess
+import zipfile
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from force_consistency.width_rate_contract import MSE_KEYS,canonical_hash,digest,read,expected_updates,resolve_commit
 from force_consistency.width_rate_replacement_contract import CONFIG_ID,validate_replacement,verify_replacement_sources
-from force_consistency.width_rate_replacement import _audit_cell,audit_replacement_cell,valid_child,attempt_binding
+from force_consistency.width_rate_replacement import _audit_cell,audit_replacement_cell,valid_child,attempt_binding,json_bytes,audit_committed_payload
 _spec=importlib.util.spec_from_file_location('pinned_width_rate_report',Path(__file__).with_name('report_width_rate.py'))
 _old=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_old)
 # Only these configuration-independent helpers cross the old report boundary.
@@ -113,6 +116,7 @@ def committed_observations(child,c,sources,errors):
         if (strict_read(child/'config.json')!=c or case not in c['cases'] or prov['case']!=case or prov['config_identity']!=CONFIG_ID
             or prov['inputs']!=sources['historical_inputs'] or prov['normalization']!=sources['normalization']
             or prov['original_baselines']!=sources['original_baselines']):raise ValueError('Published commit provenance invalid')
+        audit_committed_payload(c,child,sources,receipt,case,prov)
         updates=[r['update'] for r in history]
         if updates!=expected_updates()[:len(updates)] or receipt['update'] not in expected_updates():raise ValueError('Published history schedule invalid')
         for i,row in enumerate(history):
@@ -155,40 +159,137 @@ def _global_valid(root,c,sources,summary,arms,accounting,errors):
     except (OSError,ValueError,KeyError,TypeError) as exc:errors.append('Global validity: '+str(exc));return False
 
 
+
+def publication_bound(root,c,summary):
+    try:
+        terminal=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json'
+        invocation=strict_read(root/'invocation.json');completion=strict_read(root/'controller-completion.json');st=root.stat()
+        return (invocation['ordinal']==1 and invocation['config_identity']==CONFIG_ID and invocation['role']==c['replacement_role']
+            and invocation['directory_identity']==[st.st_dev,st.st_ino] and completion['summary_sha256']==digest(terminal)
+            and completion['status']==summary.get('status') and summary.get('config_identity')==CONFIG_ID
+            and summary.get('role')==c['replacement_role'])
+    except (OSError,ValueError,KeyError,TypeError):return False
+
+
+def journal_rows(root,errors):
+    path=root/'journal.jsonl'
+    if not path.exists():return []
+    rows=[]
+    try:
+        for line in path.read_text().splitlines():
+            value=json.loads(line)
+            if not isinstance(value,dict):raise ValueError('Journal record is not an object')
+            rows.append(value)
+    except (OSError,ValueError) as exc:errors.append('Journal incomplete: '+str(exc))
+    return rows
+
+
+def blocked_zero_bound(root,c,case,arm,summary,journal):
+    if not publication_bound(root,c,summary) or (root/case['name']).exists():return False
+    if arm.get('case')!=case or arm.get('status')!='blocked' or arm.get('executed') is not False or arm.get('execution_valid') is not False:return False
+    if not isinstance(arm.get('stop_reason'),str) or not arm['stop_reason']:return False
+    if any(arm.get(k) not in (None,0) for k in ('updates','attempted_updates','persisted_update','frame_exposures')):return False
+    return (summary.get('arms',{}).get(case['name'])==arm and any(row.get('phase')==case['name'] and row.get('status')=='blocked' and row.get('details')==arm for row in journal))
+
+
+def validated_preflight(root,c,summary,events,sources,journal,errors):
+    known=[];rejected=[];latest={}
+    if not isinstance(events,list):errors.append('Preflight events not an array');events=[];rejected.append('schema')
+    invocation_ok=False
+    try:
+        inv=strict_read(root/'invocation.json');st=root.stat()
+        invocation_ok=inv['ordinal']==1 and inv['config_identity']==CONFIG_ID and inv['role']==c['replacement_role'] and inv['directory_identity']==[st.st_dev,st.st_ino]
+    except (OSError,ValueError,KeyError,TypeError):pass
+    for i,event in enumerate(events):
+        if not isinstance(event,dict):rejected.append('event:'+str(i));continue
+        try:
+            operation=event['operation'];status=event['status']
+            if operation not in ('historical_parent_preflight','shared_training_initialization') or status not in ('started','completed','unknown'):raise ValueError('Unreviewed preflight operation/status')
+            key=operation+(':'+str(event['features']) if operation=='shared_training_initialization' else '')
+            if operation=='shared_training_initialization' and event['features'] not in (16,32):raise ValueError('Preflight width changed')
+            if status=='completed':
+                if not finite(event['elapsed_seconds']) or event['elapsed_seconds']<0:raise ValueError('Preflight time invalid')
+                if operation=='historical_parent_preflight':
+                    if event['completed_source_prediction_frames']!=208 or event['historical_template_initializations']!=1:raise ValueError('Parent count invalid')
+                else:
+                    if (event['completed_initializations']!=1 or event['baseline_prediction_frames']!=144
+                        or event['initialization_batch_record_ids']!=sources['historical_inputs']['anchor']['record_ids'][:16]
+                        or type(event['parameter_count']) is not int or event['parameter_count']<=0
+                        or set(event['initial_state_hashes'])!={'params','optimizer'}
+                        or any(not close(event['initial_metrics'][r][k],sources['original_baselines'][r][k]) for r in ROLES for k in MSE_KEYS)):
+                        raise ValueError('Shared count/identity/baseline invalid')
+            prefix_sha=__import__('hashlib').sha256(json_bytes(events[:i+1])).hexdigest()
+            linked=any(row.get('phase')=='preflight' and row.get('status')==status and row.get('details')==event
+                       and row.get('artifacts_sha256',{}).get(str(root/'preflight-work.json'))==prefix_sha for row in journal)
+            if not invocation_ok or not linked:raise ValueError('Preflight invocation/journal binding missing')
+            known.append(event);latest[key]=event
+        except (OSError,ValueError,KeyError,TypeError):rejected.append('event:'+str(i))
+    if rejected:errors.append('Unverified preflight claims quarantined: '+','.join(rejected))
+    accounting=preflight_accounting({},known)
+    if not known:accounting['shared_training_initializations_completed']=None
+    missing=[name for name in ('historical_parent_preflight','shared_training_initialization:16','shared_training_initialization:32') if name not in latest]
+    accounting['unknown_pending_preflight_operations']+=['unavailable:'+x for x in missing]+rejected
+    accounting['work_counts_complete']=not missing and not rejected and accounting['work_counts_complete']
+    return accounting
+
+
 def generate(root,output):
     root=Path(root);output=Path(output);output.mkdir(parents=True,exist_ok=True);errors=[]
-    c=strict_read(root/'config.json');validate_replacement(c);sources=verify_replacement_sources(c)
+    saved_config=optional(root/'config.json',errors)
+    config_valid=True
+    try:validate_replacement(saved_config);c=saved_config
+    except (ValueError,TypeError):
+        c=strict_read('configs/aspirin-width-rate-replacement.json');validate_replacement(c);config_valid=False;errors.append('Saved config absent/malformed/unreviewed; using reviewed cases only')
+    source_valid=config_valid
+    try:sources=verify_replacement_sources(c)
+    except (OSError,ValueError,KeyError,TypeError) as exc:
+        errors.append('Source guard failed: '+str(exc));source_valid=False
+        sources={'config_identity':CONFIG_ID,'pins':{},'historical_inputs':{},'original_baselines':{},'normalization':{},'historical':{}}
     terminal=root/'controller-failure.json' if (root/'controller-failure.json').exists() else root/'summary.json'
-    summary=optional(terminal,errors) or {};arms={};valid={};committed=0;unknown=[]
+    raw_controller=optional(terminal,errors);summary=raw_controller if isinstance(raw_controller,dict) else {}
+    if not isinstance(raw_controller,dict):errors.append('Controller terminal is unavailable or not an object')
+    if not isinstance(summary.get('arms'),dict):errors.append('Controller arms unavailable or malformed');summary={**summary,'arms':{}}
+    journal=journal_rows(root,errors);arms={};valid={};committed=0;unknown=[];unknown_committed=[]
     for case in c['cases']:
         name=case['name'];child=root/name;raw_summary=summary.get('arms',{}).get(name)
         file=child/'failure.json' if (child/'failure.json').exists() else child/'summary.json'
         saved=optional(file,errors) if file.exists() else None
         raw=saved if saved is not None else raw_summary
-        arm=raw if isinstance(raw,dict) else {'case':case,'status':'unavailable','executed':None,'execution_valid':False,'stop_reason':'missing_terminal_record'}
-        is_valid=arm==raw_summary and _saved_arm_valid(child,arm,c,sources)
-        receipt,history=committed_observations(child,c,sources,errors)
+        arm=dict(raw) if isinstance(raw,dict) else {}
+        if arm.get('status') not in ('completed','failed','incomplete','blocked','unavailable'):
+            errors.append(name+': missing or malformed terminal status');arm['status']='unavailable'
+        if arm.get('case')!=case:errors.append(name+': terminal case unavailable/mismatched');arm['case']=case
+        if arm.get('executed') not in (True,False):arm['executed']=None
+        arm.setdefault('execution_valid',False);arm.setdefault('stop_reason','unavailable_terminal_reason')
+        is_valid=source_valid and arm==raw_summary and _saved_arm_valid(child,arm,c,sources)
+        receipt,history=committed_observations(child,c,sources,errors) if source_valid else (None,[])
+        blocked_zero=blocked_zero_bound(root,c,case,arm,summary,journal)
         if receipt:committed+=receipt['update']
+        elif (child/'commit.json').exists():unknown_committed.append(name)
         # Failed/partial counters stay raw claims; only independent commit/child bindings become known work.
         child_work=None;child_result=None
         try:
+            if not source_valid:raise ValueError('Source guard invalid')
             audit=audit_replacement_cell(c,child);child_result=strict_read(child/'checkpoint-verification.json');child_work=valid_child(audit,child_result)
         except (OSError,ValueError,KeyError,TypeError):
-            if arm.get('executed') is False:child_work={'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0,'training_updates':0}
+            if blocked_zero:child_work={'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0,'training_updates':0}
         if not is_valid:unknown.append(name);errors.append(name+': incomplete or invalid saved execution')
-        arms[name]={**arm,'execution_valid':bool(is_valid),'interpretation_valid':bool(is_valid),'raw_terminal_claims':arm,
+        arms[name]={**arm,'execution_valid':bool(is_valid),'interpretation_valid':bool(is_valid),'raw_terminal_claims':raw,'blocked_zero_work_verified':blocked_zero,
                     'history':history,'persisted_update':receipt['update'] if receipt else None,
                     'derived_committed_frame_exposures':receipt['update']*128 if receipt else 0,
-                    'derived_synchronized_updates':arm['updates'] if is_valid else 0 if arm.get('executed') is False else None,
-                    'derived_attempted_updates':arm['attempted_updates'] if is_valid else 0 if arm.get('executed') is False else None,
+                    'derived_synchronized_updates':arm['updates'] if is_valid else 0 if blocked_zero else None,
+                    'derived_attempted_updates':arm['attempted_updates'] if is_valid else 0 if blocked_zero else None,
                     'known_child_work':child_work,'known_child_receipt':child_result,'observation_status':'complete' if is_valid else 'committed_prefix' if history else 'unavailable'}
         if history:
             arms[name].update(final_metrics=history[-1]['metrics'],fit_gate=history[-1]['fit_gate'],anchor_gate=history[-1]['anchor_gate'])
         else:
             for key in ('final_metrics','fit_gate','anchor_gate'):arms[name].pop(key,None)
         valid[name]=is_valid
-    events=optional(root/'preflight-work.json',errors) or summary.get('preflight_work',[])
-    accounting=preflight_accounting(summary,events);matrix_valid=_global_valid(root,c,sources,summary,arms,accounting,errors)
+    raw_events=optional(root/'preflight-work.json',errors) if (root/'preflight-work.json').exists() else summary.get('preflight_work',[])
+    events=raw_events if isinstance(raw_events,list) else []
+    if not isinstance(raw_events,list):errors.append('Raw preflight structure quarantined')
+    accounting=validated_preflight(root,c,summary,raw_events,sources,journal,errors)
+    matrix_valid=source_valid and _global_valid(root,c,sources,summary,arms,accounting,errors)
     raw_elapsed=summary.get('elapsed_seconds');elapsed=None
     try:
         completion=strict_read(root/'controller-completion.json')
@@ -197,7 +298,8 @@ def generate(root,output):
             elapsed=raw_elapsed
     except (OSError,ValueError,KeyError,TypeError):pass
     if matrix_valid:elapsed=raw_elapsed
-    counts={'committed_updates':committed,'committed_frame_exposures':committed*128,
+    counts={'committed_updates':committed if source_valid and not unknown_committed else None,'committed_frame_exposures':committed*128 if source_valid and not unknown_committed else None,
+        'committed_updates_lower_bound':committed,'unknown_committed_cells':unknown_committed,
         'synchronized_updates':sum(a['derived_synchronized_updates'] for a in arms.values()) if all(a['derived_synchronized_updates'] is not None for a in arms.values()) else None,
         'attempted_updates':sum(a['derived_attempted_updates'] for a in arms.values()) if all(a['derived_attempted_updates'] is not None for a in arms.values()) else None,
         'unknown_or_invalid_cell_counts':unknown,'known_probe_prediction_frames':sum((a['known_child_work'] or {}).get('prediction_frames',0) for a in arms.values()),
@@ -212,10 +314,10 @@ def generate(root,output):
                 'below_one_percent':abs((rows[6000]['metrics'][role][k]-rows[5500]['metrics'][role][k])/rows[5500]['metrics'][role][k])<.01}
                 for k in MSE_KEYS if rows[5500]['metrics'][role][k]>0} for role in ROLES}
     result={'status':summary.get('status','unavailable'),'execution_valid':bool(matrix_valid),'interpretation_valid':bool(matrix_valid),'full_pilot':'pending',
-        'config':c,'config_identity':CONFIG_ID,'sources':sources,'source_root':str(root),'arms':arms,'arm_verification':valid,
+        'config':c,'raw_saved_config':saved_config,'config_identity':CONFIG_ID,'sources':sources,'source_guard_valid':source_valid,'raw_controller_claims':raw_controller,'raw_preflight_claims':raw_events,'source_root':str(root),'arms':arms,'arm_verification':valid,
         'contrasts':factorial_contrasts(contrast_arms),'terminal_window':terminal_window,'actual_counts':counts,'actual_matrix_elapsed_seconds':elapsed,'raw_terminal_elapsed_seconds':raw_elapsed,
-        'ancestry':{'original_failed':strict_read('reports/width-rate-diagnostics.json'),
-                    'copy_verified':strict_read('reports/width-rate-recovery-verification.json'),'combined_work_counts_complete':False},
+        'ancestry':{'original_failed':optional('reports/width-rate-diagnostics.json',errors),
+                    'copy_verified':optional('reports/width-rate-recovery-verification.json',errors),'combined_work_counts_complete':False},
         'artifacts_sha256':{str(p.relative_to(root)):digest(p) for p in sorted(root.rglob('*')) if p.is_file()},
         'report_generator_sha256':digest(__file__),'verification_errors':errors,
         'limits':['One seed and fully fitted anchors; no held-out/generalization, capacity or optimizer-causal conclusion.',
@@ -251,45 +353,161 @@ def _figure(arms,sources,path):
             for name,arm in arms.items():
                 rows=[r for r in arm.get('history',[]) if finite(r.get('metrics',{}).get(role,{}).get(key))]
                 if rows:ax.plot([r['update'] for r in rows],[r['metrics'][role][key] for r in rows],marker='.',markersize=3,label=name+(' [committed partial/invalid]' if not arm['interpretation_valid'] else ''))
-            ax.axhline(.1*sources['original_baselines'][role][key],color='black',linestyle='--',label='Original strict gate')
+            base=sources.get('original_baselines',{}).get(role,{}).get(key)
+            if finite(base) and base>0:ax.axhline(.1*base,color='black',linestyle='--',label='Original strict gate')
             ax.set_yscale('log');ax.set_xlabel('Observed prescribed update from published commit');ax.set_ylabel('Raw energy MSE (eV²)' if j==0 else 'Raw force MSE ((eV/Å)²)')
             ax.set_title(role+(' energy' if j==0 else ' forces'));ax.grid(alpha=.2)
     axes[0,0].legend(fontsize=8);fig.suptitle('Fresh replacement: one seed, fully fitted anchors; pilot pending')
     fig.savefig(path,dpi=170);plt.close(fig)
 
 
+SCOPE='width-rate-replacement-2026-10-01'
+EXECUTION=Path('reports/execution')/SCOPE
+WORKSPACE=Path('.superpowers/sdd/2026-10-01-width-rate-replacement')
+
+
+def role_paths():
+    return {'code':str(EXECUTION/'production-code.json'),'config':'configs/aspirin-width-rate-replacement.json',
+        'pins':'configs/aspirin-width-rate-replacement-source-pins.json','raw':str(EXECUTION/'raw-inventory.json'),
+        'reports':'reports/width-rate-replacement-diagnostics.json','tests':str(EXECUTION/'test-results.json'),
+        'plan_review':'docs/reviews/2026-10-01-width-rate-replacement-plan-review.md',
+        'engineering_logs':str(EXECUTION/'test-trials.json'),'ancestry':'reports/research-log-inventory-2026-10-01.json',
+        'deferred_review':str(EXECUTION/'deferred-review.json'),'preservation':str(EXECUTION/'preservation-verification.json'),
+        'navigation':str(EXECUTION/'navigation/verification.json'),'results_commit':str(EXECUTION/'results-commit.json'),
+        'outcomes':str(EXECUTION/'outcome-index.json')}
+
+
+def case_record(name,arm,raw_files):
+    raw=arm.get('raw_terminal_claims');raw=raw if isinstance(raw,dict) else {}
+    return {'name':name,'case':arm.get('case'),'status':arm.get('status'),'execution_valid':arm.get('execution_valid',False),
+        'interpretation_valid':arm.get('interpretation_valid',False),'stop_reason':arm.get('stop_reason'),
+        'failure_reason':raw.get('failure_reason'),'raw_updates':raw.get('updates'),'raw_attempted_updates':raw.get('attempted_updates'),
+        'persisted_update':arm.get('persisted_update'),'known_child_work':arm.get('known_child_work'),
+        'derived_synchronized_updates':arm.get('derived_synchronized_updates'),'derived_attempted_updates':arm.get('derived_attempted_updates'),
+        'arm_sha256':canonical_hash(normalized(arm)),
+        'raw_files_sha256':{key:value for key,value in raw_files.items() if Path(key).parts and Path(key).parts[0]==name}}
+
+
+def outcome_index(result,report_path):
+    return {'schema':'replacement-outcome-index-v1','scope':SCOPE,'config_identity':CONFIG_ID,'source_root':result['source_root'],
+        'report_sha256':digest(report_path),'outcomes':{name:case_record(name,arm,result['artifacts_sha256']) for name,arm in result['arms'].items()}}
+
+
+def scoped_inventory(result):
+    """Expected inventory derived from fixed roles, observed raw bytes and retained trials."""
+    roles=role_paths();raw={str(Path(result['source_root'])/name):sha for name,sha in result['artifacts_sha256'].items()}
+    return {'schema':'replacement-scoped-inventory-v1','scope':SCOPE,'config_identity':CONFIG_ID,'roles':roles,
+        'raw_files_sha256':raw,'source_pins':result['sources']['pins'],
+        'test_logs_sha256':{str(p):digest(p) for p in sorted(WORKSPACE.glob('*.txt'))},
+        'additional_required_paths':['reports/width-rate-replacement-diagnostics.md','reports/figures/width-rate-replacement-curves.png',
+            'reports/width-rate-replacement-execution-record.md','docs/reviews/2026-10-01-width-rate-replacement-final-review.md',
+            'docs/superpowers/plans/2026-10-01-width-rate-replacement.md','docs/superpowers/specs/2026-10-01-width-rate-replacement-design.md']}
+
+
+def structured_evidence(prefix,identity):
+    sections=re.split(r'^## ',prefix,flags=re.M);found=[]
+    for section in sections:
+        if section.split(' ',1)[0]==identity:
+            match=re.search(r'```json\n(.*?)\n```',section,flags=re.S)
+            if match:found.append(json.loads(match.group(1)))
+    if len(found)!=1:raise ValueError('Missing or ambiguous structured evidence: '+identity)
+    return found[0]
+
+
+def artifact_role_valid(role,path,result,required):
+    """Purpose and content checks; an arbitrary listed file cannot fill a role."""
+    try:
+        if role=='plan_review':
+            text=Path(path).read_text().lower()
+            return all(word in text for word in ('scientific','engineering','material follow-up','cleared'))
+        value=strict_read(path)
+        if role=='config':validate_replacement(value);return value==result['config']
+        if role=='pins':return digest(path)==result['config']['source_pin_manifest_sha256'] and value['files_sha256']==result['sources']['pins'] and len(value['files_sha256'])==518
+        if role=='reports':return canonical_hash(normalized(value))==canonical_hash(normalized(result))
+        if role=='ancestry':
+            return value['report_count']==17 and value['all_saved_report_bytes_retained'] is True and all(required.get(a['path'])==a['sha256'] for a in value['artifacts'])
+        if not isinstance(value,dict):return False
+        if value.get('scope')!=SCOPE or value.get('config_identity')!=CONFIG_ID:return False
+        if role=='outcomes':return value==outcome_index(result,role_paths()['reports'])
+        if role=='raw':
+            want={str(Path(result['source_root'])/k):v for k,v in result['artifacts_sha256'].items()}
+            return value.get('schema')=='replacement-raw-inventory-v1' and value.get('files_sha256')==want and all(required.get(k)==v for k,v in value.get('external_action_files_sha256',{}).items())
+        if role=='code':
+            files=value['files_sha256'];needed={'src/force_consistency/width_rate_replacement.py','src/force_consistency/width_rate_replacement_contract.py','scripts/report_width_rate_replacement.py','uv.lock'}
+            return value['schema']=='replacement-code-record-v1' and value['status']=='recorded' and needed<=set(files) and all(required.get(k)==v for k,v in files.items()) and bool(re.fullmatch('[0-9a-f]{40}',value['revision']))
+        if role=='tests':
+            log=Path(value['log_path']);match=re.findall(r'(\d+) passed in ([\d.]+)s',log.read_text())
+            return (value['schema']=='replacement-test-results-v1' and value['status']=='passed' and value['exit_code']==0
+                and match and type(value['passed']) is int and value['passed']==int(match[-1][0]) and value['passed']>=455
+                and close(value['elapsed_seconds'],float(match[-1][1])) and required.get(str(log))==value['log_sha256']
+                and all(required.get(k)==v for k,v in value['code_sha256'].items()))
+        if role=='engineering_logs':
+            expected={str(p):digest(p) for p in sorted(WORKSPACE.glob('*.txt'))}
+            return value['schema']=='replacement-test-trials-v1' and value['files_sha256']==expected and value['includes_failed_trials'] is True and all(required.get(k)==v for k,v in expected.items())
+        if role=='deferred_review':
+            return (value['schema']=='replacement-deferred-review-v1' and value['status']=='completed'
+                and value['reviewer']=='/root/replacement_final_review' and value['report_sha256']==digest(role_paths()['reports'])
+                and required.get(value['review_record_path'])==value['review_record_sha256'] and isinstance(value['findings'],list))
+        if role=='preservation':
+            if (value['schema']!='replacement-preservation-v1' or value['status']!='passed' or value['preserved_source_pin_count']!=518
+                or value['crc_valid'] is not True or value['byte_identity_valid'] is not True):return False
+            return all(required.get(name)==sha and zipfile.is_zipfile(name) for name,sha in value['archives_sha256'].items()) and bool(value['archives_sha256']) and required.get(value['manifest_path'])==value['manifest_sha256']
+        if role=='navigation':
+            if value['schema']!='replacement-navigation-v1':return False
+            if value['status']=='blocked':return isinstance(value.get('reason'),str) and bool(value['reason']) and bool(value.get('attempted_command'))
+            if value['status']!='passed' or value['vault']!='hermes' or set(value['notes'])!={'hub','findings'}:return False
+            for label,note in value['notes'].items():
+                before=str(Path(path).parent/(label+'-before.md'));after=str(Path(path).parent/(label+'-after.md'))
+                if required.get(before)!=note['before_sha256'] or required.get(after)!=note['after_sha256'] or note['append_verified'] is not True or Path(before).read_text().strip() not in Path(after).read_text():return False
+            return True
+        if role=='results_commit':
+            if value['schema']!='replacement-results-commit-v1' or value['status']!='recorded' or not re.fullmatch('[0-9a-f]{40}',value['revision']):return False
+            if subprocess.check_output(['git','cat-file','-t',value['revision']],text=True).strip()!='commit':return False
+            mandatory={name for key,name in role_paths().items() if key!='results_commit'}|{'src/force_consistency/width_rate_replacement.py','src/force_consistency/width_rate_replacement_contract.py','scripts/report_width_rate_replacement.py',
+                'reports/width-rate-replacement-diagnostics.md','reports/figures/width-rate-replacement-curves.png','reports/width-rate-replacement-execution-record.md','docs/reviews/2026-10-01-width-rate-replacement-final-review.md'}
+            mandatory.update(strict_read(role_paths()['preservation'])['archives_sha256'])
+            nav=strict_read(role_paths()['navigation'])
+            if nav['status']=='passed':mandatory|={str(Path(role_paths()['navigation']).parent/(label+'-'+part+'.md')) for label in ('hub','findings') for part in ('before','after')}
+            if not mandatory<=set(value['files_sha256']):return False
+            return all(required.get(name)==sha and hashlib.sha256(subprocess.check_output(['git','show',value['revision']+':'+name])).hexdigest()==sha for name,sha in value['files_sha256'].items())
+        return False
+    except (OSError,ValueError,KeyError,TypeError,AttributeError,subprocess.SubprocessError):return False
+
+
 def reconcile_evidence(result,evidence_path,artifacts):
     errors=[]
     if artifacts.get('stage')!='final':return {'stage':'preliminary','log_completeness':False,'pending':['deferred_review','preservation','navigation_or_blocked','results_commit','final_cutoff'],'errors':[]}
-    evidence=Path(evidence_path).read_bytes();n=artifacts.get('evidence_prefix_bytes');want=artifacts.get('evidence_prefix_sha256')
-    if not isinstance(n,int) or n<0 or n>len(evidence) or hashlib.sha256(evidence[:n]).hexdigest()!=want:
-        errors.append('Evidence prefix changed or missing');prefix=''
-    else:prefix=evidence[:n].decode()
-    required=artifacts.get('required_artifacts',{});roles=artifacts.get('required_roles',{})
-    for role in ('deferred_review','preservation','navigation','results_commit','code','config','pins','raw','reports','tests','plan_review','engineering_logs','ancestry'):
-        if roles.get(role) not in required:errors.append('Required later artifact omitted: '+role)
-    for name,want in required.items():
-        try:
-            if digest(name)!=want:errors.append('Required artifact changed: '+name)
-        except OSError:errors.append('Required artifact missing: '+name)
-    if 'source_root' in result:
-        for name,want in result.get('artifacts_sha256',{}).items():
-            full=str(Path(result['source_root'])/name)
-            if required.get(full)!=want:errors.append('Raw artifact coverage omitted or changed: '+full)
-    if 'sources' in result:
-        for name,want in result['sources'].get('pins',{}).items():
-            if required.get(name)!=want:errors.append('Immutable ancestor/source coverage omitted: '+name)
-    cases=artifacts.get('case_evidence',{})
-    if set(cases)!=set(result['arms']):errors.append('Case evidence omitted or substituted')
-    for name,arm in result['arms'].items():
-        marker=cases.get(name)
-        if not isinstance(marker,str) or marker not in prefix:errors.append('Case outcome omitted: '+name)
-    for marker in artifacts.get('required_evidence',[]):
-        if marker not in prefix:errors.append('Required trial/result evidence missing: '+marker)
+    try:
+        evidence=Path(evidence_path).read_bytes();n=artifacts['evidence_prefix_bytes'];want=artifacts['evidence_prefix_sha256']
+        if type(n) is not int or n<0 or n>len(evidence) or hashlib.sha256(evidence[:n]).hexdigest()!=want:raise ValueError('Evidence prefix changed')
+        prefix=evidence[:n].decode();validate_replacement(result['config'])
+        if set(result['arms'])!={case['name'] for case in result['config']['cases']}:raise ValueError('Expected four case outcomes missing')
+        required=artifacts['required_artifacts'];roles=artifacts['required_roles'];inventory=scoped_inventory(result)
+        inventory_path=str(EXECUTION/'scope-inventory.json')
+        if required.get(inventory_path)!=digest(inventory_path) or strict_read(inventory_path)!=inventory:errors.append('Derived scoped inventory omitted or substituted')
+        if roles!=inventory['roles']:errors.append('Required role purposes/paths omitted or substituted')
+        for name,want in required.items():
+            try:
+                if digest(name)!=want:errors.append('Required artifact changed: '+name)
+            except OSError:errors.append('Required artifact missing: '+name)
+        for mapping in ('raw_files_sha256','source_pins','test_logs_sha256'):
+            for name,want in inventory[mapping].items():
+                if required.get(name)!=want:errors.append('Scoped coverage omitted: '+name)
+        for name in inventory['additional_required_paths']:
+            if name not in required:errors.append('Required output omitted: '+name)
+        for role,path in inventory['roles'].items():
+            if path not in required or not artifact_role_valid(role,path,result,required):errors.append('Required artifact purpose/content invalid: '+role)
+        index=outcome_index(result,inventory['roles']['reports'])
+        if structured_evidence(prefix,'WIDTHRATE-REPLACEMENT-OUTCOME-INDEX-001')!=index:errors.append('Structured outcomes/report links missing or mismatched')
+        for name,record in index['outcomes'].items():
+            identity='WIDTHRATE-REPLACEMENT-OUTCOME-'+name+'-001'
+            if artifacts.get('case_evidence',{}).get(name)!=identity or structured_evidence(prefix,identity)!=record:errors.append('Structured case status/count/stop/artifact mismatch: '+name)
+        if structured_evidence(prefix,'WIDTHRATE-REPLACEMENT-RESULTS-COMMIT-001')!=strict_read(inventory['roles']['results_commit']):errors.append('Results commit evidence mismatch')
+    except (OSError,ValueError,KeyError,TypeError,AttributeError) as exc:errors.append('Final coverage input incomplete: '+str(exc));n=artifacts.get('evidence_prefix_bytes');required=artifacts.get('required_artifacts',{})
     exclusions=artifacts.get('exclusions',[])
     if set(exclusions)!={'coverage_outputs','coverage_manifest','evidence_after_cutoff','closing_commit_sha'}:errors.append('Acyclic cutoff exclusions incomplete')
-    return {'stage':'final','log_completeness':not errors,'errors':errors,'scope':'Named replacement, original failed and separate copy milestones; artifact/log coverage, not a rerun of all historical science.',
-            'evidence_prefix_bytes':n,'evidence_prefix_sha256':artifacts.get('evidence_prefix_sha256'),'required_artifact_count':len(required),'exclusions':exclusions}
+    return {'stage':'final','log_completeness':not errors,'errors':errors,'scope':'Named replacement, original failed and separate copy milestones; structured artifact/log coverage, not all historical scientific correctness.',
+        'evidence_prefix_bytes':n,'evidence_prefix_sha256':artifacts.get('evidence_prefix_sha256'),'required_artifact_count':len(required),'exclusions':exclusions}
 
 
 if __name__=='__main__':

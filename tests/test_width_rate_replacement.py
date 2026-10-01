@@ -247,3 +247,102 @@ def test_known_child_receipt_uses_cached_guard_after_later_source_failure(tmp_pa
 def digest_for_test(path):
     import hashlib
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+@pytest.mark.parametrize('damage',['earlier_update','wrong_count','wrong_norm','other_width'])
+def test_serialized_payload_mutation_rejected_before_child(tmp_path,damage):
+    import msgpack,hashlib
+    replacement=module('width_rate_replacement');root,sources=_staged_endpoint(tmp_path,replacement)
+    path=root/'snapshots/6000.msgpack';envelope=msgpack.unpackb(path.read_bytes(),raw=False)
+    state=msgpack.unpackb(envelope['payload'],raw=False)
+    if damage=='earlier_update':envelope['payload']=msgpack.unpackb((root/'snapshots/0.msgpack').read_bytes(),raw=False)['payload']
+    else:
+        if damage=='wrong_count':state['optimizer']['0']['count']=msgpack.ExtType(1,msgpack.packb([[],'int32',(5999).to_bytes(4,'little',signed=True)],use_bin_type=True))
+        elif damage=='wrong_norm':state['normalization_json']='{}'
+        else:
+            def change(v):
+                if isinstance(v,msgpack.ExtType) and v.code==1:
+                    shape,dtype,raw=msgpack.unpackb(v.data,raw=False)
+                    if shape and shape[-1]==16:return msgpack.ExtType(1,msgpack.packb([shape[:-1]+[32],dtype,raw+raw],use_bin_type=True))
+                if isinstance(v,dict):return {k:change(x) for k,x in v.items()}
+                return v
+            state['params']=change(state['params'])
+        envelope['payload']=msgpack.packb(state,use_bin_type=True)
+    envelope['sha256']=hashlib.sha256(envelope['payload']).hexdigest();path.write_bytes(msgpack.packb(envelope,use_bin_type=True))
+    receipt=json.loads((root/'commit.json').read_text());receipt['checkpoint_sha256']=digest_for_test(path);(root/'commit.json').write_text(json.dumps(receipt))
+    contract=json.loads((root/'checkpoint-contract.json').read_text());contract['commit']=receipt;(root/'checkpoint-contract.json').write_text(json.dumps(contract))
+    with pytest.raises(ValueError):replacement._audit_cell(json.loads(CONFIG.read_text()),root,sources)
+    assert not (root/'probe-attempt.json').exists()
+
+def test_postclaim_root_replacement_leaves_unowned_files_untouched(tmp_path,monkeypatch):
+    import time
+    replacement=module('width_rate_replacement');root=tmp_path/'run';c=json.loads(CONFIG.read_text());c['run_directory']=str(root)
+    class Context:
+        def __init__(self,*a,**kw):self.global_start=kw.get('global_start',time.perf_counter());self.clock=time.perf_counter
+        def check_budget(self):pass
+    class Engine:
+        ExecutionContext=Context
+        @staticmethod
+        def code_provenance(p):return {}
+    monkeypatch.setattr(replacement,'verify_replacement_sources',lambda c:{'private_metadata_fixture':True})
+    monkeypatch.setattr(replacement,'evidence',lambda *a:None)
+    monkeypatch.setattr(replacement,'_engine',lambda:Engine)
+    def race(config,context,partial):
+        root.rename(tmp_path/'owned-original');root.mkdir();(root/'sources.json').write_text('UNOWNED')
+        return {'sources':{},'widths':{},'parent_work':{}}
+    monkeypatch.setattr(replacement,'replacement_preflight',race)
+    out=replacement.diagnose_width_rate_replacement(c)
+    assert (root/'sources.json').read_text()=='UNOWNED'
+    assert not (root/'provenance.json').exists()
+    assert not out['execution_valid']
+    assert Path(out['external_failure_record']).exists()
+
+def test_directory_handle_closes_check_to_replace_race(tmp_path,monkeypatch):
+    replacement=module('width_rate_replacement');root=tmp_path/'owned';root.mkdir();owner=replacement.DirectoryLease(root);real=replacement.os.replace
+    def race(src,dst,*a,**kw):
+        root.rename(tmp_path/'original');root.mkdir();(root/'saved.json').write_text('UNOWNED')
+        return real(src,dst,*a,**kw)
+    monkeypatch.setattr(replacement.os,'replace',race)
+    try:
+        with pytest.raises(ValueError,match='ownership'):owner.json('saved.json',{'owned':True})
+        assert (root/'saved.json').read_text()=='UNOWNED'
+        assert json.loads((tmp_path/'original/saved.json').read_text())=={'owned':True}
+    finally:owner.close()
+
+def test_owned_numeric_engine_and_fresh_process_keep_case_paths(tmp_path):
+    from test_width_rate_runs import fixture,tiny_probe
+    from force_consistency import width_rate_runs as wr
+    replacement=module('width_rate_replacement');repo=Path.cwd();root=tmp_path/'owned-case';root.mkdir()
+    owner=replacement.DirectoryLease(root);p,m,b,n,state,c,case,base=fixture()
+    context=replacement.OwnedContext(wr.ExecutionContext(120.).for_arm(120.,0.),owner)
+    def probe(ignored,ctx):
+        with replacement.repository_directory(repo):return tiny_probe(root,ctx)
+    try:
+        with owner.directory():out=wr._run_arm(c,case,state,p,p,m,n,base,{},Path('.'),{'owned_engine_fixture':True},context,probe_runner=probe)
+        assert Path.cwd()==repo
+        assert out['execution_valid'],out.get('failure_reason')
+        assert json.loads((root/'commit.json').read_text())['checkpoint']=='snapshots/3.msgpack'
+        assert out['checkpoint_verification']['adam_count']==3
+    finally:owner.close()
+
+def test_direct_payload_guard_denies_numerical_imports(tmp_path):
+    replacement=module('width_rate_replacement');root,sources=_staged_endpoint(tmp_path,replacement)
+    import msgpack,hashlib
+    path=root/'snapshots/6000.msgpack';env=msgpack.unpackb(path.read_bytes(),raw=False)
+    env['payload']=msgpack.unpackb((root/'snapshots/0.msgpack').read_bytes(),raw=False)['payload'];env['sha256']=hashlib.sha256(env['payload']).hexdigest();path.write_bytes(msgpack.packb(env,use_bin_type=True))
+    receipt=json.loads((root/'commit.json').read_text());receipt['checkpoint_sha256']=digest_for_test(path);(root/'commit.json').write_text(json.dumps(receipt))
+    contract=json.loads((root/'checkpoint-contract.json').read_text());contract['commit']=receipt;(root/'checkpoint-contract.json').write_text(json.dumps(contract))
+    code='''
+import sys,importlib.abc,json
+class Deny(importlib.abc.MetaPathFinder):
+ def find_spec(self,fullname,*args):
+  if fullname.split('.')[0] in ('jax','numpy','flax','e3x','optax'):raise AssertionError('NUMERICAL_IMPORT')
+sys.meta_path.insert(0,Deny())
+from force_consistency import width_rate_replacement as w
+c=json.load(open('configs/aspirin-width-rate-replacement.json'));s=w.verify_replacement_sources(c)
+w.audit_replacement_cell=lambda c,r:w._audit_cell(c,r,s) # private engineering root adapter; full state audit stays real
+w.replacement_probe(sys.argv[1],'a'*64)
+'''
+    result=subprocess.run([sys.executable,'-c',code,str(root)],capture_output=True,text=True)
+    assert result.returncode!=0 and 'Serialized update/normalization changed' in result.stderr
+    assert 'NUMERICAL_IMPORT' not in result.stderr
+    assert not (root/'probe-entry.json').exists()
