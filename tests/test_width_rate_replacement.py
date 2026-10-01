@@ -74,3 +74,144 @@ runpy.run_module('force_consistency.width_rate_replacement',run_name='__main__')
     assert result.returncode!=0
     assert 'Unreviewed replacement configuration' in result.stderr
     assert 'NUMERICAL_IMPORT' not in result.stderr
+
+@pytest.mark.parametrize('allowance',[0,-1,float('nan'),float('inf')])
+def test_no_probe_reserved_without_positive_allowance(tmp_path,allowance,monkeypatch):
+    replacement=module('width_rate_replacement')
+    class Context:
+        def remaining_seconds(self):return allowance
+        def check_budget(self):pass
+    monkeypatch.setattr(replacement,'audit_replacement_cell',lambda c,r:{'commit':{},'case':{},'contract':{}} ,raising=False)
+    with pytest.raises((TimeoutError,ValueError)):replacement.launch_probe(tmp_path,Context())
+    assert not (tmp_path/'probe-attempt.json').exists()
+
+@pytest.mark.parametrize('kind',['failed','timeout'])
+def test_launcher_preserves_complete_available_logs(tmp_path,kind,monkeypatch):
+    replacement=module('width_rate_replacement');(tmp_path/'probe-attempt.json').write_text('{}')
+    def fail(*a,**kw):
+        if kind=='failed':raise subprocess.CalledProcessError(7,a[0],output=b'A'*10001,stderr=b'B'*10002)
+        raise subprocess.TimeoutExpired(a[0],1,output=b'A'*10001,stderr=b'B'*10002)
+    monkeypatch.setattr(replacement.subprocess,'run',fail)
+    with pytest.raises((subprocess.CalledProcessError,subprocess.TimeoutExpired)):replacement._launch(tmp_path,1,'a'*64)
+    assert (tmp_path/'probe-stdout.txt').read_bytes()==b'A'*10001
+    assert (tmp_path/'probe-stderr.txt').read_bytes()==b'B'*10002
+
+def test_attempt_claim_is_exclusive_and_bound(tmp_path):
+    replacement=module('width_rate_replacement');binding={'ordinal':1,'config_identity':'test','commit':{'update':6000}}
+    path=tmp_path/'probe-attempt.json';path.write_text(json.dumps(binding));import hashlib
+    sha=hashlib.sha256(path.read_bytes()).hexdigest()
+    with pytest.raises(ValueError):replacement._claim_attempt(tmp_path,'0'*64,binding)
+    assert not (tmp_path/'probe-entry.json').exists()
+    replacement._claim_attempt(tmp_path,sha,binding)
+    with pytest.raises((ValueError,FileExistsError)):replacement._claim_attempt(tmp_path,sha,binding)
+    assert json.loads((tmp_path/'probe-entry.json').read_text())['attempt_sha256']==sha
+
+def test_journal_retains_failed_and_blocked_transitions(tmp_path):
+    replacement=module('width_rate_replacement')
+    replacement.journal(tmp_path,'cell','failed',{'attempted_updates':None})
+    replacement.journal(tmp_path,'cell','blocked',{'stop_reason':'previous_failure'})
+    rows=[json.loads(x) for x in (tmp_path/'journal.jsonl').read_text().splitlines()]
+    assert [r['status'] for r in rows]==['failed','blocked']
+    assert rows[0]['details']['attempted_updates'] is None
+    assert rows[1]['details']['stop_reason']=='previous_failure'
+
+@pytest.mark.parametrize('damage',['config','case','normalization','inputs','reference','history','envelope'])
+def test_pure_cell_audit_rejects_coherent_changes(tmp_path,damage):
+    replacement=module('width_rate_replacement');root,sources=_staged_endpoint(tmp_path,replacement)
+    assert replacement._audit_cell(json.loads(CONFIG.read_text()),root,sources)['commit']['update']==6000
+    if damage=='config':
+        value=json.loads((root/'config.json').read_text());value['max_updates']=6001;(root/'config.json').write_text(json.dumps(value))
+    elif damage=='case':
+        for name in ('case.json','provenance.json','checkpoint-contract.json'):
+            value=json.loads((root/name).read_text())
+            if name=='case.json':value['features']=32
+            else:value['case']['features']=32
+            (root/name).write_text(json.dumps(value))
+    elif damage=='normalization':
+        for name in ('provenance.json','checkpoint-contract.json'):
+            value=json.loads((root/name).read_text());value['normalization']['energy_offset_eV']+=1;(root/name).write_text(json.dumps(value))
+    elif damage=='inputs':
+        (root/'fitting-inputs.npz').write_bytes(b'substitute')
+        from force_consistency.width_rate_contract import digest
+        for name in ('provenance.json','checkpoint-contract.json'):
+            value=json.loads((root/name).read_text());value['input_files_sha256']['fitting']=digest(root/'fitting-inputs.npz');(root/name).write_text(json.dumps(value))
+    elif damage=='reference':(root/'reference.npz').write_bytes(b'wrong')
+    elif damage=='history':
+        value=json.loads((root/'histories/200.json').read_text());value[0]['metrics']['fitting']['energy_mse_eV2']+=1;(root/'histories/200.json').write_text(json.dumps(value))
+    else:
+        import msgpack
+        path=root/'snapshots/6000.msgpack';value=msgpack.unpackb(path.read_bytes(),raw=False);value['sha256']='0'*64;path.write_bytes(msgpack.packb(value,use_bin_type=True))
+        from force_consistency.width_rate_contract import digest
+        receipt=json.loads((root/'commit.json').read_text());receipt['checkpoint_sha256']=digest(path);(root/'commit.json').write_text(json.dumps(receipt))
+        contract=json.loads((root/'checkpoint-contract.json').read_text());contract['commit']=receipt;(root/'checkpoint-contract.json').write_text(json.dumps(contract))
+    with pytest.raises((ValueError,KeyError)):replacement._audit_cell(json.loads(CONFIG.read_text()),root,sources)
+
+def _staged_endpoint(tmp_path,replacement):
+    """Metadata-only fixture, opaque historical payloads; never a numerical result."""
+    import hashlib, msgpack
+    from force_consistency.width_rate_contract import digest
+    c=json.loads(CONFIG.read_text());s=module().verify_replacement_sources(c);root=tmp_path/'endpoint';root.mkdir()
+    old=Path('runs/aspirin-width-rate-2026-09-30/width16-lr1e-3');prov=json.loads((old/'provenance.json').read_text())
+    prov.update(config_identity='d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36',sources=json.loads(json.dumps(s)),source_pin_manifest_identity=c['source_pin_manifest_sha256'])
+    for name in ('fitting-inputs.npz','anchor-inputs.npz','reference.npz'):(root/name).write_bytes((old/name).read_bytes())
+    for folder in ('snapshots','histories'):(root/folder).mkdir()
+    h=json.loads((old/'histories/6000.json').read_text())
+    for i,row in enumerate(h):
+        update=row['update'];(root/f'histories/{update}.json').write_text(json.dumps(h[:i+1]))
+        envelope=msgpack.unpackb((old/f'snapshots/{update}.msgpack').read_bytes(),raw=False)
+        envelope['provenance']=json.dumps(prov,sort_keys=True,separators=(',',':'));(root/f'snapshots/{update}.msgpack').write_bytes(msgpack.packb(envelope,use_bin_type=True))
+    receipt=json.loads((old/'commit.json').read_text());receipt.update(checkpoint_sha256=digest(root/receipt['checkpoint']),history_sha256=digest(root/receipt['history']))
+    contract=json.loads((old/'checkpoint-contract.json').read_text());contract.update(config_identity=prov['config_identity'],commit=receipt)
+    for name,value in [('config.json',c),('case.json',c['cases'][0]),('provenance.json',prov),('checkpoint-contract.json',contract),('commit.json',receipt)]:
+        (root/name).write_text(json.dumps(value))
+    return root,s
+
+def test_direct_probe_requires_full_audit_before_claim_or_engine(tmp_path,monkeypatch):
+    replacement=module('width_rate_replacement');seen=[]
+    def deny(config,root):seen.append('full_audit');raise ValueError('source-derived input mutation')
+    monkeypatch.setattr(replacement,'audit_replacement_cell',deny)
+    monkeypatch.setattr(replacement,'_engine',lambda:pytest.fail('numeric import before guard'))
+    (tmp_path/'config.json').write_text(CONFIG.read_text())
+    with pytest.raises(ValueError,match='source-derived'):replacement.replacement_probe(tmp_path,'a'*64)
+    assert seen==['full_audit'] and not (tmp_path/'probe-entry.json').exists()
+
+def test_tiny_nontrivial_provenance_fresh_restore(tmp_path):
+    # Private numerical engineering route, not a production guard bypass.
+    from test_width_rate_runs import fixture,tiny_probe
+    from force_consistency import width_rate_runs as wr
+    p,m,b,n,state,c,case,base=fixture()
+    out=wr._run_arm(c,case,state,p,p,m,n,base,{},tmp_path/'tiny',{'historical':{200:{'value':2},1000:{'value':10}}},wr.ExecutionContext(120.).for_arm(120.,0.),probe_runner=tiny_probe)
+    assert out['execution_valid'],out.get('failure_reason')
+    assert out['checkpoint_verification']['maximum_absolute_error']<=1e-10
+    assert out['checkpoint_verification']['adam_count']==3
+    assert set(out['provenance']['historical'])=={'200','1000'}
+
+@pytest.mark.parametrize('damage',['template_frames','prediction_frames','history','tolerance','nonfinite'])
+def test_strict_child_receipt_rejects_wrong_work_and_identity(tmp_path,damage):
+    replacement=module('width_rate_replacement');root,sources=_staged_endpoint(tmp_path,replacement)
+    audit=replacement._audit_cell(json.loads(CONFIG.read_text()),root,sources)
+    child=json.loads(Path('runs/aspirin-width-rate-recovery-2026-10-01/summary.json').read_text())['child_receipt']
+    child.update(config_identity='d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36',checkpoint_sha256=audit['commit']['checkpoint_sha256'],history_sha256=audit['commit']['history_sha256'])
+    assert replacement.valid_child(audit,child)['prediction_frames']==144
+    if damage=='template_frames':child['template_initializer_frames']=15
+    elif damage=='prediction_frames':child['prediction_frames']=143
+    elif damage=='history':child['history_sha256']='0'*64
+    elif damage=='tolerance':child['tolerance']=1e-8
+    else:child['maximum_absolute_error']=float('nan')
+    with pytest.raises(ValueError):replacement.valid_child(audit,child)
+
+def test_direct_unreserved_public_probe_does_not_import_arrays(tmp_path):
+    (tmp_path/'config.json').write_text(CONFIG.read_text());(tmp_path/'case.json').write_text(json.dumps(json.loads(CONFIG.read_text())['cases'][0]))
+    code='''
+import sys,importlib.abc
+class Deny(importlib.abc.MetaPathFinder):
+ def find_spec(self,fullname,*args):
+  if fullname.split('.')[0] in ('numpy','jax','flax','optax','e3x'):raise AssertionError('NUMERICAL_IMPORT')
+sys.meta_path.insert(0,Deny())
+from force_consistency.width_rate_replacement import replacement_probe
+replacement_probe(sys.argv[1],'a'*64)
+'''
+    result=subprocess.run([sys.executable,'-c',code,str(tmp_path)],capture_output=True,text=True)
+    assert result.returncode!=0 and 'Unreviewed replacement cell root' in result.stderr
+    assert 'NUMERICAL_IMPORT' not in result.stderr
+    assert not (tmp_path/'probe-entry.json').exists()

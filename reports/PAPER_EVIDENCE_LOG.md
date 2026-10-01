@@ -13675,3 +13675,12 @@ Task1 prospective guard implementation;13 focused checks passed in2.84s, no arra
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt: SHA256 a04333375ffc00814b683e5b9d7b2fedaa71c4d461a0338511504a404056a042
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt: SHA256 59acec7a6a1456ae9cabf936341f3a2aa35494920967606c0c133549ca349be6
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt: SHA256 2397da710e6cdd76ac86ae1f69f0edd91fb0f319bc7791bf1bfa1ffd0d5c73f0
+
+## WIDTHRATE-REPLACEMENT-ENGINEERING-002 — strict child and persistence trials
+
+Task2 initialRED16failed/13passed, new verifier features absent. FocusedGREEN30/30 in28.68s including private tiny3-update,7-frame numerical fixture and strict fresh restore with200/1000nested provenance keys. This engineering fixture is not a production matrix/research comparison. Source physical NPZ hashes match old balanced/failed inputs, allowing source-derived pre-array byte binding. Existing numerics remain unchanged. Child reservation, exclusive entry, complete failed/timeout outputs, raw prefix/envelope/input/norm/case/replay guards and negative/blocked journal transitions verified. Additional regression checks underway; no production invocation.
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-attempt1.txt: SHA256 9ed97e741928681488246315e7949c72ec3f45e5496a2df81beed9418b4655e4
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-complete.txt: SHA256 ad9d1e278d7b0eb110785171d3f7c35dca4e76b74f705b0bd049f7a7e3a891ec
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt: SHA256 9edf2670bbd04479a4e16b203cb11448a341e32ea3f35a49ee92838d325649d7
+
+Task2 focused final:64passed in92.90s; task2-green-complete.txt retained. Includes existing first-step/multistep Adam, paired fresh states, controller learning-failure continuation/execution-failure blocking, transactional failures and the new strict boundaries. Full suite/final review remain pending. Clock now begins before engine import so subsequent setup is charged. Static attempted read tests/test_width_rate.py was absent; correct tests/test_width_rate_runs.py read; no numerical action in that failed file read.
