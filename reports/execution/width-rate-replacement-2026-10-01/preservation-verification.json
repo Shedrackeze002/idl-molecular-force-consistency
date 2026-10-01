@@ -1,0 +1,20 @@
+{
+  "archives_sha256": {
+    "reports/execution/width-rate-replacement-2026-10-01/external-failures.zip": "e63a1d4e27558f0854b9139c8be5918d71bc72a555710bd7ea9f0f5758965acd",
+    "reports/execution/width-rate-replacement-2026-10-01/implementation.zip": "83b0e3ffc3f8974863dee4a79ff42b9b288674c709bdc576a631da8cdeab9d34",
+    "reports/execution/width-rate-replacement-2026-10-01/planning.zip": "2db6f514f44aa24bf87c7cc06d5da9701efece76feacf4014caaf6924a079514",
+    "reports/execution/width-rate-replacement-2026-10-01/production-source.zip": "8c4684fd25421abe6ee113df31f9b58f26826105f72a9ff0da561b793cc06a32",
+    "reports/execution/width-rate-replacement-2026-10-01/raw.zip": "045422bcf97e99f9b5460e317a53f1c617297f482b0644a5f7243f086f020d01",
+    "reports/execution/width-rate-replacement-2026-10-01/reviewer.zip": "91b028557f3496cac2dc8c6515c9c3176a22e8f3a4589b4490482bf8c60edc48"
+  },
+  "byte_identity_valid": true,
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "crc_valid": true,
+  "manifest_path": "reports/execution/width-rate-replacement-2026-10-01/preservation-manifest.json",
+  "manifest_sha256": "28c7c9bd757e9705079031f1f25130a0e2ef5df095abee81860fd227e67aad44",
+  "preserved_source_pin_count": 518,
+  "representation": "Lossless content-addressed ZIP plus per-path source mapping; every unique archived payload hashed/CRC verified, every original source rehashed after archiving.",
+  "schema": "replacement-preservation-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "status": "passed"
+}

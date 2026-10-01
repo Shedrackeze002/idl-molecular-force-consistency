@@ -1,6 +1,7 @@
 {
   "classification": "Retained engineering RED/GREEN, regression and full-suite trials; not research training trials.",
   "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "coverage_note": "Every retained top-level test log indexed, including RED checks and unsuccessful intermediate attempts; no failed trial replaced.",
   "files_sha256": {
     ".superpowers/sdd/2026-10-01-width-rate-replacement/final-coverage-green.txt": "0bcb657498516ad47955b91bbb1bb80b7362d3e424ff478bb7f512086ecfbb14",
     ".superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-green.txt": "e30afb1049573f5bf2e65dc560b8e3854aee18f60d1a51afc6d99a2186849deb",
@@ -32,5 +33,501 @@
   },
   "includes_failed_trials": true,
   "schema": "replacement-test-trials-v1",
-  "scope": "width-rate-replacement-2026-10-01"
+  "scope": "width-rate-replacement-2026-10-01",
+  "trials": [
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-coverage-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-coverage-green.txt",
+      "log_sha256": "0bcb657498516ad47955b91bbb1bb80b7362d3e424ff478bb7f512086ecfbb14",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 11
+      },
+      "reported_elapsed_seconds": 0.75,
+      "reported_summary": "11 passed, 26 deselected in 0.75s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-green.txt",
+      "log_sha256": "e30afb1049573f5bf2e65dc560b8e3854aee18f60d1a51afc6d99a2186849deb",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 4
+      },
+      "reported_elapsed_seconds": 4.5,
+      "reported_summary": "4 passed, 37 deselected in 4.50s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement_report.py::test_substituted_partial_payload_does_not_promote_persisted_counts",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_late_artifact_is_rejected_without_crash[payload0]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_late_artifact_is_rejected_without_crash[None]"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-extra-red.txt",
+      "log_sha256": "189e9a58e3e115b43454b3495533e9f07f71d76e2819560aa7db48ee0ba5731d",
+      "outcome": "failed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "failed": 3,
+        "passed": 1
+      },
+      "reported_elapsed_seconds": 4.65,
+      "reported_summary": "3 failed, 1 passed, 37 deselected in 4.65s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-ownership-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-ownership-green.txt",
+      "log_sha256": "929c878b9adfc8205d7d7d6dee3b4987bcf7661c75ce2624d88d52612aad7e5c",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 7
+      },
+      "reported_elapsed_seconds": 0.02,
+      "reported_summary": "7 passed, 37 deselected in 0.02s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-payload-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-payload-green.txt",
+      "log_sha256": "634b9c0c1b5f0d9df593f4cdc54c2f3f0ddc59cfc39e1a76d8ba196e437b5613",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 4
+      },
+      "reported_elapsed_seconds": 8.4,
+      "reported_summary": "4 passed, 40 deselected in 8.40s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-repair-focused.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-repair-focused.txt",
+      "log_sha256": "e093f448a466edebba8dc3bfb42441c592576fbf7687db43d77e703e260a93cd",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 84
+      },
+      "reported_elapsed_seconds": 105.83,
+      "reported_summary": "84 passed in 105.83s (0:01:45)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-review-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_serialized_payload_mutation_rejected_before_child[earlier_update]",
+        "FAILED tests/test_width_rate_replacement.py::test_serialized_payload_mutation_rejected_before_child[wrong_count]",
+        "FAILED tests/test_width_rate_replacement.py::test_serialized_payload_mutation_rejected_before_child[wrong_norm]",
+        "FAILED tests/test_width_rate_replacement.py::test_serialized_payload_mutation_rejected_before_child[other_width]",
+        "FAILED tests/test_width_rate_replacement.py::test_postclaim_root_replacement_leaves_unowned_files_untouched",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_structures_produce_complete_incomplete_outputs[summary_list]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_structures_produce_complete_incomplete_outputs[null_arms]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_structures_produce_complete_incomplete_outputs[missing_status]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_structures_produce_complete_incomplete_outputs[scalar_events]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_malformed_structures_produce_complete_incomplete_outputs[source_guard]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_fabricated_preflight_and_blocked_counts_stay_unknown",
+        "FAILED tests/test_width_rate_replacement_report.py::test_plan_markers_and_lock_cannot_pose_as_final_evidence"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-review-red.txt",
+      "log_sha256": "61ff41255c958700dcc3ffc421410f1dfc65f68c26315cde52e80afc37b76594",
+      "outcome": "failed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "failed": 12
+      },
+      "reported_elapsed_seconds": 19.24,
+      "reported_summary": "12 failed, 67 deselected in 19.24s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-schema-counts-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/final-schema-counts-green.txt",
+      "log_sha256": "0165fb0db7e435fa611ca32f2a2f75a061d6e5ee89d1a0c50f05cdb1911b02e3",
+      "outcome": "passed",
+      "rationale": "Author regressions for the five independently reproduced final-review gaps; repairs verified in one pass.",
+      "reported_counts": {
+        "passed": 10
+      },
+      "reported_elapsed_seconds": 26.55,
+      "reported_summary": "10 passed, 25 deselected in 26.55s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/focused-before-review.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/focused-before-review.txt",
+      "log_sha256": "629d863e92fe77c9b4210b9df6d9918d083db5f27f1e67f05d82d42f1cc25163",
+      "outcome": "passed",
+      "rationale": "Combined/full regression verification at the documented code cutoff.",
+      "reported_counts": {
+        "passed": 66
+      },
+      "reported_elapsed_seconds": 70.73,
+      "reported_summary": "66 passed in 70.73s (0:01:10)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-after-author-repairs.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-after-author-repairs.txt",
+      "log_sha256": "64b907d46ca94693959014a7c80d5010f62cab7127cd980cbbab70f51f775ebf",
+      "outcome": "passed",
+      "rationale": "Combined/full regression verification at the documented code cutoff.",
+      "reported_counts": {
+        "passed": 476
+      },
+      "reported_elapsed_seconds": 335.52,
+      "reported_summary": "476 passed in 335.52s (0:05:35)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-before-review.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-before-review.txt",
+      "log_sha256": "f2afe699850679f63975a9da50a29a792cc017b5481e47b201e10e5f53ca13c1",
+      "outcome": "passed",
+      "rationale": "Combined/full regression verification at the documented code cutoff.",
+      "reported_counts": {
+        "passed": 451
+      },
+      "reported_elapsed_seconds": 305.01,
+      "reported_summary": "451 passed in 305.01s (0:05:05)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-final-before-review.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-final-before-review.txt",
+      "log_sha256": "799df38184ba67cec10d831cda69a42e594f8b4e1c8c85e28a4c2f2f2bcdbdc5",
+      "outcome": "passed",
+      "rationale": "Combined/full regression verification at the documented code cutoff.",
+      "reported_counts": {
+        "passed": 455
+      },
+      "reported_elapsed_seconds": 312.34,
+      "reported_summary": "455 passed in 312.34s (0:05:12)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_all_pins_and_ancestry_bind_original_facts",
+        "FAILED tests/test_width_rate_replacement.py::test_changed_pinned_file_is_rejected_without_array_import",
+        "FAILED tests/test_width_rate_replacement.py::test_original_preflight_receives_only_original_config"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt",
+      "log_sha256": "a04333375ffc00814b683e5b9d7b2fedaa71c4d461a0338511504a404056a042",
+      "outcome": "failed",
+      "rationale": "Pure reviewed-control/source guard and exclusive-root contract before numerical imports.",
+      "reported_counts": {
+        "failed": 3,
+        "passed": 10
+      },
+      "reported_elapsed_seconds": 2.09,
+      "reported_summary": "3 failed, 10 passed in 2.09s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt",
+      "log_sha256": "59acec7a6a1456ae9cabf936341f3a2aa35494920967606c0c133549ca349be6",
+      "outcome": "passed",
+      "rationale": "Pure reviewed-control/source guard and exclusive-root contract before numerical imports.",
+      "reported_counts": {
+        "passed": 13
+      },
+      "reported_elapsed_seconds": 2.84,
+      "reported_summary": "13 passed in 2.84s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[max_updates-6001]",
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[backend-gpu]",
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[run_directory-runs/aspirin-width-rate-2026-09-30]",
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[total_wall_seconds-11401]",
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[loss_weights-value4]",
+        "FAILED tests/test_width_rate_replacement.py::test_unreviewed_controls_rejected[extra-True]",
+        "FAILED tests/test_width_rate_replacement.py::test_all_pins_and_ancestry_bind_original_facts",
+        "FAILED tests/test_width_rate_replacement.py::test_changed_pinned_file_is_rejected_without_array_import",
+        "FAILED tests/test_width_rate_replacement.py::test_root_creation_never_writes_unowned_root[existing]",
+        "FAILED tests/test_width_rate_replacement.py::test_root_creation_never_writes_unowned_root[symlink]",
+        "FAILED tests/test_width_rate_replacement.py::test_root_creation_never_writes_unowned_root[race]",
+        "FAILED tests/test_width_rate_replacement.py::test_original_preflight_receives_only_original_config",
+        "FAILED tests/test_width_rate_replacement.py::test_bad_public_config_rejected_before_numerical_import"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt",
+      "log_sha256": "2397da710e6cdd76ac86ae1f69f0edd91fb0f319bc7791bf1bfa1ffd0d5c73f0",
+      "outcome": "failed",
+      "rationale": "Pure reviewed-control/source guard and exclusive-root contract before numerical imports.",
+      "reported_counts": {
+        "failed": 13
+      },
+      "reported_elapsed_seconds": 0.12,
+      "reported_summary": "13 failed in 0.12s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-green.txt",
+      "log_sha256": "e712bd952fcdd7c7ab1870dd661ed56bfbbf579c0930ded2a15f51010ee71f2d",
+      "outcome": "passed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "passed": 1
+      },
+      "reported_elapsed_seconds": 0.02,
+      "reported_summary": "1 passed, 36 deselected in 0.02s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_controller_fallback_keeps_completed_and_failed_cells"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-red.txt",
+      "log_sha256": "cbaef168c8df545879939f09070e133053033f3792b6fa37336f5a92ec9ec0cf",
+      "outcome": "failed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "failed": 1
+      },
+      "reported_elapsed_seconds": 0.04,
+      "reported_summary": "1 failed, 36 deselected in 0.04s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-attempt1.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-attempt1.txt",
+      "log_sha256": "9ed97e741928681488246315e7949c72ec3f45e5496a2df81beed9418b4655e4",
+      "outcome": "passed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "passed": 30
+      },
+      "reported_elapsed_seconds": 28.68,
+      "reported_summary": "30 passed in 28.68s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-complete.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-complete.txt",
+      "log_sha256": "ad9d1e278d7b0eb110785171d3f7c35dca4e76b74f705b0bd049f7a7e3a891ec",
+      "outcome": "passed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "passed": 64
+      },
+      "reported_elapsed_seconds": 92.9,
+      "reported_summary": "64 passed in 92.90s (0:01:32)",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-live-and-known-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_launcher_rechecks_live_deadline_before_issuing_child",
+        "FAILED tests/test_width_rate_replacement.py::test_known_child_receipt_uses_cached_guard_after_later_source_failure"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-live-and-known-red.txt",
+      "log_sha256": "a4d3f5425c3f1b99febe102e15a89d0f5a16937d1471c5e15dd15d68ca738c49",
+      "outcome": "failed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "failed": 2
+      },
+      "reported_elapsed_seconds": 1.51,
+      "reported_summary": "2 failed, 37 deselected in 1.51s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement.py::test_no_probe_reserved_without_positive_allowance[0]",
+        "FAILED tests/test_width_rate_replacement.py::test_no_probe_reserved_without_positive_allowance[-1]",
+        "FAILED tests/test_width_rate_replacement.py::test_no_probe_reserved_without_positive_allowance[nan]",
+        "FAILED tests/test_width_rate_replacement.py::test_no_probe_reserved_without_positive_allowance[inf]",
+        "FAILED tests/test_width_rate_replacement.py::test_launcher_preserves_complete_available_logs[failed]",
+        "FAILED tests/test_width_rate_replacement.py::test_launcher_preserves_complete_available_logs[timeout]",
+        "FAILED tests/test_width_rate_replacement.py::test_attempt_claim_is_exclusive_and_bound",
+        "FAILED tests/test_width_rate_replacement.py::test_journal_retains_failed_and_blocked_transitions",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[config]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[case]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[normalization]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[inputs]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[reference]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[history]",
+        "FAILED tests/test_width_rate_replacement.py::test_pure_cell_audit_rejects_coherent_changes[envelope]",
+        "FAILED tests/test_width_rate_replacement.py::test_direct_probe_requires_full_audit_before_claim_or_engine"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt",
+      "log_sha256": "9edf2670bbd04479a4e16b203cb11448a341e32ea3f35a49ee92838d325649d7",
+      "outcome": "failed",
+      "rationale": "One-shot matrix, coherent checkpoint, live deadline, transactional controller and child accounting boundaries.",
+      "reported_counts": {
+        "failed": 16,
+        "passed": 13
+      },
+      "reported_elapsed_seconds": 12.29,
+      "reported_summary": "16 failed, 13 passed, 1 deselected in 12.29s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-coverage-roles-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement_report.py::test_completeness_requires_code_config_raw_tests_and_ancestry_roles"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-coverage-roles-red.txt",
+      "log_sha256": "3daaca145d26072d493c898bd568ba02243e630cd917f1869a8ba894f50e0a80",
+      "outcome": "failed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "failed": 1
+      },
+      "reported_elapsed_seconds": 0.04,
+      "reported_summary": "1 failed, 26 deselected in 0.04s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-failed-time-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement_report.py::test_failed_elapsed_requires_a_bound_terminal_publication_receipt"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-failed-time-red.txt",
+      "log_sha256": "a7687a97a07d396e1bdbc296d62481b003f8ae3552b48392c6c1cf2e00508907",
+      "outcome": "failed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "failed": 1
+      },
+      "reported_elapsed_seconds": 3.32,
+      "reported_summary": "1 failed, 27 deselected in 3.32s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-attempt1.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-attempt1.txt",
+      "log_sha256": "37a69a98097a7be418adcc246273b4ebe1f85121de6fc6b4e85b998c790074dc",
+      "outcome": "passed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "passed": 24
+      },
+      "reported_elapsed_seconds": 22.32,
+      "reported_summary": "24 passed in 22.32s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-complete.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-complete.txt",
+      "log_sha256": "3cd5b01bf8230e093633c66d00b5b600b7d6def48d938f0d28b75dbdd789ef43",
+      "outcome": "passed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "passed": 26
+      },
+      "reported_elapsed_seconds": 28.03,
+      "reported_summary": "26 passed in 28.03s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-late-regressions-green.txt",
+      "failure_test_reasons": [],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-late-regressions-green.txt",
+      "log_sha256": "295acaf84513c2ff1dab46a791deeb7388b2e5f4e48db191243b566e4a949819",
+      "outcome": "passed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "passed": 3
+      },
+      "reported_elapsed_seconds": 2.99,
+      "reported_summary": "3 passed, 25 deselected in 2.99s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    },
+    {
+      "failure_detail_authority": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-red.txt",
+      "failure_test_reasons": [
+        "FAILED tests/test_width_rate_replacement_report.py::test_explicit_new_validator_accepts_learning_failure",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[baseline]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[history]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[gate]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[config]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[child]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[state]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[oracle]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[shared]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[time]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[group]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[weighted]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_new_validator_rejects_coherent_or_incomplete_claims[overlap]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_partial_report_preserves_four_statuses_and_unknown_work[missing]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_partial_report_preserves_four_statuses_and_unknown_work[corrupt]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_partial_report_preserves_four_statuses_and_unknown_work[nonfinite]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_partial_report_preserves_four_statuses_and_unknown_work[fake_failed]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_final_completeness_requires_late_artifacts_and_all_cases[deferred_review]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_final_completeness_requires_late_artifacts_and_all_cases[preservation]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_final_completeness_requires_late_artifacts_and_all_cases[navigation]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_final_completeness_requires_late_artifacts_and_all_cases[results_commit]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_final_completeness_requires_late_artifacts_and_all_cases[negative_case]",
+        "FAILED tests/test_width_rate_replacement_report.py::test_failed_blocked_closure_and_postcutoff_artifact_edits",
+        "FAILED tests/test_width_rate_replacement_report.py::test_preliminary_never_claims_final_completeness"
+      ],
+      "limitations": "Only the tests collected at that code cutoff are certified; earlier passing suites do not certify later changes. Synthetic malformed/blocked/failed fixtures are not research training outcomes.",
+      "log_path": ".superpowers/sdd/2026-10-01-width-rate-replacement/task3-red.txt",
+      "log_sha256": "d150688f968fb0b98c2200f99b0378d102373797bf9ede02a9b2ab1ccc61513f",
+      "outcome": "failed",
+      "rationale": "Saved-only reports, incomplete outcomes, truthful counts and acyclic log-completeness enforcement.",
+      "reported_counts": {
+        "failed": 24
+      },
+      "reported_elapsed_seconds": 10.21,
+      "reported_summary": "24 failed in 10.21s",
+      "settings": "Locked project environment; private retained fixtures and test-specific guards. Raw logs and test source define exact settings. This is engineering verification, not the approved four-cell research run."
+    }
+  ]
 }

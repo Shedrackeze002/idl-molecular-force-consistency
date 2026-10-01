@@ -1,0 +1,180 @@
+{
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "endpoint_contrasts": {
+    "available": true,
+    "interpretation": "One-seed fixed-support descriptive sensitivity, no uncertainty or causal claim",
+    "ratios": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "interaction_ratio_of_rate_ratios": 2.038565401728529,
+          "rate_within_width16": 0.773865393806747,
+          "rate_within_width32": 1.5775752174094573,
+          "width_at_rate1e-3": 0.6746468094018817,
+          "width_at_rate3e-4": 1.3753116440332172
+        },
+        "force_mse_eV2_per_A2": {
+          "interaction_ratio_of_rate_ratios": 1.028067681972935,
+          "rate_within_width16": 1.1669298550485696,
+          "rate_within_width32": 1.199682871104796,
+          "width_at_rate1e-3": 0.8718616611555712,
+          "width_at_rate3e-4": 0.8963327969852805
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "interaction_ratio_of_rate_ratios": 1.4762773571126948,
+          "rate_within_width16": 1.061759845112268,
+          "rate_within_width32": 1.5674520180307232,
+          "width_at_rate1e-3": 0.6327804416017083,
+          "width_at_rate3e-4": 0.9341594379603737
+        },
+        "force_mse_eV2_per_A2": {
+          "interaction_ratio_of_rate_ratios": 0.9135585953997459,
+          "rate_within_width16": 1.3077337665223445,
+          "rate_within_width32": 1.1946914229009724,
+          "width_at_rate1e-3": 0.8601539541741007,
+          "width_at_rate3e-4": 0.7858010382028289
+        }
+      }
+    }
+  },
+  "endpoint_observation": "At both fixed rates, wider model has lower fitting E/F MSE; lower fixed rate has higher fitting E/F MSE within each width at6000updates. Descriptive one-seed equal-exposure sensitivity, no automatic winner or causal capacity/rate conclusion.",
+  "energy_peak_observations": {
+    "width16-lr1e-3": {
+      "energy_fraction_of_initial_baseline": 14.34777322457358,
+      "fitting_energy_mse_eV2": 0.5382820259442259,
+      "fitting_force_mse_eV2_per_A2": 0.007629075603526154,
+      "force_fraction_of_initial_baseline": 0.5416858600586001,
+      "prescribed_update": 3900
+    },
+    "width16-lr3e-4": {
+      "energy_fraction_of_initial_baseline": 1.0,
+      "fitting_energy_mse_eV2": 0.03751676427546992,
+      "fitting_force_mse_eV2_per_A2": 0.014083948218070219,
+      "force_fraction_of_initial_baseline": 1.0,
+      "prescribed_update": 0
+    },
+    "width32-lr1e-3": {
+      "energy_fraction_of_initial_baseline": 19.845560553035014,
+      "fitting_energy_mse_eV2": 0.7445412171827791,
+      "fitting_force_mse_eV2_per_A2": 0.008304939228618045,
+      "force_fraction_of_initial_baseline": 0.5896740814456067,
+      "prescribed_update": 2000
+    },
+    "width32-lr3e-4": {
+      "energy_fraction_of_initial_baseline": 3.6020684618113443,
+      "fitting_energy_mse_eV2": 0.13513795338588072,
+      "fitting_force_mse_eV2_per_A2": 0.007767711452637091,
+      "force_fraction_of_initial_baseline": 0.551529395902694,
+      "prescribed_update": 3700
+    }
+  },
+  "learning_gate_observation": "All four fitting and fully fitted-anchor joint gates fail. Anchor energy alone passes for16/.0003 and32/.001; all anchor force gates fail.",
+  "limitations": [
+    "One seed and fully fitted anchors; no held-out/generalization, capacity or optimizer-causal conclusion.",
+    "Fresh fixed-rate endpoints do not test late-stage rate decay. Width changes initialization shape and optimization geometry.",
+    "Sequential times depend on order, compiler cache and load; no efficiency ranking.",
+    "Original failed trial and zero-update copy stay separate; original unreceipted child effort remains unknown.",
+    "Partial terminal counts are raw claims; known persisted observations and child work require independent saved bindings.",
+    "No automatic winner or full-pilot clearance. All failures and blocked cases stay indexed."
+  ],
+  "metric_definition_caution": "mean_energy_mse_eV2 in coverage_runs.py is the constant-mean reference baseline variance of target residual energies. It is not a measured energy prediction mean-offset error; no offset-mechanism inference is made.",
+  "new_numerical_model_evaluations": 0,
+  "new_training_updates": 0,
+  "peak_limits": "Only64prescribed scored updates/cell. Energy peaks exceed initial baseline in three cells; force MSE at those specific peaks remains below its initial baseline. No cause or global force-monotonicity inference. Off-grid maxima are unknown.",
+  "schema": "replacement-saved-observations-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "source_report_path": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+  "source_report_sha256": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+  "terminal_window": {
+    "width16-lr1e-3": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.10709665786030495
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.022845262040694873
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.020219384786694602
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.030370091090084653
+        }
+      }
+    },
+    "width16-lr3e-4": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.0580852595511242
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.024233506552678814
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.06268537484956281
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.032579527114480644
+        }
+      }
+    },
+    "width32-lr1e-3": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.036693801222689934
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.036561945423609875
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.03258612175225584
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.03117232864033538
+        }
+      }
+    },
+    "width32-lr3e-4": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.05076265818435542
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.02887724799393233
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.06663519548328774
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.028031009823560764
+        }
+      }
+    }
+  },
+  "terminal_window_observation": "All16role/metric/cell5500-to6000relative changes exceed1percent in absolute value. This window does not support a less-than1percent stability statement; it is not an adaptive stop rule or proof about future convergence."
+}

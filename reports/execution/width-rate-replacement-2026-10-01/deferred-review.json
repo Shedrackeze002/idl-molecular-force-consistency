@@ -1,0 +1,41 @@
+{
+  "checked": {
+    "child_maximum_errors": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "child_prediction_frames": 576,
+    "completed_cells": 4,
+    "exclusive_children": 4,
+    "fitting_exposures": 3072000,
+    "history_rows": 256,
+    "raw_files": 586,
+    "replay_points_exact": 63,
+    "source_pins": 518,
+    "updates": 24000
+  },
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "current_scientific_report_path": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+  "current_scientific_report_sha256": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+  "findings": [],
+  "limitations": [
+    "Saved-result reconciliation, no code rereview or numerical recomputation.",
+    "Final artifact closure not certified at reviewer cutoff.",
+    "No generalization/capacity/optimizer/efficiency/pilot or power-loss/cancellation claims."
+  ],
+  "report_sha256": "dfa41304021fa8dbd2b557e48cd68ee7a144a7154cd38b4ee2f5c0ab4d059793",
+  "review_outputs_sha256": {
+    "/private/tmp/width-rate-replacement-review-83f3eb0/deferred-result-review/reconcile.log": "168250d39f1dec486fc5ea3eb5754758eae0c31280f83b5b3748f445fa03e9a6",
+    "/private/tmp/width-rate-replacement-review-83f3eb0/deferred-result-review/reconcile.py": "4796c37925ef30219b7c2f5b614e832991eee768fc22ca76110f8352773a626f",
+    "/private/tmp/width-rate-replacement-review-83f3eb0/deferred-result-review/result.json": "168250d39f1dec486fc5ea3eb5754758eae0c31280f83b5b3748f445fa03e9a6",
+    "/private/tmp/width-rate-replacement-review-83f3eb0/deferred-result-review/supplement.log": "e36e37d271bfe5060e0a68168c6d33f67e3d6d4e4ff71c73232072e1e37898d7"
+  },
+  "review_record_path": "docs/reviews/2026-10-01-width-rate-replacement-final-review.md",
+  "review_record_sha256": "99309f88d8bb49bbda34a8a763aacb52b2970e32fd2d9f2642f3c727a2530dc2",
+  "reviewer": "/root/replacement_final_review",
+  "schema": "replacement-deferred-review-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "status": "completed"
+}

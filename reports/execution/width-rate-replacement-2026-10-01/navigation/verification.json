@@ -1,0 +1,22 @@
+{
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "method": "Authorized host CLI backup/append/readback; no direct vault writes.",
+  "notes": {
+    "findings": {
+      "after_sha256": "08d44ce6eb3f3d20692b4908d7a85989e3fdb60f1716372f4c0c940e94badfb8",
+      "append_verified": true,
+      "before_sha256": "edc627c9e3ffc3a2d455242d528c7f1b2e3f3f74ba8d7fb1c2a6c043e172db86",
+      "path": "Codex/IDL MLIP Project/Research Findings.md"
+    },
+    "hub": {
+      "after_sha256": "bda291925660c67ce92838e32710c029962ec882afeaadb572f2377760e4a41c",
+      "append_verified": true,
+      "before_sha256": "547e5a0ca0bb9cf08b1ad126d47889f589fe974cba93caaa6ab96eb13e2886d2",
+      "path": "Codex/IDL MLIP Project/Project Hub.md"
+    }
+  },
+  "schema": "replacement-navigation-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "status": "passed",
+  "vault": "hermes"
+}

@@ -1,0 +1,171 @@
+{
+  "actual_counts_summary": {
+    "attempted_updates": 24000,
+    "committed_frame_exposures": 3072000,
+    "committed_updates": 24000,
+    "committed_updates_lower_bound": 24000,
+    "known_probe_prediction_frames": 576,
+    "shared_training_initializations_completed": 2,
+    "synchronized_updates": 24000,
+    "unknown_committed_cells": [],
+    "unknown_or_invalid_cell_counts": [],
+    "unknown_pending_preflight_operations": [],
+    "unknown_probe_cells": [],
+    "work_counts_complete": true
+  },
+  "additional_probe_attempts": 0,
+  "additional_training_updates": 0,
+  "all_four_arm_records_equal": true,
+  "cause": "Initial relative report root cannot match the absolute artifact key emitted by the production directory reservation. The unchanged generator accepts the recorded absolute root and binds all six genuine preflight journal receipts.",
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "contrasts": {
+    "available": true,
+    "interpretation": "One-seed fixed-support descriptive sensitivity, no uncertainty or causal claim",
+    "ratios": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "interaction_ratio_of_rate_ratios": 2.038565401728529,
+          "rate_within_width16": 0.773865393806747,
+          "rate_within_width32": 1.5775752174094573,
+          "width_at_rate1e-3": 0.6746468094018817,
+          "width_at_rate3e-4": 1.3753116440332172
+        },
+        "force_mse_eV2_per_A2": {
+          "interaction_ratio_of_rate_ratios": 1.028067681972935,
+          "rate_within_width16": 1.1669298550485696,
+          "rate_within_width32": 1.199682871104796,
+          "width_at_rate1e-3": 0.8718616611555712,
+          "width_at_rate3e-4": 0.8963327969852805
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "interaction_ratio_of_rate_ratios": 1.4762773571126948,
+          "rate_within_width16": 1.061759845112268,
+          "rate_within_width32": 1.5674520180307232,
+          "width_at_rate1e-3": 0.6327804416017083,
+          "width_at_rate3e-4": 0.9341594379603737
+        },
+        "force_mse_eV2_per_A2": {
+          "interaction_ratio_of_rate_ratios": 0.9135585953997459,
+          "rate_within_width16": 1.3077337665223445,
+          "rate_within_width32": 1.1946914229009724,
+          "width_at_rate1e-3": 0.8601539541741007,
+          "width_at_rate3e-4": 0.7858010382028289
+        }
+      }
+    }
+  },
+  "corrected_outcome_index_path": "reports/execution/width-rate-replacement-2026-10-01/corrected-outcome-index.json",
+  "corrected_outcome_index_sha256": "3353788a4aae6fad4f391e20f28ddeec43dbe7904386c9122b899d713f98052c",
+  "corrected_report_path": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+  "corrected_report_sha256": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+  "current_scientific_summary": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+  "initial_report_path": "reports/width-rate-replacement-diagnostics.json",
+  "initial_report_sha256": "dfa41304021fa8dbd2b557e48cd68ee7a144a7154cd38b4ee2f5c0ab4d059793",
+  "limits": [
+    "One seed and fully fitted anchors; no held-out/generalization, capacity or optimizer-causal conclusion.",
+    "Fresh fixed-rate endpoints do not test late-stage rate decay. Width changes initialization shape and optimization geometry.",
+    "Sequential times depend on order, compiler cache and load; no efficiency ranking.",
+    "Original failed trial and zero-update copy stay separate; original unreceipted child effort remains unknown.",
+    "Partial terminal counts are raw claims; known persisted observations and child work require independent saved bindings.",
+    "No automatic winner or full-pilot clearance. All failures and blocked cases stay indexed."
+  ],
+  "primary_scope_report": "reports/width-rate-replacement-diagnostics.json",
+  "raw_artifact_sets_equal": true,
+  "resolution": "Separate corrected saved-only report; initial report and its outcome/evidence index retained. No production/report implementation changed, no numerical retry/remeasurement. The initial fixed-role completeness index certifies the preserved first report attempt; the corrected report is separately linked and reconciled as current scientific summary.",
+  "schema": "replacement-report-invocation-correction-v1",
+  "scope": "width-rate-replacement-2026-10-01",
+  "source_root_same_directory": true,
+  "status": "passed",
+  "terminal_window": {
+    "width16-lr1e-3": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.10709665786030495
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.022845262040694873
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.020219384786694602
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.030370091090084653
+        }
+      }
+    },
+    "width16-lr3e-4": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.0580852595511242
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.024233506552678814
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.06268537484956281
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.032579527114480644
+        }
+      }
+    },
+    "width32-lr1e-3": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.036693801222689934
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.036561945423609875
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.03258612175225584
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.03117232864033538
+        }
+      }
+    },
+    "width32-lr3e-4": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": 0.05076265818435542
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.02887724799393233
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "below_one_percent": false,
+          "relative_change": -0.06663519548328774
+        },
+        "force_mse_eV2_per_A2": {
+          "below_one_percent": false,
+          "relative_change": -0.028031009823560764
+        }
+      }
+    }
+  }
+}

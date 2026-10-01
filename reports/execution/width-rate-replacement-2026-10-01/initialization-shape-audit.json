@@ -1,0 +1,32 @@
+{
+  "additional_template_initializations": 0,
+  "additional_training_updates": 0,
+  "checks": {
+    "16": {
+      "adam_count": 0,
+      "checkpoint_sha256": "237d5274c3f3a8e112faeca9c7ecae80748f290ff1597082ab740ff4d42fae59",
+      "expected_shape_matches_actual": true,
+      "state_hashes": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "717b74705326d1b5b271b135f2b967b0df9c8061f7808497bf17d02b0848ef54"
+      },
+      "status": "passed",
+      "update": 0
+    },
+    "32": {
+      "adam_count": 0,
+      "checkpoint_sha256": "32e545d6f203a3877e4a73241f427cfeb282eb3ac5ac29f2102f01428458ea59",
+      "expected_shape_matches_actual": true,
+      "state_hashes": {
+        "optimizer": "f0a71cbf26a1dec088cf8c5a5338eb72413ab1868544a4c6a0ff5cbdaf210184",
+        "params": "c63c26e38b4c7c65ae0f4658ce3cb31052cede8f940ec394cb40bbf7cf4ed4f4"
+      },
+      "status": "passed",
+      "update": 0
+    }
+  },
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "method": "Pure opaque-byte schema inspection of the two already published initializations.",
+  "schema": "replacement-saved-initialization-audit-v1",
+  "scope": "width-rate-replacement-2026-10-01"
+}
