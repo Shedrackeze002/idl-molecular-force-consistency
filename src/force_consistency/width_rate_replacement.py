@@ -68,7 +68,8 @@ def _audit_cell(config,root,sources):
     for role in ('fitting','anchor'):
         path=root/f'{role}-inputs.npz';no_symlinks(path)
         source=Path(config['original_failed_run_directory'])/'width16-lr1e-3'/path.name
-        if digest(path)!=digest(source) or prov['input_files_sha256'][role]!=digest(source) or contract['input_files_sha256']!=prov['input_files_sha256']:
+        expected_input=sources['pins'][str(source)]
+        if digest(path)!=expected_input or prov['input_files_sha256'][role]!=expected_input or contract['input_files_sha256']!=prov['input_files_sha256']:
             raise ValueError('Source input physical bytes changed')
     receipt,history=resolve_commit(root)
     if receipt['update']!=6000 or contract['update']!=6000 or contract['commit']!=receipt or contract['state_hashes']!=receipt['state_hashes']:
@@ -157,8 +158,9 @@ def positive_allowance(value):
     return value
 
 
-def _launch(root,timeout,attempt_sha256):
+def _launch(root,timeout,attempt_sha256,*,context=None):
     positive_allowance(timeout);root=Path(root)
+    if context is not None:timeout=min(timeout,positive_allowance(context.remaining_seconds()))
     try:
         result=subprocess.run([sys.executable,'-m','force_consistency.width_rate_replacement','--probe',str(root.resolve()),'--attempt-sha256',attempt_sha256],
                               env={**os.environ,'JAX_PLATFORMS':'cpu'},capture_output=True,check=True,timeout=timeout)
@@ -177,9 +179,14 @@ def launch_probe(root,context):
     audit=audit_replacement_cell(config,root);context.check_budget();positive_allowance(context.remaining_seconds())
     exclusive(root/'probe-attempt.json',attempt_binding(root,audit))
     sha=digest(root/'probe-attempt.json');context.check_budget();allowance=positive_allowance(context.remaining_seconds())
-    result=_launch(root,allowance,sha);valid_child(audit,result)
+    result=_launch(root,allowance,sha,context=context);valid_child(audit,result)
     if read(root/'checkpoint-verification.json')!=result:raise ValueError('Saved child result changed')
     return result
+
+
+def recover_child_work(config,root,sources):
+    audit=_audit_cell(config,root,sources);result=read(Path(root)/'checkpoint-verification.json')
+    return {'work':valid_child(audit,result),'receipt':result}
 
 
 def run_replacement_arm(config,case,prepared,root,provenance,context):
@@ -203,8 +210,8 @@ def run_replacement_arm(config,case,prepared,root,provenance,context):
     except BaseException as exc:out.update(status='failed',execution_valid=False,failure_reason=f'Post-cell guard: {type(exc).__name__}: {exc}')
     # Valid receipted child work remains known even when a later boundary fails.
     try:
-        audit=audit_replacement_cell(config,root);result=read(Path(root)/'checkpoint-verification.json')
-        work=valid_child(audit,result);out.update(known_child_work=work,known_child_receipt=result,probe_work_status='completed')
+        known=recover_child_work(config,root,sources)
+        out.update(known_child_work=known['work'],known_child_receipt=known['receipt'],probe_work_status='completed')
     except (OSError,ValueError,KeyError,TypeError):
         out['known_child_work']=None if (Path(root)/'probe-attempt.json').exists() else {'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0,'training_updates':0}
     out['elapsed_seconds']=context.clock()-context.arm_start;out['charged_elapsed_seconds']=out['elapsed_seconds']+context.shared_initialization_seconds
@@ -218,6 +225,25 @@ def run_replacement_arm(config,case,prepared,root,provenance,context):
 def evidence(config,identity,title,details):
     with Path(config['evidence_log']).open('a') as f:
         f.write('\n## '+identity+' — '+title+'\n\n```json\n'+json.dumps(details,sort_keys=True,indent=2,allow_nan=False)+'\n```\n');f.flush();os.fsync(f.fileno())
+
+
+
+def failure_outcome(config,root,error,records):
+    """Controller failure cannot erase earlier durable cells or invent their work."""
+    root=Path(root);arms={};unreadable=[]
+    for case in config['cases']:
+        child=root/case['name'];arm=None
+        for name in ('failure.json','summary.json'):
+            path=child/name
+            if path.is_file():
+                try:arm=read(path);break
+                except (OSError,ValueError) as exc:unreadable.append({'path':str(path),'sha256':digest(path),'error':str(exc)})
+        if arm is None:
+            arm={'case':case,'status':'unavailable' if child.exists() else 'blocked','executed':None if child.exists() else False,
+                 'execution_valid':False,'stop_reason':'controller_failure_with_unreceipted_work' if child.exists() else 'preflight_or_controller_failure'}
+        arms[case['name']]=arm
+    return {'status':'failed','execution_valid':False,'full_pilot':'pending','failure_reason':f'{type(error).__name__}: {error}',
+            'preflight_work':records,'arms':arms,'unreadable_terminal_artifacts':unreadable}
 
 
 def diagnose_width_rate_replacement(config):
@@ -259,8 +285,7 @@ def diagnose_width_rate_replacement(config):
         out=engine.execute_width_rate_matrix(root,config,runner,lambda:verify_replacement_sources(config),context)
         out['parent_work']=prepared['parent_work'];out['shared_initializations']={str(k):v['receipt'] for k,v in prepared['widths'].items()}
     except BaseException as exc:
-        out={'status':'failed','execution_valid':False,'full_pilot':'pending','failure_reason':f'{type(exc).__name__}: {exc}','preflight_work':records,
-             'arms':{c['name']:{'case':c,'status':'blocked','executed':False,'execution_valid':False,'stop_reason':'preflight_or_controller_failure'} for c in config['cases']}}
+        out=failure_outcome(config,root,exc,records)
     out.update(role=ROLE,config_identity=CONFIG_ID,started_at_utc=started,ended_at_utc=utc(),elapsed_seconds=context.clock()-context.global_start)
     def owns():
         return not root.is_symlink() and root.exists() and (root.stat().st_dev,root.stat().st_ino)==owned

@@ -215,3 +215,35 @@ replacement_probe(sys.argv[1],'a'*64)
     assert result.returncode!=0 and 'Unreviewed replacement cell root' in result.stderr
     assert 'NUMERICAL_IMPORT' not in result.stderr
     assert not (tmp_path/'probe-entry.json').exists()
+
+def test_controller_fallback_keeps_completed_and_failed_cells(tmp_path):
+    replacement=module('width_rate_replacement');c=json.loads(CONFIG.read_text())
+    first=c['cases'][0];second=c['cases'][1]
+    for case,status,updates in ((first,'completed',6000),(second,'failed',200)):
+        child=tmp_path/case['name'];child.mkdir();(child/'summary.json').write_text(json.dumps({'case':case,'status':status,'executed':True,'execution_valid':status=='completed','updates':updates}))
+    out=replacement.failure_outcome(c,tmp_path,RuntimeError('controller failed'),[])
+    assert out['arms'][first['name']]['status']=='completed'
+    assert out['arms'][second['name']]['updates']==200
+    assert [out['arms'][x['name']]['status'] for x in c['cases'][2:]]==['blocked','blocked']
+    assert not out['execution_valid']
+
+def test_launcher_rechecks_live_deadline_before_issuing_child(tmp_path,monkeypatch):
+    replacement=module('width_rate_replacement')
+    class Expired:
+        def remaining_seconds(self):return -0.01
+    monkeypatch.setattr(replacement.subprocess,'run',lambda *a,**k:pytest.fail('child issued after live deadline'))
+    with pytest.raises(TimeoutError):replacement._launch(tmp_path,1,'a'*64,context=Expired())
+
+def test_known_child_receipt_uses_cached_guard_after_later_source_failure(tmp_path,monkeypatch):
+    replacement=module('width_rate_replacement');root,sources=_staged_endpoint(tmp_path,replacement)
+    child=json.loads(Path('runs/aspirin-width-rate-recovery-2026-10-01/summary.json').read_text())['child_receipt']
+    child.update(config_identity='d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36',checkpoint_sha256=digest_for_test(root/'snapshots/6000.msgpack'),history_sha256=digest_for_test(root/'histories/6000.json'))
+    (root/'checkpoint-verification.json').write_text(json.dumps(child))
+    monkeypatch.setattr(replacement,'verify_replacement_sources',lambda c:(_ for _ in ()).throw(ValueError('later unrelated source failure')))
+    known=replacement.recover_child_work(json.loads(CONFIG.read_text()),root,sources)
+    assert known['work']['prediction_frames']==144
+    assert known['receipt']['adam_count']==6000
+
+def digest_for_test(path):
+    import hashlib
+    return hashlib.sha256(path.read_bytes()).hexdigest()

@@ -13684,3 +13684,28 @@ Task2 initialRED16failed/13passed, new verifier features absent. FocusedGREEN30/
 - .superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt: SHA256 9edf2670bbd04479a4e16b203cb11448a341e32ea3f35a49ee92838d325649d7
 
 Task2 focused final:64passed in92.90s; task2-green-complete.txt retained. Includes existing first-step/multistep Adam, paired fresh states, controller learning-failure continuation/execution-failure blocking, transactional failures and the new strict boundaries. Full suite/final review remain pending. Clock now begins before engine import so subsequent setup is charged. Static attempted read tests/test_width_rate.py was absent; correct tests/test_width_rate_runs.py read; no numerical action in that failed file read.
+
+## WIDTHRATE-REPLACEMENT-ENGINEERING-003 — saved-only reporting and additional failure regressions
+
+Task3 RED24failures (report absent), GREEN24/24 in22.32s, expanded26/26 in28.03s. Corrected completeness test fixtures to begin from a valid acyclic closure before omitting each later artifact; this avoids a false-positive test caused by absent exclusions. Saved-only report denied engine imports and numerical array loading. Negative/blocked outcomes can have complete log coverage while numerical interpretation remains invalid.
+
+First fullsuite451passed in305.01s before the last regressions. The subsequently added tests were not in that initial collection; that run is not final certification of later changes. AdditionalRED: coverage accepted only four late artifacts without code/config/raw/test/ancestry roles; live launcher lacked a deadline recheck; later source failure could hide a previously valid child receipt; fabricated positive failed elapsed time could be reported without a bound terminal publication. All corrected with focused regressions. Latest focused66passed70.73s; last3 reporting regressions passed separately. Final fullsuite is now running on frozen code with dedicated retained fixtures. No production invocation.
+
+Controller fallback1RED→1GREEN preserves completed/failed earlier cells rather than replacing them all with blocked states. Private fixture work is engineering evidence, not new research data or production6000-update training. Static process-list diagnostic was sandbox-denied; it produced no project mutation or scientific result. All saved logs below, including unsuccessful attempts, are retained.
+- .superpowers/sdd/2026-10-01-width-rate-replacement/focused-before-review.txt: SHA256 629d863e92fe77c9b4210b9df6d9918d083db5f27f1e67f05d82d42f1cc25163
+- .superpowers/sdd/2026-10-01-width-rate-replacement/full-suite-before-review.txt: SHA256 f2afe699850679f63975a9da50a29a792cc017b5481e47b201e10e5f53ca13c1
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green-attempt1.txt: SHA256 a04333375ffc00814b683e5b9d7b2fedaa71c4d461a0338511504a404056a042
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-green.txt: SHA256 59acec7a6a1456ae9cabf936341f3a2aa35494920967606c0c133549ca349be6
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task1-red.txt: SHA256 2397da710e6cdd76ac86ae1f69f0edd91fb0f319bc7791bf1bfa1ffd0d5c73f0
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-green.txt: SHA256 e712bd952fcdd7c7ab1870dd661ed56bfbbf579c0930ded2a15f51010ee71f2d
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-fallback-red.txt: SHA256 cbaef168c8df545879939f09070e133053033f3792b6fa37336f5a92ec9ec0cf
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-attempt1.txt: SHA256 9ed97e741928681488246315e7949c72ec3f45e5496a2df81beed9418b4655e4
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-green-complete.txt: SHA256 ad9d1e278d7b0eb110785171d3f7c35dca4e76b74f705b0bd049f7a7e3a891ec
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-live-and-known-red.txt: SHA256 a4d3f5425c3f1b99febe102e15a89d0f5a16937d1471c5e15dd15d68ca738c49
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task2-red.txt: SHA256 9edf2670bbd04479a4e16b203cb11448a341e32ea3f35a49ee92838d325649d7
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-coverage-roles-red.txt: SHA256 3daaca145d26072d493c898bd568ba02243e630cd917f1869a8ba894f50e0a80
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-failed-time-red.txt: SHA256 a7687a97a07d396e1bdbc296d62481b003f8ae3552b48392c6c1cf2e00508907
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-attempt1.txt: SHA256 37a69a98097a7be418adcc246273b4ebe1f85121de6fc6b4e85b998c790074dc
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-green-complete.txt: SHA256 3cd5b01bf8230e093633c66d00b5b600b7d6def48d938f0d28b75dbdd789ef43
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-late-regressions-green.txt: SHA256 295acaf84513c2ff1dab46a791deeb7388b2e5f4e48db191243b566e4a949819
+- .superpowers/sdd/2026-10-01-width-rate-replacement/task3-red.txt: SHA256 d150688f968fb0b98c2200f99b0378d102373797bf9ede02a9b2ab1ccc61513f
