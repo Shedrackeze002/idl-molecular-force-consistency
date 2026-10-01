@@ -20,6 +20,8 @@ User reaffirmation, 29 September 2026: document every experiment and trial, whet
 
 User instruction, 29 September 2026: save findings as work proceeds and use the existing Obsidian CLI when helpful. The `hermes` vault lives under `/Users/shedrackeze/Library/Mobile Documents/iCloud~md~obsidian/Documents/hermes`. Codex notes are in `Codex/IDL MLIP Project/`: `Project Hub.md` holds current state/navigation and `Research Findings.md` links paper-facing observations to evidence IDs. Use the Obsidian CLI for vault changes. Keep authoritative numbers, run identities and corrections in the repository evidence log; refresh the hub when project gates change. Do not treat an old note as current until checked against repository artifacts.
 
+Obsidian access diagnostic, 1 October 2026: the installed CLI can report that Obsidian is missing when run inside the restricted Codex sandbox even while permitted host execution succeeds. Before declaring CLI unavailability, compare the same read-only command through the authorized host execution path. Use the existing Obsidian CLI with backups and verified readback for vault changes; preserve the access diagnosis in repository evidence.
+
 ## Preserve review records
 
 User instruction, 30 September 2026: leave the review folders in place because they are harmless and help track reviews. Preserve review workspaces, packages, test logs and progress ledgers after completion; do not automatically delete them as cleanup. Durable execution archives supplement retained workspaces. Remove review records only when the user explicitly requests it. This project preference takes precedence over skill instructions to delete completed review workspaces.

@@ -13584,3 +13584,32 @@ Final archive includes15external failure records from the configured macOS temp 
   }
 }
 ```
+
+## OBSIDIAN-ACCESS-CORRECTION-001 — CLI available through permitted host execution
+
+Correction to prior CLI-unavailable statements: executable /usr/local/bin/obsidian correctly resolves to the installed app CLI. Same --help command reproducibly exits1 in restricted execution with “CLI is unable to find Obsidian,” but exits0 with permitted host execution; host CLI read of the existing hermes project hub also succeeds. Thus the execution restriction caused app discovery failure; the error did not establish missing/broken installation. Author should have checked host execution before declaring unavailability. Exact internal app-discovery mechanism not investigated; no installation/registration/app-setting changes.
+
+Pending project hub/findings navigation now appended through CLI with pre-edit backups and readback verification. Prior notes retained; current status supersedes older pending-navigation records. Evidence trail/results unchanged, no training/numerical action. Backups, sync script and verification stored in reports/execution/obsidian-access-2026-10-01.
+
+```json
+{
+  "at_utc": "2026-10-01T15:23:15.563866+00:00",
+  "diagnosis": "same CLI help fails in sandbox (exit1); host help and project read succeed (exit0)",
+  "method": "CLI backup, append, readback; no direct vault write",
+  "notes": {
+    "findings": {
+      "after_sha256": "edc627c9e3ffc3a2d455242d528c7f1b2e3f3f74ba8d7fb1c2a6c043e172db86",
+      "append_verified": true,
+      "before_sha256": "f0099d715dce7a55ee7972382b0f33d3b436f4f447ab46a757a5a9d826a2c170",
+      "path": "Codex/IDL MLIP Project/Research Findings.md"
+    },
+    "hub": {
+      "after_sha256": "547e5a0ca0bb9cf08b1ad126d47889f589fe974cba93caaa6ab96eb13e2886d2",
+      "append_verified": true,
+      "before_sha256": "5d41070b493de52b4bb2bbe51a11eca258fdd71290702ce7d1806f270e38c3c5",
+      "path": "Codex/IDL MLIP Project/Project Hub.md"
+    }
+  },
+  "vault": "hermes"
+}
+```
