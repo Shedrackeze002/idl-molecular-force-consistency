@@ -1,6 +1,7 @@
 """Opaque checkpoint-copy audit and one bounded fresh verifier; no numerical imports."""
 import argparse
 import copy
+from datetime import datetime, timezone
 import hashlib
 import importlib.metadata
 import json
@@ -120,8 +121,17 @@ def valid_child(v,root,result):
 
 
 def _launch(root,timeout):
+    if not isinstance(timeout,(int,float)) or not math.isfinite(timeout) or timeout<=0:raise TimeoutError('No positive verifier allowance')
     env={**os.environ,'JAX_PLATFORMS':'cpu'}
-    completed=subprocess.run([sys.executable,'-m','force_consistency.width_rate_runs','--probe',str((Path(root)/'verification-copy').resolve())],env=env,capture_output=True,timeout=timeout,check=True)
+    try:
+        completed=subprocess.run([sys.executable,'-m','force_consistency.width_rate_runs','--probe',str((Path(root)/'verification-copy').resolve())],env=env,capture_output=True,timeout=timeout,check=True)
+    except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as exc:
+        # Preserve all available partial output, retaining the original exception if persistence fails.
+        for name,value in [('stdout',exc.output),('stderr',exc.stderr)]:
+            if value is not None:
+                try:atomic(Path(root)/('probe-'+name+'.txt'),value.encode() if isinstance(value,str) else value)
+                except Exception as persistence:exc.add_note('Log persistence failed: '+str(persistence))
+        raise
     atomic(Path(root)/'probe-stdout.txt',completed.stdout);atomic(Path(root)/'probe-stderr.txt',completed.stderr)
     return read(Path(root)/'verification-copy/checkpoint-verification.json')
 
@@ -129,19 +139,27 @@ def _launch(root,timeout):
 def _recover(config,root,guard,probe_runner,*,clock=time.perf_counter):
     root=Path(root)
     if root.exists() or root.is_symlink():raise ValueError('Protected recovery root already exists')
-    start=clock();deadline=start+config['total_wall_seconds'];probe_start=None;v=None
+    start=clock();deadline=start+config['total_wall_seconds'];probe_start=None;v=None;owned=None
+    root_location=root.resolve()
+    def utc():return datetime.now(timezone.utc).isoformat()
+    def owns_root():
+        if owned is None or root.is_symlink() or root.resolve()!=root_location:return False
+        try:return (root.stat().st_dev,root.stat().st_ino)==owned
+        except OSError:return False
     def check():
         if clock()>=deadline:raise TimeoutError('Recovery boundary cap exhausted')
     out={'role':ROLE,'status':'failed','verification_valid':False,'config_identity':canonical_hash(config),'config':config,'full_pilot':'pending',
-         'probe_attempts':0,'probe_work_status':'not_started','probe_seconds':0.,'new_work':{'training_updates':0,'optimizer_proposals':0,'warmup_frames':0,'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0}}
+         'started_at_utc':utc(),'timestamp_provenance':'parent UTC wall clock; durations use monotonic clock','probe_attempts':0,'probe_work_status':'not_started','probe_seconds':0.,'new_work':{'training_updates':0,'optimizer_proposals':0,'warmup_frames':0,'template_initializations':0,'template_initializer_frames':0,'prediction_frames':0}}
     try:
-        check();v=guard();check();root.mkdir(parents=True);out.update(original_effort=original_effort(v),original_outcome=original_outcome(v),code=code_record())
+        check();v=guard();check();root.mkdir(parents=True);owned=(root.stat().st_dev,root.stat().st_ino);out.update(original_effort=original_effort(v),original_outcome=original_outcome(v),code=code_record())
         atomic(root/'config.json',json_bytes(config));atomic(root/'prospective.json',json_bytes(out))
         _stage_copy(v,root,check);v=guard();_audit_copy(v,root,read(root/'copy-transformation.json'));check()
-        out.update(probe_attempts=1,probe_work_status='started');atomic(root/'probe-work.json',json_bytes({'status':'started','phase':'launch_intent','attempt':1}));check();probe_start=clock()
-        result=probe_runner(root,deadline-probe_start);out['probe_seconds']=clock()-probe_start;out['child_receipt']=result
+        atomic(root/'probe-work.json',json_bytes({'status':'started','phase':'launch_intent','attempt':1}));check();candidate_start=clock();allowance=deadline-candidate_start
+        if not math.isfinite(allowance) or allowance<=0:raise TimeoutError('No positive verifier allowance')
+        probe_start=candidate_start;out.update(probe_attempts=1,probe_work_status='started',probe_started_at_utc=utc())
+        result=probe_runner(root,allowance);out['probe_seconds']=clock()-probe_start;out['probe_ended_at_utc']=utc();out['child_receipt']=result
         out['new_work']=valid_child(v,root,result);out['probe_work_status']='completed';atomic(root/'probe-work.json',json_bytes({'status':'completed','attempt':1,'new_work':out['new_work'],'elapsed_seconds':out['probe_seconds']}))
-        check();v=guard();_audit_copy(v,root,read(root/'copy-transformation.json'),True);check();out.update(status='passed',verification_valid=True,elapsed_seconds=clock()-start)
+        check();v=guard();_audit_copy(v,root,read(root/'copy-transformation.json'),True);check();out.update(status='passed',verification_valid=True,elapsed_seconds=clock()-start,ended_at_utc=utc())
         atomic(root/'summary.json',json_bytes(out));check()
         atomic(root/'controller-completion.json',json_bytes({'status':'passed','summary_sha256':digest(root/'summary.json'),'elapsed_seconds':clock()-start}));check()
     except BaseException as exc:
@@ -149,12 +167,25 @@ def _recover(config,root,guard,probe_runner,*,clock=time.perf_counter):
         if out['probe_work_status']=='started':
             if probe_start is None:out.update(probe_work_status='not_started',probe_attempts=0)
             else:
-                out.update(probe_work_status='unknown',probe_seconds=clock()-probe_start)
+                out.update(probe_work_status='unknown',probe_seconds=clock()-probe_start,probe_ended_at_utc=utc())
                 out['new_work'].update(template_initializations=None,template_initializer_frames=None,prediction_frames=None)
-        out.update(status='incomplete' if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else 'failed',verification_valid=False,failure_reason=f'{type(exc).__name__}: {exc}',elapsed_seconds=clock()-start)
+                # A child receipt already persisted before later log/controller I/O failure remains known work.
+                try:
+                    receipt=read(root/'verification-copy/checkpoint-verification.json');work=valid_child(v,root,receipt)
+                    _audit_copy(v,root,read(root/'copy-transformation.json'),True)
+                    out.update(child_receipt=receipt,new_work=work,probe_work_status='completed')
+                    atomic(root/'probe-work.json',json_bytes({'status':'completed','attempt':1,'new_work':work,'elapsed_seconds':out['probe_seconds']}))
+                except (OSError,ValueError,KeyError,TypeError):pass
+        out.update(status='incomplete' if isinstance(exc,(TimeoutError,subprocess.TimeoutExpired)) else 'failed',verification_valid=False,failure_reason=f'{type(exc).__name__}: {exc}',elapsed_seconds=clock()-start,ended_at_utc=utc())
         if isinstance(exc,subprocess.CalledProcessError):out['probe_stderr']=(exc.stderr.decode(errors='replace') if isinstance(exc.stderr,bytes) else str(exc.stderr))[-4000:]
-        if root.exists():
+        if owns_root():
             try:atomic(root/'controller-failure.json',json_bytes(out))
+            except Exception as persistence:out['failure_record_error']=str(persistence)
+        else:
+            # Never follow an unowned destination, including a symlink introduced during guard().
+            try:
+                with tempfile.NamedTemporaryFile(prefix='width-rate-recovery-unowned-',suffix='.json',delete=False) as f:
+                    out['external_failure_record']=f.name;f.write(json_bytes(out));f.flush();os.fsync(f.fileno())
             except Exception as persistence:out['failure_record_error']=str(persistence)
     return out
 

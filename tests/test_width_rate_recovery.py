@@ -180,3 +180,54 @@ def test_source_reference_swap_after_guard_is_rejected(tmp_path):
     v=source(tmp_path);v['source_files_sha256']={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
     (v['source_root']/'reference.npz').write_bytes(b'swapped after verified guard')
     with pytest.raises(ValueError):module()._stage_copy(v,tmp_path/'copy',lambda:None)
+
+
+@pytest.mark.parametrize('symlink',[False,True])
+def test_raced_destination_never_receives_failure_record(tmp_path,symlink):
+    v=source(tmp_path);root=tmp_path/'run';before={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()};calls=[]
+    def guard():
+        if symlink:root.symlink_to(v['source_root'],target_is_directory=True)
+        else:root.mkdir()
+        return v
+    out=module()._recover(v['config'],root,guard,lambda *a:calls.append(a))
+    assert not (root/'controller-failure.json').exists() and calls==[]
+    assert before=={str(p.relative_to(v['source_root'])):h(p.read_bytes()) for p in v['source_root'].rglob('*') if p.is_file()}
+    assert Path(out['external_failure_record']).is_file()
+
+
+def test_allowance_crosses_deadline_before_launch(tmp_path,monkeypatch):
+    v=source(tmp_path);m=module();armed=[False];ticks=[0];calls=[];real=m.atomic
+    def atomic(path,data):
+        real(path,data)
+        if Path(path).name=='probe-work.json':armed[0]=True
+    def clock():
+        if armed[0]:ticks[0]+=1
+        return 121. if ticks[0]>=2 else 0.
+    monkeypatch.setattr(m,'atomic',atomic)
+    out=m._recover(v['config'],tmp_path/'run',lambda:v,lambda *a:calls.append(a),clock=clock)
+    assert calls==[] and out['probe_attempts']==0 and out['new_work']['prediction_frames']==0
+
+
+@pytest.mark.parametrize('timeout',[0.,-1.])
+def test_launch_rejects_nonpositive_timeout_without_process(tmp_path,monkeypatch,timeout):
+    m=module();calls=[];monkeypatch.setattr(m.subprocess,'run',lambda *a,**k:calls.append(k))
+    with pytest.raises(TimeoutError):m._launch(tmp_path,timeout)
+    assert calls==[]
+
+
+@pytest.mark.parametrize('kind',['timeout','failed'])
+def test_failed_child_preserves_complete_available_logs(tmp_path,monkeypatch,kind):
+    m=module();stdout=b'full stdout'*1000;stderr=b'full stderr'*1000
+    error=subprocess.TimeoutExpired('probe',1,output=stdout,stderr=stderr) if kind=='timeout' else subprocess.CalledProcessError(1,'probe',output=stdout,stderr=stderr)
+    def run(*a,**k):raise error
+    monkeypatch.setattr(m.subprocess,'run',run)
+    with pytest.raises(type(error)) as caught:m._launch(tmp_path,1.)
+    assert caught.value is error and (tmp_path/'probe-stdout.txt').read_bytes()==stdout and (tmp_path/'probe-stderr.txt').read_bytes()==stderr
+
+
+def test_receipted_child_work_survives_later_log_failure(tmp_path):
+    v=source(tmp_path);root=tmp_path/'run'
+    def runner(root,timeout):passed(root,v);raise OSError('stdout persistence failure after child receipt')
+    out=module()._recover(v['config'],root,lambda:v,runner)
+    assert not out['verification_valid'] and out['probe_work_status']=='completed' and out['new_work']['prediction_frames']==14
+    assert out['started_at_utc']<=out['ended_at_utc'] and out['probe_started_at_utc']<=out['probe_ended_at_utc']
