@@ -1,0 +1,25 @@
+# Replacement research-log completeness
+
+{
+  "corrected_current_summary_reconciled": true,
+  "current_scientific_summary": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+  "errors": [],
+  "evidence_prefix_bytes": 32418308,
+  "evidence_prefix_sha256": "c77b4a95c03d3ad1f29c1d3723da21951c4c262b83748013c5ef86340a625f44",
+  "exclusions": [
+    "coverage_outputs",
+    "coverage_manifest",
+    "evidence_after_cutoff",
+    "closing_commit_sha"
+  ],
+  "full_results_commit_resolution_verified": true,
+  "log_completeness": true,
+  "required_artifact_count": 1259,
+  "scope": "Named replacement, original failed and separate copy milestones; structured artifact/log coverage, not all historical scientific correctness. The retained abbreviated snapshot reference is resolved via a separately validated full actual revision and structured correction; unchanged core checker errors are exposed separately. The initial relative-path reporting failure is retained; appended corrected absolute-path current summary and index are separately reconciled against identical raw/arm records.",
+  "stage": "final",
+  "unmodified_core_checker_errors": [
+    "Required artifact purpose/content invalid: results_commit"
+  ]
+}
+
+This certifies the named structured artifact trail at the byte-count/hash cutoff. It does not independently rerun or certify all historical scientific correctness. Later evidence and closing commit identity are explicitly excluded to avoid circular hashes.

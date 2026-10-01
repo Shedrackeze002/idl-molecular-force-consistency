@@ -1,0 +1,19 @@
+{
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "failed_check_artifacts_sha256": {
+    "reports/execution/width-rate-replacement-2026-10-01/failed-closure-check/coverage-check-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reports/execution/width-rate-replacement-2026-10-01/failed-closure-check/coverage-check-stdout.txt": "4c4d6166f3e2e8f1ad7fe94d268eb95a1a159397651ed3230d046944e0910345",
+    "reports/execution/width-rate-replacement-2026-10-01/failed-closure-check/log-completeness-input.json": "c1a82bcee0e7364171a6b5faafd54f59981a6be7d70561da0682667d5d6e3350",
+    "reports/execution/width-rate-replacement-2026-10-01/failed-closure-check/log-completeness.json": "4c4d6166f3e2e8f1ad7fe94d268eb95a1a159397651ed3230d046944e0910345",
+    "reports/execution/width-rate-replacement-2026-10-01/failed-closure-check/log-completeness.md": "3d99775f5a88187708224635d5fb969ef85a5431204dae7b41b9cd98c898c6f7"
+  },
+  "initial_record_path": "reports/execution/width-rate-replacement-2026-10-01/results-commit.json",
+  "initial_record_sha256": "1c29d488dc67dda20c82a229e2604fb7d9b354ad6354377af55b90b9409c42a0",
+  "reason": "Author supplied abbreviated d08f340, while the fixed role validator requires40hex. Actual90committed scientific/runtime/test/review/archive/navigation files were already verified; resolve the same unambiguous actual commit without altering any outcome.",
+  "resolution": "Initial record/evidence retained. Final closure additionally validates the resolved full record using the unchanged purpose/content validator and exact structured correction entry; only the demonstrated abbreviated-revision role failure may be resolved. All other checker errors stay blocking. Coverage stdout/stderr are classified with coverage outputs and excluded from their own required hash map; failed copies remain separately retained.",
+  "resolved_record_path": "reports/execution/width-rate-replacement-2026-10-01/resolved-results-commit.json",
+  "resolved_record_sha256": "8015343ce317b100d509a1af4f7a504c27c786bde0c4c567f60774479388eaad",
+  "resolved_revision": "d08f34055d531c8760bba816626f255e4df03dfc",
+  "schema": "replacement-closure-correction-v1",
+  "scope": "width-rate-replacement-2026-10-01"
+}
