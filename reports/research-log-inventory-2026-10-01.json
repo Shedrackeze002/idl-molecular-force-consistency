@@ -1,0 +1,556 @@
+{
+  "all_saved_report_bytes_retained": true,
+  "artifacts": [
+    {
+      "attempt_outcomes": [
+        {
+          "learning_accepted": false,
+          "learning_final_mse": {
+            "energy_mse_eV2": 0.007751758500612726,
+            "force_mse_eV2_per_A2": 0.009779336686872274
+          },
+          "learning_initial_mse": {
+            "energy_mse_eV2": 32.23256077457698,
+            "force_mse_eV2_per_A2": 0.0435718463614834
+          },
+          "status": "incomplete",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        },
+        {
+          "learning_accepted": false,
+          "learning_final_mse": {
+            "energy_mse_eV2": 0.0004897094577467109,
+            "force_mse_eV2_per_A2": 0.0075721620581139844
+          },
+          "learning_initial_mse": {
+            "energy_mse_eV2": 0.061298358531283896,
+            "force_mse_eV2_per_A2": 0.010133561081129104
+          },
+          "status": "incomplete",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        }
+      ],
+      "bytes": 28625,
+      "path": "reports/baseline-learning-checks.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "cd739475709a32ffe7d547f3d07d4b20c18ed9aa80549ee5b78960815e326691",
+      "status_fields": {
+        "status": "learning gate failed; full pilot pending"
+      }
+    },
+    {
+      "bytes": 569,
+      "path": "reports/baseline-physics-zero-readout.json",
+      "previous_direct_filename_reference": false,
+      "previous_direct_hash_reference": false,
+      "sha256": "fe5c606534f066126eed2a0a233bfa978f98086dfc417524bf2da95cf5b46d5e",
+      "status_fields": {}
+    },
+    {
+      "bytes": 587,
+      "path": "reports/baseline-physics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "897fd3ae9931de0a59b6ff987be40b1375525c5a8b799b0c143a17cd3e67f5f5",
+      "status_fields": {}
+    },
+    {
+      "arm_outcomes": {
+        "balanced": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.10905757620503544,
+              "force_mse_eV2_per_A2": 0.42746961258301264
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.3220330430785254,
+              "force_mse_eV2_per_A2": 0.45318885284127763
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "persisted_update": 6000,
+          "status": "completed",
+          "stop_reason": "fixed_budget",
+          "updates": 6000
+        },
+        "force-only": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 175005.4664788659,
+              "force_mse_eV2_per_A2": 0.38385681809949984
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 286547.0772000517,
+              "force_mse_eV2_per_A2": 0.4235739571978734
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "persisted_update": 6000,
+          "status": "completed",
+          "stop_reason": "fixed_budget",
+          "updates": 6000
+        },
+        "replay": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.009534698444162338,
+              "force_mse_eV2_per_A2": 0.7531844155210349
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.05085541799008127,
+              "force_mse_eV2_per_A2": 0.8767568128028022
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "persisted_update": 6000,
+          "status": "completed",
+          "stop_reason": "fixed_budget",
+          "updates": 6000
+        }
+      },
+      "bytes": 5542642,
+      "path": "reports/convergence-budget-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "16d9b1288713325c6bf125939ebd550539b1baa81531e29709fee025e7e27852",
+      "status_fields": {
+        "execution_valid": true,
+        "full_pilot": "pending",
+        "interpretation_valid": true,
+        "status": "completed"
+      }
+    },
+    {
+      "arm_outcomes": {
+        "diverse128": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.024702018838049,
+              "force_mse_eV2_per_A2": 0.8769996293603259
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.08738058573272221,
+              "force_mse_eV2_per_A2": 0.9784403043672875
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        },
+        "diverse16": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.01838750683983036,
+              "force_mse_eV2_per_A2": 0.9387592519896504
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.02669173143721766,
+              "force_mse_eV2_per_A2": 0.8967607042970483
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003622249218106596,
+              "force_mse_eV2_per_A2": 0.0017939664221939815
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        },
+        "narrow16": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.003516256921364377,
+              "force_mse_eV2_per_A2": 0.7145522825221748
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.003516256921364377,
+              "force_mse_eV2_per_A2": 0.7145522825221748
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        }
+      },
+      "bytes": 1798148,
+      "path": "reports/data-coverage-diagnostics.json",
+      "previous_direct_filename_reference": false,
+      "previous_direct_hash_reference": true,
+      "sha256": "6c5b3233360a6baf9b155162fbae1fdf43b0d1f9b209f79997b468976d40dbb4",
+      "status_fields": {
+        "execution_valid": true,
+        "full_pilot": "pending",
+        "status": "completed"
+      }
+    },
+    {
+      "bytes": 26137,
+      "path": "reports/force-learning-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "2165ffb58ed9768b20b00b1c05d18dd73db3ddf9ff813c2dc0b31cab4aa73e54",
+      "status_fields": {
+        "execution_valid": true
+      }
+    },
+    {
+      "bytes": 6681,
+      "path": "reports/landscape17-aspirin-44-complete-endpoint-check.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "992188985de903c6f313327daa3067ac7416cb77c6e9c0b82c7dfa0ec2b074d8",
+      "status_fields": {}
+    },
+    {
+      "bytes": 6679,
+      "path": "reports/landscape17-aspirin-66-complete-endpoint-check.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "439580f003746b7be80ea9f859986793a354b7ed2945661208bc456fe03aa118",
+      "status_fields": {}
+    },
+    {
+      "bytes": 84,
+      "path": "reports/landscape17-duplicates.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "c3106a4140f518f2b8187df4e325d7b2b2c86de9c62b22bbd4319a378429b256",
+      "status_fields": {}
+    },
+    {
+      "bytes": 175840,
+      "path": "reports/landscape17-endpoints.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6",
+      "status_fields": {}
+    },
+    {
+      "bytes": 2946,
+      "path": "reports/landscape17-paracetamol-01_2-complete-endpoint-check.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "09975070d132bf2b42646a4004bd838d35772fbee2a49f6856a4df6e7d818712",
+      "status_fields": {}
+    },
+    {
+      "bytes": 2713,
+      "path": "reports/learning-check-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "a34b90186d92ed9a31fa47f9084be19b170f86e1a569cc3ea8ec4d83af79ae56",
+      "status_fields": {}
+    },
+    {
+      "arm_outcomes": {
+        "balanced": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.14981029569238652,
+              "force_mse_eV2_per_A2": 0.5562927944341675
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.4220107073579012,
+              "force_mse_eV2_per_A2": 0.6411855899465196
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        },
+        "force-only": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 55075.171126502115,
+              "force_mse_eV2_per_A2": 0.5059369229844992
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 90243.08877300369,
+              "force_mse_eV2_per_A2": 0.5699438664822202
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        },
+        "replay": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.024702018838049,
+              "force_mse_eV2_per_A2": 0.8769996293603259
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": true,
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.08738058573272221,
+              "force_mse_eV2_per_A2": 0.9784403043672875
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "status": "completed",
+          "stop_reason": "max_updates",
+          "updates": 2000
+        }
+      },
+      "bytes": 2757827,
+      "path": "reports/loss-balance-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f",
+      "status_fields": {
+        "execution_valid": true,
+        "full_pilot": "pending",
+        "status": "completed"
+      }
+    },
+    {
+      "bytes": 22038587,
+      "path": "reports/optimizer-step-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "f841592a80e09b205b5422d196fa22088d704d63a03693e1d143ae806be53fc5",
+      "status_fields": {
+        "execution_valid": true,
+        "full_pilot": "pending",
+        "interpretation_valid": true,
+        "status": "completed"
+      }
+    },
+    {
+      "bytes": 109850,
+      "path": "reports/representation-gradient-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+      "status_fields": {}
+    },
+    {
+      "arm_outcomes": {
+        "width16-lr1e-3": {
+          "anchor_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.10905757620503544,
+              "force_mse_eV2_per_A2": 0.42746961258301264
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.00612983585312839,
+              "force_mse_eV2_per_A2": 0.0010133561081129107
+            }
+          },
+          "executed": true,
+          "execution_valid": false,
+          "failure_reason": "CalledProcessError: Command '['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '-m', 'force_consistency.width_rate_runs', '--probe', '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/runs/aspirin-width-rate-2026-09-30/width16-lr1e-3']' returned non-zero exit status 1.",
+          "fit_gate": {
+            "accepted": false,
+            "fraction_remaining": {
+              "energy_mse_eV2": 0.3220330430785254,
+              "force_mse_eV2_per_A2": 0.45318885284127763
+            },
+            "gate_fraction": 0.1,
+            "threshold_mse": {
+              "energy_mse_eV2": 0.003751676427546992,
+              "force_mse_eV2_per_A2": 0.001408394821807022
+            }
+          },
+          "persisted_update": 6000,
+          "status": "failed",
+          "stop_reason": "failure",
+          "updates": 6000
+        },
+        "width16-lr3e-4": {
+          "executed": false,
+          "execution_valid": false,
+          "status": "blocked",
+          "stop_reason": "width16-lr1e-3_execution_failure"
+        },
+        "width32-lr1e-3": {
+          "executed": false,
+          "execution_valid": false,
+          "status": "blocked",
+          "stop_reason": "width16-lr1e-3_execution_failure"
+        },
+        "width32-lr3e-4": {
+          "executed": false,
+          "execution_valid": false,
+          "status": "blocked",
+          "stop_reason": "width16-lr1e-3_execution_failure"
+        }
+      },
+      "bytes": 7572139,
+      "path": "reports/width-rate-diagnostics.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": true,
+      "sha256": "548158a2e36515a847af63c326e237ac456a65fa7ec1bf5a9064b7a0397efd1a",
+      "status_fields": {
+        "execution_valid": false,
+        "full_pilot": "pending",
+        "interpretation_valid": false,
+        "status": "failed"
+      }
+    },
+    {
+      "bytes": 88587,
+      "path": "reports/width-rate-recovery-verification.json",
+      "previous_direct_filename_reference": true,
+      "previous_direct_hash_reference": false,
+      "sha256": "a009b32dfbf28e2405a9d6ae5ea52a2e884343a854464b90143b86733186f26c",
+      "status_fields": {
+        "full_pilot": "pending",
+        "status": "passed",
+        "verification_valid": true
+      }
+    }
+  ],
+  "checked_at_utc": "2026-10-01T16:00:31.701517+00:00",
+  "independent_scientific_metric_audit": false,
+  "limitations": [
+    "Filename/hash search tests direct indexing only, not semantic completeness of every historical log paragraph.",
+    "This snapshot does not certify every raw run, figure, source PDF, trial rationale or analytical derivation across the entire project.",
+    "New comparison has its own reviewed completeness reconciler; missing or unreceipted work remains unknown."
+  ],
+  "numerical_reexecution": false,
+  "prior_direct_index_gaps": [
+    "reports/baseline-physics-zero-readout.json"
+  ],
+  "report_count": 17,
+  "scope": "all17existing top-level reports/*.json at this snapshot; original/recovery/replacement provenance tracked separately"
+}

@@ -13613,3 +13613,58 @@ Pending project hub/findings navigation now appended through CLI with pre-edit b
   "vault": "hermes"
 }
 ```
+
+## WIDTHRATE-REPLACEMENT-PLAN-001 — prospective fresh comparison and complete trail
+
+User says proceed and reaffirms no important research results omitted. Proposed fresh16/32×.001/.0003matrix, unchanged128fit/16fittedanchors/6000updates/cell/strictgates/CPUfloat64/seed/weights/Adam/caps; newprotectedroot, no graft of originalfailed/recoveredcell. All scientific controls exactly equaloldconfig. Existing arithmetic remains byte-identical; new frozen guarded entry/report. Oldcellgraft/threecellcompletion and largerGPUgrid remain unexecuted alternatives. Original failed145raw/recoverypassed19raw and unknownoldeffort separate.
+
+```json
+{
+  "status": "planning_only_no_new_numerics",
+  "config_identity": "d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36",
+  "pin_manifest_sha256": "557daf51680f48a9c852bde83a133ee6bac0796bb36103bc2ae22c833ca66cb6",
+  "pin_count": 518,
+  "historical_pins_verified": 326,
+  "recovery_pins_verified": 163,
+  "original_failed_status_preserved": "failed",
+  "copy_passed": true,
+  "existing_suite_count": 388,
+  "scientific_controls_equal": true
+}
+```
+
+518pins checked and original326/recovery163contracts verified metadata-only. No new tests/numerics/training. Saved spec/plan awaittwoindependentreviews and materialfollowup beforeimplementation. Completeness reconciliation will detect missing negative/blocked/test/review/archive links; scoped namedmilestones, not a global all-historyclaim. One planningtool invocation had a JavaScriptsyntaxerror and made no files/changes; corrected save succeeded, not a numerical trial.
+
+## RESEARCH-LOG-INVENTORY-001 — all saved top-level numerical reports indexed
+
+User requested nothing important omitted. Read-only inventory found17existing top-level JSON reports intact. One lacked both a direct filename and checksum occurrence in the prior evidence log: reports/baseline-physics-zero-readout.json. This is an indexing gap, not evidence the result was lost; all reports now directly hash-indexed below, including failed/blocked learning and separate verification outcomes. No numerical rerun or full independent scientific audit. Scope/limits in reports/research-log-inventory-2026-10-01.json/md.
+
+| Saved artifact | SHA256 |
+|---|---|
+| reports/baseline-learning-checks.json | cd739475709a32ffe7d547f3d07d4b20c18ed9aa80549ee5b78960815e326691 |
+| reports/baseline-physics-zero-readout.json | fe5c606534f066126eed2a0a233bfa978f98086dfc417524bf2da95cf5b46d5e |
+| reports/baseline-physics.json | 897fd3ae9931de0a59b6ff987be40b1375525c5a8b799b0c143a17cd3e67f5f5 |
+| reports/convergence-budget-diagnostics.json | 16d9b1288713325c6bf125939ebd550539b1baa81531e29709fee025e7e27852 |
+| reports/data-coverage-diagnostics.json | 6c5b3233360a6baf9b155162fbae1fdf43b0d1f9b209f79997b468976d40dbb4 |
+| reports/force-learning-diagnostics.json | 2165ffb58ed9768b20b00b1c05d18dd73db3ddf9ff813c2dc0b31cab4aa73e54 |
+| reports/landscape17-aspirin-44-complete-endpoint-check.json | 992188985de903c6f313327daa3067ac7416cb77c6e9c0b82c7dfa0ec2b074d8 |
+| reports/landscape17-aspirin-66-complete-endpoint-check.json | 439580f003746b7be80ea9f859986793a354b7ed2945661208bc456fe03aa118 |
+| reports/landscape17-duplicates.json | c3106a4140f518f2b8187df4e325d7b2b2c86de9c62b22bbd4319a378429b256 |
+| reports/landscape17-endpoints.json | 4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6 |
+| reports/landscape17-paracetamol-01_2-complete-endpoint-check.json | 09975070d132bf2b42646a4004bd838d35772fbee2a49f6856a4df6e7d818712 |
+| reports/learning-check-diagnostics.json | a34b90186d92ed9a31fa47f9084be19b170f86e1a569cc3ea8ec4d83af79ae56 |
+| reports/loss-balance-diagnostics.json | c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f |
+| reports/optimizer-step-diagnostics.json | f841592a80e09b205b5422d196fa22088d704d63a03693e1d143ae806be53fc5 |
+| reports/representation-gradient-diagnostics.json | 0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477 |
+| reports/width-rate-diagnostics.json | 548158a2e36515a847af63c326e237ac456a65fa7ec1bf5a9064b7a0397efd1a |
+| reports/width-rate-recovery-verification.json | a009b32dfbf28e2405a9d6ae5ea52a2e884343a854464b90143b86733186f26c |
+
+Zero-readout-named physics artifact records seed19, nontrivial_head_seed191, perturbation scale0.1 and parameter_count4737; readout explicitly deliberately perturbed. Saved finite-difference max errors at .001/.0001/.00001Å are1.840800183117164e-08/7.37725186494842e-09/7.325904053528953e-09eV/Å; net force3.469446951953614e-18eV/Å and net torque6.938893903907228e-18eV. LockSHA256f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f. These are untrained analytical/implementation checks, not DFT accuracy/generalization/physical recovery. Original file untouched; no original trial timing or missing work invented.
+
+## WIDTHRATE-REPLACEMENT-REVIEW-001 — two static reviews and material amendments
+
+Scientific0Critical/0Important/1Minor, engineering0Critical/2Important/0Minor. Both independent static reviewers confirmed config/518manifest/all518bytes/old326+recovery163guards and scientific equality; no numericimports/arrays/restores/predictions/tests/probes/training. Scientific statickey/missingpath diagnostic errors caused no mutation/numerics; no result omitted. Scientific caveats accepted. Engineering direct-public-child fullaudit and after-all-evidence finalcompleteness gaps accepted/amended with source-derived pre-numeric guards, SHA-bound exclusive attempt, explicit preliminarypending/finalacyclic coverage prefix/artifactcutoffs. Originaldrafts retained; exactconfig/pin identities unchanged. Bothmaterial rereviews beforeimplementation. See docs/reviews/2026-10-01-width-rate-replacement-plan-review.md.
+
+## WIDTHRATE-REPLACEMENT-REVIEW-002 — material plan clearance
+
+Both independent reviewers cleared the amended prospective design (0 Critical/Important/remaining Minor). Both accepted engineering gaps are resolved in the plan, not yet in implemented code. Scientific controls and config/pin identities unchanged. Review: docs/reviews/2026-10-01-width-rate-replacement-plan-review.md. Execution remains pending implementation, regression/full-suite checks and fresh final review. No numerical action in planning or log inventory.
