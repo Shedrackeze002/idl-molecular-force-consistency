@@ -51,6 +51,33 @@ def verify_gate(c,expected=None):
     cc.verify_pins(gate['artifacts'])
     return gate
 
+def validate_launch_code(code,provenance,gate):
+    if provenance.get('code')!=code:raise ValueError('Local code/provenance differs')
+    if gate['status']=='cleared':
+        cc.verify_code(code)
+        if code['code_fingerprint']!=gate['code_fingerprint'] or code['revision']!=gate['launch_revision'] or gate.get('code',code)!=code:
+            raise ValueError('Launch code differs from frozen gate')
+
+def verify_invocation(c,gate):
+    invocation=cc.read(Path(c['prelaunch_gate']).parent/'production-invocation.json')
+    if (invocation['ordinal']!=1 or invocation['gate']!=gate or invocation['config_identity']!=cc.canonical_hash(c)
+        or invocation['run_directory']!=c['run_directory']):raise ValueError('Worker differs from supervisor frozen invocation')
+
+def finalize_summary(j,out):
+    """Confirm the clock after durable writes; correction can never restore validity."""
+    j.save()
+    def measured():
+        out['elapsed_seconds']=j.clock()-j.start
+        if out['elapsed_seconds']>=j.deadline-j.start:
+            out.update(status='incomplete',execution_valid=False,stop_reason='wall_budget')
+    measured();j.owner.json('summary.json',out)
+    measured();out['final_durable_write_checked']=True;j.owner.json('summary.json',out)
+    # This boundary includes the elapsed-record write itself.
+    if j.clock()>=j.deadline:
+        measured();j.owner.json('summary.json',out)
+        out['elapsed_seconds']=j.clock()-j.start
+    return out
+
 def reserve_root(root):
     root=cc.no_symlinks(root);root.mkdir(exist_ok=False)
     owner=cc.DirectoryLease(root)
@@ -89,7 +116,7 @@ class Store:
     """Bound child leases. Binary returned data precedes strict finite JSON."""
     def __init__(self,owner):self.owner=owner;self.children={}
     def child(self,name):
-        if name not in self.children:self.children[name]=self.owner.child(name,create=True)
+        if name not in self.children:self.children[name]=self.owner.child(name,create=not (self.owner.path/name).exists())
         return self.children[name]
     def write(self,group,name,data,exclusive=False):self.child(group).write(name,data,exclusive=exclusive)
     def json(self,group,name,value,exclusive=False):self.child(group).json(name,value,exclusive=exclusive)
@@ -191,6 +218,11 @@ def probe(root,token):
     cc.verify_code(cc.read(root/'code.json'));attempt=cc.read(root/'probe-attempt.json')
     if cc.read(root/'commit.json')['update']!=c['max_updates']:raise ValueError('Probe requires reviewed endpoint')
     entry=claim_probe_entry(root,token)
+    return probe_owned(root,source,gate,attempt,entry)
+
+def probe_owned(root,source,gate,attempt,entry):
+    """Numerical child after claimed entry; private fixture uses this same boundary."""
+    c=cc.read(root/'config.json')
     owner=cc.DirectoryLease(root,expected=attempt['binding']['directory_identity']);store=Store(owner)
     try:
         j=Journal(owner,attempt['deadline_monotonic']-time.perf_counter(),0,filename='probe-work.json');j.phase='child';j.check()
@@ -208,10 +240,13 @@ def probe(root,token):
             with np.load(root/receipt['predictions'],allow_pickle=False) as expected:
                 maximum=max(float(np.max(np.abs(a[k]-expected[k]))) for k in a)
             if maximum>1e-10:raise ValueError('Child endpoint prediction differs')
-        j.check();verify_inputs(c);verify_gate(c,gate);owner.check()
+        j.check()
+        if cc.canonical_hash(c)==CONFIG_ID:verify_inputs(c);verify_gate(c,gate)
+        else:cc.verify_pins(source['pins'])
+        owner.check()
         if attempt['binding']!=probe_binding(root):raise ValueError('Child inputs changed during probe')
         record={'status':'passed','binding':attempt['binding'],'state_hashes':lr.state_hashes(state),
-            'full_hash':full_hash(state),'adam_count':int(state['optimizer'][0].count),'prediction_frames':144,
+            'full_hash':full_hash(state),'adam_count':int(state['optimizer'][0].count),'prediction_frames':sum(len(p.record_ids) for p in parts.values()),
             'maximum_absolute_error':maximum,'random_initializations':0,'training_updates':0,'work':j.work}
         owner.json('checkpoint-verification.json',record,exclusive=True)
         owner.json('probe-completion.json',{'status':'passed','attempt_sha256':entry['attempt_sha256'],
@@ -249,6 +284,7 @@ def run_owned(c,source,gate,code,owner,start,*,probe_runner=launch_probe):
         for role in parts:owner.write(role+'-inputs.npz',(Path(source['root'])/(role+'-inputs.npz')).read_bytes(),exclusive=True)
         prov={**original,'config_identity':cc.canonical_hash(c),'code':code,'source_root':source['root'],
             'source_zero_state_hashes':lr.state_hashes(zero),'source_zero_full_hash':source_full,
+            'source_zero_payload_sha256':core._read_checkpoint(root/'shared-zero.msgpack',original)['sha256'],
             'source_provenance_sha256':cc.digest(root/'shared-zero-provenance.json'),
             'source_blueprint':source['zero']['params_schema'],'gate_identity':cc.canonical_hash(gate)}
         bindings=projection_binding(prov,gate,'initial',0,0)
@@ -320,6 +356,11 @@ def run_owned(c,source,gate,code,owner,start,*,probe_runner=launch_probe):
                 def oracle_retain(e):
                     if 'data' in e:store.write('oracles',str(u)+'-'+e['event']+'.msgpack',serialization.to_bytes(e['data']),True)
                     if 'receipt' in e:store.json('oracles',str(u)+'-'+e['event']+'.json',e['receipt'],True)
+                    if e['event']=='oracle_reference_projection':
+                        sha=store.npz('oracles',str(u)+'-projection.npz',e['data'],True)
+                        record={**projection_binding(prov,gate,'oracle-reference',u-1,u),**e['receipt'],
+                            'incoming_full_hash':core.full_hash(state),'actual_candidate_full_hash':core.full_hash(candidate),'vector_sha256':sha}
+                        store.json('oracles',str(u)+'-projection.json',record,True)
                 oracle=core.profile_oracle(state,candidate,g,full,model,norm,c['loss_weights'],c['learning_rate'],j.call,oracle_retain)
                 oracle['projection_binding']=projection_binding(prov,gate,'oracle-reference',u-1,u)
                 oracle['artifact_sha256']={n.name:cc.digest(n) for n in store.child('oracles').path.glob(str(u)+'-*')}
@@ -354,7 +395,7 @@ def run_owned(c,source,gate,code,owner,start,*,probe_runner=launch_probe):
             pending_inflight_unknown=j.pending,late_call=j.late_call,elapsed_seconds=time.perf_counter()-start,
             wall_seconds=c['total_wall_seconds'],ended_at_utc=cc.utc())
         if out['elapsed_seconds']>=c['total_wall_seconds']:out.update(status='incomplete',execution_valid=False,stop_reason='wall_budget')
-        if owner.owns():j.save();owner.json('summary.json',out)
+        if owner.owns():finalize_summary(j,out)
         else:out.update(status='failed',execution_valid=False,failure_reason='Root directory ownership lost')
         store.close()
     return out
@@ -365,10 +406,10 @@ def execute(c):
     owner=reserve_root(c['run_directory']);start=time.perf_counter()
     try:
         owner.json('budget-start.json',{'started_at_utc':cc.utc(),'wall_seconds':3600,'reserve_seconds':180})
-        source=verify_inputs(c);gate=verify_gate(c)
+        source=verify_inputs(c);gate=verify_gate(c);verify_invocation(c,gate)
         from force_consistency.runs import code_provenance
         code=code_provenance(Path.cwd());cc.verify_code(code)
-        if code['code_fingerprint']!=gate['code_fingerprint']:raise ValueError('Launch source fingerprint differs')
+        validate_launch_code(code,{'code':code},gate)
         import jax
         from force_consistency.runs import require_backend
         with jax.default_device(require_backend('cpu')):return run_owned(c,source,gate,code,owner,start)

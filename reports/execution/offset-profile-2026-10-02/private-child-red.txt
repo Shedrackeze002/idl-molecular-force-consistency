@@ -1,0 +1,32 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_private_fresh_process_reproduces_real_saved_endpoint ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-120/test_private_fresh_process_rep0')
+
+    def test_private_fresh_process_reproduces_real_saved_endpoint(tmp_path):
+        import subprocess,time
+        m,c,facts,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        a=m.reserve_probe(root,time.perf_counter()+60);bundle=tmp_path/'facts.json'
+        m.cc.atomic(bundle,{'source':facts,'gate':gate,'root':str(root),'token':a['token']})
+        script=tmp_path/'engineering_child.py'
+        script.write_text('import sys\nfrom pathlib import Path\nsys.path.insert(0,'+repr(str(Path('scripts').absolute()))+')\nfrom train_offset_profile import cc,claim_probe_entry,probe_owned\nb=cc.read(sys.argv[1]);root=Path(b["root"]);entry=claim_probe_entry(root,b["token"]);probe_owned(root,b["source"],b["gate"],cc.read(root/"probe-attempt.json"),entry)\n')
+        child=subprocess.run([sys.executable,str(script),str(bundle)],capture_output=True,text=True,timeout=60)
+        (tmp_path/'child-stdout.txt').write_text(child.stdout);(tmp_path/'child-stderr.txt').write_text(child.stderr)
+>       assert child.returncode==0,child.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-120/test_private_fresh_process_rep0/engineering_child.py", line 4, in <module>
+E             from train_offset_profile import cc,claim_probe_entry,probe_owned
+E         ImportError: cannot import name 'probe_owned' from 'train_offset_profile' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '/private/var/...ain_offset_profile\' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py)\n').returncode
+
+tests/test_offset_profile_runs.py:162: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.307871958008036}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 1.7912659169815015}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 1.8640546670067124}
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_runs.py::test_private_fresh_process_reproduces_real_saved_endpoint
+1 failed in 6.35s

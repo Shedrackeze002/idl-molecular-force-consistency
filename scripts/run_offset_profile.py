@@ -14,7 +14,7 @@ def main():
     owner=cc.DirectoryLease(root)
     try:
         owner.json('production-invocation.json',{'ordinal':1,'started_at_utc':cc.utc(),'config_sha256':cc.digest(config_path),
-            'gate':gate,'run_directory':c['run_directory'],'no_retry':True},exclusive=True)
+            'gate':gate,'config_identity':cc.canonical_hash(c),'run_directory':c['run_directory'],'no_retry':True},exclusive=True)
         if cc.no_symlinks(c['run_directory']).exists():raise FileExistsError('Production root already exists')
         start=time.perf_counter();command=[sys.executable,str(Path(__file__).parent/'train_offset_profile.py'),'--config',str(config_path)]
         with (root/'production-stdout.txt').open('xb') as out,(root/'production-stderr.txt').open('xb') as err:

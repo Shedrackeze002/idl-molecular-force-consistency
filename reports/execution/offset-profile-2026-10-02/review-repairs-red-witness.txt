@@ -1,0 +1,205 @@
+..........FFF......FFF..F                                                [100%]
+=================================== FAILURES ===================================
+___________ test_final_durable_writes_are_charged_to_cap[work.json] ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_final_durable_writes_are_0')
+late_write = 'work.json'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1164b89b0>
+
+    @pytest.mark.parametrize('late_write',['work.json','summary.json'])
+    def test_final_durable_writes_are_charged_to_cap(tmp_path,late_write,monkeypatch):
+        m=api();clock=[0.];owner=m.cc.DirectoryLease(tmp_path);j=m.Journal(owner,10,2,clock=lambda:clock[0]);real=owner.json
+        def delayed(name,value,**kw):
+            real(name,value,**kw)
+            if name==late_write:clock[0]=11.
+        monkeypatch.setattr(owner,'json',delayed)
+        try:
+>           result=m.finalize_summary(j,{'status':'completed','execution_valid':True})
+                   ^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'train_offset_profile' has no attribute 'finalize_summary'
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py:141: AttributeError
+__________ test_final_durable_writes_are_charged_to_cap[summary.json] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_final_durable_writes_are_1')
+late_write = 'summary.json'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11251a570>
+
+    @pytest.mark.parametrize('late_write',['work.json','summary.json'])
+    def test_final_durable_writes_are_charged_to_cap(tmp_path,late_write,monkeypatch):
+        m=api();clock=[0.];owner=m.cc.DirectoryLease(tmp_path);j=m.Journal(owner,10,2,clock=lambda:clock[0]);real=owner.json
+        def delayed(name,value,**kw):
+            real(name,value,**kw)
+            if name==late_write:clock[0]=11.
+        monkeypatch.setattr(owner,'json',delayed)
+        try:
+>           result=m.finalize_summary(j,{'status':'completed','execution_valid':True})
+                   ^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'train_offset_profile' has no attribute 'finalize_summary'
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py:141: AttributeError
+__________________ test_worker_binds_supervisor_original_gate __________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_worker_binds_supervisor_o0')
+
+    def test_worker_binds_supervisor_original_gate(tmp_path):
+        m=api();c={'prelaunch_gate':str(tmp_path/'gate.json'),'run_directory':'run'};gate={'status':'cleared','artifacts':{}}
+        m.cc.atomic(tmp_path/'production-invocation.json',{'ordinal':1,'gate':gate,'config_identity':m.cc.canonical_hash(c),'run_directory':'run'})
+>       m.verify_invocation(c,gate)
+        ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'train_offset_profile' has no attribute 'verify_invocation'
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py:150: AttributeError
+________ test_saved_audit_rejects_source_or_receipt_substitution[gate] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_saved_audit_rejects_sourc5')
+mutation = 'gate'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng','gate','code','oracle_incoming'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+        m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        if mutation=='ids':
+            p=root/'projections/training-2.json';r=m.cc.read(p);r['fitting_record_ids']=r['fitting_record_ids'][::-1];m.cc.atomic(p,r)
+        elif mutation=='projection':
+            p=root/'accepted/2.json';r=m.cc.read(p);r['projection']='projections/training-1.json';r['projection_sha256']=m.cc.digest(root/r['projection']);m.cc.atomic(p,r)
+        elif mutation=='orphan':
+            (root/'commits/3.json').unlink()
+        elif mutation=='code':
+            m.cc.atomic(root/'code.json',{'revision':'unbound'})
+        elif mutation=='oracle_incoming':
+            path=root/'oracles/3.json';r=m.cc.read(path);r['incoming_full_hash']='0'*64;m.cc.atomic(path,r)
+        elif mutation=='gate':
+            p=root/'histories/3.json';hist=m.cc.read(p)
+            hist[-1]['fitting_gate']['accepted']=True
+            hist[-1]['fitting_gate']['fraction_remaining']['energy_mse_eV2']=0.
+            m.cc.atomic(p,hist)
+            r=m.cc.read(root/'commit.json');r['row']=hist[-1];r['history_sha256']=m.cc.digest(p)
+            m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+        else:
+            from offset_profile_core import restore_state,set_bias
+            from force_consistency.runs import save_checkpoint
+            p=m.cc.read(root/'provenance.json');state=restore_state(root/'snapshots/3.msgpack',p)
+            if mutation=='biasmoment':state['optimizer']=(state['optimizer'][0]._replace(mu=set_bias(state['optimizer'][0].mu,[.1])),state['optimizer'][1])
+            else:state['sampler_rng_json']='{}'
+            save_checkpoint(root/'snapshots/3.msgpack',state,p)
+            # Update superficial hash to ensure the audit independently checks state fields.
+            r=m.cc.read(root/'commit.json');r['checkpoint_sha256']=m.cc.digest(root/'snapshots/3.msgpack');m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+>       with pytest.raises((ValueError,FileNotFoundError)):api().audit_saved(root,complete=False,source=source,gate=gate)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, FileNotFoundError)
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py:53: Failed
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.03453162498772144}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 0.0852424580079969}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 0.1343366669898387}
+________ test_saved_audit_rejects_source_or_receipt_substitution[code] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_saved_audit_rejects_sourc6')
+mutation = 'code'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng','gate','code','oracle_incoming'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+        m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        if mutation=='ids':
+            p=root/'projections/training-2.json';r=m.cc.read(p);r['fitting_record_ids']=r['fitting_record_ids'][::-1];m.cc.atomic(p,r)
+        elif mutation=='projection':
+            p=root/'accepted/2.json';r=m.cc.read(p);r['projection']='projections/training-1.json';r['projection_sha256']=m.cc.digest(root/r['projection']);m.cc.atomic(p,r)
+        elif mutation=='orphan':
+            (root/'commits/3.json').unlink()
+        elif mutation=='code':
+            m.cc.atomic(root/'code.json',{'revision':'unbound'})
+        elif mutation=='oracle_incoming':
+            path=root/'oracles/3.json';r=m.cc.read(path);r['incoming_full_hash']='0'*64;m.cc.atomic(path,r)
+        elif mutation=='gate':
+            p=root/'histories/3.json';hist=m.cc.read(p)
+            hist[-1]['fitting_gate']['accepted']=True
+            hist[-1]['fitting_gate']['fraction_remaining']['energy_mse_eV2']=0.
+            m.cc.atomic(p,hist)
+            r=m.cc.read(root/'commit.json');r['row']=hist[-1];r['history_sha256']=m.cc.digest(p)
+            m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+        else:
+            from offset_profile_core import restore_state,set_bias
+            from force_consistency.runs import save_checkpoint
+            p=m.cc.read(root/'provenance.json');state=restore_state(root/'snapshots/3.msgpack',p)
+            if mutation=='biasmoment':state['optimizer']=(state['optimizer'][0]._replace(mu=set_bias(state['optimizer'][0].mu,[.1])),state['optimizer'][1])
+            else:state['sampler_rng_json']='{}'
+            save_checkpoint(root/'snapshots/3.msgpack',state,p)
+            # Update superficial hash to ensure the audit independently checks state fields.
+            r=m.cc.read(root/'commit.json');r['checkpoint_sha256']=m.cc.digest(root/'snapshots/3.msgpack');m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+>       with pytest.raises((ValueError,FileNotFoundError)):api().audit_saved(root,complete=False,source=source,gate=gate)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, FileNotFoundError)
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py:53: Failed
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.03676324998377822}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 0.09183562500402331}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 0.15210708399536088}
+___ test_saved_audit_rejects_source_or_receipt_substitution[oracle_incoming] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-119/test_saved_audit_rejects_sourc7')
+mutation = 'oracle_incoming'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng','gate','code','oracle_incoming'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+        m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        if mutation=='ids':
+            p=root/'projections/training-2.json';r=m.cc.read(p);r['fitting_record_ids']=r['fitting_record_ids'][::-1];m.cc.atomic(p,r)
+        elif mutation=='projection':
+            p=root/'accepted/2.json';r=m.cc.read(p);r['projection']='projections/training-1.json';r['projection_sha256']=m.cc.digest(root/r['projection']);m.cc.atomic(p,r)
+        elif mutation=='orphan':
+            (root/'commits/3.json').unlink()
+        elif mutation=='code':
+            m.cc.atomic(root/'code.json',{'revision':'unbound'})
+        elif mutation=='oracle_incoming':
+            path=root/'oracles/3.json';r=m.cc.read(path);r['incoming_full_hash']='0'*64;m.cc.atomic(path,r)
+        elif mutation=='gate':
+            p=root/'histories/3.json';hist=m.cc.read(p)
+            hist[-1]['fitting_gate']['accepted']=True
+            hist[-1]['fitting_gate']['fraction_remaining']['energy_mse_eV2']=0.
+            m.cc.atomic(p,hist)
+            r=m.cc.read(root/'commit.json');r['row']=hist[-1];r['history_sha256']=m.cc.digest(p)
+            m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+        else:
+            from offset_profile_core import restore_state,set_bias
+            from force_consistency.runs import save_checkpoint
+            p=m.cc.read(root/'provenance.json');state=restore_state(root/'snapshots/3.msgpack',p)
+            if mutation=='biasmoment':state['optimizer']=(state['optimizer'][0]._replace(mu=set_bias(state['optimizer'][0].mu,[.1])),state['optimizer'][1])
+            else:state['sampler_rng_json']='{}'
+            save_checkpoint(root/'snapshots/3.msgpack',state,p)
+            # Update superficial hash to ensure the audit independently checks state fields.
+            r=m.cc.read(root/'commit.json');r['checkpoint_sha256']=m.cc.digest(root/'snapshots/3.msgpack');m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+>       with pytest.raises((ValueError,FileNotFoundError)):api().audit_saved(root,complete=False,source=source,gate=gate)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, FileNotFoundError)
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py:53: Failed
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.039649292011745274}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 0.09370579200913198}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 0.15094929200131446}
+______ test_launch_code_fingerprint_and_revision_are_independently_bound _______
+
+    def test_launch_code_fingerprint_and_revision_are_independently_bound():
+        from test_offset_profile_runs import api as runner
+        from force_consistency.runs import code_provenance
+        m=runner();code=code_provenance(Path.cwd());p={'code':code}
+        gate={'status':'cleared','code_fingerprint':code['code_fingerprint'],'launch_revision':code['revision']}
+>       m.validate_launch_code(code,p,gate)
+        ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'train_offset_profile' has no attribute 'validate_launch_code'
+
+/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py:70: AttributeError
+=========================== short test summary info ============================
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py::test_final_durable_writes_are_charged_to_cap[work.json]
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py::test_final_durable_writes_are_charged_to_cap[summary.json]
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_runs.py::test_worker_binds_supervisor_original_gate
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[gate]
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[code]
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[oracle_incoming]
+FAILED ../../../../../../../var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/offset-review-red-rxekb647/tests/test_offset_profile_report.py::test_launch_code_fingerprint_and_revision_are_independently_bound
+7 failed, 18 passed in 9.76s

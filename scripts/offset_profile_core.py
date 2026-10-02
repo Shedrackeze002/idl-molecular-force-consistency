@@ -147,8 +147,17 @@ def profile_oracle(incoming,candidate,actual_gradient,fullbatch,model,norm,weigh
     atoms=np.bincount(np.asarray(fullbatch['batch_segments']),minlength=n)
     if not n or np.any(atoms!=atoms[0]) or atoms[0]<=0:raise ValueError('Oracle needs constant atom count')
     error=np.asarray(re)-np.asarray(fullbatch['energy']);mean=float(np.mean(error));delta=-mean/int(atoms[0])
+    bias_before=float(np.asarray(bias(rp))[0]);raw_reference_hash=full_hash({**incoming,'params':rp,'optimizer':ro,'update':int(candidate['update'])})
     rp=set_bias(rp,np.asarray(bias(rp))+delta)
     corrected=np.asarray(re)+atoms*delta
+    shifted=error+atoms*delta
+    retain({'event':'oracle_reference_projection','data':{'errors':error,'atom_counts':atoms},
+        'receipt':{'record_count':n,'atom_count':int(atoms[0]),'bias_before':bias_before,'bias_after':float(np.asarray(bias(rp))[0]),
+            'delta_bias':delta,'preprojection_mean_eV':mean,'preprojection_mse_eV2':float(np.mean(error**2)),
+            'centered_variance_eV2':float(np.var(error)),'predicted_post_mean_eV':float(np.mean(shifted)),
+            'predicted_post_mse_eV2':float(np.mean(shifted**2)),
+            'reference_raw_full_hash':raw_reference_hash,'reference_projected_full_hash':full_hash({**incoming,'params':rp,'optimizer':ro,'update':int(candidate['update'])}),
+            'post_statistics_scope':'Independent reference algebraic correction; discarded proposal'}})
     state_error=_trees_close((candidate['params'],candidate['optimizer']),(rp,ro))
     ae,af=call('oracle_prediction_actual',n,_predict(model),candidate['params'],fullbatch,
         on_returned=lambda returned:retain({'event':'oracle_prediction_actual','data':returned}))

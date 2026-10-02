@@ -1,0 +1,56 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_private_fresh_process_reproduces_real_saved_endpoint ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-121/test_private_fresh_process_rep0')
+
+    def test_private_fresh_process_reproduces_real_saved_endpoint(tmp_path):
+        import subprocess,time
+        m,c,facts,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        a=m.reserve_probe(root,time.perf_counter()+60);bundle=tmp_path/'facts.json'
+        m.cc.atomic(bundle,{'source':facts,'gate':gate,'root':str(root),'token':a['token']})
+        script=tmp_path/'engineering_child.py'
+        script.write_text('import sys\nfrom pathlib import Path\nsys.path.insert(0,'+repr(str(Path('scripts').absolute()))+')\nfrom train_offset_profile import cc,claim_probe_entry,probe_owned\nb=cc.read(sys.argv[1]);root=Path(b["root"]);entry=claim_probe_entry(root,b["token"]);probe_owned(root,b["source"],b["gate"],cc.read(root/"probe-attempt.json"),entry)\n')
+        child=subprocess.run([sys.executable,str(script),str(bundle)],capture_output=True,text=True,timeout=60)
+        (tmp_path/'child-stdout.txt').write_text(child.stdout);(tmp_path/'child-stderr.txt').write_text(child.stderr)
+>       assert child.returncode==0,child.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-121/test_private_fresh_process_rep0/engineering_child.py", line 5, in <module>
+E             b=cc.read(sys.argv[1]);root=Path(b["root"]);entry=claim_probe_entry(root,b["token"]);probe_owned(root,b["source"],b["gate"],cc.read(root/"probe-attempt.json"),entry)
+E                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 239, in probe_owned
+E             a=predictions(state,parts,model,c['microbatch_size'],j,store,'child')
+E               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 150, in predictions
+E             e,f=journal.call('prediction_'+role,len(idx),_predict(model),state['params'],b,
+E                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 107, in call
+E             on_returned(result)
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 151, in <lambda>
+E             on_returned=lambda a:store.npz('staging',label+'-'+role+'-returned.npz',{'energy':a[0],'forces':a[1]}))
+E                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 125, in npz
+E             stream=io.BytesIO();np.savez(stream,**values);self.write(group,name,stream.getvalue(),exclusive)
+E                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 121, in write
+E             def write(self,group,name,data,exclusive=False):self.child(group).write(name,data,exclusive=exclusive)
+E                                                             ^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py", line 119, in child
+E             if name not in self.children:self.children[name]=self.owner.child(name,create=True)
+E                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/width_rate_replacement.py", line 59, in child
+E             if create:os.mkdir(name,dir_fd=self.fd)
+E                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         FileExistsError: [Errno 17] File exists: 'staging'
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python', '/private/var/...,dir_fd=self.fd)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: \'staging\'\n').returncode
+
+tests/test_offset_profile_runs.py:162: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.29646533299819566}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 1.7466795420041308}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 1.8083952919987496}
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_runs.py::test_private_fresh_process_reproduces_real_saved_endpoint
+1 failed in 8.36s

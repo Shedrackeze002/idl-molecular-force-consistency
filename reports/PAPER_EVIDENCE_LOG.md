@@ -704292,3 +704292,80 @@ Private seven-example/3atom real-model fixture executes3accepted updates/4accept
   }
 }
 ```
+
+
+## OFFSET-IMPLEMENTATION-REVIEW-REPAIRS-001 — changes-required review resolved in engineering, independent followup pending
+
+Four required engineering corrections R1-R4 plus oracle receipt/incoming-state binding reconciled. Successful private child uncovered real existing-staging mkdir bug, fixed lease reopening with no public production bypass.41focused checks pass15.57s. Final new regressions against preserved frozenold ac13a19 scripts:9fail18pass10.05s, including actualengine completing3updates but incorrectly accepting late final summary; repaired engine invalidates it. First RED attempt16fail9pass was confounded by isolated test harness missing scripts import path; retained and corrected, frozenold reproduction gives meaningful RED. Original fullsuite647pass476.45s supports earlier bytes only; final suite must be rerun for repairs. Initial childmissinghelperRED and actualexisting-staging failure retained; no production numerics/root. Read-only process inventory attempt was denied by sandbox (operation not permitted), no process changed. Obsidian hub/findings implementation notes backed up and exact CLIreadback verified. Preserved prefix45677796bytes/hash and original343/247 raw exactinventories unchanged. Research-only outcomes remain unknown.
+
+```json
+{
+  "R1": "All scored raw gates recomputed from saved predictions and original baselines; report uses recomputed gates.",
+  "R2": "Local code.json equals checkpoint provenance; canonical production runtime/fingerprint/revision bind frozen gate.",
+  "R3": "Final work/summary durable writes have post-write cap check and irreversible invalid correction; actual-engine late summary regression.",
+  "R4": "Worker binds supervisor ordinal/config/root/full frozen gate before numerical entry.",
+  "additional_bug": "Fresh child existing staging lease reopened safely instead of exclusive mkdir, caught by successful-child check.",
+  "child": "Successful fresh private process reproduces14 roleentries without initialization/updates; public canonical root/config guards remain unchanged.",
+  "final_fullsuite": "pending",
+  "followup_review": "pending",
+  "logs": {
+    "fullsuite-v1.txt": {
+      "last_line": "647 passed in 476.45s (0:07:56)",
+      "sha256": "e3609dfa04f8060e9228e1c72fc960c705b8cd4dfe59cb721dc744b60ed0ee5f"
+    },
+    "implementation-focused-final-v2.txt": {
+      "last_line": "41 passed in 16.86s",
+      "sha256": "4f7dc6925078f2b0acba9b47ebceb487bee0f2e040b60272a2075ebb5ae4f758"
+    },
+    "implementation-focused-final.txt": {
+      "last_line": "40 passed in 15.19s",
+      "sha256": "f23f509c98ede32e2db2e02cbd7e0c77de2651c4e7ae34b44d22394573bb7666"
+    },
+    "implementation-focused-v2.txt": {
+      "last_line": "40 passed in 15.62s",
+      "sha256": "6d461ea70bd383c2bf7aa8503803a706f65aa80f4b404b87dab60b320413359c"
+    },
+    "implementation-focused-v3.txt": {
+      "last_line": "41 passed in 15.57s",
+      "sha256": "f06d189f272ddf5cacdc369fef5ebfe7f7138d1d502b0a2917912fe1d1fb4755"
+    },
+    "private-child-check.txt": {
+      "last_line": "1 failed in 8.36s",
+      "sha256": "2d26e4afe340ecf9810dc4b73fcc93ad400a327cc701de1b427667747099110d"
+    },
+    "private-child-red.txt": {
+      "last_line": "1 failed in 6.35s",
+      "sha256": "426fcc683d1b36014550e1e1c3c75038f764a3e54cf5534c29b1d10083b616a9"
+    },
+    "review-repairs-check.txt": {
+      "last_line": "39 passed in 13.32s",
+      "sha256": "87683ec9e7aca0571e179e0fc5f568a9b9064dbdf219cc52eabc040151bf984f"
+    },
+    "review-repairs-final-red-witness.txt": {
+      "last_line": "9 failed, 18 passed in 10.05s",
+      "sha256": "9ac4512164120ccb1dd4e3ea498b73823c6205c3b89727e7179e6925fb5d235a"
+    },
+    "review-repairs-red-witness.txt": {
+      "last_line": "7 failed, 18 passed in 9.76s",
+      "sha256": "a3a802f568d172352be9d64da04956e36b8fad8c8c0dbd6ee4d530d81ca72c10"
+    },
+    "review-repairs-red.txt": {
+      "last_line": "16 failed, 9 passed in 5.14s",
+      "sha256": "70aa7a2a59bebb237101ddcfd71cfcef8a24ea7fa943ddd0a5cdb82996a6436c"
+    }
+  },
+  "oracle": "Dedicated independent-reference error NPZ/full projection receipt and raw/projected all-field identity, incoming-state/update/candidate and artifact bindings audited.",
+  "participants": {
+    "scripts/offset_profile_core.py": "2a416258f87a01632166a20b16d472300914fddfc5297b8f7319d76907bebb45",
+    "scripts/report_offset_profile.py": "25dc9af0b4a67aac177952b4b542e33cbc65921bb0953705b445f3c8c2cc050a",
+    "scripts/run_offset_profile.py": "3063a3ede84eda49eb5b5ef5f4b94a94072daeed9c4626512d81cceea05b6c30",
+    "scripts/train_offset_profile.py": "416e9084c2c13ecb6bfeb824c6b4c233c5376348d027627a9df7dee6281cfe27",
+    "tests/test_offset_profile_core.py": "3b0883babff0a315805af7215fc1cc394e40cda6b14b7af14c171aa5889cd277",
+    "tests/test_offset_profile_report.py": "e3190613c02091eb0cf8ed3ab6b7b5a4ab6b9489fbe97eae60f0f5bfbc4f2de0",
+    "tests/test_offset_profile_runs.py": "6c8e15efdfd90d4455ef42daf285ed2564bd6cd76ca51e45174b5d72ba27384d"
+  },
+  "research_trial": "unexecuted",
+  "review": "docs/reviews/2026-10-03-offset-profile-implementation.md",
+  "review_sha256": "0d487ce2ceff1c53a1080597f095acae97a2b64aa26366aebe5805b547d55d70"
+}
+```

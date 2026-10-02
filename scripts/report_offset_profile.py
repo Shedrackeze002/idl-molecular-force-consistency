@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 from force_consistency import capacity_contract as cc
-from train_offset_profile import verify_inputs,verify_gate,projection_binding,probe_binding
+from train_offset_profile import verify_inputs,verify_gate,projection_binding,probe_binding,validate_launch_code
 
 def leaf(a):
     import msgpack
@@ -59,10 +59,16 @@ def close_metrics(actual,expected):
         if not np.isclose(actual,expected,atol=1e-12,rtol=1e-10):raise ValueError('Saved metric differs')
     elif actual!=expected:raise ValueError('Saved metric identities differ')
 
+def raw_gate(current,baseline,fraction):
+    ratios={k:current[k]/baseline[k] for k in cc.MSE_KEYS}
+    return {'accepted':all(np.isfinite(v) and v<fraction for v in ratios.values()),'fraction_remaining':ratios,
+        'threshold_mse':{k:baseline[k]*fraction for k in cc.MSE_KEYS},'gate_fraction':fraction}
+
 def audit_saved(root,*,complete=True,source=None,gate=None):
     root=cc.no_symlinks(root);c=cc.read(root/'config.json');p=cc.read(root/'provenance.json')
     if source is None:source=verify_inputs(c)
     if gate is None:gate=verify_gate(c)
+    validate_launch_code(cc.read(root/'code.json'),p,gate)
     original=source['provenance']
     if (cc.read(root/'prelaunch-gate.json')!=gate or cc.read(root/'source-pins.json')!=source['pins']
         or p['config_identity']!=cc.canonical_hash(c) or p['gate_identity']!=cc.canonical_hash(gate)
@@ -79,6 +85,7 @@ def audit_saved(root,*,complete=True,source=None,gate=None):
     import msgpack
     envelope=msgpack.unpackb((root/'shared-zero.msgpack').read_bytes(),raw=False)
     if p['source_zero_full_hash']!=raw_full_hash(zero):raise ValueError('Source all-field hash differs')
+    if p['source_zero_payload_sha256']!=envelope['sha256']:raise ValueError('Source serialized payload hash differs')
     receipt=cc.read(root/'commit.json')
     if receipt!=cc.read(root/'commits'/ (str(receipt['update'])+'.json')):raise ValueError('Orphan/unpublished commit')
     if cc.digest(root/receipt['history'])!=receipt['history_sha256']:raise ValueError('History hash differs')
@@ -100,6 +107,9 @@ def audit_saved(root,*,complete=True,source=None,gate=None):
         if u==0:projected_zero=raw
         with np.load(root/commit['predictions'],allow_pickle=False) as data:recomputed=score_arrays(root,p,data)
         close_metrics(recomputed,row['metrics']);endpoint=recomputed
+        endpoint_gates={r:raw_gate(recomputed[r],original['original_baselines'][r],c['gate_fraction']) for r in ('fitting','anchor')}
+        for role in endpoint_gates:
+            if endpoint_gates[role]!=row[role+'_gate']:raise ValueError('Saved raw gate decision differs')
         if cc.digest(root/row['projection'])!=row['projection_sha256']:raise ValueError('Score projection link differs')
         if u:
             ap=root/row['accepted_receipt']
@@ -149,16 +159,35 @@ def audit_saved(root,*,complete=True,source=None,gate=None):
         oracle=cc.read(root/'oracles'/ (str(u)+'.json'))
         expected=projection_binding(p,gate,'oracle-reference',u-1,u)
         if oracle['projection_binding']!=expected or oracle['status']!='passed':raise ValueError('Oracle identity differs')
-        members={str(u)+'-'+n for n in ('oracle_gradient.msgpack','oracle_numpy_adam.msgpack','oracle_prediction_reference.msgpack','oracle_prediction_actual.msgpack','oracle_complete.msgpack','oracle_complete.json')}
+        actual_incoming=p['initial_full_hash'] if u==1 else cc.read(root/'accepted'/ (str(u-1)+'.json'))['outgoing_full_hash']
+        if oracle['incoming_update']!=u-1 or oracle['outgoing_update']!=u or oracle['incoming_full_hash']!=actual_incoming:raise ValueError('Oracle incoming state differs')
+        members={str(u)+'-'+n for n in ('oracle_gradient.msgpack','oracle_numpy_adam.msgpack','oracle_prediction_reference.msgpack','oracle_prediction_actual.msgpack','oracle_complete.msgpack','oracle_complete.json','oracle_reference_projection.msgpack','oracle_reference_projection.json','projection.npz','projection.json')}
         if set(oracle['artifact_sha256'])!=members:raise ValueError('Incomplete oracle artifacts')
         for n,sha in oracle['artifact_sha256'].items():
             if cc.digest(root/'oracles'/n)!=sha:raise ValueError('Oracle artifact hash differs')
-        data=decoded(msgpack.unpackb((root/'oracles'/ (str(u)+'-oracle_complete.msgpack')).read_bytes(),raw=False))
+        raw_data=msgpack.unpackb((root/'oracles'/ (str(u)+'-oracle_complete.msgpack')).read_bytes(),raw=False)
+        data=decoded(raw_data)
         close_arrays(data['reference_gradient'],data['actual_gradient'])
         raw=decoded(cc._envelope(root/'snapshots'/ (str(u)+'.msgpack'),p))
         close_arrays(data['reference_params'],raw['params']);close_arrays(data['reference_optimizer'],raw['optimizer'])
         close_arrays(data['reference_energy_adjusted'],data['actual_energy']);close_arrays(data['reference_forces'],data['actual_forces'])
         if oracle['candidate_full_hash']!=cc.read(root/'accepted'/ (str(u)+'.json'))['outgoing_full_hash']:raise ValueError('Oracle accepted state differs')
+        projection=cc.read(root/'oracles'/ (str(u)+'-projection.json'))
+        if any(projection[k]!=v for k,v in expected.items()) or projection['incoming_full_hash']!=actual_incoming or projection['actual_candidate_full_hash']!=oracle['candidate_full_hash']:raise ValueError('Oracle projection state binding differs')
+        if projection['vector_sha256']!=cc.digest(root/'oracles'/ (str(u)+'-projection.npz')):raise ValueError('Oracle projection NPZ hash differs')
+        raw_proposal=msgpack.unpackb((root/'oracles'/ (str(u)+'-oracle_numpy_adam.msgpack')).read_bytes(),raw=False)
+        reference_raw={**zero,'params':raw_proposal['0'],'optimizer':raw_proposal['1'],'update':u}
+        reference_projected={**zero,'params':raw_data['reference_params'],'optimizer':raw_data['reference_optimizer'],'update':u}
+        if raw_full_hash(reference_raw)!=projection['reference_raw_full_hash'] or raw_full_hash(reference_projected)!=projection['reference_projected_full_hash']:raise ValueError('Oracle reference all-field identity differs')
+        if projection['bias_before']!=float(leaf(reference_raw['params']['energy_head']['0+']['bias'])[0]) or projection['bias_after']!=float(leaf(reference_projected['params']['energy_head']['0+']['bias'])[0]):raise ValueError('Oracle reference bias differs')
+        with np.load(root/'oracles'/ (str(u)+'-projection.npz'),allow_pickle=False) as vector:
+            with np.load(root/'fitting-inputs.npz',allow_pickle=False) as target:errors=data['reference_energy_raw']-target['energy_residual']
+            if not np.array_equal(errors,vector['errors']) or np.any(vector['atom_counts']!=c['atom_count']):raise ValueError('Oracle projection vector differs')
+            delta=-float(np.mean(errors))/c['atom_count'];shift=errors+c['atom_count']*delta
+            for k,v in {'delta_bias':delta,'preprojection_mean_eV':float(np.mean(errors)),'preprojection_mse_eV2':float(np.mean(errors**2)),
+                'centered_variance_eV2':float(np.var(errors)),'predicted_post_mean_eV':float(np.mean(shift)),
+                'predicted_post_mse_eV2':float(np.mean(shift**2))}.items():
+                if not np.isclose(projection[k],v,atol=1e-12,rtol=1e-10):raise ValueError('Oracle projection statistics differ')
     if complete:
         s=cc.read(root/'summary.json');child=cc.read(root/'checkpoint-verification.json');completion=cc.read(root/'probe-completion.json');entry=cc.read(root/'probe-entry.json');attempt=cc.read(root/'probe-attempt.json')
         if (not s['execution_valid'] or s['status']!='completed' or s['updates']!=c['max_updates'] or s['accepted_calibrations']!=c['max_updates']+1
@@ -176,7 +205,7 @@ def audit_saved(root,*,complete=True,source=None,gate=None):
         work=s['work']
         if work['training:gradient']['valid_frames']!=c['max_updates']*128 or work['training:adam_proposal']['valid_calls']!=c['max_updates'] or work['training:calibration_energy']['valid_frames']!=c['max_updates']*128:raise ValueError('Accepted work counts differ')
     return {'scored_states':len(hist),'accepted_projection_receipts':len(corrections),'recomputed_endpoint':endpoint,
-        'history':hist,'corrections':{'scope':'dense intervention only; historical reference is sparse',
+        'history':hist,'recomputed_gates':endpoint_gates,'corrections':{'scope':'dense intervention only; historical reference is sparse',
             'maximum_absolute_delta_bias':max(abs(r['delta_bias']) for r in corrections),
             'maximum_absolute_preprojection_mean_eV':max(abs(r['preprojection_mean_eV']) for r in corrections),
             'initial_delta_bias':corrections[0]['delta_bias']},'source_zero_full_hash':p['source_zero_full_hash']}
@@ -207,7 +236,7 @@ def build_report(root):
                     'historical_fraction':ref/base,'intervention_fraction':new/base,'relative_endpoint_change':new/ref-1,
                     'historical_matching_grid_maximum':max(a['metrics'][role][key] for _,a,b in pairs),
                     'intervention_matching_grid_maximum':max(b['metrics'][role][key] for _,a,b in pairs)}
-        gates={r:audit['history'][-1][r+'_gate'] for r in ('fitting','anchor')}
+        gates=audit['recomputed_gates']
         return {'execution_valid':True,'scientific_endorsement':True,'status':'verified_completed',
             'learning_gate_passed':all(g['accepted'] for g in gates.values()),'gates':gates,'contrasts':contrasts,
             'matching_postzero_observations':len(pairs),'audit':audit,'summary':s,
