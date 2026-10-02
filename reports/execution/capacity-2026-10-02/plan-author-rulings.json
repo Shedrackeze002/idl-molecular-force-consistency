@@ -1,0 +1,14 @@
+{
+  "status": "amended_pending_followup",
+  "material_finding": "CAPACITY-ENG-P2-001 accepted; exclusive child reservation/entry/completion enforced before numerical imports, no retry, exact bindings and repeated/concurrent/forged attempt tests added.",
+  "advisories": "Adopted128distinct structures/144role entries, finite state and zero-moment decoding, actual width-specific0 blueprint, DirectoryLease ownership/symlinks, known child work after later failure, byte-stable report and explicit numerical cap vs saved closeout scope.",
+  "numerical_protocol_changed": false,
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "artifacts": {
+    "docs/superpowers/specs/2026-10-02-capacity-design.md": "2f156d40d80b97c714cf3e8715912389e898ce13d94e1903b60ec0c5280cabd2",
+    "docs/superpowers/plans/2026-10-02-capacity.md": "b51c8b64ddf50857c5edaaf9350cbfa3c689e09ccc38d6b2a27cb0c1d291603e",
+    "docs/reviews/2026-10-02-capacity-scientific-plan.md": "6ec28c26e383411329dcdb1137c85fb7fec69d3b90de2bb1d0fdf6e4e334258f",
+    "docs/reviews/2026-10-02-capacity-engineering-plan.md": "621f099f1f6e09a89266d0f57166e43e4e32356e9174fe3e35f6ee5a98fd15b2"
+  },
+  "implementation_started": false
+}

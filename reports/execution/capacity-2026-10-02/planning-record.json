@@ -1,0 +1,28 @@
+{
+  "status": "planned_unexecuted",
+  "authorization": "Human Proceed after explicit recommendation of controlled model capacity with two independent plan reviews. Bounded extension of existing diagnostics, primary-agent native execution; no redundant authorization for routine numerical choices.",
+  "question": "At a fixed .0003 rate and6000freshupdates on128fitted frames, how does32vs64feature representation change joint fitting?",
+  "config_path": "configs/aspirin-capacity.json",
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "source_pins_sha256": "9611a194fc9c30906f6b9e6a4b66eb4590d279b0799b8299ca0133dc7b0e6fd7",
+  "source_pin_count": 20,
+  "source_findings": "Use corrected width-rate report referenced by source pins, not preserved invalid initial report. Late-rate report is current numerical authority; no comparable saved reduced-rate spike but worse endpoints. Capacity cause remains untested.",
+  "alternatives": [
+    "Fresh32vs64atfixed.0003 selected: matched updates/data/loss/initialization rule, informative architecture/optimization comparison.",
+    "Widen trained32state: rejected for this trial because state-transfer changes the question and requires new method validation.",
+    "Width64onlyvs historical32: rejected because a fresh pair avoids relying on mixed-code/historical timing controls."
+  ],
+  "limits": [
+    "One seed; width changes initialization shape and optimization geometry.",
+    "The selected fixed rate was motivated by prior sampled trajectories; alternative schedules are untested.",
+    "Fitted anchors are not held out; no generalization/main-hypothesis/convergence/efficiency result."
+  ],
+  "planned_new_updates": 12000,
+  "planned_fitting_exposures": 1536000,
+  "exploration_trials": [
+    "Several broad read outputs were truncated; focused source/config reads established actual controls.",
+    "Obsidian option-first syntax returned command read not found; help and command-first read worked on authorized host. Existing notes remain intact; CLI is available.",
+    "Sandbox hardware-memory query was denied; no resource claim inferred, no numerical work run."
+  ],
+  "implementation_started": false
+}

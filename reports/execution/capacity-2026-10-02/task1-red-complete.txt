@@ -1,0 +1,814 @@
+FFFFFFFFFFFFFFFFFFFFFFFF                                                 [100%]
+=================================== FAILURES ===================================
+_______ test_unreviewed_numerical_protocol_cannot_enter_production[rate] _______
+
+damage = 'rate'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_unreviewed_numerical_protocol_cannot_enter_production[width] _______
+
+damage = 'width'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_unreviewed_numerical_protocol_cannot_enter_production[order] _______
+
+damage = 'order'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_unreviewed_numerical_protocol_cannot_enter_production[score] _______
+
+damage = 'score'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_______ test_unreviewed_numerical_protocol_cannot_enter_production[pin] ________
+
+damage = 'pin'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_______ test_unreviewed_numerical_protocol_cannot_enter_production[cap] ________
+
+damage = 'cap'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_unreviewed_numerical_protocol_cannot_enter_production[retry] _______
+
+damage = 'retry'
+
+    @pytest.mark.parametrize('damage', ['rate', 'width', 'order', 'score', 'pin', 'cap', 'retry'])
+    def test_unreviewed_numerical_protocol_cannot_enter_production(damage):
+        c = config()
+        if damage == 'rate': c['learning_rate'] = .001
+        if damage == 'width': c['cases'][1]['features'] = 128
+        if damage == 'order': c['cases'].reverse()
+        if damage == 'score': c['score_updates'].remove(3001)
+        if damage == 'pin': c['source_pins_sha256'] = '0' * 64
+        if damage == 'cap': c['total_wall_seconds'] += 1
+        if damage == 'retry': c['maximum_probe_attempts_per_case'] = 2
+>       with pytest.raises(ValueError): contract().validate_contract(c)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_________ test_actual_source_facts_are_verified_without_model_imports __________
+
+    def test_actual_source_facts_are_verified_without_model_imports():
+>       m = contract()
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_________________ test_changed_actual_file_bytes_are_rejected __________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_changed_actual_file_bytes0')
+
+    def test_changed_actual_file_bytes_are_rejected(tmp_path):
+>       m = contract();p = tmp_path / 'source';p.write_text('fixed')
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_______________ test_case_width_assignment_cannot_be_relabelled ________________
+
+    def test_case_width_assignment_cannot_be_relabelled():
+        c = config();case = copy.deepcopy(c['cases'][0]);case['features'] = 64
+>       with pytest.raises(ValueError): contract().validate_case(c, case)
+                                        ^^^^^^^^^^
+
+tests/test_capacity_contract.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+____________ test_child_attempt_is_exclusive_and_entry_is_once_only ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_child_attempt_is_exclusiv0')
+
+    def test_child_attempt_is_exclusive_and_entry_is_once_only(tmp_path):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_forged_or_changed_child_binding_is_rejected_before_entry[token] _____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b0')
+damage = 'token'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_forged_or_changed_child_binding_is_rejected_before_entry[zero] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b1')
+damage = 'zero'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___ test_forged_or_changed_child_binding_is_rejected_before_entry[terminal] ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b2')
+damage = 'terminal'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___ test_forged_or_changed_child_binding_is_rejected_before_entry[reference] ___
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b3')
+damage = 'reference'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_forged_or_changed_child_binding_is_rejected_before_entry[case] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b4')
+damage = 'case'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_____ test_forged_or_changed_child_binding_is_rejected_before_entry[code] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_forged_or_changed_child_b5')
+damage = 'code'
+
+    @pytest.mark.parametrize('damage', ['token', 'zero', 'terminal', 'reference', 'case', 'code'])
+    def test_forged_or_changed_child_binding_is_rejected_before_entry(tmp_path, damage):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___________ test_public_missing_probe_reservation_never_imports_jax ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_public_missing_probe_rese0')
+
+    def test_public_missing_probe_reservation_never_imports_jax(tmp_path):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_________________ test_symlinked_child_artifacts_are_rejected __________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_symlinked_child_artifacts0')
+
+    def test_symlinked_child_artifacts_are_rejected(tmp_path):
+>       m = contract();r, c, case = fixture_probe_root(tmp_path)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___ test_actual_serialized_initial_and_terminal_states_match_width_blueprint ___
+
+    def test_actual_serialized_initial_and_terminal_states_match_width_blueprint():
+>       m = contract();root = Path(config()['source_directory']);prov = m.read(root / 'provenance.json')
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ test_locally_rehashed_invalid_state_is_still_rejected[nan_params-nonfinite] __
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_locally_rehashed_invalid_0')
+damage = 'nan_params', match = 'nonfinite'
+
+    @pytest.mark.parametrize('damage,match', [('nan_params','nonfinite'), ('negative_variance','variance'), ('count','count'), ('nonzero_initial_moments','zero')])
+    def test_locally_rehashed_invalid_state_is_still_rejected(tmp_path, damage, match):
+        import hashlib
+        import msgpack
+        import struct
+>       m = contract();source = Path(config()['source_directory']);root = tmp_path / 'state';(root / 'snapshots').mkdir(parents=True)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ test_locally_rehashed_invalid_state_is_still_rejected[negative_variance-variance] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_locally_rehashed_invalid_1')
+damage = 'negative_variance', match = 'variance'
+
+    @pytest.mark.parametrize('damage,match', [('nan_params','nonfinite'), ('negative_variance','variance'), ('count','count'), ('nonzero_initial_moments','zero')])
+    def test_locally_rehashed_invalid_state_is_still_rejected(tmp_path, damage, match):
+        import hashlib
+        import msgpack
+        import struct
+>       m = contract();source = Path(config()['source_directory']);root = tmp_path / 'state';(root / 'snapshots').mkdir(parents=True)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+______ test_locally_rehashed_invalid_state_is_still_rejected[count-count] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_locally_rehashed_invalid_2')
+damage = 'count', match = 'count'
+
+    @pytest.mark.parametrize('damage,match', [('nan_params','nonfinite'), ('negative_variance','variance'), ('count','count'), ('nonzero_initial_moments','zero')])
+    def test_locally_rehashed_invalid_state_is_still_rejected(tmp_path, damage, match):
+        import hashlib
+        import msgpack
+        import struct
+>       m = contract();source = Path(config()['source_directory']);root = tmp_path / 'state';(root / 'snapshots').mkdir(parents=True)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ test_locally_rehashed_invalid_state_is_still_rejected[nonzero_initial_moments-zero] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-66/test_locally_rehashed_invalid_3')
+damage = 'nonzero_initial_moments', match = 'zero'
+
+    @pytest.mark.parametrize('damage,match', [('nan_params','nonfinite'), ('negative_variance','variance'), ('count','count'), ('nonzero_initial_moments','zero')])
+    def test_locally_rehashed_invalid_state_is_still_rejected(tmp_path, damage, match):
+        import hashlib
+        import msgpack
+        import struct
+>       m = contract();source = Path(config()['source_directory']);root = tmp_path / 'state';(root / 'snapshots').mkdir(parents=True)
+            ^^^^^^^^^^
+
+tests/test_capacity_contract.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_contract.py:14: in contract
+    return importlib.import_module('force_consistency.capacity_contract')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_contract'
+import_ = <function _gcd_import at 0x10438c0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_contract'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[rate]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[width]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[order]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[score]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[pin]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[cap]
+FAILED tests/test_capacity_contract.py::test_unreviewed_numerical_protocol_cannot_enter_production[retry]
+FAILED tests/test_capacity_contract.py::test_actual_source_facts_are_verified_without_model_imports
+FAILED tests/test_capacity_contract.py::test_changed_actual_file_bytes_are_rejected
+FAILED tests/test_capacity_contract.py::test_case_width_assignment_cannot_be_relabelled
+FAILED tests/test_capacity_contract.py::test_child_attempt_is_exclusive_and_entry_is_once_only
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[token]
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[zero]
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[terminal]
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[reference]
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[case]
+FAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[code]
+FAILED tests/test_capacity_contract.py::test_public_missing_probe_reservation_never_imports_jax
+FAILED tests/test_capacity_contract.py::test_symlinked_child_artifacts_are_rejected
+FAILED tests/test_capacity_contract.py::test_actual_serialized_initial_and_terminal_states_match_width_blueprint
+FAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[nan_params-nonfinite]
+FAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[negative_variance-variance]
+FAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[count-count]
+FAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[nonzero_initial_moments-zero]
+24 failed in 0.66s

@@ -1,0 +1,10 @@
+{
+  "status": "two_independent_plan_reviews_cleared",
+  "reviews": {
+    "docs/reviews/2026-10-02-capacity-scientific-plan-followup.md": "c0862eff37571b476fb871d76f3ee69aba2233239233504ba0c5f1156c81beca",
+    "docs/reviews/2026-10-02-capacity-engineering-plan-followup.md": "605e597ebb7454844212579016f99de3e581ea6a28f501d1770c1956c75bbf38"
+  },
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "numerical_protocol_unchanged": true,
+  "next": "Task1 contract tests before implementation; primary-agent native execution, all prior sources unchanged"
+}

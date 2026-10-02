@@ -1,0 +1,17 @@
+............F.............                                               [100%]
+=================================== FAILURES ===================================
+____________ test_replaced_root_cannot_reuse_prior_attempt_binding _____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-68/test_replaced_root_cannot_reus0')
+
+    def test_replaced_root_cannot_reuse_prior_attempt_binding(tmp_path):
+        m = contract();r, c, case = fixture_probe_root(tmp_path);a = m.reserve_probe(r, case, c, {})
+        retained = tmp_path / 'retained';r.rename(retained);shutil.copytree(retained,r)
+>       with pytest.raises(ValueError):m.claim_probe_entry(r, a['token'], production=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_capacity_contract.py:91: Failed
+=========================== short test summary info ============================
+FAILED tests/test_capacity_contract.py::test_replaced_root_cannot_reuse_prior_attempt_binding
+1 failed, 25 passed in 0.36s

@@ -541466,3 +541466,115 @@ Saved-only6000..7100 observations compare identical absolute updates in both arm
   "next_proposed_lever": "Controlled representation capacity, with two independent plan reviews before implementation; capacity cause remains untested. GPU parity before a broader pilot."
 }
 ```
+
+## CAPACITY-PLAN-001 — prospective controlled fresh width comparison
+
+```json
+{
+  "status": "planned_unexecuted",
+  "authorization": "Human Proceed after explicit recommendation of controlled model capacity with two independent plan reviews. Bounded extension of existing diagnostics, primary-agent native execution; no redundant authorization for routine numerical choices.",
+  "question": "At a fixed .0003 rate and6000freshupdates on128fitted frames, how does32vs64feature representation change joint fitting?",
+  "config_path": "configs/aspirin-capacity.json",
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "source_pins_sha256": "9611a194fc9c30906f6b9e6a4b66eb4590d279b0799b8299ca0133dc7b0e6fd7",
+  "source_pin_count": 20,
+  "source_findings": "Use corrected width-rate report referenced by source pins, not preserved invalid initial report. Late-rate report is current numerical authority; no comparable saved reduced-rate spike but worse endpoints. Capacity cause remains untested.",
+  "alternatives": [
+    "Fresh32vs64atfixed.0003 selected: matched updates/data/loss/initialization rule, informative architecture/optimization comparison.",
+    "Widen trained32state: rejected for this trial because state-transfer changes the question and requires new method validation.",
+    "Width64onlyvs historical32: rejected because a fresh pair avoids relying on mixed-code/historical timing controls."
+  ],
+  "limits": [
+    "One seed; width changes initialization shape and optimization geometry.",
+    "The selected fixed rate was motivated by prior sampled trajectories; alternative schedules are untested.",
+    "Fitted anchors are not held out; no generalization/main-hypothesis/convergence/efficiency result."
+  ],
+  "planned_new_updates": 12000,
+  "planned_fitting_exposures": 1536000,
+  "exploration_trials": [
+    "Several broad read outputs were truncated; focused source/config reads established actual controls.",
+    "Obsidian option-first syntax returned command read not found; help and command-first read worked on authorized host. Existing notes remain intact; CLI is available.",
+    "Sandbox hardware-memory query was denied; no resource claim inferred, no numerical work run."
+  ],
+  "implementation_started": false
+}
+```
+
+## CAPACITY-PLAN-REVIEW-AMEND-001 — two independent reviews and accepted enforcement amendment
+
+```json
+{
+  "status": "amended_pending_followup",
+  "material_finding": "CAPACITY-ENG-P2-001 accepted; exclusive child reservation/entry/completion enforced before numerical imports, no retry, exact bindings and repeated/concurrent/forged attempt tests added.",
+  "advisories": "Adopted128distinct structures/144role entries, finite state and zero-moment decoding, actual width-specific0 blueprint, DirectoryLease ownership/symlinks, known child work after later failure, byte-stable report and explicit numerical cap vs saved closeout scope.",
+  "numerical_protocol_changed": false,
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "artifacts": {
+    "docs/superpowers/specs/2026-10-02-capacity-design.md": "2f156d40d80b97c714cf3e8715912389e898ce13d94e1903b60ec0c5280cabd2",
+    "docs/superpowers/plans/2026-10-02-capacity.md": "b51c8b64ddf50857c5edaaf9350cbfa3c689e09ccc38d6b2a27cb0c1d291603e",
+    "docs/reviews/2026-10-02-capacity-scientific-plan.md": "6ec28c26e383411329dcdb1137c85fb7fec69d3b90de2bb1d0fdf6e4e334258f",
+    "docs/reviews/2026-10-02-capacity-engineering-plan.md": "621f099f1f6e09a89266d0f57166e43e4e32356e9174fe3e35f6ee5a98fd15b2"
+  },
+  "implementation_started": false
+}
+```
+
+## CAPACITY-PLAN-GATE-001 — amended scientific and engineering gates passed
+
+```json
+{
+  "status": "two_independent_plan_reviews_cleared",
+  "reviews": {
+    "docs/reviews/2026-10-02-capacity-scientific-plan-followup.md": "c0862eff37571b476fb871d76f3ee69aba2233239233504ba0c5f1156c81beca",
+    "docs/reviews/2026-10-02-capacity-engineering-plan-followup.md": "605e597ebb7454844212579016f99de3e581ea6a28f501d1770c1956c75bbf38"
+  },
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "numerical_protocol_unchanged": true,
+  "next": "Task1 contract tests before implementation; primary-agent native execution, all prior sources unchanged"
+}
+```
+
+## CAPACITY-ENGINEERING-001 — frozen source and once-only child contract, all failures retained
+
+```json
+{
+  "status": "task1_focused_verified",
+  "trial_logs": {
+    "task1-green-attempt.txt": {
+      "sha256": "1d27a19d7a90c6ab4a4e471426b6a5f0d5e152ea9845d479d1ab2acc06b4ff7e",
+      "tail": "........................                                                 [100%]\n24 passed in 0.32s\n"
+    },
+    "task1-green-final.txt": {
+      "sha256": "5a1a300cd65e2997f1b8f4c715b85427bf6dfb71679e7b3187e16028d64db1b8",
+      "tail": "..........................                                               [100%]\n26 passed in 0.36s\n"
+    },
+    "task1-red-complete.txt": {
+      "sha256": "77c48e802071c8e228d51de3464ef79057d5ca0b0ab59a47874e1ca58df505c7",
+      "tail": "h_blueprint\nFAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[nan_params-nonfinite]\nFAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[negative_variance-variance]\nFAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[count-count]\nFAILED tests/test_capacity_contract.py::test_locally_rehashed_invalid_state_is_still_rejected[nonzero_initial_moments-zero]\n24 failed in 0.66s\n"
+    },
+    "task1-red.txt": {
+      "sha256": "561b028dec577830bd6020a0e6342dbbde767339f30f98430c46d3d8896225fe",
+      "tail": "ontract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[case]\nFAILED tests/test_capacity_contract.py::test_forged_or_changed_child_binding_is_rejected_before_entry[code]\nFAILED tests/test_capacity_contract.py::test_public_missing_probe_reservation_never_imports_jax\nFAILED tests/test_capacity_contract.py::test_symlinked_child_artifacts_are_rejected\nFAILED tests/test_capacity_contract.py::test_actual_serialized_initial_and_terminal_states_match_width_blueprint\n20 failed in 0.12s\n"
+    },
+    "task1-root-identity-red.txt": {
+      "sha256": "466bfc31fcb8fe58f74ac2c4c9f12fd08dd88c5ba970b0e57a0b3b8249ad396f",
+      "tail": "retained = tmp_path / 'retained';r.rename(retained);shutil.copytree(retained,r)\n>       with pytest.raises(ValueError):m.claim_probe_entry(r, a['token'], production=False)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE ValueError\n\ntests/test_capacity_contract.py:91: Failed\n=========================== short test summary info ============================\nFAILED tests/test_capacity_contract.py::test_replaced_root_cannot_reuse_prior_attempt_binding\n1 failed, 25 passed in 0.36s\n"
+    }
+  },
+  "root_identity_repair": "RED1 on reusing reservation after directory replacement; inode/device binding added; GREEN26. Initial missing module RED20 then completeRED24 retained. No numerical trial.",
+  "obsidian_plan_verification": {
+    "hub": {
+      "status": "verified",
+      "before_sha256": "e34298af9766a2a1be4af41998cd5af5cca175e5b071b53b1c87d8a079a1c758",
+      "after_sha256": "bf3ac29e0358579ad05ba782133337a8fa8b2cf652fd3c14df35d290ffd910b3"
+    },
+    "findings": {
+      "status": "verified",
+      "before_sha256": "591f2239c74f72f370d956be54682c779791d0d2267e8f10a09f9fc767369766",
+      "after_sha256": "39f283fc83424f85fd9ef7d82d8c12e9bb587e688bd9ec7447edff8bd295fd6c"
+    }
+  },
+  "full_suite": "pending after all implementation tasks",
+  "source_pins": "All20still match; numerical config unchanged"
+}
+```

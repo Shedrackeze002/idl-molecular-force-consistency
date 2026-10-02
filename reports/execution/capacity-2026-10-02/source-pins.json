@@ -1,0 +1,22 @@
+{
+  "configs/aspirin-width-rate-replacement.json": "60b7948e0a6118cac93a8ecfc6e9c633f52853f486665b3b54f77a3890b20f59",
+  "reports/execution/late-rate-2026-10-01/closeout.json": "6557542b460cdf1cfd49822af2de53c9850162e3917a6f7fdc4b54ac84668a87",
+  "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+  "reports/late-rate-diagnostics.json": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+  "reports/late-rate-diagnostics.md": "6f2106ad2cc25bd972f875ea06a6405efdacc46ea1d555f69c4f9269693c3d74",
+  "runs/aspirin-late-rate-2026-10-01/finalization.json": "fbe62a52b243613a08215e4d75e46d40017d3f28b79d10d686eb048e75e74073",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/case.json": "93cb31baac1c23fe4f8954b9c58ce1fc677f619f4b9f16351df046254e4b1920",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/checkpoint-contract.json": "73a8a3442023ed0d9f1b59c1ec346a0d8081e90052cfda25966728172b6c30ed",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/checkpoint-verification.json": "5638c8394d9d710810315d82e5ae122fc0e5ec4c893bd0f5185a58e22b0c0d56",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/commit.json": "4613b2467b1ebfb69d359448195f575feb45d1b716aac3b9f1597a4a23f14559",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/config.json": "60b7948e0a6118cac93a8ecfc6e9c633f52853f486665b3b54f77a3890b20f59",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/histories/6000.json": "9f0c5109797c5dc1eafe3b7162fa8a610475521874c7012324eb0ca9cf73c3d6",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/probe-completion.json": "9695d137c860d16f96069f64baefbe42bcc4e2c59e8bea89f49805ceef40914e",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/provenance.json": "f16cfaa54de32154d8101f1cf9dd3f34a71521e3e547631f0a54635bf8569dc3",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/reference.npz": "fc7449cfd61398f176b4453782f1db68b0dd30279c7ba155149a8bdbb256f23e",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/snapshots/6000.msgpack": "52f39c3ba69849bcee5bc055e4041460e84d45c6e3ae59a337aac96fcf3c508d",
+  "runs/aspirin-width-rate-replacement-2026-10-01/width32-lr1e-3/summary.json": "8c1fdf75a6d62ab98b7d5604051403e17bdde57ad301e6fb06cf44cb6e43335c",
+  "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+}
