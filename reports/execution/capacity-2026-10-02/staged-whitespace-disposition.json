@@ -1,0 +1,8 @@
+{
+  "full_staged_check_exit_code": 2,
+  "trailing_whitespace_lines": 1466,
+  "only_affected_file": "reports/execution/capacity-2026-10-02/capacity-trajectories.svg",
+  "other_staged_files_check": "passed",
+  "decision": "Preserve Matplotlib-generated SVG bytes and its reviewed hashes; whitespace is inside valid SVG path data. No scientific/source change or rerender.",
+  "full_output_sha256": "79d34e3799c5ad3c91092cd934d9a588333e6ac23c26240948aade1e6871f0d3"
+}

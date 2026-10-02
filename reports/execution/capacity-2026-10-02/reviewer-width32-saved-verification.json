@@ -1,0 +1,1048 @@
+{
+  "case_file_count": 146,
+  "case_file_hashes": {
+    "anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+    "case.json": "be13f31d010d23d5f8d26b1290eaea64ee65d96f8fbc3807ae0e66868781ceb0",
+    "checkpoint-contract.json": "1da015ce1e070441b353bbea2ab699509d81482cd19eccff8f7d7abaf3c716a4",
+    "checkpoint-verification.json": "bf626fad0081af8b80de258b630da4aec0f3f6d1db87ca01555fad2e8df8191e",
+    "code.json": "14996deae0e2de859f0fa8732abef966bbac0ed5b85216110ee62b7386607a79",
+    "commit.json": "a086707683a9eb1434bc9201d33404d307b0017ea6bf1f530c11676c06f5ae28",
+    "config.json": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+    "fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+    "histories/0.json": "e7634698e937d15c9045c0c5d78f033ee2e8d3a6c3f1bb01709adf695c74b291",
+    "histories/1.json": "c4347fbcd4ca0ff8422010109299e3c897dd76e2c5f000d7c2632ccdbfac7749",
+    "histories/100.json": "b5362eb8d745dd97ea64ddc0131754f12e798769ea530f41d50d96e5635e091b",
+    "histories/1000.json": "f55a877ac7341c78e26d5ecc0a61b26e32b7de85d3f561cd55b7fd58668957fb",
+    "histories/1100.json": "0939fae4e83ac0a4813d92a92145b31cfb046be072a8c4a6c7a2005e7dd7ac1d",
+    "histories/1200.json": "89427a6afe45d367e6ae5b6270c5db581a66f387ac02de72b3039fc58fce21b0",
+    "histories/1300.json": "2523ab03eee90a48f69ff63c4b8a91536d524a16c69943b2056d614b33802d4c",
+    "histories/1400.json": "07a68ee070e0d31b20627c9254e9a6ceaf6ad23289c783257a6aef8caa6330f8",
+    "histories/1500.json": "0c8fba2f35b2c2d18ff63d36c670bad492b3fb731054ae96c2e990535ad29061",
+    "histories/1600.json": "b876e499ec8e5dac968f10b4bc94f6ec3e87cd1f4918e64e49127db7871f0d4c",
+    "histories/1700.json": "5f672ab7b61f4f9fbd251d5a82a980ae79a36115f7063844ef08729fcc1941cf",
+    "histories/1800.json": "785ca64892d81df7c742238392564108759a65c1670d1694d16bbd9fe27800cb",
+    "histories/1900.json": "3cab6b69a0c6fadccbbf5152e6b7a4f4857fcab66ea26417b16086d9e8509905",
+    "histories/200.json": "a1980346cf091f158e46a5ae52c705cc88103e13f999fba69f4df931f71d6427",
+    "histories/2000.json": "afaaa4a52ec1b5857959ac1888ba64c4f7446107a35ce53d066c2a1d46a8ce96",
+    "histories/2100.json": "189c6001d84f81d66d37c7e676a7d817cada68177f0d48d357e346b325d5d825",
+    "histories/2200.json": "b5148c6ac4fdfb40681d8396e6fb865d9a9507115163812c2444af2ef6be35f7",
+    "histories/2300.json": "dc20495b3fa4921fb71e929fee0f97ccfe2ef634e746c410b58371cfc1d25b84",
+    "histories/2400.json": "3a6bfa9fc24b0f68b126f62f31df95bd108e539513b4d8706d591a89d8899302",
+    "histories/2500.json": "45e1b44f21dc4aa421a1834a94d542a56a77e35df9a596abb6e710f69850e436",
+    "histories/2600.json": "54e951de2be8a868b7049e572720ba869b33062e8113d833cda7827a39dd54ab",
+    "histories/2700.json": "42a0cd84ebe963cf59d100fcae48a4640dd59ceb52d8c3b13e604a9e8ee4b1af",
+    "histories/2800.json": "0f8d40384645ab508627fb959e52dd16423f8f046d74c15da684f5fb9955f54c",
+    "histories/2900.json": "0cc4cf484eb0cf72d4265ef8ff43f3b4e3bfaf28668965cc6db641b85f86b7c6",
+    "histories/300.json": "762bd6187973fe1843fd7380c14f7c20da008914a318fb5d37f9311cb9fdaa94",
+    "histories/3000.json": "9350da8a55d6c64e09c406396912dcf4a45574e63cf1a26ec68507f41a0f0810",
+    "histories/3001.json": "d8ab3e5052aa8267326fb5190dd59c9330b272b7f696ec5775a0611f3ffe878a",
+    "histories/3100.json": "d6eb049f2c95028b6c7bfb0b429f5c3056d32ff6021c7efa8df2f2671657f955",
+    "histories/3200.json": "fd6daae824ff4358b90571315c5ac39d583ccd3318b1d1ddd7beb6b11710b7bd",
+    "histories/3300.json": "005fc983eb510a911a380649e8756143331902d0e9f522df2c37016173c237ff",
+    "histories/3400.json": "8aec1b5c08426da8fea233d1e6a14955e50911274805e4c42c67b69a9f580825",
+    "histories/3500.json": "c9fa62a65b16db2434321fde0af48c30aa0b403b8079aff370e518028588d05f",
+    "histories/3600.json": "414d98da100d618d668dcbadfa363d06607f007ba5e72769be587a9fade8511b",
+    "histories/3700.json": "f5a811df4704b6b3293c673d1a19ee34f15af2092274d7ea199e282a30a5b499",
+    "histories/3800.json": "6e706c828082249da78bc9275d08151d6b1f5466f6ef3f33a43661699c125b52",
+    "histories/3900.json": "8387f119cf00ed33d124b138b1f260203f2f8b43383f8d991a59d7d0fff4f4f1",
+    "histories/400.json": "d0b8bae371514fb8969f7d0c586accf5056e3769cd188fb28738f3e043a4ae70",
+    "histories/4000.json": "9fe2d768cae01a1510d541e8a971e30e1b3b8ee245064a26bba8f029f00f10de",
+    "histories/4100.json": "1f67931520a243f3c4eea38a9465205778dd0709ea89e566ef32050cbcdb5a07",
+    "histories/4200.json": "8d6b3054e9a6d79d8014e23e69ee3e124efbc1241e28641322da3ef58d331aff",
+    "histories/4300.json": "48babd598d25e630cbee7846c823cf2e41e1997d8b5aca8b918214806769c982",
+    "histories/4400.json": "d76bb633ef8b8970ba652a026849a7d8f8b6935ce3b4bf5c475718167cd7b0d6",
+    "histories/4500.json": "3207d7b738c8f94cfd8919d8fcb9d79155fbef5f7430a9d6c6322f42bf263b67",
+    "histories/4600.json": "4aaab7628e733d751ea5a7c75b6e98c9f143a760650ac912bd5f483e70a352e5",
+    "histories/4700.json": "6c8aee0adb84938158ec394d85ddf50ce19e8d38a178d6c2f561504f602def51",
+    "histories/4800.json": "98e7902d5408921b9e7d5ec577ab0330dcd2f991869d9f8e8864dfecc62551b1",
+    "histories/4900.json": "f7f49ac9de38aad71d48b03944992d6633923b3de906d272f14db3d464ff762f",
+    "histories/500.json": "67b5b6a78b4dd25094fc1d5418d007f5cf7eecb76f8068fd03b28d386cedc789",
+    "histories/5000.json": "91df46b8f322aa980a1cf36a74d46313bf773662a64f5b0be5f470ae8c5859d3",
+    "histories/5100.json": "8720e3ff3b6bfde052f58b005b20029bad3bdc080359e424061cad22221ef27d",
+    "histories/5200.json": "3babf382892ae4976acdff134424c6b9d538712d93031d25bff97b618c8695ad",
+    "histories/5300.json": "6a085718405e24b01f64739722c39fdc0af5f7b6788a48cc42993a68c6d2a432",
+    "histories/5400.json": "fac333bda2d745314577dc3ca7697384b9e92734443b8c30c446d3ed648e6c80",
+    "histories/5500.json": "613cdf4112d4cffd4c1b6d58ddd133aa1ddd88cc963266d1d1292fdc38083e8e",
+    "histories/5600.json": "772a8bcffedb8d05642ff884e0a56e928aef2edfc03fef1c61e45694a428475c",
+    "histories/5700.json": "723945e576c66921fc694963634ab20590e6c26224abc3f11053b482d8216742",
+    "histories/5800.json": "6e053bf6156db466cf01865f35a91d5acff7b562f256412427b28b7cebb048bd",
+    "histories/5900.json": "683bd9583034164b87f28d8a42ab44ce722fa7ff918893647dd1e1a8545de9a1",
+    "histories/600.json": "3f102c238d4dc556fa65f2093ffdba235950381dddcda44413e2b811b6bad92b",
+    "histories/6000.json": "d35d54e21f78100d15a48d55c6cfc6a1e1f9825e17f395f8facc7435d3403810",
+    "histories/700.json": "5183dd4ff3ebb3bf7cfeeba48ffc0ae017961113f64c865314027376ebc69995",
+    "histories/800.json": "f868accc2d3c8294b7a6f9053c84a42a3f1a764a963e77fb5f42dff7c25dbec1",
+    "histories/900.json": "847bd266feb7fbb7e61a613897f842de2d237442ec0979cefafe04cec2384a9c",
+    "oracle-1.json": "8a6c6870a47100b65917570f0daf49687647a96e81b64219697666fd8ea09b17",
+    "oracle-3001.json": "9d85804220b99db68afb669353f461fed41ba73864685f9fdcd4a92c78619a13",
+    "phase.json": "396b3aed41f8bb53ce144458b0d4500b3f712e9c09c25e5fe310bc65fc134ce1",
+    "probe-attempt.json": "0360a657ff079421dc80875165839231496f78b5bf258e039cab82a1cc5d088b",
+    "probe-completion.json": "c24770bbffea9d4da6403b1b6b0f9a2cd02a3d2b353c0e291ce53aba278f9ca4",
+    "probe-entry.json": "6fbbfd9c7fe242b68cafe00f4a95d24079a20251bf721e0b2f8f577584019d44",
+    "probe-phase.json": "e429ae0ab631aacdd711ad2874ad9c4d55a10d9d0f16585b96f75b750795bfa0",
+    "probe-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "probe-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance.json": "69355e35791b3cd102e6733ddede30c4d6c78ff0de17f08079018e0a87c97213",
+    "reference.npz": "eccaefdcc1a43f99465ec759bb83fce71539311fa429da2791fb16789e6774f5",
+    "snapshots/0.msgpack": "554a4f233c849c578ea1e3fd09f87d72d05cc23815d8c681b5de48c96d86b8a3",
+    "snapshots/1.msgpack": "c5990df96006e71260dd69ab7271573b768e03daff55d5055fb91cab592b5838",
+    "snapshots/100.msgpack": "e791111d83a0008419e11b855430a417324b77d55f4a1628315add0f685fc0ce",
+    "snapshots/1000.msgpack": "742ef90b33165574986c66c507dd7780a87472fc4aac40140301879787b34004",
+    "snapshots/1100.msgpack": "b52108fe7639f5db912af5f32ba9c249cb0055d9f997b2ef78796a66ac47ec94",
+    "snapshots/1200.msgpack": "600ac1a057bf9b6011baaaac743304215b8772490da23c0400e28da6151b2cec",
+    "snapshots/1300.msgpack": "c1b9585275d0797ed17bd0e2119074321267e28bf77b72170ce83ccade7c5ace",
+    "snapshots/1400.msgpack": "79912b2d73301fc201e70f3530b1ff2180122a5ba40eb255a3f189af41fd234a",
+    "snapshots/1500.msgpack": "12dd0c93183ea44b00d2f98325b8cc55194f523d513cc54a2f1c297dd40c50ad",
+    "snapshots/1600.msgpack": "95e1c7d0da9871ff66f7183058e529a62b5a979c5cd24cca74c485a83780f84f",
+    "snapshots/1700.msgpack": "13303a530d93d5c735de7b7990967cb4c02f2d47a8ab9f0d20378097ddf520b5",
+    "snapshots/1800.msgpack": "5a4583a2ee23ba36ed783c736b618e7864eeca5c80be66bc305bfadebef75774",
+    "snapshots/1900.msgpack": "d4d0def0e35029469c9e91dce11867b92b09a0ecd7cbb40c79a7df0e6b449828",
+    "snapshots/200.msgpack": "0c7d32e2db8a2d1d1439cb27ccf7241ce00c69cca93c5a81f8def967d1b286eb",
+    "snapshots/2000.msgpack": "f21557bdf0daf79c3165df81b3434bea8709ffa7a197a5908008c0b30485e758",
+    "snapshots/2100.msgpack": "295f21b909de374407d1c310add510d1817ff30c1762183e527f22ef3378cf5b",
+    "snapshots/2200.msgpack": "0f4ca07c4bc097ad35a8e2cb737055df17e0a82ff2f6503aabf1dbd63408c1a5",
+    "snapshots/2300.msgpack": "b109b2a73745a17e576dad24251ae8b35ef093fea19dc41b09597540f6284ecc",
+    "snapshots/2400.msgpack": "0e81617d1ec2affd67470324bab0fbef9dd43365f99047de529f53448195f735",
+    "snapshots/2500.msgpack": "8d978f52fb823f0045fc0b0b10898770642eb60454a4e0da5846bcd46b13eac2",
+    "snapshots/2600.msgpack": "9052ac3abb5b31c61f98fee39e12bec6bdd93126a5a84e6d66418a99791ce2bd",
+    "snapshots/2700.msgpack": "255b3c2614696abcf4d76a49a05e8769e1d7475ecf9003b4d96c1dd9f8ef45a4",
+    "snapshots/2800.msgpack": "0173fb3105d334ca5d7d5c0723bda1c38364f62b64d899e72b357b59b205266d",
+    "snapshots/2900.msgpack": "2b0d23fffc2742f058722ec6acca7118e42992cf2016cd92c8a35f09ddfa2681",
+    "snapshots/300.msgpack": "14f5dd5df7e83ab31acfd1e79818afe6a5f823c0eafb4a0abe883ba7ef48e194",
+    "snapshots/3000.msgpack": "7eb5289ff647a88b4e885fde0408e225163df9b0d91c187d4df10926e3ccefa6",
+    "snapshots/3001.msgpack": "f8ef2fb8475bcc7ac4124d139bb2f4d155941633e28de2de2725db6df26c533d",
+    "snapshots/3100.msgpack": "be63535c6d475d91200869e80502d29553cffdf095e7137f3f083b703d0946d4",
+    "snapshots/3200.msgpack": "b090d33a3d10fd6d3af5f73436fd82074835244edef23468e3f2bf38fa58c6d6",
+    "snapshots/3300.msgpack": "86ac1856bd43c9df229e1bba8a5a27cc24e0a0199b2432f6e88ae010eeba483d",
+    "snapshots/3400.msgpack": "7c2e09e081f3c96d3bb524938a93fe25dc8a061f298ba5797f4c56f1410dd7a9",
+    "snapshots/3500.msgpack": "4f4d88f564a3991224d9f7541d16f619001c39fab51f6a844bbbba0f7205c3ff",
+    "snapshots/3600.msgpack": "453eb8fe80af738ed1d471b1885302ad73040d7aa77bd888252ad2b70139e11b",
+    "snapshots/3700.msgpack": "a42765a4002966758378f898da787f1c8af3f49d256aa755e478d419abbe9da3",
+    "snapshots/3800.msgpack": "81250a869f737bfa157348996e276727254826e3c0af190af9c467160bafc9a4",
+    "snapshots/3900.msgpack": "a2af70c06c8fa250babb575b2a9eb2405b106d2e1047ce468ca17b16486419ef",
+    "snapshots/400.msgpack": "d36a7b10e503fab00b1470674bdf900ea1ebb796ffea840561a65388e037317d",
+    "snapshots/4000.msgpack": "23bafe49e86061023a99053baf473c5c4491d7604e8bbed0c675f72c9e566026",
+    "snapshots/4100.msgpack": "b74143bbef69ac6db7c1a212f99c400e7a0d5979057e9669b0c87932cec0ac76",
+    "snapshots/4200.msgpack": "915231d2178e6e1507af8d85942d87449e54b0bfa65758bbe41d4f0426bb52ec",
+    "snapshots/4300.msgpack": "553a7afa34f28c3f7a3fd04d3069f5857cc704a23c9fdbeacd4b20d22bf9f017",
+    "snapshots/4400.msgpack": "e233f9839883618402afb7cffc11433d6808f116aa64c4c68b8be747ab3d87c5",
+    "snapshots/4500.msgpack": "65f0085fa77d9f69f332faef65e7c8393e6de902c99ce9d790b6078619a8e7a8",
+    "snapshots/4600.msgpack": "7935ed3d1cf8e5c31cc45b582685472eb2131202598c1aff859e203dc936870f",
+    "snapshots/4700.msgpack": "7beb7485a6db49736730dbcbcdcaea7e529935ff068d1788d61e56fb731c77a8",
+    "snapshots/4800.msgpack": "5c707b0f92f0c1a50e97c359889d7a95097feb5751ef05f0ce51cf1894e2690d",
+    "snapshots/4900.msgpack": "c08e3cc47be88645323c30a0db715ef99944dd57e50645af270b8d2ed149efa9",
+    "snapshots/500.msgpack": "29b6123d05430b0194f1ab159dca0e4f987dbe3ba97cf5635d917b8c6e43992f",
+    "snapshots/5000.msgpack": "24996995aeb96b23616d8200dc2a437bd7a598b5aacf7093a38fd1ca4ff7846a",
+    "snapshots/5100.msgpack": "73f21eae11e418e9751d0604ff88d95bfce50d9ac7962b8e471a440107dfad24",
+    "snapshots/5200.msgpack": "aac807871b2119ffcbffbc5dbec557042a0d0127f96476ceaaf49971c43aeca7",
+    "snapshots/5300.msgpack": "200047345fd54f1a1fdc2c2d64842bbf4840131e27842d51790cd6046cdc6f9f",
+    "snapshots/5400.msgpack": "6281960d023bd37bdeea6d8ccb771768eab905e3442bd0b9953a08461d18c490",
+    "snapshots/5500.msgpack": "99aeb632f7f458278a165b441b61a1b611941f3a328424e88ffe967f42075626",
+    "snapshots/5600.msgpack": "34576bfece3e6af97b258cb6893df74d543124eb20f1e5a8e2bd75525357a701",
+    "snapshots/5700.msgpack": "a96728e4164a6d680a051f9ef515e66e22db32d3484bed58084418409e5fb114",
+    "snapshots/5800.msgpack": "280cf3829083c99037bb13102506794c12441f0fef8dff19300224529439d3b3",
+    "snapshots/5900.msgpack": "a4a4fba748207f543d70baf527beb0cc340ee7078bb3b978c4b284ca1676b5c2",
+    "snapshots/600.msgpack": "4199535f6c8ae12a9a8fe8395efd919440865cbd6da3370148d2983f73d512fe",
+    "snapshots/6000.msgpack": "d075bd3762cb53a6342da238951f2f90c6b9e79ebcaac9df8f62c54928422aba",
+    "snapshots/700.msgpack": "0d21a07bf9e3a06258de9e72a7612beb7c4beb2ce2f3f857fdc4e5a8718d472b",
+    "snapshots/800.msgpack": "665b772e2b41c3dbd9484139dceeefaa7468679ddd1424b4c594f499b43c4b14",
+    "snapshots/900.msgpack": "58bc6cdbb485f3bbc9b0b25399137f24bd61dad43571735feb6cfe94b0b16aa8",
+    "summary.json": "6da242c06ca53274d5faa349a675b317c4d6855db7405cce066c89d64b16685c"
+  },
+  "code": {
+    "fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+    "revision": "b45ff2a66923af14a51dce7190b3808810b2a478"
+  },
+  "elapsed_seconds": 1.8485081669932697,
+  "independent_endpoint": {
+    "anchor": {
+      "accepted": false,
+      "decomposition": {
+        "centered_variance_eV2": 0.004883396577606338,
+        "mean_error_eV": -0.047239213184937026,
+        "mean_squared_eV2": 0.002231543262331928
+      },
+      "equal_group": {
+        "energy_mse_eV2": 0.007114939839938265,
+        "force_mse_eV2_per_A2": 0.004530867645870908
+      },
+      "fractions": {
+        "energy_mse_eV2": 0.11607064219031449,
+        "force_mse_eV2_per_A2": 0.4471150476714813
+      },
+      "metrics": {
+        "energy_mse_eV2": 0.007114939839938265,
+        "force_mse_eV2_per_A2": 0.004530867645870908
+      },
+      "per_group": {
+        "01": {
+          "energy_mse_eV2": 0.007114939839938265,
+          "force_mse_eV2_per_A2": 0.004530867645870908
+        }
+      },
+      "post_initial_above_baseline_samples": {
+        "energy_mse_eV2": [
+          {
+            "baseline_fraction": 2.1998201468692145,
+            "next_saved_fraction": 0.0766823764959413,
+            "next_saved_update": 3800,
+            "raw_mse": 0.1348453640671307,
+            "update": 3700
+          }
+        ],
+        "force_mse_eV2_per_A2": []
+      }
+    },
+    "fitting": {
+      "accepted": false,
+      "decomposition": {
+        "centered_variance_eV2": 0.011983163512182258,
+        "mean_error_eV": 0.00021192289768029449,
+        "mean_squared_eV2": 4.4911314561212563e-08
+      },
+      "equal_group": {
+        "energy_mse_eV2": 0.01198320842349682,
+        "force_mse_eV2_per_A2": 0.006558968942479818
+      },
+      "fractions": {
+        "energy_mse_eV2": 0.3194094334870974,
+        "force_mse_eV2_per_A2": 0.4657052724792342
+      },
+      "metrics": {
+        "energy_mse_eV2": 0.01198320842349682,
+        "force_mse_eV2_per_A2": 0.0065589689424798165
+      },
+      "per_group": {
+        "01": {
+          "energy_mse_eV2": 0.007114939839938265,
+          "force_mse_eV2_per_A2": 0.004530867645870908
+        },
+        "01_2": {
+          "energy_mse_eV2": 0.006735812615071827,
+          "force_mse_eV2_per_A2": 0.00626540750086144
+        },
+        "22": {
+          "energy_mse_eV2": 0.008768998821744076,
+          "force_mse_eV2_per_A2": 0.002939387224211774
+        },
+        "23": {
+          "energy_mse_eV2": 0.016763586667440267,
+          "force_mse_eV2_per_A2": 0.009289151664485311
+        },
+        "44": {
+          "energy_mse_eV2": 0.0031718623190165286,
+          "force_mse_eV2_per_A2": 0.0029328169359857993
+        },
+        "58_2": {
+          "energy_mse_eV2": 0.029289757156369903,
+          "force_mse_eV2_per_A2": 0.0132154665432393
+        },
+        "77": {
+          "energy_mse_eV2": 0.020708692151092254,
+          "force_mse_eV2_per_A2": 0.0074024499620608895
+        },
+        "78_2": {
+          "energy_mse_eV2": 0.003312017817301432,
+          "force_mse_eV2_per_A2": 0.005896204063123117
+        }
+      },
+      "post_initial_above_baseline_samples": {
+        "energy_mse_eV2": [
+          {
+            "baseline_fraction": 1.4616051173839626,
+            "next_saved_fraction": 0.48382220501503725,
+            "next_saved_update": 2400,
+            "raw_mse": 0.05483469465271466,
+            "update": 2300
+          },
+          {
+            "baseline_fraction": 1.8088490321429394,
+            "next_saved_fraction": 0.5082758791312568,
+            "next_saved_update": 3200,
+            "raw_mse": 0.06786216274881857,
+            "update": 3100
+          },
+          {
+            "baseline_fraction": 3.6020684618113443,
+            "next_saved_fraction": 0.46121610845452854,
+            "next_saved_update": 3800,
+            "raw_mse": 0.13513795338588072,
+            "update": 3700
+          },
+          {
+            "baseline_fraction": 1.3508647286352125,
+            "next_saved_fraction": 0.36913940909823895,
+            "next_saved_update": 5000,
+            "raw_mse": 0.050680073592253905,
+            "update": 4900
+          }
+        ],
+        "force_mse_eV2_per_A2": []
+      }
+    }
+  },
+  "no_model_work": true,
+  "scope": "Completed width32 only; width64/global closure not inspected.",
+  "status": "passed_first_arm_only",
+  "suite_evidence": {
+    "passed": 585,
+    "reused_saved_evidence": true,
+    "seconds": 468.33
+  },
+  "trials": [
+    {
+      "action": "Combined plan/review/evidence read",
+      "resolution": "Focused reads retained key controls and records.",
+      "status": "inspection_output_truncated"
+    },
+    {
+      "action": "Printed full support memberships",
+      "resolution": "No numerical conclusion drawn from truncated output; verification uses complete saved files.",
+      "status": "inspection_output_truncated"
+    },
+    {
+      "action": "Saved first-arm audit plus independent NumPy endpoint/group/gate/spike recomputation",
+      "status": "passed"
+    }
+  ],
+  "validated_case": {
+    "attempted_updates": 6000,
+    "case": {
+      "features": 32,
+      "name": "width32",
+      "wall_seconds": 3000
+    },
+    "child_maximum_prediction_error": 0.0,
+    "child_work": {
+      "prediction_frames": 144,
+      "template_initializations": 1,
+      "template_initializer_frames": 16,
+      "training_updates": 0
+    },
+    "distinct_prediction_structures": 128,
+    "elapsed_seconds": 1562.8148765840015,
+    "endpoint_metrics": {
+      "anchor": {
+        "energy_count": 16,
+        "energy_mse_eV2": 0.007114939839938265,
+        "energy_rmse_eV": 0.0843501027855821,
+        "equal_group": {
+          "energy_mse_eV2": 0.007114939839938265,
+          "force_mse_eV2_per_A2": 0.004530867645870908
+        },
+        "force_component_count": 1008,
+        "force_mse_eV2_per_A2": 0.004530867645870908,
+        "force_rmse_eV_per_A": 0.06731171997409446,
+        "mean_energy_mse_eV2": 0.011184466862616722,
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.007114939839938265,
+            "energy_rmse_eV": 0.0843501027855821,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.004530867645870908,
+            "force_rmse_eV_per_A": 0.06731171997409446,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          }
+        },
+        "record_count": 16,
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+        ],
+        "zero_energy_mse_eV2": 0.061298358531283896,
+        "zero_force_mse_eV2_per_A2": 0.010133561081129106
+      },
+      "anchor_fitted": {
+        "energy_count": 16,
+        "energy_mse_eV2": 0.007114939839938265,
+        "energy_rmse_eV": 0.0843501027855821,
+        "equal_group": {
+          "energy_mse_eV2": 0.007114939839938265,
+          "force_mse_eV2_per_A2": 0.004530867645870908
+        },
+        "force_component_count": 1008,
+        "force_mse_eV2_per_A2": 0.004530867645870908,
+        "force_rmse_eV_per_A": 0.06731171997409446,
+        "mean_energy_mse_eV2": 0.011184466862616722,
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.007114939839938265,
+            "energy_rmse_eV": 0.0843501027855821,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.004530867645870908,
+            "force_rmse_eV_per_A": 0.06731171997409446,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          }
+        },
+        "record_count": 16,
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+        ],
+        "zero_energy_mse_eV2": 0.061298358531283896,
+        "zero_force_mse_eV2_per_A2": 0.010133561081129106
+      },
+      "anchor_fitted_flags": {
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz": true,
+        "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz": true
+      },
+      "anchor_not_fitted": {
+        "energy_count": 0,
+        "energy_mse_eV2": null,
+        "energy_rmse_eV": null,
+        "equal_group": {
+          "energy_mse_eV2": null,
+          "force_mse_eV2_per_A2": null
+        },
+        "force_component_count": 0,
+        "force_mse_eV2_per_A2": null,
+        "force_rmse_eV_per_A": null,
+        "mean_energy_mse_eV2": null,
+        "per_group": {},
+        "record_count": 0,
+        "record_ids": [],
+        "zero_energy_mse_eV2": null,
+        "zero_force_mse_eV2_per_A2": null
+      },
+      "fitting": {
+        "energy_count": 128,
+        "energy_mse_eV2": 0.01198320842349682,
+        "energy_rmse_eV": 0.1094678419605357,
+        "equal_group": {
+          "energy_mse_eV2": 0.01198320842349682,
+          "force_mse_eV2_per_A2": 0.006558968942479818
+        },
+        "force_component_count": 8064,
+        "force_mse_eV2_per_A2": 0.0065589689424798165,
+        "force_rmse_eV_per_A": 0.0809874616374647,
+        "mean_energy_mse_eV2": 0.03318544258252297,
+        "per_group": {
+          "01": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.007114939839938265,
+            "energy_rmse_eV": 0.0843501027855821,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.004530867645870908,
+            "force_rmse_eV_per_A": 0.06731171997409446,
+            "mean_energy_mse_eV2": 0.011184466862616722,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061298358531283896,
+            "zero_force_mse_eV2_per_A2": 0.010133561081129106
+          },
+          "01_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.006735812615071827,
+            "energy_rmse_eV": 0.08207199653396904,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.00626540750086144,
+            "force_rmse_eV_per_A": 0.0791543271139452,
+            "mean_energy_mse_eV2": 0.014691840198546696,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.061309625626903314,
+            "zero_force_mse_eV2_per_A2": 0.012643781149752755
+          },
+          "22": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.008768998821744076,
+            "energy_rmse_eV": 0.09364293257765946,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.002939387224211774,
+            "force_rmse_eV_per_A": 0.05421611590857255,
+            "mean_energy_mse_eV2": 0.00043393794551779054,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+              "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.025654788215940468,
+            "zero_force_mse_eV2_per_A2": 0.0031611763984129714
+          },
+          "23": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.016763586667440267,
+            "energy_rmse_eV": 0.129474270291206,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.009289151664485311,
+            "force_rmse_eV_per_A": 0.09638024519830457,
+            "mean_energy_mse_eV2": 0.003272736677958737,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+              "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.01972081939103084,
+            "zero_force_mse_eV2_per_A2": 0.013989886462890417
+          },
+          "44": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.0031718623190165286,
+            "energy_rmse_eV": 0.05631928904928159,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0029328169359857993,
+            "force_rmse_eV_per_A": 0.05415548851211481,
+            "mean_energy_mse_eV2": 0.0037639219993234286,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+              "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.004330088583582667,
+            "zero_force_mse_eV2_per_A2": 0.0027215358535326905
+          },
+          "58_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.029289757156369903,
+            "energy_rmse_eV": 0.1711425054052029,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0132154665432393,
+            "force_rmse_eV_per_A": 0.11495854271536021,
+            "mean_energy_mse_eV2": 0.05609685929773062,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.06930285764299296,
+            "zero_force_mse_eV2_per_A2": 0.047555128919074555
+          },
+          "77": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.020708692151092254,
+            "energy_rmse_eV": 0.1439051498421521,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.0074024499620608895,
+            "force_rmse_eV_per_A": 0.08603749160721091,
+            "mean_energy_mse_eV2": 0.04301548832510679,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+              "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.049888904847356544,
+            "zero_force_mse_eV2_per_A2": 0.010461935367549885
+          },
+          "78_2": {
+            "energy_count": 16,
+            "energy_mse_eV2": 0.003312017817301432,
+            "energy_rmse_eV": 0.05755013307805145,
+            "force_component_count": 1008,
+            "force_mse_eV2_per_A2": 0.005896204063123117,
+            "force_rmse_eV_per_A": 0.07678674405861416,
+            "mean_energy_mse_eV2": 0.008175567346002584,
+            "record_count": 16,
+            "record_ids": [
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+              "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz"
+            ],
+            "zero_energy_mse_eV2": 0.008628671364668732,
+            "zero_force_mse_eV2_per_A2": 0.012004580512219374
+          }
+        },
+        "record_count": 128,
+        "record_ids": [
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_077.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_093.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsminus_108.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_047.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_021.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_042.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_052.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsminus_073.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_010.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_021.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_030.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_041.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_061.xyz",
+          "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_012.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_025.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_038.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_051.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_076.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsminus_089.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_030.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_044.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_059.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_073.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_088.xyz",
+          "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_013.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_081.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_023.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_033.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_045.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_055.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_016.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_034.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_083.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_101.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsminus_117.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_014.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_080.xyz",
+          "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_022.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_032.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_044.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_066.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsminus_076.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_013.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_026.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_038.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_050.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_062.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_075.xyz",
+          "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_012.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_024.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_035.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_048.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_059.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_072.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_083.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_011.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_023.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_033.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_045.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_055.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_000.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_015.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_031.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_046.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_063.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_078.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_094.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_109.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_001.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_014.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_027.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_040.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_054.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_067.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_080.xyz",
+          "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz"
+        ],
+        "zero_energy_mse_eV2": 0.03751676427546992,
+        "zero_force_mse_eV2_per_A2": 0.014083948218070219
+      }
+    },
+    "execution_valid": true,
+    "frame_exposures": 768000,
+    "initial_state_hashes": {
+      "optimizer": "f0a71cbf26a1dec088cf8c5a5338eb72413ab1868544a4c6a0ff5cbdaf210184",
+      "params": "c63c26e38b4c7c65ae0f4658ce3cb31052cede8f940ec394cb40bbf7cf4ed4f4"
+    },
+    "learning_accepted": false,
+    "oracles": {
+      "1": {
+        "accumulated_gradient_frames": 128,
+        "accumulated_proposals": 1,
+        "actual_update_verified": true,
+        "atol": 1e-10,
+        "committed_state_hashes": {
+          "optimizer": "c44d2504571bfea64ad23ddd1fe403b4d598d7f0ecc5ef23d575618e468c12e8",
+          "params": "4e48cc7b54bca81f332623ec0ad2cef62790a0ace4fa17ce5474b84b700e1a36"
+        },
+        "discarded": true,
+        "fullbatch_gradient_frames": 128,
+        "incoming_nonzero_moments": false,
+        "incoming_state_hashes": {
+          "optimizer": "f0a71cbf26a1dec088cf8c5a5338eb72413ab1868544a4c6a0ff5cbdaf210184",
+          "params": "c63c26e38b4c7c65ae0f4658ce3cb31052cede8f940ec394cb40bbf7cf4ed4f4"
+        },
+        "incoming_update": 0,
+        "independent_numpy_proposals": 1,
+        "maximum_absolute_difference": 8.326672684688674e-17,
+        "outgoing_update": 1,
+        "proposal_state_hashes": {
+          "optimizer": "c44d2504571bfea64ad23ddd1fe403b4d598d7f0ecc5ef23d575618e468c12e8",
+          "params": "4e48cc7b54bca81f332623ec0ad2cef62790a0ace4fa17ce5474b84b700e1a36"
+        },
+        "rate": 0.0003,
+        "rtol": 1e-08,
+        "status": "passed"
+      },
+      "3001": {
+        "accumulated_gradient_frames": 128,
+        "accumulated_proposals": 1,
+        "actual_update_verified": true,
+        "atol": 1e-10,
+        "committed_state_hashes": {
+          "optimizer": "5b8f0aa41779f654be02c58c6200ba0bb7e170713b9caea262d3a967de3f3389",
+          "params": "3b2b8241840933d20bcf20144e82525a84c085ae9a3816ee49b00693266a6335"
+        },
+        "discarded": true,
+        "fullbatch_gradient_frames": 128,
+        "incoming_nonzero_moments": true,
+        "incoming_state_hashes": {
+          "optimizer": "1dd4443bb7d02fa2b0fcc584b29b2506dfd6bf7630c20c184951815c357bf8b6",
+          "params": "8a115332a7249db3a52b361fc5f6dbffea93416536009112b9fe7a83e2d76ca9"
+        },
+        "incoming_update": 3000,
+        "independent_numpy_proposals": 1,
+        "maximum_absolute_difference": 1.6653345369377348e-15,
+        "outgoing_update": 3001,
+        "proposal_state_hashes": {
+          "optimizer": "5b8f0aa41779f654be02c58c6200ba0bb7e170713b9caea262d3a967de3f3389",
+          "params": "3b2b8241840933d20bcf20144e82525a84c085ae9a3816ee49b00693266a6335"
+        },
+        "rate": 0.0003,
+        "rtol": 1e-08,
+        "status": "passed"
+      }
+    },
+    "original_baseline_fractions": {
+      "anchor": {
+        "energy_mse_eV2": 0.11607064219031449,
+        "force_mse_eV2_per_A2": 0.4471150476714813
+      },
+      "fitting": {
+        "energy_mse_eV2": 0.3194094334870974,
+        "force_mse_eV2_per_A2": 0.4657052724792342
+      }
+    },
+    "parameter_count": 13569,
+    "pending_update_unknown": false,
+    "persisted_updates": 6000,
+    "residual_decomposition": {
+      "anchor": {
+        "centered_energy_error_variance_eV2": 0.004883396577606338,
+        "energy_mse_eV2": 0.007114939839938265,
+        "force_mse_eV2_per_A2": 0.004530867645870908,
+        "mean_energy_error_squared_eV2": 0.002231543262331928,
+        "signed_mean_energy_error_eV": -0.047239213184937026
+      },
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.011983163512182258,
+        "energy_mse_eV2": 0.01198320842349682,
+        "force_mse_eV2_per_A2": 0.0065589689424798165,
+        "mean_energy_error_squared_eV2": 4.4911314561212563e-08,
+        "signed_mean_energy_error_eV": 0.00021192289768029449
+      }
+    },
+    "sampled_peaks": {
+      "anchor": {
+        "energy_mse_eV2": {
+          "original_baseline_fraction": 2.1998201468692145,
+          "raw_mse": 0.1348453640671307,
+          "update": 3700
+        },
+        "force_mse_eV2_per_A2": {
+          "original_baseline_fraction": 1.0,
+          "raw_mse": 0.010133561081129106,
+          "update": 0
+        }
+      },
+      "fitting": {
+        "energy_mse_eV2": {
+          "original_baseline_fraction": 3.6020684618113443,
+          "raw_mse": 0.13513795338588072,
+          "update": 3700
+        },
+        "force_mse_eV2_per_A2": {
+          "original_baseline_fraction": 1.0,
+          "raw_mse": 0.014083948218070219,
+          "update": 0
+        }
+      }
+    },
+    "status": "completed",
+    "terminal_window": {
+      "from_update": 5500,
+      "metrics": {
+        "anchor": {
+          "energy_mse_eV2": {
+            "relative_change": 0.05076265818435542,
+            "unavailable_reason": null
+          },
+          "force_mse_eV2_per_A2": {
+            "relative_change": -0.02887724799393233,
+            "unavailable_reason": null
+          }
+        },
+        "fitting": {
+          "energy_mse_eV2": {
+            "relative_change": -0.06663519548328774,
+            "unavailable_reason": null
+          },
+          "force_mse_eV2_per_A2": {
+            "relative_change": -0.028031009823560764,
+            "unavailable_reason": null
+          }
+        }
+      },
+      "to_update": 6000
+    },
+    "updates": 6000,
+    "verified_persisted_updates": 6000,
+    "work": {
+      "discarded_accumulated_proposals": 2,
+      "independent_numpy_proposals": 2,
+      "initialization_frames": 16,
+      "initialization_status": "completed",
+      "initializations": 1,
+      "oracle_accumulated_gradient_frames": 256,
+      "oracle_fullbatch_gradient_frames": 256,
+      "oracle_status": "completed",
+      "probe_status": "completed",
+      "reference_prediction_frames": 144,
+      "reference_status": "completed",
+      "scoring_prediction_frames": 9072,
+      "scoring_status": "completed",
+      "warmup_frame_exposures": 128,
+      "warmup_status": "completed"
+    }
+  }
+}

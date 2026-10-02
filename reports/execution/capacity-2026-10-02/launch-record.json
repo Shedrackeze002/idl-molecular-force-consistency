@@ -1,0 +1,20 @@
+{
+  "status": "production_launched_once",
+  "invocation_sha256": "0d4a039896c433f5d54277e79444eed9ea3e7abfe8823bac438c1ac00689301e",
+  "source_revision": "b45ff2a66923af14a51dce7190b3808810b2a478",
+  "process": {
+    "command": [
+      "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python",
+      "-m",
+      "force_consistency.capacity_runs",
+      "--config",
+      "configs/aspirin-capacity.json"
+    ],
+    "pid": 9607,
+    "started_at_utc": "2026-10-02T11:18:06.727875+00:00"
+  },
+  "prospective_pair_updates": 12000,
+  "prospective_pair_fitting_exposures": 1536000,
+  "user_pdfs": "unchanged, excluded from local checkpoint",
+  "numerical_results": "pending"
+}

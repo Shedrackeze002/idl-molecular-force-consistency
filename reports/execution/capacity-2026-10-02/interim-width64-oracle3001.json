@@ -1,0 +1,36 @@
+{
+  "case": "width64",
+  "limits": "Update agreement and saved state metadata verified at this boundary; no learning acceptance or complete endpoint comparison claimed.",
+  "oracle": {
+    "accumulated_gradient_frames": 128,
+    "accumulated_proposals": 1,
+    "actual_update_verified": true,
+    "atol": 1e-10,
+    "committed_state_hashes": {
+      "optimizer": "57d0a19dfa9237bdd3a529026cfe581d8a85fec95e79a320e9f4d2cbaf010f70",
+      "params": "fb034785fe51d1f17706dfb596948f21adcf10cc69bab33499ae7677496b9795"
+    },
+    "discarded": true,
+    "fullbatch_gradient_frames": 128,
+    "incoming_nonzero_moments": true,
+    "incoming_state_hashes": {
+      "optimizer": "6dec1c8993bf1600eb1219be7d5b90331cda0f520761d2ee97289dc482ebd917",
+      "params": "694e2c11f1e50a9b82dd970d70148cbbfc03340908fbe0220fbadab5324e71ab"
+    },
+    "incoming_update": 3000,
+    "independent_numpy_proposals": 1,
+    "maximum_absolute_difference": 3.563122019656362e-15,
+    "outgoing_update": 3001,
+    "proposal_state_hashes": {
+      "optimizer": "57d0a19dfa9237bdd3a529026cfe581d8a85fec95e79a320e9f4d2cbaf010f70",
+      "params": "fb034785fe51d1f17706dfb596948f21adcf10cc69bab33499ae7677496b9795"
+    },
+    "rate": 0.0003,
+    "rtol": 1e-08,
+    "status": "passed"
+  },
+  "oracle_sha256": "253c08bb38f331924df937883ea75451ecc16f350ad876616043c100d1250ca5",
+  "parameter_count": 43521,
+  "saved_state_adam_count": 3001,
+  "status": "interim actual wider oracle passed; endpoint/child/global pending"
+}

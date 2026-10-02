@@ -1,0 +1,11 @@
+{
+  "finding": "CAPACITY-NARRATIVE-P2-001 resolved: eight microbatches of16 structures",
+  "hashes": {
+    "docs/reviews/2026-10-02-capacity-narrative-review.md": "9d40d43e0d57f073b529e531f53cb6e39e3644268cae3e8901e845027e490112",
+    "reports/capacity-findings-2026-10-02.md": "b068d1343e6f27cd38a7b1283f876f31749290da84e31db22328815785ee4a0d",
+    "reports/execution/capacity-2026-10-02/capacity-trajectories-caption.md": "68de68a4ea779c17c0c8a3719982facfc6966eab3ad4f61f8d538630b5340712"
+  },
+  "new_model_work": false,
+  "raw_results_edited": false,
+  "status": "passed_after_preserved_wording_correction"
+}

@@ -1,0 +1,91 @@
+{
+  "case": "width32",
+  "history_sha256": "0c8fba2f35b2c2d18ff63d36c670bad492b3fb731054ae96c2e990535ad29061",
+  "immutable_checkpoint_sha256": "12dd0c93183ea44b00d2f98325b8cc55194f523d513cc54a2f1c297dd40c50ad",
+  "limits": "One still-running fitted-support arm. This does not establish continuous behavior, mechanism, convergence or a width comparison. No settings changed and no retry.",
+  "observation": "Fitting energy fraction rises across these saved checkpoints while force fraction falls; sampled history is nonmonotonic.",
+  "sampled_rows": [
+    {
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.04880114650973192,
+          "force_mse_eV2_per_A2": 0.8152120987162697
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      },
+      "fitting_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.35193369310466743,
+          "force_mse_eV2_per_A2": 0.8424414021847239
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "update": 900
+    },
+    {
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.04839277523347865,
+          "force_mse_eV2_per_A2": 0.7804681209907065
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      },
+      "fitting_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.38530876949462284,
+          "force_mse_eV2_per_A2": 0.8070296784514602
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "update": 1200
+    },
+    {
+      "anchor_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.06343119903269245,
+          "force_mse_eV2_per_A2": 0.7424464486640762
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.00612983585312839,
+          "force_mse_eV2_per_A2": 0.0010133561081129107
+        }
+      },
+      "fitting_gate": {
+        "accepted": false,
+        "fraction_remaining": {
+          "energy_mse_eV2": 0.4396891709396042,
+          "force_mse_eV2_per_A2": 0.7697529844782414
+        },
+        "gate_fraction": 0.1,
+        "threshold_mse": {
+          "energy_mse_eV2": 0.003751676427546992,
+          "force_mse_eV2_per_A2": 0.001408394821807022
+        }
+      },
+      "update": 1500
+    }
+  ],
+  "status": "interim_saved_observations; terminal execution/learning verification pending"
+}

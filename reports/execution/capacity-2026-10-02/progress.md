@@ -17,3 +17,11 @@ Independent implementation followup PASS, original three findings and child-phas
 Operational inspection during full-suite monitoring: sandbox process listing was denied; test progress was read from retained log/tool session instead. No resource or completion inference from failed listing.
 
 Full-suite GREEN585passed468.33s. Exact source/lock/runtime fingerprint, all20sourcepins, both plan followups and implementation followup bound in preproduction-gate.json. Once-only launch queued; source checkpoint and CLI readback next.
+
+Production source b45ff2a66923af14a51dce7190b3808810b2a478; once-only launcher session57799 active. Width32 completed6000/768000fitting exposures in1562.8148765840015s, independentchild error0, first-arm saved review PASS146unchangedfiles. Both raw learning gates failed: fittingE.3194094334870974/F.4657052724792342; anchorE.11607064219031449/F.4471150476714813. Source/snapshots unchanged. Width64 currently at least2700saved updates;6000endpoint/child/globalreport closure pending. Interim energy spikes and recoveries are appended in CAPACITY-INTERIM-SPIKE-001..004. No source edits or production retry.
+
+Production pair complete: both6000-update arms execution valid,12000verifiedupdates/1536000corefittingexposures, both joint learning gates failed. Immutable scientific closure5185.547022624989s within10800s. Canonical saved reports and343-member archive CRC/every-member hashes independently PASS. No retry/new model work. Paper-facing findings/caption saved; narrative review corrected microbatch wording to8x16. Final Obsidian/current-state/readback and scoped result checkpoint pending.
+
+Final Obsidian CLI synchronization succeeded for both notes with exclusive backups and exact readback hashes. Whole-pair independent result review PASS; paper-narrative correction followup and final deterministic closeout check pending. All research/review/test/raw records retained.
+
+Closeout complete: final deterministic saved-only check PASS, two independent plan reviews/implementation followup/whole-pair saved-result and narrative correction followup all cleared.585passed suite evidence reused with unchanged participating source. Both learning gates failed; full pilot pending. Both Obsidian notes backed up/readback verified. No new numerical work/retry/cleanup. Scoped local result checkpoint next.

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python",
+    "-m",
+    "force_consistency.capacity_runs",
+    "--config",
+    "configs/aspirin-capacity.json"
+  ],
+  "pid": 9607,
+  "started_at_utc": "2026-10-02T11:18:06.727875+00:00"
+}

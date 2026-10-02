@@ -1,0 +1,29 @@
+{
+  "status": "complete_saved_only_verified",
+  "execution_valid": true,
+  "both_joint_learning_gates": "failed",
+  "full_pilot": "pending",
+  "source_revision": "b45ff2a66923af14a51dce7190b3808810b2a478",
+  "canonical_reports_match": true,
+  "source_pins_verified": 20,
+  "raw_files_unchanged": 343,
+  "evidence_prefix_intact": true,
+  "source_diff_empty": true,
+  "independent_saved_result_review": "PASS",
+  "independent_narrative_followup": "PASS",
+  "obsidian_both_readbacks": "verified",
+  "existing_full_suite": "585 passed, 468.33 seconds; participating source unchanged",
+  "new_training_updates": 0,
+  "new_model_initializations": 0,
+  "new_predictions": 0,
+  "artifact_sha256": {
+    "docs/reviews/2026-10-02-capacity-saved-result-review.md": "60c5f6b419935d86d07569ed3d952d0142382f41dd7a5e89855ec8896d15587a",
+    "docs/reviews/2026-10-02-capacity-narrative-review.md": "9d40d43e0d57f073b529e531f53cb6e39e3644268cae3e8901e845027e490112",
+    "reports/capacity-findings-2026-10-02.md": "b068d1343e6f27cd38a7b1283f876f31749290da84e31db22328815785ee4a0d",
+    "reports/execution/capacity-2026-10-02/capacity-trajectories-caption.md": "68de68a4ea779c17c0c8a3719982facfc6966eab3ad4f61f8d538630b5340712",
+    "reports/execution/capacity-2026-10-02/reviewer-capacity-saved-verification.json": "2a1056c6bdb59b5f55bfe263999a89d320729e3673765215f2129e1cd717b3dd",
+    "reports/execution/capacity-2026-10-02/reviewer-capacity-narrative-verification.json": "12505156693bfb2afffb46762cd9b6f3b728527b0b2eec2c97107c771994f295",
+    "reports/execution/capacity-2026-10-02/obsidian-final-verified-verification.json": "d1ef112c0cd5faaaaaf15a2bff1422e19f3249165a423ce8f1a983338637f28f"
+  },
+  "elapsed_seconds": 2.474539916991489
+}

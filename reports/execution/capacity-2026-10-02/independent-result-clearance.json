@@ -1,0 +1,19 @@
+{
+  "status": "independent_saved_result_pass",
+  "learning_accepted": false,
+  "updates": 12000,
+  "fitting_exposures": 1536000,
+  "full_pilot": "pending",
+  "new_training_updates": 0,
+  "new_model_initializations": 0,
+  "new_predictions": 0,
+  "artifacts": {
+    "docs/reviews/2026-10-02-capacity-saved-result-review.md": "60c5f6b419935d86d07569ed3d952d0142382f41dd7a5e89855ec8896d15587a",
+    "reports/execution/capacity-2026-10-02/reviewer-capacity-saved-verification.json": "2a1056c6bdb59b5f55bfe263999a89d320729e3673765215f2129e1cd717b3dd",
+    "reports/execution/capacity-2026-10-02/reviewer-capacity-saved-moments.json": "2088b46126239a605a303a0c1d82d96abf8881c07acc5787a4087cbd4d0ae413",
+    "reports/capacity-findings-2026-10-02.md": "b068d1343e6f27cd38a7b1283f876f31749290da84e31db22328815785ee4a0d",
+    "reports/execution/capacity-2026-10-02/capacity-trajectories-caption.md": "68de68a4ea779c17c0c8a3719982facfc6966eab3ad4f61f8d538630b5340712"
+  },
+  "operational_warnings": "Matplotlib and Fontconfig cache permissions; successful temporary-cache render retained without retry. A broad closeout JSON display was truncated; targeted fields used for conclusions.",
+  "narrative_trial": "Independent wording check found incorrect description of 16 microbatches. Corrected to eight microbatches of 16 structures each, consistent with 128 fitting structures and frozen microbatch size16. No numerical artifact changed."
+}

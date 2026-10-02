@@ -1,0 +1,34 @@
+{
+  "case": "width32",
+  "limits": "Verifies mathematical update agreement at this sampled boundary; no learning acceptance, convergence, mechanism or complete width comparison claimed.",
+  "oracle": {
+    "accumulated_gradient_frames": 128,
+    "accumulated_proposals": 1,
+    "actual_update_verified": true,
+    "atol": 1e-10,
+    "committed_state_hashes": {
+      "optimizer": "5b8f0aa41779f654be02c58c6200ba0bb7e170713b9caea262d3a967de3f3389",
+      "params": "3b2b8241840933d20bcf20144e82525a84c085ae9a3816ee49b00693266a6335"
+    },
+    "discarded": true,
+    "fullbatch_gradient_frames": 128,
+    "incoming_nonzero_moments": true,
+    "incoming_state_hashes": {
+      "optimizer": "1dd4443bb7d02fa2b0fcc584b29b2506dfd6bf7630c20c184951815c357bf8b6",
+      "params": "8a115332a7249db3a52b361fc5f6dbffea93416536009112b9fe7a83e2d76ca9"
+    },
+    "incoming_update": 3000,
+    "independent_numpy_proposals": 1,
+    "maximum_absolute_difference": 1.6653345369377348e-15,
+    "outgoing_update": 3001,
+    "proposal_state_hashes": {
+      "optimizer": "5b8f0aa41779f654be02c58c6200ba0bb7e170713b9caea262d3a967de3f3389",
+      "params": "3b2b8241840933d20bcf20144e82525a84c085ae9a3816ee49b00693266a6335"
+    },
+    "rate": 0.0003,
+    "rtol": 1e-08,
+    "status": "passed"
+  },
+  "oracle_sha256": "9d85804220b99db68afb669353f461fed41ba73864685f9fdcd4a92c78619a13",
+  "status": "interim_actual_oracle_passed; terminal/child verification pending"
+}

@@ -1,0 +1,6 @@
+{
+  "review": "docs/reviews/2026-10-02-capacity-saved-result-review.md",
+  "sha256": "60c5f6b419935d86d07569ed3d952d0142382f41dd7a5e89855ec8896d15587a",
+  "verdict": "PASS saved whole-pair integrity; both scientific learning gates failed",
+  "verification_json_sha256": "2a1056c6bdb59b5f55bfe263999a89d320729e3673765215f2129e1cd717b3dd"
+}

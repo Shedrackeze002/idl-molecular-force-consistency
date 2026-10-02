@@ -1,0 +1,26 @@
+{
+  "status": "saved_only_verified",
+  "execution_valid": true,
+  "canonical_json_markdown_match": true,
+  "primary_report_missing_before_closeout": false,
+  "raw_file_count": 343,
+  "archive_members": 343,
+  "archive_crc": "passed",
+  "every_archive_member_hash_matches": true,
+  "raw_files_unchanged": true,
+  "archive_sha256": "2226d21dab8533330914aee75473a88ac4e9cf0b546141d309c0ec5fb287939a",
+  "inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+  "figures": {
+    "reports/execution/capacity-2026-10-02/capacity-trajectories.png": "21b879ef563cf8b5fc23e2d0632531b487de93eee93c52ffdf17ee1740cd938c",
+    "reports/execution/capacity-2026-10-02/capacity-trajectories.svg": "0c314fe3f6facb70fb43329396dda03c525c5015caa8cddc56d3663d3b9d01b1"
+  },
+  "report_sha256": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+  "report_md_sha256": "c111215a040b154207c26a255aad7ac1244fe6f04c83f545c1c7f2a24b4d8ac5",
+  "verification_errors": [],
+  "elapsed_seconds": 13.974572416991577,
+  "cap_scope": "Saved-only archive/figures after immutable scientific cap closure, no new numerical work",
+  "new_training_updates": 0,
+  "new_model_initializations": 0,
+  "new_predictions": 0,
+  "independent_result_review": "pending"
+}
