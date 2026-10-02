@@ -1,0 +1,71 @@
+...........FFF                                                           [100%]
+=================================== FAILURES ===================================
+___ test_real_profile_step_matches_global_objective_and_independent_adam[0] ____
+
+count = 0
+
+    @pytest.mark.parametrize('count',[0,3])
+    def test_real_profile_step_matches_global_objective_and_independent_adam(count):
+        import jax
+        import jax.numpy as jnp
+        from force_consistency.models.energy import energy_and_forces
+        from force_consistency.width_rate_runs import independent_adam_step
+        from test_coverage import close_trees
+        m,p,model,full,norm,state,batches=fixture(count);weights={'energy':.2,'force':1.8}
+        before=m.full_hash(state);events=[]
+        def objective(pp):
+            e,f=energy_and_forces(pp,full,model=model);err=e-full['energy']
+            return weights['energy']*jnp.mean((err-jnp.mean(err))**2)/norm.energy_loss_scale_eV**2+weights['force']*jnp.mean((f-full['forces'])**2)/norm.force_loss_scale_eV_per_A**2
+        wanted_grad=jax.jit(jax.grad(objective))(state['params']);wanted_grad=m.set_bias(wanted_grad,[0.])
+        rp,ro=independent_adam_step(state['params'],state['optimizer'],wanted_grad,.0003)
+        re,rf=energy_and_forces(rp,full,model=model)
+        wanted_bias=float(rp['energy_head']['0+']['bias'][0])-float(jnp.mean(re-full['energy']))/3
+        rp=m.set_bias(rp,[wanted_bias])
+>       got,g,r=m.profile_step(state,batches,model,norm,weights,.0003,direct_call,lambda event:events.append(event))
+                ^^^^^^^^^^^^^^
+E       AttributeError: module 'offset_profile_core' has no attribute 'profile_step'
+
+tests/test_offset_profile_core.py:95: AttributeError
+___ test_real_profile_step_matches_global_objective_and_independent_adam[3] ____
+
+count = 3
+
+    @pytest.mark.parametrize('count',[0,3])
+    def test_real_profile_step_matches_global_objective_and_independent_adam(count):
+        import jax
+        import jax.numpy as jnp
+        from force_consistency.models.energy import energy_and_forces
+        from force_consistency.width_rate_runs import independent_adam_step
+        from test_coverage import close_trees
+        m,p,model,full,norm,state,batches=fixture(count);weights={'energy':.2,'force':1.8}
+        before=m.full_hash(state);events=[]
+        def objective(pp):
+            e,f=energy_and_forces(pp,full,model=model);err=e-full['energy']
+            return weights['energy']*jnp.mean((err-jnp.mean(err))**2)/norm.energy_loss_scale_eV**2+weights['force']*jnp.mean((f-full['forces'])**2)/norm.force_loss_scale_eV_per_A**2
+        wanted_grad=jax.jit(jax.grad(objective))(state['params']);wanted_grad=m.set_bias(wanted_grad,[0.])
+        rp,ro=independent_adam_step(state['params'],state['optimizer'],wanted_grad,.0003)
+        re,rf=energy_and_forces(rp,full,model=model)
+        wanted_bias=float(rp['energy_head']['0+']['bias'][0])-float(jnp.mean(re-full['energy']))/3
+        rp=m.set_bias(rp,[wanted_bias])
+>       got,g,r=m.profile_step(state,batches,model,norm,weights,.0003,direct_call,lambda event:events.append(event))
+                ^^^^^^^^^^^^^^
+E       AttributeError: module 'offset_profile_core' has no attribute 'profile_step'
+
+tests/test_offset_profile_core.py:95: AttributeError
+_________ test_nonzero_bias_moment_rejected_before_any_numerical_call __________
+
+    def test_nonzero_bias_moment_rejected_before_any_numerical_call():
+        m,p,model,full,norm,state,batches=fixture(3)
+        state['optimizer']=(state['optimizer'][0]._replace(mu=m.set_bias(state['optimizer'][0].mu,[.1])),state['optimizer'][1])
+        def forbidden(*a,**kw):raise AssertionError('scheduled numerical call')
+        with pytest.raises(ValueError,match='bias moment'):
+>           m.profile_step(state,batches,model,norm,{'energy':.2,'force':1.8},.0003,forbidden,lambda e:None)
+            ^^^^^^^^^^^^^^
+E           AttributeError: module 'offset_profile_core' has no attribute 'profile_step'
+
+tests/test_offset_profile_core.py:115: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_core.py::test_real_profile_step_matches_global_objective_and_independent_adam[0]
+FAILED tests/test_offset_profile_core.py::test_real_profile_step_matches_global_objective_and_independent_adam[3]
+FAILED tests/test_offset_profile_core.py::test_nonzero_bias_moment_rejected_before_any_numerical_call
+3 failed, 11 passed in 7.66s

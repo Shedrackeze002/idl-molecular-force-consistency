@@ -704154,3 +704154,103 @@ Frozen restored-state diagnostic; zero training updates.
   }
 }
 ```
+
+
+## OFFSET-PLAN-001 — global fitting-bias profiling comparison proposed, two reviews pending
+
+The completed spike diagnostic found squared-mean contributions99.38447026696703%/99.93977749791236% of sampled fitting energy spike increases; endpoint fitting offsets tiny and joint raw gates remain failed. User authorized proceeding. Plan one restored sharedzero width32 intervention at unchangedrate/weights/model/support using complete128-fitting analytical bias handling, preserving original rawbaselines and historicalwidth32reference. Mean-zero is construction, centeredenergy/force improvements empirical. No implementation/researchnumerics yet.
+
+```json
+{
+  "implementation": "not_started",
+  "initial_plus_outgoing_calibrations_planned": 6001,
+  "max_invocations": 1,
+  "new_training_updates_planned": 6000,
+  "raw_gate_fraction": 0.1,
+  "reference": "historical width32 capacity6000; not concurrently rerun",
+  "reserve_seconds": 180,
+  "source_hashes": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "91ab94fb05d19321908b621e3d11431ae259809bc65e8ce6334d3d72c3456a0d",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "ba4b422791426592be29b765fd85345781c9a01a77d08af647f0d06240f5b6cd",
+    "reports/capacity-diagnostics.json": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+    "reports/capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "reports/capacity-spike-paper-findings.md": "c12781140c7577ed9975c13da67be408d763fbd2ff3feb3c4ca77680601621e5"
+  },
+  "status": "planned_unexecuted",
+  "total_wall_seconds_including_reserve": 3600,
+  "two_plan_reviews": "pending",
+  "user_authorization": "proceed after controlled offset-handling recommendation"
+}
+```
+
+Preserved planning failures: first orchestrationcall JavaScriptSyntaxError before shell/fileexecution, corrected structuredpatch. Combined skill/source outputs truncated; recovered targeted operative reads. No evidence inferred from truncated sections. Repo checks confirm userproposal.pdf deletion/Group9.pdf untracked remain preserved.
+
+
+## OFFSET-LITERATURE-001 — variable-projection methodological background, not an MLIP result
+
+Primary publisher DOI https://epubs.siam.org/doi/10.1137/0710036, Golub/Pereyra (1973), The Differentiation of Pseudo-Inverses and Nonlinear Least Squares Problems Whose Variables Separate. Publisher abstract read: linear coefficients may be eliminated from a separable nonlinear least-squares problem, leaving nonlinear optimization. Full text access-gated; DOI sent to user for CMU access. Author-hosted https://www.cs.umd.edu/~oleary/software/varpro.pdf returned a web internalerror, preserved as failed retrieval; not used for claims. Publisher-hosted Kaufman report abstract https://tidsskrift.dk/daimipb/article/view/6446 also accessible. Our fixed21atom scalar bias formula is derived from project model and independently tested; no claim these sources demonstrate this MLIP intervention or force-fitting benefit.
+
+
+## OFFSET-PLAN-REVIEWS-AMEND-001 — initial scientific/engineeringPASS; concrete clarificationA reviewed before coding
+
+Both initial reviews preserved. Engineering checks adopted into spec/plan with explicit interfaces/sourcepathcount/state/receipt/output failure contracts. No researchnumerics.
+
+```json
+{
+  "after": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "bfad4a08f3f056313750a1286b9df4136cf08f9b88f0cf489b05b1303c518baf",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "b7c2d5ca7fb0fa86a5fac99e2fd5db5b37301c35b290ac4e5d7a0d55369e8e63"
+  },
+  "before": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "91ab94fb05d19321908b621e3d11431ae259809bc65e8ce6334d3d72c3456a0d",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "ba4b422791426592be29b765fd85345781c9a01a77d08af647f0d06240f5b6cd"
+  },
+  "implementation": "unexecuted",
+  "initial_two_reviews": "PASS",
+  "material_clarification": "A",
+  "new_review_followups": "pending"
+}
+```
+
+
+## OFFSET-PLAN-GATE-001 — final scientific and engineering planPASS, implementation may start
+
+```json
+{
+  "artifacts": {
+    "docs/reviews/2026-10-02-offset-profile-engineering-plan-followup.md": "a211f38091387b21de9aa23487d1158ab1d486da1626c58c8ebc0b6be88ff7bf",
+    "docs/reviews/2026-10-02-offset-profile-scientific-plan-followup.md": "dba63b697df0e0966e20869f5455b5e5f8e9b4b1c41f036977cbf02154daa01f",
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "bfad4a08f3f056313750a1286b9df4136cf08f9b88f0cf489b05b1303c518baf",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "b7c2d5ca7fb0fa86a5fac99e2fd5db5b37301c35b290ac4e5d7a0d55369e8e63"
+  },
+  "implementation": "starting_Task1",
+  "research": "unexecuted",
+  "status": "two_final_plan_reviews_PASS"
+}
+```
+
+
+## OFFSET-ENGINEERING-TASK1-001 — global projection/restoration and independent profile derivative/Adam witnesses verified
+
+Small realmodel engineering witnesses use3constantatoms, deliberately unequal3/3/1chunks and nonzero readout; full centeredloss reference and independent NumPyAdam compare atincomingcounts0/3, with nonzero bodymoments and zero biasmoments. Forces invariant within1e-12. No production config/CLI/source/modeltraining trial invoked. Production support remains21atoms. All RED/GREEN logs retained; sharedsource updates unmodified.
+
+```json
+{
+  "task1-numerical-green.txt": {
+    "last_line": "14 passed in 8.73s",
+    "sha256": "1c2508394c210adca15c54acded1d470a1328253b4f9377d5255614e36dd40f4"
+  },
+  "task1-numerical-red.txt": {
+    "last_line": "3 failed, 11 passed in 7.66s",
+    "sha256": "60f97af4debbc5fe43acea3332c5531266c45fc3845ef188de9a8620ee028bf1"
+  },
+  "task1-projection-green.txt": {
+    "last_line": "11 passed in 3.79s",
+    "sha256": "f4038f12fb33245cad1b800b9d913d141422f3785253dbcf70d819c44d529de3"
+  },
+  "task1-projection-red.txt": {
+    "last_line": "11 failed in 4.42s",
+    "sha256": "6c68a982ebb413ce143ebf05f725d92d575c12bd1a2541245bc0ac1aeb99f588"
+  }
+}
+```

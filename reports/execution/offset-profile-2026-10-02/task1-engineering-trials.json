@@ -1,0 +1,18 @@
+{
+  "task1-numerical-green.txt": {
+    "last_line": "14 passed in 8.73s",
+    "sha256": "1c2508394c210adca15c54acded1d470a1328253b4f9377d5255614e36dd40f4"
+  },
+  "task1-numerical-red.txt": {
+    "last_line": "3 failed, 11 passed in 7.66s",
+    "sha256": "60f97af4debbc5fe43acea3332c5531266c45fc3845ef188de9a8620ee028bf1"
+  },
+  "task1-projection-green.txt": {
+    "last_line": "11 passed in 3.79s",
+    "sha256": "f4038f12fb33245cad1b800b9d913d141422f3785253dbcf70d819c44d529de3"
+  },
+  "task1-projection-red.txt": {
+    "last_line": "11 failed in 4.42s",
+    "sha256": "6c68a982ebb413ce143ebf05f725d92d575c12bd1a2541245bc0ac1aeb99f588"
+  }
+}

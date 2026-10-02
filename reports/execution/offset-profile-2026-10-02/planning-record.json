@@ -1,0 +1,20 @@
+{
+  "implementation": "not_started",
+  "initial_plus_outgoing_calibrations_planned": 6001,
+  "max_invocations": 1,
+  "new_training_updates_planned": 6000,
+  "raw_gate_fraction": 0.1,
+  "reference": "historical width32 capacity6000; not concurrently rerun",
+  "reserve_seconds": 180,
+  "source_hashes": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "91ab94fb05d19321908b621e3d11431ae259809bc65e8ce6334d3d72c3456a0d",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "ba4b422791426592be29b765fd85345781c9a01a77d08af647f0d06240f5b6cd",
+    "reports/capacity-diagnostics.json": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+    "reports/capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "reports/capacity-spike-paper-findings.md": "c12781140c7577ed9975c13da67be408d763fbd2ff3feb3c4ca77680601621e5"
+  },
+  "status": "planned_unexecuted",
+  "total_wall_seconds_including_reserve": 3600,
+  "two_plan_reviews": "pending",
+  "user_authorization": "proceed after controlled offset-handling recommendation"
+}

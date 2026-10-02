@@ -1,0 +1,11 @@
+{
+  "artifacts": {
+    "docs/reviews/2026-10-02-offset-profile-engineering-plan-followup.md": "a211f38091387b21de9aa23487d1158ab1d486da1626c58c8ebc0b6be88ff7bf",
+    "docs/reviews/2026-10-02-offset-profile-scientific-plan-followup.md": "dba63b697df0e0966e20869f5455b5e5f8e9b4b1c41f036977cbf02154daa01f",
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "bfad4a08f3f056313750a1286b9df4136cf08f9b88f0cf489b05b1303c518baf",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "b7c2d5ca7fb0fa86a5fac99e2fd5db5b37301c35b290ac4e5d7a0d55369e8e63"
+  },
+  "implementation": "starting_Task1",
+  "research": "unexecuted",
+  "status": "two_final_plan_reviews_PASS"
+}

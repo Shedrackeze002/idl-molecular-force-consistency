@@ -1,0 +1,14 @@
+{
+  "after": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "bfad4a08f3f056313750a1286b9df4136cf08f9b88f0cf489b05b1303c518baf",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "b7c2d5ca7fb0fa86a5fac99e2fd5db5b37301c35b290ac4e5d7a0d55369e8e63"
+  },
+  "before": {
+    "docs/superpowers/plans/2026-10-02-offset-profile.md": "91ab94fb05d19321908b621e3d11431ae259809bc65e8ce6334d3d72c3456a0d",
+    "docs/superpowers/specs/2026-10-02-offset-profile-design.md": "ba4b422791426592be29b765fd85345781c9a01a77d08af647f0d06240f5b6cd"
+  },
+  "implementation": "unexecuted",
+  "initial_two_reviews": "PASS",
+  "material_clarification": "A",
+  "new_review_followups": "pending"
+}

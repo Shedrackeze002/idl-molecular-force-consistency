@@ -1,0 +1,316 @@
+FFFFFFFFFFF                                                              [100%]
+=================================== FAILURES ===================================
+__________ test_projection_uses_global_mean_and_atomic_bias[0.0-0.0] ___________
+
+shift = 0.0, delta = 0.0
+
+    @pytest.mark.parametrize('shift,delta',[(0.,0.),(4.,-4/21),(-7.,1/3)])
+    def test_projection_uses_global_mean_and_atomic_bias(shift,delta):
+>       m=api();p=params();before=copy.deepcopy(p);errors=np.array([-3.,-1.,1.,3.])+shift
+          ^^^^^
+
+tests/test_offset_profile_core.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d15340>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__ test_projection_uses_global_mean_and_atomic_bias[4.0--0.19047619047619047] __
+
+shift = 4.0, delta = -0.19047619047619047
+
+    @pytest.mark.parametrize('shift,delta',[(0.,0.),(4.,-4/21),(-7.,1/3)])
+    def test_projection_uses_global_mean_and_atomic_bias(shift,delta):
+>       m=api();p=params();before=copy.deepcopy(p);errors=np.array([-3.,-1.,1.,3.])+shift
+          ^^^^^
+
+tests/test_offset_profile_core.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d17a10>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__ test_projection_uses_global_mean_and_atomic_bias[-7.0-0.3333333333333333] ___
+
+shift = -7.0, delta = 0.3333333333333333
+
+    @pytest.mark.parametrize('shift,delta',[(0.,0.),(4.,-4/21),(-7.,1/3)])
+    def test_projection_uses_global_mean_and_atomic_bias(shift,delta):
+>       m=api();p=params();before=copy.deepcopy(p);errors=np.array([-3.,-1.,1.,3.])+shift
+          ^^^^^
+
+tests/test_offset_profile_core.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d14140>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors0-atoms0] ____________
+
+errors = [], atoms = []
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106cd7260>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors1-atoms1] ____________
+
+errors = [1.0, 2.0], atoms = [21, 20]
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d17650>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors2-atoms2] ____________
+
+errors = [nan], atoms = [21]
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d15a60>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors3-atoms3] ____________
+
+errors = [inf], atoms = [21]
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x106d17590>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors4-atoms4] ____________
+
+errors = [1.0], atoms = [0]
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1072a33e0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+___________ test_projection_rejects_invalid_support[errors5-atoms5] ____________
+
+errors = [1.0, 2.0], atoms = [21]
+
+    @pytest.mark.parametrize('errors,atoms', [([],[]),([1.,2.],[21,20]),([np.nan],[21]),([np.inf],[21]),([1.],[0]),([1.,2.],[21])])
+    def test_projection_rejects_invalid_support(errors,atoms):
+>       with pytest.raises(ValueError):api().project_bias(params(),np.array(errors),np.array(atoms))
+                                       ^^^^^
+
+tests/test_offset_profile_core.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1072a0230>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_between_chunk_residuals_not_removed_by_local_centering __________
+
+    def test_between_chunk_residuals_not_removed_by_local_centering():
+        # Full residual variance is5, while averaging each2-element chunk variance gives1.
+>       _,r=api().project_bias(params(),np.array([-3.,-1.,1.,3.]),np.full(4,21))
+            ^^^^^
+
+tests/test_offset_profile_core.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x1072a3530>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______ test_restoration_decodes_saved_state_without_parameter_initializer ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-105/test_restoration_decodes_saved0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1072a25a0>
+
+    def test_restoration_decodes_saved_state_without_parameter_initializer(tmp_path,monkeypatch):
+        from test_coverage import seven_case,close_trees
+        from force_consistency.runs import save_checkpoint
+        from force_consistency import train
+        _,_,_,_,state=seven_case();path=tmp_path/'zero.msgpack';save_checkpoint(path,state,{})
+        def forbidden(*a,**kw):raise AssertionError('initializer called')
+        monkeypatch.setattr(train,'initialize_state',forbidden)
+>       restored=api().restore_state(path,{})
+                 ^^^^^
+
+tests/test_offset_profile_core.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_core.py:11: in api
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10e358bc0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/offset_profile_core.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_core.py::test_projection_uses_global_mean_and_atomic_bias[0.0-0.0]
+FAILED tests/test_offset_profile_core.py::test_projection_uses_global_mean_and_atomic_bias[4.0--0.19047619047619047]
+FAILED tests/test_offset_profile_core.py::test_projection_uses_global_mean_and_atomic_bias[-7.0-0.3333333333333333]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors0-atoms0]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors1-atoms1]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors2-atoms2]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors3-atoms3]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors4-atoms4]
+FAILED tests/test_offset_profile_core.py::test_projection_rejects_invalid_support[errors5-atoms5]
+FAILED tests/test_offset_profile_core.py::test_between_chunk_residuals_not_removed_by_local_centering
+FAILED tests/test_offset_profile_core.py::test_restoration_decodes_saved_state_without_parameter_initializer
+11 failed in 4.42s
