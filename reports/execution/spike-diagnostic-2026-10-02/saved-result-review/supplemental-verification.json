@@ -1,0 +1,28 @@
+{
+  "invocation": {
+    "analysis_script_sha256": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+    "config_sha256": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e",
+    "launcher_sha256": "fe93ff7040ce59738b96038daffca5f135df53fb25b54e0aeac6ca29fd56bc37",
+    "no_retry": true,
+    "ordinal": 1,
+    "prelaunch_gate_sha256": "230cb75ee6fa6faa3e732b7d1f7a597e2661381dcd21b20574a3bd7c13b4afd4",
+    "source_revision": "b013acdae3f4566a8b41d7b417bf43ebe7583c5f",
+    "started_at_utc": "2026-10-02T17:44:04.187500+00:00"
+  },
+  "paper_note_sha256": "b40b305e0f7e91dd779e2e75dbd3584d504072817cdb55ad2a76cc39284aa138",
+  "source_archive_343_members_crc_sha256_passed": true,
+  "source_archive_sha256": "2226d21dab8533330914aee75473a88ac4e9cf0b546141d309c0ec5fb287939a",
+  "status": "PASS",
+  "width32": {
+    "centered_variance_percent_increase": 4.011865902552159,
+    "peak_energy_over_force_norm": 3.330270691702372,
+    "weighted_gradient_energy_growth": 166.77995173809643,
+    "weighted_gradient_force_growth": 38.546889377194354
+  },
+  "width64": {
+    "centered_variance_percent_increase": 30.7117224287881,
+    "peak_energy_over_force_norm": 4.4741114391072765,
+    "weighted_gradient_energy_growth": 1154.1055559578751,
+    "weighted_gradient_force_growth": 247.4509045786981
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "archive_crc": "passed",
+  "archive_members": 247,
+  "archive_sha256": "d814f9d4db37f17c9af0f125b15a4ac986cb6aa9aa633c5191cbda10fc11a47f",
+  "canonical_json_markdown_match": true,
+  "cap_scope": "Saved-only work after numerical closure; separately timed",
+  "elapsed_seconds": 16.928402166988235,
+  "every_member_hash_matches": true,
+  "execution_valid": true,
+  "figures": {
+    "reports/execution/spike-diagnostic-2026-10-02/energy-residual-components.png": "16651339bd4a086752458d59569f22736f7b3f66d9b35fbb37640011898471ed"
+  },
+  "independent_result_review": "pending",
+  "inventory_sha256": "12d298583f792732525388f7107925cef994b721658ee825b3d7257ca7a46441",
+  "new_predictions": 0,
+  "new_random_parameter_initializations": 0,
+  "new_training_updates": 0,
+  "raw_file_count": 247,
+  "raw_files_unchanged": true,
+  "report_sha256": {
+    "reports/capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "reports/capacity-spike-diagnostics.md": "69acf9ccb3dc98032ead99a4ff471ab212c991e3e93ba7d13743ef2180465fbb"
+  },
+  "status": "saved_only_verified"
+}

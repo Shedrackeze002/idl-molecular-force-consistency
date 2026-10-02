@@ -1,0 +1,159 @@
+{
+  "all_archive_bytes_match": true,
+  "analysis_script_sha256": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+  "archive_crc": "passed",
+  "archive_sha256": "d814f9d4db37f17c9af0f125b15a4ac986cb6aa9aa633c5191cbda10fc11a47f",
+  "cases": {
+    "width32-u3600": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.017975785733417605,
+        "energy_mse_eV2": 0.017976363969020193,
+        "force_mse_eV2_per_A2": 0.007776068662395142,
+        "mean_energy_error_squared_eV2": 5.782356025880325e-07,
+        "offset_share": 3.216643830668664e-05,
+        "signed_mean_energy_error_eV": 0.0007604180446228459
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width32-u3700": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.01869695015197242,
+        "energy_mse_eV2": 0.13513795338588072,
+        "force_mse_eV2_per_A2": 0.007767711452637091,
+        "mean_energy_error_squared_eV2": 0.11644100323390834,
+        "offset_share": 0.8616454542671367,
+        "signed_mean_energy_error_eV": -0.34123452819711597
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width32-u3800": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.017298321008028285,
+        "energy_mse_eV2": 0.017303336020938115,
+        "force_mse_eV2_per_A2": 0.007628727085498151,
+        "mean_energy_error_squared_eV2": 5.015012909828294e-06,
+        "offset_share": 0.0002898292504844046,
+        "signed_mean_energy_error_eV": 0.0022394224500590088
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width32-u6000": {
+      "endpoint_reference_checked": true,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.011983163512182258,
+        "energy_mse_eV2": 0.01198320842349682,
+        "force_mse_eV2_per_A2": 0.0065589689424798165,
+        "mean_energy_error_squared_eV2": 4.4911314561212563e-08,
+        "offset_share": 3.747853911407392e-06,
+        "signed_mean_energy_error_eV": 0.00021192289768029449
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width64-u4900": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.009555352235121207,
+        "energy_mse_eV2": 0.009555389496062851,
+        "force_mse_eV2_per_A2": 0.008461949627994764,
+        "mean_energy_error_squared_eV2": 3.726094164589925e-08,
+        "offset_share": 3.899468636129593e-06,
+        "signed_mean_energy_error_eV": -0.0001930309344273587
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width64-u5000": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.012489965490664633,
+        "energy_mse_eV2": 4.882506784430785,
+        "force_mse_eV2_per_A2": 0.010254620466342844,
+        "mean_energy_error_squared_eV2": 4.87001681894012,
+        "offset_share": 0.9974418949031484,
+        "signed_mean_energy_error_eV": 2.206811459762732
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width64-u5100": {
+      "endpoint_reference_checked": false,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.009287563331998028,
+        "energy_mse_eV2": 0.00932241419185751,
+        "force_mse_eV2_per_A2": 0.008399957635575486,
+        "mean_energy_error_squared_eV2": 3.485085985948219e-05,
+        "offset_share": 0.003738394276658725,
+        "signed_mean_energy_error_eV": -0.0059034616844256885
+      },
+      "status": "verified",
+      "work_unknown": false
+    },
+    "width64-u6000": {
+      "endpoint_reference_checked": true,
+      "fitting": {
+        "centered_energy_error_variance_eV2": 0.007948309200339902,
+        "energy_mse_eV2": 0.007948333482229644,
+        "force_mse_eV2_per_A2": 0.00794262358651163,
+        "mean_energy_error_squared_eV2": 2.428188974271815e-08,
+        "offset_share": 3.0549661507039164e-06,
+        "signed_mean_energy_error_eV": -0.00015582647317679416
+      },
+      "status": "verified",
+      "work_unknown": false
+    }
+  },
+  "diagnostic_raw_files": 247,
+  "elapsed_numerical_seconds": 36.18193837499712,
+  "failed_fd_steps": [
+    {
+      "absolute_error": 0.012876678739630165,
+      "case": "width64-u5100",
+      "finite_difference": 120.42695315085588,
+      "objective": "energy",
+      "step": 0.0001,
+      "valid": false
+    },
+    {
+      "absolute_error": 3.1798494105783615e-05,
+      "case": "width64-u6000",
+      "finite_difference": 0.26578665733412166,
+      "objective": "force",
+      "step": 0.0001,
+      "valid": false
+    }
+  ],
+  "fd_scope": "Saved directional derivatives, arithmetic and criteria audited; central objective evaluations not repeated",
+  "new_initializations": 0,
+  "new_model_calls": 0,
+  "new_optimizer_proposals": 0,
+  "new_training_updates": 0,
+  "report_sha256": {
+    "capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "capacity-spike-diagnostics.md": "69acf9ccb3dc98032ead99a4ff471ab212c991e3e93ba7d13743ef2180465fbb"
+  },
+  "source_and_raw_unchanged": true,
+  "source_pins": 347,
+  "source_raw_files": 343,
+  "status": "PASS",
+  "work_totals": {
+    "finite_difference": {
+      "calls": 512,
+      "exposures": 8192
+    },
+    "gradient": {
+      "calls": 256,
+      "exposures": 4096
+    },
+    "prediction": {
+      "calls": 72,
+      "exposures": 1152
+    }
+  }
+}

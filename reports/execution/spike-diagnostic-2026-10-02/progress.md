@@ -21,3 +21,7 @@ Review repair RED4/26passed then GREEN30passed12.37s. Prediction microbatch NPZ/
 Independent implementation finalPASS for exact script8bfa6ff/launcherfe93ff/test3690c2/config73463e hashes, sourcefrozen. Focused87passed34.18s and gate-substitution1passed7.16s. Fullsuite session91477active; prelaunchgate/sourcecheckpoint/research run pending. No modifications to reviewed artifacts aftergate.
 
 Final fullsuite615passed467.29s, focused87passed34.18s, independent implementation and two plan reviewsPASS. All launch artifacts frozen in prelaunch-gate.json; original numerical source unchanged and347pins checked. Research root absent; source checkpoint and once-only launch next.
+
+Eight states completed/verified36.18193837499712s, source intact, no training; saved-only closeout16.928402166988235s,247raw files archived CRC/everyhashverified. Initial packaging temp-symlink failure preserved/repaired outside analysis gate; font-cache warnings retained. Paper metrics include30/32 individualFDstepsPASS and two large-step failures; all16 objective checks pass predeclared at-least-one step rule. Fresh independent saved-result review active.
+
+COMPLETE: independent saved-result reviewPASS, originalprefix independently verified, final-closeout.json source/raw/report/archive identities valid. Paper draft exactreviewedbytes retained, finalnote updated withPASS. Both ObsidiannotesCLIbackup/readbackverified. No additional modelcalls/training/rerun. Final scopedresultcommit next; fullpilot and proposedoffsettrial remain pending.

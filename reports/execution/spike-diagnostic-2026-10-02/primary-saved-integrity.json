@@ -1,0 +1,15 @@
+{
+  "completed_numerical_elapsed_seconds": 36.18193837499712,
+  "diagnostic_raw_file_count": 247,
+  "evidence_prefix_bytes": 45677796,
+  "evidence_prefix_sha256": "c9a671d84712a9203bc25550b5bd95c685dda817d87464c22f501f56ac717584",
+  "new_model_calls": 0,
+  "new_training_updates": 0,
+  "once_only_invocation": true,
+  "original_capacity_evidence_prefix_unchanged": true,
+  "original_capacity_raw_file_count": 343,
+  "passed_suite_reused_without_rerun": "615 passed in467.29s",
+  "source_launch_integrity": true,
+  "source_pin_count": 347,
+  "status": "verified_pending_independent_review"
+}

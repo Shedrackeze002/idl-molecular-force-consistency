@@ -1,0 +1,9 @@
+{
+  "status": "failed_saved_only_packaging",
+  "reason": "macOS temporary root /var is a symlink; immutable artifact writer rejected unresolved temporary report path",
+  "repair": "Resolve temporary directory before calling render; no analysis/model/source edits",
+  "before_helper_sha256": "bab81ba7058fc3d9bfe07eeaa28e76144984987ebb904db6c726be2a7efe6b7a",
+  "after_helper_sha256": "7c116b2566a1a4751b6aa7eea82b812fc193b94f21880afb959855a2f07f988e",
+  "new_model_calls": 0,
+  "no_numerical_retry": true
+}

@@ -19,7 +19,7 @@ def main():
     inventory = {str(p.relative_to(root)): analysis.digest(no_symlinks(p)) for p in root.rglob('*') if p.is_file()}
     result = analysis.render(root, 'reports')
     with tempfile.TemporaryDirectory(prefix='spike-report-check-') as temporary:
-        again = analysis.render(root, temporary)
+        again = analysis.render(root, Path(temporary).resolve())
         assert result == again
         for name in ('capacity-spike-diagnostics.json', 'capacity-spike-diagnostics.md'):
             assert (Path('reports') / name).read_bytes() == (Path(temporary) / name).read_bytes()

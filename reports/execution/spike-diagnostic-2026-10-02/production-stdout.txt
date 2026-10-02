@@ -1,0 +1,9 @@
+{"case": "width32-u3600", "status": "completed", "failure_reason": null}
+{"case": "width32-u3700", "status": "completed", "failure_reason": null}
+{"case": "width32-u3800", "status": "completed", "failure_reason": null}
+{"case": "width32-u6000", "status": "completed", "failure_reason": null}
+{"case": "width64-u4900", "status": "completed", "failure_reason": null}
+{"case": "width64-u5000", "status": "completed", "failure_reason": null}
+{"case": "width64-u5100", "status": "completed", "failure_reason": null}
+{"case": "width64-u6000", "status": "completed", "failure_reason": null}
+{"elapsed_seconds": 36.18193837499712, "execution_valid": true, "full_pilot": "pending", "model_definitions_constructed": 2, "optimizer_proposals": 0, "random_parameter_initializations": 0, "restored_states": 8, "source_integrity": true, "status": "completed", "training_updates": 0, "within_total_cap": true}

@@ -1,0 +1,62 @@
+{
+  "all16objective_fdchecks": "pass_predeclared_any_one_step_rule",
+  "all8cases_endorsed": true,
+  "analysis_source_revision": "b013acdae3f4566a8b41d7b417bf43ebe7583c5f",
+  "archive_crc_and_every_byte_hash": "passed_primary_and_independent",
+  "archive_sha256": "d814f9d4db37f17c9af0f125b15a4ac986cb6aa9aa633c5191cbda10fc11a47f",
+  "canonical_report_sha256": {
+    "reports/capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "reports/capacity-spike-diagnostics.md": "69acf9ccb3dc98032ead99a4ff471ab212c991e3e93ba7d13743ef2180465fbb"
+  },
+  "diagnostic_raw_file_count": 247,
+  "figure_sha256": {
+    "reports/execution/spike-diagnostic-2026-10-02/energy-residual-components.png": "16651339bd4a086752458d59569f22736f7b3f66d9b35fbb37640011898471ed"
+  },
+  "final_verification_model_calls": 0,
+  "focused": "87 passed in34.18s",
+  "full_training_pilot": "pending",
+  "historical_capacity_source_revision": "b45ff2a66923af14a51dce7190b3808810b2a478",
+  "independent_arithmetic_record_sha256": "d706d3c057cc91d05668b5270468e0ccd592a6d6f21ac558822e032de47d61ad",
+  "independent_implementation_review": "PASS",
+  "independent_saved_result_review": "PASS",
+  "negative_fd_steps": 2,
+  "next_offset_handling_trial": "unexecuted_requires_two_plan_reviews",
+  "numerical_elapsed_seconds": 36.18193837499712,
+  "obsidian_readbacks": {
+    "findings": {
+      "after_sha256": "1f5d03b647c92797686e2f536675a3fb3cb3f70ce315dec333a5a508f3ef578a",
+      "before_sha256": "eaebf814c84f25cc159d29710ef7db04c84bb62743bef7b1d1f8aa04ee2fde2c",
+      "status": "verified"
+    },
+    "hub": {
+      "after_sha256": "75f2e2aeee06098c9d1c74a44808eb8cc731b409f61da5e6ecc35206e603efd4",
+      "before_sha256": "971b183813ea5c4599eb26562b9d0521b625858e992131c7236136e9e5e9c5d4",
+      "status": "verified"
+    }
+  },
+  "original_source_count": 343,
+  "paper_findings_sha256": "c12781140c7577ed9975c13da67be408d763fbd2ff3feb3c4ca77680601621e5",
+  "raw_source_analysis_unchanged": true,
+  "research_execution_valid": true,
+  "result_review_sha256": "3a9061a5bd44755341be561b8b955071382d43013f8091d2fd15768f7e8302b8",
+  "reviewed_draft_sha256": "b40b305e0f7e91dd779e2e75dbd3584d504072817cdb55ad2a76cc39284aa138",
+  "source_pin_count": 347,
+  "status": "complete_verified",
+  "suite": "615 passed in467.29s",
+  "two_independent_plan_reviews": "PASS",
+  "user_pdf_changes": "preserved_unstaged",
+  "work_totals": {
+    "finite_difference": {
+      "calls": 512,
+      "exposures": 8192
+    },
+    "gradient": {
+      "calls": 256,
+      "exposures": 4096
+    },
+    "prediction": {
+      "calls": 72,
+      "exposures": 1152
+    }
+  }
+}

@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/close_capacity_spikes.py", line 76, in <module>
+    main()
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/close_capacity_spikes.py", line 22, in main
+    again = analysis.render(root, temporary)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py", line 549, in render
+    write(output / 'capacity-spike-diagnostics.json', result)
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py", line 31, in write
+    atomic(Path(path), value)
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/width_rate_replacement.py", line 25, in atomic
+    path=Path(path);no_symlinks(path);path.parent.mkdir(parents=True,exist_ok=True)
+                    ^^^^^^^^^^^^^^^^^
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/width_rate_replacement_contract.py", line 25, in no_symlinks
+    raise ValueError('Symlinked artifact path')
+ValueError: Symlinked artifact path

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python",
+    "scripts/diagnose_capacity_spikes.py",
+    "--config",
+    "configs/aspirin-capacity-spike.json"
+  ],
+  "pid": 58071,
+  "started_at_utc": "2026-10-02T17:44:04.191322+00:00"
+}

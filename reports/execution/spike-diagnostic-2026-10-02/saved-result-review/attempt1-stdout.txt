@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "new_model_calls": 0,
+  "new_training_updates": 0,
+  "new_initializations": 0,
+  "new_optimizer_proposals": 0,
+  "failed_fd_steps": [
+    {
+      "case": "width64-u5100",
+      "objective": "energy",
+      "absolute_error": 0.012876678739630165,
+      "finite_difference": 120.42695315085588,
+      "step": 0.0001,
+      "valid": false
+    },
+    {
+      "case": "width64-u6000",
+      "objective": "force",
+      "absolute_error": 3.1798494105783615e-05,
+      "finite_difference": 0.26578665733412166,
+      "step": 0.0001,
+      "valid": false
+    }
+  ],
+  "source_raw_files": 343,
+  "source_pins": 347,
+  "diagnostic_raw_files": 247,
+  "archive_crc": "passed",
+  "all_archive_bytes_match": true,
+  "source_and_raw_unchanged": true,
+  "work_totals": {
+    "prediction": {
+      "calls": 72,
+      "exposures": 1152
+    },
+    "gradient": {
+      "calls": 256,
+      "exposures": 4096
+    },
+    "finite_difference": {
+      "calls": 512,
+      "exposures": 8192
+    }
+  },
+  "report_sha256": {
+    "capacity-spike-diagnostics.json": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+    "capacity-spike-diagnostics.md": "69acf9ccb3dc98032ead99a4ff471ab212c991e3e93ba7d13743ef2180465fbb"
+  },
+  "archive_sha256": "d814f9d4db37f17c9af0f125b15a4ac986cb6aa9aa633c5191cbda10fc11a47f",
+  "analysis_script_sha256": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+  "elapsed_numerical_seconds": 36.18193837499712,
+  "fd_scope": "Saved directional derivatives, arithmetic and criteria audited; central objective evaluations not repeated"
+}
