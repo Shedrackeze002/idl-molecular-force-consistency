@@ -21,6 +21,12 @@ with zipfile.ZipFile(archive) as z:
     assert len(z.namelist())==len(set(z.namelist()))==len(before)
     assert set(z.namelist())==set(before)
     for name,sha in before.items():assert hashlib.sha256(z.read(name)).hexdigest()==sha
+import importlib.util
+spec=importlib.util.spec_from_file_location('offset_components',records/'component-comparison.py');component=importlib.util.module_from_spec(spec);spec.loader.exec_module(component)
+comparison=component.build(report)
+component_path=Path('reports/offset-profile-component-comparison.json')
+component_path.write_text(json.dumps(comparison,sort_keys=True,indent=2)+'\n')
+assert comparison==component.build(report)
 figures={}
 if report['execution_valid']:
     os.environ.setdefault('MPLCONFIGDIR',tempfile.mkdtemp(prefix='offset-plot-'))
@@ -45,7 +51,7 @@ record={'status':'saved_only_verified','execution_valid':report['execution_valid
  'raw_file_count':len(before),'raw_files_unchanged':True,'archive_members':len(before),'archive_crc':'passed','every_member_hash_matches':True,
  'archive_sha256':cc.digest(archive),'inventory_sha256':cc.digest(records/'numerical-run-inventory.json'),
  'report_sha256':{str(Path('reports')/name):cc.digest(Path('reports')/name) for name in ('offset-profile-diagnostics.json','offset-profile-diagnostics.md')},
- 'figures':figures,'independent_saved_result_review':'pending','new_training_updates':0,'new_predictions':0,'new_random_parameter_initializations':0,
+ 'component_comparison_sha256':cc.digest(component_path),'figures':figures,'independent_saved_result_review':'pending','new_training_updates':0,'new_predictions':0,'new_random_parameter_initializations':0,
  'elapsed_seconds':time.perf_counter()-start,'cap_scope':'saved-only work separately timed after numerical closure'}
 with (records/'saved-closeout-verification.json').open('x') as f:json.dump(record,f,sort_keys=True,indent=2);f.write('\n')
 print(json.dumps(record,indent=2))

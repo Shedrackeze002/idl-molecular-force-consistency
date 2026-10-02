@@ -704369,3 +704369,43 @@ Four required engineering corrections R1-R4 plus oracle receipt/incoming-state b
   "review_sha256": "0d487ce2ceff1c53a1080597f095acae97a2b64aa26366aebe5805b547d55d70"
 }
 ```
+
+
+## OFFSET-IMPLEMENTATION-FOLLOWUP-001 — independent repaired implementation PASS, final regression gate pending
+
+Followup docs/reviews/2026-10-03-offset-profile-implementation-followup.md SHA256 ed044149282ec71b638bf1b53b7703c51af768db4b97c1575ed5dadbf4828a78 verifies repaired HEAD06d35b7746e4fd9fe492f8393ec3c4a65fba5d44; no remaining material implementation defect. Launch remains conditional on completed fullsuite-v2 and frozen gate.41focusedpass15.57s at same participating bytes. Source/config/spec/plan remain unchanged and once-only trial unexecuted. Review appropriately declines measured learning/mechanism/generalization and full-budget performance claims. Separately timed saved-only component helper will compare mean-squared offset/population variance and same-role groups on the four pre-existing historical selected width32 states3600/3700/3800/6000, using pinned spike evidence and matching ordered supports; no new predictions or trial settings. This supplies the existing secondary-decomposition requirement, not another arm or new primary metric. Fullsuite currently running; all numerical participants remain frozen.
+
+
+## OFFSET-TRIAL-PROSPECTIVE-001 — implementation/final suite cleared, once-only controlled trial next
+
+Both final planreviewsPASS, implementation followupPASS ed044149282ec71b638bf1b53b7703c51af768db4b97c1575ed5dadbf4828a78. Final matching-byte suite656pass488.59s, focused41pass15.57s; no unresolved implementation issue. Source601pins, historical343capacity/247spike inventories and protected evidenceprefix verified unchanged. One shared-zero restored width32 arm, source seed0 ancestry,128fitted+16fittedanchors(128unique),21atoms,micro16,float64CPU.63scores/62matchedpostzero states, derivative/independentAdam oracles1/3001, one discardedwarmup and one freshprocesschild. Raw original baselines remain fixed; no endpoint parent prediction replay beyond reused immutable scored endpoint. Proposed settings and acceptance below are not outcomes; no production root yet at this entry. Complete prospective counts/settings: reports/execution/offset-profile-2026-10-02/prospective-trial.json SHA256 004ffc44b74889d003bb8131af4b6ff4959f1cf0263a15e02c3b7d627b07a2d4. ActualUTC launch recorded by supervisor/root attempts; frozen2026-10-02 identifiers retained though launch is3October.
+
+```json
+{
+  "accepted_initial_plus_outgoing_calibrations": 6001,
+  "accepted_updates": 6000,
+  "construction": "Fitting pooled mean-zero bias imposed analytically; centered-energy/force improvements remain empirical.",
+  "counts_scope": "Controller invocations/structure exposures, not primitive AD forward evaluations; warmup/oracle/child work separate.",
+  "learning_rate": 0.0003,
+  "limits": [
+    "One seed/rate and historical reference.",
+    "All supports fitted, no held-out/generalization evidence.",
+    "Sparse scores, no continuous stability/mechanism claim.",
+    "Fullpilot pending."
+  ],
+  "loss_weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  },
+  "raw_gate": "Strictly below0.1 of original unprojected zero-state energy AND force MSE on BOTH fitted roles.",
+  "reference": "Historical once-completed capacity width32; no concurrent rerun.",
+  "reserve_seconds": 180,
+  "source_zero_checkpoint_sha256": "554a4f233c849c578ea1e3fd09f87d72d05cc23815d8c681b5de48c96d86b8a3",
+  "source_zero_parameter_optimizer_hashes": {
+    "optimizer": "f0a71cbf26a1dec088cf8c5a5338eb72413ab1868544a4c6a0ff5cbdaf210184",
+    "params": "c63c26e38b4c7c65ae0f4658ce3cb31052cede8f940ec394cb40bbf7cf4ed4f4"
+  },
+  "supervisor_seconds": 3660,
+  "wall_seconds_including_reserve": 3600
+}
+```

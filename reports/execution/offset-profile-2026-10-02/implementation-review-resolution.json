@@ -5,8 +5,14 @@
   "R4": "Worker binds supervisor ordinal/config/root/full frozen gate before numerical entry.",
   "additional_bug": "Fresh child existing staging lease reopened safely instead of exclusive mkdir, caught by successful-child check.",
   "child": "Successful fresh private process reproduces14 roleentries without initialization/updates; public canonical root/config guards remain unchanged.",
-  "final_fullsuite": "pending",
-  "followup_review": "pending",
+  "final_fullsuite": {
+    "sha256": "30f91d840ac7fc0dfd2507195d7927296d4a5388fe6758cb843a2b0f943a4e74",
+    "status": "passed",
+    "summary": "656 passed in 488.59s (0:08:08)"
+  },
+  "followup_review": "PASS",
+  "followup_review_path": "docs/reviews/2026-10-03-offset-profile-implementation-followup.md",
+  "followup_review_sha256": "ed044149282ec71b638bf1b53b7703c51af768db4b97c1575ed5dadbf4828a78",
   "logs": {
     "fullsuite-v1.txt": {
       "last_line": "647 passed in 476.45s (0:07:56)",

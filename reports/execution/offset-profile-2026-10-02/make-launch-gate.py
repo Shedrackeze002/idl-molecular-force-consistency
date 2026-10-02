@@ -14,7 +14,7 @@ files=['scripts/offset_profile_core.py','scripts/train_offset_profile.py','scrip
  'tests/test_offset_profile_core.py','tests/test_offset_profile_runs.py','tests/test_offset_profile_report.py','configs/aspirin-offset-profile.json',
  c['source_pins'],c['plan_gate'],'docs/superpowers/specs/2026-10-02-offset-profile-design.md','docs/superpowers/plans/2026-10-02-offset-profile.md',
  'docs/reviews/2026-10-02-offset-profile-scientific-plan-followup.md','docs/reviews/2026-10-02-offset-profile-engineering-plan-followup.md',
- focused,suite,review]
+ focused,suite,review,'docs/reviews/2026-10-03-offset-profile-implementation.md',str(records/'prospective-trial.json'),str(records/'prelaunch-source-preservation.json'),str(records/'close-saved.py'),str(records/'component-comparison.py'),str(records/'make-launch-gate.py')]
 followup=records/'implementation-review-resolution.json'
 if followup.exists():files.append(str(followup))
 gate={'status':'cleared','launch_revision':code['revision'],'code_fingerprint':code['code_fingerprint'],
