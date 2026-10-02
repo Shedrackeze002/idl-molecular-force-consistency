@@ -6,6 +6,7 @@ from pathlib import Path
 import platform
 import secrets
 import struct
+import subprocess
 from importlib.metadata import version
 import msgpack
 
@@ -36,6 +37,10 @@ def verify_pins(pins):
 
 
 def verify_code(code):
+    names = subprocess.check_output(['git', 'ls-files', '-z', '--cached', '--others', '--exclude-standard']).decode().split('\0')
+    participants = {n for n in names if n and (n.startswith('src/') or n in ('pyproject.toml', 'uv.lock')) and Path(n).is_file()}
+    if set(code['code_files']) != participants or set(code['dependencies']) != {'jax', 'jaxlib', 'flax', 'e3x', 'optax', 'numpy', 'ase'}:
+        raise ValueError('Incomplete participant/runtime identity')
     verify_pins(code['code_files'])
     if canonical_hash(code['code_files']) != code['code_fingerprint']:
         raise ValueError('Code fingerprint differs')
@@ -43,6 +48,8 @@ def verify_code(code):
         raise ValueError('Lock identity differs')
     if len(code['revision']) != 40 or any(c not in '0123456789abcdef' for c in code['revision']):
         raise ValueError('Invalid launch revision')
+    commit = subprocess.run(['git', 'cat-file', '-t', code['revision']], capture_output=True, text=True)
+    if commit.returncode or commit.stdout.strip() != 'commit':raise ValueError('Launch revision is not a repository commit')
     if platform.python_version() != code['python'] or any(version(k) != v for k, v in code['dependencies'].items()):
         raise ValueError('Runtime dependency identity differs')
 
@@ -80,6 +87,26 @@ def verify_sources(config):
         raise ValueError('Source support changed')
     return {'root': str(root), 'provenance': p, 'pins': pins,
             'input_files_sha256': {r: digest(root / f'{r}-inputs.npz') for r in ('fitting', 'anchor')}}
+
+
+def audit_provenance(root, config, case, *, source=None):
+    """Bind local labels to the declared case and, in production, pinned source."""
+    root = no_symlinks(root);validate_case(config, case)
+    p = read(root / 'provenance.json');code = read(root / 'code.json')
+    if (read(root / 'config.json') != config or read(root / 'case.json') != case
+        or p['case'] != case or p['config_identity'] != canonical_hash(config)
+        or p['model'] != {**config['model'], 'features': case['features']}
+        or p['code'] != code or p['precision'] != 'float64' or p['backend'] != config['backend']
+        or p['input_files_sha256'] != {r: digest(no_symlinks(root / f'{r}-inputs.npz')) for r in ('fitting', 'anchor')}):
+        raise ValueError('Case provenance differs from declared model/code/inputs')
+    if source is not None:
+        original = source['provenance']
+        if (any(p[k] != original[k] for k in ('normalization', 'inputs', 'original_baselines'))
+            or p['input_files_sha256'] != source['input_files_sha256']
+            or p['source_directory'] != config['source_directory'] or p['source_pins'] != source['pins']
+            or p['source_provenance_sha256'] != digest(Path(source['root']) / 'provenance.json')):
+            raise ValueError('Case provenance differs from authoritative source')
+    return p
 
 
 def _envelope(path, provenance):
@@ -158,7 +185,9 @@ def reserve_probe(root, case, config, code):
     if read(Path(root) / 'case.json') != case or read(Path(root) / 'config.json') != config or read(Path(root) / 'code.json') != code:
         raise ValueError('Probe reservation case/config/code differs')
     record = {'ordinal': 1, 'token': secrets.token_hex(32), 'binding': probe_binding(root)}
-    exclusive(Path(root) / 'probe-attempt.json', record)
+    owner = DirectoryLease(root, expected=record['binding']['directory_identity'])
+    try:owner.json('probe-attempt.json', record, exclusive=True)
+    finally:owner.close()
     return record
 
 
@@ -168,10 +197,13 @@ def claim_probe_entry(root, token, *, production=True):
         validate_contract(c);validate_case(c, case)
         if root != (Path.cwd() / c['run_directory'] / case['name']).absolute():
             raise ValueError('Unreviewed probe root')
-        verify_sources(c);verify_code(read(root / 'code.json'))
+        source = verify_sources(c);verify_code(read(root / 'code.json'))
+        audit_provenance(root, c, case, source=source)
     record = read(root / 'probe-attempt.json')
     if record.get('ordinal') != 1 or record.get('token') != token or record.get('binding') != probe_binding(root):
         raise ValueError('Missing or mismatched probe reservation')
     entry = {'attempt_sha256': digest(root / 'probe-attempt.json'), 'binding': record['binding'], 'entered_at_utc': utc()}
-    exclusive(root / 'probe-entry.json', entry)
+    owner = DirectoryLease(root, expected=record['binding']['directory_identity'])
+    try:owner.json('probe-entry.json', entry, exclusive=True)
+    finally:owner.close()
     return entry

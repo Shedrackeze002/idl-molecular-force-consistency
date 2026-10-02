@@ -1,0 +1,43 @@
+{
+  "status": "Task2 and initial Task3 focused suite 58 passed in40.47s; full-suite and independent implementation review pending",
+  "production": "not_started",
+  "trial_logs": {
+    "task2-test-fixture-error.txt": {
+      "sha256": "7aacb84286217a119c910d20a17c6e95040e0e85b112333e80b120e79a553c83",
+      "tail": "\n        m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)\n        prov=copy.deepcopy(prov)\n        if damage=='model':prov['model']['features']=64\n>       if damage=='normalization':prov['normalization']['energy_scale']+=1\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'energy_scale'\n\ntests/test_capacity_contract.py:171: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]\n1 failed, 40 passed in 29.30s\n"
+    },
+    "task2-boundary-red.txt": {
+      "sha256": "7737d65b3159cfe8a0d7cf9a46837909863dddbc8a24d819d614bf46787761e2",
+      "tail": "ocal_provenance_rejects_authoritative_source_drift[inputs]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[baseline]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[source]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[code]\nFAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[exit]\nFAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[timeout]\n8 failed, 33 deselected in 1.13s\n"
+    },
+    "task2-contract-green.txt": {
+      "sha256": "bc91d75ce74916f703bc63a92a6af9772c10b1c92035dfae98bfcfc98eda61ca",
+      "tail": "................................                                         [100%]\n32 passed in 1.25s\n"
+    },
+    "task2-test-fixture-error-second.txt": {
+      "sha256": "41ea8f169a23c7a863697b38d7aded9fdd6f27a2b98705c0432eaa54d35ef1c9",
+      "tail": "      m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)\n        prov=copy.deepcopy(prov)\n        if damage=='model':prov['model']['features']=64\n>       if damage=='normalization':prov['normalization']['energy_std_eV']+=1\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'energy_std_eV'\n\ntests/test_capacity_contract.py:171: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]\n1 failed, 40 passed in 30.10s\n"
+    },
+    "task2-red.txt": {
+      "sha256": "02859f85bed04e00bb088d562c2b44e75b38f3e491e619018eb55a0a3c132614",
+      "tail": "s.py::test_fresh_training_matches_independent_multistep_adam_and_real_child\nFAILED tests/test_capacity_runs.py::test_different_width_uses_its_own_fresh_template\nFAILED tests/test_capacity_runs.py::test_unreturned_update_retains_known_computed_and_committed_counts\nFAILED tests/test_capacity_runs.py::test_orphan_checkpoint_does_not_advance_published_receipt\nFAILED tests/test_capacity_runs.py::test_known_child_work_survives_later_source_failure\nFAILED tests/test_capacity_runs.py::test_invalid_public_config_is_rejected_before_numerical_import\nFAILED tests/test_capacity_runs.py::test_template_mismatch_cannot_be_silently_restored\n7 failed in 4.46s\n"
+    },
+    "task2-green-attempt.txt": {
+      "sha256": "d2f55e792fc3a84b70d8783eb64e5d73dac04cb35283406ebcf380396ef3b9b0",
+      "tail": ".................................                                        [100%]\n33 passed in 26.92s\n"
+    },
+    "task3-green-attempt.txt": {
+      "sha256": "6f3628d1e8c47feb15ccfb2ce0ccbde46a6e3fb71dde32f834e9232568dfc21d",
+      "tail": "..........................................................               [100%]\n58 passed in 40.47s\n"
+    },
+    "task3-red.txt": {
+      "sha256": "9c1115df5142a248d766f95a803da341cae2bec6a1177e90e1965085475f8741",
+      "tail": "_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-completion.json-<lambda>]\nERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[histories/3.json-<lambda>]\nERROR tests/test_capacity_report.py::test_nonfinite_saved_reference_is_rejected\nERROR tests/test_capacity_report.py::test_late_failure_retains_completed_child_and_receipt_work\nERROR tests/test_capacity_report.py::test_missing_case_is_unknown_not_zero - ...\nERROR tests/test_capacity_report.py::test_closure_byte_regeneration_and_post_marker_overrun\n1 failed, 16 errors in 20.40s\n"
+    }
+  },
+  "fixture_error": "Normalization tamper test initially named two nonexistent fields; both KeyError trials retained. Corrected to actual energy_loss_scale_eV; contract32passed. Numerical40other checks passed in each preceding trial.",
+  "Task2_RED": "Missing runner7failed; added boundary checks8failed. Repaired authoritative provenance guards, anchored exclusive reservations/entries and retained failed/timeout childstdout/stderr, no retry.",
+  "Task3_RED": "Missing report1failed/16fixtureerrors after two tiny width4/6 runs; both engineering runs use7structures/3updates and are not research comparison results.",
+  "Task3_GREEN": "58focused tests cover real independent Adam/fresh subprocess restore, wrong labels/childreceipts/oracles/workcounts/history/nonfinite predictions, exact saved metric reconstruction, raw gates, different initial shapes, partialknownchildwork, canonical regeneration and marker overrun.",
+  "source_pins": 20
+}

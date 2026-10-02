@@ -1,0 +1,228 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[model] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro0')
+damage = 'model'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro1')
+damage = 'normalization'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[inputs] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro2')
+damage = 'inputs'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[baseline] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro3')
+damage = 'baseline'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[source] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro4')
+damage = 'source'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[code] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_self_consistent_local_pro5')
+damage = 'code'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+>       m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+                                              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'force_consistency.capacity_contract' has no attribute 'audit_provenance'
+
+tests/test_capacity_contract.py:168: AttributeError
+_________ test_failed_child_retains_stdout_stderr_without_retry[exit] __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x110062f30>
+failure = 'exit'
+
+    @pytest.mark.parametrize('failure',['exit','timeout'])
+    def test_failed_child_retains_stdout_stderr_without_retry(tmp_path,monkeypatch,failure):
+        r=runner();root=tmp_path/'child';root.mkdir();calls=[]
+        def run(*a,**k):
+            calls.append(a)
+            if failure=='exit':raise subprocess.CalledProcessError(2,a[0],output=b'child-started',stderr=b'child-failed')
+            raise subprocess.TimeoutExpired(a[0],1,output=b'child-started',stderr=b'child-failed')
+        monkeypatch.setattr(subprocess,'run',run)
+        with pytest.raises((subprocess.CalledProcessError,subprocess.TimeoutExpired)):r._launch_probe(root,1,'token')
+        assert len(calls)==1
+>       assert (root/'probe-stdout.txt').read_bytes()==b'child-started'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_capacity_runs.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo0/child/probe-stdout.txt')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo0/child/probe-stdout.txt'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+________ test_failed_child_retains_stdout_stderr_without_retry[timeout] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x110bfd2e0>
+failure = 'timeout'
+
+    @pytest.mark.parametrize('failure',['exit','timeout'])
+    def test_failed_child_retains_stdout_stderr_without_retry(tmp_path,monkeypatch,failure):
+        r=runner();root=tmp_path/'child';root.mkdir();calls=[]
+        def run(*a,**k):
+            calls.append(a)
+            if failure=='exit':raise subprocess.CalledProcessError(2,a[0],output=b'child-started',stderr=b'child-failed')
+            raise subprocess.TimeoutExpired(a[0],1,output=b'child-started',stderr=b'child-failed')
+        monkeypatch.setattr(subprocess,'run',run)
+        with pytest.raises((subprocess.CalledProcessError,subprocess.TimeoutExpired)):r._launch_probe(root,1,'token')
+        assert len(calls)==1
+>       assert (root/'probe-stdout.txt').read_bytes()==b'child-started'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_capacity_runs.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo1/child/probe-stdout.txt')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-72/test_failed_child_retains_stdo1/child/probe-stdout.txt'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[model]
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[inputs]
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[baseline]
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[source]
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[code]
+FAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[exit]
+FAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[timeout]
+8 failed, 33 deselected in 1.13s

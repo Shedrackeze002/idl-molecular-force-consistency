@@ -1,0 +1,63 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+____________ test_closure_byte_regeneration_and_post_marker_overrun ____________
+
+pair = (PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-80/capacity-saved-pa...model': {'max_degree': 1, 'iterations': 1, 'radial_basis': 4, 'cutoff_A': 5.0, ...}, 'seed': 0, 'backend': 'cpu', ...})
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-80/test_closure_byte_regeneration0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10dbe5f40>
+
+    def test_closure_byte_regeneration_and_post_marker_overrun(pair,tmp_path,monkeypatch):
+        root,c=pair;m=report_module();cc=m.cc
+        monkeypatch.setattr(m,'REPORT_JSON',tmp_path/'report.json');monkeypatch.setattr(m,'REPORT_MD',tmp_path/'report.md')
+        r=m._build_report(root,production=False,allow_pending_finalization=True);m.write_report(r)
+        monkeypatch.setattr(m.time,'perf_counter',lambda:10.)
+        owner=cc.DirectoryLease(root)
+        try:m.finalize(c,owner,0,r)
+        finally:owner.close()
+        rebuilt=m._build_report(root,production=False)
+        assert rebuilt==r and m.verify_saved_report(rebuilt)
+        # Editing a later evidence suffix remains allowed; the committed prefix is bound.
+        with Path(c['evidence_log']).open('a') as f:f.write('later research\n')
+        assert m._build_report(root,production=False)['execution_valid']
+        # Marker persistence may cross cap even if substantive writes were within it.
+        values=iter([10.,10.,121.,121.,121.]);monkeypatch.setattr(m.time,'perf_counter',lambda:next(values,121.))
+        owner=cc.DirectoryLease(root)
+        try:m.finalize(c,owner,0,r)
+        finally:owner.close()
+        assert not r['execution_valid'] and r['endpoint_contrasts'] is None
+        assert not cc.read(root/'finalization.json')['within_global_cap']
+>       assert m._build_report(root,production=False)==r
+E       AssertionError: assert {'status': 'p...3, ...}}, ...} == {'status': 'p...3, ...}}, ...}
+E         
+E         Omitting 16 identical items, use -vv to show
+E         Differing items:
+E         {'verification_errors': ['Finalization: Final report/evidence/marker cap closure invalid']} != {'verification_errors': ['Global cap exceeded during finalization']}
+E         Use -v to get more diff
+
+tests/test_capacity_report.py:137: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+{"case": "width4", "update": 0, "energy_fraction": 1.0, "force_fraction": 1.0, "elapsed_seconds": 3.663693750000675}
+{"case": "width4", "update": 1, "energy_fraction": 0.9850861767140496, "force_fraction": 0.9999317602075575, "elapsed_seconds": 5.034797708009137}
+{"case": "width4", "update": 2, "energy_fraction": 0.9704553177574751, "force_fraction": 0.9998633665445152, "elapsed_seconds": 5.041794250006205}
+{"case": "width4", "update": 3, "energy_fraction": 0.9561072862141456, "force_fraction": 0.999794547062291, "elapsed_seconds": 5.345104292005999}
+{"case": "width6", "update": 0, "energy_fraction": 1.0, "force_fraction": 1.0, "elapsed_seconds": 1.5126544169906992}
+{"case": "width6", "update": 1, "energy_fraction": 0.986539203777753, "force_fraction": 0.9996844986633415, "elapsed_seconds": 2.783139291990665}
+{"case": "width6", "update": 2, "energy_fraction": 0.9732987489748921, "force_fraction": 0.9993770415764809, "elapsed_seconds": 2.790423667000141}
+{"case": "width6", "update": 3, "energy_fraction": 0.9602772891195108, "force_fraction": 0.9990774829953766, "elapsed_seconds": 3.1051734999928158}
+_ test_missing_local_summary_retains_controller_returned_computation_and_child_work _
+
+pair = (PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-80/capacity-saved-pa...model': {'max_degree': 1, 'iterations': 1, 'radial_basis': 4, 'cutoff_A': 5.0, ...}, 'seed': 0, 'backend': 'cpu', ...})
+
+    def test_missing_local_summary_retains_controller_returned_computation_and_child_work(pair):
+        root,c=pair;m=report_module();path=root/'width4/summary.json';saved=path.read_bytes();inventory=(root/'raw-artifacts.json').read_bytes()
+        try:
+            path.unlink();m.freeze_inventory(root);r=m._build_report(root,production=False,allow_pending_finalization=True)
+            a=r['cases']['width4'];assert not r['execution_valid']
+>           assert a['updates']==3 and a['attempted_updates']==3 and a['frame_exposures']==21
+E           assert (None == 3)
+
+tests/test_capacity_report.py:174: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_report.py::test_closure_byte_regeneration_and_post_marker_overrun
+FAILED tests/test_capacity_report.py::test_missing_local_summary_retains_controller_returned_computation_and_child_work
+2 failed, 17 deselected in 22.27s

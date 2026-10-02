@@ -1,0 +1,72 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[files] _
+
+damage = 'files'
+
+    @pytest.mark.parametrize('damage',['files','dependencies','revision'])
+    def test_code_guard_rejects_omitted_participants_runtime_or_forged_commit(damage):
+        from force_consistency.runs import code_provenance
+        m=contract();code=code_provenance(Path.cwd())
+        if damage=='files':
+            code['code_files']={'uv.lock':m.digest('uv.lock')};code['code_fingerprint']=m.canonical_hash(code['code_files'])
+        if damage=='dependencies':code['dependencies']={}
+        if damage=='revision':code['revision']='0'*40
+>       with pytest.raises(ValueError):m.verify_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_capacity_contract.py:187: Failed
+_ test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[dependencies] _
+
+damage = 'dependencies'
+
+    @pytest.mark.parametrize('damage',['files','dependencies','revision'])
+    def test_code_guard_rejects_omitted_participants_runtime_or_forged_commit(damage):
+        from force_consistency.runs import code_provenance
+        m=contract();code=code_provenance(Path.cwd())
+        if damage=='files':
+            code['code_files']={'uv.lock':m.digest('uv.lock')};code['code_fingerprint']=m.canonical_hash(code['code_files'])
+        if damage=='dependencies':code['dependencies']={}
+        if damage=='revision':code['revision']='0'*40
+>       with pytest.raises(ValueError):m.verify_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_capacity_contract.py:187: Failed
+_ test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[revision] _
+
+damage = 'revision'
+
+    @pytest.mark.parametrize('damage',['files','dependencies','revision'])
+    def test_code_guard_rejects_omitted_participants_runtime_or_forged_commit(damage):
+        from force_consistency.runs import code_provenance
+        m=contract();code=code_provenance(Path.cwd())
+        if damage=='files':
+            code['code_files']={'uv.lock':m.digest('uv.lock')};code['code_fingerprint']=m.canonical_hash(code['code_files'])
+        if damage=='dependencies':code['dependencies']={}
+        if damage=='revision':code['revision']='0'*40
+>       with pytest.raises(ValueError):m.verify_code(code)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_capacity_contract.py:187: Failed
+_ test_incomplete_child_phase_preserves_known_template_and_unknown_predictions _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-81/test_incomplete_child_phase_pr0')
+
+    def test_incomplete_child_phase_preserves_known_template_and_unknown_predictions(tmp_path):
+        m=report_module();c={'max_updates':3};path=tmp_path/'child';path.mkdir()
+        m.cc.atomic(path/'probe-phase.json',{'phase':'predictions','status':'started','known_template_initializations':1,'known_template_frames':3})
+        r=m._partial_case(path,c,{'updates':3,'probe_status':'unknown'})
+>       assert r['child_phase']['phase']=='predictions'
+               ^^^^^^^^^^^^^^^^
+E       KeyError: 'child_phase'
+
+tests/test_capacity_report.py:183: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_contract.py::test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[files]
+FAILED tests/test_capacity_contract.py::test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[dependencies]
+FAILED tests/test_capacity_contract.py::test_code_guard_rejects_omitted_participants_runtime_or_forged_commit[revision]
+FAILED tests/test_capacity_report.py::test_incomplete_child_phase_preserves_known_template_and_unknown_predictions
+4 failed, 51 deselected in 0.45s

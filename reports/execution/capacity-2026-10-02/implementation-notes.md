@@ -1,6 +1,6 @@
 # Capacity implementation notes
 
-Status: design notes only; numerical implementation has not started, both plan reviews pending.
+Current status: Tasks1–3 implementation and64focused checks passed; both plan gates and repaired implementation followup cleared. Full suite running; full-size production unexecuted. Historical design notes follow.
 
 Existing reusable helpers: late_rate._parts (hash-bound ordered arrays), _boundary (full gradient vs accumulated/NumPy Adam; fixed reviewed weights), _commit (immutable snapshots/history + published receipt), _prediction_error (all-frame finite absolute reproduction), verify_code (participating files/lock/runtime), residual_summary; width_rate_runs.validate_state/canonical_state_hashes; width_rate_replacement.serialized_state_metadata (opaque serialized shape/count/hash audit), no_symlinks/claim_root.
 

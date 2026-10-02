@@ -1,0 +1,16 @@
+{
+  "trial": "review incomplete code identity guard",
+  "accepted": true,
+  "record": {
+    "code_files": {
+      "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+    },
+    "code_fingerprint": "a0a15a031bda4a6be1fc52ab51840f1db5586ba799c9c8d5dab7033a3e44335a",
+    "lock_sha256": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f",
+    "revision": "0000000000000000000000000000000000000000",
+    "python": "3.12.13",
+    "dependencies": {}
+  },
+  "jax_imported": false,
+  "numpy_imported": false
+}

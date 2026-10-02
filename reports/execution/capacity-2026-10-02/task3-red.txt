@@ -1,0 +1,762 @@
+EEEEEEEEEEEEEFEEE                                                        [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_saved_pair_metrics_gates_work_and_width_specific_initial_states _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+---------------------------- Captured stdout setup -----------------------------
+{"case": "width4", "update": 0, "energy_fraction": 1.0, "force_fraction": 1.0, "elapsed_seconds": 3.2929779999976745}
+{"case": "width4", "update": 1, "energy_fraction": 0.9850861767140496, "force_fraction": 0.9999317602075575, "elapsed_seconds": 4.548870624988922}
+{"case": "width4", "update": 2, "energy_fraction": 0.9704553177574751, "force_fraction": 0.9998633665445152, "elapsed_seconds": 4.554995041995426}
+{"case": "width4", "update": 3, "energy_fraction": 0.9561072862141456, "force_fraction": 0.999794547062291, "elapsed_seconds": 4.841773374995682}
+{"case": "width6", "update": 0, "energy_fraction": 1.0, "force_fraction": 1.0, "elapsed_seconds": 1.3739813749998575}
+{"case": "width6", "update": 1, "energy_fraction": 0.986539203777753, "force_fraction": 0.9996844986633415, "elapsed_seconds": 2.5259354170120787}
+{"case": "width6", "update": 2, "energy_fraction": 0.9732987489748921, "force_fraction": 0.9993770415764809, "elapsed_seconds": 2.5325566250103293}
+{"case": "width6", "update": 3, "energy_fraction": 0.9602772891195108, "force_fraction": 0.9990774829953766, "elapsed_seconds": 2.8783356670028297}
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[case.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[provenance.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>0] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>1] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>2] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[oracle-3.json-<lambda>0] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[oracle-3.json-<lambda>1] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[checkpoint-verification.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-entry.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-completion.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[histories/3.json-<lambda>] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_________ ERROR at setup of test_nonfinite_saved_reference_is_rejected _________
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+_ ERROR at setup of test_late_failure_retains_completed_child_and_receipt_work _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___________ ERROR at setup of test_missing_case_is_unknown_not_zero ____________
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+___ ERROR at setup of test_closure_byte_regeneration_and_post_marker_overrun ___
+
+tmp_path_factory = TempPathFactory(_given_basetemp=None, _trace=<pluggy._tracing.TagTracerSub object at 0x108dcf260>, _basetemp=PosixPath...ers/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-75'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def pair(tmp_path_factory):
+        from test_capacity_runs import tiny_setup,real_tiny_probe,runner
+        from force_consistency import capacity_contract as cc
+        from force_consistency.runs import code_provenance
+        root=tmp_path_factory.mktemp('capacity-saved-pair');c,case,support=tiny_setup()
+        c.update(cases=[case,{**case,'name':'width6','features':6}],total_wall_seconds=120,
+                 evidence_log=str(root.parent/'evidence.md'),run_directory=str(root))
+        Path(c['evidence_log']).write_text('existing evidence\n')
+        cc.atomic(root/'config.json',c);cc.atomic(root/'code.json',support['code'])
+        results={}
+        for case in c['cases']:
+            out=runner()._run_case(c,case,support,root/case['name'],time.perf_counter()+120,probe_runner=real_tiny_probe)
+            assert out['execution_valid'],out.get('failure_reason');results[case['name']]=out
+        cc.atomic(root/'cases.json',results)
+        cc.atomic(root/'completion.json',{'execution_valid':True,'elapsed_seconds':1,'failure_reason':None,'case_names':list(results)})
+>       m=report_module();m.freeze_inventory(root)
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=================================== FAILURES ===================================
+___________ test_zero_denominator_is_named_and_difference_preserved ____________
+
+    def test_zero_denominator_is_named_and_difference_preserved():
+>       m=report_module();assert m.metric_contrast(0,2)=={'wider_minus_narrower':2,'wider_divided_by_narrower':None,'ratio_unavailable_reason':'narrower denominator is zero'}
+          ^^^^^^^^^^^^^^^
+
+tests/test_capacity_report.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_report.py:13: in report_module
+    def report_module():return importlib.import_module('force_consistency.capacity_report')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1387: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'force_consistency.capacity_report'
+import_ = <function _gcd_import at 0x1022bc0e0>
+
+>   ???
+E   ModuleNotFoundError: No module named 'force_consistency.capacity_report'
+
+<frozen importlib._bootstrap>:1324: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_report.py::test_zero_denominator_is_named_and_difference_preserved
+ERROR tests/test_capacity_report.py::test_saved_pair_metrics_gates_work_and_width_specific_initial_states
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[case.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[provenance.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>0]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>1]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[summary.json-<lambda>2]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[oracle-3.json-<lambda>0]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[oracle-3.json-<lambda>1]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[checkpoint-verification.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-entry.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-completion.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[histories/3.json-<lambda>]
+ERROR tests/test_capacity_report.py::test_nonfinite_saved_reference_is_rejected
+ERROR tests/test_capacity_report.py::test_late_failure_retains_completed_child_and_receipt_work
+ERROR tests/test_capacity_report.py::test_missing_case_is_unknown_not_zero - ...
+ERROR tests/test_capacity_report.py::test_closure_byte_regeneration_and_post_marker_overrun
+1 failed, 16 errors in 20.40s

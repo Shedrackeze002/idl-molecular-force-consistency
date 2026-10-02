@@ -1,0 +1,37 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_controller_failure_blocks_later_case_and_retains_known_first_work ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-78/test_controller_failure_blocks0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bbe88c0>
+
+    def test_controller_failure_blocks_later_case_and_retains_known_first_work(tmp_path,monkeypatch):
+        from test_capacity_runs import tiny_setup
+        from force_consistency import capacity_runs as runs,capacity_contract as cc
+        m=report_module();c,case,support=tiny_setup();root=tmp_path/'once'
+        c.update(cases=[case,{**case,'name':'width6','features':6}],run_directory=str(root),total_wall_seconds=120,
+                 evidence_log=str(tmp_path/'evidence.md'))
+        Path(c['evidence_log']).write_text('prior\n');monkeypatch.setattr(cc,'validate_contract',lambda c:None)
+        monkeypatch.setattr(cc,'verify_sources',lambda c:{'fixture':'no fullsize source'})
+        monkeypatch.setattr(runs,'load_support',lambda c:{**support,'source_facts':{}})
+        calls=[]
+        def fail(c,case,support,path,deadline):
+            calls.append(case['name']);child=support['_root_owner'].child(case['name'],create=True)
+            result={'case':case,'execution_valid':False,'status':'failed','failure_reason':'known failure','updates':2,
+                    'attempted_updates':3,'persisted_updates':1,'frame_exposures':14,'pending_update_unknown':True}
+            try:child.json('summary.json',result)
+            finally:child.close()
+            return result
+        monkeypatch.setattr(runs,'_run_case',fail)
+        monkeypatch.setattr(m,'REPORT_JSON',tmp_path/'report.json');monkeypatch.setattr(m,'REPORT_MD',tmp_path/'report.md')
+        r=m.execute(c)
+>       assert calls==['width4'] and not r['execution_valid']
+E       AssertionError: assert ([] == ['width4']
+E         
+E         Right contains one more item: 'width4'
+E         Use -v to get more diff)
+
+tests/test_capacity_report.py:160: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_report.py::test_controller_failure_blocks_later_case_and_retains_known_first_work
+1 failed, 17 deselected in 4.84s

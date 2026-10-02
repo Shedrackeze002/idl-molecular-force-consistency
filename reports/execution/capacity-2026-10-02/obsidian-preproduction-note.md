@@ -1,0 +1,8 @@
+
+### Capacity lever — implementation and review gates, 2 October 2026
+
+The two independent plan reviews and amended followups passed. A separate implementation review found three material guard/accounting/closure gaps; all were reproduced, repaired and cleared in a saved followup. The focused checks passed64 tests. See `CAPACITY-ENGINEERING-002/003` and `CAPACITY-IMPLEMENTATION-REVIEW-GATE-001` in the repository evidence log for every failed engineering trial and repair. Full-suite details and launch identity are in `reports/execution/capacity-2026-10-02/preproduction-gate.json`.
+
+Next is one fresh32-versus64 comparison: seed0, CPUfloat64, fixed learning rate .0003, unchanged loss weights/normalization/128 fitting structures and16 fitted anchors,6000 committed updates per width. Oracles check actual updates1/3001; independent child initializes its declared fresh template and restores the terminal checkpoint. Exclusive root and child attempt guards prevent retries. The width32/width64/global caps are3000/7200/10800seconds.12000 updates and1536000 fitting exposures are prospective complete-pair counts, not measured results at this note's publication.
+
+Capacity production is queued after the verified local source checkpoint. No capacity training result is claimed in this note. All anchors are fitted;144 role predictions cover128 distinct structures. Width changes initialization shape and optimization geometry; one seed/rate/fitted-support diagnostic cannot establish pure expressivity, generalization, convergence or the main force-consistency hypothesis. Full pilot remains pending. Authoritative current numbers/status are the repository receipts and `reports/capacity-diagnostics.json/md` once produced; later notes will supersede this queued status.

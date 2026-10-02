@@ -541578,3 +541578,180 @@ Saved-only6000..7100 observations compare identical absolute updates in both arm
   "source_pins": "All20still match; numerical config unchanged"
 }
 ```
+
+## CAPACITY-ENGINEERING-002 — fresh-run and saved-only report checks, failures retained
+
+```json
+{
+  "status": "Task2 and initial Task3 focused suite 58 passed in40.47s; full-suite and independent implementation review pending",
+  "production": "not_started",
+  "trial_logs": {
+    "task2-test-fixture-error.txt": {
+      "sha256": "7aacb84286217a119c910d20a17c6e95040e0e85b112333e80b120e79a553c83",
+      "tail": "\n        m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)\n        prov=copy.deepcopy(prov)\n        if damage=='model':prov['model']['features']=64\n>       if damage=='normalization':prov['normalization']['energy_scale']+=1\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'energy_scale'\n\ntests/test_capacity_contract.py:171: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]\n1 failed, 40 passed in 29.30s\n"
+    },
+    "task2-boundary-red.txt": {
+      "sha256": "7737d65b3159cfe8a0d7cf9a46837909863dddbc8a24d819d614bf46787761e2",
+      "tail": "ocal_provenance_rejects_authoritative_source_drift[inputs]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[baseline]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[source]\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[code]\nFAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[exit]\nFAILED tests/test_capacity_runs.py::test_failed_child_retains_stdout_stderr_without_retry[timeout]\n8 failed, 33 deselected in 1.13s\n"
+    },
+    "task2-contract-green.txt": {
+      "sha256": "bc91d75ce74916f703bc63a92a6af9772c10b1c92035dfae98bfcfc98eda61ca",
+      "tail": "................................                                         [100%]\n32 passed in 1.25s\n"
+    },
+    "task2-test-fixture-error-second.txt": {
+      "sha256": "41ea8f169a23c7a863697b38d7aded9fdd6f27a2b98705c0432eaa54d35ef1c9",
+      "tail": "      m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)\n        prov=copy.deepcopy(prov)\n        if damage=='model':prov['model']['features']=64\n>       if damage=='normalization':prov['normalization']['energy_std_eV']+=1\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'energy_std_eV'\n\ntests/test_capacity_contract.py:171: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]\n1 failed, 40 passed in 30.10s\n"
+    },
+    "task2-red.txt": {
+      "sha256": "02859f85bed04e00bb088d562c2b44e75b38f3e491e619018eb55a0a3c132614",
+      "tail": "s.py::test_fresh_training_matches_independent_multistep_adam_and_real_child\nFAILED tests/test_capacity_runs.py::test_different_width_uses_its_own_fresh_template\nFAILED tests/test_capacity_runs.py::test_unreturned_update_retains_known_computed_and_committed_counts\nFAILED tests/test_capacity_runs.py::test_orphan_checkpoint_does_not_advance_published_receipt\nFAILED tests/test_capacity_runs.py::test_known_child_work_survives_later_source_failure\nFAILED tests/test_capacity_runs.py::test_invalid_public_config_is_rejected_before_numerical_import\nFAILED tests/test_capacity_runs.py::test_template_mismatch_cannot_be_silently_restored\n7 failed in 4.46s\n"
+    },
+    "task2-green-attempt.txt": {
+      "sha256": "d2f55e792fc3a84b70d8783eb64e5d73dac04cb35283406ebcf380396ef3b9b0",
+      "tail": ".................................                                        [100%]\n33 passed in 26.92s\n"
+    },
+    "task3-green-attempt.txt": {
+      "sha256": "6f3628d1e8c47feb15ccfb2ce0ccbde46a6e3fb71dde32f834e9232568dfc21d",
+      "tail": "..........................................................               [100%]\n58 passed in 40.47s\n"
+    },
+    "task3-red.txt": {
+      "sha256": "9c1115df5142a248d766f95a803da341cae2bec6a1177e90e1965085475f8741",
+      "tail": "_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[probe-completion.json-<lambda>]\nERROR tests/test_capacity_report.py::test_case_tampering_removes_complete_contrasts_even_if_inventory_is_rehashed[histories/3.json-<lambda>]\nERROR tests/test_capacity_report.py::test_nonfinite_saved_reference_is_rejected\nERROR tests/test_capacity_report.py::test_late_failure_retains_completed_child_and_receipt_work\nERROR tests/test_capacity_report.py::test_missing_case_is_unknown_not_zero - ...\nERROR tests/test_capacity_report.py::test_closure_byte_regeneration_and_post_marker_overrun\n1 failed, 16 errors in 20.40s\n"
+    }
+  },
+  "fixture_error": "Normalization tamper test initially named two nonexistent fields; both KeyError trials retained. Corrected to actual energy_loss_scale_eV; contract32passed. Numerical40other checks passed in each preceding trial.",
+  "Task2_RED": "Missing runner7failed; added boundary checks8failed. Repaired authoritative provenance guards, anchored exclusive reservations/entries and retained failed/timeout childstdout/stderr, no retry.",
+  "Task3_RED": "Missing report1failed/16fixtureerrors after two tiny width4/6 runs; both engineering runs use7structures/3updates and are not research comparison results.",
+  "Task3_GREEN": "58focused tests cover real independent Adam/fresh subprocess restore, wrong labels/childreceipts/oracles/workcounts/history/nonfinite predictions, exact saved metric reconstruction, raw gates, different initial shapes, partialknownchildwork, canonical regeneration and marker overrun.",
+  "source_pins": 20
+}
+```
+
+## CAPACITY-ENGINEERING-003 — independent implementation findings and reproduced repairs
+
+```json
+{
+  "status": "repairs focused verified64passed48.40s; fresh review followup and full suite pending",
+  "production": "not_started",
+  "material_findings": {
+    "CAPACITY-IMPL-P2-001": "Canonical global-cap error now regenerates exact saved invalid JSON/MD; RED assertion reproduced failure.",
+    "CAPACITY-IMPL-P2-002": "Complete controller/local records must agree. Partial report preserves controller-returned counts and reported child work when local summary unavailable; independent receipt counts separate.",
+    "CAPACITY-IMPL-P2-003": "Require full current participant-file set, exact7runtime dependency keys and genuine repository commit before numerical child work; reviewer pure self-consistent omission trial accepted invalid metadata, then RED3 retained."
+  },
+  "advisory": "Incomplete child phase retained with reported successful template initialization and unknown predictions; RED1 then focusedGREEN.",
+  "additional_trial": "Engineering controller test RED1: snapshot source inferred from root.parents[1] fails outside production layout; captured repositoryCWD repair, GREEN1. First returned failure blocks wider run and exclusive root prevents retry.",
+  "review_inspection_trials": "Reviewer preserved truncated source/temporary inventory reads and macOS protected-subdirectory errors; no numerical claim inferred and no cleanup. See initial review.",
+  "artifacts": {
+    "docs/reviews/2026-10-02-capacity-implementation-review.md": "5201d7d825896d0b0a6b2374386303c81f9bd5597959b3645a0fcf47faf77415",
+    "reports/execution/capacity-2026-10-02/implementation-review-incomplete-code-guard.json": "f57abc5cd6c7fb5fa55ae5f742e3d95befa90879413bffca0efd74603035f31b",
+    "reports/execution/capacity-2026-10-02/task3-controller-red.txt": "834612e83c227f02b2938fa086c80daa316de6f96039b8b8d4a0281dd4a53e20",
+    "reports/execution/capacity-2026-10-02/task3-controller-green.txt": "3e3a772a726185c55627c63e29c1e2349055a2b61fa3fa8c4edbb6df3716f784",
+    "reports/execution/capacity-2026-10-02/task3-review-repair-red.txt": "56b069e8f417ef74bcc98137bff3b45d357a0becce289d62b15d3e7d1215b665",
+    "reports/execution/capacity-2026-10-02/task3-green-final.txt": "19d4596e8002dc6fdcfafd1835e18250b879f35030f034dd831057a5a0d6bd2f",
+    "reports/execution/capacity-2026-10-02/task3-green-attempt.txt": "6f3628d1e8c47feb15ccfb2ce0ccbde46a6e3fb71dde32f834e9232568dfc21d",
+    "reports/execution/capacity-2026-10-02/task3-red.txt": "9c1115df5142a248d766f95a803da341cae2bec6a1177e90e1965085475f8741",
+    "reports/execution/capacity-2026-10-02/task3-code-phase-red.txt": "52b56be2300fb6ab2cfbddbfd1eb830e0666c4f4913885655b259e13996d590f"
+  },
+  "old_numerical_sources": "unchanged"
+}
+```
+
+## CAPACITY-IMPLEMENTATION-REVIEW-GATE-001 — repaired implementation independently cleared
+
+```json
+{
+  "status": "independent_implementation_followup_PASS; full-suite_pending",
+  "review_sha256": "4af78679ce49a6292823e95c2c9f4795d8b94f6fdb9dfe59bf8c6bbd411e2487",
+  "verification_sha256": "0c0332ea39dbdb36677a44d3f015f3b29a6c715f95371c6cf49c45e6b6647397",
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "source_pins_count": 20,
+  "production": "not_started",
+  "next": "full regression gate, exact source checkpoint, once-only launch"
+}
+```
+
+## CAPACITY-FULL-SUITE-GATE-001 — 585 regression tests and exact reviewed launch identities cleared
+
+```json
+{
+  "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+  "config_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "launcher_sha256": "5fa3fd7865a157599ce86b70aab4647c6cb2863d92cbf06db21fc0a118d1df0f",
+  "numerical_protocol": "unchanged after two reviewed followups",
+  "production": "queued_unexecuted",
+  "source_pins_count": 20,
+  "status": "cleared",
+  "suite": {
+    "code": {
+      "code_files": {
+        "pyproject.toml": "ae5595d50d97ac81e28ccdbebd42c37f4918f3d8785fb62fca18b6d04cf321ab",
+        "src/force_consistency/__init__.py": "99faee9d92bcfe69daf3ed6e2577b1fcc894914d3b85d5e7228c5c03ee16b00b",
+        "src/force_consistency/capacity_contract.py": "b98fc5e584d7bbe1e2b14723e6456b1f52091fe59cc7978e0ffe065e4ecc23ef",
+        "src/force_consistency/capacity_report.py": "fa81adc7fcde9280fa9cb64e4adefb2e040b8e8e95d881ab97f218a351aae27a",
+        "src/force_consistency/capacity_runs.py": "e336840e110c12b005ccde6630b68c42a49ffe25191970a1dcd404a3536ab70c",
+        "src/force_consistency/cli.py": "be8ee478e325d0ea088b12488dcda6c3973e495c35c9f8fa2aff7f50bc37e342",
+        "src/force_consistency/convergence_runs.py": "b2eae05a8ca69253c140e6f905ad4fefe966f8e95bb0928767f4fd44e819751b",
+        "src/force_consistency/coverage.py": "13ef795d66c20c7a839555608ac9556d4b68a163fa358cfedf6329d44dfd5cd4",
+        "src/force_consistency/coverage_matrix.py": "b54d25565336a2273a2d7816daadebcc8eb6f79092837506456765a280ce3c5a",
+        "src/force_consistency/coverage_runs.py": "9c6dbeadac9b094ab088f49419c0f7c01c7e6c600a54326e6f7c455f3f391997",
+        "src/force_consistency/data/__init__.py": "07edae732e1f38f356369ee977ee9fbb2e22b6103e58bf74c5004ba83b7cd93c",
+        "src/force_consistency/data/audit.py": "0b8d41c8149b9dedfcdfbe7fa129fcf1723244f4ffd98f44611cd9664e912ab8",
+        "src/force_consistency/data/geometry.py": "81a592b9379c81471a59f8147ded74cda3b05e28628cf783b486e925c205edf1",
+        "src/force_consistency/data/matching.py": "1de0f37c4f9be98cf688aa896a31562603d1d42cc9af7db59d92f115d878bd53",
+        "src/force_consistency/data/prepare.py": "3280b11a42fe178c7d3ddce877d5a2ae482e4c3424ee30071c8b99b4778c8e74",
+        "src/force_consistency/data/source.py": "bc7b7aac2945cee6bfc746935052f78437414802fd85ffc201b728925afa7229",
+        "src/force_consistency/data/splits.py": "b9cc69d86cfb1876215117a873e442b2e7de2e76019c151b581c04bff6a69f80",
+        "src/force_consistency/data/types.py": "cd2774e75c0611ddb2c6c14bd5f9ac6c4afbd9e60b5d4ccbe602cf703e44b4f6",
+        "src/force_consistency/data/units.py": "1ea1983ba9eed7846451bca2e552381b060eacae9346a1c8f3fdb24f8b67d29d",
+        "src/force_consistency/data/xyz.py": "8bb2dbdda93759bce3fc6ea66c9dec63a0d1d8ff07f88fc0b233e29641db94ed",
+        "src/force_consistency/diagnostics.py": "a70d3b2bc9b2cc615093288af121e3f7af67c02907d2dfa69caf8f0df3101df3",
+        "src/force_consistency/gradient_diagnostics.py": "e3324b57a98899eb8038a64cd0ad6874932df31874d1d2de7217960b7c55ccd4",
+        "src/force_consistency/gradient_runs.py": "6adee300674f3301304007c1f58645200dcd1eaa20e79605e6f041e1119c2c96",
+        "src/force_consistency/late_rate.py": "bdcb516013a018a95171c1e81626e4983633bc8a88d397b6c5a335773f7741a3",
+        "src/force_consistency/loss_balance.py": "0ff64dcbad7a44f93b362d43d82336d500780cb41f893df27e7539b2f616dfbd",
+        "src/force_consistency/loss_balance_runs.py": "e11e31a997c0815f444747855a9590fea7563d812fa75c591e32cc81e05397a4",
+        "src/force_consistency/metrics.py": "901e93774e5d075303180abd58540f45889e1e9768d10b81a99e3c040a0784d5",
+        "src/force_consistency/models/__init__.py": "7509bed2e10c99f6e1053a1d1a77084b1a77cd31735afc85d04814618e60787e",
+        "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+        "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+        "src/force_consistency/optimizer_diagnostics.py": "476bd921d1ed687220efca54c83652c1dafb5757f259d008f6233a5dc537f8ee",
+        "src/force_consistency/optimizer_runs.py": "d5b701c51c2c17a040136f281477d8d2a775c99fd56793d212af561590f170ec",
+        "src/force_consistency/representation.py": "e8d7d777f3b44fd774164a164f60970095b9441f489945979f85e70e86e8ff7d",
+        "src/force_consistency/runs.py": "aebd78ced104d35ff11a125e85e20a3aa2c67792a131a09f0d343893a3694d6e",
+        "src/force_consistency/train.py": "682a3b384dd6137a9da820c469e0847a54d772e08cb1ac9d6fa9cba5c239d433",
+        "src/force_consistency/width_rate_contract.py": "3dd435c39af69507ccd3e279631b28d59d39f64b9d7af3bb116084a39e5997bd",
+        "src/force_consistency/width_rate_recovery.py": "bb8f8f870e7956302c37aaa997e9f4a2f0b2dad8b842f21419f0923cafae55d7",
+        "src/force_consistency/width_rate_recovery_contract.py": "61fdd11e71b8ca2c43e88aa35052a422d29e22867fe3b683dce8d002460c24d7",
+        "src/force_consistency/width_rate_replacement.py": "1ba6486808718e99abc853ce5ae0051c692c591aff5e3a4fcfd82b6abb30769b",
+        "src/force_consistency/width_rate_replacement_contract.py": "d060f420c6b7432a213afacc44d858ae164932930bf6c350a76c432ae5b4df81",
+        "src/force_consistency/width_rate_runs.py": "89bc461c6cc9308cfdca1dd9315510bda24fc2a3ac0f9bbdd5d728d65aef6295",
+        "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+      },
+      "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+      "dependencies": {
+        "ase": "3.29.0",
+        "e3x": "1.0.2",
+        "flax": "0.12.6",
+        "jax": "0.9.2",
+        "jaxlib": "0.9.2",
+        "numpy": "2.5.3",
+        "optax": "0.2.8"
+      },
+      "lock_sha256": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f",
+      "python": "3.12.13",
+      "revision": "504e3cdc4615c1d090f33ebefdb7195a15824a2c"
+    },
+    "elapsed_seconds": 468.33,
+    "passed": 585,
+    "source_revision_at_test": "504e3cdc4615c1d090f33ebefdb7195a15824a2c"
+  },
+  "user_changes": "proposal.pdf deletion and Group9.pdf remain untouched and excluded",
+  "verification_artifacts": {
+    "docs/reviews/2026-10-02-capacity-engineering-plan-followup.md": "605e597ebb7454844212579016f99de3e581ea6a28f501d1770c1956c75bbf38",
+    "docs/reviews/2026-10-02-capacity-implementation-followup.md": "4af78679ce49a6292823e95c2c9f4795d8b94f6fdb9dfe59bf8c6bbd411e2487",
+    "docs/reviews/2026-10-02-capacity-scientific-plan-followup.md": "c0862eff37571b476fb871d76f3ee69aba2233239233504ba0c5f1156c81beca",
+    "reports/execution/capacity-2026-10-02/full-suite.txt": "2b45c89668138222cc95bcdb9613f727e568497f19176791c171e9c109f4c22d",
+    "reports/execution/capacity-2026-10-02/implementation-review-followup-verification.json": "0c0332ea39dbdb36677a44d3f015f3b29a6c715f95371c6cf49c45e6b6647397"
+  }
+}
+```

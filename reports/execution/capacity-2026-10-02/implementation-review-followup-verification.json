@@ -1,0 +1,23 @@
+{
+  "rejected": true,
+  "reason": "Incomplete participant/runtime identity",
+  "configuration_sha256": "655cfd44c0eeacd2e2cb62210b2a78eb5562a417dc01e09a707dfba931f6e960",
+  "source_pins_sha256": "9611a194fc9c30906f6b9e6a4b66eb4590d279b0799b8299ca0133dc7b0e6fd7",
+  "source_pin_count": 20,
+  "files_sha256": {
+    "src/force_consistency/capacity_contract.py": "b98fc5e584d7bbe1e2b14723e6456b1f52091fe59cc7978e0ffe065e4ecc23ef",
+    "src/force_consistency/capacity_runs.py": "e336840e110c12b005ccde6630b68c42a49ffe25191970a1dcd404a3536ab70c",
+    "src/force_consistency/capacity_report.py": "fa81adc7fcde9280fa9cb64e4adefb2e040b8e8e95d881ab97f218a351aae27a",
+    "scripts/run_capacity.py": "5fa3fd7865a157599ce86b70aab4647c6cb2863d92cbf06db21fc0a118d1df0f",
+    "tests/test_capacity_contract.py": "9d6a993fe174f198643f34ff5a8c375208d9605c5708461ac036d3d8af89ad35",
+    "tests/test_capacity_runs.py": "442f4865711595c052a311d260e9a63985a649cdb542570f05bf6f054579c357",
+    "tests/test_capacity_report.py": "c6cf7dab2a9fb0b5925e0903243c5b62266eb1d903e053bb47c3eaa5603013d5",
+    "reports/execution/capacity-2026-10-02/task3-review-repair-red.txt": "56b069e8f417ef74bcc98137bff3b45d357a0becce289d62b15d3e7d1215b665",
+    "reports/execution/capacity-2026-10-02/task3-code-phase-red.txt": "52b56be2300fb6ab2cfbddbfd1eb830e0666c4f4913885655b259e13996d590f",
+    "reports/execution/capacity-2026-10-02/task3-green-final.txt": "19d4596e8002dc6fdcfafd1835e18250b879f35030f034dd831057a5a0d6bd2f",
+    "reports/execution/capacity-2026-10-02/task3-controller-red.txt": "834612e83c227f02b2938fa086c80daa316de6f96039b8b8d4a0281dd4a53e20",
+    "reports/execution/capacity-2026-10-02/task3-controller-green.txt": "3e3a772a726185c55627c63e29c1e2349055a2b61fa3fa8c4edbb6df3716f784"
+  },
+  "jax_imported": false,
+  "numpy_imported": false
+}

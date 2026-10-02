@@ -1,0 +1,24 @@
+{
+  "status": "repairs focused verified64passed48.40s; fresh review followup and full suite pending",
+  "production": "not_started",
+  "material_findings": {
+    "CAPACITY-IMPL-P2-001": "Canonical global-cap error now regenerates exact saved invalid JSON/MD; RED assertion reproduced failure.",
+    "CAPACITY-IMPL-P2-002": "Complete controller/local records must agree. Partial report preserves controller-returned counts and reported child work when local summary unavailable; independent receipt counts separate.",
+    "CAPACITY-IMPL-P2-003": "Require full current participant-file set, exact7runtime dependency keys and genuine repository commit before numerical child work; reviewer pure self-consistent omission trial accepted invalid metadata, then RED3 retained."
+  },
+  "advisory": "Incomplete child phase retained with reported successful template initialization and unknown predictions; RED1 then focusedGREEN.",
+  "additional_trial": "Engineering controller test RED1: snapshot source inferred from root.parents[1] fails outside production layout; captured repositoryCWD repair, GREEN1. First returned failure blocks wider run and exclusive root prevents retry.",
+  "review_inspection_trials": "Reviewer preserved truncated source/temporary inventory reads and macOS protected-subdirectory errors; no numerical claim inferred and no cleanup. See initial review.",
+  "artifacts": {
+    "docs/reviews/2026-10-02-capacity-implementation-review.md": "5201d7d825896d0b0a6b2374386303c81f9bd5597959b3645a0fcf47faf77415",
+    "reports/execution/capacity-2026-10-02/implementation-review-incomplete-code-guard.json": "f57abc5cd6c7fb5fa55ae5f742e3d95befa90879413bffca0efd74603035f31b",
+    "reports/execution/capacity-2026-10-02/task3-controller-red.txt": "834612e83c227f02b2938fa086c80daa316de6f96039b8b8d4a0281dd4a53e20",
+    "reports/execution/capacity-2026-10-02/task3-controller-green.txt": "3e3a772a726185c55627c63e29c1e2349055a2b61fa3fa8c4edbb6df3716f784",
+    "reports/execution/capacity-2026-10-02/task3-review-repair-red.txt": "56b069e8f417ef74bcc98137bff3b45d357a0becce289d62b15d3e7d1215b665",
+    "reports/execution/capacity-2026-10-02/task3-green-final.txt": "19d4596e8002dc6fdcfafd1835e18250b879f35030f034dd831057a5a0d6bd2f",
+    "reports/execution/capacity-2026-10-02/task3-green-attempt.txt": "6f3628d1e8c47feb15ccfb2ce0ccbde46a6e3fb71dde32f834e9232568dfc21d",
+    "reports/execution/capacity-2026-10-02/task3-red.txt": "9c1115df5142a248d766f95a803da341cae2bec6a1177e90e1965085475f8741",
+    "reports/execution/capacity-2026-10-02/task3-code-phase-red.txt": "52b56be2300fb6ab2cfbddbfd1eb830e0666c4f4913885655b259e13996d590f"
+  },
+  "old_numerical_sources": "unchanged"
+}

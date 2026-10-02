@@ -1,0 +1,30 @@
+...........................F.............                                [100%]
+=================================== FAILURES ===================================
+_ test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization] _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-73/test_self_consistent_local_pro1')
+damage = 'normalization'
+
+    @pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+    def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+        from force_consistency.runs import code_provenance
+        m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+        code=code_provenance(Path.cwd())
+        prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+              'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+              'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+              'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+              'code':code,'precision':'float64','backend':'cpu'}
+        for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+        m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+        m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+        prov=copy.deepcopy(prov)
+        if damage=='model':prov['model']['features']=64
+>       if damage=='normalization':prov['normalization']['energy_scale']+=1
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'energy_scale'
+
+tests/test_capacity_contract.py:171: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_contract.py::test_self_consistent_local_provenance_rejects_authoritative_source_drift[normalization]
+1 failed, 40 passed in 29.30s

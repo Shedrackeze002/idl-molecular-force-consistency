@@ -152,3 +152,36 @@ def test_locally_rehashed_invalid_state_is_still_rejected(tmp_path, damage, matc
     path.write_bytes(msgpack.packb(envelope,use_bin_type=True))
     receipt = {**receipt,'update':u,'checkpoint':f'snapshots/{u}.msgpack','checkpoint_sha256':m.digest(path)}
     with pytest.raises(ValueError,match=match):m.audit_state(root,receipt,prov)
+
+@pytest.mark.parametrize('damage',['model','normalization','inputs','baseline','source','code'])
+def test_self_consistent_local_provenance_rejects_authoritative_source_drift(tmp_path,damage):
+    from force_consistency.runs import code_provenance
+    m=contract();c=config();case=c['cases'][0];source=m.verify_sources(c);p=source['provenance'];root=tmp_path/'audit';root.mkdir()
+    code=code_provenance(Path.cwd())
+    prov={'case':case,'config_identity':m.canonical_hash(c),'model':{**c['model'],'features':case['features']},
+          'normalization':p['normalization'],'inputs':p['inputs'],'original_baselines':p['original_baselines'],
+          'input_files_sha256':source['input_files_sha256'],'source_directory':c['source_directory'],
+          'source_provenance_sha256':m.digest(Path(source['root'])/'provenance.json'),'source_pins':source['pins'],
+          'code':code,'precision':'float64','backend':'cpu'}
+    for role in ('fitting','anchor'):shutil.copyfile(Path(source['root'])/f'{role}-inputs.npz',root/f'{role}-inputs.npz')
+    m.atomic(root/'config.json',c);m.atomic(root/'case.json',case);m.atomic(root/'code.json',code)
+    m.atomic(root/'provenance.json',prov);m.audit_provenance(root,c,case,source=source)
+    prov=copy.deepcopy(prov)
+    if damage=='model':prov['model']['features']=64
+    if damage=='normalization':prov['normalization']['energy_loss_scale_eV']+=1
+    if damage=='inputs':prov['inputs']['fitting']['record_ids'].reverse()
+    if damage=='baseline':prov['original_baselines']['fitting']['energy_mse_eV2']*=2
+    if damage=='source':prov['source_provenance_sha256']='0'*64
+    if damage=='code':prov['code']['revision']='0'*40
+    m.atomic(root/'provenance.json',prov)
+    with pytest.raises(ValueError):m.audit_provenance(root,c,case,source=source)
+
+@pytest.mark.parametrize('damage',['files','dependencies','revision'])
+def test_code_guard_rejects_omitted_participants_runtime_or_forged_commit(damage):
+    from force_consistency.runs import code_provenance
+    m=contract();code=code_provenance(Path.cwd())
+    if damage=='files':
+        code['code_files']={'uv.lock':m.digest('uv.lock')};code['code_fingerprint']=m.canonical_hash(code['code_files'])
+    if damage=='dependencies':code['dependencies']={}
+    if damage=='revision':code['revision']='0'*40
+    with pytest.raises(ValueError):m.verify_code(code)
