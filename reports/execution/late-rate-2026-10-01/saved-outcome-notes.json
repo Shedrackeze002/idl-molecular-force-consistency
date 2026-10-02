@@ -1,0 +1,394 @@
+{
+  "arms": {
+    "constant": {
+      "child_maximum_prediction_error": 0.0,
+      "continuation_start_fractions": {
+        "anchor": {
+          "energy_mse_eV2": 0.9663075376027102,
+          "force_mse_eV2_per_A2": 0.8212836276614447
+        },
+        "fitting": {
+          "energy_mse_eV2": 0.8691594978856826,
+          "force_mse_eV2_per_A2": 0.8329620388737595
+        }
+      },
+      "endpoint_group_mse": {
+        "01": {
+          "energy_mse_eV2": 0.004358093307406281,
+          "force_mse_eV2_per_A2": 0.0031017592284433623
+        },
+        "01_2": {
+          "energy_mse_eV2": 0.005236908500813888,
+          "force_mse_eV2_per_A2": 0.004268626348873575
+        },
+        "22": {
+          "energy_mse_eV2": 0.0011247120411298015,
+          "force_mse_eV2_per_A2": 0.0016695518015466563
+        },
+        "23": {
+          "energy_mse_eV2": 0.003869918956212881,
+          "force_mse_eV2_per_A2": 0.006132393015983669
+        },
+        "44": {
+          "energy_mse_eV2": 0.0070210337451639005,
+          "force_mse_eV2_per_A2": 0.001991037587894764
+        },
+        "58_2": {
+          "energy_mse_eV2": 0.012768821926188074,
+          "force_mse_eV2_per_A2": 0.01018531319961151
+        },
+        "77": {
+          "energy_mse_eV2": 0.013668597430951914,
+          "force_mse_eV2_per_A2": 0.00502735028128554
+        },
+        "78_2": {
+          "energy_mse_eV2": 0.005109876423950321,
+          "force_mse_eV2_per_A2": 0.004208291741570792
+        }
+      },
+      "energy_peak_observation": {
+        "energy_fraction": 39.76470431227181,
+        "force_fraction": 0.740930786027122,
+        "update": 8001
+      },
+      "learning_accepted": false,
+      "mean_residual_squared_fraction_of_energy_mse": {
+        "anchor": 0.16633445720639964,
+        "fitting": 0.0004195307340374353
+      },
+      "observed_energy_max_fraction": 39.76470431227181,
+      "observed_energy_min_fraction": 0.17711402941595777,
+      "observed_energy_range_fraction": 39.58759028285585,
+      "original_baseline_fractions": {
+        "anchor": {
+          "energy_mse_eV2": 0.07109641125515798,
+          "force_mse_eV2_per_A2": 0.30608778134465603
+        },
+        "fitting": {
+          "energy_mse_eV2": 0.17711402941595777,
+          "force_mse_eV2_per_A2": 0.3246987513617705
+        }
+      },
+      "residual_decomposition": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0036331922226640143,
+          "energy_mse_eV2": 0.004358093307406281,
+          "force_mse_eV2_per_A2": 0.0031017592284433623,
+          "mean_energy_error_squared_eV2": 0.0007249010847422668,
+          "signed_mean_energy_error_eV": 0.026923987162793456
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.006641957616607508,
+          "energy_mse_eV2": 0.006644745291477133,
+          "force_mse_eV2_per_A2": 0.004573040400651233,
+          "mean_energy_error_squared_eV2": 2.7876748696251935e-06,
+          "signed_mean_energy_error_eV": 0.0016696331542063944
+        }
+      },
+      "sampled_local_energy_maxima": [
+        {
+          "energy_fraction": 0.20890460888384002,
+          "following_energy_fraction": 0.2014231788963567,
+          "following_update": 6300,
+          "force_fraction": 0.3866282040246008,
+          "preceding_energy_fraction": 0.20412034704361187,
+          "preceding_update": 6100,
+          "update": 6200
+        },
+        {
+          "energy_fraction": 0.7726856180438889,
+          "following_energy_fraction": 0.2027712030333964,
+          "following_update": 6500,
+          "force_fraction": 0.386492957596755,
+          "preceding_energy_fraction": 0.2014231788963567,
+          "preceding_update": 6300,
+          "update": 6400
+        },
+        {
+          "energy_fraction": 0.20457378867149156,
+          "following_energy_fraction": 0.19866675271896056,
+          "following_update": 6800,
+          "force_fraction": 0.3757194125006186,
+          "preceding_energy_fraction": 0.20004045789087557,
+          "preceding_update": 6600,
+          "update": 6700
+        },
+        {
+          "energy_fraction": 0.19939656683281495,
+          "following_energy_fraction": 0.19606781963090622,
+          "following_update": 7100,
+          "force_fraction": 0.36940805449889763,
+          "preceding_energy_fraction": 0.19759204038033565,
+          "preceding_update": 6900,
+          "update": 7000
+        },
+        {
+          "energy_fraction": 1.403813001033245,
+          "following_energy_fraction": 0.19574100828637944,
+          "following_update": 7300,
+          "force_fraction": 0.37151693394090296,
+          "preceding_energy_fraction": 0.19606781963090622,
+          "preceding_update": 7100,
+          "update": 7200
+        },
+        {
+          "energy_fraction": 24.1587829977754,
+          "following_energy_fraction": 0.19394621588078603,
+          "following_update": 7700,
+          "force_fraction": 0.5704800413471636,
+          "preceding_energy_fraction": 0.3595446217366042,
+          "preceding_update": 7500,
+          "update": 7600
+        },
+        {
+          "energy_fraction": 36.804261259953016,
+          "following_energy_fraction": 0.19227210300697234,
+          "following_update": 7900,
+          "force_fraction": 0.3975027758573909,
+          "preceding_energy_fraction": 0.19394621588078603,
+          "preceding_update": 7700,
+          "update": 7800
+        },
+        {
+          "energy_fraction": 39.76470431227181,
+          "following_energy_fraction": 0.19232674051128051,
+          "following_update": 8100,
+          "force_fraction": 0.740930786027122,
+          "preceding_energy_fraction": 24.69332465102994,
+          "preceding_update": 8000,
+          "update": 8001
+        },
+        {
+          "energy_fraction": 0.19415019049927323,
+          "following_energy_fraction": 0.18781918975722442,
+          "following_update": 8500,
+          "force_fraction": 0.3476709205604239,
+          "preceding_energy_fraction": 0.18814149609593656,
+          "preceding_update": 8300,
+          "update": 8400
+        },
+        {
+          "energy_fraction": 0.4501144332003128,
+          "following_energy_fraction": 0.18634276972119235,
+          "following_update": 8700,
+          "force_fraction": 0.4992501610337271,
+          "preceding_energy_fraction": 0.18781918975722442,
+          "preceding_update": 8500,
+          "update": 8600
+        },
+        {
+          "energy_fraction": 0.19069065973168237,
+          "following_energy_fraction": 0.18507900765025295,
+          "following_update": 8900,
+          "force_fraction": 0.3412307925531848,
+          "preceding_energy_fraction": 0.18634276972119235,
+          "preceding_update": 8700,
+          "update": 8800
+        },
+        {
+          "energy_fraction": 4.961145660327784,
+          "following_energy_fraction": 0.18558905092682623,
+          "following_update": 9100,
+          "force_fraction": 0.40446287053624236,
+          "preceding_energy_fraction": 0.18507900765025295,
+          "preceding_update": 8900,
+          "update": 9000
+        },
+        {
+          "energy_fraction": 0.24055988061240371,
+          "following_energy_fraction": 0.18102586748812355,
+          "following_update": 9400,
+          "force_fraction": 0.3343026285246359,
+          "preceding_energy_fraction": 0.18267821972498982,
+          "preceding_update": 9200,
+          "update": 9300
+        },
+        {
+          "energy_fraction": 0.18314735393281908,
+          "following_energy_fraction": 0.1798415052407087,
+          "following_update": 9600,
+          "force_fraction": 0.33145411307920464,
+          "preceding_energy_fraction": 0.18102586748812355,
+          "preceding_update": 9400,
+          "update": 9500
+        },
+        {
+          "energy_fraction": 0.18312432175326834,
+          "following_energy_fraction": 0.17880566905296486,
+          "following_update": 9800,
+          "force_fraction": 0.32945722252236703,
+          "preceding_energy_fraction": 0.1798415052407087,
+          "preceding_update": 9600,
+          "update": 9700
+        },
+        {
+          "energy_fraction": 0.26026156661053895,
+          "following_energy_fraction": 0.17711402941595777,
+          "following_update": 10000,
+          "force_fraction": 0.3267858929560239,
+          "preceding_energy_fraction": 0.17880566905296486,
+          "preceding_update": 9800,
+          "update": 9900
+        }
+      ],
+      "scored_observations": 43
+    },
+    "late_decay": {
+      "child_maximum_prediction_error": 0.0,
+      "continuation_start_fractions": {
+        "anchor": {
+          "energy_mse_eV2": 1.0007738904315,
+          "force_mse_eV2_per_A2": 0.8754858167621888
+        },
+        "fitting": {
+          "energy_mse_eV2": 0.9382813501987178,
+          "force_mse_eV2_per_A2": 0.8839084305647641
+        }
+      },
+      "endpoint_group_mse": {
+        "01": {
+          "energy_mse_eV2": 0.004513538210554299,
+          "force_mse_eV2_per_A2": 0.003306465781189072
+        },
+        "01_2": {
+          "energy_mse_eV2": 0.005296623250837877,
+          "force_mse_eV2_per_A2": 0.004604334407568681
+        },
+        "22": {
+          "energy_mse_eV2": 0.0011134059408076883,
+          "force_mse_eV2_per_A2": 0.0017874791937706248
+        },
+        "23": {
+          "energy_mse_eV2": 0.004092179512414674,
+          "force_mse_eV2_per_A2": 0.006578188172069101
+        },
+        "44": {
+          "energy_mse_eV2": 0.007929504440032478,
+          "force_mse_eV2_per_A2": 0.002092053909248402
+        },
+        "58_2": {
+          "energy_mse_eV2": 0.014108316121249378,
+          "force_mse_eV2_per_A2": 0.010648321937097761
+        },
+        "77": {
+          "energy_mse_eV2": 0.014693045822328415,
+          "force_mse_eV2_per_A2": 0.005277144833069179
+        },
+        "78_2": {
+          "energy_mse_eV2": 0.005638854837187615,
+          "force_mse_eV2_per_A2": 0.004527939054911356
+        }
+      },
+      "energy_peak_observation": {
+        "energy_fraction": 0.20377621120957126,
+        "force_fraction": 0.3898121837590496,
+        "update": 6000
+      },
+      "learning_accepted": false,
+      "mean_residual_squared_fraction_of_energy_mse": {
+        "anchor": 0.09947020229370507,
+        "fitting": 2.862163762103408e-07
+      },
+      "observed_energy_max_fraction": 0.20377621120957126,
+      "observed_energy_min_fraction": 0.19119941859209563,
+      "observed_energy_range_fraction": 0.01257679261747563,
+      "original_baseline_fractions": {
+        "anchor": {
+          "energy_mse_eV2": 0.07363228508396019,
+          "force_mse_eV2_per_A2": 0.32628863187556345
+        },
+        "fitting": {
+          "energy_mse_eV2": 0.19119941859209563,
+          "force_mse_eV2_per_A2": 0.3445582755614849
+        }
+      },
+      "residual_decomposition": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.004064575651690095,
+          "energy_mse_eV2": 0.004513538210554299,
+          "force_mse_eV2_per_A2": 0.003306465781189072,
+          "mean_energy_error_squared_eV2": 0.0004489625588642037,
+          "signed_mean_energy_error_eV": 0.02118873660377616
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.00717318146384396,
+          "energy_mse_eV2": 0.007173183516926552,
+          "force_mse_eV2_per_A2": 0.004852740911115523,
+          "mean_energy_error_squared_eV2": 2.0530825921064657e-09,
+          "signed_mean_energy_error_eV": 4.531095443826433e-05
+        }
+      },
+      "sampled_local_energy_maxima": [
+        {
+          "energy_fraction": 0.19757016176415707,
+          "following_energy_fraction": 0.19724199995951477,
+          "following_update": 8001,
+          "force_fraction": 0.36195321244868767,
+          "preceding_energy_fraction": 0.19708019990682163,
+          "preceding_update": 7900,
+          "update": 8000
+        }
+      ],
+      "scored_observations": 43
+    }
+  },
+  "endpoint_contrasts": {
+    "anchor": {
+      "energy_mse_eV2": {
+        "late_decay_divided_by_constant": 1.0356680989101013,
+        "late_decay_minus_constant": 0.00015544490314801755,
+        "ratio_unavailable_reason": null
+      },
+      "force_mse_eV2_per_A2": {
+        "late_decay_divided_by_constant": 1.065996919060814,
+        "late_decay_minus_constant": 0.0002047065527457097,
+        "ratio_unavailable_reason": null
+      }
+    },
+    "fitting": {
+      "energy_mse_eV2": {
+        "late_decay_divided_by_constant": 1.0795272357733892,
+        "late_decay_minus_constant": 0.0005284382254494195,
+        "ratio_unavailable_reason": null
+      },
+      "force_mse_eV2_per_A2": {
+        "late_decay_divided_by_constant": 1.0611629213738103,
+        "late_decay_minus_constant": 0.0002797005104642897,
+        "ratio_unavailable_reason": null
+      }
+    }
+  },
+  "limitations": [
+    "One selected checkpoint, one seed and fitted supports; no held-out or main-hypothesis result.",
+    "The two-stage reduction is one bundled intervention; individual phase effects and optimality are untested.",
+    "Fixed finite budget and sparse scores do not prove convergence or identify every spike/mechanism.",
+    "Raw energy/force gates use immutable update0 baselines; residual decomposition never recenters them.",
+    "Sequential wall times are engineering records, not hardware efficiency rankings."
+  ],
+  "new_model_prediction_frames": 0,
+  "new_optimizer_updates": 0,
+  "report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+  "status": "verified_saved_only_descriptive_analysis",
+  "terminal_9500_to_10000_relative_changes": {
+    "constant": {
+      "anchor": {
+        "energy_mse_eV2": 0.05625573566793722,
+        "force_mse_eV2_per_A2": -0.019543822177352337
+      },
+      "fitting": {
+        "energy_mse_eV2": -0.03294246074160818,
+        "force_mse_eV2_per_A2": -0.020380986238719118
+      }
+    },
+    "late_decay": {
+      "anchor": {
+        "energy_mse_eV2": 0.0006303054382354038,
+        "force_mse_eV2_per_A2": -0.017303968964948013
+      },
+      "fitting": {
+        "energy_mse_eV2": -0.011098599838555623,
+        "force_mse_eV2_per_A2": -0.01675953082185891
+      }
+    }
+  }
+}

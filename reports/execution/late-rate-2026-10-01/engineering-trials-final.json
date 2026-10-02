@@ -1,0 +1,70 @@
+{
+  "scope": "All retained late-rate text outputs; supersedes the earlier engineering-trials.json inventory without removing it. Numerical production stdout and empty stderr are identified separately from software tests.",
+  "trials": {
+    "full-final.txt": {
+      "sha256": "2e231045d6f89484e20e3007e6cc254e05a41b38fbdf44e97cdc4c384ccb0572",
+      "tail": "........................................................................ [ 13%]\n........................................................................ [ 27%]\n........................................................................ [ 41%]\n........................................................................ [ 55%]\n........................................................................ [ 69%]\n........................................................................ [ 82%]\n........................................................................ [ 96%]\n.................                                                        [100%]\n521 passed in 405.21s (0:06:45)\n"
+    },
+    "full-preproduction.txt": {
+      "sha256": "fdab713aee0fd9ae851d5781544f294b74987e2ab8fa3017958f38ebd94847bd",
+      "tail": "........................................................................ [ 14%]\n........................................................................ [ 28%]\n........................................................................ [ 42%]\n........................................................................ [ 56%]\n........................................................................ [ 70%]\n........................................................................ [ 84%]\n........................................................................ [ 99%]\n.....                                                                    [100%]\n509 passed in 375.90s (0:06:15)\n"
+    },
+    "label-final-verification.txt": {
+      "sha256": "63efdb113d2818ca5ad6eaec649b5422b31014bb0dd104d220427f8d89871a96",
+      "tail": "................                                                         [100%]\n16 passed, 29 deselected in 0.45s\n"
+    },
+    "production-stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tail": ""
+    },
+    "production-stdout.txt": {
+      "sha256": "82e44bdd83e3c02e36904210c377b343f3450f8b4a303d8e05b548be8a01cd5f",
+      "tail": "ce_fraction\": 0.3514600103536312, \"elapsed_seconds\": 780.9981462919968}\n{\"arm\": \"late_decay\", \"update\": 9500, \"energy_fraction\": 0.19334528049093785, \"force_fraction\": 0.35043134041206625, \"elapsed_seconds\": 803.1050055840024}\n{\"arm\": \"late_decay\", \"update\": 9600, \"energy_fraction\": 0.19297184593254418, \"force_fraction\": 0.3493566340519421, \"elapsed_seconds\": 825.7145901250042}\n{\"arm\": \"late_decay\", \"update\": 9700, \"energy_fraction\": 0.19257289948631084, \"force_fraction\": 0.34823399336602573, \"elapsed_seconds\": 849.5420354590024}\n{\"arm\": \"late_decay\", \"update\": 9800, \"energy_fraction\": 0.19214619282978282, \"force_fraction\": 0.34706144202803124, \"elapsed_seconds\": 873.6768642919924}\n{\"arm\": \"late_decay\", \"update\": 9900, \"energy_fraction\": 0.19168926346494672, \"force_fraction\": 0.3458369196841991, \"elapsed_seconds\": 896.7428749999963}\n{\"arm\": \"late_decay\", \"update\": 10000, \"energy_fraction\": 0.19119941859209563, \"force_fraction\": 0.3445582755614849, \"elapsed_seconds\": 920.8126330840023}\n"
+    },
+    "review-repair-green-attempt.txt": {
+      "sha256": "675cd443edc5bb6c916fac61db4d088f5d645379f55794218993224b4138e384",
+      "tail": "..........................................                               [100%]\n42 passed in 61.43s (0:01:01)\n"
+    },
+    "review-repair-green-final.txt": {
+      "sha256": "5e72d8d728558cf4a99dd822f9de6b80877878675e82f1956b80ca505fcdd3a7",
+      "tail": ".............................................                            [100%]\n45 passed in 66.44s (0:01:06)\n"
+    },
+    "review-repair-red-complete.txt": {
+      "sha256": "0b3a381b279d8b99368767ac053037cbef7e44074431c11df3a0c6495dd7d0ca",
+      "tail": "=========== short test summary info ============================\nFAILED tests/test_late_rate.py::test_partial_report_preserves_known_computed_and_persisted_work\nFAILED tests/test_late_rate.py::test_saved_constant_arm_cannot_be_used_as_decay_control\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[checkpoint]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[baseline]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[inputs]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[start]\nFAILED tests/test_late_rate.py::test_reporting_overrun_invalidates_persisted_scientific_contrast\nFAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[nan_reference]\nFAILED tests/test_late_rate.py::test_child_rejects_nonfinite_reference_or_wrong_contract_arm[contract_arm]\n9 failed, 33 deselected in 18.64s\n"
+    },
+    "review-repair-red.txt": {
+      "sha256": "108d32e5455700f48bc5adb4bed6b3585f1d0c5b93ae810fadbaca3d901ae8dc",
+      "tail": "^^\nE       AttributeError: module 'force_consistency.late_rate' has no attribute '_finalize'\n\n/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/tests/test_late_rate.py:243: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_late_rate.py::test_partial_report_preserves_known_computed_and_persisted_work\nFAILED tests/test_late_rate.py::test_saved_constant_arm_cannot_be_used_as_decay_control\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[checkpoint]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[baseline]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[inputs]\nFAILED tests/test_late_rate.py::test_saved_parent_binding_rejects_consistent_wrong_ancestry[start]\nFAILED tests/test_late_rate.py::test_reporting_overrun_invalidates_persisted_scientific_contrast\n7 failed, 33 deselected in 10.35s\n"
+    },
+    "task1-green.txt": {
+      "sha256": "ca297b4167ea52f7a0e7e3fb4defd206e74168ef515dfd8fecdf753aeb5acf97",
+      "tail": "...................                                                      [100%]\n19 passed in 0.04s\n"
+    },
+    "task1-red.txt": {
+      "sha256": "9428eddbb018fbee2143e423f869cedcd7d63ec9fa34867481baee6670742692",
+      "tail": "ollecting tests/test_late_rate.py ___________________\nImportError while importing test module '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/tests/test_late_rate.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_late_rate.py:7: in <module>\n    from force_consistency import late_rate as lr\nE   ImportError: cannot import name 'late_rate' from 'force_consistency' (/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/src/force_consistency/__init__.py)\n=========================== short test summary info ============================\nERROR tests/test_late_rate.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.05s\n"
+    },
+    "task2-green-attempt.txt": {
+      "sha256": "b5552cf3915b1e2a4e4c583a528c38817b4db8c125cd24d7f233656fb1b27d61",
+      "tail": ".........................                                                [100%]\n25 passed in 22.90s\n"
+    },
+    "task2-red.txt": {
+      "sha256": "3f04dfdfbf1b63515d8a8027e6da727f4b1ca9223f79ed50ad5798a3dcdf35d2",
+      "tail": "te.py:149: AttributeError\n_________________ test_parent_ancestry_and_predictions_restore _________________\n\n    def test_parent_ancestry_and_predictions_restore():\n>       p=lr.load_parent(config())\n          ^^^^^^^^^^^^^^\nE       AttributeError: module 'force_consistency.late_rate' has no attribute 'load_parent'\n\ntests/test_late_rate.py:158: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_late_rate.py::test_nonzero_moments_survive_rate_boundary_and_real_child[6000]\nFAILED tests/test_late_rate.py::test_nonzero_moments_survive_rate_boundary_and_real_child[7999]\nFAILED tests/test_late_rate.py::test_interrupted_unscored_work_keeps_persisted_receipt\nFAILED tests/test_late_rate.py::test_orphan_checkpoint_does_not_advance_persisted_count\nFAILED tests/test_late_rate.py::test_probe_rejects_prediction_preserving_wrong_count\nFAILED tests/test_late_rate.py::test_parent_ancestry_and_predictions_restore\n6 failed, 19 passed in 5.67s\n"
+    },
+    "task3-green-attempt.txt": {
+      "sha256": "5e0ad804ff31aba865889a07d522b089b13292b5da3d2b39fa5aae85db71305e",
+      "tail": ".................................                                        [100%]\n33 passed in 48.69s\n"
+    },
+    "task3-red.txt": {
+      "sha256": "977c5a26c86572c86edd0109e26e4c85cb14fa53107e83020299f65517b41528",
+      "tail": ".9973047085393837, \"elapsed_seconds\": 0.34294441698875744}\n{\"arm\": \"constant\", \"update\": 6003, \"energy_fraction\": 0.7122766922056242, \"force_fraction\": 0.9970908513897014, \"elapsed_seconds\": 0.34825116700085346}\n=========================== short test summary info ============================\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[interior]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[oracle]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[summary]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[child]\nFAILED tests/test_late_rate.py::test_saved_report_refuses_missing_or_disagreeing_evidence[input]\nFAILED tests/test_late_rate.py::test_endpoint_contrast_orientation_and_zero_denominator\nFAILED tests/test_late_rate.py::test_saved_report_recognizes_valid_execution_with_failed_learning\n7 failed, 26 passed in 48.30s\n"
+    },
+    "work-reconciliation-red.txt": {
+      "sha256": "767688f61686fc3b36197e60a04c0ac476d30408ccaeabe5b8ce176a05341313",
+      "tail": "^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE ValueError\n\ntests/test_late_rate.py:290: Failed\n----------------------------- Captured stdout call -----------------------------\n{\"arm\": \"constant\", \"update\": 6000, \"energy_fraction\": 0.8642591113837509, \"force_fraction\": 0.9993348766504788, \"elapsed_seconds\": 0.027583625007537194}\n{\"arm\": \"constant\", \"update\": 6001, \"energy_fraction\": 0.6960879092207212, \"force_fraction\": 0.9981509805008799, \"elapsed_seconds\": 1.0230312080093427}\n{\"arm\": \"constant\", \"update\": 6002, \"energy_fraction\": 0.6429079779883959, \"force_fraction\": 0.9973047085393837, \"elapsed_seconds\": 1.028802540997276}\n{\"arm\": \"constant\", \"update\": 6003, \"energy_fraction\": 0.7122766922056242, \"force_fraction\": 0.9970908513897014, \"elapsed_seconds\": 1.0342227079963777}\n=========================== short test summary info ============================\nFAILED tests/test_late_rate.py::test_complete_report_reconciles_prediction_work_categories\n1 failed, 2 passed, 42 deselected in 9.04s\n"
+    }
+  },
+  "final_full_suite": "521 passed in 405.21s; followed by label-only correction and 16 targeted checks; source identity and rationale retained in label-only-correction.json. No repeated production or full suite."
+}

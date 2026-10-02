@@ -1,0 +1,32 @@
+{
+  "status": "completed_verified_and_independently_reconciled",
+  "production_source_revision": "f1eb3fc68159b96e74d2f523c43436aa8f65592f",
+  "new_training_after_resume": false,
+  "saved_result_review": {
+    "path": "docs/reviews/2026-10-02-late-rate-saved-result-review.md",
+    "sha256": "bd04e5b130e4b17f48349142aab3bf8a231d1817b7ae43a8b1a72f83a51346a0",
+    "disposition": "No material saved-artifact inconsistency found; own report/hash/archive/endpoint-array checks completed; saved child/oracle receipts verified without rerunning model predictions."
+  },
+  "resumed_verification": {
+    "status": "passed",
+    "scope": "Saved-only verification after interruption and resume; zero model evaluations, optimizer updates and test invocations.",
+    "report_exact_equality": true,
+    "closure_and_evidence_prefix_valid": true,
+    "archive_crc_and_all_member_bytes_match_retained_runs": true,
+    "archive_file_count": 243,
+    "production_outputs_match_completion_hashes": true,
+    "execution_valid": true,
+    "additional_updates": 8000,
+    "additional_frame_exposures": 1024000,
+    "any_learning_accepted": false,
+    "full_pilot": "pending",
+    "report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933"
+  },
+  "negative_result_retained": "Both unchanged joint learning criteria fail. Constant has lower terminal errors on fitting and anchors; reduced rate has no comparable spike at saved observations. Constant peak at8001 and recovery8100 retained, without a mechanism or convergence claim.",
+  "review_interruption_preserved": "saved-review-interruption.json; prior successful progress was not treated as a written final review. Fresh written closeout review now completes that record.",
+  "review_inspection_trials_retained": "Fresh reviewer documents initial history-schema AttributeError and two truncated read-only retrievals, followed by correct focused checks; no numerical retry.",
+  "obsidian": "Both project notes previously backed up and verified through installed CLI; final status and transient spike observations saved, repo is authoritative.",
+  "software_verification": "Repaired full suite521passed405.21s, followed only by label correction and16targeted checks; all RED/GREEN logs retained; no duplicate suite after production.",
+  "full_pilot": "pending",
+  "next_proposed_lever": "Controlled representation capacity, with two independent plan reviews before implementation; capacity cause remains untested. GPU parity before a broader pilot."
+}

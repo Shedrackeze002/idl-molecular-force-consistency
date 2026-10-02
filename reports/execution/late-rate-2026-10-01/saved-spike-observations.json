@@ -1,0 +1,265 @@
+{
+  "status": "saved_observation",
+  "source_report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+  "boundary_observations": {
+    "constant": [
+      {
+        "update": 7900,
+        "rate": 0.001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.19227210300697234,
+            "force_mse_eV2_per_A2": 0.35320000995938605
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.06913938482327739,
+            "force_mse_eV2_per_A2": 0.3330056419481338
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8000,
+        "rate": 0.001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 24.69332465102994,
+            "force_mse_eV2_per_A2": 0.6144920761060898
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 13.923359393316458,
+            "force_mse_eV2_per_A2": 0.7426433689423181
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8001,
+        "rate": 0.001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 39.76470431227181,
+            "force_mse_eV2_per_A2": 0.740930786027122
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 24.50998890816955,
+            "force_mse_eV2_per_A2": 0.8269189917027799
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8100,
+        "rate": 0.001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.19232674051128051,
+            "force_mse_eV2_per_A2": 0.35099059112737957
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.06842499924763928,
+            "force_mse_eV2_per_A2": 0.3303302141770999
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      }
+    ],
+    "late_decay": [
+      {
+        "update": 7900,
+        "rate": 0.0003,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.19708019990682163,
+            "force_mse_eV2_per_A2": 0.3635089436772541
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.0741676790912095,
+            "force_mse_eV2_per_A2": 0.3454414062058625
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8000,
+        "rate": 0.0003,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.19757016176415707,
+            "force_mse_eV2_per_A2": 0.36195321244868767
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.07608347024693601,
+            "force_mse_eV2_per_A2": 0.343228110115484
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8001,
+        "rate": 0.0001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.19724199995951477,
+            "force_mse_eV2_per_A2": 0.36193974260505496
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.07462475659594477,
+            "force_mse_eV2_per_A2": 0.34333958833398703
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      },
+      {
+        "update": 8100,
+        "rate": 0.0001,
+        "fitting_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.1968320479652959,
+            "force_mse_eV2_per_A2": 0.361390902313023
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.003751676427546992,
+            "force_mse_eV2_per_A2": 0.001408394821807022
+          }
+        },
+        "anchor_gate": {
+          "accepted": false,
+          "fraction_remaining": {
+            "energy_mse_eV2": 0.07391133258208192,
+            "force_mse_eV2_per_A2": 0.3429856328090049
+          },
+          "gate_fraction": 0.1,
+          "threshold_mse": {
+            "energy_mse_eV2": 0.00612983585312839,
+            "force_mse_eV2_per_A2": 0.0010133561081129107
+          }
+        }
+      }
+    ]
+  },
+  "constant_8001_oracle": {
+    "accumulated_gradient_frames": 128,
+    "accumulated_proposals": 1,
+    "actual_update_verified": true,
+    "atol": 1e-10,
+    "committed_state_hashes": {
+      "optimizer": "f101e98efc6d5183ed80d7329c9f08ca40b292036f1e3ef0b370972ca144986f",
+      "params": "5e49908937d76000bf7ffb7235246ac577bc3cf6c68ba5513a096ad9c1e57474"
+    },
+    "discarded": true,
+    "fullbatch_gradient_frames": 128,
+    "incoming_state_hashes": {
+      "optimizer": "5b38adfe0fb76964eb32d688494425a821a5460ad32454a1d32d75e116536b57",
+      "params": "2bd7969105162f7f3f7dc8bcc6824bea1574da7a24c0af3a17a77fd8282a8fee"
+    },
+    "incoming_update": 8000,
+    "independent_numpy_proposals": 1,
+    "maximum_absolute_difference": 1.4210854715202004e-14,
+    "outgoing_update": 8001,
+    "proposal_state_hashes": {
+      "optimizer": "f101e98efc6d5183ed80d7329c9f08ca40b292036f1e3ef0b370972ca144986f",
+      "params": "5e49908937d76000bf7ffb7235246ac577bc3cf6c68ba5513a096ad9c1e57474"
+    },
+    "rate": 0.001,
+    "rtol": 1e-08,
+    "status": "passed"
+  },
+  "interpretation": "## Transient spike and recovery\n\nThe constant-rate arm reached fitting energy MSE 1.4918430381672636 eV\u00b2 at update 8,001, or 39.76470431227181 times the original update-0 energy MSE. At 7,900 the fraction was 0.1922721030, at 8,000 it was 24.6933246510, and at 8,100 it recovered to 0.1923267405. Force MSE at 8,001 rose to 0.7409307860 of the original baseline. All eight fitting groups show high energy MSE at this saved observation. The constant schedule did not change at 8,000/8,001. Its verified 8,001 update oracle passed against the accumulated full gradient and independent Adam calculation, with maximum absolute difference 1.4210854715202004e-14; this supports correct execution of this step, not an explanation of the spike.\n\nThe reduced-rate arm's observed energy fraction spans 0.1911994186\u20130.2037762112 across all 43 saved scores, with no comparable sampled spike. Scores are sparse, except the prescribed boundary check; no claim is made about unsampled updates or general stability. Endpoint error and transient behavior must both be reported, because the constant arm still ends with lower energy/force errors. Preserved linear and logarithmic figures show the full peak without hiding the lower-error trajectory.",
+  "new_updates": 0,
+  "new_model_prediction_frames": 0,
+  "notes_md_sha256": "141aa5c64088bad12ce31bed3d8e6397f2f1e32851ca14b016140f9643325065"
+}

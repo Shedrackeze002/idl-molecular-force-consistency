@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "scope": "Saved-only verification after interruption and resume; zero model evaluations, optimizer updates and test invocations.",
+  "report_exact_equality": true,
+  "closure_and_evidence_prefix_valid": true,
+  "archive_crc_and_all_member_bytes_match_retained_runs": true,
+  "archive_file_count": 243,
+  "production_outputs_match_completion_hashes": true,
+  "execution_valid": true,
+  "additional_updates": 8000,
+  "additional_frame_exposures": 1024000,
+  "any_learning_accepted": false,
+  "full_pilot": "pending",
+  "report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933"
+}

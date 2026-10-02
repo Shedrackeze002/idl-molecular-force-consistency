@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python",
+    "-m",
+    "force_consistency.late_rate",
+    "--config",
+    "configs/aspirin-late-rate.json"
+  ],
+  "cwd": "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex",
+  "revision": "f1eb3fc68159b96e74d2f523c43436aa8f65592f",
+  "started_utc": "2026-10-01T20:50:30.871197+00:00",
+  "config_sha256": "690173c68507499204ac67fcb005428014ce69915b58621563d01c9d483008dc",
+  "numerical_source_sha256": "bdcb516013a018a95171c1e81626e4983633bc8a88d397b6c5a335773f7741a3",
+  "maximum_invocations": 1
+}

@@ -1,0 +1,16 @@
+{
+  "additional_frame_exposures": 1024000,
+  "additional_updates": 8000,
+  "archive_bytes_verified": true,
+  "archive_crc_verified": true,
+  "archive_file_count": 243,
+  "archive_sha256": "ae673b8e4a3d99fcaf58d87782f49e03cfb244503cb8179731ae161e44bef52b",
+  "closure_sha256": "fbe62a52b243613a08215e4d75e46d40017d3f28b79d10d686eb048e75e74073",
+  "original_folders_retained": true,
+  "production_invocations": 1,
+  "raw_artifact_count": 241,
+  "report_exactly_reproduced": true,
+  "report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+  "source_pins_unchanged": true,
+  "status": "passed"
+}

@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "fresh_saved_report_exact_equality": true,
+  "closure_and_evidence_prefix_verified_after_supplementary_appends": true,
+  "source_and_tests_unchanged_since_production_commit": true,
+  "production_returncode": 0,
+  "additional_updates": 8000,
+  "additional_frame_exposures": 1024000,
+  "no_pending_work_unknown": true,
+  "both_child_prediction_errors": {
+    "constant": 0.0,
+    "late_decay": 0.0
+  },
+  "joint_gates": {
+    "constant": false,
+    "late_decay": false
+  },
+  "report_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+  "final_suite_output_sha256": "2e231045d6f89484e20e3007e6cc254e05a41b38fbdf44e97cdc4c384ccb0572",
+  "final_suite_result": "521 passed in 405.21s; verified original retained output; no duplicate test invocation",
+  "full_pilot": "pending",
+  "new_model_prediction_frames": 0,
+  "new_optimizer_updates": 0
+}
