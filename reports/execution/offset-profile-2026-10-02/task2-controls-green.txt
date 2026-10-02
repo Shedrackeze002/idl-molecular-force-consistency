@@ -1,0 +1,31 @@
+F....                                                                    [100%]
+=================================== FAILURES ===================================
+__________ test_known_nonfinite_return_is_retained_before_validation ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-110/test_known_nonfinite_return_is0')
+
+    def test_known_nonfinite_return_is_retained_before_validation(tmp_path):
+        m=api();owner=m.cc.DirectoryLease(tmp_path);j=m.Journal(owner,100,10)
+        try:
+>           with pytest.raises(ValueError):j.call('energy',3,lambda:np.array([np.nan]),on_returned=lambda a:owner.write('returned.npy',a.tobytes()))
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_offset_profile_runs.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/train_offset_profile.py:82: in call
+    assert_finite(result)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tree = array([nan])
+
+    def assert_finite(tree):
+        for x in jax.tree.leaves(tree):
+            if hasattr(x,'dtype') or isinstance(x,(int,float)):
+>               if not np.isfinite(np.asarray(x)).all(): raise FloatingPointError('Nonfinite update, state or metric')
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               FloatingPointError: Nonfinite update, state or metric
+
+src/force_consistency/runs.py:29: FloatingPointError
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_runs.py::test_known_nonfinite_return_is_retained_before_validation
+1 failed, 4 passed in 1.00s

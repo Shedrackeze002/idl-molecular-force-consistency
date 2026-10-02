@@ -1,0 +1,145 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+_______ test_saved_tiny_run_recomputes_metrics_without_model_evaluation ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_tiny_run_recomputes0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b80d7f0>
+
+    def test_saved_tiny_run_recomputes_metrics_without_model_evaluation(tmp_path,monkeypatch):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:13: AssertionError
+_________ test_saved_audit_rejects_source_or_receipt_substitution[ids] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_audit_rejects_sourc0')
+mutation = 'ids'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:24: AssertionError
+_____ test_saved_audit_rejects_source_or_receipt_substitution[projection] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_audit_rejects_sourc1')
+mutation = 'projection'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:24: AssertionError
+_______ test_saved_audit_rejects_source_or_receipt_substitution[orphan] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_audit_rejects_sourc2')
+mutation = 'orphan'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:24: AssertionError
+_____ test_saved_audit_rejects_source_or_receipt_substitution[biasmoment] ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_audit_rejects_sourc3')
+mutation = 'biasmoment'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:24: AssertionError
+_________ test_saved_audit_rejects_source_or_receipt_substitution[rng] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_saved_audit_rejects_sourc4')
+mutation = 'rng'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+>       m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'status': 'failed', 'execution_valid': False, 'random_initializations': 0, 'reference': 'historical_width32', ...}
+E       assert False
+
+tests/test_offset_profile_report.py:24: AssertionError
+_______________ test_missing_summary_never_endorses_observations _______________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-112/test_missing_summary_never_end0')
+
+    def test_missing_summary_never_endorses_observations(tmp_path):
+>       report=api().incomplete_report(tmp_path)
+               ^^^^^
+
+tests/test_offset_profile_report.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_report.py:9: in api
+    m=importlib.util.module_from_spec(s);sys.modules[name]=m;s.loader.exec_module(m);return m
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x114493a70>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+______________ test_matching_grid_ignores_unmatched_dense_events _______________
+
+    def test_matching_grid_ignores_unmatched_dense_events():
+>       m=api();a=[{'update':0,'x':9},{'update':1,'x':2},{'update':100,'x':3}]
+          ^^^^^
+
+tests/test_offset_profile_report.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_report.py:9: in api
+    m=importlib.util.module_from_spec(s);sys.modules[name]=m;s.loader.exec_module(m);return m
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x114395250>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/report_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_report.py::test_saved_tiny_run_recomputes_metrics_without_model_evaluation
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[ids]
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[projection]
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[orphan]
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[biasmoment]
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[rng]
+FAILED tests/test_offset_profile_report.py::test_missing_summary_never_endorses_observations
+FAILED tests/test_offset_profile_report.py::test_matching_grid_ignores_unmatched_dense_events
+8 failed in 5.04s

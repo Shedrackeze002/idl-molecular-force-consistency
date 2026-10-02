@@ -1,0 +1,65 @@
+.......................F....                                             [100%]
+=================================== FAILURES ===================================
+_______ test_saved_audit_rejects_source_or_receipt_substitution[orphan] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-114/test_saved_audit_rejects_sourc2')
+mutation = 'orphan'
+
+    @pytest.mark.parametrize('mutation',['ids','projection','orphan','biasmoment','rng'])
+    def test_saved_audit_rejects_source_or_receipt_substitution(tmp_path,mutation):
+        from test_offset_profile_runs import small_run
+        m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        if mutation=='ids':
+            p=root/'projections/training-2.json';r=m.cc.read(p);r['fitting_record_ids']=r['fitting_record_ids'][::-1];m.cc.atomic(p,r)
+        elif mutation=='projection':
+            p=root/'accepted/2.json';r=m.cc.read(p);r['projection']='projections/training-1.json';r['projection_sha256']=m.cc.digest(root/r['projection']);m.cc.atomic(p,r)
+        elif mutation=='orphan':
+            (root/'commits/3.json').unlink()
+        else:
+            from offset_profile_core import restore_state,set_bias
+            from force_consistency.runs import save_checkpoint
+            p=m.cc.read(root/'provenance.json');state=restore_state(root/'snapshots/3.msgpack',p)
+            if mutation=='biasmoment':state['optimizer']=(state['optimizer'][0]._replace(mu=set_bias(state['optimizer'][0].mu,[.1])),state['optimizer'][1])
+            else:state['sampler_rng_json']='{}'
+            save_checkpoint(root/'snapshots/3.msgpack',state,p)
+            # Update superficial hash to ensure the audit independently checks state fields.
+            r=m.cc.read(root/'commit.json');r['checkpoint_sha256']=m.cc.digest(root/'snapshots/3.msgpack');m.cc.atomic(root/'commit.json',r);m.cc.atomic(root/'commits/3.json',r)
+>       with pytest.raises(ValueError):api().audit_saved(root,complete=False,source=source,gate=gate)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_offset_profile_report.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/report_offset_profile.py:71: in audit_saved
+    if receipt!=cc.read(root/'commits'/ (str(receipt['update'])+'.json')):raise ValueError('Orphan/unpublished commit')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/force_consistency/width_rate_contract.py:20: in read
+    def read(path):return json.loads(Path(path).read_text())
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-114/test_saved_audit_rejects_sourc2/run/commits/3.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-114/test_saved_audit_rejects_sourc2/run/commits/3.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.03882199997315183}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 0.09167908297968097}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 0.14437874997383915}
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_report.py::test_saved_audit_rejects_source_or_receipt_substitution[orphan]
+1 failed, 27 passed in 10.88s

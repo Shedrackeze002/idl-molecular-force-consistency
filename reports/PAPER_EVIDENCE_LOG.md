@@ -704254,3 +704254,41 @@ Small realmodel engineering witnesses use3constantatoms, deliberately unequal3/3
   }
 }
 ```
+
+
+## OFFSET-ENGINEERING-TASK2-TASK3-001 — guarded tiny integration and saved-only audit, no research launch
+
+Private seven-example/3atom real-model fixture executes3accepted updates/4accepted calibrations and two independent derivative/Adam oracles; production canonical guard remains128/21atoms/6000updates.32focused tests pass12.06s. Retained RED and failed engineering attempts: first controller GREEN expectedValueError but finite guard correctly raisedFloatingPointError (test corrected); first saved-only audit found fullstate hash ordering mismatch from JAX tree-map sorting, fixed by canonical all-field serialization while preserving original envelope bytes; next audit failure was test expectingValueError for missing immutable commit while FileNotFoundError already failed closed (test expectation broadened). Source checkpoint payload and canonical all-field hashes are separate identities. Child nonzero/missing-completion tests retain outputs and suppress validity. Latest successful partial-work slots are overwritten, but every accepted projection/receipt and scored state is immutable; failed latest outputs remain retained. Source/runtime unchanged. Independent implementation review and fullsuite pending; actual research trial unexecuted.
+
+```json
+{
+  "implementation-focused-v1.txt": {
+    "last_line": "32 passed in 12.06s",
+    "sha256": "da324d6d35d7baee5710b68d566bf66f97ca57966c586d66db04b457d994ed05"
+  },
+  "task2-controls-green.txt": {
+    "last_line": "1 failed, 4 passed in 1.00s",
+    "sha256": "70ed1266382d82bec792bc06a1d0dee4e95fe88d11b5f878a4a6c585d3046b80"
+  },
+  "task2-controls-red.txt": {
+    "last_line": "5 failed in 0.03s",
+    "sha256": "1f7e060de87ba4e0e815b60a3f5b7d9042d4ad0bf774609a6e82fda7aeac40c0"
+  },
+  "task2-integration-check.txt": {
+    "last_line": "20 passed in 10.48s",
+    "sha256": "116df3db1a6be2d36f5a943ae7cfd2ff37c0e87896642d02bf131a2e91d17fe0"
+  },
+  "task3-report-check.txt": {
+    "last_line": "1 failed, 27 passed in 11.64s",
+    "sha256": "39f5599e34833cc1d3cb88a785b619d2cabe7ea5b186ba089de5b3cb674ea430"
+  },
+  "task3-report-green.txt": {
+    "last_line": "1 failed, 27 passed in 10.88s",
+    "sha256": "783db9ed2946f8d61e7aacd31effa16c2636de5c742a4b63ae3e76e1f6287345"
+  },
+  "task3-report-red.txt": {
+    "last_line": "8 failed in 5.04s",
+    "sha256": "7a732b2d02c5eae3653759a4c4db10e0c853afb0fb9e8bf102d4fa3dc2c199b1"
+  }
+}
+```

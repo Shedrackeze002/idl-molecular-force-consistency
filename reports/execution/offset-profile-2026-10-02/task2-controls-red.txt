@@ -1,0 +1,137 @@
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+__________ test_known_nonfinite_return_is_retained_before_validation ___________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-109/test_known_nonfinite_return_is0')
+
+    def test_known_nonfinite_return_is_retained_before_validation(tmp_path):
+>       m=api();owner=m.cc.DirectoryLease(tmp_path);j=m.Journal(owner,100,10)
+          ^^^^^
+
+tests/test_offset_profile_runs.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_runs.py:11: in api
+    m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b51fe60>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________________ test_unknown_call_and_late_return_fail_closed _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-109/test_unknown_call_and_late_ret0')
+
+    def test_unknown_call_and_late_return_fail_closed(tmp_path):
+>       m=api();owner=m.cc.DirectoryLease(tmp_path);clock=[0.];j=m.Journal(owner,20,5,clock=lambda:clock[0])
+          ^^^^^
+
+tests/test_offset_profile_runs.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_runs.py:11: in api
+    m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b51c8f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_________ test_gate_drift_compared_to_frozen_object_and_exact_sources __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-109/test_gate_drift_compared_to_fr0')
+
+    def test_gate_drift_compared_to_frozen_object_and_exact_sources(tmp_path):
+>       m=api();p=tmp_path/'participant';p.write_text('A')
+          ^^^^^
+
+tests/test_offset_profile_runs.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_runs.py:11: in api
+    m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b4e75f0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________________ test_exclusive_root_and_directory_replacement _________________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-109/test_exclusive_root_and_direct0')
+
+    def test_exclusive_root_and_directory_replacement(tmp_path):
+>       m=api();root=tmp_path/'run';owner=m.reserve_root(root)
+          ^^^^^
+
+tests/test_offset_profile_runs.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_runs.py:11: in api
+    m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b54d490>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_____________ test_public_configuration_and_source_guards_are_pure _____________
+
+    def test_public_configuration_and_source_guards_are_pure():
+>       m=api();c=m.cc.read('configs/aspirin-offset-profile.json');facts=m.verify_inputs(c)
+          ^^^^^
+
+tests/test_offset_profile_runs.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_offset_profile_runs.py:11: in api
+    m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b54fad0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_runs.py::test_known_nonfinite_return_is_retained_before_validation
+FAILED tests/test_offset_profile_runs.py::test_unknown_call_and_late_return_fail_closed
+FAILED tests/test_offset_profile_runs.py::test_gate_drift_compared_to_frozen_object_and_exact_sources
+FAILED tests/test_offset_profile_runs.py::test_exclusive_root_and_directory_replacement
+FAILED tests/test_offset_profile_runs.py::test_public_configuration_and_source_guards_are_pure
+5 failed in 0.03s

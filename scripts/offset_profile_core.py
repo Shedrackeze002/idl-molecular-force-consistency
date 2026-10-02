@@ -12,7 +12,8 @@ from force_consistency.runs import _read_checkpoint,assert_finite,assert_paramet
 from force_consistency.loss_balance import _weighted_gradient,validate_weights
 
 def full_hash(state):
-    return hashlib.sha256(serialization.to_bytes(state)).hexdigest()
+    from force_consistency.width_rate_replacement import _sorted_tree
+    return hashlib.sha256(serialization.msgpack_serialize(_sorted_tree(serialization.to_state_dict(state)))).hexdigest()
 
 def bias(tree):return tree['energy_head']['0+']['bias']
 

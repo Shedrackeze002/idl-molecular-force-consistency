@@ -1,0 +1,55 @@
+....................F.......                                             [100%]
+=================================== FAILURES ===================================
+_______ test_saved_tiny_run_recomputes_metrics_without_model_evaluation ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-113/test_saved_tiny_run_recomputes0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x116677200>
+
+    def test_saved_tiny_run_recomputes_metrics_without_model_evaluation(tmp_path,monkeypatch):
+        from test_offset_profile_runs import small_run
+        m,c,source,gate,root,result=small_run(tmp_path);assert result['execution_valid'],result
+        from force_consistency.models.energy import EnergyModel
+        def forbidden(*a,**k):raise AssertionError('Numerical model invoked in saved-only audit')
+        monkeypatch.setattr(EnergyModel,'apply',forbidden)
+>       report=api().audit_saved(root,complete=False,source=source,gate=gate)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_offset_profile_report.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-113/test_saved_tiny_run_recomputes0/run')
+complete = False
+source = {'root': '/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-113/test_saved_tiny_ru...': {'shape': [...], 'dtype': 'float64'}, 'bias': {'shape': [...], 'dtype': 'float64'}}}}, 'parameter_count': 601, ...}}
+gate = {'status': 'private_engineering_fixture', 'artifacts': {}}
+
+    def audit_saved(root,*,complete=True,source=None,gate=None):
+        root=cc.no_symlinks(root);c=cc.read(root/'config.json');p=cc.read(root/'provenance.json')
+        if source is None:source=verify_inputs(c)
+        if gate is None:gate=verify_gate(c)
+        original=source['provenance']
+        if (cc.read(root/'prelaunch-gate.json')!=gate or cc.read(root/'source-pins.json')!=source['pins']
+            or p['config_identity']!=cc.canonical_hash(c) or p['gate_identity']!=cc.canonical_hash(gate)
+            or p['inputs']!=original['inputs'] or p['normalization']!=original['normalization']
+            or p['original_baselines']!=original['original_baselines'] or p['model']!=original['model']
+            or p['source_zero_state_hashes']!=original['initial_state_hashes']
+            or p['source_blueprint']!=source['zero']['params_schema']
+            or cc.read(root/'shared-zero-provenance.json')!=original
+            or cc.digest(root/'shared-zero.msgpack')!=cc.digest(Path(source['root'])/'snapshots/0.msgpack')):
+            raise ValueError('Saved provenance differs from source/gate')
+        for role in p['inputs']:
+            if cc.digest(root/(role+'-inputs.npz'))!=p['input_files_sha256'][role] or p['input_files_sha256'][role]!=original['input_files_sha256'][role]:raise ValueError('Input hash differs')
+        zero=cc._envelope(root/'shared-zero.msgpack',original)
+        import msgpack
+        envelope=msgpack.unpackb((root/'shared-zero.msgpack').read_bytes(),raw=False)
+>       if p['source_zero_full_hash']!=envelope['sha256']:raise ValueError('Source all-field hash differs')
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: Source all-field hash differs
+
+scripts/report_offset_profile.py:64: ValueError
+----------------------------- Captured stdout call -----------------------------
+{"update": 0, "energy_fraction": 0.6400000000000001, "force_fraction": 1.0, "elapsed_seconds": 0.03626216697739437}
+{"update": 1, "energy_fraction": 0.6399686427283999, "force_fraction": 1.0000088572292638, "elapsed_seconds": 0.09080712500144728}
+{"update": 3, "energy_fraction": 0.639933518402883, "force_fraction": 0.9998968921477003, "elapsed_seconds": 0.15019437498995103}
+=========================== short test summary info ============================
+FAILED tests/test_offset_profile_report.py::test_saved_tiny_run_recomputes_metrics_without_model_evaluation
+1 failed, 27 passed in 11.64s
