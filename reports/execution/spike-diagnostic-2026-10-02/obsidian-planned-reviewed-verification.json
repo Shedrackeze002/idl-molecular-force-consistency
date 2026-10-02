@@ -1,0 +1,12 @@
+{
+  "hub": {
+    "status": "verified",
+    "before_sha256": "4a7a3ea7cfee558b19078766e7f79694d657dce3b4856452169b5dad91c5b0cc",
+    "after_sha256": "971b183813ea5c4599eb26562b9d0521b625858e992131c7236136e9e5e9c5d4"
+  },
+  "findings": {
+    "status": "verified",
+    "before_sha256": "a0eaf900573c1049e08f5394bbb2a40e51949bf93f2b44fdc7d298abb64d4977",
+    "after_sha256": "eaebf814c84f25cc159d29710ef7db04c84bb62743bef7b1d1f8aa04ee2fde2c"
+  }
+}

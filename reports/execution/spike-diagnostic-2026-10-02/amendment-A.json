@@ -1,0 +1,9 @@
+{
+  "status": "amended_unexecuted",
+  "scientific_findings": "Atomic head bias includes atom count; slope scale/direction must be explicit",
+  "engineering_findings": "Instrument all completed microbatch calls; total cap includes reserve",
+  "design_sha256": "b674a96d27f3867c4f40b5ae85747e292c89e01f2ff9f46263463ddac5afc835",
+  "plan_sha256": "7cac3ef0cbfa0536bdb1067dd5e8ab5f20518404521714ee4cbbf0be5ebe492a",
+  "implementation": "not_started",
+  "review_followups": "pending"
+}

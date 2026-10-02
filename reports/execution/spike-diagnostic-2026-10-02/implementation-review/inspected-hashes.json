@@ -1,0 +1,12 @@
+{
+  "scripts/diagnose_capacity_spikes.py": "565d7dfe54dcba59658aa3491972a8a039585388ee474a5023453333ddb5edd4",
+  "tests/test_capacity_spikes.py": "58a5040ebe1d217cffab2a033d121542dd1d9f87a5c86b97b817981ffdcdf7be",
+  "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e",
+  "docs/superpowers/specs/2026-10-02-capacity-spike-design.md": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+  "docs/superpowers/plans/2026-10-02-capacity-spike.md": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+  "docs/reviews/2026-10-02-capacity-spike-engineering-plan-followup.md": "a7ba890f33664e5da14294e9d6c52829f019941a3d1791f7d9c13b8e9c4eef71",
+  "docs/reviews/2026-10-02-capacity-spike-scientific-plan-followup.md": "bec2486cd44e7e18f4cadcf04486aaeb0eb52d503b335a85ad5888ad94ae6708",
+  "reports/execution/spike-diagnostic-2026-10-02/source-pins.json": "26f6914685dc38709652408b015356c7e4fd38bd5d1b392c9550c2cb2719c130",
+  "reports/execution/spike-diagnostic-2026-10-02/progress.md": "9ec7fd384dd2694f4b5fd6760e418e75b5d7684d63d080ded1a2a2f02a75e478",
+  "reports/execution/spike-diagnostic-2026-10-02/focused-verification.txt": "6f66cf76e0ce23b79bea36025307313747b421835be7df6f501631f905d35c2c"
+}

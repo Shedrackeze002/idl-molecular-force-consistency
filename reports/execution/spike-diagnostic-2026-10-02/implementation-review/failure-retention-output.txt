@@ -1,0 +1,25 @@
+{
+  "second_call_failure": {
+    "exception": "injected second-call cap",
+    "attempted_stub_calls": 2,
+    "predictions_retained": false,
+    "state_audit_retained": true,
+    "files": [
+      "partial.json",
+      "state-audit.json"
+    ]
+  },
+  "history_mismatch": {
+    "exception": "Score schema differs",
+    "attempted_stub_calls": 1,
+    "predictions_retained": false,
+    "state_audit_retained": true,
+    "files": [
+      "partial.json",
+      "state-audit.json"
+    ]
+  },
+  "interrupted_report": {
+    "exception": "FileNotFoundError: [Errno 2] No such file or directory: 'reports/execution/spike-diagnostic-2026-10-02/implementation-review/interrupted_report/summary.json'"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "state_full_hash_after": "49eb73b438d9cfa8072192b03309bc33294da7ae3cb90ddc2a859b78dc49b6cf",
+  "state_full_hash_before": "49eb73b438d9cfa8072192b03309bc33294da7ae3cb90ddc2a859b78dc49b6cf",
+  "state_hashes_after": {
+    "optimizer": "76be8b528d0075f7aae98d6fa57a6d3c83ae480a8469e668d7b0af968995ac71",
+    "params": "76be8b528d0075f7aae98d6fa57a6d3c83ae480a8469e668d7b0af968995ac71"
+  },
+  "state_hashes_before": {
+    "optimizer": "76be8b528d0075f7aae98d6fa57a6d3c83ae480a8469e668d7b0af968995ac71",
+    "params": "76be8b528d0075f7aae98d6fa57a6d3c83ae480a8469e668d7b0af968995ac71"
+  },
+  "state_unchanged": true
+}

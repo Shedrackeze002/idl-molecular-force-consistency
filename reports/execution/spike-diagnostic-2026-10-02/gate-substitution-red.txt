@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_final_integrity_rechecks_analysis_bytes_after_source_audit ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-101/test_final_integrity_rechecks_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10b1c6fc0>
+
+    def test_final_integrity_rechecks_analysis_bytes_after_source_audit(tmp_path, monkeypatch):
+        m = api(); config = json.loads(Path('configs/aspirin-capacity-spike.json').read_text())
+        if not Path(config['source_root']).exists(): pytest.skip('Historical local artifacts unavailable')
+        item = tmp_path / 'analysis.py'; item.write_text('original')
+        gate = tmp_path / 'gate.json'; gate.write_text(json.dumps({'status': 'verified', 'artifacts': {str(item): m.digest(item)}}))
+        config['prelaunch_gate'] = str(gate)
+        from force_consistency.capacity_contract import canonical_hash
+        monkeypatch.setattr(m, 'CONFIG_ID', canonical_hash(config)); monkeypatch.setattr(m, 'LAUNCH_INPUTS', {str(item)})
+        frozen = json.loads(gate.read_text())
+>       assert m.verify_execution_integrity(config, expected_gate=frozen)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: verify_execution_integrity() got an unexpected keyword argument 'expected_gate'
+
+tests/test_capacity_spikes.py:293: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_spikes.py::test_final_integrity_rechecks_analysis_bytes_after_source_audit
+1 failed in 0.05s

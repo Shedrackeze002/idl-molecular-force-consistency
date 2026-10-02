@@ -1,0 +1,38 @@
+{
+  "task1-red.txt": {
+    "sha256": "86bee6a27c349ba910f533d90a255af6438fdb43b9aedca2b1fc6b887bf3bea1",
+    "last_line": "12 failed in 0.06s"
+  },
+  "task1-green.txt": {
+    "sha256": "c90552887b15f0dd338283c6b09a470ebacdbd4677c68174867fe21155a8b633",
+    "last_line": "12 passed in 0.03s"
+  },
+  "task2-red.txt": {
+    "sha256": "a94af043db38d35ca66829b2b096b1cba5c2ac6a6a73ce7c79254194b702f9ba",
+    "last_line": "9 failed, 12 passed in 0.67s"
+  },
+  "task2-core-green.txt": {
+    "sha256": "c6a80b300dc58a3ac23813a09f6c80928c7ce590286dfb0cd552b88cdc83d8d2",
+    "last_line": "6 failed, 15 passed in 0.98s"
+  },
+  "task2-core-green-fixed.txt": {
+    "sha256": "9c63481eb44e19f1a93eee9ab1d4aff1eee9673434a3482460dbd83667d37429",
+    "last_line": "21 passed in 0.82s"
+  },
+  "task2-numerical-red.txt": {
+    "sha256": "5b06e8112052ee6871679412ef55c1c98505d5a8999509b3d36581308ddeb09e",
+    "last_line": "3 failed, 21 passed in 4.02s"
+  },
+  "task2-numerical-green.txt": {
+    "sha256": "ea5aaa0c9ccf9665b938247de30c115bbdea28c81dbf8168e71244b42a0c54d5",
+    "last_line": "24 passed in 8.90s"
+  },
+  "task2-controller-red.txt": {
+    "sha256": "5dcab94dd760b368586461d0c7cf3eaa84369fad3957373a74528f0bbc27fdea",
+    "last_line": "2 failed, 24 passed in 8.11s"
+  },
+  "task2-controller-green.txt": {
+    "sha256": "7db9c3e178d3d5915adecc226b2370414a1718b583a5465740132cb9713daa4b",
+    "last_line": "26 passed in 8.04s"
+  }
+}

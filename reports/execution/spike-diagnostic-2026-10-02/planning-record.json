@@ -1,0 +1,27 @@
+{
+  "status": "planned_unexecuted",
+  "rationale": "Decompose saved maximum-energy excursions before another training change",
+  "cases": {
+    "width32": [
+      3600,
+      3700,
+      3800,
+      6000
+    ],
+    "width64": [
+      4900,
+      5000,
+      5100,
+      6000
+    ]
+  },
+  "source": "runs/aspirin-capacity-2026-10-02",
+  "source_archive_inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+  "planned_training_updates": 0,
+  "planned_random_parameter_initializations": 0,
+  "planned_prediction_role_entries": 1152,
+  "wall_seconds": 1800,
+  "reserve_seconds": 60,
+  "plan_reviews": "pending",
+  "limits": "Posthoc selection, sparse saved states, fitted supports, no causal/continuous stability/Adam-direction/main-hypothesis claim"
+}

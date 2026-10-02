@@ -1,0 +1,136 @@
+............FFFFFFFFF                                                    [100%]
+=================================== FAILURES ===================================
+__________ test_weighted_slopes_have_explicit_objective_and_direction __________
+
+    def test_weighted_slopes_have_explicit_objective_and_direction():
+        m = api(); ge = {'x': np.array([1., 0.])}; gf = {'x': np.array([-2., 1.])}
+        # Weighted joint = -5,3. Dot products give E slope +5 and F slope -13.
+        gj = {'x': np.array([-1., 1.])}; gw = {'x': np.array([-5., 3.])}
+>       r = m.gradient_metrics(ge, gf, gj, gw, {'energy': 1., 'force': 3.})
+            ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'gradient_metrics'
+
+tests/test_capacity_spikes.py:90: AttributeError
+________ test_returned_nonfinite_work_is_known_but_not_valid[gradient] _________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_returned_nonfinite_work_i0')
+kind = 'gradient'
+
+    @pytest.mark.parametrize('kind', ['gradient', 'finite_difference', 'prediction'])
+    def test_returned_nonfinite_work_is_known_but_not_valid(tmp_path, kind):
+        m = api()
+        def finite(x):
+            if not np.isfinite(x).all(): raise ValueError('nonfinite')
+>       journal = m.Journal(tmp_path, lambda: None, ready=lambda x: x, finite=finite)
+                  ^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'Journal'
+
+tests/test_capacity_spikes.py:108: AttributeError
+____ test_returned_nonfinite_work_is_known_but_not_valid[finite_difference] ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_returned_nonfinite_work_i1')
+kind = 'finite_difference'
+
+    @pytest.mark.parametrize('kind', ['gradient', 'finite_difference', 'prediction'])
+    def test_returned_nonfinite_work_is_known_but_not_valid(tmp_path, kind):
+        m = api()
+        def finite(x):
+            if not np.isfinite(x).all(): raise ValueError('nonfinite')
+>       journal = m.Journal(tmp_path, lambda: None, ready=lambda x: x, finite=finite)
+                  ^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'Journal'
+
+tests/test_capacity_spikes.py:108: AttributeError
+_______ test_returned_nonfinite_work_is_known_but_not_valid[prediction] ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_returned_nonfinite_work_i2')
+kind = 'prediction'
+
+    @pytest.mark.parametrize('kind', ['gradient', 'finite_difference', 'prediction'])
+    def test_returned_nonfinite_work_is_known_but_not_valid(tmp_path, kind):
+        m = api()
+        def finite(x):
+            if not np.isfinite(x).all(): raise ValueError('nonfinite')
+>       journal = m.Journal(tmp_path, lambda: None, ready=lambda x: x, finite=finite)
+                  ^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'Journal'
+
+tests/test_capacity_spikes.py:108: AttributeError
+___ test_unreturned_call_stays_unknown_and_budget_block_does_not_start_work ____
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_unreturned_call_stays_unk0')
+
+    def test_unreturned_call_stays_unknown_and_budget_block_does_not_start_work(tmp_path):
+        m = api()
+>       journal = m.Journal(tmp_path, lambda: None, ready=lambda x: x, finite=lambda x: None)
+                  ^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'Journal'
+
+tests/test_capacity_spikes.py:119: AttributeError
+_____ test_late_cap_failure_keeps_observations_and_blocks_remaining_cases ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_late_cap_failure_keeps_ob0')
+
+    def test_late_cap_failure_keeps_observations_and_blocks_remaining_cases(tmp_path):
+        m = api(); cases = [{'name': 'a'}, {'name': 'b'}]
+        def analyzer(case, path): return {'verification_valid': True, 'value': 7.}
+        def budget():
+            if (tmp_path / 'a/observations.json').exists(): raise TimeoutError('late cap')
+>       result = m.execute_cases(tmp_path, cases, analyzer, budget)
+                 ^^^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'execute_cases'
+
+tests/test_capacity_spikes.py:138: AttributeError
+_ test_report_never_endorses_observation_existence_or_source_integrity_failure _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_report_never_endorses_obs0')
+
+    def test_report_never_endorses_observation_existence_or_source_integrity_failure(tmp_path):
+        m = api(); cases = [{'name': 'a'}, {'name': 'b'}]
+        for name in ('a', 'b'): (tmp_path / name).mkdir()
+        (tmp_path / 'a/observations.json').write_text('{"verification_valid":true,"value":99}')
+        (tmp_path / 'a/summary.json').write_text('{"status":"failed","verification_valid":false}')
+        (tmp_path / 'b/summary.json').write_text('{"status":"completed","verification_valid":true}')
+        (tmp_path / 'b/observations.json').write_text('{"verification_valid":true,"value":7}')
+>       assert m.saved_cases(tmp_path, cases, source_integrity=True)['b']['endorsed']
+               ^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'saved_cases'
+
+tests/test_capacity_spikes.py:151: AttributeError
+___________ test_exclusive_run_refuses_repeated_attempt_and_symlink ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_exclusive_run_refuses_rep0')
+
+    def test_exclusive_run_refuses_repeated_attempt_and_symlink(tmp_path):
+        m = api(); path = tmp_path / 'run'
+>       m.reserve_run(path)
+        ^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'reserve_run'
+
+tests/test_capacity_spikes.py:158: AttributeError
+___________ test_fd_retains_both_steps_and_rejects_wrong_derivative ____________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-89/test_fd_retains_both_steps_and0')
+
+    def test_fd_retains_both_steps_and_rejects_wrong_derivative(tmp_path):
+        import jax.numpy as jnp
+        m = api(); params = {'x': jnp.array([1.])}
+        ge = {'x': jnp.array([2.])}; gf = {'x': jnp.array([4.])}
+        def evaluate(p): return np.array([float(p['x'][0]) ** 2, 2 * float(p['x'][0]) ** 2])
+        progress = []
+>       r = m.finite_differences(params, ge, gf, evaluate, lambda d: progress.append(json.loads(json.dumps(d))), seed=20261002)
+            ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'finite_differences'
+
+tests/test_capacity_spikes.py:170: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_spikes.py::test_weighted_slopes_have_explicit_objective_and_direction
+FAILED tests/test_capacity_spikes.py::test_returned_nonfinite_work_is_known_but_not_valid[gradient]
+FAILED tests/test_capacity_spikes.py::test_returned_nonfinite_work_is_known_but_not_valid[finite_difference]
+FAILED tests/test_capacity_spikes.py::test_returned_nonfinite_work_is_known_but_not_valid[prediction]
+FAILED tests/test_capacity_spikes.py::test_unreturned_call_stays_unknown_and_budget_block_does_not_start_work
+FAILED tests/test_capacity_spikes.py::test_late_cap_failure_keeps_observations_and_blocks_remaining_cases
+FAILED tests/test_capacity_spikes.py::test_report_never_endorses_observation_existence_or_source_integrity_failure
+FAILED tests/test_capacity_spikes.py::test_exclusive_run_refuses_repeated_attempt_and_symlink
+FAILED tests/test_capacity_spikes.py::test_fd_retains_both_steps_and_rejects_wrong_derivative
+9 failed, 12 passed in 0.67s

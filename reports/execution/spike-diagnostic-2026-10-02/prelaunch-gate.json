@@ -1,0 +1,24 @@
+{
+  "artifacts": {
+    "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e",
+    "docs/reviews/2026-10-02-capacity-spike-engineering-plan-followup.md": "a7ba890f33664e5da14294e9d6c52829f019941a3d1791f7d9c13b8e9c4eef71",
+    "docs/reviews/2026-10-02-capacity-spike-implementation.md": "037d39f2f4564841e90ce25859ef8f39bc5df02d5afc97e54e50fb0b50c36e99",
+    "docs/reviews/2026-10-02-capacity-spike-scientific-plan-followup.md": "bec2486cd44e7e18f4cadcf04486aaeb0eb52d503b335a85ad5888ad94ae6708",
+    "docs/superpowers/plans/2026-10-02-capacity-spike.md": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+    "docs/superpowers/specs/2026-10-02-capacity-spike-design.md": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+    "reports/execution/spike-diagnostic-2026-10-02/focused-verification.txt": "f665c2d10f1a84b8e2469e02a0634c83d12b2d823142e5c77dea2b0c6b5e0f53",
+    "reports/execution/spike-diagnostic-2026-10-02/full-suite.txt": "e283765d444abe7d331d2406587ff30d87d578bd8ac40c5a298ce3681ab12d16",
+    "reports/execution/spike-diagnostic-2026-10-02/source-pins.json": "26f6914685dc38709652408b015356c7e4fd38bd5d1b392c9550c2cb2719c130",
+    "scripts/diagnose_capacity_spikes.py": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+    "tests/test_capacity_spikes.py": "3690c2c506e60df9575fa67534b8ab84c0fab25263c519e89c0d9be924fa74e1"
+  },
+  "config_id": "0ac07e84eb570ba926d2cc3f7338f120c78c0fc6dd8ea18174bcfc0f86b2ab1a",
+  "focused": "87 passed in 34.18s",
+  "full_suite": "615 passed in 467.29s",
+  "independent_implementation_review": "PASS",
+  "new_training_updates": 0,
+  "no_retry": true,
+  "prospective_state_count": 8,
+  "status": "verified",
+  "two_plan_reviews": "PASS"
+}

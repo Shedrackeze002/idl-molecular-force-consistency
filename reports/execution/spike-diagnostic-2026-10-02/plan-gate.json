@@ -1,0 +1,9 @@
+{
+  "status": "two_review_pass",
+  "artifacts": {
+    "docs/superpowers/specs/2026-10-02-capacity-spike-design.md": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+    "docs/superpowers/plans/2026-10-02-capacity-spike.md": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+    "docs/reviews/2026-10-02-capacity-spike-scientific-plan-followup.md": "bec2486cd44e7e18f4cadcf04486aaeb0eb52d503b335a85ad5888ad94ae6708",
+    "docs/reviews/2026-10-02-capacity-spike-engineering-plan-followup.md": "a7ba890f33664e5da14294e9d6c52829f019941a3d1791f7d9c13b8e9c4eef71"
+  }
+}

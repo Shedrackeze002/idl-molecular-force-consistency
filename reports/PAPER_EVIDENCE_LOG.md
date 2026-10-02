@@ -702574,3 +702574,230 @@ The complete staged whitespace check returned exit2 due solely to Matplotlib-gen
   "full_output_sha256": "79d34e3799c5ad3c91092cd934d9a588333e6ac23c26240948aade1e6871f0d3"
 }
 ```
+
+
+## SPIKE-PLAN-001 — saved-state diagnostic proposed, two reviews pending
+
+User authorized proceeding with the saved spike diagnostic. Design and plan saved; no implementation/numerical work yet. Earlier source closure remains unchanged. A file-discovery command failed due to unmatched shell glob learning*; focused explicit paths resolved it. Broad Obsidian read/tool output truncated; latest completion section agrees with current repository. These are read-only inspection trials, not numerical evidence.
+
+```json
+{
+  "status": "planned_unexecuted",
+  "rationale": "Decompose saved maximum-energy excursions before another training change",
+  "cases": {
+    "width32": [
+      3600,
+      3700,
+      3800,
+      6000
+    ],
+    "width64": [
+      4900,
+      5000,
+      5100,
+      6000
+    ]
+  },
+  "source": "runs/aspirin-capacity-2026-10-02",
+  "source_archive_inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+  "planned_training_updates": 0,
+  "planned_random_parameter_initializations": 0,
+  "planned_prediction_role_entries": 1152,
+  "wall_seconds": 1800,
+  "reserve_seconds": 60,
+  "plan_reviews": "pending",
+  "limits": "Posthoc selection, sparse saved states, fitted supports, no causal/continuous stability/Adam-direction/main-hypothesis claim"
+}
+```
+
+
+## SPIKE-PLAN-REVIEW-AMEND-001 — both initial reviews required material repairs
+
+Initial scientific and engineering findings accepted against existing code/model evidence. Amendment A specifies atom-count bias derivative, exact weighted/unweighted scaled-loss slopes, explicit per-microbatch completed/in-flight work and total-cap reserve scope. No implementation or numerical diagnostic yet. Failed guessed file reads learning_checks.py/overfit.py preserved as inspection trials; focused actual coverage_runs.py resolves them.
+
+```json
+{
+  "status": "amended_unexecuted",
+  "scientific_findings": "Atomic head bias includes atom count; slope scale/direction must be explicit",
+  "engineering_findings": "Instrument all completed microbatch calls; total cap includes reserve",
+  "design_sha256": "b674a96d27f3867c4f40b5ae85747e292c89e01f2ff9f46263463ddac5afc835",
+  "plan_sha256": "7cac3ef0cbfa0536bdb1067dd5e8ab5f20518404521714ee4cbbf0be5ebe492a",
+  "implementation": "not_started",
+  "review_followups": "pending"
+}
+```
+
+
+## SPIKE-PLAN-GATE-001 — both final amended plan reviews PASS
+
+Both reviewers cleared final derivative/bias, instrumented returned/valid/unknown work, inclusive cap/reserve/start and global source-integrity endorsement controls before implementation. Test-first inline execution begins.
+
+```json
+{
+  "docs/superpowers/specs/2026-10-02-capacity-spike-design.md": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+  "docs/superpowers/plans/2026-10-02-capacity-spike.md": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+  "docs/reviews/2026-10-02-capacity-spike-scientific-plan-followup.md": "bec2486cd44e7e18f4cadcf04486aaeb0eb52d503b335a85ad5888ad94ae6708",
+  "docs/reviews/2026-10-02-capacity-spike-engineering-plan-followup.md": "a7ba890f33664e5da14294e9d6c52829f019941a3d1791f7d9c13b8e9c4eef71"
+}
+```
+
+
+## SPIKE-ENGINEERING-001 — test-first residual/guard/bias and orchestration trials
+
+Task1 RED12 missing-script failures then GREEN12 passed0.07s (actual logs retained). Ledger previously guessed14 failures; actual retained log shows12, corrected here. Task2 RED9 missing orchestration/geometry/FD interfaces,12 already passed0.67s. First config-generation trial failed NameError: u not defined because missing final comprehension loop; source-pins had been exclusively written, preserved/reused without mutation. Fixed writer produced config. No diagnostic execution. Frozen config and347-file source pin map are prospective.
+
+
+## SPIKE-ENGINEERING-002 — numerical adapter and report trials preserved
+
+Core firstGREEN attempt had6failures/15passed: five wrong atomic_json import failures (correct existing name atomic) and an exact-float assertion -13 versus -13.000000000000004 (corrected fixture assertion to numerical tolerance). Root causes traced to actual module definition and roundoff; original logs retained. Later numerical restoration/derivative tests and complete-gate/status-report tests each watched fail for missing interfaces then passed. The following raw terminal summary lines supersede any rounded or guessed timing/count descriptions in earlier entries. Small fixture evaluations are engineering tests, not research observations. No eight-case research diagnostic yet.
+
+```json
+{
+  "task1-red.txt": {
+    "sha256": "86bee6a27c349ba910f533d90a255af6438fdb43b9aedca2b1fc6b887bf3bea1",
+    "last_line": "12 failed in 0.06s"
+  },
+  "task1-green.txt": {
+    "sha256": "c90552887b15f0dd338283c6b09a470ebacdbd4677c68174867fe21155a8b633",
+    "last_line": "12 passed in 0.03s"
+  },
+  "task2-red.txt": {
+    "sha256": "a94af043db38d35ca66829b2b096b1cba5c2ac6a6a73ce7c79254194b702f9ba",
+    "last_line": "9 failed, 12 passed in 0.67s"
+  },
+  "task2-core-green.txt": {
+    "sha256": "c6a80b300dc58a3ac23813a09f6c80928c7ce590286dfb0cd552b88cdc83d8d2",
+    "last_line": "6 failed, 15 passed in 0.98s"
+  },
+  "task2-core-green-fixed.txt": {
+    "sha256": "9c63481eb44e19f1a93eee9ab1d4aff1eee9673434a3482460dbd83667d37429",
+    "last_line": "21 passed in 0.82s"
+  },
+  "task2-numerical-red.txt": {
+    "sha256": "5b06e8112052ee6871679412ef55c1c98505d5a8999509b3d36581308ddeb09e",
+    "last_line": "3 failed, 21 passed in 4.02s"
+  },
+  "task2-numerical-green.txt": {
+    "sha256": "ea5aaa0c9ccf9665b938247de30c115bbdea28c81dbf8168e71244b42a0c54d5",
+    "last_line": "24 passed in 8.90s"
+  },
+  "task2-controller-red.txt": {
+    "sha256": "5dcab94dd760b368586461d0c7cf3eaa84369fad3957373a74528f0bbc27fdea",
+    "last_line": "2 failed, 24 passed in 8.11s"
+  },
+  "task2-controller-green.txt": {
+    "sha256": "7db9c3e178d3d5915adecc226b2370414a1718b583a5465740132cb9713daa4b",
+    "last_line": "26 passed in 8.04s"
+  }
+}
+```
+
+
+## SPIKE-FOCUSED-GATE-001 — focused regression83passed, independent implementation/full-suite gates pending
+
+Focused tests pass83 in25.97s. Actual small model witness validates restoration-compatible split/weighted losses, FDcriterion, atom bias and source unchanged; archived source checkpoint tests use immutable saved arrays without training. Independent reviewer received precise source/config/test hashes. Fullsuite started once with complete output retained; research execution is still unexecuted. A helper search guessed absent tests/conftest.py; actual x64 enablement traced to frozen models/backbone.py.
+
+```json
+{
+  "scripts/diagnose_capacity_spikes.py": "565d7dfe54dcba59658aa3491972a8a039585388ee474a5023453333ddb5edd4",
+  "tests/test_capacity_spikes.py": "58a5040ebe1d217cffab2a033d121542dd1d9f87a5c86b97b817981ffdcdf7be",
+  "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e"
+}
+```
+
+
+## SPIKE-OBSIDIAN-PLANNED-001 — reviewed prospective scope synchronized with CLI backups/readback
+
+Both notes now link the twice-reviewed diagnostic and state that implementation/full-suite launch gates remain pending. No diagnostic findings are claimed. Exact readback hashes below; prior note bytes preserved.
+
+```json
+{
+  "hub": {
+    "status": "verified",
+    "before_sha256": "4a7a3ea7cfee558b19078766e7f79694d657dce3b4856452169b5dad91c5b0cc",
+    "after_sha256": "971b183813ea5c4599eb26562b9d0521b625858e992131c7236136e9e5e9c5d4"
+  },
+  "findings": {
+    "status": "verified",
+    "before_sha256": "a0eaf900573c1049e08f5394bbb2a40e51949bf93f2b44fdc7d298abb64d4977",
+    "after_sha256": "eaebf814c84f25cc159d29710ef7db04c84bb62743bef7b1d1f8aa04ee2fde2c"
+  }
+}
+```
+
+
+## SPIKE-IMPLEMENTATION-REVIEW-001 — material retention/interrupt/integrity gaps before launch
+
+Independent implementation review found: E1 completed prediction batches/history-mismatch outputs not durable; E2 missing rootsummary after operationalkill breaks saved-only rendering; E3 final guard omits analysis launch-artifact recheck. Findings accepted against code, E1/E2 independently reproduced using stub engineering calls with no real models under implementation-review/. First fullsuite interrupted with KeyboardInterrupt179passed145.09s before modifying numerical script. Retain full-suite-attempt1-interrupted.txt; no research diagnostic launched. Repair RED/GREEN and followup required; no source mutations while tests active.
+
+
+## SPIKE-IMPLEMENTATION-REPAIR-001 — three review findings reproduced and repaired before research execution
+
+RED4/26passed8.74s reproduced lost completed prediction batches/history mismatch, missing-summary interruption report and omitted final analysis-byte guard. GREEN30passed12.37s after: durable exclusive per-returned-microbatch arrays/orderedIDs before finite/historical checks; saved-only interrupted reconstruction conservatively status/source gated and preserving unknown work; final and saved-only full source+launch-artifact rechecks invalidating endorsements on drift. Original83-pass focused log retained as focused-verification-initial.txt; revised focused/fullsuite follow. No research numerical run or source checkpoint mutation.
+
+```json
+{
+  "scripts/diagnose_capacity_spikes.py": "9ff93f8ea5742de614a08eabcbee61601095f4b4face7dab84e10b8a4b886210",
+  "tests/test_capacity_spikes.py": "92dcb13805b94ab064bc05da7ae86c8d2e6e433e9fb89d6fe845445b8ea0db84",
+  "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e"
+}
+```
+
+
+## SPIKE-IMPLEMENTATION-REPAIR-002 — frozen launch gate substitution rejected
+
+Followup cleared E1/E2 but required completion of E3: external launch gate could be rewritten to endorse changed artifacts at closure. Added expected original gate-object comparison on success/failure closure and saved-only rendering; missing frozen run gate conservatively invalidates endorsements. Targeted RED missing expected_gate interface then GREEN gate-substitution test; both logs retained. No research run. Focused87passed30.11s repair1 evidence preserved separately; final focused/fullsuite and independent final followup pending.
+
+
+## SPIKE-IMPLEMENTATION-GATE-001 — independent repaired implementation PASS, final regression pending
+
+All initial findings, first followup incomplete E3 and final followup are preserved in the pinned review. Final code/test/config/supervisor hashes match. Final focused87passed34.18s; targeted frozen-manifest substitution1passed7.16s. Fullsuite running on unchanged reviewed bytes; no research invocation yet.
+
+```json
+{
+  "implementation_review": "PASS",
+  "review_sha256": "037d39f2f4564841e90ce25859ef8f39bc5df02d5afc97e54e50fb0b50c36e99",
+  "focused": "87 passed in 34.18s",
+  "gate_substitution": "1 passed in 7.16s",
+  "artifacts": {
+    "scripts/diagnose_capacity_spikes.py": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+    "scripts/run_capacity_spikes.py": "fe93ff7040ce59738b96038daffca5f135df53fb25b54e0aeac6ca29fd56bc37",
+    "tests/test_capacity_spikes.py": "3690c2c506e60df9575fa67534b8ab84c0fab25263c519e89c0d9be924fa74e1",
+    "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e"
+  },
+  "full_suite": "running",
+  "research_diagnostic": "unexecuted"
+}
+```
+
+
+## SPIKE-FULL-SUITE-GATE-001 — final reviewed implementation and regression verified before once-only execution
+
+Frozen restored-state diagnostic; zero training updates.
+
+```json
+{
+  "artifacts": {
+    "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e",
+    "docs/reviews/2026-10-02-capacity-spike-engineering-plan-followup.md": "a7ba890f33664e5da14294e9d6c52829f019941a3d1791f7d9c13b8e9c4eef71",
+    "docs/reviews/2026-10-02-capacity-spike-implementation.md": "037d39f2f4564841e90ce25859ef8f39bc5df02d5afc97e54e50fb0b50c36e99",
+    "docs/reviews/2026-10-02-capacity-spike-scientific-plan-followup.md": "bec2486cd44e7e18f4cadcf04486aaeb0eb52d503b335a85ad5888ad94ae6708",
+    "docs/superpowers/plans/2026-10-02-capacity-spike.md": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+    "docs/superpowers/specs/2026-10-02-capacity-spike-design.md": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+    "reports/execution/spike-diagnostic-2026-10-02/focused-verification.txt": "f665c2d10f1a84b8e2469e02a0634c83d12b2d823142e5c77dea2b0c6b5e0f53",
+    "reports/execution/spike-diagnostic-2026-10-02/full-suite.txt": "e283765d444abe7d331d2406587ff30d87d578bd8ac40c5a298ce3681ab12d16",
+    "reports/execution/spike-diagnostic-2026-10-02/source-pins.json": "26f6914685dc38709652408b015356c7e4fd38bd5d1b392c9550c2cb2719c130",
+    "scripts/diagnose_capacity_spikes.py": "8bfa6ff4bae33e2a4175f5dadc7cd237eabb607260fe03951d22357870447924",
+    "tests/test_capacity_spikes.py": "3690c2c506e60df9575fa67534b8ab84c0fab25263c519e89c0d9be924fa74e1"
+  },
+  "config_id": "0ac07e84eb570ba926d2cc3f7338f120c78c0fc6dd8ea18174bcfc0f86b2ab1a",
+  "focused": "87 passed in 34.18s",
+  "full_suite": "615 passed in 467.29s",
+  "independent_implementation_review": "PASS",
+  "new_training_updates": 0,
+  "no_retry": true,
+  "prospective_state_count": 8,
+  "status": "verified",
+  "two_plan_reviews": "PASS"
+}
+```

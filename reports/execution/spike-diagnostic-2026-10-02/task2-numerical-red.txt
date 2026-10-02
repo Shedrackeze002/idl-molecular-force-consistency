@@ -1,0 +1,52 @@
+.....................FFF                                                 [100%]
+=================================== FAILURES ===================================
+_ test_real_weighted_case_matches_historical_predictions_and_preserves_all_state _
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-92/test_real_weighted_case_matche0')
+
+    def test_real_weighted_case_matches_historical_predictions_and_preserves_all_state(tmp_path):
+        from test_gradient_diagnostics import witness
+        from force_consistency.coverage_runs import _partition_predictions, _group_score
+        p, model, batch, norm, state = witness(); m = api()
+        e, f = _partition_predictions(state['params'], p, model, 16)
+        metrics = _group_score(p, e, f); history = {'metrics': {'fitting': metrics, 'anchor': metrics}}
+        journal = m.Journal(tmp_path, lambda: None); saved = []
+>       result = m.analyze_case(state, {'fitting': p, 'anchor': p}, model, norm,
+                 ^^^^^^^^^^^^^^
+                               {'energy': .25, 'force': 1.75}, history, journal,
+                               lambda d: saved.append(json.loads(json.dumps(d))))
+E       AttributeError: module 'capacity_spikes' has no attribute 'analyze_case'
+
+tests/test_capacity_spikes.py:184: AttributeError
+_____ test_actual_saved_state_restore_rejects_wrong_selected_history_hash ______
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-92/test_actual_saved_state_restor0')
+
+    def test_actual_saved_state_restore_rejects_wrong_selected_history_hash(tmp_path):
+        import shutil
+        m = api(); source = Path('runs/aspirin-capacity-2026-10-02/width32')
+        if not source.exists(): pytest.skip('Historical local research artifacts unavailable')
+        for directory in ('snapshots', 'histories'): (tmp_path / directory).mkdir()
+        for name in ('snapshots/0.msgpack', 'snapshots/3700.msgpack', 'histories/3700.json', 'provenance.json'):
+            shutil.copyfile(source / name, tmp_path / name)
+        prov = json.loads((tmp_path / 'provenance.json').read_text())
+>       state = m.load_snapshot(tmp_path, 3700, prov)
+                ^^^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'load_snapshot'
+
+tests/test_capacity_spikes.py:204: AttributeError
+_______ test_frozen_config_and_complete_source_pins_guard_before_restore _______
+
+    def test_frozen_config_and_complete_source_pins_guard_before_restore():
+        m = api(); config = json.loads(Path('configs/aspirin-capacity-spike.json').read_text())
+        changed = {**config, 'microbatch_size': 8}
+>       with pytest.raises(ValueError, match='configuration'): m.verify_inputs(changed)
+                                                               ^^^^^^^^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'verify_inputs'
+
+tests/test_capacity_spikes.py:214: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_spikes.py::test_real_weighted_case_matches_historical_predictions_and_preserves_all_state
+FAILED tests/test_capacity_spikes.py::test_actual_saved_state_restore_rejects_wrong_selected_history_hash
+FAILED tests/test_capacity_spikes.py::test_frozen_config_and_complete_source_pins_guard_before_restore
+3 failed, 21 passed in 4.02s

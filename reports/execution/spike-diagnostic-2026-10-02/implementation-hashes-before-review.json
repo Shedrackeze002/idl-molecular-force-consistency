@@ -1,0 +1,5 @@
+{
+  "scripts/diagnose_capacity_spikes.py": "565d7dfe54dcba59658aa3491972a8a039585388ee474a5023453333ddb5edd4",
+  "tests/test_capacity_spikes.py": "58a5040ebe1d217cffab2a033d121542dd1d9f87a5c86b97b817981ffdcdf7be",
+  "configs/aspirin-capacity-spike.json": "73463e015fd8d9282a039cd68a1a11fa26f1febc6dbfa1877fb093af84a1248e"
+}

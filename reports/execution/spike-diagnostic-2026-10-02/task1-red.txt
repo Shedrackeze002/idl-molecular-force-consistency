@@ -1,0 +1,346 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+_ test_offset_and_variance_are_distinct_raw_mse_components[errors0-4.0-0.0-1.0] _
+
+errors = [2.0, 2.0], mean2 = 4.0, variance = 0.0, share = 1.0
+
+    @pytest.mark.parametrize('errors,mean2,variance,share', [
+        ([2., 2.], 4., 0., 1.), ([-1., 1.], 0., 1., 0.),
+        ([1., 3.], 4., 1., .8), ([0., 0.], 0., 0., None)])
+    def test_offset_and_variance_are_distinct_raw_mse_components(errors, mean2, variance, share):
+>       result = api().residual_summary(np.array(errors), np.zeros((2, 1, 3)), ['a', 'a'])
+                 ^^^^^
+
+tests/test_capacity_spikes.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10affa630>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_ test_offset_and_variance_are_distinct_raw_mse_components[errors1-0.0-1.0-0.0] _
+
+errors = [-1.0, 1.0], mean2 = 0.0, variance = 1.0, share = 0.0
+
+    @pytest.mark.parametrize('errors,mean2,variance,share', [
+        ([2., 2.], 4., 0., 1.), ([-1., 1.], 0., 1., 0.),
+        ([1., 3.], 4., 1., .8), ([0., 0.], 0., 0., None)])
+    def test_offset_and_variance_are_distinct_raw_mse_components(errors, mean2, variance, share):
+>       result = api().residual_summary(np.array(errors), np.zeros((2, 1, 3)), ['a', 'a'])
+                 ^^^^^
+
+tests/test_capacity_spikes.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10afc3b60>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_ test_offset_and_variance_are_distinct_raw_mse_components[errors2-4.0-1.0-0.8] _
+
+errors = [1.0, 3.0], mean2 = 4.0, variance = 1.0, share = 0.8
+
+    @pytest.mark.parametrize('errors,mean2,variance,share', [
+        ([2., 2.], 4., 0., 1.), ([-1., 1.], 0., 1., 0.),
+        ([1., 3.], 4., 1., .8), ([0., 0.], 0., 0., None)])
+    def test_offset_and_variance_are_distinct_raw_mse_components(errors, mean2, variance, share):
+>       result = api().residual_summary(np.array(errors), np.zeros((2, 1, 3)), ['a', 'a'])
+                 ^^^^^
+
+tests/test_capacity_spikes.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10aff8290>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_ test_offset_and_variance_are_distinct_raw_mse_components[errors3-0.0-0.0-None] _
+
+errors = [0.0, 0.0], mean2 = 0.0, variance = 0.0, share = None
+
+    @pytest.mark.parametrize('errors,mean2,variance,share', [
+        ([2., 2.], 4., 0., 1.), ([-1., 1.], 0., 1., 0.),
+        ([1., 3.], 4., 1., .8), ([0., 0.], 0., 0., None)])
+    def test_offset_and_variance_are_distinct_raw_mse_components(errors, mean2, variance, share):
+>       result = api().residual_summary(np.array(errors), np.zeros((2, 1, 3)), ['a', 'a'])
+                 ^^^^^
+
+tests/test_capacity_spikes.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10affb1a0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__ test_global_variance_keeps_between_group_means_and_unequal_group_weighting __
+
+    def test_global_variance_keeps_between_group_means_and_unequal_group_weighting():
+>       result = api().residual_summary(np.array([0., 0., 3.]), np.zeros((3, 1, 3)), ['a', 'a', 'b'])
+                 ^^^^^
+
+tests/test_capacity_spikes.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10aff9d30>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_invalid_residual_inputs_rejected[errors0-forces0-groups0] ________
+
+errors = [nan], forces = array([[[0., 0., 0.]]]), groups = ['a']
+
+    @pytest.mark.parametrize('errors,forces,groups', [
+        ([float('nan')], np.zeros((1, 1, 3)), ['a']),
+        ([1., 2.], np.zeros((1, 1, 3)), ['a', 'a']),
+        ([], np.zeros((0, 1, 3)), []),
+        ([1.], np.zeros((1, 1, 3)), [])])
+    def test_invalid_residual_inputs_rejected(errors, forces, groups):
+        with pytest.raises(ValueError):
+>           api().residual_summary(np.array(errors), forces, groups)
+            ^^^^^
+
+tests/test_capacity_spikes.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b5a08c0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_invalid_residual_inputs_rejected[errors1-forces1-groups1] ________
+
+errors = [1.0, 2.0], forces = array([[[0., 0., 0.]]]), groups = ['a', 'a']
+
+    @pytest.mark.parametrize('errors,forces,groups', [
+        ([float('nan')], np.zeros((1, 1, 3)), ['a']),
+        ([1., 2.], np.zeros((1, 1, 3)), ['a', 'a']),
+        ([], np.zeros((0, 1, 3)), []),
+        ([1.], np.zeros((1, 1, 3)), [])])
+    def test_invalid_residual_inputs_rejected(errors, forces, groups):
+        with pytest.raises(ValueError):
+>           api().residual_summary(np.array(errors), forces, groups)
+            ^^^^^
+
+tests/test_capacity_spikes.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b5a13a0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_invalid_residual_inputs_rejected[errors2-forces2-groups2] ________
+
+errors = [], forces = array([], shape=(0, 1, 3), dtype=float64), groups = []
+
+    @pytest.mark.parametrize('errors,forces,groups', [
+        ([float('nan')], np.zeros((1, 1, 3)), ['a']),
+        ([1., 2.], np.zeros((1, 1, 3)), ['a', 'a']),
+        ([], np.zeros((0, 1, 3)), []),
+        ([1.], np.zeros((1, 1, 3)), [])])
+    def test_invalid_residual_inputs_rejected(errors, forces, groups):
+        with pytest.raises(ValueError):
+>           api().residual_summary(np.array(errors), forces, groups)
+            ^^^^^
+
+tests/test_capacity_spikes.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b5a2000>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+________ test_invalid_residual_inputs_rejected[errors3-forces3-groups3] ________
+
+errors = [1.0], forces = array([[[0., 0., 0.]]]), groups = []
+
+    @pytest.mark.parametrize('errors,forces,groups', [
+        ([float('nan')], np.zeros((1, 1, 3)), ['a']),
+        ([1., 2.], np.zeros((1, 1, 3)), ['a', 'a']),
+        ([], np.zeros((0, 1, 3)), []),
+        ([1.], np.zeros((1, 1, 3)), [])])
+    def test_invalid_residual_inputs_rejected(errors, forces, groups):
+        with pytest.raises(ValueError):
+>           api().residual_summary(np.array(errors), forces, groups)
+            ^^^^^
+
+tests/test_capacity_spikes.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b5a2d20>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_inventory_rejects_omissions_extras_and_tampered_bytes __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-87/test_inventory_rejects_omissio0')
+
+    def test_inventory_rejects_omissions_extras_and_tampered_bytes(tmp_path):
+>       m = api(); root = tmp_path / 'source'; root.mkdir()
+            ^^^^^
+
+tests/test_capacity_spikes.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b5a3ec0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+_____________ test_increment_shares_stay_signed_and_can_exceed_one _____________
+
+    def test_increment_shares_stay_signed_and_can_exceed_one():
+>       m = api()
+            ^^^^^
+
+tests/test_capacity_spikes.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b58e420>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+__________ test_bias_derivative_counts_atoms_and_preserves_error_sign __________
+
+    def test_bias_derivative_counts_atoms_and_preserves_error_sign():
+>       m = api()
+            ^^^^^
+
+tests/test_capacity_spikes.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_capacity_spikes.py:17: in api
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:995: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1132: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x10b58eff0>
+path = '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/diagnose_capacity_spikes.py'
+
+<frozen importlib._bootstrap_external>:1190: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_spikes.py::test_offset_and_variance_are_distinct_raw_mse_components[errors0-4.0-0.0-1.0]
+FAILED tests/test_capacity_spikes.py::test_offset_and_variance_are_distinct_raw_mse_components[errors1-0.0-1.0-0.0]
+FAILED tests/test_capacity_spikes.py::test_offset_and_variance_are_distinct_raw_mse_components[errors2-4.0-1.0-0.8]
+FAILED tests/test_capacity_spikes.py::test_offset_and_variance_are_distinct_raw_mse_components[errors3-0.0-0.0-None]
+FAILED tests/test_capacity_spikes.py::test_global_variance_keeps_between_group_means_and_unequal_group_weighting
+FAILED tests/test_capacity_spikes.py::test_invalid_residual_inputs_rejected[errors0-forces0-groups0]
+FAILED tests/test_capacity_spikes.py::test_invalid_residual_inputs_rejected[errors1-forces1-groups1]
+FAILED tests/test_capacity_spikes.py::test_invalid_residual_inputs_rejected[errors2-forces2-groups2]
+FAILED tests/test_capacity_spikes.py::test_invalid_residual_inputs_rejected[errors3-forces3-groups3]
+FAILED tests/test_capacity_spikes.py::test_inventory_rejects_omissions_extras_and_tampered_bytes
+FAILED tests/test_capacity_spikes.py::test_increment_shares_stay_signed_and_can_exceed_one
+FAILED tests/test_capacity_spikes.py::test_bias_derivative_counts_atoms_and_preserves_error_sign
+12 failed in 0.06s

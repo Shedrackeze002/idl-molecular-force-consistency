@@ -1,0 +1,6 @@
+{
+  "design_sha256": "d9c5b564ba0771c17f7c94cbf41a7d553e8838ec39b55c657cb932a607feb96b",
+  "plan_sha256": "eb4bf915c5ca7a1efc1a7b90246a40ef8b59bd98afbf4a695cbc073ea7377e1e",
+  "clarifications": "Explicit budget start, returned versus valid work, full-state failed-path hashes, global integrity gate, fixed FD seed/zero threshold",
+  "implementation": "not_started"
+}

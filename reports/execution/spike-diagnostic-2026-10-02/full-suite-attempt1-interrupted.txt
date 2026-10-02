@@ -1,0 +1,7 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+...................................
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/lib/python3.12/site-packages/jax/_src/compiler.py:362: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+179 passed in 145.09s (0:02:25)

@@ -1,0 +1,37 @@
+........................FF                                               [100%]
+=================================== FAILURES ===================================
+_______ test_complete_prelaunch_artifact_set_required_not_supplied_only ________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-94/test_complete_prelaunch_artifa0')
+
+    def test_complete_prelaunch_artifact_set_required_not_supplied_only(tmp_path):
+        m = api(); gate = tmp_path / 'gate.json'
+        item = tmp_path / 'one'; item.write_text('ok')
+        gate.write_text(json.dumps({'status': 'verified', 'artifacts': {str(item): m.digest(item)}}))
+        with pytest.raises(ValueError, match='artifact set'):
+>           m.verify_gate({'prelaunch_gate': str(gate)})
+            ^^^^^^^^^^^^^
+E           AttributeError: module 'capacity_spikes' has no attribute 'verify_gate'
+
+tests/test_capacity_spikes.py:225: AttributeError
+_________ test_failed_case_report_keeps_rows_but_suppresses_contrasts __________
+
+tmp_path = PosixPath('/private/var/folders/f0/xgsbg4qn14s0216vw50196lh0000gn/T/pytest-of-shedrackeze/pytest-94/test_failed_case_report_keeps_0')
+
+    def test_failed_case_report_keeps_rows_but_suppresses_contrasts(tmp_path):
+        m = api(); root = tmp_path / 'run'; root.mkdir(); out = tmp_path / 'out'; out.mkdir()
+        cases = [{'name': 'a', 'width': 'width32', 'update': 3700}]
+        (root / 'a').mkdir()
+        (root / 'config.json').write_text(json.dumps({'cases': cases}))
+        (root / 'summary.json').write_text(json.dumps({'execution_valid': False, 'source_integrity': False, 'status': 'failed'}))
+        (root / 'a/summary.json').write_text('{"status":"failed","verification_valid":false}')
+        (root / 'a/observations.json').write_text('{"verification_valid":true,"value":99}')
+>       result = m.render(root, out)
+                 ^^^^^^^^
+E       AttributeError: module 'capacity_spikes' has no attribute 'render'
+
+tests/test_capacity_spikes.py:236: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_capacity_spikes.py::test_complete_prelaunch_artifact_set_required_not_supplied_only
+FAILED tests/test_capacity_spikes.py::test_failed_case_report_keeps_rows_but_suppresses_contrasts
+2 failed, 24 passed in 8.11s
