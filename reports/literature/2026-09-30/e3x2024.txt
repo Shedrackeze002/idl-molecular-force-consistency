@@ -1,0 +1,1463 @@
+                                         E3x: E(3)-Equivariant Deep Learning Made
+                                         Easy
+                                         Oliver T. Unke1 and Hartmut Maennel1
+                                         1 Google DeepMind
+
+
+
+
+                                         This work introduces E3x, a software package for building neural networks that are equivariant with
+                                         respect to the Euclidean group E(3), consisting of translations, rotations, and reflections of three–
+                                         dimensional space. Compared to ordinary neural networks, E(3)-equivariant models promise benefits
+                                         whenever input and/or output data are quantities associated with three–dimensional objects. This is
+                                         because the numeric values of such quantities (e.g. positions) typically depend on the chosen coordinate
+                                         system. Under transformations of the reference frame, the values change predictably, but the underlying
+
+
+
+
+arXiv:2401.07595v3 [cs.LG] 11 Nov 2024
+                                         rules can be difficult to learn for ordinary machine learning models. With built-in E(3)-equivariance,
+                                         neural networks are guaranteed to satisfy the relevant transformation rules exactly, resulting in superior
+                                         data efficiency and accuracy.
+                                         The code for E3x is available from https://github.com/google-research/e3x, detailed documen-
+                                         tation and usage examples can be found on https://e3x.readthedocs.io.
+
+
+                                         Introduction                                            “change accordingly” when the coordinate system
+                                                                                                 is changed. Such properties are not invariant, but
+                                         When we want to describe some geometric object          equivariant.
+                                         in space (e.g. a collection of points or a distribu-
+                                         tion of masses) with numbers, we need to choose         If we want to use a multi-layer neural network to
+                                         a reference point as origin and an orthonormal          predict such invariant or equivariant properties,
+                                         basis of vectors in 𝑥 , 𝑦 , and 𝑧 direction. This de-   we can make sure that the end result is invari-
+                                         fines a coordinate system, which identifies points      ant/equivariant by requiring that each layer in
+                                         in physical space with mathematical points in ℝ3 .      the network works with “equivariant features”
+                                         However, this coordinate system usually is arbi-        and all operations respect this equivariance. Even
+                                         trarily chosen, we could as well use any rotated        if we are only interested in end results that should
+                                         (or translated) version of it. When we process          be invariant numbers, it is often useful to use
+                                         geometric objects with a machine learning model         equivariant features as intermediates. For exam-
+                                         to extract a classification or number (for regres-      ple, consider equivariant “vector features”. To
+                                         sion tasks), the result should usually not depend       extract an invariant output from such features,
+                                         on our choice of coordinate system, so it should        we can compute their scalar (dot) product. Since
+                                         be invariant under translations, rotations, and         the dot product of two vectors contains informa-
+                                         (depending on the task), maybe also reflections.        tion about the angle between them, this allows
+                                                                                                 to efficiently resolve “angular information” in a
+                                         We may also want to extract a vector, e.g. if the       manner that would not be possible without inter-
+                                         geometric objects are cameras, we may want to           mediate equivariant features.
+                                         assign the direction in which this camera points,
+                                         or if it is a physical object, we may want to pre-      In recent years, equivariant machine learn-
+                                         dict the forces acting on it. In those cases, the       ing models 5–7,17,22 have been successfully ap-
+                                         numerical representation of the vector changes          plied in many different fields, e.g. in com-
+                                         if we e.g. rotate the coordinate system, but “in        puter vision, 4,12 mesh reconstruction, 3 and quan-
+                                         the same way” as the coordinates of the geomet-         tum chemistry. 1,2,15,18,19 However, implementing
+                                         ric objects. Similarly, we may want to extract          equivariant operations is non-trivial and can be
+                                         other properties, like the direction of a symmetry      difficult to reconcile with existing neural network
+                                         axis, or an approximating ellipsoid, which also         building blocks. In practice, this often means
+
+
+                                         Corresponding author(s): oliverunke@google.com
+                                         © 2024 Google DeepMind. All rights reserved
+                                         E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+that intuition and skills acquired by designing                      group      transformations
+ordinary neural networks do not carry over to
+                                                                      E(3)      translations, rotations, reflections
+building equivariant models, and it can be diffi-
+                                                                     SE(3)      translations, rotations
+cult to adapt an existing model architecture to
+                                                                     O(3)       rotations, reflections
+an equivariant version. In this work, we intro-
+                                                                     SO(3)      rotations
+duce E3x, a library for building E(3)–equivariant
+neural networks built on Flax, 10 with the aim to
+                                                                  Table 1 | Overview of groups and transformations
+make the construction of equivariant models intu-
+                                                                  relevant for three–dimensional objects.
+itive and simple. This is achieved by generalizing
+features and neural network building blocks to
+be equivariant in a way that allows recovering
+ordinary features and neural network behaviour
+as a limiting case.
+The “ingredients” of the above-mentioned equiv-                   bines any two elements 𝑎, 𝑏 of 𝐺 in such a way
+ariant features are discussed in detail in the Math-              that
+ematical background. This section is meant as a
+                                                                   1. 𝐺 is closed under the operation:
+self-contained introduction to the relevant math-
+                                                                      𝑎 ⊙ 𝑏 is also an element of 𝐺 ,
+ematical theory, a learning resource, and a quick
+reference for formal definitions of technical terms,               2. the operation is associative:
+such as equivariance. Readers that are already                        𝑎 ⊙ ( 𝑏 ⊙ 𝑐) = ( 𝑎 ⊙ 𝑏) ⊙ 𝑐,
+familiar with the topic, or primarily interested in                3. an identity element 𝑒 exists:
+the practical implementation, may want to skip                        𝑎 ⊙ 𝑒 = 𝑒 ⊙ 𝑎 = 𝑎,
+directly to How E3x works for an overview of how                   4. and every element 𝑎 has an inverse 𝑎−1 :
+equivariant features and operations in E3x are                        𝑎 ⊙ 𝑎 −1 = 𝑒
+designed concretely.
+                                                                  (see e.g. Chapter 1 of Ref. 11). For us, 𝐺 will
+                                                                  usually be one of the concrete groups E(3), SE(3),
+Mathematical background                                           O(3), SO(3) shown in Table 1. In particular, these
+                                                                  groups are topological groups, i.e. there is also a
+In the following, we give formal definitions for                  notion of continuous functions from 𝐺 to the real
+the most important mathematical concepts and                      numbers ℝ or to vectors or matrices (or higher-
+an overview of the theory underlying E3x. Be-                     order tensors), and with this the operation ⊙ and
+yond abstract definitions, whenever possible, we                  inverse are continuous functions.
+aim to give readers an intuitive understanding                    For example, rotations in the two–dimensional
+of the relevant concepts with concrete examples.                  plane and in three–dimensional space are the
+We also motivate why the construction of equiv-                   elements of groups called SO(2) and SO(3), re-
+ariant features leads to these concepts and why                   spectively. Rotations intuitively satisfy the four
+all information that can be contained in equivari-                required properties of a group listed above: When
+ant features can be built up from functions that                  two rotations 𝑎 and 𝑏 are applied consecutively
+are the product of a radial function and so-called                to an object, the combined transformation 𝑎 ⊙ 𝑏
+spherical harmonics.                                              is still a rotation (closure). Similarly, when apply-
+                                                                  ing a chain of multiple rotations to an object, any
+                                                                  two consecutive rotations can first be combined
+Groups and group actions
+                                                                  without changing the overall result (associativ-
+Definition A group 𝐺 is a non-empty seta                          ity). Further, there is a “rotation by zero degrees”
+equipped with a binary operation ⊙ that com-                      that does not change the orientation of objects
+                                                                  (existence of identity element) and the effect of
+   aA set is the mathematical model for a collection of things,   any rotation can be reverted by “rotating back”
+which are also called elements of the set.                        (existence of inverse element).
+
+
+                                                                                                                       2
+                                         E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+Subgroups A subset 𝐻 ⊆ 𝐺 is called a subgroup
+of 𝐺 if it is closed under the group operation and                            𝑛 ( 𝒖)                               𝑡 ( 𝒖)
+under taking inverses (thus it also contains the
+identity element), so it automatically becomes a
+group in its own right.
+For example, the planar rotations around the 𝑧–
+axis can be identified with SO(2), which is a sub-
+group of the three-dimensional rotations in SO(3).
+The rotations SO(3) are themselves a subgroup
+of O(3), which also includes rotoreflections (see
+Table 1).
+                                                                 We can easily extend 𝑛 and 𝑡 to equivariant
+                                                                 functions ℝ2 → ℝ2 , for example by using the unit
+Action of a group on a set A group 𝐺 acts on                     vector 𝒓ˆ = 𝒓 /𝑟 as input to 𝑛 or 𝑡 and scaling the re-
+a set 𝑋 , if for every 𝑔 ∈ 𝐺, 𝑥 ∈ 𝑋 we have defined              sult by the radius 𝑟 = ∥ 𝒓 ∥ (see illustrations below).
+“how to apply 𝑔 to 𝑥 ”, i.e. we have defined a 𝑔𝑥 ,
+such that for all 𝑔, ℎ ∈ 𝐺 :                                           ˜ ( 𝒓 ) B 𝑟 · 𝑛 (ˆ𝒓 )
+                                                                       𝑛                                    𝑡˜( 𝒓 ) B 𝑟 · 𝑡 (ˆ
+                                                                                                                             𝒓)
+
+
+                   ℎ ( 𝑔𝑥 ) = ( ℎ ⊙ 𝑔 ) 𝑥 .
+
+
+In other words, for every 𝑔 ∈ 𝐺 there is a map
+𝜌 ( 𝑔 ) : 𝑋 → 𝑋 such that 𝜌 ( ℎ) 𝜌 ( 𝑔 ) = 𝜌 ( ℎ ⊙ 𝑔 ).
+
+For example, the group 𝐺 = SO(3) can operate on
+𝑋 = ℝ3 . The map 𝜌 ( 𝑔 ) : ℝ3 → ℝ3 would assign
+any vector 𝒓 ∈ ℝ3 to the corresponding rotated
+vector.
+                                                                 More generally, we can use any continuous func-
+                                                                 tions of the radius 𝑎, 𝑏 : ℝ ≥0 → ℝ satisfying
+                                                                 𝑎 (0) = 𝑏 (0) = 0b to define an equivariant contin-
+Equivariance Let a group 𝐺 act on the sets 𝑋                     uous function 𝑓 : ℝ2 → ℝ2 as
+and 𝑌 . A map 𝑓 : 𝑋 → 𝑌 is called equivariant if
+𝑓 ( 𝑔𝑥 ) = 𝑔 ( 𝑓 ( 𝑥 )) for all 𝑔 ∈ 𝐺 , 𝑥 ∈ 𝑋 , 𝑓 ( 𝑥 ) ∈ 𝑌 .                𝑓 ( 𝒓 ) B 𝑎 ( 𝑟 ) · 𝑛 (ˆ
+                                                                                                    𝒓 ) + 𝑏 ( 𝑟 ) · 𝑡 (ˆ
+                                                                                                                       𝒓) .       (1)
+In other words, it does not matter whether a
+group element acts on the input or output of an                  In fact, any continuous SO(2)–equivariant func-
+equivariant function, the result will be the same.               tion 𝑓 : ℝ2 → ℝ2 can be written in this form.
+For example, consider the group 𝐺 = SO(2). The                   For example, we might have an equivariant func-
+functions                                                        tion that, close to the origin, maps points to short
+                                                                 vectors pointing in radial direction and smoothly
+                   𝑥
+                                               
+                                                     −𝑦
+                                                                transitions to longer vectors rotated clockwise (in
+      𝑛 ( 𝒖) B 𝜆 ·         and 𝑡 (𝒖) B 𝜆 ·                       relation to the radial direction) further from the
+                   𝑦                                 𝑥
+                                                                 origin. We can choose 𝑎, 𝑏 in (1) such that the
+                                                                 desired behaviour is satisfied for points in a spe-
+(with some fixed 𝜆 ≠ 0 ∈ ℝ) are examples of
+equivariant functions 𝕊1 → ℝ2 . Here, 𝑛 maps                        b The requirement 𝑎 (0) = 𝑏 (0) = 0 is necessary for our
+
+points 𝒖 = [ 𝑥 𝑦 ] ⊺ on the unit circle 𝕊1 to vectors            formula, because the unit vector 𝒓ˆ is undefined for 𝒓 = 0.
+                                                                 But also, any equivariant continuous function 𝑓 : ℝ2 → ℝ2
+𝒓 ∈ ℝ2 of length 𝜆 pointing in radial (normal)
+                                                                 must map the zero vector to itself, since for any rotation
+direction, whereas 𝑡 maps 𝒖 to vectors pointing                  𝑔 ∈ SO(2) we have 𝑔 0 = 0, so we must have 𝑔 ( 𝑓 (0)) = 𝑓 (0)
+in tangential direction (see illustrations below).               and this is only possible for 𝑓 (0) = 0.
+
+
+
+                                                                                                                                   3
+                                        E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+cific direction, e.g. for those on the right half of              4. every vector 𝒖 has an additive inverse −𝒖:
+the 𝑥 –axis. Then, 𝑓 ( 𝒓 ) also must have the desired                𝒖 + (−𝒖) = (−𝒖) + 𝒖 = 0,
+behavior for all other points by equivariance (see                5. and the scalar multiplication satisfies:
+illustration below).                                                 𝑎 ( 𝒖 + 𝒗) = 𝑎𝒖 + 𝑎𝒗,
+                                                                     ( 𝑎 + 𝑏) 𝒖 = 𝑎𝒖 + 𝑏𝒖,
+                                                                     ( 𝑎𝑏) 𝒖 = 𝑎 ( 𝑏𝒖), and
+                                                                     1𝒖 = 𝒖
+                                                                 (see e.g. Chapter 1 of Ref. 13).
+                                                                 For example, as suggested by the name, the fa-
+                                                                 miliar two–dimensional vectors in the plane or
+                                                                 the three–dimensional vectors in space form the
+                                                                 vector spaces ℝ2 and ℝ3 . More generally, we have
+                                                                 the vector spaces ℝ𝑛 for any positive integer 𝑛. In
+Later, we use a similar construction to describe
+                                                                 fact, the “vectors” may be objects which we do
+SO(3)–equivariant features on ℝ3 by equivariant
+                                                                 not typically think of as vectors, e.g. 3 × 3 matri-
+functions on the three–dimensional unit sphere
+                                                                 ces, or even functions (such as polynomials), as
+𝕊2 ⊂ ℝ3 and radial functions ℝ ≥0 → ℝ.
+                                                                 long as the vector space axioms listed above are
+Note that in (1), we multiplied 𝑛 (ˆ𝒓 ) and 𝑡 (ˆ𝒓 ) with         satisfied.
+scalars 𝑎 ( 𝑟 ) and 𝑏 ( 𝑟 ) and added them together.
+                                                                 It can be shown that any vector space has a basis,
+For such expressions to make sense, the equivari-
+                                                                 i.e. a set of vectors 𝒆𝑖 such that any vector can
+ant feature values 𝑓 ( 𝒓 ) must have the structure of
+                                                                 be written as a linear combination of these basis
+a vector space, which is defined in the next section.
+                                                                 vectors in a unique way. While there are many
+To formally show that (1) defines an equivariant
+                                                                 different ways to choose such a basis set, it can be
+function, we would use that group elements 𝑔 ∈ 𝐺
+                                                                 shown that the number of basis vectors is always
+act on this vector space by linear maps. Actions
+                                                                 the same, it is called the dimension of the vector
+of a group on a vector space by linear maps are
+                                                                 space 𝑉 and denoted dim(𝑉 ). For example, the di-
+called representations, which we study in detail
+                                                                 mension of the vector space of 3 × 3 matrices is 9d
+after the next section.
+                                                                 (an explicit basis is given later in the text). Once
+                                                                 a basis 𝒆1 , . . . , 𝒆𝑛 for an abstract 𝑛–dimensional
+Vector spaces                                                    vector space 𝑉 is chosen, we can write any vector
+                                                                 𝒗 ∈ 𝑉 as a linear combination of the basis vectors
+Definition A vector space 𝑉 is a non-empty set                   as
+whose elements (called vectors) may be added                                                   𝑛
+                                                                                              ∑︁
+together and multiplied by numbers (scalars),                                             𝒗=     𝑐 𝑖 𝒆𝑖 .          (2)
+satisfying the following requirements (also called                                           𝑖=1
+
+vector space axioms) for all vectors 𝒖, 𝒗, 𝒘 ∈ 𝑉                 By “collecting the values of the coefficients” 𝑐𝑖 , we
+and scalars 𝑎, 𝑏 ∈ ℝ:c                                           can then identify the abstract vector 𝒗 ∈ 𝑉 with
+                                                                 the concrete column vector [ 𝑐1 · · · 𝑐𝑛 ] ⊺ ∈ ℝ𝑛 (an
+ 1. Vector addition is associative:
+                                                                 array of 𝑛 numbers).
+    𝒖 + ( 𝒗 + 𝒘) = ( 𝒖 + 𝒗) + 𝒘,
+ 2. vector addition is commutative:
+    𝒖 + 𝒗 = 𝒗 + 𝒖,                                               Linear maps A function 𝑓 that maps vectors
+ 3. there exists a zero vector 0:                                𝒗 ∈ 𝑉 to the real numbers ℝ (or to another vector
+    𝒖 + 0 = 0 + 𝒖 = 𝒖,                                              d There are also vector spaces with infinite dimensions,
+                                                                 for example, the vector space of all polynomials 𝑖 𝑐𝑖 𝑥 𝑖 in
+                                                                                                                      Í
+   c In general, vector spaces may be defined on any field 𝐹 ,   one variable 𝑥 (a basis would be given by 𝒆𝑖 B 𝑥 𝑖 ). However,
+not just the real numbers 𝐹 = ℝ (e.g. the complex numbers        for our purposes only finite–dimensional vector spaces are
+𝐹 = ℂ would also work). However, for our purposes, the           relevant, e.g. the vector space of polynomials of a fixed
+restriction to real vector spaces is sufficient.                 degree.
+
+
+
+                                                                                                                             4
+                                          E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+space) is called linear if                                        vector space ℝ𝑛 is also called the representation
+                                                                  space.
+  𝑓 ( 𝒗 + 𝒘) = 𝑓 ( 𝒗 ) + 𝑓 ( 𝒘 )   and      𝑓 ( 𝑎𝒗) = 𝑎 𝑓 ( 𝒗)
+                                                                  The groups SO(3) and O(3) are already given as
+for all vectors 𝒗, 𝒘 ∈ 𝑉 and numbers 𝑎 ∈ ℝ. For                   sets of 3 × 3 matrices, so they come with a “canon-
+example, taking the trace of a 3 × 3 matrix, or                   ical” representation on ℝ3 .e Also, every group
+the derivative of a polynomial, are both linear                   has a “trivial” representation on ℝ, which assigns
+operations that can be written in this way.                       the identity 1 × 1 matrix to all group elements.
+                                                                  There are also more interesting representations
+If we identify abstract vectors in 𝑉 with concrete                of SO(3) and O(3), which are introduced later in
+vectors in ℝ𝑛 , then linear functions 𝑓 : ℝ𝑛 → ℝ𝑚                 the text.
+can be written as 𝑚 × 𝑛 matrices. Thus, any ab-
+stractly given vectors or linear maps can be “trans-              To avoid confusion, we want to stress that when
+lated” to concrete column vectors or matrices. So                 talking about the “dimension of a representation”,
+in a way, the abstract notions of vector spaces and               we always refer to the number 𝑛, the dimension
+linear maps “do not give anything new” beyond                     of the representation space ℝ𝑛 . However, there
+arrays of numbers. However, when working with                     are also other dimensions at play. For example,
+concrete arrays of numbers, the resulting formu-                  𝑛 × 𝑛 matrices of course also form a vector space of
+las may appear quite complicated and obscure                      dimension 𝑛2 . Further, the manifold 𝜌 (𝐺 ) ⊂ ℝ𝑛× 𝑛
+simple arguments and structures, so we choose                     of actually occurring matrices 𝜌 ( 𝑔 ) can have any
+to formulate the theory primarily in the more                     dimension between 0 and 𝑛2 . For example, for the
+conceptual/abstract language.                                     𝑛–dimensional representation of any group 𝐺 that
+                                                                  maps every 𝑔 ∈ 𝐺 to the 𝑛 × 𝑛 identity matrix 𝑰 𝑛 ,
+                                                                  the manifold of actually occurring matrices has
+Representations                                                   dimension 0 (all group elements are mapped to a
+                                                                  “single point” in the space of 𝑛 × 𝑛 matrices).
+As mentioned at the end of the section on groups,
+the equivariant features used in E3x are elements                 Before we get to the promised more interesting
+of vector spaces, and groups such as SO(3) act                    representations, we formulate the more general
+on these vector spaces by linear maps called rep-                 and abstract version of our definition.
+resentations. We first give a definition of a rep-
+resentation in matrix form for concrete vector
+spaces ℝ𝑛 , and then a more general definition                    Definition 2 A (linear, continuous, finite–
+of representations for arbitrary (abstract) vector                dimensional)f representation of a group 𝐺 is a
+spaces 𝑉 .                                                        continuous function from 𝐺 to the invertible lin-
+                                                                  ear maps from a finite–dimensional vector space
+                                                                  𝑉 into itself, such that again for all 𝑔, ℎ ∈ 𝐺
+Definition 1 An 𝑛–dimensional matrix represen-
+tation 𝜌 of a group 𝐺 on the vector space ℝ𝑛 is a                                   𝜌 ( 𝑔 ) 𝜌 ( ℎ) = 𝜌 ( 𝑔 ⊙ ℎ)
+continuous function from 𝐺 to invertible square
+matrices ∈ ℝ𝑛× 𝑛 such that for all 𝑔, ℎ ∈ 𝐺                       (see e.g. 0.4 in Ref. 21).
+                  𝜌 ( 𝑔 ) 𝜌 ( ℎ) = 𝜌 ( 𝑔 ⊙ ℎ)                        eWhen 𝑔 ∈ SO(3) or 𝑔 ∈ O(3) is used in equations, this
+                                                                  canonical representation, a 3 × 3 matrix, is often meant
+(see e.g. 0.3 in Ref. 21).                                        implicitly. For example, we use this notation in (3).
+                                                                      f Usually, the “linear” is implied when only “representa-
+In other words, the representation 𝜌 maps group                   tion” is said, although there also exist “projective” represen-
+elements to square matrices such that the group                   tations. Similarly, when the group has a topological struc-
+operation ⊙ can be expressed by matrix multipli-                  ture, also “continuous” is usually silently assumed. For gen-
+                                                                  eral groups 𝐺 , there are also important infinite–dimensional
+cation. Similarly, the result of applying a transfor-             representations, but for compact groups 𝐺 they can all be
+mation associated with a group element 𝑔 to an                    assembled from finite–dimensional ones. So for compact
+element 𝒓 ∈ ℝ𝑛 can be expressed as 𝜌 ( 𝑔 ) 𝒓 . The                groups, often “finite–dimensional” is also silently assumed.
+
+
+
+                                                                                                                               5
+                                   E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+This is almost the same as Definition 1, but now in-       for 𝑔 ∈ SO(3) (this is a representation of dimen-
+stead of the concrete vector space ℝ𝑛 , we allow an        sion 9).g
+𝑛–dimensional vector space 𝑉 that could be given
+                                                           The notation used here may be confusing, so for
+in some other, more abstract way. Of course, we
+                                                           clarity, we want to explain “how to read” (3) and
+could find a basis of 𝑉 and write the maps 𝑉 → 𝑉
+                                                           how it relates to the two definitions given above.
+as matrices in this basis, which would lead us back
+                                                           In this case, the representation is defined (in ac-
+to our first definition. However, the advantage of
+                                                           cordance with Definition 2) as the linear map
+the second definition is that we can think about                                                    ⊺
+                                                           𝜌 ( 𝑔 ) 𝑴 that is computed as 𝑔𝑴𝑔 , meaning “ 𝑴 is
+the concept of a representation without having to
+                                                           (matrix) multiplied from the left with 𝑔 and from
+think about (or specify) a concrete basis, which
+                                                           the right with 𝑔 ⊺ ”, where 𝑔 and 𝑔 ⊺ are the canon-
+may be extra work and only obscure the questions
+                                                           ical representations (3 × 3 matrices) of the group
+we are interested in.
+                                                           element 𝑔 and its transpose 𝑔 ⊺ . To “translate” to
+When talking about representations, we may use             Definition 1, we have to specify a basis 𝒆1 , . . . , 𝒆9
+the expressions “a representation of 𝐺 on 𝑉 ” or           for 𝑉 . For example:
+“a 𝐺 –representation on 𝑉 ” interchangeably (they                     h1 0 0i          h0 1 0i           h0 0 1i
+are synonymous). Further, if we talk about rep-                 𝒆1 = 0 0 0         𝒆2 = 0 0 0        𝒆3 = 0 0 0
+resentations on different vector spaces 𝑉 and 𝑊                       h 00 00 00 i     h 00 00 00 i      h 00 00 00 i
+                                                                𝒆4 = 1 0 0         𝒆5 = 0 1 0        𝒆6 = 0 0 1
+in the same context, we may refer to them as 𝜌𝑉
+                                                                      h 00 00 00 i     h 00 00 00 i      h 00 00 00 i
+and 𝜌𝑊 , respectively (to make clear which 𝜌 we                 𝒆7 = 0 0 0         𝒆8 = 0 0 0        𝒆9 = 0 0 0 .
+are talking about). Finally, since a representation                       100                              010                               001
+𝜌 is always defined on some vector space 𝑉 , when          Then, any (real) 3 × 3 matrix can be written as
+talking about the concept of a representation, the
+                                                                                                           9
+notation ( 𝜌, 𝑉 ) is most precise. However, it is also                                                    ∑︁
+                                                                                              𝑴=                 𝑐 𝑖 𝒆𝑖 ,                                     (4)
+common in the literature to refer to 𝜌 or 𝑉 alone
+                                                                                                          𝑖=1
+as “representation” if what is meant is clear from
+context (and we do so as well).                            where the 𝑐𝑖 ∈ ℝ are coefficients. Written in this
+                                                           form, it becomes clear that we could also specify
+For us, the importance of representations is that          𝑴 as a 9–dimensional column vector containing
+they define what an equivariant feature with val-          the coefficients 𝑐𝑖 as entries, i.e. [ 𝑐1 · · · 𝑐9 ] ⊺ ∈
+ues in a vector space is. Note that if we have an          ℝ9 . Then, the 9 × 9 matrix representation of 𝐺
+equivariant function 𝑓 : 𝑉 → 𝑊 , there is at most          (following Definition 1) can be chosen to “have
+one permissible representation of 𝐺 on the span            the same effect” as (3) on this vector, namely
+of 𝑓 (𝑉 ), i.e. if the vector space is not “unnecessar-
+ily large” (meaning the image points of 𝑓 would
+                                                                              h 𝜚 1 𝜚2 𝜚3 i h 𝜚 1 𝜚2 𝜚3 i
+                                                             𝜌 ( 𝑔 ) B 𝑔 ⊗ 𝑔 = 𝜚𝜚4 𝜚𝜚5 𝜚𝜚6 ⊗ 𝜚𝜚4 𝜚𝜚5 𝜚𝜚6
+only span a smaller subspace), the action of 𝐺 on                                               7     8    9                7     8    9
+                                                                      𝜚𝜚14 𝜚𝜚11 𝜚𝜚25 𝜚𝜚11 𝜚𝜚36 𝜚𝜚11 𝜚𝜚14 𝜚𝜚22 𝜚𝜚25 𝜚𝜚22 𝜚𝜚36 𝜚𝜚22 𝜚𝜚14 𝜚𝜚33 𝜚𝜚25 𝜚𝜚33 𝜚𝜚36 𝜚𝜚33 
+𝑊 is already determined by 𝑓 . However, the fact                      𝜚7 𝜚1 𝜚8 𝜚 1 𝜚 9 𝜚1 𝜚7 𝜚2 𝜚8 𝜚 2 𝜚 9 𝜚2 𝜚 7 𝜚3 𝜚8 𝜚 3 𝜚9 𝜚 3 
+that there must exist a representation of 𝐺 on 𝑊
+                                                                      𝜚1 𝜚 4 𝜚2 𝜚 4 𝜚 3 𝜚4 𝜚1 𝜚5 𝜚2 𝜚 5 𝜚 3 𝜚5 𝜚 1 𝜚 𝜚2 𝜚 𝜚3 𝜚 
+                                                                                                                                           6         6         6
+                                                                   =  𝜚𝜚4 𝜚𝜚4 𝜚𝜚5 𝜚𝜚4 𝜚𝜚6 𝜚𝜚4 𝜚𝜚4 𝜚𝜚5 𝜚𝜚5 𝜚𝜚5 𝜚𝜚6 𝜚𝜚5 𝜚𝜚4 𝜚𝜚6 𝜚𝜚5 𝜚𝜚6 𝜚𝜚6 𝜚𝜚6 
+                                                                     
+that makes 𝑓 equivariant is a strong restriction                          7    4    8    4    9    4    7    5
+                                                                      𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚 𝜚6 𝜚 𝜚 6 𝜚 𝜚6   8    5    9    5    7         8         9
+                                                                      𝜚1 𝜚 7 𝜚 2 𝜚7 𝜚3 𝜚7 𝜚1 𝜚 8 𝜚2 𝜚8 𝜚 3 𝜚8 𝜚1 𝜚9 𝜚2 𝜚 9 𝜚 3 𝜚9 
+on 𝑓 .                                                                𝜚4 𝜚 7 𝜚 5 𝜚7 𝜚6 𝜚7 𝜚4 𝜚 8 𝜚5 𝜚8 𝜚 6 𝜚8 𝜚4 𝜚 9 𝜚5 𝜚9 𝜚 6 𝜚9 
+                                                                      7 7 8 7 9 7 7 8 8 8 9 8 7 9 8 9 9 9
+                                                           where the 𝜚1 , . . . , 𝜚9 are the entries of the canoni-
+                                                           cal representation of 𝑔 (also a 3 × 3 matrix), using
+Example 1: Matrices As a first example of a                the same basis as in (4). This example also il-
+higher–dimensional representation of 𝐺 = SO(3),            lustrates why it can be more convenient to work
+consider as representation space the vector space          with Definition 2 when talking about the theory
+𝑉 of 3 × 3 matrices 𝑴 . Then, a representation             (although for practical computations, Definition 1
+( 𝜌, 𝑉 ) is given by                                       may be preferable).
+                                                              g Since all 𝑔 ∈ SO(3) are orthogonal matrices, inverting
+                                                           the matrix representing 𝑔 is the same as taking its transpose,
+                                        ⊺
+             𝜌 ( 𝑔 ) 𝑴 B 𝑔𝑴𝑔 −1 = 𝑔𝑴𝑔              (3)     i.e. 𝑔 −1 = 𝑔 ⊺ .
+
+
+
+                                                                                                                                                                     6
+                                              E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+Example 2: Polynomials As a second exam-                                  Since symmetric matrices can be written as e.g.
+ple of a higher–dimensional representation of                                          h1 0 0i          h0 0 0i          h0 0 0i
+𝐺 = SO(3), consider functions on the three–                                   𝑺 = 𝑐1    000      + 𝑐2    010      + 𝑐3    000
+                                                                                        000              000              001
+dimensional unit sphere 𝕊2 ⊂ ℝ3 . If we restrict                                              h0 1 0i          h0 0 1i          h0 0 0i
+them to functions that can be given as polynomi-                                       + 𝑐4    100      + 𝑐5    000      + 𝑐6    001      ,
+                                                                                               000              100              010
+als in 𝑥, 𝑦, 𝑧 (the Cartesian coordinates of a point
+on the sphere) with degree ≤ ℓ, this is a finite–                         and anti–symmetric matrices as e.g.
+dimensional vector space. Since the elements of                                         h0 0 0i           h 0 0 −1 i           h 0 1 0i
+𝐺 map points on 𝕊2 again into points of 𝕊2 , we                               𝑨 = 𝑐1     0 0 1     + 𝑐2    00 0        + 𝑐3     −1 0 0    ,
+can define a representation of 𝐺 on this space of                                        0 −1 0            10 0                 0 00
+
+functions 𝑓 : 𝕊2 → ℝ as
+                                                                          respectively, they are representations of dimen-
+                                                                        sions 6 and 3. Further, also the subspace of trace-
+               𝜌 ( 𝑔 ) 𝑓 B 𝒓 ↦→ 𝑓 ( 𝑔 −1 𝒓 ) ,   (5)                      less symmetric matrices is an invariant subspace,
+                                                                          which gives a representation of dimension 5.j
+where 𝒓 = [ 𝑥 𝑦 𝑧] ⊺ ∈ 𝕊2 is a point on the sphere
+and 𝑔 ∈ 𝐺 is an element of the group.h
+This example is the basis of “harmonic analy-                             Isomorphisms We can ask when two represen-
+sis on the sphere 𝕊2 ⊂ ℝ3 ”, which is a higher–                           tations are “essentially the same”, i.e. differ only
+dimensional analogue to the Fourier analysis of                           “by the name of the vectors” (meaning the ele-
+periodic functions (i.e. functions on the circle 𝕊1 ).                    ments of the representation space). This is cap-
+It can be applied e.g. to the study of polynomi-                          tured in the definition of an isomorphism between
+                                                                          𝐺 –representations ( 𝜌𝑉 , 𝑉 ) and ( 𝜌𝑊 , 𝑊 ). The rep-
+als on ℝ3 : A polynomial on ℝ3 decomposes into
+a sum of homogeneous polynomials,i which are                              resentations ( 𝜌𝑉 , 𝑉 ) and ( 𝜌𝑊 , 𝑊 ) are called iso-
+already determined by their values on 𝕊2 .                                morphic if there is a linear bijectionk 𝑓 : 𝑉 → 𝑊
+                                                                          between the vector spaces 𝑉 and 𝑊 such that
+
+Invariant subspaces If we have a representa-                                               𝑓 ( 𝜌𝑉 ( 𝑔 ) 𝒗) = 𝜌𝑊 ( 𝑔 ) 𝑓 ( 𝒗)
+tion ( 𝜌, 𝑉 ) of a group 𝐺 and a subspace 𝑊 ⊆ 𝑉
+that is mapped to itself by all 𝜌 ( 𝑔 ), we call 𝑊 an                     for all 𝑔 ∈ 𝐺, 𝒗 ∈ 𝑉, 𝑓 ( 𝒗) ∈ 𝑊 . If a linear bijection
+invariant subspace. In this case, the restriction of                       𝑓 : 𝑉 → 𝑊 with this property exists, we write
+the linear map 𝜌 ( 𝑔) : 𝑉 → 𝑉 to the subspace 𝑊                           ( 𝜌𝑉 , 𝑉 ) ≃ ( 𝜌𝑊 , 𝑊 ), meaning ( 𝜌𝑉 , 𝑉 ) and ( 𝜌𝑊 , 𝑊 )
+gives again a representation (on 𝑊 ).                                     are “equal up to isomorphism”.
+
+To give an example for invariant subspaces, con-                          Of course, two isomorphic representations must
+sider the 9–dimensional SO(3)–representation on                           have the same dimension, but the converse is
+the space of 3 × 3 matrices discussed in Exam-                            not true: The canonical representation of SO(3)
+ple 1. In (3), the symmetric and anti–symmetric                           on ℝ3 is not isomorphic to the one that always
+matrices form such invariant subspaces, because a                         assigns the 3 × 3 identity matrix, although both
+symmetric matrix 𝐴 = 𝐴 ⊺ is mapped by 𝜌 ( 𝑔) , 𝑔 ∈                        use the same 3–dimensional representation space
+               ⊺      ⊺ ⊺ ⊺         ⊺ ⊺
+𝑆𝑂 (3) to 𝑔 𝐴𝑔 = ( 𝑔 𝐴 𝑔 ) = ( 𝑔 𝐴𝑔 ) and sim-                            ℝ3 . However, we can say that the 3–dimensional
+ilarly for an anti–symmetric matrix 𝐴 = − 𝐴 ⊺ .                           representation on anti–symmetric 3 × 3 matrices
+   h It may not be immediately obvious why 𝑔 −1 (instead of                   j For a symmetric matrix to have trace 0, it must be that
+𝑔 ) has to be used on the right side in (5): Recall from the              𝑐3 = −( 𝑐1 + 𝑐2 ), hence the subspace has only dimension 5
+definition of a representation at the start of this section that          (only five 𝑐𝑖 can be chosen freely). However, giving an explicit
+𝜌 ( 𝑔 ) 𝜌 ( ℎ) = 𝜌 ( 𝑔 ⊙ ℎ) must be true for all 𝑔, ℎ ∈ 𝐺 . If 𝑔 −1 was   basis is slightly more involved than for symmetric and anti–
+replaced by 𝑔 in (5), we would instead get 𝜌 ( 𝑔 ) 𝜌 ( ℎ) = 𝜌 ( ℎ ⊙       symmetric matrices and is therefore postponed until later
+𝑔 ) (⊙ is not necessarily commutative, e.g. if ⊙ represents               in the text.
+matrix multiplication).                                                       kA bijective mapping 𝑓 : 𝐴 → 𝐵 between two sets 𝐴 and
+      i Homogeneous polynomials only contain non-zero terms               𝐵 means that there is a one-to-one correspondence between
+of the same degree, e.g. 𝑥 2 + 2𝑥 𝑦 is homogeneous, but                   elements of 𝐴 and elements of 𝐵, i.e. every element 𝑏 ∈ 𝐵 is
+3 𝑦 2 + 𝑥 is not.                                                         the image of exactly one element 𝑎 ∈ 𝐴.
+
+
+
+                                                                                                                                              7
+                                             E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+discussed before is isomorphic to the canonical                      Definition A representation on 𝑉 that has no in-
+representation: An isomorphism is given by                           variant subspaces except {0}l and 𝑉 itself is called
+                                                                     irreducible. In particular, irreducible representa-
+                 0   𝑧 − 𝑦    𝑥                                 tions (irreps) cannot be written as a direct sum
+                 − 𝑧 0                                      (6)     of smaller representations.
+                                 
+                         𝑥  ↦→  𝑦  .
+                             
+                  𝑦 −𝑥 0 
+                 
+                                 𝑧
+                                                                 For example, recall that for the 9–dimensional
+                                                                     SO(3)–representation on the space of 3 × 3 ma-
+Also, the representation on all functions on the                     trices (see Example 1), symmetric and anti–
+sphere 𝕊2 ⊂ ℝ3 that can be given by homoge-                          symmetric matrices form invariant subspaces.
+neous polynomials of degree 2 in 𝑥, 𝑦, 𝑧 (see Ex-                    Thus, the representation can be written as
+ample 2) is isomorphic to the 6–dimensional rep-                     the direct sum of the 6–dimensional and 3–
+resentation on symmetric 3 × 3 matrices. An iso-                     dimensional subrepresentations of symmetric and
+morphism is given by                                                 anti–symmetric matrices. Further, the symmet-
+                                                                     ric matrices can be written as a direct sum of the
+                                                                     1–dimensional subspace ℝ· 𝑰 3 ( 𝑰 3 denotes the 3×3
+                                        
+                                     ⊺
+                    𝑺 ↦→ 𝒓 ↦→ 𝒓 𝑺𝒓 ,                         (7)
+                                                                     identity matrix) and the 5–dimensional subspace
+                                                                     of traceless symmetric matrices. Together, this
+where 𝒓 = [ 𝑥 𝑦 𝑧 ] ⊺ . This means that the symmet-
+                                                                     gives that the 9–dimensional representation in (3)
+ric matrix
+                         𝑐1 𝑐4 𝑐5                                  is the direct sum of (irreducible) representations
+                                                                   of dimensions 1, 3, and 5.
+                 𝑺 = 𝑐4 𝑐2 𝑐6 
+                         𝑐5 𝑐6 𝑐3 
+                                                                   One can show that for “compact groups” (which
+                                                                     include SO(3) and O(3), but not SE(3) and E(3),
+is mapped to the polynomial                                          see Table 1), every linear, finite–dimensional rep-
+                                                                     resentation can be written as a direct sum of ir-
+   𝑓 ( 𝑥, 𝑦, 𝑧 ) = 𝑐1 · 𝑥 2 + 𝑐2 · 𝑦 2 + 𝑐3 · 𝑧 2                    reducible representations (see e.g. Theorem 2 in
+                      + 2𝑐4 · 𝑥 𝑦 + 2𝑐5 · 𝑥𝑧 + 2𝑐6 · 𝑦𝑧 .            chapter 2.5 of Ref. 21 and its corollary).
+
+
+Decomposition into irreducible components
+                                                                     SO(3)–equivariant features Recall that our
+Given two matrix representations (Definition 1)
+                                                                     goal is to describe equivariant features, and we
+𝜌𝑊1 on 𝑊1 = ℝ𝑚 and 𝜌𝑊2 on 𝑊2 = ℝ𝑛 , the com-
+                                                                     said that our features 𝑓 : ℝ3 → 𝑉 take values in
+bined representation on the concatenated tuples
+                                                                     a vector space 𝑉 on which e.g. the group SO(3)
+of numbers 𝑉 = ℝ𝑚+𝑛 is called a direct sum repre-
+                                                                     acts as a linear representation. Similar to the
+sentation, which we write as 𝑉 = 𝑊1 ⊕ 𝑊2 . The
+                                                                     construction we used for SO(2)–equivariant func-
+corresponding 𝜌𝑉 ( 𝑔 ) are block diagonal matri-
+                                                                     tions (see Equivariance), we can again reduce this
+ces composed of an 𝑚 × 𝑚 block 𝜌𝑊1 ( 𝑔 ) and an
+                                                                     to studying SO(3)–equivariant functions on the
+𝑛 × 𝑛 block 𝜌𝑊2 ( 𝑔 ).
+                                                                     three–dimensional unit sphere 𝑏1 , . . . , 𝑏𝑛 : 𝕊2 →
+More generally, for a linear representation on 𝑉                     𝑉 , and combining them with radial functions
+(Definition 2) and two invariant subspaces                           𝑎1 , . . . , 𝑎𝑛 : ℝ ≥0 → ℝ (with 𝑎𝑖 (0) = 0). Thus,
+𝑊1 , 𝑊2 ⊆ 𝑉 , we say 𝑉 is the direct sum of 𝑊1 and                   all SO(3)–equivariant functions can be written as
+𝑊2 if every vector 𝒗 ∈ 𝑉 can be uniquely writ-
+ten as 𝒗 = 𝒘1 + 𝒘2 with 𝒘1 ∈ 𝑊1 and 𝒘2 ∈ 𝑊2 .                                                   𝑛
+                                                                                               ∑︁
+As a consequence, a basis 𝒆1 , . . . , 𝒆𝑚 of 𝑊1 and                                  𝑓 (𝒓) B         𝑎𝑖 ( 𝑟 ) · 𝑏𝑖 (ˆ
+                                                                                                                    𝒓) ,    (8)
+𝒆𝑚+1 , . . . , 𝒆𝑚+𝑛 of 𝑊2 then give a basis 𝒆1 , . . . , 𝒆𝑚+𝑛                                  𝑖=1
+of 𝑉 , leading back to the definition for matrix rep-
+resentations (see above). This can be generalized                        l Since the subspace {0} (that contains only the zero
+in the obvious way to direct sums of more than                       vector 0) is always mapped to itself by any linear map, {0}
+two subrepresentations.                                              is always a “trivial” subspace of any vector space 𝑉 .
+
+
+
+                                                                                                                              8
+                                           E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+where 𝒓 ∈ ℝ3 , 𝑟 = ∥ 𝒓 ∥, and 𝒓ˆ = 𝒓 /𝑟 .m                           mension 1, 3, 5, . . . and only one equivariant map
+                                                                     𝕊2 → 𝑉 (up to scalar multiples), which is given by
+In the case of 𝐺 = SO(2) and the canonical rep-
+                                                                     the so-called spherical harmonics 𝑌ℓ : 𝕊2 → ℝ2ℓ+1 ,
+resentation on ℝ2 , the functions 𝑛 and 𝑡 , giving
+                                                                     which are discussed in detail later in the text. This
+vectors in radial/normal and in tangential direc-
+                                                                     means that all information an equivariant feature
+tion to the circle, are a basis for equivariant func-
+                                                                     could contain is already encoded in features of
+tions 𝑓 : 𝕊1 → ℝ2 . In three dimensions, how-
+                                                                     the form 𝑎 ( 𝑟 ) · 𝑌ℓ (ˆ𝒓 ), which are the basis of the
+ever, while we can specify vectors in the radial
+                                                                     geometric features in E3x.
+direction, there are no vectors in the tangential
+direction that could be values of an equivariant
+function 𝑓 : 𝕊2 → ℝ3 . To see why this is the case,                  Irreducible representations of SO(3) As
+consider that there is just one possible tangen-                     stated above, irreducible representations of
+tial direction for each point on the circle 𝕊1 , but                 SO(3) on ℝ𝑛 exist only for odd dimensions
+there are infinitely many possible tangential direc-                 𝑛 = 2ℓ + 1, where ℓ can be any positive integer or
+tions for each point on the sphere 𝕊2 . It might be                  zero and is called the degree of the representation.
+tempting to just pick one of these directions, but                   These occur naturally on 𝕊2 : Consider the vector
+this would violate equivariance as follows: Pick                     space 𝑃 ℓ of homogeneous polynomials of degree
+rotations around a specific axis, e.g. the 𝑥 –axis.                  ℓ in variables 𝑥 , 𝑦 , and 𝑧 as a representation of
+Since rotations around the 𝑥 –axis leave the point                   SO(3) with the group action given by (5). The
+[1 0 0] ⊺ fix, also the value of any equivariant func-               polynomial 𝑟 2 = 𝑥 2 + 𝑦 2 + 𝑧2 is identically 1 on
+tion 𝕊2 → 𝑉 at [1 0 0] ⊺ must remain fixed under                     the unit sphere 𝕊2 , so multiplication with 𝑟 2
+𝜌 ( 𝑔 ) for all rotations 𝑔 around the 𝑥 –axis. But any              gives an equivariant map 𝑃 ℓ → 𝑃 ℓ+2 . There is
+tangential direction we could pick at the point                      a natural scalar product on these vector spaces
+[1 0 0] ⊺ would necessarily rotate when we rotate                    of polynomials that is invariant under rotations,
+around the 𝑥 –axis, thus it cannot be a function                     and under which the adjoint of the operators
+value for an equivariant function.                                   “multiplying with 𝑥 , 𝑦 , 𝑧” are the operators 𝜕𝑥𝜕 ,
+                                                                       𝜕
+                                                                         , 𝜕 .n It follows that the adjoint operator of
+If a representation on 𝑉 is reducible, i.e.                           𝜕𝑦 𝜕𝑧
+
+𝑉 ≃ 𝑉1 ⊕ · · · ⊕ 𝑉𝑘 , then equivariant features with                 the multiplication with 𝑟 2 = 𝑥 2 + 𝑦 2 + 𝑧2 is the
+values in 𝑉 contain no “new information” that                        Laplace operator
+is not already contained in equivariant features                                      𝜕2        𝜕2         𝜕2
+with values in the smaller vector spaces 𝑉1 , . . . , 𝑉𝑘 .                     Δ=         2
+                                                                                            +        2
+                                                                                                       +          : 𝑃 ℓ+2 → 𝑃 ℓ ,
+                                                                                     𝜕𝑥         𝜕𝑦         𝜕𝑧 2
+Therefore, it is sufficient to focus on irreducible
+representations ( 𝜌, 𝑉 ) of SO(3). It turns out that                 which is then also invariant under rotations. Thus,
+there exists only one irreducible representation                     we can decompose the SO(3)–representations 𝑃 ℓ
+of SO(3) on 𝑉 (up to isomorphism) for each di-                       for ℓ ≥ 2 as a direct sum
+
+  mAn SO(3)–equivariant function on the sphere 𝕊2 is al-                                   𝑃 ℓ = 𝐻 ℓ ⊕ 𝑟 2 · 𝑃 ℓ −2
+                                                     ⊺
+ready determined by its value at one point, e.g. at [1 0 0] ,        for 𝐻 ℓ B { 𝑓 ∈ 𝑃 ℓ | Δ 𝑓 = 0} ( 𝐻 ℓ is the subspace
+since for every other point 𝒖 ∈ 𝕊2 there is a rotation
+                                    ⊺
+𝑔 ∈ SO(3) that moves [1 0 0] to 𝒖. The SO(3)–equivariant             of 𝑃 ℓ that contains only harmonic functions, i.e.
+                  2    3
+functions 𝕊 ⊂ ℝ form a vector space (they are closed un-             satisying Δ 𝑓 = 0). One can then show that this 𝐻 ℓ
+der addition and scalar multiplication), so also the possible        is a representation of SO(3) of dimension 2ℓ +1, it
+values at [1 0 0] ⊺ form a vector space, which is a subspace         is irreducible, and every irreducible representation
+of 𝑉 and has as dimension of at most dim(𝑉 ). So if we
+let 𝑏1 , . . . , 𝑏𝑛 be a basis of this vector space of equivariant
+                                                                     of SO(3) is isomorphic to exactly one of these (see
+functions 𝕊2 → 𝑉 , we can write any equivariant function             e.g. Chapter 7 in Ref. 11).
+ 𝑓 : ℝ3 → 𝑉 uniquely in the form (8). To construct a specific
+ 𝑓 ( 𝒓 ) with some desired behaviour, it is enough to determine
+the corresponding radial functions 𝑎1 , . . . , 𝑎𝑛 : ℝ ≥0 → ℝ in     Dual representation For any representation
+one specific direction (e.g. on the positive 𝑥 –axis) and 𝑓 ( 𝒓 )    ( 𝜌, 𝑉 ) of 𝐺 there is a representation on the dual
+automatically must have the desired behavior in all direc-
+tions by equivariance (compare to the argument presented                n This means that e.g. ⟨ 𝑥 𝑓 , 𝑔 ⟩                 𝜕
+                                                                                                                  = ⟨ 𝑓 , 𝜕𝑥 𝑔 ⟩, see Ref. 21,
+at the end of Equivariance).                                         section III.9.3 for details.
+
+
+
+                                                                                                                                            9
+                                          E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+space 𝑉ˇ of linear functions 𝐿 : 𝑉 → ℝ, which is
+given by the usual formula for functions
+                                       
+           ˇ( 𝑔) 𝐿 B 𝒗 ↦→ 𝐿 𝜌 ( 𝑔 −1 ) 𝒗 .
+           𝜌                                                                ℓ=0
+
+One can show (see e.g. Ref. 21, Theorem 2 in
+chapter I.2) that for compact groups like SO(3)
+or O(3), there exists for any representation ( 𝜌, 𝑉 )                                     ℓ=1
+of 𝐺 a 𝐺 –invariant scalar product on 𝑉 . This
+means in particular that
+                                                ⊺
+    ⟨𝒗, 𝒘⟩ = ⟨ 𝜌 ( 𝑔 ) 𝒗, 𝜌 ( 𝑔) 𝒘⟩ = ⟨𝒗, 𝜌 ( 𝑔 ) 𝜌 ( 𝑔 ) 𝒘⟩
+                                                                                                     ℓ=2
+for all 𝒗, 𝒘 ∈ 𝑉 , which can only be the case if
+               ⊺
+𝜌 ( 𝑔 ) 𝜌 ( 𝑔 ) is the identity matrix, i.e. the 𝜌 ( 𝑔 ) must
+be orthogonal matrices.
+                                                                                                                   ℓ=3
+In those cases (in particular, always when 𝐺 is
+compact) the dual representation ( 𝜌ˇ, 𝑉ˇ) is isomor-             Figure 1 | Visualization of the spherical harmonics
+phic to ( 𝜌, 𝑉 ). An isomorphism is given by                      𝑌ℓ𝑚 up to degree ℓ = 3 (positive values shown in
+                                                                blue, negative values in red, the 𝑥 –, 𝑦 –, and 𝑧–
+           𝑉 → 𝑉ˇ, 𝒗 ↦→ 𝒘 ↦→ ⟨𝒗, 𝒘⟩ .                             axes are depicted as red, green, and blue arrows).
+                                                                  All 𝑌ℓ𝑚 are evaluated on the unit sphere, but its
+This means that for compact groups, we do not                     radius at point 𝒓 is scaled by |𝑌ℓ𝑚 ( 𝒓 )|, leading to
+have to distinguish between a representation and                  distinct shapes for the different 𝑌ℓ𝑚 .
+its dual, since they are isomorphic (except for
+giving explicit formulas, when we have to specify
+the scalar product and apply the isomorphism).
+                                                                  called spherical harmonics and denoted 𝑌ℓ𝑚 (the
+                                                                  meaning of 𝑚 will be explained below).
+Spherical harmonics Consider the action of
+𝐺 = SO(3) on the sphere 𝕊2 , and our representa-                  For ℓ = 0, this space consists only of the constants,
+tion on 𝐻 ℓ , which are functions on 𝕊2 . Then we                 so only one orthonormal basis is possible. For the
+can map each point 𝒖 ∈ 𝕊2 to a linear form on 𝐻 ℓ                 (2ℓ + 1)–dimensional spaces with ℓ > 0, there
+by just evaluating the function 𝑓 : 𝕊2 → ℝ at the                 are more choices (different conventions for the
+point 𝒖. This gives an equivariant map 𝕊2 → 𝐻   ˇℓ.               spherical harmonics differ by choosing slightly
+Since this dual space is isomorphic to the original               different orthonormal bases). For the convention
+function space, it also gives an equivariant map                  used in E3x, it is useful to consider the action
+𝕊2 → 𝐻 ℓ .                                                        of the subgroup SO(2) of rotations around the
+                                                                  𝑧 –axis on 𝐻 ℓ . One can show that although the
+To make this map and the representation on 𝐻 ℓ                    𝐻 ℓ are irreducible as SO(3)–representations, they
+explicit, we consider as scalar product of functions              decompose into ℓ + 1 different representations of
+𝑓1 , 𝑓2 : 𝕊2 → ℝ the surface integral
+                                                                  SO(2): A one–dimensional subspace that is the
+                            ∫                                     trivial representation, i.e. it remains fixed under
+             ⟨ 𝑓 1 , 𝑓2 ⟩ B   𝑓1 ( 𝒖) 𝑓2 ( 𝒖) 𝑑𝒖 .                rotations, and ℓ two–dimensional subspaces in
+                            𝕊2
+                                                                  which the rotations by angle 𝛼 act as rotations
+This is an SO(3)–invariant scalar product, and                    by angle 𝑚 · 𝛼 for 𝑚 = 1, 2, . . . , ℓ. We choose
+we now have all ingredients to give an orthonor-                  an orthonormal basis of 𝐻 ℓ such that 𝑌ℓ0 remains
+mal basis of 𝐻 ℓ . Since we are interested in points              fixed under rotations around the 𝑧–axis, and the
+𝒖 ∈ 𝕊2 on the sphere and 𝐻 ℓ only contains har-                   𝑌ℓ±𝑚 span the subspace corresponding to the 𝑚
+monic functions, these basis functions are also                   above (see Fig. 1).
+
+
+                                                                                                                     10
+                                             E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+So far, we have considered the 𝑌ℓ𝑚 only as func-                     ℝ3 \ {0} such that they depend only on 𝒓ˆ = 𝒓 /𝑟
+tions on 𝕊2 , but it is custom to extend them to                     with 𝑟 = ∥ 𝒓 ∥. Then, the general formulas are:
+
+                                               √          |𝑚|
+                                                                                     
+                                   √︂        
+                                                2    · Πℓ ( 𝑧 ) · ℑ ( 𝑥 + 𝑖𝑦 ) | 𝑚 |       𝑚<0
+                                   2ℓ + 1 
+                                             
+                                             
+                                                 0
+                                             
+                       𝑚
+                      𝑌ℓ ( 𝒓 ) =               Πℓ ( 𝑧 )                                     𝑚=0
+                                      4𝜋      √                                 
+                                              2 · Πℓ𝑚 ( 𝑧) · ℜ ( 𝑥 + 𝑖𝑦 ) 𝑚                𝑚>0
+                                             
+                                             
+                                             
+                                                ⌊ ℓ −2𝑚 ⌋
+                                 √︄
+                                                           (−1) 𝑘 ℓ 2ℓ − 2𝑘              ( ℓ − 2𝑘)! 2𝑘 ℓ −2𝑘 − 𝑚
+                                                                               
+                                    ( ℓ − 𝑚)! ∑︁
+                      Πℓ ( 𝑧 ) =
+                        𝑚
+                                                                                                     𝑟 𝑧                            (9)
+                                    ( ℓ + 𝑚)! 𝑘=0            2ℓ 𝑘           ℓ         ( ℓ − 2𝑘 − 𝑚)!
+                                    ∑︁   𝑚                      𝜋             
+                                                𝑚 𝑘 𝑚−𝑘
+                                  𝑚
+                      ℑ ( 𝑥 + 𝑖𝑦 ) =                   𝑥 𝑦     sin      ( 𝑚 − 𝑘)          (for 𝑚 > 0)
+                                          𝑘=0
+                                                𝑘                     2
+                                      ∑︁  𝑚                      𝜋             
+                                                 𝑚 𝑘 𝑚−𝑘
+                                   𝑚
+                      ℜ ( 𝑥 + 𝑖𝑦 ) =                    𝑥 𝑦     cos      ( 𝑚 − 𝑘)          (for 𝑚 > 0)
+                                           𝑘=0
+                                                 𝑘                     2
+
+
+where 𝑥 , 𝑦 , and 𝑧 are the entries of 𝒓 = [ 𝑥 𝑦 𝑧] ⊺                vectors in (2)). Note that the order of the ba-
+and 𝑖 is the imaginary unit. The order 𝑚 (see                        sis functions is irrelevant (different conventions
+above) can take any integer value between −ℓ and                     are possible), as long as a consistent choice is
+ℓ, i.e. there are (2ℓ + 1) valid orders 𝑚 per degree                 made. In E3x, the default ordering convention
+ℓ. Although the general definition of spherical                      is 𝑌ℓℓ , 𝑌ℓ− ℓ , 𝑌ℓℓ −1 , 𝑌ℓ− ℓ+1 , . . . , 𝑌ℓ0 , because for ℓ = 1,
+harmonics given in (9) may look quite involved,                      this corresponds to the usual ( 𝑥, 𝑦, 𝑧)–order for
+for particular values of ℓ and 𝑚, the expression                     three–dimensional vectors.
+for 𝑌ℓ𝑚 can be strongly simplified. For example,
+the first few spherical harmonics are
+                           √︂                                        Schur’s lemma We have already introduced the
+                      0        1
+                     𝑌0 =                                            notion of isomorphisms and said two represen-
+                              4𝜋                                     tations are isomorphic if there exists an isomor-
+          √︂               √︂              √︂
+              3 𝑥              3 𝑦             3 𝑧                   phism between them. If there is one isomorphism
+   𝑌11 =           𝑌1−1 =            𝑌10 =         .
+             4𝜋 𝑟             4𝜋 𝑟            4𝜋 𝑟                   𝑓 : 𝑉 → 𝑊 , there are also infinitely many oth-
+Since these 𝑌𝑙𝑚 are an orthonormal basis, they                       ers: Any scalar multiple 𝜆 𝑓 with 𝜆 ≠ 0 is also
+also give the equivariant map 𝕊2 → 𝐻 ℓ by                            an isomorphism. Schur’s lemma says these are
+                                                                     already all the isomorphisms if ( 𝜌, 𝑉 ) and ( 𝜌, 𝑊 )
+                        ℓ
+                                                                     are irreducible representations of 𝐺 = SO(3) or
+                       ∑︁
+               𝒓 ↦→           𝑌ℓ𝑚 ( 𝒓 ) · 𝑌ℓ𝑚 ∈ 𝐻 ℓ .
+                      𝑚=− ℓ
+                                                                     𝐺 = O(3).
+
+The use of both 𝑌ℓ𝑚 ( 𝒓 ) and 𝑌ℓ𝑚 in the same con-                   Although straightforward to prove,o this is a sur-
+text may be slightly confusing: Here, 𝑌ℓ𝑚 ( 𝒓 ) is                   prising statement: In general, there are many
+the function 𝑌ℓ𝑚 evaluated at the point 𝒓 (giv-                      more choices for an isomorphism. For example,
+ing a scalar coefficient), which is multiplied                       for vector spaces with trivial group operation,
+with the function 𝑌ℓ𝑚 itself (a polynomial of de-                    isomorphisms would be linear invertible maps,
+gree ℓ in 𝑥 , 𝑦 , and 𝑧), which is used as a ba-                     and there are “a lot” of isomorphisms of vector
+sis vector of the (2ℓ + 1)–dimensional vector                        spaces ℝ𝑛 → ℝ𝑛 (every possible invertible 𝑛 × 𝑛
+space 𝐻 ℓ . In other words, expressed in the ba-                     matrix corresponds to one such map). The reason
+sis 𝑌ℓℓ , 𝑌ℓ− ℓ , . . . , 𝑌ℓ0 we map a vector 𝒓 ∈ ℝ3 to the          Schur’s lemma is true for SO(3) and O(3) is that
+vector [𝑌ℓℓ ( 𝒓 ) 𝑌ℓ− ℓ ( 𝒓 ) · · · 𝑌ℓ0 ( 𝒓 )] ⊺ ∈ ℝ2ℓ+1 contain-      o Typically this is formulated and proved over the complex
+ing the values of the coefficients for each basis                    numbers (see e.g. Ref. 21, I.4.2), but the usual proof also
+function (compare to the way we wrote an ab-                         works for real vector spaces of odd dimensions, since there
+stract vector 𝒗 as a linear combination of basis                     must be at least one real eigenvalue.
+
+
+                                                                                                                                     11
+                                         E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+it is true for irreducible representations on real               can be defined as
+vector spaces of odd dimension, and for SO(3)                                                                 ⊺
+and O(3), all irreducible representations happen                             𝜌𝑉 ⊗𝑊 ( 𝑔 ) 𝑴 B 𝜌𝑉 ( 𝑔 ) 𝑴𝜌𝑊 ( 𝑔 ) .
+to have odd dimension.
+We also said that for SO(3) and O(3), any two ir-                This tensor product representation is typically not
+reducible representations of the same dimension                  irreducible, but can be re-written as a direct sum
+are isomorphic, i.e. there exists an isomorphism                 of irreps (see Decomposition into irreps). Thus,
+ 𝑓 : 𝑉 → 𝑊 . Thus Schur’s lemma allows defining a
+                                                                 two irreps can be “coupled” via a tensor product
+concrete map between two irreducible represen-                   to produce new irreps.
+tations of the same dimension that are abstractly                We have seen this already for the canonical repre-
+given in two different ways, just by fixing the                  sentation ℝ3 of SO(3): The vector space ℝ3 ⊗ ℝ3
+scalar factor. On irreducible representations of                 of 3 × 3 matrices decomposes into 1–, 3–, and
+SO(3) or O(3) there is also a 𝐺 –invariant scalar                5–dimensional representations. The Clebsch–
+product (see e.g. Ref. 21, I.2.5), and one can use               Gordan theorem (see e.g. Ref. 11, chapter 6, sec-
+Schur’s lemma to show that it is also unique up to               tion 2.2) generalizes this to tensor products of
+a scalar factor. So if we have in addition specified             (2ℓ1 + 1)–dimensional and (2ℓ2 + 1)–dimensional
+𝐺 –invariant scalar products on both vector spaces               irreps.
+𝑉 and 𝑊 , there is an isomorphism that also re-
+spects the scalar product, and this isomorphism                  For ease of notation, we write the irreducible
+is unique up to a factor ±1 (this will be important              SO(3)–representations of degree 0, 1, 2, ... as
+in the next section).                                            0, 1, 2, .... The general Clebsch–Gordan rule for
+                                                                 expressing the tensor product a ⊗ b of two irreps
+                                                                 a and b of SO(3) as a direct sum is
+Coupling irreps with tensor products
+                                                                           a ⊗ b ≃ (|a − b|) ⊕ · · · ⊕ (a + b) .
+Definition Given representations 𝜌𝑉 and 𝜌𝑊 of
+a group 𝐺 on vector spaces 𝑉 and 𝑊 , there also
+                                                                 For example, the tensor product of two vectors
+exists a representation 𝜌𝑉 ⊗𝑊 on the tensor product
+                                                                 (irrep 1) can be written as
+𝑉 ⊗ 𝑊 of the vector spaces. It has the following
+properties:                                                                         1 ⊗ 1 ≃ 0 ⊕ 1 ⊕ 2.
+ 1. There is a map 𝑉 × 𝑊 → 𝑉 ⊗ 𝑊 , it is linear in
+                                                                 To simplify notation, we introduce the short-hand
+    each variable, and written as 𝒗, 𝒘 ↦→ 𝒗 ⊗ 𝒘.
+                                                                 ‘⊗ ( ℓ ) ’ to refer to the irrep of degree ℓ in the direct
+ 2. If 𝒆𝑖 are basis vectors of 𝑉 , and 𝒇 𝑗 basis vectors         sum representation of a tensor product, i.e.
+    of 𝑊 , then the 𝒆𝑖 ⊗ 𝒇 𝑗 are a basis of 𝑉 ⊗ 𝑊 .
+                                                                                   ≃0            ≃1               ≃2
+ 3. The representation 𝜌𝑉 ⊗𝑊 on 𝑉 ⊗ 𝑊 has the                              z }| { z }| { z }| {
+    property
+                                                                                                        
+                                                                    1 ⊗ 1 = 1 ⊗ (0) 1 ⊕ 1 ⊗ (1) 1 ⊕ 1 ⊗ (2) 1 .
+       𝜌𝑉 ⊗𝑊 ( 𝑔 ) ( 𝒗 ⊗ 𝒘) = 𝜌𝑉 ( 𝑔 ) ( 𝒗) ⊗ 𝜌𝑊 ( 𝑔 ) ( 𝒘) .
+                                                                 To get a concrete formula for this “coupling”, we
+It can be shown that a representation with these
+                                                                 need to specify one particular isomorphism from
+properties is unique up to isomorphism (note that
+                                                                 the subspace a ⊗ ( 𝑐 ) b to c. By Schur’s lemma, we
+the tensor product can be defined in different
+                                                                 can fix it up to a factor ±1 by specifying scalar
+equivalent ways, here we follow Ref. 16, chap-
+                                                                 products (or equivalently: norms) on both sides.
+ter 1.5).
+                                                                 On our concrete realizations of the irreducible
+One way of realizing the tensor product of 𝑉 = ℝ𝑚                representations, we already have a scalar prod-
+and 𝑊 = ℝ𝑛 in a concrete way is as 𝑚 × 𝑛 matrices:               uct and an orthonormal basis 𝑌ℓ𝑚 (see Spherical
+The bilinear map 𝑉 × 𝑊 → 𝑉 ⊗ 𝑊 can be taken as                   harmonics). On the tensor product 𝑉 ⊗ 𝑊 of vec-
+            ⊺
+𝒗, 𝒘 ↦→ 𝒗𝒘 , and the representation 𝜌 ( 𝑔 ) of a                 tor spaces 𝑉 and 𝑊 with orthonormal basis vec-
+group element 𝑔 on the 𝑚 × 𝑛 matrices 𝑴 = 𝒗𝒘⊺                    tors 𝒆𝑖 and 𝒇 𝑗 , there is a unique scalar product
+
+
+                                                                                                                        12
+                                           E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+on 𝑉 ⊗ 𝑊 such that the 𝒆𝑖 ⊗ 𝒇 𝑗 are again an or-                   The second part (1 component) is the anti–
+thonormal basis (see the definition of the ten-                    symmetric matrix
+sor product at the start of this section). Equiv-
+alently, it can also be defined by the property                                   1      ⊺      ⊺
+⟨𝒗 ⊗ 𝒘, 𝒗′ ⊗ 𝒘′ ⟩ = ⟨𝒗, 𝒗′ ⟩ · ⟨𝒘, 𝒘′ ⟩ for 𝒗, 𝒗′ ∈ 𝑉                𝒖 ⊗ (1) 𝒗 =      𝒖𝒗 − 𝒗𝒖
+                                                                                  2
+and 𝒘, 𝒘′ ∈ 𝑊 . If the scalar products on 𝑉 and                                     0        𝑢𝑥 𝑣 𝑦 − 𝑢 𝑦 𝑣𝑥 𝑢𝑥 𝑣𝑧 − 𝑢𝑧 𝑣𝑥 
+                                                                        1 
+                                                                           
+𝑊 are 𝐺 –invariant, then also this scalar product                      = 𝑢 𝑦 𝑣𝑥 − 𝑢𝑥 𝑣 𝑦            0        𝑢 𝑦 𝑣𝑧 − 𝑢𝑧 𝑣 𝑦 
+on 𝑉 ⊗ 𝑊 is 𝐺 –invariant, and we choose our iso-                        2
+                                                                            𝑢 𝑧 𝑣𝑥 − 𝑢 𝑥 𝑣𝑧 𝑢 𝑧 𝑣 𝑦 − 𝑣𝑧 𝑢 𝑦        0         
+morphism a ⊗ ( 𝑐 ) b → c such that it respects these
+                                                                                                                               
+scalar products. This fixes it up to an arbitrary
+choice of sign (which is not important for the                     which under the isomorphism (6) is mapped to
+considerations that follow).                                       the 3–dimensional representation
+
+                                                                                    𝑢 𝑣 − 𝑢𝑧 𝑣 𝑦 
+                                                                                1  𝑦 𝑧             1
+Example: Coupling vectors To illustrate the                                     2
+                                                                                     𝑢𝑧 𝑣𝑥 − 𝑢𝑥 𝑣𝑧  = ( 𝒖 × 𝒗) .
+                                                                                                     2
+                                                                                   
+meaning of these operations, consider the “cou-                                    𝑢𝑥 𝑣 𝑦 − 𝑢 𝑦 𝑣𝑥 
+pling” of two vectors 𝒖, 𝒗 ∈ ℝ3 . Their tensor
+product is given by                                                This isomorphism maps e.g.
+
+             𝑢 𝑥   𝑣𝑥   𝑢 𝑥 𝑣𝑥 𝑢 𝑥 𝑣 𝑦 𝑢 𝑥 𝑣𝑧 
+                                                                                0 1 0    0
+   𝒖 ⊗ 𝒗 = 𝑢 𝑦  ⊗  𝑣 𝑦  = 𝑢 𝑦 𝑣𝑥 𝑢 𝑦 𝑣 𝑦 𝑢 𝑦 𝑣𝑧  .                       −1 0 0 ↦→ 0 ,
+                                                                                                
+             𝑢 𝑧   𝑣𝑧   𝑢 𝑧 𝑣𝑥 𝑢 𝑧 𝑣 𝑦 𝑢 𝑧 𝑣𝑧 
+                                                                                      0 0 0    1
+                                                                                                
+                                                      
+                                                                                                
+As stated before, this matrix can be written in a
+unique way as a sum of:                                            so to respect
+                                                                          √      the norms, we have to multiply by a
+                                                                   factor 2, which gives
+ 0: a multiple of the identity matrix 𝑰 3 ,
+ 1: an anti–symmetric matrix, and                                                                   1
+                                                                                   𝒖 ⊗ (1) 𝒗 ↦→ √ ( 𝒖 × 𝒗) .
+ 2: a symmetric matrix with trace 0.                                                                  2
+The first part (0 component) is the multiple of the
+3 × 3 identity matrix 𝑰 3 that has the same trace                  Finally, the part that is a traceless symmetric ma-
+as the matrix 𝒖 ⊗ 𝒗:                                               trix (2 component) can be written as
+                ⟨𝒖, 𝒗⟩        𝑢 𝑥 𝑣𝑥 + 𝑢 𝑦 𝑣 𝑦 + 𝑢 𝑧 𝑣𝑧
+ 𝒖 ⊗ (0) 𝒗 =           · 𝑰3 =                           · 𝑰3 .                 1                 1
+                  3                      3                           𝒖 ⊗ (2) 𝒗 =
+                                                                                       ⊺    ⊺             ⊺
+                                                                                  𝒖𝒗 + 𝒗𝒖 − Tr 𝒖𝒗 + 𝒗𝒖 · 𝑰 3
+                                                                                                             ⊺
+                                                                               2                 6
+To get a 1–dimensional representation, we can                                        𝑆𝑥𝑥 𝑆𝑥 𝑦 𝑆𝑥𝑧 
+                                                                                                      
+use the isomorphism                                                           B 𝑺 = 𝑆𝑥 𝑦 𝑆 𝑦 𝑦 𝑆 𝑦𝑧  ,
+                                                                                     𝑆𝑥𝑧 𝑆 𝑦𝑧 𝑆𝑧𝑧 
+                                                                                                      
+                     1 0 0
+                     0 1 0 ↦→ 1 .
+                          
+                                                                   where Tr is the trace. Using the isomorphism (7),
+                     0 0 1
+                          
+                                                                 the matrix 𝑺 can be mapped to the function
+
+To also get a norm–preserving isomorphism, we                           𝑆𝑥𝑥 · 𝑥 2 + 𝑆 𝑦 𝑦 · 𝑦 2 + 𝑆𝑧𝑧 · 𝑧 2
+need√to multiply by the norm of the identity ma-                                                                            (10)
+                                                                            + 2𝑆𝑥 𝑦 · 𝑥 𝑦 + 2𝑆𝑥𝑧 · 𝑥𝑧 + 2𝑆 𝑦𝑧 · 𝑦𝑧 .
+trix 3, which gives
+
+                                   1                               Since Tr(𝑺) = 𝑆𝑥𝑥 + 𝑆 𝑦 𝑦 + 𝑆𝑧𝑧 = 0, this is a harmonic
+                 𝒖 ⊗ (0) 𝒗 ↦→ √ ⟨𝒖, 𝒗⟩ .
+                                    3                              polynomial, and we can write it as a linear com-
+
+
+                                                                                                                               13
+                                                E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+bination of our basis (see Spherical harmonics):                        and√︃ observe that the norm picked up a factor
+                         √︂ √                                          of 815𝜋 . Thus, dividing by this factor gives the
+                        5     3           
+              𝑌22 =       ·     · 𝑥2 − 𝑦2                               norm-preserving map
+                       4𝜋 2
+                    √︂
+                        5 √                                                                        𝑆𝑥𝑥 − 𝑆 𝑦 𝑦 
+             𝑌2−2 =       · 3 · 𝑥𝑦                                                                  2𝑆𝑥 𝑦 
+                                                                                                               
+                       4𝜋                                                                       1
+                                                                                          𝑺 ↦→ √  2𝑆𝑥𝑧  ,
+                    √︂                                                                                         
+                        5 √                                                                      2  2𝑆 𝑦𝑧 
+              𝑌21 =       · 3 · 𝑥𝑧
+                       4𝜋                                                                           √
+                                                                                                    3𝑆 
+                                                                                                                
+                    √︂                                                                                    𝑧𝑧 
+                        5 √
+                                                                                                   
+             𝑌2−1 =       · 3 · 𝑦𝑧
+                       4𝜋                                               or, re-written directly in terms of the components
+                                  𝑥2   𝑦2                               of 𝒖 and 𝒗,
+                    √︂
+                        5
+                                          
+                0             2
+              𝑌2 =        · 𝑧 −      −       .
+                       4𝜋         2     2                                                  
+                                                                                                𝑢 𝑥 𝑣𝑥 − 𝑢 𝑦 𝑣 𝑦        
+                                                                                                                         
+                                                                                                𝑢   𝑣   + 𝑢   𝑣         
+                                                                                         1
+                                                                                                   𝑥   𝑦     𝑦   𝑥
+We now want to find the coefficients for express-
+                                                                                                                        
+                                                                            𝒖 ⊗ (2) 𝒗 ↦→ √      𝑢 𝑥 𝑣𝑧 + 𝑢 𝑧 𝑣𝑥
+                                                                                                                        
+                                                                                                                          .
+ing (10) in the orthonormal basis 𝑌22 , 𝑌2−2 , . . . , 𝑌20 .                              2
+                                                                                                𝑢 𝑦 𝑣𝑧 + 𝑢 𝑧 𝑣 𝑦
+                                                                                                                         
+                                                                                                                         
+For the first three terms in (10), we get (using                                            √1
+                                                                                            3 2𝑢𝑧 𝑣𝑧 − 𝑢𝑥 𝑣𝑥 − 𝑢 𝑦 𝑣 𝑦 
+                                                                                                                        
+𝑆𝑥𝑥 + 𝑆 𝑦 𝑦 + 𝑆𝑧𝑧 = 0)                                                                                                  
+
+     𝑆𝑥𝑥 · 𝑥 2 + 𝑆 𝑦 𝑦 · 𝑦 2 + 𝑆𝑧𝑧 · 𝑧 2                                Clebsch–Gordan coefficients The crucial ob-
+             √︂
+                  4𝜋                            √                     servation in the above formulas is that all com-
+                         𝑆𝑥𝑥 − 𝑆 𝑦 𝑦 · 𝑌22 +         3𝑆𝑧𝑧 · 𝑌20 ,       ponents of the irreps can be written as linear
+                                       
+         =
+                  15
+                                                                        combinations of the components of the tensor
+and for the last three terms, we get                                    product 𝒖 ⊗ 𝒗 with appropriate coefficients (and
+                                                                        vice versa).
+ 2𝑆𝑥 𝑦 · 𝑥 𝑦 + 2𝑆𝑥𝑧 · 𝑥𝑧 + 2𝑆 𝑦𝑧 · 𝑦𝑧
+       √︂                                                               In general, assume we are given 𝒖 ∈ ℝ2ℓ1 +1
+           4𝜋                                                          and 𝒗 ∈ ℝ2ℓ2 +1 and want to compute the irrep
+                                                        
+    =           2𝑆𝑥 𝑦 · 𝑌2−2 + 2𝑆𝑥𝑧 · 𝑌21 + 2𝑆 𝑦𝑧 · 𝑌2−1 .
+           15                                                           𝒘 ∈ ℝ2ℓ3 +1 in the direct sum representation of
+                                                                        the tensor product 𝒖 ⊗ 𝒗. As in our examples
+Put together, we have mapped the traceless sym-                         above, we fix the isomorphism such that it also
+metric matrix 𝑺 to the 5–dimensional vector                             respects the scalar products/norms inside the ten-
+                                       𝑆𝑥𝑥 − 𝑆 𝑦 𝑦                    sor product and in our concrete realization of the
+                              √︂        2𝑆𝑥 𝑦 
+                                                                      irreducible representations.
+                                   4𝜋 
+                                          2𝑆𝑥𝑧 
+                                                    
+                   𝑺 ↦→                                                 Using the same notation as for the spherical har-
+                                   15 
+                                        √2𝑆 𝑦𝑧 
+                                       
+                                                                       monics in (9), we label the components of 𝒖 and
+                                        3𝑆                            𝒗 as 𝑢ℓ 1 and 𝑣ℓ 2 .p Then, the components of 𝒘
+                                                                              𝑚        𝑚
+                                              𝑧𝑧 
+                                                                               1        2
+                                       
+                                                                        are given by
+(expressed in the basis 𝑌22 , 𝑌2−2 , . . . , 𝑌20 ).
+                                                                                         ℓ1      ℓ2
+To correct the isomorphism used here (to make
+                                                                                        ∑︁      ∑︁
+                                                                             𝑤ℓ 3 =
+                                                                              𝑚
+                                                                                                          𝐶 ℓ3,𝑚 3,ℓ ,𝑚 𝑢ℓ 1 𝑣ℓ 2 ,
+                                                                                                            ℓ ,𝑚          𝑚   𝑚
+                                                                                                                                      (11)
+                                                                               3                            1   1 2   2   1    2
+it also respect the norms), we can compute this                                       𝑚1 =− ℓ1 𝑚2 =− ℓ2
+mapping for an example of a simple traceless
+symmetric matrix                                                        where 𝐶 ℓℓ3,𝑚
+                                                                                   ,𝑚3
+                                                                                              are the so-called Clebsch–
+                                                                                  1 1 ,ℓ2 ,𝑚2
+                                                                        Gordan coefficients (CGCs).
+                                     0
+                                                                           p For  example,     consider the 3–dimensional vector
+                   0 1 0           2
+                                      
+                              √︂                                                      ⊺
+                                 4                                                       . In the spherical harmonics convention, we
+                                                                            
+                                  𝜋                                     𝒖 = 𝑢𝑥 𝑢 𝑦 𝑢𝑧
+                   1 0 0 ↦→        0
+                                    
+                                 15                                 re-label the components as 𝑢𝑥 = 𝑢11 , 𝑢 𝑦 = 𝑢1−1 , and 𝑢𝑧 = 𝑢01 .
+                   0 0 0
+                                     0
+                        
+                                                                      This way, there is a consistent labelling scheme that works
+                                     0                                for the components of any (2ℓ + 1)–dimensional irrep.
+                                      
+
+                                                                                                                                        14
+                                              E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+For example, the CGCs necessary for computing                         refer to O(3)–representations with 𝜌 (−𝑒) = 𝑰 𝑛 as
+1 ⊗ (0) 1 with (11) are                                               even (or “parity +1”) and with 𝜌 (−𝑒) = − 𝑰 𝑛 as odd
+                                                                      (or “parity −1”).
+          0,0             0,0           0,0           1
+        𝐶1, −1,1, −1 = 𝐶1,0,1,0 = 𝐶1,1,1,1 = √
+                                                       3              For example, the trivial 1–dimensional represen-
+                                                                      tation is 0+ , and the canonical 3–dimensional
+and                                                                   representation is 1− . These irreps correspond
+         0,0           0,0             0, 0                           to scalars and vectors, whereas the irreps 0− and
+       𝐶1, −1,1,0 = 𝐶1, −1,1,1 = 𝐶1,0,1, −1                           1+ correspond to “pseudoscalars” and “pseudovec-
+           = 𝐶10,,00,1,1 = 𝐶10,,10,1, −1 = 𝐶10,,10,1,0 = 0            tors”,s respectively. In general, we refer to irreps
+                                                                      with even/odd degree and even/odd parity as
+(compare to the norm-preserving isomorphism                           (proper) tensors, whereas irreps with even/odd
+given for the 0 component in the example for                          degree and odd/even parity are referred to as
+coupling vectors above).                                              “pseudotensors”.
+As mentioned before, our construction using                           For tensor products of even/odd representations,
+norm–preserving isomorphisms only determines                          the parities multiply, so the general rule for ex-
+the CGCs up to an arbitrary choice of sign per                        pressing the tensor product a𝛼 ⊗ b 𝛽 of two irreps
+triple ( ℓ1 , ℓ2 , ℓ3 ). The choice realized in E3x has               a𝛼 and b 𝛽 of O(3) as a direct sum is
+the property that 𝐶 ℓℓ3,,00,ℓ ,0 ≥ 0.
+                          1     2                                                   (
+                                                                                        (|a − b|) + ⊕ · · · ⊕ (a + b) +   𝛼=𝛽
+                                                                       a𝛼 ⊗ b 𝛽 ≃
+                                                                                        (|a − b|) − ⊕ · · · ⊕ (a + b) −   𝛼≠ 𝛽.
+Representations of O(3)
+
+So far, we have mostly focused on representa-                         Following the short-hand notation we introduced
+tions for SO(3), we now want to infer the cor-                        earlier, we also write the c𝛾 –component of a𝛼 ⊗ b 𝛽
+responding results for O(3). At this point, we                        as a𝛼 ⊗ ( 𝑐𝛾 ) b 𝛽 , which is computed with (11) in
+clarify that the equivariant features used in E3x                     the same way as couplings of SO(3)–irreps. The
+are built from irreps of O(3). In the remainder of                    CGCs for computing the coupling of O(3)–irreps
+this manuscript, when the generic term “irreps”                       a𝛼 ⊗ ( 𝑐𝛾 ) b 𝛽 are identical to the ones for computing
+is used without specifying a particular group, we                     the coupling of SO(3)–irreps a⊗ ( 𝑐 ) b when 𝛾 = 𝛼· 𝛽
+implicitly mean irreps of O(3).                                       (and zero otherwise).
+
+The group O(3) consists of rotations 𝑔 ∈ SO(3)
+and rotoreflections (see also Table 1), which can                     How E3x works
+be written as −𝑒 ⊙ 𝑔 for a 𝑔 ∈ SO(3) (𝑒 is the
+identity element). Since −𝑒 ⊙ 𝑔 = 𝑔 ⊙ −𝑒 = −𝑔 ,                       The core design principle of E3x is that imple-
+a representation ( 𝜌, 𝑉 ) of O(3) is given by the                     menting an equivariant deep learning architec-
+values 𝜌 ( 𝑔) for 𝑔 ∈ SO(3) (i.e. a representation                    ture should feel familiar to anyone who has ex-
+of SO(3) on 𝑉 ) and one additional matrix     𝜌 (−𝑒)                 perience with constructing ordinary neural net-
+                                 2         2
+with the property that 𝜌 (−𝑒) = 𝜌 (−𝑒) = 𝜌 ( 𝑒)                       works. Loosely speaking, features in E3x are “aug-
+is the identity on 𝑉 and commutesq with all 𝜌 ( 𝑔 )                   mented with directional information”, and com-
+for 𝑔 ∈ SO(3). So for every representation ( 𝜌, 𝑉 )                   ponents like activation functions or linear layers
+of SO(3), there are two representations ( 𝜌± , 𝑉 ) of                 are generalized to work with such features while
+O(3) given by 𝜌 (−𝑒) = ± 𝑰 𝑛 ( 𝑰 𝑛 denotes the 𝑛 × 𝑛
+                                                                         s For example, the cross product 𝒘 = 𝒖 × 𝒗 of two vectors
+identity matrix). In particular we get irreducible
+                                                                      𝒖 and 𝒗 is a pseudovector. Under a reflection (refl.) of the
+representations 0± , 1± , ... of O(3). These are in                   coordinate system, (proper) vectors change direction, i.e.
+fact all irreducible representations of O(3).r We                        refl.             refl.
+                                                                      𝒖 −−−→ −𝒖 and 𝒗 −−−→ −𝒗, but pseudovectors do not, i.e.
+  q The phrase “𝑔, ℎ commute” means 𝑔 ⊙ ℎ = ℎ ⊙ 𝑔 .                      refl.
+                                                                      𝒘 −−−→ 𝒘. Similarly, the dot product 𝒖 · 𝒗 of two vectors
+   r For reducible SO(3)–representations, there are more              is a scalar (which does not change sign under reflection),
+ways to extend them to O(3)–representations: We can                   whereas the dot product of a vector and a pseudovector is a
+choose a sign for each irreducible component.                         pseudoscalar (which does change sign under reflection).
+
+
+
+                                                                                                                                15
+                                       E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+preserving their equivariance. Importantly, “ordi-                A
+nary features” can be recovered as a special case,
+in which case the “ordinary behaviour” of com-
+mon neural network components is recovered as
+well. By keeping standard neural network build-
+ing blocks essentially unchanged, it is straightfor-
+ward to define equivariant models with almost
+no necessary code changes compared to ordinary
+models, see Listing 1 for an example.
+                                                                  B
+In the following, we give an overview over the
+basic components of E3x, including equivariant
+features and how familiar neural network build-
+ing blocks, such as dense layers and activation
+functions, are generalized to work with them. We
+also describe tensor layers, which couple equiv-
+ariant features in a way that has no analogue in
+ordinary neural networks (see also Coupling ir-                Figure 2 | (A) Color-coded visualization of the
+reps). Finally, we briefly mention other utilities             memory layout of (randomly drawn) features
+                                                                             2
+in E3x that can be useful when working with                    𝒙 ∈ ℝ2× ( 𝐿+1) × 𝐹 with 𝐿 = 2 and 𝐹 = 8. (B) Visual-
+three–dimensional data.                                        ization of features as three-dimensional shapes
+                                                               (negative components are drawn in red and posi-
+                                                               tive components in blue).
+Irrep features Ordinary neural networks typi-
+cally operate on features 𝒙 ∈ ℝ𝐹 , where 𝐹 is the di-
+mension of the feature space. We can either think              to “translate” between the short-hand notation
+of 𝒙 as an 𝐹 –dimensional feature vector, or equiv-            introduced above and the corresponding array
+alently, as a collection of 𝐹 scalar (1–dimensional)           slicing operation in code (in the style of numpy 9 )
+features. In E3x, a single feature is not necessarily          is given in Table 2.
+just a scalar anymore, but instead consists of ir-
+reps of O(3) (see Representations of O(3)) for all             Another way to think about irrep features is
+degrees starting from ℓ = 0 up to some maximum                 to imagine them as representing abstract three–
+degree ℓ = 𝐿 (we call these irrep features). Since             dimensional shapes with positive and negative
+irreps of degree ℓ have 2ℓ + 1 components and                  regions (see Fig. 2B). Under rotations of the co-
+there is an irrep with both even and an odd parity             ordinate system, these shapes rotate accordingly;
+                                                   2
+for each ℓ, the features in E3x are 𝒙 ∈ ℝ2× ( 𝐿+1) × 𝐹         under reflections, all regions of features with neg-
+in the most general case (see also Fig. 1, where               ative parity, i.e. 𝒙 (−) , change sign (features with
+all ( 𝐿 + 1) 2 spherical harmonics up to a maximum             positive parity stay unchanged under reflections).
+degree 𝐿 are visualized in a square arrangement).              Crucially, as long as the maximum degree 𝐿 is
+We use the short-hand notation 𝒙 𝑖 to refer to all             chosen sufficiently large, all possible “behaviors
+irreps of the 𝑖-th feature, 𝒙 ( ℓ± ) to refer to all ir-       under rotations and reflections” can be expressed
+reps of degree ℓ with parity 𝑝 = ±1, and 𝒙 (±)                 by such irrep features (see Decomposition into
+to refer to all irreps of all degrees with parity              irreps), i.e. all equivariant quantities can be “as-
+𝑝 = ±1. In our implementation, 𝒙 is stored in a                sembled” from irrep features.
+contiguous array x of shape (2, (L+1)**2, F)                   Since it is often useful to work with irrep fea-
+(see Fig. 2A).t For reference, an overview of how              tures where all pseudotensors are zero and only
+    t This has the advantage that the coupling of irrep fea-
+                                                               “proper tensor” components are non-zero, E3x
+tures via CGCs (see (11)) can be efficiently implemented
+                                                               also supports representing such features without
+on accelerators such as GPUs and TPUs with einsum opera-       the need to explicity store the zero components
+tions.                                                         (see Fig. 3 for an illustration). All operations
+
+
+                                                                                                                 16
+                                     E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+
+1 # 2−l a y e r o r d i n a r y MLP with f l a x .
+2 from f l a x import l i n e n as nn
+3 ...
+4 h = nn . Dense ( f e a t u r e s=num_hidden ) ( x )   # x stores ( invariant ) ordinary features
+5 y = nn . Dense ( f e a t u r e s=num_output ) ( nn . r e l u ( x ) )
+6
+7  # 2−l a y e r e q u i v a r i a n t MLP with e3x .
+8  import e3x
+ 9 ...
+10 h = e3x . nn . Dense ( f e a t u r e s=num_hidden ) ( x )  # x stores equivariant irrep features
+11 y = e3x . nn . Dense ( f e a t u r e s=num_output ) ( e3x . nn . r e l u ( x ) )
+
+    Listing 1 | Simple multi-layer perceptron (MLP) written with Flax 10 compared to an equivariant MLP
+    written with E3x.
+
+
+                     notation    numpy-style array slicing                shape
+                     𝒙           x                                        (2, (L+1)**2, F)
+                     𝒙𝑖          x[:, :, i:i+1]                           (2, (L+1)**2, 1)
+                     𝒙 (+)       x[0:1, :, :]                             (1, (L+1)**2, F)
+                     𝒙 (−)       x[1:2, :, :]                             (1, (L+1)**2, F)
+                     𝒙 ( ℓ+ )    x[0:1, l**2:(l+1)**2, :]                 (1, 2*l+1, F)
+                     𝒙 ( ℓ− )    x[1:2, l**2:(l+1)**2, :]                 (1, 2*l+1, F)
+
+    Table 2 | Correspondence between mathematical short-hand notation for specific components of 𝒙
+    and numpy-style array slicing.
+
+
+    implemented in E3x automatically detect which               A
+    kind of features are used (from their shape) and
+    computations that involve features without any
+    pseudotensor components are (apart from being
+    implemented more efficiently) equivalent to us-
+    ing features where all pseudotensor components
+    are set to zero. Thus, for brevity, we only men-
+    tion the general case of irrep features that contain
+    both tensor and pseudotensor components in the              B
+    descriptions that follow.
+    It is worth pointing out that when pseudotensors
+    are omitted and the maximum degree is 𝐿 = 0
+    (i.e. there are only scalar feature components),         Figure 3 | For better memory efficiency, E3x sup-
+    irrep features become equivalent to the features         ports representing features where all pseudoten-
+    used in ordinary neural networks. Thus, E3x              sor components are zero (A) without the need
+    implements a generalization that allows to define        for explicitly storing the zero components (B).
+    equivariant and ordinary models with the same
+    code (the maximum degree 𝐿 of irrep features
+    can be a hyperparameter).                                to (scalar) features. For the irrep features used
+                                                             in E3x, an element-wise application of a non-
+                                                             linear function would not preserve equivariance,
+    Activation functions An essential component              because the absolute value and sign of the in-
+    of neural networks are non-linear activation func-       dividual feature entries depends on the orien-
+    tions, which are typically applied element-wise          tation of the chosen coordinate system. How-
+
+
+                                                                                                           17
+                                            E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+ever, multiplying all elements with a common                        features, the components of 𝒚 with degree ℓ and
+(scalar) factor does preserve equivariance. Thus,                   parity 𝑝 are given by
+given a non-linear function 𝜎 ( 𝑥 ), we can define an                               (
+equivariance-preserving application of 𝜎 to irrep                          ( ℓ𝑝 )     𝒙 (0+ ) 𝑾 (0+ ) + 𝒃 ℓ = 0, 𝑝 = +1
+                                                                         𝒚        =
+features 𝒙 as                                                                         𝒙 ( ℓ𝑝 ) 𝑾 ( ℓ𝑝 )   otherwise .
+                                 
+              𝜎 ( 𝒙 ) B 𝑔𝜎 𝒙 (0+ ) ◦ 𝒙 .         (12)               Here, 𝑾 ∈ ℝ𝐹in × 𝐹out are weights, 𝒃 ∈ ℝ𝐹out bi-
+                                                                    ases, and all operations are implicitly broadcasted
+Here, ‘◦’ denotes element-wise multiplication                       across dimensions.v While it would be possible
+(with implied broadcastingu ), and 𝑔𝜎 (which is                     to use the same weights for feature components
+applied element-wise to only the scalar feature                     of all degrees and parities, in E3x, every irrep of
+components 𝒙 (0+ ) ) satisfies                                      the output features has a separate weight matrix
+                                                                    𝑾 ( ℓ𝑝 ) , i.e. there are 2( 𝐿 + 1) 𝐹in 𝐹out weight param-
+                     𝜎 ( 𝑥 ) = 𝑔𝜎 ( 𝑥 ) · 𝑥 .              (13)
+                                                                    eters in total.w Separate weight matrices make
+Evidently, when pseudotensors are omitted and                       the equivariant generalization of dense layers
+ℓ = 0 (i.e, there are only scalar feature compo-                    more expressive, because they allow to change
+nents), (12) is equivalent to the familiar element-                 the proportion of different irreps within each fea-
+wise application of 𝜎 for ordinary features. Many                   ture 𝒚 𝑖 independently.
+common activation functions can be transformed
+to the form given in (13), for example
+                                                                    Tensor layers As described in Coupling irreps,
+relu( 𝑥 ) = max(0, 𝑥 ) ⇒ 𝑔relu ( 𝑥 ) = max(0, sgn 𝑥 )               it is possible to “couple” different irreps via tensor
+                                                                    products to produce new irreps. This operation is
+or                                                                  at the heart of building equivariant architectures
+                                                                    and has no proper analogue in ordinary neural
+                      𝑥                         1                   networks (although for purely scalar features, it is
+     swish( 𝑥 ) =           ⇒ 𝑔swish ( 𝑥 ) =
+                    1+𝑒 − 𝑥                  1 + 𝑒− 𝑥               equivalent to element-wise multiplication). The
+(E3x already contains implementations of (12)                       result of a learnable tensor product coupling 𝒛 =
+                                                                                                                                    2
+for most popular activation functions). Imple-                      tensor( 𝒙, 𝒚 ) of irrep features 𝒙 ∈ ℝ2× ( 𝐿𝑥 +1) × 𝐹 and
+                                                                                     2
+menting new activation functions is typically                       𝒚 ∈ ℝ2× ( 𝐿 𝑦 +1) × 𝐹 is computed as
+straightforward and requires only a few lines of                                   ∑︁                                                  
+code, see Listing 2 for an example.                                     𝒛 ( 𝑐𝛾 ) =       𝒘 ( 𝑎𝛼 ,𝑏 𝛽 ,𝑐𝛾 ) ◦ 𝒙 ( 𝑎𝛼 ) ⊗ ( 𝑐𝛾 ) 𝒚 ( 𝑏 𝛽 ) .
+                                                                                  ( 𝑎𝛼 ,𝑏 𝛽 )
+
+
+Dense layers Dense (or fully-connected) lay-                        Here, 𝒘 ∈ ℝ𝐹 are weight coefficients, ‘◦’ de-
+ers are perhaps the most basic building block                       notes element-wise multiplication (with implied
+of neural networks. Due to their linearity, it is                   broadcasting), and the sum runs over all com-
+straightforward to generalize them to support ir-                   binations of degrees and parities. The coupling
+rep features: As mentioned before, multiplying                      operator ‘⊗ ( 𝑐𝛾 ) ’ is implicitly broadcasted across
+all elements of an irrep with a common (scalar)                     the feature dimension, i.e. irreps within each fea-
+factor preserves equivariance. Similarly, element-                  ture channel are coupled independently of those
+wise addition of irreps of the same kind (sharing                   in other feature channels. Each valid “coupling
+the same parity and degree) is also an equivari-                       v The notation 𝒙 ( ℓ𝑝 ) 𝑾 means that each 𝐹
+ant operation. It follows that (scalar) bias terms                                                                  in –dimensional
+                                                                    “slice” of 𝒙 ( ℓ𝑝 ) ∈ ℝ2× (2ℓ+1) × 𝐹in is multiplied with 𝑾 ∈
+may only be added to scalar feature components.                     ℝ𝐹in × 𝐹out according to the ordinary matrix-vector multipli-
+                                               2
+Thus, for 𝒚 = dense( 𝒙 ), where 𝒙 ∈ ℝ2× ( 𝐿+1) × 𝐹in                cation rules. Similarly, 𝒃 ∈ ℝ𝐹out is added element-wise to
+                  2
+and 𝒚 ∈ ℝ2× ( 𝐿+1) × 𝐹out are the input and output                  each slice of 𝒙 (0+ ) 𝑾 .
+                                                                        w Unless the input features 𝒙 do not contain any pseu-
+     u Broadcasting means that dimensions that are size 1 in        dotensor components (see Irrep features), in which case the
+one of the factors are implicitly repeated to match the size        corresponding parameters are omitted and there are only
+of the corresponding dimension in the other factor.                 ( 𝐿 + 1) 𝐹in 𝐹out weight parameters.
+
+
+
+                                                                                                                                      18
+                                                E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+
+1   import j a x . numpy as j n p
+2
+3   def relu ( x ) :
+4     r e t u r n j n p . maximum( j n p . s i g n ( x [ . . . , 0 : 1 , 0 : 1 , : ] ) , 0 . 0 ) ∗ x
+    Listing 2 | Implementation of an equivariant generalization of the popular relu( 𝑥 ) activation function
+    following the general form given in (12).
+
+
+
+    path”, denoted as a triplet of degree and par-                          tion functions, tensor dense layers can be stacked
+    ity combinations ( 𝑎𝛼 , 𝑏 𝛽 , 𝑐𝛾 ) has separate train-                  directly, because the tensor operation already acts
+    able weights. The input features 𝒙 and 𝒚 may                            as a non-linearity.
+    have different maximum degrees 𝐿𝑥 and 𝐿 𝑦 , and
+    the maximum degree 𝐿𝑧 of the output features
+                    2
+    𝒛 ∈ ℝ2× ( 𝐿𝑧 +1) × 𝐹 can be freely chosen between                      Other layers and utilities E3x also includes
+    𝐿𝑧 = 0 and 𝐿𝑧 = 𝐿𝑥 + 𝐿 𝑦 (see the rule for coupling                    ready-to-use equivariant implementations of
+    irreps in Representations of O(3), all irreps with                     more sophisticated neural network building
+    degrees ℓ > 𝐿𝑧 are omitted).                                           blocks, e.g. message-passing 8 or attention. 20 Fur-
+                                                                           ther, there is code for evaluating spherical har-
+                                                                           monics, and, more generally “featurizing” vectors
+    Tensor dense layers As described above, dense                          𝒓 ∈ ℝ3 using functions of the form given in (8).
+    layers allow to recombine information in different                     For testing whether specific transformations are
+    feature channels, but do not mix information from                      equivariant, E3x includes functionality for gen-
+    different parity and degree channels. In contrast,                     erating random rotation matrices and converting
+    tensor layers combine information from different                       rotation matrices to the corresponding Wigner-D
+    parity and degree channels without mixing across                       matrices (used to rotate irrep features directly).
+    the feature dimension. Thus, both types of layers                      Since point clouds are a natural representation for
+    can be combined to a flexible feature transforma-                      many different types of three–dimensional data,
+    tion that allows mixing across all channels:                           E3x also contains utilities for working with point
+                          𝒂 = dense1 ( 𝒙 )                                 clouds. In particular, this includes support for
+                                                                           both “sparse” and “dense” neighbor/index lists
+                          𝒃 = dense2 ( 𝒙 )
+                                                                           (following the nomenclature used in JAX MD 14 )
+                          𝒚 = tensor( 𝒂, 𝒃) .                              and “indexed operations”, for example to com-
+                                                            2              pute a sum over specific points according to a
+    Here, the input features 𝒙 ∈ ℝ2× ( 𝐿in +1) × 𝐹in are                   given index list. For a full overview of features
+    first projected to the intermediate features 𝒂, 𝒃 ∈                    implemented in E3x, we refer the reader to the
+                 2
+    ℝ2× ( 𝐿in +1) × 𝐹out with separate dense layers, which                 online documentation.
+    are then coupled with a tensor layer to produce
+                                           2
+    the output features 𝒚 ∈ ℝ2× ( 𝐿out +1) × 𝐹out . Because
+    they allow information flow between all feature                         How to get started
+    channels, such tensor dense layers are a power-
+    ful building block for equivariant model architec-                      E3x is available on PyPI and can be installed by
+    tures. For example, by stacking multiple tensor                         simply running:
+    dense layers on top of each other, the scalar fea-
+    ture components (which are invariant under ro-
+    tations and reflections of the coordinate system)                       python -m pip install --upgrade e3x
+    are successively “enriched” with higher-order geo-
+    metric information from feature components with                         Usage examples and detailed documentation can
+    ℓ > 0. Contrary to stacks of dense layers, which                        be found on https://e3x.readthedocs.io.
+    are mathematically equivalent to a single dense                         The code for E3x is available from https://
+    layer when not interleaved with non-linear activa-                      github.com/google-research/e3x.
+
+
+                                                                                                                             19
+                                 E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+Acknowledgements                                           [9] C. R. Harris, K. J. Millman, S. J. Van
+                                                               Der Walt, R. Gommers, P. Virtanen, D. Cour-
+We thank J. T. Frank, N. W. A. Gebauer and S.                  napeau, E. Wieser, J. Taylor, S. Berg,
+Ganscha for helpful comments on the manuscript.                N. J. Smith, et al. Array programming
+                                                               with NumPy. Nature, 585(7825):357–362,
+                                                               2020.
+References
+                                                         [10] J. Heek, A. Levskaya, A. Oliver, M. Ritter,
+ [1] B. Anderson, T. S. Hy, and R. Kondor. Cor-               B. Rondepierre, A. Steiner, and M. van Zee.
+     morant: Covariant molecular neural net-                  Flax: A neural network library and ecosys-
+     works. Advances in neural information pro-               tem for JAX, 2023. URL http://github.
+     cessing systems, 32, 2019.                               com/google/flax.
+
+ [2] S. Batzner, A. Musaelian, L. Sun, M. Geiger,        [11] Y. Kosmann-Schwarzbach and S. Singer.
+     J. P. Mailoa, M. Kornbluth, N. Molinari, T. E.           Groups and Symmetries: From Finite Groups
+     Smidt, and B. Kozinsky. E(3)-equivariant                 to Lie Groups. Universitext. Springer New
+     graph neural networks for data-efficient and             York, 2009. ISBN 9780387788661. URL
+     accurate interatomic potentials. Nature com-               https://books.google.ch/books?
+     munications, 13(1):2453, 2022.                             id=8Aa4uS6ZcJEC.
+
+ [3] E. Chatzipantazis, S. Pertigkiozoglou, E. Do-       [12] D. Marcos, M. Volpi, N. Komodakis, and
+     briban, and K. Daniilidis. SE(3)-equivariant             D. Tuia. Rotation equivariant vector field
+     attention networks for shape reconstruc-                 networks. In Proceedings of the IEEE Interna-
+     tion in function space. arXiv preprint                   tional Conference on Computer Vision, pages
+     arXiv:2204.02394, 2022.                                  5048–5057, 2017.
+
+ [4] T. Cohen and M. Welling. Group equivariant          [13] S. Roman.       Advanced Linear Algebra.
+     convolutional networks. In International                 Springer, 2008.
+     conference on machine learning, pages 2990–         [14] S. Schoenholz and E. D. Cubuk. Jax MD:
+     2999. PMLR, 2016.                                        a framework for differentiable physics. Ad-
+                                                              vances in Neural Information Processing Sys-
+ [5] T. S. Cohen, M. Geiger, J. Köhler, and
+                                                              tems, 33:11428–11441, 2020.
+     M. Welling. Spherical CNNs. arXiv preprint
+     arXiv:1801.10130, 2018.                             [15] K. Schütt, O. Unke, and M. Gastegger. Equiv-
+                                                              ariant message passing for the prediction
+ [6] T. S. Cohen, M. Geiger, and M. Weiler. A                 of tensorial properties and molecular spec-
+     general theory of equivariant CNNs on ho-                tra. In International Conference on Machine
+     mogeneous spaces. Advances in neural in-                 Learning, pages 9377–9388. PMLR, 2021.
+     formation processing systems, 32, 2019.
+                                                         [16] J. Serre. Linear Representations of Fi-
+ [7] F. Fuchs, D. Worrall, V. Fischer, and                    nite Groups. Graduate Texts in Mathe-
+     M. Welling. SE(3)-transformers: 3D roto-                 matics. Springer New York, 2012. ISBN
+     translation equivariant attention networks.              9781468494587. URL https://books.
+     Advances in neural information processing                google.ch/books?id=9mT1BwAAQBAJ.
+     systems, 33:1970–1981, 2020.
+                                                         [17] N. Thomas, T. Smidt, S. Kearnes, L. Yang,
+ [8] J. Gilmer, S. S. Schoenholz, P. F. Riley,                L. Li, K. Kohlhoff, and P. Riley. Tensor
+     O. Vinyals, and G. E. Dahl. Neural message               field networks: Rotation-and translation-
+     passing for quantum chemistry. In Interna-               equivariant neural networks for 3d point
+     tional conference on machine learning, pages             clouds. arXiv preprint arXiv:1802.08219,
+     1263–1272. PMLR, 2017.                                   2018.
+
+
+                                                                                                        20
+                                E3x: E(3)-Equivariant Deep Learning Made Easy
+
+
+[18] O. Unke, M. Bogojeski, M. Gastegger,
+     M. Geiger, T. Smidt, and K.-R. Müller. SE(3)-
+     equivariant prediction of molecular wave-
+     functions and electronic densities. Advances
+     in Neural Information Processing Systems,
+     34:14434–14447, 2021.
+
+[19] O. T. Unke, S. Chmiela, M. Gastegger, K. T.
+     Schütt, H. E. Sauceda, and K.-R. Müller.
+     Spookynet: Learning force fields with elec-
+     tronic degrees of freedom and nonlocal ef-
+     fects. Nature communications, 12(1):7273,
+     2021.
+
+[20] A. Vaswani, N. Shazeer, N. Parmar, J. Uszko-
+     reit, L. Jones, A. N. Gomez, Ł. Kaiser, and
+     I. Polosukhin. Attention is all you need.
+     Advances in neural information processing
+     systems, 30, 2017.
+
+[21] E. Vinberg. Linear Representations of Groups:
+     Translated from the Russian by A. Iacob.
+     Modern Birkhäuser Classics. Springer
+     Basel, 2010. ISBN 9783034800631. URL
+     https://books.google.ch/books?
+     id=CTY_AAAAQBAJ.
+[22] M. Weiler, M. Geiger, M. Welling,
+     W. Boomsma, and T. S. Cohen.          3D
+     steerable CNNs: Learning rotationally
+     equivariant features in volumetric data.
+     Advances in Neural Information Processing
+     Systems, 31, 2018.
+
+
+
+
+                                                                                21
+

@@ -1,0 +1,51 @@
+> Research protocol copy. Dates, settings and checkboxes describe the saved protocol, not current experiment completion or a new launch approval. See [the experiment index](../../../reports/PAPER_EVIDENCE_LOG.md) for outcomes. Historical launch records referenced below are retained separately.
+
+# Frozen optimizer-step diagnostic design
+
+30 September2026. Proposed/unexecuted.  Bounded observational extension of existing snapshot diagnostics; native implementation, no new training or broader scientific comparison.  Repository evidence is numerical authority;
+
+## Question and rationale
+
+At the three fixed2000update loss-control endpoints, what do the actual saved Adam moments imply for the next update? Does its fitting force derivative/finite change differ from two prespecified equal-norm reference directions? Saved force-only force MSE still declined between1500and2000, so failed gate at2000 does not establish convergence or insufficient capacity. More training now changes budget, widening changes capacity and a learning-rate sweep adds tuning. First observe the saved optimizer state with temporary probes. These are local observations, not training/causal attribution/selection.
+
+Use unchanged normalized losses LE=rawenergyMSE/Escale², LF=rawforceMSE/Fscale², and each source arm's frozen weights. Fitting128 diverse frames, original16 anchor fully fitted. Same model/normalization/seed/data/splits. Preserve strict raw original gates and failed learning outcomes; temporary point gates cannot clear learning acceptance/pilot.
+
+## Sources and immutable identity
+
+Pin complete31loss-control artifacts (four root config/provenance/subsets/summary plus nine files in each replay/balanced/force-only directory: config/provenance/summary/history/fitting-inputs/anchor-inputs/reference/last.msgpack/checkpoint-verification) and compact report before any prepared arrays. Also enforce previous31coverage source+38raw calibration+calibration compact gates via balance_preflight. Verify both compact indexes against pinned files; completeallowlists, all100raw files+2compact hashes rechecked after eachcase/end.
+
+Reconcile loss-source config/protocol with diagnostic config (run_directory is observational output, not old training root). Fresh initial hashes match earlier controls; all source arms executionvalid/2000updates/Adamcount2000/256000exposures/128warmup/22scheduledobservations and verified checkpoint status. Per-arm config/provenance weights equal declared source arms, canonical confighash/normalization/dataset/split/subsets/input IDs/arrays/memberships correct. Same ordered128fit/16anchor, allanchors fitted. Reload each saved final state against its exact historical provenance and fresh template; current/historical code separate. Recompute all saved fitting/anchor predictions against references atatol1e-10/rtol0 and initial/final metric/gate identities. Historical checkpoints are observation inputs only, never resumed or written.
+
+## Frozen directions and probes
+
+For each source arm, compute scaled energy/force gradients on fitting and anchor by unchanged sequential16frame microbatches. Independently reconcile weighted fitting g=a*gE+b*gF with accumulated_weighted_loss_and_grad at1e-10/1e-8; retain raw/weighted objectives and whole/backbone/kernel/bias norms and zero blocks. Force-only bias should remainzero; whole-tree norms depend on parameterization/scales, not a universal stationarity criterion.
+
+Three fitting-derived directions, same direction applied to both fitting and anchor:
+
+1. stateful_adam: call locked Optax Adam atLR0.001 with savedcount2000/mu/nu and weighted fitting gradient, obtaining proposed delta and ephemeral newoptcount2001. Independently verify manual moment/bias-correction/epsilon formula leafwise at1e-10/1e-8 and compare actual p+delta/newoptimizer against build_weighted_step. Do not retain an advanced checkpoint; discard newstate. Biascorrection uses incomingcount+1.
+2. reset_adam_matched_norm: initialize fresh Adam moments/count0 at the saved parameters, calculate hypothetical weighted step with count1, rescale its Euclidean whole-tree norm to ||stateful_adam delta||. This is an artificial local direction comparison, not optimizer reset training or a matched-compute control.
+3. steepest_matched_norm: -g * ||stateful_adam delta|| / ||g||. This is a Euclidean parameter-space reference, not an implemented new optimizer. Gradient/scaling must use weighted fitting objective, not anchor loss or force-only gradient in all arms.
+
+For each nonzero available direction, report dot(gE,delta), dot(gF,delta), a*dot(gE,delta)+b*dot(gF,delta), and normalized directional cosines, on fitting AND anchor. Report directional contributions by backbone/headkernel/headbias; actual directionnorm, gradientnorm and zero blocks. Verify derivatives along unitdelta by central differences atboth fixedh1e-4/1e-5 for bothscaledobjectives on bothroles; every direction/objective/role must meet atol1e-8/rtol1e-4 atatleastoneh. Preserve every successful/failedstep; failure blocks latercases, invalidatesinterpretation. Zero directions have explicit not_applicable_zero_direction status; if weightedgradient/reset directionnormzero while targetnonzero, referenceunavailable withreason, never fabricate normalization. Zero target yields zero statefuldirection; reset/steepest unavailability is declared rather than implying convergence.
+
+Evaluate exactlyscale0.1and1.0 for all available directions, temporaryparams p+scale*delta, exhaustively measure rawE/F, original-baseline fractions, pergroup/equalgroup/anchoroverlap and weightedloss. Save sourcebaseline plus everyprobe. Labels/offset fixed; no posthocenergy recentering. Probe scale is a counterfactual displacement, not a permanent learning-rate change. No scale/direction chosen as winner or applied persistently. Training frame exposures=0; separately count all diagnostic forward/gradient/FD/probe frame evaluations. Ephemeral optimizer calls are verified/discarded, not committed training updates. Statehashbefore=after for all3 source states and allsource files unchanged.
+
+Official [Optax Adam documentation](https://optax.readthedocs.io/en/latest/api/generated/optax.adam.html) describes moment-based updates and denominator epsilon; locked local implementation/defaults govern this exact diagnostic. It does not justify causal claims from one local step.
+
+## Execution, failure and interpretation
+
+Exactly3cases in replay->balanced->force-only order. No fresh initialization case, no training step committed, no dense Jacobian/capacity search, no LR/weight sweep, newseed/GPU/validation/test/fullpilot. One600s controllercap includes preflight/compilation/gradients/probes/reportableoutput; boundary checks around chunks/operations, running operations are not forciblycancelled. Protected outputroot, incremental prospective/partial/observation/summary files, blockedcases distinct from attemptedfailures, no overwrite/resume/retry. Source/hash/identity/FD/nonfinite/budget failure preservespartials and routes toresolve_verification_or_operational_failure. Applicableverification passing defines executionvalid, not learninggatepass. Each case preregistered and outcome logged immediately including hashes/stops/limits. JSON-only report gatesinterpretation and actualcounts for preflight/partial/blocked/unavailable cases.
+
+Negative fitting force slope and lower finite force atfixedscale is local feasible improvement atthatpoint, not eventual gate passage. A positive slope or finiteincrease can describe momentum/nonlinearity under exactsavedstate; one step does not establish accumulated cause. Equal-norm controls change direction/components, not identicalperparametersteps or compute. Anchor wholly fitted, notgeneralization. Snapshotgradientnorm not a capacity/stationarity theorem. No automatic nextintervention: separatelyreview longerbudget/optimizer/capacity work only after validlocaloutcomes; pendingpilot unchanged.
+
+## Implementation contract
+
+Isolated optimizer_diagnostics.py numerichelpers and analyze_optimizer_snapshot; optimizer_runs.py strictsource/control orchestration; CLI diagnose-optimizer-step; scripts/report_optimizer_steps.py and focusedtests. Baseline/sharedtrainer/loss/weights unchanged. NativeTDD: explicit scalar/quadraticmoments/oracles, counter+1, epsilon, weightedderivative, equalnorm/zero/unavailable, unitFDsign/decomposition, exactsourcepins/controlsettingsbeforeloader, rehashedbadmetadata/input/state rejection, protectedroot/partial/budgetblocking, immutablehashes and actualcounts/reportfailuregating. Full152prior plusnewtests beforeproduction; commit code thenexactconfigonce. Reportfigures visuallyverified, independentfinalreview withauthorverifiedrepairs,  durablearchive andlocalcommits; preserveallrecords.
+
+## Plan-review clarifications without protocol change
+
+Count synchronized completed frame passes by operation, increment after return/block_until_ready and before finite verification; save started/incomplete operation metadata for interruptions rather than pretending zero actual work or inventing completed frames. Reuse cached objective/gradient functions through isolated per-chunk wrappers for budget/partial accounting; opaque referencebuilder/parentpreflight counts only after complete return, otherwise started-but-unconfirmed status. Counts describe recorded completed model/gradient passes, not identical hardware FLOPs, with0committed training exposures. Source verification passes are separate from case probes.
+
+FD tolerance passage does not certify the sign of a derivative close to numerical tolerance; report numerical slope without declaring a robust sign there. Whole-tree equal norms do not equalize perparameter displacement or compute. No numeric settings, controls or cases changed.
+
+Execution status update30September2026: exact frozen3case matrix executed once atfef6197, all100raw+2compact sources unchanged,36FDcells/72steps/18probes verified under preregisteredcriterion withfourlargerFDfailures retained. No persistent update. Final reporting-schema repair changed no numericconditions or savedresearch;193tests passed125.07s. Balancedlimits and review scope in reports/optimizer-step-execution-record.md.

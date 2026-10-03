@@ -1,0 +1,33 @@
+# Capacity diagnostic findings, 2 October 2026
+
+Increasing width from 32 to 64 reduced endpoint energy error but increased force error under the selected training settings. Both runs completed the prescribed 6,000 updates and passed execution verification. Neither met the joint learning criterion. This separates a valid numerical experiment from a successful learning outcome.
+
+We compared freshly initialized models with 13,569 and 43,521 parameters, respectively, a 3.20738447932788-fold increase. Each used seed 0, CPU float64, Adam at learning rate 0.0003, two representation iterations, degree 1, eight radial features, a 5 Å cutoff and a zero energy head. We retained the reviewed energy and force weights, 0.014584365670390719 and 1.9854156343296092. The same 128 fitted structures were used in both arms, with full gradients accumulated over eight microbatches of 16 structures each. The 16 anchors are a fitted subset. The 144 role entries therefore represent 128 distinct structures, with no held-out validation.
+
+Acceptance required raw energy and force MSE to fall strictly below 10% of their original update-zero baselines on both fitting and anchor roles. We retained these original baselines throughout; the residual decomposition does not change the acceptance rule.
+
+| Width | Role | Energy MSE / baseline | Force MSE / baseline | Joint role gate |
+|---|---|---:|---:|---|
+| 32 | Fitting | 0.3194094334870974 | 0.4657052724792342 | Failed |
+| 32 | Anchors | 0.11607064219031449 | 0.4471150476714813 | Failed |
+| 64 | Fitting | 0.2118608476964685 | 0.5639486501605391 | Failed |
+| 64 | Anchors | 0.03513370966695055 | 0.5233608310384563 | Failed |
+
+On the fitting structures, width 64 had 33.67107371140724% lower energy MSE and 21.09561207205048% higher force MSE than width 32. The raw fitting energy MSE changed from 0.01198320842349682 to 0.007948333482229644 eV², while force MSE changed from 0.0065589689424798165 to 0.00794262358651163 eV²/Å². The same direction held on the anchors: energy MSE was 69.73075275198031% lower and force MSE was 17.05283321687636% higher. The wider model passed the anchor energy criterion individually, but failed the remaining criteria. More parameters did not produce a joint improvement at this rate and update budget.
+
+The saved trajectories contain substantial energy excursions. Width 32 reached a fitting energy MSE of 3.6020684618113443 times baseline at update 3,700. Width 64 reached 130.1420012818957 times baseline at update 5,000, with anchor energy at 76.36200895272364 times baseline. At the next saved observation, update 5,100, its fitting energy fraction was 0.24848662649600908. These observations establish a sampled excursion and subsequent sampled recovery. Scores were saved at updates 0, 1, every 100 updates through 6,000, and 3,001, giving 63 observations per arm. We cannot infer continuous stability, the duration of an excursion or a causal mechanism between those observations.
+
+At the endpoint, the squared global mean energy error on the fitting structures was 4.4911314561212563e-08 eV² for width 32 and 2.428188974271815e-08 eV² for width 64. These values are small relative to the corresponding energy MSEs, so a constant global energy offset explains very little of the remaining fitting error at update 6,000. The anchor decomposition differs: width 32 had squared mean error 0.002231543262331928 eV² within total MSE 0.007114939839938265 eV². Endpoint residuals do not explain the update-5,000 spike; its prediction-level decomposition has not been measured.
+
+The last saved window also does not establish convergence. From updates 5,500 to 6,000, fitting energy MSE fell by 6.663519548328774% for width 32 and 8.41186602325171% for width 64; force MSE fell by 2.8031009823560764% and 2.7863712214831998%. These are finite-window changes, with earlier nonmonotonic energy trajectories retained.
+
+Both independent child checks reproduced the saved endpoint predictions with maximum absolute difference 0.0. All four actual gradient/Adam oracles passed, including the update-3,001 checks with nonzero incoming optimizer moments. The largest reported absolute discrepancy was 3.563122019656362e-15. Production committed 12,000 updates and 1,536,000 fitting exposures across the pair. Initialization, warm-up, scoring, discarded oracle work and child verification are recorded separately in the canonical JSON. The numerical work, primary reports and evidence closure took 5,185.547022624989 seconds, within the 10,800-second global cap. The two case times are engineering records, not a hardware efficiency comparison.
+
+These findings concern one seed, one selected learning rate, fitted supports and a finite update budget. Width changes both representation size and optimization geometry, and different parameter shapes cannot share identical initial parameters. This experiment does not isolate expressivity, establish generalization or test the main force-consistency hypothesis. The full training pilot remains pending.
+
+A possible next diagnostic is to examine saved spike checkpoints and decompose energy residuals and head/body gradients before selecting another training change. This is an unexecuted proposal. A detailed implementation plan and two independent plan reviews must precede any such work.
+
+The numerical authority is [the canonical report](capacity-diagnostics.json), with [the concise report](capacity-diagnostics.md), [the trajectory figure](execution/capacity-2026-10-02/capacity-trajectories.png) and [its caption](execution/capacity-2026-10-02/capacity-trajectories-caption.md). The production source is commit b45ff2a66923af14a51dce7190b3808810b2a478. The saved archive has 343 members, all checked against retained raw-file hashes, with CRC verification passed. Its SHA-256 is 2226d21dab8533330914aee75473a88ac4e9cf0b546141d309c0ec5fb287939a. The evidence trail retains both failed gates, all sampled excursions, unsuccessful engineering trials and review repairs under the CAPACITY entries in PAPER_EVIDENCE_LOG.md. Final review status is recorded separately in the whole-pair review and closeout record.
+
+
+Historical source hashes identify the original research artifacts. Raw run archives, original launch packages and historical audit records referenced here are retained separately; this report is a research export. See [the reproduction note](../docs/REPRODUCTION.md).

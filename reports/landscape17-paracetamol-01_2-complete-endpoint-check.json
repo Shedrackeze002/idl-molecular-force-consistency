@@ -1,0 +1,82 @@
+{
+  "molecule": "paracetamol",
+  "connection": "01_2",
+  "named_endpoint_pair": [
+    "0",
+    "1"
+  ],
+  "branches": {
+    "plus": {
+      "record_id": "Landscape17/paracetamol/SteepestDescent/01_2/coordsplus_138.xyz",
+      "source_sha256": "6eb2052dae969b18f59670da267dec4b5fff6f8df3dd0dbb655bffc42aa6ef93",
+      "energy_eV": -14023.35601746059,
+      "force_max_eV_per_A": 0.01034903,
+      "scores_without_descriptor_shortlist": {
+        "0": {
+          "rmsd": 0.34597055528879134,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "08103a6b87fa5cd7b6b0004b0ca3d0a4be488d47a11aa560bdcb1be3b00469a4",
+          "reference_energy_eV": -14023.337818314883
+        },
+        "1": {
+          "rmsd": 0.06431211546693098,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fbe6e8db0a4ac019d58a166728eb1c625dde8666333c01656b2853be55c3db0d",
+          "reference_energy_eV": -14023.356074088288
+        },
+        "2": {
+          "rmsd": 1.4095231220018807,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fea7166c50bd23d2676ccddbb240d5f8492f9f76d60b72c9fcf105f403b00344",
+          "reference_energy_eV": -14023.257582611723
+        },
+        "3": {
+          "rmsd": 1.3724159316498081,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d263a0fe0f0d747d927d868c52792817db2c3be5e20872f726e65ba8ca10d3f9",
+          "reference_energy_eV": -14023.257648165292
+        }
+      }
+    },
+    "minus": {
+      "record_id": "Landscape17/paracetamol/SteepestDescent/01_2/coordsminus_108.xyz",
+      "source_sha256": "47d89f2a8eabb93c45855f3b6695c298d44f087c6b3f916e7cd708c095b56c17",
+      "energy_eV": -14023.337809470462,
+      "force_max_eV_per_A": 0.00532891,
+      "scores_without_descriptor_shortlist": {
+        "0": {
+          "rmsd": 0.00494779704533744,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "08103a6b87fa5cd7b6b0004b0ca3d0a4be488d47a11aa560bdcb1be3b00469a4",
+          "reference_energy_eV": -14023.337818314883
+        },
+        "1": {
+          "rmsd": 0.35019879188399183,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fbe6e8db0a4ac019d58a166728eb1c625dde8666333c01656b2853be55c3db0d",
+          "reference_energy_eV": -14023.356074088288
+        },
+        "2": {
+          "rmsd": 1.3750141316578972,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "fea7166c50bd23d2676ccddbb240d5f8492f9f76d60b72c9fcf105f403b00344",
+          "reference_energy_eV": -14023.257582611723
+        },
+        "3": {
+          "rmsd": 1.4216559933362247,
+          "complete": true,
+          "reason": null,
+          "reference_sha256": "d263a0fe0f0d747d927d868c52792817db2c3be5e20872f726e65ba8ca10d3f9",
+          "reference_energy_eV": -14023.257648165292
+        }
+      }
+    }
+  }
+}

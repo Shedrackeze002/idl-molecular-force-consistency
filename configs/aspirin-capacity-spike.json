@@ -1,0 +1,74 @@
+{
+  "backend": "cpu",
+  "capacity_config": "configs/aspirin-capacity.json",
+  "capacity_report_sha256": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+  "cases": [
+    {
+      "name": "width32-u3600",
+      "update": 3600,
+      "width": "width32"
+    },
+    {
+      "name": "width32-u3700",
+      "update": 3700,
+      "width": "width32"
+    },
+    {
+      "name": "width32-u3800",
+      "update": 3800,
+      "width": "width32"
+    },
+    {
+      "name": "width32-u6000",
+      "update": 6000,
+      "width": "width32"
+    },
+    {
+      "name": "width64-u4900",
+      "update": 4900,
+      "width": "width64"
+    },
+    {
+      "name": "width64-u5000",
+      "update": 5000,
+      "width": "width64"
+    },
+    {
+      "name": "width64-u5100",
+      "update": 5100,
+      "width": "width64"
+    },
+    {
+      "name": "width64-u6000",
+      "update": 6000,
+      "width": "width64"
+    }
+  ],
+  "direction_seed": 20261002,
+  "direction_zero_tolerance": 1e-12,
+  "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+  "fd_atol": 1e-08,
+  "fd_rtol": 0.0001,
+  "fd_steps": [
+    0.0001,
+    1e-05
+  ],
+  "gradient_identity_atol": 1e-10,
+  "gradient_identity_rtol": 1e-08,
+  "maximum_invocations": 1,
+  "microbatch_size": 16,
+  "output_reserve_seconds": 60,
+  "precision": "float64",
+  "prediction_atol": 1e-10,
+  "prelaunch_gate": "reports/execution/spike-diagnostic-2026-10-02/prelaunch-gate.json",
+  "run_directory": "runs/aspirin-capacity-spike-2026-10-02",
+  "score_atol": 1e-10,
+  "score_rtol": 1e-08,
+  "source_inventory": "reports/execution/capacity-2026-10-02/numerical-run-inventory.json",
+  "source_inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+  "source_pins": "reports/execution/spike-diagnostic-2026-10-02/source-pins.json",
+  "source_pins_sha256": "26f6914685dc38709652408b015356c7e4fd38bd5d1b392c9550c2cb2719c130",
+  "source_root": "runs/aspirin-capacity-2026-10-02",
+  "status": "planned_unexecuted",
+  "wall_seconds": 1800
+}

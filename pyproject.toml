@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "force-consistency"
+version = "0.1.0"
+description = "Audited Landscape17 force-consistency experiments"
+requires-python = ">=3.12,<3.13"
+dependencies = ["numpy>=2,<3", "scipy>=1.14", "ase>=3.24", "networkx>=3.4", "jax>=0.6,<0.10", "flax>=0.10", "e3x==1.0.2", "optax>=0.2"]
+
+[project.optional-dependencies]
+gpu = ["jax[cuda12]==0.9.2; sys_platform == 'linux' and (platform_machine == 'x86_64' or platform_machine == 'aarch64')"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[project.scripts]
+force-consistency = "force_consistency.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/test_capacity_report.py", "tests/test_capacity_runs.py", "tests/test_capacity_spikes.py", "tests/test_connections_units.py", "tests/test_diagnostics.py", "tests/test_geometry_matching.py", "tests/test_gradient_diagnostics.py", "tests/test_loss_balance.py", "tests/test_loss_balance_report.py", "tests/test_model_physics.py", "tests/test_offset_profile_core.py", "tests/test_offset_profile_report.py", "tests/test_optimizer_diagnostics.py", "tests/test_representation.py", "tests/test_source_xyz.py", "tests/test_splits_prepare.py", "tests/test_training_contract.py", "tests/test_width_rate_recovery_report.py", "tests/test_width_rate_runs.py"]
+pythonpath = ["src", "tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/force_consistency"]
