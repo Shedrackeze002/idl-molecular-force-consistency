@@ -1,0 +1,22 @@
+{
+  "allocation": "proposed_team_agreement_pending",
+  "artifacts": {
+    "docs/team/CONTRIBUTIONS.md": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+    "docs/team/PROJECT_HANDOFF.md": "12f23e73c807b8f422cdfbdcca822b49794f0ce66e3af72138a0c8f69689d379",
+    "docs/team/reviews/2026-10-03-handoff-engineering-followup.md": "6a8a39fbf83eb6f442b74c18ef1dd71154cfb89609376633d910bc0ee39935ab",
+    "docs/team/reviews/2026-10-03-handoff-engineering.md": "c80f47d2f66bc4937c1d53685bade6622149215248a2292f8bc872e560461154",
+    "docs/team/reviews/2026-10-03-handoff-scientific-followup.md": "ebf74512aa303803f93b09d42c20eb2def46592c486972f2d975aff803018f4c",
+    "docs/team/reviews/2026-10-03-handoff-scientific.md": "7f82f9f3d3fcf27d44947b4a9871d75a9ce1b0e686b3b3abcced3da989b258d1",
+    "reports/execution/team-handoff-2026-10-03/amendment-A.json": "d656cfc9c18f27688b4bc5342d3192392f58067b3fc008582b20d67ae654c0c1",
+    "reports/execution/team-handoff-2026-10-03/draft-document-checks.json": "a2d2d5d75f27d94a78b915c5d70e586872ed6d5bc49efcc588f5018b8fd5c12c",
+    "reports/execution/team-handoff-2026-10-03/drafts/CONTRIBUTIONS.md": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+    "reports/execution/team-handoff-2026-10-03/drafts/PROJECT_HANDOFF.md": "14f3f74b140b87717b54d8bfd37291dd1efc6a7ac9c347ebea37e4fa154bf81f",
+    "reports/execution/team-handoff-2026-10-03/final-document-checks.json": "b6e7f4140bff92a2abe7e5afcd07c1128044d6f8454b135e8fd657e01e669749",
+    "reports/execution/team-handoff-2026-10-03/planning-record.json": "e111a531e7afdb61bea5e66d4dca7ac912ef7d3edc0aec0b023a27ab4adb4ed6"
+  },
+  "external_actions": [],
+  "implementation_or_research_launch_approval": false,
+  "next_step": "team agrees owners/access/interface, then each owns reviewed implementation plan and authored technical PR",
+  "scope": "ready_to_share_local_handoff_and_empty_ledger",
+  "status": "two_final_handoff_reviews_PASS"
+}

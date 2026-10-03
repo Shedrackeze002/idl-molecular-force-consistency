@@ -1,0 +1,22 @@
+{
+  "amended_handoff_sha256": "12f23e73c807b8f422cdfbdcca822b49794f0ce66e3af72138a0c8f69689d379",
+  "before_handoff_sha256": "14f3f74b140b87717b54d8bfd37291dd1efc6a7ac9c347ebea37e4fa154bf81f",
+  "initial_reviews": {
+    "engineering": "c80f47d2f66bc4937c1d53685bade6622149215248a2292f8bc872e560461154",
+    "scientific": "7f82f9f3d3fcf27d44947b4a9871d75a9ce1b0e686b3b3abcced3da989b258d1"
+  },
+  "ledger_unchanged_sha256": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+  "research_or_implementation_executed": false,
+  "reviewer_suggestions_adopted": [
+    "explicit force MSE fractions/strict gate",
+    "seen-reference flags and structural RMSD units",
+    "single adapter integrator; species/order/energy gauge/differentiability conventions",
+    "force-only scoring cannot use missing energy through paired scorer",
+    "loop/disagreement units and separate seed variability",
+    "training-only loader and round-trip fixture",
+    "no HEAD or dependency mutation during active launch",
+    "actual artifact access and persistence verification before onboarding claim"
+  ],
+  "settings_or_roles_changed": false,
+  "status": "final_amended_handoff_followups_pending"
+}

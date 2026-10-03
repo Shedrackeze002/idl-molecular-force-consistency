@@ -1,0 +1,26 @@
+{
+  "context_read_limits": [
+    "two optional directories absent: .github and docs/team (before creation)",
+    "aggregate source output truncated; targeted proposal/name/runtime/report reads recovered operative facts"
+  ],
+  "dates": "Oct23 midterm and Dec9 report from submitted proposal; current schedule unconfirmed",
+  "draft_sha256": {
+    "docs/team/CONTRIBUTIONS.md": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+    "docs/team/PROJECT_HANDOFF.md": "14f3f74b140b87717b54d8bfd37291dd1efc6a7ac9c347ebea37e4fa154bf81f"
+  },
+  "external_actions": "none; no messages, repository pushes, issues, PRs or uploads",
+  "github_handles": "not supplied; Andrew IDs not treated as handles",
+  "implementation_status": "no_new_feature_implementation",
+  "member_names": [
+    "Shedrack Eze",
+    "Olufunke Abodunrin",
+    "Emmanuel Aaron",
+    "Muhammed Idris"
+  ],
+  "name_source": "proposal.tex:17",
+  "research_status": "no_new_experiment",
+  "reviews": "scientific and engineering review-only agents",
+  "scope": "brief progress handoff, four technical streams, dependencies and authentic GitHub contribution records",
+  "status": "proposed_team_allocation_dual_review_pending",
+  "strength_assumption": "user says assume comparable CMU MS engineering AI ability"
+}

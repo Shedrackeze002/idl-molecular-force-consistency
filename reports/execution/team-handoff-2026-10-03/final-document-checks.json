@@ -1,0 +1,24 @@
+{
+  "contributions_sha256": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+  "existing_force_isolation_plan_gate_unchanged": true,
+  "existing_source_paths_verified": 17,
+  "first_amended_check_failure": {
+    "expected_only_log_change_but_actual": [
+      "proposal.pdf",
+      "reports/PAPER_EVIDENCE_LOG.md"
+    ],
+    "reason": "naive checker failed to exempt the known preexisting user PDF deletion",
+    "resolution": "explicitly verifies and exempts existing user PDF status, then confirms other tracked changes are log append only; no file cleanup or draft changes",
+    "type": "AssertionError"
+  },
+  "future_paths_explicitly_suggested_only": [
+    "reports/team/"
+  ],
+  "handoff_sha256": "12f23e73c807b8f422cdfbdcca822b49794f0ce66e3af72138a0c8f69689d379",
+  "nonuser_tracked_changes_only_append_only_evidence_log": true,
+  "numerical_or_implementation_work": false,
+  "prior_HEAD_log_prefix_bytes": 45874826,
+  "prior_HEAD_log_prefix_sha256": "6a13ecd136766a3ab50b62c7e53ab8081cd73f463940ef941b3f9567bb5739ab",
+  "status": "PASS_amended_document_checks",
+  "user_PDF_status_preserved_unstaged": true
+}

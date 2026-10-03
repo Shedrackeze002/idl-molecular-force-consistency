@@ -1,0 +1,27 @@
+{
+  "all_four_names_present": true,
+  "brief_words": 307,
+  "draft_hashes": {
+    "docs/team/CONTRIBUTIONS.md": "37974f5c2348e85919d2395dd1e9cb680c1662d1c1d2cdc325d932a008c9c7da",
+    "docs/team/PROJECT_HANDOFF.md": "14f3f74b140b87717b54d8bfd37291dd1efc6a7ac9c347ebea37e4fa154bf81f"
+  },
+  "existing_force_isolation_plan_gate_unchanged": true,
+  "existing_paths_verified": 16,
+  "first_check_failure": {
+    "paths": [
+      "reports/team/"
+    ],
+    "reason": "naive checker treated explicitly suggested future evidence directory as an existing cited artifact",
+    "resolution": "distinguished suggested future path from required existing source links; no draft edit or implementation",
+    "type": "AssertionError"
+  },
+  "future_suggested_path_not_created": [
+    "reports/team/"
+  ],
+  "handoff_words": 1915,
+  "model_calls": 0,
+  "no_trailing_whitespace_or_em_dashes": true,
+  "status": "PASS_draft_document_checks",
+  "test_suite_runs": 0,
+  "training_updates": 0
+}
