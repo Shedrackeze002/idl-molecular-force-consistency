@@ -23,7 +23,7 @@ Shedrack takes the largest workstream because he has the implementation context 
 | **Emmanuel Aaron** | Physical-consistency evaluation, cost measurements and comparative analysis | Draft metrics/output schemas and implement analytic conservative/nonconservative fixtures, with tests for units, unavailable values and failure routing | Closed-loop work, energy/direct-force disagreement where a corresponding energy exists, matched-hardware inference timing and connection-level analysis/plots. Own physical consistency, error/cost comparisons and uncertainty analysis. |
 | **Muhammed Idris** | Same-split MACE reference and reproducible compute setup | Draft the MACE/data-export and GPU verification plans; audit artifact availability, reuse the existing aspirin loader and GPU instructions | Tested MACE export/inference adapter, same-split training configuration, verified compute smoke checks and a trained reference checkpoint after approval. Own MACE methods/results and runtime reproducibility. |
 
-These assignments give the other three members independent engineering work while the baseline fitting investigation continues. They should use synthetic controls and training-only fixtures initially. No one needs to reproduce the completed diagnostic sequence to demonstrate a contribution.
+These assignments give every team member independent engineering work while the baseline fitting investigation continues.
 
 ## Boundaries and dependencies
 
