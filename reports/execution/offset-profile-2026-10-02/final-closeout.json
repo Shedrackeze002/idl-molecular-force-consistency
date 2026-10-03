@@ -1,0 +1,189 @@
+{
+  "actual_calibrations": 6001,
+  "actual_updates": 6000,
+  "all_manifest_numerical_bytes_unchanged": true,
+  "archive_crc_and_all_member_hashes": "PASS_primary_and_independent_review; unchanged original archive hash reconfirmed",
+  "archive_snapshot_exact_numerical_members": 18324,
+  "artifact_sha256": {
+    "docs/reviews/2026-10-03-offset-profile-metadata-followup.md": "7045345ce336ac30e357236a51e2cfc8dc7d44700e25123329aa803245bf09cc",
+    "docs/reviews/2026-10-03-offset-profile-saved-results.md": "3f620adb990f21f517ba7023de69d58db1d154e46fa804daf2b09180e5cfe4d8",
+    "reports/execution/offset-profile-2026-10-02/fullsuite-v2.txt": "30f91d840ac7fc0dfd2507195d7927296d4a5388fe6758cb843a2b0f943a4e74",
+    "reports/execution/offset-profile-2026-10-02/incidental-metadata-verification.json": "da9e98493b6c7bc7f74f8331ec5a4a43c96485aaa0d1fcc75af9a99acd05bd46",
+    "reports/execution/offset-profile-2026-10-02/incidental-metadata.zip": "abfc494b01d17f775dde4ab6cbb232fac092c88e0c1068118868510fcffde22c",
+    "reports/execution/offset-profile-2026-10-02/independent-arithmetic.json": "42785d90a90f78c595559c6827cd8387f600db4cbd4c13721625462fc986f467",
+    "reports/execution/offset-profile-2026-10-02/matched-raw-mse.png": "424c9df45d105f40a323c9ff8c7b2d8997e3b0e5d6c8c7866bb31f3ba95f2bb0",
+    "reports/execution/offset-profile-2026-10-02/numerical-completion.json": "93cc9fba9cc2e1f1e05e77e4481e3c42d6e48ee5409a789f3663412593a37849",
+    "reports/execution/offset-profile-2026-10-02/numerical-run-inventory.json": "52156beb72da98b0c1da1801efa1b57ffeaaed21d36259f170a426cd11e97ea8",
+    "reports/execution/offset-profile-2026-10-02/numerical-run.zip": "91375bfe0e628d6cb374e186cd64e01b23a8f1ade837df057e5e1234ab42c7fa",
+    "reports/execution/offset-profile-2026-10-02/obsidian-completed-recovered-verification.json": "9646e485aa066cb2e56f7e03f02278d35dc00b1a3f622a92db273555d9615633",
+    "reports/execution/offset-profile-2026-10-02/obsidian-completed-text.md": "fffb21357a88e5cde5832cca00fa8946c52cebc6e6b76a5226d1f425babdc11b",
+    "reports/execution/offset-profile-2026-10-02/obsidian-completed-verification.json": "4fe38fac1a1b512ba4890bfc84eb8e0e1179c76bee930b807280b12912fad505",
+    "reports/execution/offset-profile-2026-10-02/obsidian-metadata-clarification-verification.json": "8dc3d332aaf6394af46e582cf8437e5feaeac51a4da79424edf913777373c5f5",
+    "reports/execution/offset-profile-2026-10-02/obsidian-metadata-text.md": "8c40c3484433bd916fced61a40d92395047727f0c89a0f8ffdf53d2490028a3a",
+    "reports/execution/offset-profile-2026-10-02/paper-grid-correction.json": "81c80458737c9dd11cdee0bd5ee3e087b06c8e05320d48674edb9690d05983e1",
+    "reports/execution/offset-profile-2026-10-02/prelaunch-gate.json": "4991f948ba1e19ec26e157bab57d9920e232b43c64d3ca9ac0b23d3ea0af23e4",
+    "reports/execution/offset-profile-2026-10-02/production-process-completion.json": "6f1bb4623e2663b863b2863d6adc2421c85e59cd827b44efad7cdf1a8ee8d967",
+    "reports/execution/offset-profile-2026-10-02/saved-closeout-verification.json": "3695e32696c150c2adffd90a8c72c1d5cbf16939a5e0ccffd0a1b8c1ea2c8336",
+    "reports/execution/offset-profile-2026-10-02/saved-result-review-closure.json": "4102807e6b32b8358de0358abe1e379f8de4d44249f76d9c8f71ae79371883df",
+    "reports/execution/offset-profile-2026-10-02/source-pins.json": "c527a7b19c4ebe4aa681add2e2a649306a4d3f44a9e029eacb5a7b9b3d876882",
+    "reports/execution/offset-profile-2026-10-02/sync-obsidian-completed-repair.py": "53e665af3e02b43e96f5c407d867eb5876a48b1fa8bcfa07e621aa82cfca85ac",
+    "reports/offset-profile-component-comparison.json": "5baa1ab4f75d126789ccd05d95101876ab5b787a1c8ee7d3a03cb6b3924b3276",
+    "reports/offset-profile-diagnostics.json": "33f5b57fc74b363de07026b6401bf79f029b24fbb46bcc356bac4256bf875f26",
+    "reports/offset-profile-diagnostics.md": "85e6307989f02557d628e1fb440262e0d618b2eefa83c47072cee31708d7e9f1",
+    "reports/offset-profile-methods-note.md": "905a47e2ba12031ba7437262caa8f61b7f10268ab74e80faa3747fb2bf2976d5",
+    "reports/offset-profile-paper-findings.md": "69077e1632d87613f1af42faf150ab87d5f7c2b91cf25ed3a702da936c4dc172",
+    "reports/reviews/offset-profile-metadata-followup-2026-10-03/preservation-verification.json": "f926f7e39960232727130bbcf7e3977459765394545a1ef4782e3d63f6047c9d",
+    "reports/reviews/offset-profile-saved-results-2026-10-03/evidence-manifest.json": "ac54a5b6d510f62bf5f3bc3eb3fa6210a27dd974dcbe43fcddd696bac8a220e8"
+  },
+  "at_utc": "2026-10-03T00:30:04.014397+00:00",
+  "closeout_new_predictions": 0,
+  "closeout_new_random_initializations": 0,
+  "closeout_new_training_updates": 0,
+  "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+  "current_incidental_metadata": {
+    ".DS_Store": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987"
+  },
+  "current_raw_folder_files": 18325,
+  "endpoint_contrasts": {
+    "anchor": {
+      "energy_mse_eV2": {
+        "historical_endpoint": 0.007114939839938265,
+        "historical_fraction": 0.11607064219031449,
+        "historical_matching_grid_maximum": 0.1348453640671307,
+        "intervention_endpoint": 0.006999080616555901,
+        "intervention_fraction": 0.11418055530775573,
+        "intervention_matching_grid_maximum": 0.036222284060598034,
+        "original_baseline": 0.061298358531283896,
+        "relative_endpoint_change": -0.01628393577300702
+      },
+      "force_mse_eV2_per_A2": {
+        "historical_endpoint": 0.004530867645870908,
+        "historical_fraction": 0.4471150476714813,
+        "historical_matching_grid_maximum": 0.010127277887478154,
+        "intervention_endpoint": 0.004293494802138282,
+        "intervention_fraction": 0.42369062245390743,
+        "intervention_matching_grid_maximum": 0.010125633322943054,
+        "original_baseline": 0.010133561081129106,
+        "relative_endpoint_change": -0.05239015179552853
+      }
+    },
+    "fitting": {
+      "energy_mse_eV2": {
+        "historical_endpoint": 0.01198320842349682,
+        "historical_fraction": 0.3194094334870974,
+        "historical_matching_grid_maximum": 0.13513795338588072,
+        "intervention_endpoint": 0.010880078056279096,
+        "intervention_fraction": 0.2900057685250047,
+        "intervention_matching_grid_maximum": 0.033201892516970574,
+        "original_baseline": 0.03751676427546992,
+        "relative_endpoint_change": -0.09205634486459346
+      },
+      "force_mse_eV2_per_A2": {
+        "historical_endpoint": 0.0065589689424798165,
+        "historical_fraction": 0.4657052724792342,
+        "historical_matching_grid_maximum": 0.014077900408841586,
+        "intervention_endpoint": 0.006351944796216577,
+        "intervention_fraction": 0.45100597487761285,
+        "intervention_matching_grid_maximum": 0.01407687745614785,
+        "original_baseline": 0.014083948218070219,
+        "relative_endpoint_change": -0.03156351982739647
+      }
+    }
+  },
+  "engineering_suite": "656 passed in488.59s at unchanged reviewed source/runtime; reused without rerun",
+  "evidence_log_before_final_append_bytes": 45861276,
+  "evidence_log_before_final_append_sha256": "eb5c75bf44df299da84ebc04c3898ccadfc7310c6b9387be1f140efafccc7bbd",
+  "full_training_pilot": "pending_not_started",
+  "implementation_repair_followup": "PASS_before_launch",
+  "incidental_metadata_policy": "retained in place, separate copy and separate ZIP; original numerical archive/inventory not modified",
+  "independent_metadata_followup": "PASS",
+  "independent_saved_result_review": "PASS_including_corrected_grid_and_final_paper_hash",
+  "learning_gate_passed": false,
+  "limits": [
+    "Mean-zero fitting bias is enforced by construction.",
+    "One seed/rate, historical reference and changed optimizer algorithm limit causal claims.",
+    "All128 fitting examples and16 fitted anchors provide no held-out generalization evidence.",
+    "Sparse score observations do not prove continuous stability or convergence.",
+    "Dense intervention corrections have no matching dense historical reference.",
+    "Full pilot remains pending.",
+    "All16 fitted anchors are group01 only.",
+    "Anchor centered variance+24.41971159078873%; adverse group outcomes retained.",
+    "Grid wording correction preserved with prior erroneous draft and reviewer failed assertion.",
+    "Initial CLI sync failure, UI permissions stall and failed exactfolder final assertion preserved; no permission granted/app security change.",
+    "New .DS_Store observed after original review; exact unchanged numerical snapshot distinguished from current folder."
+  ],
+  "live_source_runtime_gate_checked": true,
+  "matching_grid_excludes_0": true,
+  "matching_grid_includes_3001": true,
+  "matching_postzero_count": 62,
+  "next_step": "Prepare unresolved force-fitting next-lever plan with two independent reviews before implementation; no next experiment launched.",
+  "numerical_elapsed_seconds": 1899.5848710830032,
+  "numerical_manifest_files": 18324,
+  "numerical_source_revision": "ca31c8b4bc67dc7ec067dd514dca3c80c713c75e",
+  "obsidian_cli_completion": "recovered_and_verified_both_notes_with_real_backups_and_exact_readback; metadata clarification included",
+  "obsidian_readbacks": {
+    "completed-recovered": {
+      "findings": {
+        "after_sha256": "4e94dd4e9a79db3c1bdd6ea29720938a75ae0c043a24d0c8a5e9124d4a8e1429",
+        "before_sha256": "2bde6947c4b2147bfc95a756f5f05ac922f3f5d150009a0bfe4e0f2c6d5667b6",
+        "exact_sync_text_present": true,
+        "status": "verified"
+      },
+      "hub": {
+        "after_sha256": "331686f1957e3e544a091e7fe7c74427ae406162d3fffd06190cdb678af1c70c",
+        "before_sha256": "ba56dd502fde58c3b0fdb4a8facb0247f404390d943297d360fea704bc089a5a",
+        "exact_sync_text_present": true,
+        "status": "verified"
+      }
+    },
+    "metadata-clarification": {
+      "findings": {
+        "after_sha256": "65a358fe0eb86b4310b678555e93010b09f8afdff3b49d6a64f54c5f56b17e86",
+        "before_sha256": "4e94dd4e9a79db3c1bdd6ea29720938a75ae0c043a24d0c8a5e9124d4a8e1429",
+        "exact_sync_text_present": true,
+        "status": "verified"
+      },
+      "hub": {
+        "after_sha256": "e497e31aa83a5e7b2b43c0a0b565937a279fc9f7e76eb8a5284634945120b492",
+        "before_sha256": "331686f1957e3e544a091e7fe7c74427ae406162d3fffd06190cdb678af1c70c",
+        "exact_sync_text_present": true,
+        "status": "verified"
+      }
+    }
+  },
+  "old_raw_inventory_counts": {
+    "capacity": 343,
+    "spike": 247
+  },
+  "protected_evidence_prefix_bytes": 45677796,
+  "protected_evidence_prefix_sha256": "c9a671d84712a9203bc25550b5bd95c685dda817d87464c22f501f56ac717584",
+  "role_gates": {
+    "anchor": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.11418055530775573,
+        "force_mse_eV2_per_A2": 0.42369062245390743
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.00612983585312839,
+        "force_mse_eV2_per_A2": 0.0010133561081129107
+      }
+    },
+    "fitting": {
+      "accepted": false,
+      "fraction_remaining": {
+        "energy_mse_eV2": 0.2900057685250047,
+        "force_mse_eV2_per_A2": 0.45100597487761285
+      },
+      "gate_fraction": 0.1,
+      "threshold_mse": {
+        "energy_mse_eV2": 0.003751676427546992,
+        "force_mse_eV2_per_A2": 0.001408394821807022
+      }
+    }
+  },
+  "source_pin_count": 601,
+  "status": "verified_saved_only_closeout_learning_gate_failed",
+  "two_final_plan_reviews": "PASS_before_implementation"
+}

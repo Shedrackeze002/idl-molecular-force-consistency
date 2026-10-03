@@ -1,0 +1,39 @@
+{
+  "accepted_calibrations": 6001,
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.11418055530775573,
+      "force_mse_eV2_per_A2": 0.42369062245390743
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "child_prediction_maximum_absolute_error": 0.0,
+  "elapsed_seconds": 1899.5848710830032,
+  "execution_valid": true,
+  "fitting_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.2900057685250047,
+      "force_mse_eV2_per_A2": 0.45100597487761285
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "late_call": false,
+  "pending_inflight_unknown": null,
+  "persisted_update": 6000,
+  "random_initializations": 0,
+  "saved_audit_and_independent_review": "pending",
+  "source_revision": "ca31c8b4bc67dc7ec067dd514dca3c80c713c75e",
+  "status": "completed",
+  "summary_sha256": "18fb37a18e5f421631ce77fcec4ca8de5c381c38765f87afdad4661f9ddf9bfd",
+  "updates": 6000
+}

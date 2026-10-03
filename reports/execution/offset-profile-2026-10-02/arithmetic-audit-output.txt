@@ -1,0 +1,57 @@
+{
+  "fitting": {
+    "groups": [
+      "01",
+      "01_2",
+      "22",
+      "23",
+      "44",
+      "58_2",
+      "77",
+      "78_2"
+    ],
+    "relative_endpoint_changes": {
+      "energy_mse_eV2": -0.09205634486459346,
+      "force_mse_eV2_per_A2": -0.03156351982739647,
+      "centered_variance_eV2": -0.09205294201166092
+    },
+    "group_change_counts": {
+      "energy_mse_eV2": {
+        "lower": 4,
+        "higher": 4
+      },
+      "force_mse_eV2_per_A2": {
+        "lower": 7,
+        "higher": 1
+      },
+      "centered_variance_eV2": {
+        "lower": 3,
+        "higher": 5
+      }
+    }
+  },
+  "anchor": {
+    "groups": [
+      "01"
+    ],
+    "relative_endpoint_changes": {
+      "energy_mse_eV2": -0.01628393577300702,
+      "force_mse_eV2_per_A2": -0.05239015179552853,
+      "centered_variance_eV2": 0.24419711590788729
+    },
+    "group_change_counts": {
+      "energy_mse_eV2": {
+        "lower": 1,
+        "higher": 0
+      },
+      "force_mse_eV2_per_A2": {
+        "lower": 1,
+        "higher": 0
+      },
+      "centered_variance_eV2": {
+        "lower": 0,
+        "higher": 1
+      }
+    }
+  }
+}

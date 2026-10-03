@@ -1,0 +1,35 @@
+{
+  "at_utc": "2026-10-02T23:34:16.226349+00:00",
+  "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+  "code_revision": "ca31c8b4bc67dc7ec067dd514dca3c80c713c75e",
+  "frozen_gate_sha256": "4991f948ba1e19ec26e157bab57d9920e232b43c64d3ca9ac0b23d3ea0af23e4",
+  "new_archive_sha256": "91375bfe0e628d6cb374e186cd64e01b23a8f1ade837df057e5e1234ab42c7fa",
+  "new_predictions": 0,
+  "new_raw_files": 18324,
+  "new_raw_inventory_sha256": "52156beb72da98b0c1da1801efa1b57ffeaaed21d36259f170a426cd11e97ea8",
+  "new_training_updates": 0,
+  "old_raw_sources": {
+    "runs/aspirin-capacity-2026-10-02": {
+      "count": 343,
+      "inventory": "reports/execution/capacity-2026-10-02/numerical-run-inventory.json",
+      "inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+      "unchanged": true
+    },
+    "runs/aspirin-capacity-spike-2026-10-02": {
+      "count": 247,
+      "inventory": "reports/execution/spike-diagnostic-2026-10-02/numerical-run-inventory.json",
+      "inventory_sha256": "12d298583f792732525388f7107925cef994b721658ee825b3d7257ca7a46441",
+      "unchanged": true
+    }
+  },
+  "protected_evidence_prefix": {
+    "capacity343_and_spike247_exact_inventories": "unchanged",
+    "numerical_trial": "unexecuted",
+    "protected_evidence_prefix_bytes": 45677796,
+    "protected_evidence_prefix_sha256": "c9a671d84712a9203bc25550b5bd95c685dda817d87464c22f501f56ac717584"
+  },
+  "source_pin_count": 601,
+  "source_pin_sha256": "c527a7b19c4ebe4aa681add2e2a649306a4d3f44a9e029eacb5a7b9b3d876882",
+  "status": "saved_sources_runtime_gate_prefix_and_raw_unchanged",
+  "suite_reused": "656 passed in488.59s; unchanged participants/runtime; no rerun"
+}

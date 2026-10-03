@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-10-02T23:46:02.790885+00:00",
+  "correction_record_sha256": "81c80458737c9dd11cdee0bd5ee3e087b06c8e05320d48674edb9690d05983e1",
+  "final_paper_sha256": "69077e1632d87613f1af42faf150ab87d5f7c2b91cf25ed3a702da936c4dc172",
+  "learning_gate_passed": false,
+  "material_correction": "update3001 is shared and included in62postzero observations; raw reports/figure already correct",
+  "new_predictions": 0,
+  "new_training_updates": 0,
+  "review_evidence_manifest": "reports/reviews/offset-profile-saved-results-2026-10-03/evidence-manifest.json",
+  "review_evidence_manifest_sha256": "ac54a5b6d510f62bf5f3bc3eb3fa6210a27dd974dcbe43fcddd696bac8a220e8",
+  "review_path": "docs/reviews/2026-10-03-offset-profile-saved-results.md",
+  "review_sha256": "3f620adb990f21f517ba7023de69d58db1d154e46fa804daf2b09180e5cfe4d8",
+  "scope": "independent saved-only numerical, provenance, archive, paper claim and final status-only followup",
+  "status": "PASS",
+  "tests_rerun": false
+}

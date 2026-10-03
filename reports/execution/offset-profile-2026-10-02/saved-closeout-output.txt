@@ -1,0 +1,47 @@
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+
+Fontconfig error: No writable cache directories
+	/opt/homebrew/var/cache/fontconfig
+	/Users/shedrackeze/.cache/fontconfig
+	/Users/shedrackeze/.fontconfig
+Matplotlib is building the font cache; this may take a moment.
+{
+  "status": "saved_only_verified",
+  "execution_valid": true,
+  "canonical_json_markdown_match": true,
+  "raw_file_count": 18324,
+  "raw_files_unchanged": true,
+  "archive_members": 18324,
+  "archive_crc": "passed",
+  "every_member_hash_matches": true,
+  "archive_sha256": "91375bfe0e628d6cb374e186cd64e01b23a8f1ade837df057e5e1234ab42c7fa",
+  "inventory_sha256": "52156beb72da98b0c1da1801efa1b57ffeaaed21d36259f170a426cd11e97ea8",
+  "report_sha256": {
+    "reports/offset-profile-diagnostics.json": "33f5b57fc74b363de07026b6401bf79f029b24fbb46bcc356bac4256bf875f26",
+    "reports/offset-profile-diagnostics.md": "85e6307989f02557d628e1fb440262e0d618b2eefa83c47072cee31708d7e9f1"
+  },
+  "component_comparison_sha256": "5baa1ab4f75d126789ccd05d95101876ab5b787a1c8ee7d3a03cb6b3924b3276",
+  "figures": {
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/matched-raw-mse.png": "424c9df45d105f40a323c9ff8c7b2d8997e3b0e5d6c8c7866bb31f3ba95f2bb0"
+  },
+  "independent_saved_result_review": "pending",
+  "new_training_updates": 0,
+  "new_predictions": 0,
+  "new_random_parameter_initializations": 0,
+  "elapsed_seconds": 19.99920254200697,
+  "cap_scope": "saved-only work separately timed after numerical closure"
+}

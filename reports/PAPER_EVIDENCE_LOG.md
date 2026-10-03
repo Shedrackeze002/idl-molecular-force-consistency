@@ -704409,3 +704409,183 @@ Both final planreviewsPASS, implementation followupPASS ed044149282ec71b638bf1b5
   "wall_seconds_including_reserve": 3600
 }
 ```
+
+
+## OFFSET-TRIAL-LAUNCH-001 — once-only ordinal1 launched under frozen gate
+
+Supervisor reports/execution/offset-profile-2026-10-02/production-invocation.json records actual UTC launch and full frozen gate. Source revision ca31c8b4bc67dc7ec067dd514dca3c80c713c75e; gate SHA256 4991f948ba1e19ec26e157bab57d9920e232b43c64d3ca9ac0b23d3ea0af23e4. Strict canonical config/source/gate/worker-invocation bindings, unchanged reviewed settings; one6000update arm. Actual completion/learning status pending. Do not retry or tune after failure. Raw root runs/aspirin-offset-profile-2026-10-02.
+
+
+## OFFSET-RUNNING-INITIAL-001 — construction effect and first numerical witness, final status pending
+
+The actual source-zero replay matched original rawbaselines before calibration; projected update0 fitting rawenergy MSE fraction0.8845496999383032 and forcefraction1.0. The11.54503000616968% initial energyMSE reduction is imposed by analytical globaloffset handling, not learning. Update0 differs from unprojected historicalstate and is excluded from the62sharedpostzero comparison. Oracle1passed runtime independentgradient/Adam/referenceprojection/prediction checks. These are partial in-progress observations, unendorsed until final source/gate/state/child/cap closure and independent saved review. No fullpilot or generalization result.
+
+```json
+{
+  "final_execution_and_learning_status": "pending",
+  "initial_projection": {
+    "bias_after": -0.0031339417895789473,
+    "bias_before": 0.0,
+    "centered_variance_eV2": 0.03318544258252297,
+    "delta_bias": -0.0031339417895789473,
+    "predicted_post_mse_eV2": 0.03318544258252297,
+    "preprojection_mean_eV": 0.06581277758115789,
+    "preprojection_mse_eV2": 0.03751676427546992
+  },
+  "initial_raw_MSE_reduction_by_construction_fraction": 0.11545030006169676,
+  "oracle1_errors": {
+    "gradient_maximum_error": 1.0547118733938987e-15,
+    "prediction_maximum_error": 4.163336342344337e-17,
+    "state_maximum_error": 1.1449174941446927e-16
+  },
+  "oracle1_status": "passed",
+  "projected_zero_fitting_energy_fraction": 0.8845496999383032,
+  "projected_zero_fitting_force_fraction": 1.0,
+  "verification_status": "running_partial_unendorsed_until_final_closure"
+}
+```
+
+
+## OFFSET-METHODS-DRAFT-001 — paper-facing method preserved during running trial
+
+Methods draft reports/offset-profile-methods-note.md SHA256 905a47e2ba12031ba7437262caa8f61b7f10268ab74e80faa3747fb2bf2976d5 explains fixed21atom separable scalarbias, global envelope derivative, why microbatch centering differs, unchanged force under fixedbody bias shift versus empirical changedtraining path, shared-source versus projectedzero identities and original rawgates, numerical oracles/freshchild, counts and fitted/historical/sparse limits. Explicit running/draft status, no endpoint claim. Variable-projection publisherabstract supplies background only; fulltextaccess-gated. Source/config/launchgate remain unchanged.
+
+
+## OFFSET-RUNNING-HALFWAY-001 — actual nonzero-moment oracle passed; centered-error fluctuation retained
+
+Oracle3001 passes predeclared combined absolute/relative tolerances. Largeststate difference1.3664092080034607e-10 exceeds absolutecomponent alone but satisfies the combined per-leaf tolerance; do not falsely describe it as all differencesbelowabsolute1e-10. Both full-reference gradient and independentAdam/projection/prediction witnesses use actual incomingupdate3000 nonzero bodymoments. Fresh fittingenergyfractions3000/3001 are0.420133179867439/0.30901383668434784, forces0.5733154659398794/0.5581048241028662. Pooledmean remains nearzero byconstruction; the sampled energy fluctuation is centered error, so removal ofmeanoffset does not imply monotonic accuracy/stability. Preserve both higher/lower observations, not selectedsuccess. Final execution/learning and source/child/cap endorsement still pending.
+
+```json
+{
+  "acceptance_rule": "Every oracle leaf/prediction uses combined atol1e-10+rtol1e-8, not absolute-only1e-10; child reproduction will use absolute1e-10/relative0.",
+  "interpretation": "Sampled fluctuation remains in centered energy error despite enforced pooled mean. No continuous stability or mechanism claim.",
+  "observed_fitting_rows": {
+    "2900": {
+      "centered_population_variance_eV2": 0.014748174738046129,
+      "energy_mse_eV2": 0.014748174738046129,
+      "force_mse_eV2_per_A2": 0.008011814250673252,
+      "signed_mean_eV": -8.409939411535561e-15,
+      "squared_mean_eV2": 7.07270809056991e-29
+    },
+    "3000": {
+      "centered_population_variance_eV2": 0.015762037473390313,
+      "energy_mse_eV2": 0.015762037473390313,
+      "force_mse_eV2_per_A2": 0.00807454533491606,
+      "signed_mean_eV": 3.3029134982598407e-15,
+      "squared_mean_eV2": 1.0909237576987059e-29
+    },
+    "3001": {
+      "centered_population_variance_eV2": 0.011593199268745236,
+      "energy_mse_eV2": 0.011593199268745236,
+      "force_mse_eV2_per_A2": 0.007860319442919955,
+      "signed_mean_eV": 6.966649479522857e-15,
+      "squared_mean_eV2": 4.85342049705361e-29
+    }
+  },
+  "oracle3001": {
+    "atol": 1e-10,
+    "gradient_maximum_error": 2.5135449277513544e-13,
+    "incoming_nonzero_moments": true,
+    "incoming_update": 3000,
+    "outgoing_update": 3001,
+    "prediction_maximum_error": 4.551914400963142e-14,
+    "rtol": 1e-08,
+    "state_maximum_error": 1.3664092080034607e-10,
+    "status": "passed"
+  },
+  "status": "running_partial_unendorsed_until_final_closure"
+}
+```
+
+
+## OFFSET-TRIAL-COMPLETION-001 — bounded once-only trial completed, raw learning gate failed
+
+Actual6000acceptedupdates/6001acceptedcalibrations, no randomparameterinitializers. Elapsed1899.5848710830032s including chargednumericalphases/primaryclosure, below3600s cap. BothoraclesPASS and onefreshprocesschild reproduces144roleentries maximumabsoluteerror0.0. Runtime summaryvalid; saved-array/archive/independentreview stillpending at thisentry. Originalzero strict10% joint learninggateFAILED onbothroles; fit E/F fractions0.2900057685250047/0.45100597487761285, fittedanchor E/F0.11418055530775573/0.42369062245390743. No retry/tuning/selected earlier checkpoint; fixed6000endpoint retained. Allscores/receipts/raw work remainpreserved. Fullpilotpending.
+
+```json
+{
+  "accepted_calibrations": 6001,
+  "anchor_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.11418055530775573,
+      "force_mse_eV2_per_A2": 0.42369062245390743
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.00612983585312839,
+      "force_mse_eV2_per_A2": 0.0010133561081129107
+    }
+  },
+  "child_prediction_maximum_absolute_error": 0.0,
+  "elapsed_seconds": 1899.5848710830032,
+  "execution_valid": true,
+  "fitting_gate": {
+    "accepted": false,
+    "fraction_remaining": {
+      "energy_mse_eV2": 0.2900057685250047,
+      "force_mse_eV2_per_A2": 0.45100597487761285
+    },
+    "gate_fraction": 0.1,
+    "threshold_mse": {
+      "energy_mse_eV2": 0.003751676427546992,
+      "force_mse_eV2_per_A2": 0.001408394821807022
+    }
+  },
+  "late_call": false,
+  "pending_inflight_unknown": null,
+  "persisted_update": 6000,
+  "random_initializations": 0,
+  "saved_audit_and_independent_review": "pending",
+  "source_revision": "ca31c8b4bc67dc7ec067dd514dca3c80c713c75e",
+  "status": "completed",
+  "summary_sha256": "18fb37a18e5f421631ce77fcec4ca8de5c381c38765f87afdad4661f9ddf9bfd",
+  "updates": 6000
+}
+```
+
+## OFFSET-SAVED-CLOSEOUT-001 — 2026-10-03 saved-only numerical closeout
+
+Status: primary saved-only verified; independent saved-result review pending. Actual once-only trial completion recorded in OFFSET-TRIAL-COMPLETION-001. No additional training/model calls/predictions. Canonical reports rebuilt byte-for-byte;18,324 unchanged raw files archived as18,324 unique exact members; archive CRC and all member hashes PASS. Archive SHA25691375bfe0e628d6cb374e186cd64e01b23a8f1ade837df057e5e1234ab42c7fa; inventory SHA25652156beb72da98b0c1da1801efa1b57ffeaaed21d36259f170a426cd11e97ea8. Saved-only elapsed19.99920254200697s after numerical cap closure. saved-closeout-verification.json SHA2563695e32696c150c2adffd90a8c72c1d5cbf16939a5e0ccffd0a1b8c1ea2c8336.
+
+Independent primary endpoint arithmetic from raw saved historical/new NPZ arrays and unchanged targets exactly matches canonical raw endpoint metrics/relative contrasts for both roles. Group membership and within/between variance identities checked. independent-arithmetic.json SHA25642785d90a90f78c595559c6827cd8387f600db4cbd4c13721625462fc986f467; audit helper/output retained. This is a second arithmetic path by primary, not the independent subagent review. Four saved spike-state components separately compared; component JSON SHA2565baa1ab4f75d126789ccd05d95101876ab5b787a1c8ee7d3a03cb6b3924b3276.
+
+Finding: fitting endpoint E9.205634486459346% and F3.156351982739647% lower than historical6000. Bothrole/overall strict10% original-baseline learning gates FAIL. Anchor raw E1.628393577300702% lower, centered variance24.41971159078873% HIGHER, F5.239015179552853% lower. All16 anchors fitted from group01. Eight groups: rawE4lower/4higher, centeredvariance3lower/5higher, F7lower/1higher; group44 rawE+119.28131254959813%, group78_2 F+8.146900877762131%. Initial fittingE11.54503000616968% lower byconstruction, notlearning; sampledmax reductions not continuous stability ormechanism. One seed/rate/historical changedalgorithm/allfitted limits inference/fullpilotpending. Paper draft reports/offset-profile-paper-findings.md SHA25694bc3c7106d8f771d0a479dc4472409e63e47085b016a5dc24d423125f3f72a4.
+
+Figure reports/execution/offset-profile-2026-10-02/matched-raw-mse.png SHA256424c9df45d105f40a323c9ff8c7b2d8997e3b0e5d6c8c7866bb31f3ba95f2bb0; visualQA clear2x2logMSEfractionchart/labels/legend. Host Fontconfig unwritablecache warnings retained in saved-closeout-output.txt; figurecreation successful, noinstall/retry. Source lookup attempted source-preservation.py (nonexistent; no mutation); correct retained preservation record located via file inventory. Next: independent saved-only raw/archive/claims review, source/runtime/prefix preservation, CLI notes update/readback, finalcloseout.
+
+## OFFSET-CLOSEOUT-PRESERVATION-001 — 2026-10-03
+
+Saved-only source/runtime/gate/protected-prefix verification PASS before independent result review.601 pinned sources checked; unchanged live source/runtime fingerprint2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d; frozen gate SHA2564991f948ba1e19ec26e157bab57d9920e232b43c64d3ca9ac0b23d3ea0af23e4. Capacity343/spike247/new18,324 exact raw inventories unchanged; previous protected45,677,796-byte evidence prefix SHA256c9a671d84712a9203bc25550b5bd95c685dda817d87464c22f501f56ac717584 preserved. Record reports/execution/offset-profile-2026-10-02/final-preservation-before-review.json SHA25689fa7b6a4edfedd9e207d6eee7a712b2668d28d56fd991c827946a8aea1e0e7c. No model calls or testing rerun; valid656-test evidence reused against unchanged participants.
+
+Paper draft spacing-only cleanup after OFFSET-SAVED-CLOSEOUT-001; final scientific values/limitations unchanged. New draft SHA2569de7272b493048adb50ab8e86e7fb28097afd0da29e8fbafba5c48277e7e1d66 sent to independent saved-result reviewer. Numerical-completion and initial saved-closeout records intentionally retain their historical pending-review statements; a later linked final record will report final review status.
+
+## OFFSET-PAPER-GRID-CORRECTION-001 — 2026-10-03
+
+Independent reviewer found a material factual draft description error: primary paper claimed update3001 intervention-only/excluded from sharedgrid. Primary verified both saved histories have63 rows on identical update grids;62 sharedpostzero rows INCLUDE3001 and exclude0. Canonical report/figure calculations were correct and unchanged. Preserved erroneous spacing-clean draft SHA2569de7272b493048adb50ab8e86e7fb28097afd0da29e8fbafba5c48277e7e1d66 at reports/execution/offset-profile-2026-10-02/paper-findings-before-grid-correction.md. Corrected paper SHA2560ede62384b0ac7851989c98aabb4240b9926d9def7632c0e5f7dfd2d731ff8c7; paper-grid-correction.json retains explicit grid; material corrected claim re-review pending. No model calls/numerical rerun. This correction supersedes any earlier primary description of3001 as intervention-only; numerical conclusions/bothfailed learninggates unaffected.
+
+## OFFSET-SAVED-RESULT-REVIEW-001 — 2026-10-03
+
+Independent saved-only numerical/provenance/archive/claim review PASS after factual grid description correction OFFSET-PAPER-GRID-CORRECTION-001. Final review docs/reviews/2026-10-03-offset-profile-saved-results.md SHA2563f620adb990f21f517ba7023de69d58db1d154e46fa804daf2b09180e5cfe4d8; evidence manifest reports/reviews/offset-profile-saved-results-2026-10-03/evidence-manifest.json SHA256ac54a5b6d510f62bf5f3bc3eb3fa6210a27dd974dcbe43fcddd696bac8a220e8. Independent raw NumPy endpoint/group/variance arithmetic and four historical spike-state components agree; originalzero raw fractions/bothroles gateFAIL; all18,324 exact ZIPmembers/allhashes/CRC/rawinventory PASS;601pins/source/runtime/gate/protectedprefix PASS; full saved-state/accepted6000/projection6001/oracle/child/cap work-chain audit PASS; canonical JSON/Markdown rebuilt byte-for-byte. Initialprojection forcearrays bitwiseunchanged, fitEconstructiongain11.545030006169677%. No modelcalls/training/initialization/newchild/suite rerun.
+
+Reviewer preserved failed matched-grid assertion revealing draft error and read-only path/text lookup failures; details/evidence in reviewfolder, not erased. Corrected scientific draft SHA2560ede62384b0ac7851989c98aabb4240b9926d9def7632c0e5f7dfd2d731ff8c7 passed. Final status/link-only paper SHA25669077e1632d87613f1af42faf150ab87d5f7c2b91cf25ed3a702da936c4dc172 passed exact followup; corrected scientific content unchanged. Previous corrected preamble retained in paper-findings-before-final-status.md. saved-result-review-closure.json records actual PASS and supersedes historical pendingreview fields; learningfailures/mixedgroup/anchorvariance limits retained. Next actualcloseout: authorized Obsidian CLI backup/readback, final preservation/record and scoped result commit excluding user PDFs.
+
+## OFFSET-OBSIDIAN-COMPLETION-SYNC-FAILURE-001 — 2026-10-03
+
+Original completion CLI sync returned exit1/readback mismatch. Inspection showed both saved purported hub backup/readback held only17byte diagnostic "Vault not found."; these are failure evidence, NOT actual note backups. Existing helper only rejected Error: responses and missed this exit0 CLI diagnostic. No completed text had been appended. Host CLI name/ID/help/vaults old command-order attempts likewise returned Vault not found; registered config path /Users/shedrackeze/hermes is a symlink to authorized iCloud hermes vault. UI inspection waited1993.8592seconds on ungranted Accessibility/Screen Recording permissions and yielded no app state; no permission was granted by agent/no UI action; not used further. Preserve operational delay as such, separate from earlier1899.584871 numerical elapsed.
+
+Official https://obsidian.md/help/cli documents vault parameter before command. Host explicit vault-first read initially returned command-not-found; explicit help showed registered read/append commands, then same read returned actual project hub. Registry readiness and command-order effects cannot be separately attributed from these observations. No app restart/install/securitysettings change. New separately retained sync-obsidian-completed-repair.py leaves original helper/failure files unchanged, selects vaultfirst, failsclosed on error/empty/missingvault diagnostics, requires real note header/length, times out each CLI20s, backs up bothnotes before mutations, escapes multiline content as documented, appends only if exactsectionabsent, then verifies exact CLI readback. Authorized completion sync recovery next; no research numerical work.
+
+## OFFSET-CLOSEOUT-METADATA-001 — 2026-10-03
+
+First final-closeout assertion failed before any finalrecord/write: full currentfolder has18,325 files versus18,324 numericalmanifest. Read-only difference check proves ONLYnew .DS_Store in offsetroot; all18,324 archived numerical bytes unchanged/no missing numericalfiles. Both oldcapacity343/spike247 roots remain exact. Origin unattributed; appeared after savedresultreview, macOS incidentalmetadata, no numericalwork. Metadata preserved in-place plus copied to execution/incidental-metadata, SHA in incidental-metadata-verification.json. Prior archived snapshot18,324exactunique numericmembers/allhashes/CRC remainsvalid; final currentfolder record must explicitly distinguish18,324 numericalfiles+1incidentalmetadata, rather than asserting unchanged fullfileset. No deletion/rerun/pinnedsourcechange. Independent narrow preservation followup next; prospective numerical results/gates/claims unchanged.
+
+## OFFSET-TRIAL-FINAL-001 — 2026-10-03
+
+Final bounded offset-profile trial closeout COMPLETE, executionvalid, learninggateFAILED. Final record reports/execution/offset-profile-2026-10-02/final-closeout.json SHA256fb17a2707f0fc792b0bfcc4338d6ac47581d6e700e52eb7f4030321953a168ee binds source ca31c8b4bc67dc7ec067dd514dca3c80c713c75e,601sourcepins/frozen gate/livecode/runtime,6000updates/6001calibrations/1899.5848710830032numerical seconds, bothoraclesPASS/oncechild0.0error144entries,62sharedpostzero INCLUDING3001. Original18,324numerical-member unique ZIP/allhashes/CRC and numericalbytes unchanged; currentrawfolder18,325 dueonlyincidental.DS_Store separately preserved. Standalone metadatafollowupPASS SHA2567045345ce336ac30e357236a51e2cfc8dc7d44700e25123329aa803245bf09cc; originalreview/manifest unchanged, initialfailed fullfolder assertion retained.
+
+Bothrole/overall original-baseline raw learninggatesFAIL: fitE0.2900057685250047/F0.45100597487761285, anchorE0.11418055530775573/F0.42369062245390743, allabove0.1. Positive endpointfitE−9.205634486459346%/F−3.156351982739647%historical; anchorcenteredvariance+24.41971159078873% and heterogeneous adversegroups retained. No causal/heldout/convergence/continuousstability/fullpilot claims. Finalpaper SHA25669077e1632d87613f1af42faf150ab87d5f7c2b91cf25ed3a702da936c4dc172; independent savedreview SHA2563f620adb990f21f517ba7023de69d58db1d154e46fa804daf2b09180e5cfe4d8 and exact finalstatusfollowup PASS. Historical pending fields superseded by final actualPASSrecord; material gridcorrection/old draft/failed reviewerassertion preserved.
+
+Obsidian completed+metadata clarification recovery PASS via explicitvault-first CLI, realnote backups/exactreadback. Initial missingvault/readbackfailure retained; oldhelper unchanged; ungrantedUIpermissionstall1993.8592s operationalonly distinctfromnumericalelapsed. Latest hub SHA256e497e31aa83a5e7b2b43c0a0b565937a279fc9f7e76eb8a5284634945120b492; findings SHA25665a358fe0eb86b4310b678555e93010b09f8afdff3b49d6a64f54c5f56b17e86. Recoverybefore hashes equal previoushalfway notes, so failedoriginalattempt changedneither note. Realbackups/CLItexts/proofs in executionfolder.
+
+No numerical/model/prediction/child/suite rerun. Valid656tests evidence reused againstunchangedparticipants. Allreviewfolders and userPDFchanges preserved; next candidateforcefittinglever needsownsavedplan+twoindependentreviews, fullpilotpending. Scopedresult commit excludinguserPDFs next.

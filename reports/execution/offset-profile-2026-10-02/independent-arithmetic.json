@@ -1,0 +1,261 @@
+{
+  "files_sha256": {
+    "runs/aspirin-capacity-2026-10-02/width32/provenance.json": "69355e35791b3cd102e6733ddede30c4d6c78ff0de17f08079018e0a87c97213",
+    "runs/aspirin-capacity-2026-10-02/width32/reference.npz": "eccaefdcc1a43f99465ec759bb83fce71539311fa429da2791fb16789e6774f5",
+    "runs/aspirin-offset-profile-2026-10-02/anchor-inputs.npz": "5c638b71fe14615e53ae0b27a0c69c1fff1fd572f9f7191130cb2116e86264fc",
+    "runs/aspirin-offset-profile-2026-10-02/fitting-inputs.npz": "9c56de4bae8058f4c18aab338aaee4e45c42f527905e48656f49900239fa701f",
+    "runs/aspirin-offset-profile-2026-10-02/predictions/6000.npz": "519baa224165c0925b5bee4a4d0be7455790f8e5a90f801acce3697b4d801f66",
+    "runs/aspirin-offset-profile-2026-10-02/provenance.json": "f8525147a76e2434dd732d409c59e685b851b6fba566eacfc89d3561ae91fd7f"
+  },
+  "new_model_calls": 0,
+  "roles": {
+    "anchor": {
+      "group_change_counts": {
+        "centered_variance_eV2": {
+          "higher": 1,
+          "lower": 0
+        },
+        "energy_mse_eV2": {
+          "higher": 0,
+          "lower": 1
+        },
+        "force_mse_eV2_per_A2": {
+          "higher": 0,
+          "lower": 1
+        }
+      },
+      "groups": [
+        "01"
+      ],
+      "original_baseline_fractions": {
+        "energy_mse_eV2": 0.11418055530775573,
+        "force_mse_eV2_per_A2": 0.42369062245390743
+      },
+      "paired": {
+        "historical": {
+          "between_group_variance_eV2": 0.0,
+          "per_group": {
+            "01": {
+              "centered_variance_eV2": 0.004883396577606338,
+              "energy_mse_eV2": 0.007114939839938265,
+              "force_mse_eV2_per_A2": 0.004530867645870908,
+              "mean_eV": -0.047239213184937026,
+              "mean_squared_eV2": 0.002231543262331928
+            }
+          },
+          "pooled": {
+            "centered_variance_eV2": 0.004883396577606338,
+            "energy_mse_eV2": 0.007114939839938265,
+            "force_mse_eV2_per_A2": 0.004530867645870908,
+            "mean_eV": -0.047239213184937026,
+            "mean_squared_eV2": 0.002231543262331928
+          },
+          "within_group_variance_eV2": 0.004883396577606338
+        },
+        "intervention": {
+          "between_group_variance_eV2": 0.0,
+          "per_group": {
+            "01": {
+              "centered_variance_eV2": 0.006075907937692252,
+              "energy_mse_eV2": 0.006999080616555901,
+              "force_mse_eV2_per_A2": 0.004293494802138282,
+              "mean_eV": 0.030383756826035335,
+              "mean_squared_eV2": 0.0009231726788636489
+            }
+          },
+          "pooled": {
+            "centered_variance_eV2": 0.006075907937692252,
+            "energy_mse_eV2": 0.006999080616555901,
+            "force_mse_eV2_per_A2": 0.004293494802138282,
+            "mean_eV": 0.030383756826035335,
+            "mean_squared_eV2": 0.0009231726788636489
+          },
+          "within_group_variance_eV2": 0.006075907937692252
+        }
+      },
+      "record_count": 16,
+      "relative_endpoint_changes": {
+        "centered_variance_eV2": 0.24419711590788729,
+        "energy_mse_eV2": -0.01628393577300702,
+        "force_mse_eV2_per_A2": -0.05239015179552853
+      }
+    },
+    "fitting": {
+      "group_change_counts": {
+        "centered_variance_eV2": {
+          "higher": 5,
+          "lower": 3
+        },
+        "energy_mse_eV2": {
+          "higher": 4,
+          "lower": 4
+        },
+        "force_mse_eV2_per_A2": {
+          "higher": 1,
+          "lower": 7
+        }
+      },
+      "groups": [
+        "01",
+        "01_2",
+        "22",
+        "23",
+        "44",
+        "58_2",
+        "77",
+        "78_2"
+      ],
+      "original_baseline_fractions": {
+        "energy_mse_eV2": 0.2900057685250047,
+        "force_mse_eV2_per_A2": 0.45100597487761285
+      },
+      "paired": {
+        "historical": {
+          "between_group_variance_eV2": 0.0033400199752518416,
+          "per_group": {
+            "01": {
+              "centered_variance_eV2": 0.004883396577606338,
+              "energy_mse_eV2": 0.007114939839938265,
+              "force_mse_eV2_per_A2": 0.004530867645870908,
+              "mean_eV": -0.047239213184937026,
+              "mean_squared_eV2": 0.002231543262331928
+            },
+            "01_2": {
+              "centered_variance_eV2": 0.004902234027652972,
+              "energy_mse_eV2": 0.006735812615071827,
+              "force_mse_eV2_per_A2": 0.00626540750086144,
+              "mean_eV": -0.042820305783808396,
+              "mean_squared_eV2": 0.0018335785874188549
+            },
+            "22": {
+              "centered_variance_eV2": 0.0009770828743331326,
+              "energy_mse_eV2": 0.008768998821744076,
+              "force_mse_eV2_per_A2": 0.002939387224211774,
+              "mean_eV": 0.08827182986327485,
+              "mean_squared_eV2": 0.007791915947410941
+            },
+            "23": {
+              "centered_variance_eV2": 0.0052172049256029454,
+              "energy_mse_eV2": 0.016763586667440267,
+              "force_mse_eV2_per_A2": 0.009289151664485311,
+              "mean_eV": 0.10745409132200283,
+              "mean_squared_eV2": 0.011546381741837324
+            },
+            "44": {
+              "centered_variance_eV2": 0.0029602118833476866,
+              "energy_mse_eV2": 0.0031718623190165286,
+              "force_mse_eV2_per_A2": 0.0029328169359857993,
+              "mean_eV": -0.01454821073771076,
+              "mean_squared_eV2": 0.00021165043566884263
+            },
+            "58_2": {
+              "centered_variance_eV2": 0.027976391782140606,
+              "energy_mse_eV2": 0.029289757156369903,
+              "force_mse_eV2_per_A2": 0.0132154665432393,
+              "mean_eV": -0.036240383196501955,
+              "mean_squared_eV2": 0.0013133653742293011
+            },
+            "77": {
+              "centered_variance_eV2": 0.01908161091043163,
+              "energy_mse_eV2": 0.020708692151092254,
+              "force_mse_eV2_per_A2": 0.0074024499620608895,
+              "mean_eV": -0.04033709509447382,
+              "mean_squared_eV2": 0.001627081240660624
+            },
+            "78_2": {
+              "centered_variance_eV2": 0.0031470153143280267,
+              "energy_mse_eV2": 0.003312017817301432,
+              "force_mse_eV2_per_A2": 0.005896204063123117,
+              "mean_eV": -0.012845330006403321,
+              "mean_squared_eV2": 0.00016500250297340555
+            }
+          },
+          "pooled": {
+            "centered_variance_eV2": 0.011983163512182258,
+            "energy_mse_eV2": 0.01198320842349682,
+            "force_mse_eV2_per_A2": 0.0065589689424798165,
+            "mean_eV": 0.00021192289768029449,
+            "mean_squared_eV2": 4.4911314561212563e-08
+          },
+          "within_group_variance_eV2": 0.008643143536930417
+        },
+        "intervention": {
+          "between_group_variance_eV2": 0.0029628574147498063,
+          "per_group": {
+            "01": {
+              "centered_variance_eV2": 0.006075907937692252,
+              "energy_mse_eV2": 0.006999080616555901,
+              "force_mse_eV2_per_A2": 0.004293494802138282,
+              "mean_eV": 0.030383756826035335,
+              "mean_squared_eV2": 0.0009231726788636489
+            },
+            "01_2": {
+              "centered_variance_eV2": 0.007396126669535449,
+              "energy_mse_eV2": 0.008560474969469246,
+              "force_mse_eV2_per_A2": 0.006246560491522706,
+              "mean_eV": 0.03412254826260486,
+              "mean_squared_eV2": 0.0011643482999337978
+            },
+            "22": {
+              "centered_variance_eV2": 0.001105249452346593,
+              "energy_mse_eV2": 0.0028805926709786368,
+              "force_mse_eV2_per_A2": 0.0026491273064903815,
+              "mean_eV": 0.04213482192476958,
+              "mean_squared_eV2": 0.0017753432186320436
+            },
+            "23": {
+              "centered_variance_eV2": 0.004740406476944909,
+              "energy_mse_eV2": 0.005791120384355381,
+              "force_mse_eV2_per_A2": 0.008914090547095544,
+              "mean_eV": 0.032414717450727104,
+              "mean_squared_eV2": 0.0010507139074104723
+            },
+            "44": {
+              "centered_variance_eV2": 0.0033835910710695413,
+              "energy_mse_eV2": 0.006955301325405565,
+              "force_mse_eV2_per_A2": 0.0026452958828099594,
+              "mean_eV": 0.05976378714854025,
+              "mean_squared_eV2": 0.0035717102543360245
+            },
+            "58_2": {
+              "centered_variance_eV2": 0.020902037821268916,
+              "energy_mse_eV2": 0.030645532274587807,
+              "force_mse_eV2_per_A2": 0.012887917681264951,
+              "mean_eV": -0.09870914067764391,
+              "mean_squared_eV2": 0.009743494453318896
+            },
+            "77": {
+              "centered_variance_eV2": 0.01472948636858874,
+              "energy_mse_eV2": 0.0189897532094007,
+              "force_mse_eV2_per_A2": 0.006802509694714457,
+              "mean_eV": -0.06527071962842113,
+              "mean_squared_eV2": 0.004260266840811959
+            },
+            "78_2": {
+              "centered_variance_eV2": 0.005004959334787907,
+              "energy_mse_eV2": 0.006218768999479516,
+              "force_mse_eV2_per_A2": 0.006376561963696341,
+              "mean_eV": -0.03483977130653426,
+              "mean_squared_eV2": 0.0012138096646916081
+            }
+          },
+          "pooled": {
+            "centered_variance_eV2": 0.010880078056279094,
+            "energy_mse_eV2": 0.010880078056279096,
+            "force_mse_eV2_per_A2": 0.006351944796216577,
+            "mean_eV": 9.728329253277934e-15,
+            "mean_squared_eV2": 9.464039006018321e-29
+          },
+          "within_group_variance_eV2": 0.007917220641529289
+        }
+      },
+      "record_count": 128,
+      "relative_endpoint_changes": {
+        "centered_variance_eV2": -0.09205294201166092,
+        "energy_mse_eV2": -0.09205634486459346,
+        "force_mse_eV2_per_A2": -0.03156351982739647
+      }
+    }
+  },
+  "status": "raw_saved_endpoint_arithmetic_verified"
+}

@@ -1,0 +1,22 @@
+{
+  "final_execution_and_learning_status": "pending",
+  "initial_projection": {
+    "bias_after": -0.0031339417895789473,
+    "bias_before": 0.0,
+    "centered_variance_eV2": 0.03318544258252297,
+    "delta_bias": -0.0031339417895789473,
+    "predicted_post_mse_eV2": 0.03318544258252297,
+    "preprojection_mean_eV": 0.06581277758115789,
+    "preprojection_mse_eV2": 0.03751676427546992
+  },
+  "initial_raw_MSE_reduction_by_construction_fraction": 0.11545030006169676,
+  "oracle1_errors": {
+    "gradient_maximum_error": 1.0547118733938987e-15,
+    "prediction_maximum_error": 4.163336342344337e-17,
+    "state_maximum_error": 1.1449174941446927e-16
+  },
+  "oracle1_status": "passed",
+  "projected_zero_fitting_energy_fraction": 0.8845496999383032,
+  "projected_zero_fitting_force_fraction": 1.0,
+  "verification_status": "running_partial_unendorsed_until_final_closure"
+}

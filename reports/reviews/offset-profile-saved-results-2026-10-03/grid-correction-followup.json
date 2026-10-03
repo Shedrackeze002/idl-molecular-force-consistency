@@ -1,0 +1,7 @@
+{
+  "corrected_draft_sha256": "0ede62384b0ac7851989c98aabb4240b9926d9def7632c0e5f7dfd2d731ff8c7",
+  "correction": "requested sentence meaning; all other draft bytes identical",
+  "prior_draft_sha256": "9de7272b493048adb50ab8e86e7fb28097afd0da29e8fbafba5c48277e7e1d66",
+  "prior_finding": "Update3001 is shared and counted, not intervention-only/excluded.",
+  "status": "PASS"
+}

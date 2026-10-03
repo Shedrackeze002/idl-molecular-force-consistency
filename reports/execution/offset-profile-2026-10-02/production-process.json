@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/.venv/bin/python",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/scripts/train_offset_profile.py",
+    "--config",
+    "configs/aspirin-offset-profile.json"
+  ],
+  "pid": 62667,
+  "started_at_utc": "2026-10-02T22:48:19.681378+00:00"
+}

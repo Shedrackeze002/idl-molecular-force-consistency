@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-03T00:25:54.221943+00:00",
+  "cause": "appearance of .DS_Store after earlier independent audit; external origin unattributed",
+  "checks": {
+    "runs/aspirin-capacity-2026-10-02": {
+      "changed": [],
+      "current_folder_count": 343,
+      "extra": {},
+      "missing": [],
+      "numerical_manifest_count": 343
+    },
+    "runs/aspirin-capacity-spike-2026-10-02": {
+      "changed": [],
+      "current_folder_count": 247,
+      "extra": {},
+      "missing": [],
+      "numerical_manifest_count": 247
+    },
+    "runs/aspirin-offset-profile-2026-10-02": {
+      "changed": [],
+      "current_folder_count": 18325,
+      "extra": {
+        ".DS_Store": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987"
+      },
+      "missing": [],
+      "numerical_manifest_count": 18324
+    }
+  },
+  "first_final_closeout_attempt": "assertion_failed_on_full_folder_set; no final record or evidence finalentry written",
+  "independent_followup": "pending",
+  "policy": "preserve original numerical inventory/ZIP; preserve raw incidental file and separately copy it; do not delete or imply changed numerical data",
+  "status": "all_numerical_bytes_unchanged_incidental_macOS_metadata_retained"
+}

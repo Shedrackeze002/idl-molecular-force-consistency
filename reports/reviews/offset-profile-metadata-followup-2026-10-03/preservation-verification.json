@@ -1,0 +1,50 @@
+{
+  "archive_includes_incidental_metadata": false,
+  "archive_members": 18324,
+  "archive_sha256": "91375bfe0e628d6cb374e186cd64e01b23a8f1ade837df057e5e1234ab42c7fa",
+  "checks": {
+    "runs/aspirin-capacity-2026-10-02": {
+      "changed": [],
+      "current_folder_file_count": 343,
+      "incidental_extra": {},
+      "inventory_sha256": "bc689bd0a7deaab79b07d388492fd316e5c1e4026cc200ec22db28c38fa64ebf",
+      "missing": [],
+      "numerical_file_count": 343
+    },
+    "runs/aspirin-capacity-spike-2026-10-02": {
+      "changed": [],
+      "current_folder_file_count": 247,
+      "incidental_extra": {},
+      "inventory_sha256": "12d298583f792732525388f7107925cef994b721658ee825b3d7257ca7a46441",
+      "missing": [],
+      "numerical_file_count": 247
+    },
+    "runs/aspirin-offset-profile-2026-10-02": {
+      "changed": [],
+      "current_folder_file_count": 18325,
+      "incidental_extra": {
+        ".DS_Store": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987"
+      },
+      "inventory_sha256": "52156beb72da98b0c1da1801efa1b57ffeaaed21d36259f170a426cd11e97ea8",
+      "missing": [],
+      "numerical_file_count": 18324
+    }
+  },
+  "elapsed_seconds": 2.454656874993816,
+  "metadata_copy_matches_in_place_bytes": true,
+  "metadata_origin": "unattributed",
+  "metadata_sha256": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987",
+  "new_model_calls": 0,
+  "new_predictions": 0,
+  "new_tests": 0,
+  "new_training_updates": 0,
+  "primary_metadata_record_sha256": "da9e98493b6c7bc7f74f8331ec5a4a43c96485aaa0d1fcc75af9a99acd05bd46",
+  "prior_review_and_every_manifest_participant_unchanged": true,
+  "saved_only": true,
+  "separate_metadata_zip": {
+    "member_sha256_and_crc": "PASS",
+    "sha256": "abfc494b01d17f775dde4ab6cbb232fac092c88e0c1068118868510fcffde22c",
+    "sole_member": "aspirin-offset-profile-2026-10-02/.DS_Store"
+  },
+  "status": "PASS_numerical_preservation_with_incidental_metadata"
+}

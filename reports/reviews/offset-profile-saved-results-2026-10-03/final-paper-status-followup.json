@@ -1,0 +1,8 @@
+{
+  "delta": "preamble verification status and two repository links only",
+  "final_closeout_record_scope": "link accepted; actual primary closure creation/readback remains outside this numerical and paper claim verdict",
+  "final_paper_sha256": "69077e1632d87613f1af42faf150ab87d5f7c2b91cf25ed3a702da936c4dc172",
+  "previous_paper_sha256": "0ede62384b0ac7851989c98aabb4240b9926d9def7632c0e5f7dfd2d731ff8c7",
+  "scientific_body": "unchanged byte-for-byte",
+  "status": "PASS"
+}

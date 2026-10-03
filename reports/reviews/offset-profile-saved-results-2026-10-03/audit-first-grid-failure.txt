@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/reviews/offset-profile-saved-results-2026-10-03/audit.py", line 56, in <module>
+    assert len(updates)==62 and 3001 not in updates
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

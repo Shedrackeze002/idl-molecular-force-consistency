@@ -1,0 +1,7 @@
+{
+  "gate_sha256": "4991f948ba1e19ec26e157bab57d9920e232b43c64d3ca9ac0b23d3ea0af23e4",
+  "once_only": true,
+  "source_revision": "ca31c8b4bc67dc7ec067dd514dca3c80c713c75e",
+  "status": "completed_valid_runtime_learning_gate_failed",
+  "summary_sha256": "18fb37a18e5f421631ce77fcec4ca8de5c381c38765f87afdad4661f9ddf9bfd"
+}

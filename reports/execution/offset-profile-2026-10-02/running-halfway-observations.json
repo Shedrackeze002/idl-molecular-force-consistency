@@ -1,0 +1,39 @@
+{
+  "acceptance_rule": "Every oracle leaf/prediction uses combined atol1e-10+rtol1e-8, not absolute-only1e-10; child reproduction will use absolute1e-10/relative0.",
+  "interpretation": "Sampled fluctuation remains in centered energy error despite enforced pooled mean. No continuous stability or mechanism claim.",
+  "observed_fitting_rows": {
+    "2900": {
+      "centered_population_variance_eV2": 0.014748174738046129,
+      "energy_mse_eV2": 0.014748174738046129,
+      "force_mse_eV2_per_A2": 0.008011814250673252,
+      "signed_mean_eV": -8.409939411535561e-15,
+      "squared_mean_eV2": 7.07270809056991e-29
+    },
+    "3000": {
+      "centered_population_variance_eV2": 0.015762037473390313,
+      "energy_mse_eV2": 0.015762037473390313,
+      "force_mse_eV2_per_A2": 0.00807454533491606,
+      "signed_mean_eV": 3.3029134982598407e-15,
+      "squared_mean_eV2": 1.0909237576987059e-29
+    },
+    "3001": {
+      "centered_population_variance_eV2": 0.011593199268745236,
+      "energy_mse_eV2": 0.011593199268745236,
+      "force_mse_eV2_per_A2": 0.007860319442919955,
+      "signed_mean_eV": 6.966649479522857e-15,
+      "squared_mean_eV2": 4.85342049705361e-29
+    }
+  },
+  "oracle3001": {
+    "atol": 1e-10,
+    "gradient_maximum_error": 2.5135449277513544e-13,
+    "incoming_nonzero_moments": true,
+    "incoming_update": 3000,
+    "outgoing_update": 3001,
+    "prediction_maximum_error": 4.551914400963142e-14,
+    "rtol": 1e-08,
+    "state_maximum_error": 1.3664092080034607e-10,
+    "status": "passed"
+  },
+  "status": "running_partial_unendorsed_until_final_closure"
+}

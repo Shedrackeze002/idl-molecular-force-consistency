@@ -1,0 +1,14 @@
+{
+  "findings": {
+    "after_sha256": "65a358fe0eb86b4310b678555e93010b09f8afdff3b49d6a64f54c5f56b17e86",
+    "before_sha256": "4e94dd4e9a79db3c1bdd6ea29720938a75ae0c043a24d0c8a5e9124d4a8e1429",
+    "exact_sync_text_present": true,
+    "status": "verified"
+  },
+  "hub": {
+    "after_sha256": "e497e31aa83a5e7b2b43c0a0b565937a279fc9f7e76eb8a5284634945120b492",
+    "before_sha256": "331686f1957e3e544a091e7fe7c74427ae406162d3fffd06190cdb678af1c70c",
+    "exact_sync_text_present": true,
+    "status": "verified"
+  }
+}

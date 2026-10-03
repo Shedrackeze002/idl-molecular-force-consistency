@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "saved_only": true,
+  "new_model_calls": 0,
+  "new_training_updates": 0,
+  "new_predictions": 0,
+  "raw_files": 18324,
+  "archive_members": 18324,
+  "all_member_hashes_and_crc": "PASS",
+  "source_pins": 601,
+  "frozen_participant_hashes": "PASS",
+  "protected_log_prefix": "PASS",
+  "canonical_regeneration": "byte-for-byte",
+  "elapsed_saved_review_seconds": 4.626584832993103,
+  "oracles": {
+    "1": {
+      "combined_per_leaf_tolerance_passed": true,
+      "gradient_maximum_error": 1.0547118733938987e-15,
+      "state_maximum_error": 1.1449174941446927e-16,
+      "prediction_maximum_error": 4.163336342344337e-17,
+      "incoming_nonzero_moments": false
+    },
+    "3001": {
+      "combined_per_leaf_tolerance_passed": true,
+      "gradient_maximum_error": 2.5135449277513544e-13,
+      "state_maximum_error": 1.3664092080034607e-10,
+      "prediction_maximum_error": 4.551914400963142e-14,
+      "incoming_nonzero_moments": true
+    }
+  },
+  "execution": {
+    "updates": 6000,
+    "accepted_calibrations": 6001,
+    "elapsed_seconds": 1899.5848710830032,
+    "final_durable_write_checked": true,
+    "random_initializations": 0
+  }
+}

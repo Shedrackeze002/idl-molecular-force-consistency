@@ -1,0 +1,8 @@
+{
+  "elapsed_seconds": 1899.863967207988,
+  "ended_at_utc": "2026-10-02T23:19:59.562346+00:00",
+  "exit_code": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "0281ef20d227680f309aa31673235669966c6e8e8e2bd209ee3dd26a7e60dbf8",
+  "stop_reason": "returned"
+}
