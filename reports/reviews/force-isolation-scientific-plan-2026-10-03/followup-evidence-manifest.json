@@ -1,0 +1,15 @@
+{
+  "artifacts_sha256": {
+    "docs/reviews/2026-10-03-force-isolation-scientific-plan-followup.md": "a97585514d46c3a2c9c03e5a42d5637ca421c82ecd0e835b611a9ffbbf9d78cf",
+    "docs/reviews/2026-10-03-force-isolation-scientific-plan.md": "445ee46a7d06cc425ac6ea1485757ea0fa3433b0e5e15366cdf0a57b631b792b",
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "dbac79dd3d57f5599094cb8abe9e13661d5e596ecfcfb53af64c359b0ab5b1ce",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "1a61f0087b0baf147d07e8a5e5ed5dca02199910195bcf21f15e58132625ba21",
+    "reports/execution/force-isolation-2026-10-03/amendment-A.json": "e60cafd5c55106d2ae265ac26b604c8c6fa44f548254728f717ccce1be2d6846",
+    "reports/execution/force-isolation-2026-10-03/proposed-settings.json": "48d6bd6070904d348f250e1a9e8fd4e09cfe0fe44685af9b195e4c749fcfe2f8",
+    "reports/execution/force-isolation-2026-10-03/source-pins.json": "eda3ae20c34d16a5fea4260d6a15a5ac31356e2a384df00e4dd08e29a0e30664",
+    "reports/reviews/force-isolation-scientific-plan-2026-10-03/followup-amendment-A-verification.json": "3d5f69fdc870ce0be11311693174e9cba8bff38ad119ae36f55ffcf64b083c4e",
+    "reports/reviews/force-isolation-scientific-plan-2026-10-03/verification.json": "0e16972de3f2b35c40937467aaff9d0ead8d10c03c24d51f2facfb634bb86259"
+  },
+  "scope": "bounded_final_amended_plan_followup_only",
+  "verdict": "PASS"
+}

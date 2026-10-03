@@ -1,0 +1,29 @@
+{
+  "artifact_sha256": {
+    "docs/reviews/2026-10-03-force-isolation-engineering-plan-followup.md": "9538b5a24929448b389a9697a4d177293ae2ab0f53703f15b4d6c6e4cabdda37",
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "dbac79dd3d57f5599094cb8abe9e13661d5e596ecfcfb53af64c359b0ab5b1ce",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "1a61f0087b0baf147d07e8a5e5ed5dca02199910195bcf21f15e58132625ba21",
+    "reports/execution/force-isolation-2026-10-03/amendment-A.json": "e60cafd5c55106d2ae265ac26b604c8c6fa44f548254728f717ccce1be2d6846",
+    "reports/execution/force-isolation-2026-10-03/drafts/before-amendment-A/2026-10-03-force-isolation-design.md": "ddec7093b80801e3a70f16a9db8624d4d249278f4146999fa74ed0664ea4c38c",
+    "reports/execution/force-isolation-2026-10-03/drafts/before-amendment-A/2026-10-03-force-isolation.md": "496ded0971ce8af638f3372fb48c67aedcfd03cf2381a2e47f36213fd64d86da",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/2026-10-03-force-isolation-amendment-A.diff": "b499d93aeb927baba8bbbc5d00a1ccd8210fe72c01e454e47bffd1669fd907eb",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/2026-10-03-force-isolation-design-amendment-A.diff": "794b8890a4db6043c86d2044f577e528492a707ed29b2bfc980dddd210ec289b",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/evidence-manifest.json": "b910bbc92da65b6399a19e3543047e644e0ec01bbd43b801e48fc41eed884318"
+  },
+  "final_artifact_sha256": {
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "dbac79dd3d57f5599094cb8abe9e13661d5e596ecfcfb53af64c359b0ab5b1ce",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "1a61f0087b0baf147d07e8a5e5ed5dca02199910195bcf21f15e58132625ba21",
+    "reports/execution/force-isolation-2026-10-03/amendment-A.json": "e60cafd5c55106d2ae265ac26b604c8c6fa44f548254728f717ccce1be2d6846"
+  },
+  "full_source_audit_repeated": false,
+  "future_nonvacuity_tests_executed": false,
+  "initial_review_and_manifest_members_unchanged": true,
+  "initializations": 0,
+  "model_calls": 0,
+  "new_predictions": 0,
+  "scope": "bounded amended plan followup only",
+  "test_suite_runs": 0,
+  "training_updates": 0,
+  "unchanged_settings_and_source_context_identities": true,
+  "verdict": "PASS"
+}

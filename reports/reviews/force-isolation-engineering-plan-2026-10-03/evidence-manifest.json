@@ -1,0 +1,25 @@
+{
+  "artifacts_sha256": {
+    "docs/reviews/2026-10-03-force-isolation-engineering-plan.md": "ee2a0c551a074e4a5e0691059e4d7685646c18ccb84c50c49ae8f89b1ac28f39",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/progress.md": "30c580a8a9dd1b607d46b58e7fab1f590b66655bda6a4743431a27ace947d790",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/saved-context-check-output.txt": "289918f1151ba21fbc3448c5075969a463ad6afa3075e96426c5f1f6cc908d43",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/saved-context-check.json": "f31e2656d3ee568265d8c794f5e40415f2dfc19dc326708581a0d9c567c51be0",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/verify_saved_context.py": "d55f00eafe09c37f7f112adec561d7da8a74987bbaa3d3259b491c0093541fd7"
+  },
+  "final_reviewed_artifacts_unchanged": true,
+  "models_called": 0,
+  "new_predictions": 0,
+  "new_product_artifacts_absent": [
+    "scripts/force_isolation_contract.py",
+    "scripts/train_force_isolation.py",
+    "scripts/run_force_isolation.py",
+    "scripts/report_force_isolation.py",
+    "configs/aspirin-force-isolation.json",
+    "runs/aspirin-force-isolation-2026-10-03"
+  ],
+  "parameter_initializations": 0,
+  "reviewed_head": "75f16226518615f0d46ba8e59abd7134361cf890",
+  "test_suite_runs": 0,
+  "training_updates": 0,
+  "verdict": "PASS"
+}

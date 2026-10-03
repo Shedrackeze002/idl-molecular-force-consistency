@@ -1,0 +1,17 @@
+{
+  "formatting_only": {
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": {
+      "before_sha256": "dacc2abf6eaf4c7d2f23d75cdd6b631ac46e29598efcd0923a120ab70d10a74d",
+      "review_sha256": "496ded0971ce8af638f3372fb48c67aedcfd03cf2381a2e47f36213fd64d86da"
+    },
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": {
+      "before_sha256": "c62feab35da252fdd72271537eae43f62fd19a6097bea34cb050c303d8f86708",
+      "review_sha256": "ddec7093b80801e3a70f16a9db8624d4d249278f4146999fa74ed0664ea4c38c"
+    }
+  },
+  "scope": "scientific and engineering independent plan reviews before implementation; preserve initial drafts",
+  "settings_sha256": "48d6bd6070904d348f250e1a9e8fd4e09cfe0fe44685af9b195e4c749fcfe2f8",
+  "source_pin_count": 18963,
+  "source_pin_sha256": "eda3ae20c34d16a5fea4260d6a15a5ac31356e2a384df00e4dd08e29a0e30664",
+  "status": "dual_review_requested_planning_only"
+}

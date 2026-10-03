@@ -1,0 +1,22 @@
+{
+  "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+  "control_numerical_count": 18324,
+  "control_projected_zero_full_hash": "b22c5108b3e08c088f20f2bc862e01ddb6df9fd3961ce949f951e41f1512e4bc",
+  "control_root": "runs/aspirin-offset-profile-2026-10-02",
+  "control_verification_record_sha256": "fb17a2707f0fc792b0bfcc4338d6ac47581d6e700e52eb7f4030321953a168ee",
+  "current_control_extras": {
+    ".DS_Store": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987"
+  },
+  "incidental_metadata_excluded_from_numerical_manifest": true,
+  "new_parameter_initializations": 0,
+  "new_predictions": 0,
+  "new_training_updates": 0,
+  "protected_evidence_prefix_bytes": 45863751,
+  "protected_evidence_prefix_sha256": "3c45058c51e90a4c17390b9184218eeb7030eede0a1f85bc57b6b1e0df34f246",
+  "source_pin_count": 18963,
+  "source_pin_sha256": "eda3ae20c34d16a5fea4260d6a15a5ac31356e2a384df00e4dd08e29a0e30664",
+  "source_revision": "75f16226518615f0d46ba8e59abd7134361cf890",
+  "source_zero_full_hash": "6ebbe0d9ff683e10c09b1ab373faf5d62fcc199b8109caf5ed9e4f0723ca028e",
+  "source_zero_root": "runs/aspirin-capacity-2026-10-02/width32",
+  "status": "planning_only_verified_source_context"
+}

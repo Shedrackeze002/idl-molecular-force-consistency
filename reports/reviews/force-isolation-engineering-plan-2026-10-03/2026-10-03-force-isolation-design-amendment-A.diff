@@ -1,0 +1,11 @@
+--- reports/execution/force-isolation-2026-10-03/drafts/before-amendment-A/2026-10-03-force-isolation-design.md
++++ docs/superpowers/specs/2026-10-03-force-isolation-design.md
+@@ -52,6 +52,8 @@
+ 
+ Reuse unchanged offset numerical core, Journal/Store/state/prediction/ownership helpers and saved-state tensor audits by import. Do NOT use old `run_owned` as a production shortcut: it unconditionally calls old canonical `verify_inputs` at 6000, and its child launcher points to the old worker. Own the small orchestration engine/child/launch finalization in the new worker, preserving order and boundaries; retain explicit code ancestry and test equivalence on a private tiny joint-coefficient fixture. No monkeypatch/rebinding of old guards, bypass flag or modification of old modules. The new reporter passes explicitly verified source/gate to the old saved-array audit, and implements its own comparison root/force gate/labels. Old reports remain regenerable under old frozen guards.
+ 
++Gradient-independence and gauge-invariance fixtures must use a nonzero readout kernel, assert a nonzero shared-body force-gradient norm and actual nonzero incoming body Adam moments. Retain the assertions and per-block norm evidence; zero-initialized heads cannot establish body invariance vacuously. Calibration changes only the scalar bias; shared body and readout kernel remain trainable. These are future engineering requirements, not measured results.
++
+ Before launch: two final plan PASS reviews, resolved material amendments, focused meaningful regressions, full suite at final participant bytes, independent implementation followup, immutable prelaunch gate including new and imported participants/config/runtime/revision, prospective budget/work record, exclusive invocation ordinal. Source/state/review failures resolve operationally without a research retry.
+ 
+ ## Closure and preservation

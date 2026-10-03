@@ -1,0 +1,30 @@
+{
+  "artifacts": {
+    "docs/reviews/2026-10-03-force-isolation-engineering-plan-followup.md": "9538b5a24929448b389a9697a4d177293ae2ab0f53703f15b4d6c6e4cabdda37",
+    "docs/reviews/2026-10-03-force-isolation-engineering-plan.md": "ee2a0c551a074e4a5e0691059e4d7685646c18ccb84c50c49ae8f89b1ac28f39",
+    "docs/reviews/2026-10-03-force-isolation-scientific-plan-followup.md": "a97585514d46c3a2c9c03e5a42d5637ca421c82ecd0e835b611a9ffbbf9d78cf",
+    "docs/reviews/2026-10-03-force-isolation-scientific-plan.md": "445ee46a7d06cc425ac6ea1485757ea0fa3433b0e5e15366cdf0a57b631b792b",
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "dbac79dd3d57f5599094cb8abe9e13661d5e596ecfcfb53af64c359b0ab5b1ce",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "1a61f0087b0baf147d07e8a5e5ed5dca02199910195bcf21f15e58132625ba21",
+    "reports/execution/force-isolation-2026-10-03/amendment-A.json": "e60cafd5c55106d2ae265ac26b604c8c6fa44f548254728f717ccce1be2d6846",
+    "reports/execution/force-isolation-2026-10-03/context-paths.json": "20caac4eb91d06a468e15f9d8e25855c67e5c27d4cb635687a3565163e4f29fc",
+    "reports/execution/force-isolation-2026-10-03/final-preservation-verification.json": "842c870e8acb3a8b7a0f49707c52da8d7f42307aa92768cb21a69fd0d35eeacf",
+    "reports/execution/force-isolation-2026-10-03/proposed-settings.json": "48d6bd6070904d348f250e1a9e8fd4e09cfe0fe44685af9b195e4c749fcfe2f8",
+    "reports/execution/force-isolation-2026-10-03/source-context-verification.json": "9678807860f0104564c1ac2afb0b3274f45df383e16d8a3584df34b6420e30fc",
+    "reports/execution/force-isolation-2026-10-03/source-pins.json": "eda3ae20c34d16a5fea4260d6a15a5ac31356e2a384df00e4dd08e29a0e30664",
+    "reports/reviews/force-isolation-engineering-plan-2026-10-03/followup-evidence-manifest.json": "d256c6dceb2d9da224f43e5483b105ac01b80a9c882f4b645c35d428de340638",
+    "reports/reviews/force-isolation-scientific-plan-2026-10-03/followup-evidence-manifest.json": "4574fe18a10ffbf9a76d895a478e22affbdc6751532fbfa0a8bd8f0e9c63d90c"
+  },
+  "implementation": "unexecuted_next_milestone_Task1",
+  "production_launch_cleared": false,
+  "required_next_gate": "new_implementation_focused_and_full_suite_review_frozen_launch_gate",
+  "research": "unexecuted",
+  "review_roles": [
+    "independent_scientific",
+    "independent_engineering"
+  ],
+  "scope": "planning_only",
+  "settings_single_change": "energy_gradient_coefficient_zero_force_coefficient_unchanged",
+  "source_pin_count": 18963,
+  "status": "two_final_plan_reviews_PASS"
+}

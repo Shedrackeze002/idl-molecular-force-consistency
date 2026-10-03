@@ -1,0 +1,17 @@
+[
+  "reports/execution/offset-profile-2026-10-02/numerical-run-inventory.json",
+  "configs/aspirin-offset-profile.json",
+  "reports/offset-profile-diagnostics.json",
+  "reports/offset-profile-diagnostics.md",
+  "reports/offset-profile-component-comparison.json",
+  "reports/offset-profile-paper-findings.md",
+  "reports/execution/offset-profile-2026-10-02/final-closeout.json",
+  "reports/execution/offset-profile-2026-10-02/numerical-run.zip",
+  "reports/execution/offset-profile-2026-10-02/prelaunch-gate.json",
+  "docs/reviews/2026-10-03-offset-profile-saved-results.md",
+  "docs/reviews/2026-10-03-offset-profile-metadata-followup.md",
+  "reports/reviews/offset-profile-saved-results-2026-10-03/evidence-manifest.json",
+  "reports/loss-balance-diagnostics.json",
+  "reports/loss-balance-diagnostics.md",
+  "configs/aspirin-loss-balance-diagnostic.json"
+]

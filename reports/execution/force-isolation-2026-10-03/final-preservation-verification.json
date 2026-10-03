@@ -1,0 +1,39 @@
+{
+  "all_pinned_hashes_unchanged": true,
+  "code_fingerprint": "2066ca4a476c5bca16a7c48312457a0efcb84da60970c3337a2b80a011113a0d",
+  "control_extra_metadata": {
+    ".DS_Store": "14a8d0405b7dca467452ab65c5bcdbbbeef4c216d08da5acb62695c121ad4987"
+  },
+  "control_numerical_members": 18324,
+  "elapsed_saved_only_seconds": 0.9132065000012517,
+  "model_calls": 0,
+  "parameter_initializations": 0,
+  "protected_prefix_bytes": 45863751,
+  "protected_prefix_sha256": "3c45058c51e90a4c17390b9184218eeb7030eede0a1f85bc57b6b1e0df34f246",
+  "python": "3.12.13",
+  "runtime": {
+    "ase": "3.29.0",
+    "e3x": "1.0.2",
+    "flax": "0.12.6",
+    "jax": "0.9.2",
+    "jaxlib": "0.9.2",
+    "numpy": "2.5.3",
+    "optax": "0.2.8"
+  },
+  "source_head": "75f16226518615f0d46ba8e59abd7134361cf890",
+  "source_pin_count": 18963,
+  "status": "PASS_planning_only_preservation",
+  "test_suite_runs": 0,
+  "training_updates": 0,
+  "unexecuted_paths_absent": [
+    "configs/aspirin-force-isolation.json",
+    "runs/aspirin-force-isolation-2026-10-03",
+    "scripts/force_isolation_contract.py",
+    "scripts/train_force_isolation.py",
+    "scripts/run_force_isolation.py",
+    "scripts/report_force_isolation.py",
+    "tests/test_force_isolation_contract.py",
+    "tests/test_force_isolation_runs.py",
+    "tests/test_force_isolation_report.py"
+  ]
+}

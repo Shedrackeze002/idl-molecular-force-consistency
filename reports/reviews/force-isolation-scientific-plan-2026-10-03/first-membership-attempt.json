@@ -1,0 +1,39 @@
+{
+  "extra_in_pins": [
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/close-saved.py",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/component-comparison.py",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/implementation-review-resolution.json",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/make-launch-gate.py",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/prelaunch-source-preservation.json",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/offset-profile-2026-10-02/prospective-trial.json"
+  ],
+  "missing_from_pins": [
+    "reports/execution/offset-profile-2026-10-02/close-saved.py",
+    "reports/execution/offset-profile-2026-10-02/component-comparison.py",
+    "reports/execution/offset-profile-2026-10-02/implementation-review-resolution.json",
+    "reports/execution/offset-profile-2026-10-02/make-launch-gate.py",
+    "reports/execution/offset-profile-2026-10-02/prelaunch-source-preservation.json",
+    "reports/execution/offset-profile-2026-10-02/prospective-trial.json"
+  ],
+  "new_model_calls": 0,
+  "new_training_updates": 0,
+  "observed_union_count": 18963,
+  "old_gate_top_level_keys": [
+    "artifacts",
+    "code",
+    "code_fingerprint",
+    "config_identity",
+    "focused",
+    "implementation_review",
+    "launch_revision",
+    "plan_reviews",
+    "research_trial",
+    "run_ordinal",
+    "source_pin_count",
+    "status",
+    "suite"
+  ],
+  "pins_count": 18963,
+  "reason": "First independent membership reconstruction normalized six absolute old-gate keys into relative names. The frozen map deliberately retains the exact old-gate key spelling. The observed count was correct but exact key identity failed; no model or test work occurred.",
+  "status": "FAILED_first_membership_assertion_preserved"
+}

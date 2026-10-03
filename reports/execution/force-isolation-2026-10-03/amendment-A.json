@@ -1,0 +1,31 @@
+{
+  "amendment": "Explicit nonzero readout/body-force-gradient/incoming-body-moment assertions and retained per-block evidence for Task 2 invariance fixtures; no scientific-setting change.",
+  "before_sha256": {
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "496ded0971ce8af638f3372fb48c67aedcfd03cf2381a2e47f36213fd64d86da",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "ddec7093b80801e3a70f16a9db8624d4d249278f4146999fa74ed0664ea4c38c"
+  },
+  "evidence_navigation_correction": "LIT007 composition learning locator is section 3.3 printed pages 13-14; section 4.3 is datasets. Append-only correction to earlier locator; no literature claim expansion.",
+  "final_candidate_sha256": {
+    "docs/superpowers/plans/2026-10-03-force-isolation.md": "dbac79dd3d57f5599094cb8abe9e13661d5e596ecfcfb53af64c359b0ab5b1ce",
+    "docs/superpowers/specs/2026-10-03-force-isolation-design.md": "1a61f0087b0baf147d07e8a5e5ed5dca02199910195bcf21f15e58132625ba21"
+  },
+  "initial_reviews": {
+    "docs/reviews/2026-10-03-force-isolation-engineering-plan.md": {
+      "sha256": "ee2a0c551a074e4a5e0691059e4d7685646c18ccb84c50c49ae8f89b1ac28f39",
+      "verdict": "PASS"
+    },
+    "docs/reviews/2026-10-03-force-isolation-scientific-plan.md": {
+      "sha256": "445ee46a7d06cc425ac6ea1485757ea0fa3433b0e5e15366cdf0a57b631b792b",
+      "verdict": "PASS"
+    }
+  },
+  "preserved_initial_review_attempts": [
+    "scientific first exact-union assertion wrongly normalized six absolute keys; corrected reconstruction passed",
+    "scientific nonexistent initial-projection/history lookup names; actual initial receipt projections/initial-0.json",
+    "scientific aggregate output truncation resolved through targeted reads"
+  ],
+  "scope": "planning_only_unexecuted",
+  "settings_sha256": "48d6bd6070904d348f250e1a9e8fd4e09cfe0fe44685af9b195e4c749fcfe2f8",
+  "source_pins_sha256": "eda3ae20c34d16a5fea4260d6a15a5ac31356e2a384df00e4dd08e29a0e30664",
+  "status": "amended_plan_final_followup_pending"
+}

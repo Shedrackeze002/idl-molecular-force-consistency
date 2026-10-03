@@ -1,0 +1,10 @@
+{
+  "findings": {
+    "offset_completion_present": true,
+    "sha256": "65a358fe0eb86b4310b678555e93010b09f8afdff3b49d6a64f54c5f56b17e86"
+  },
+  "hub": {
+    "offset_completion_present": true,
+    "sha256": "e497e31aa83a5e7b2b43c0a0b565937a279fc9f7e76eb8a5284634945120b492"
+  }
+}

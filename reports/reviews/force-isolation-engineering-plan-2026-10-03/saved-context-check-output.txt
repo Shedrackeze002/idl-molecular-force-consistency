@@ -1,0 +1,8 @@
+{
+  "status": "PASS_saved_only_plan_context",
+  "source_pin_count": 18963,
+  "scored_states": 63,
+  "accepted_projection_receipts": 6001,
+  "jax_imported": false,
+  "elapsed_saved_only_seconds": 5.910101375018712
+}
