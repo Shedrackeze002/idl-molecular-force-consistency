@@ -8,7 +8,7 @@ Install [Git LFS](https://git-lfs.com/) on your development machine. These comma
 
 ```sh
 git lfs install
-git clone --branch codex/project-handoff https://github.com/Shedrackeze002/idl-molecular-force-consistency.git
+git clone --branch project-handoff https://github.com/Shedrackeze002/idl-molecular-force-consistency.git
 cd idl-molecular-force-consistency
 git lfs pull
 git lfs ls-files

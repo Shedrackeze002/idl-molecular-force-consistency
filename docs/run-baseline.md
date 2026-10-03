@@ -1,6 +1,6 @@
 # Running the Landscape17 baseline
 
-Run commands from the repository root `Codex`. Proposal submission is complete. Aspirin passes preparation; paracetamol preparation is blocked by endpoint `01_2/plus`. Both original learning checks and the reviewed real-label full-batch control failed their unchanged force criteria. Read the current report before launching a pilot.
+Run commands from the repository root. Proposal submission is complete. Aspirin passes preparation; paracetamol preparation is blocked by endpoint `01_2/plus`. Both original learning checks and the reviewed real-label full-batch control failed their unchanged force criteria. Read the current report before launching a pilot.
 
 ## CPU environment
 

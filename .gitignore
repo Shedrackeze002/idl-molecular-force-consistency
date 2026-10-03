@@ -14,3 +14,9 @@ __pycache__/
 .pytest_cache/
 data/processed/
 runs/
+
+# Personal tool configuration and private workflow instructions
+AGENTS.md
+.agents/
+.codex/
+.local-workflow/
