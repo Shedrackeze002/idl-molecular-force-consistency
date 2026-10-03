@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "lfs",
+    "checkout"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "Checking out LFS objects: 100% (4/4), 487 MB | 0 B/s, done.\n"
+}

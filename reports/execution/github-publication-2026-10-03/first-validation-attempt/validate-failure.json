@@ -1,0 +1,5 @@
+{
+  "reason": "max() iterable argument is empty",
+  "status": "FAIL",
+  "type": "ValueError"
+}

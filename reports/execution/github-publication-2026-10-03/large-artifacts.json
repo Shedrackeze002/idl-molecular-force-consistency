@@ -1,0 +1,29 @@
+{
+  "artifacts": [
+    {
+      "git_blob": "3e4386edd1593082386f0300dd66d277a587cbba",
+      "path": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+      "sha256": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+      "size_bytes": 108766147
+    },
+    {
+      "git_blob": "ff0e27eedb06a2740ad2bd5e3e9abdcf5d8d5d48",
+      "path": "reports/execution/width-rate-replacement-2026-10-01/implementation.zip",
+      "sha256": "83b0e3ffc3f8974863dee4a79ff42b9b288674c709bdc576a631da8cdeab9d34",
+      "size_bytes": 136272816
+    },
+    {
+      "git_blob": "54d7ef537ad1772cf3f3db2f5292b6ca7087d257",
+      "path": "reports/execution/width-rate-replacement-2026-10-01/raw.zip",
+      "sha256": "045422bcf97e99f9b5460e317a53f1c617297f482b0644a5f7243f086f020d01",
+      "size_bytes": 133449092
+    },
+    {
+      "git_blob": "b8368d0b4f7c46f0cb313f470fb29d82d6ab8a18",
+      "path": "reports/width-rate-replacement-diagnostics.json",
+      "sha256": "dfa41304021fa8dbd2b557e48cd68ee7a144a7154cd38b4ee2f5c0ab4d059793",
+      "size_bytes": 108690332
+    }
+  ],
+  "source_head": "17aa83c751f95f5a1aef54fd1974340bfc5a1527"
+}

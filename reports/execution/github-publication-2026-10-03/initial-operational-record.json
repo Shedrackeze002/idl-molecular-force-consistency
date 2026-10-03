@@ -1,0 +1,22 @@
+{
+  "abandoned_proposal": "clean snapshot plus release assets was unexecuted; superseded by explicit user choice of Git LFS",
+  "first_push_exit": 143,
+  "first_push_remote_ref_created": false,
+  "lfs_available_initially": false,
+  "ordinary_blob_limit_source": "https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github",
+  "original_head": "17aa83c751f95f5a1aef54fd1974340bfc5a1527",
+  "original_status": " D proposal.pdf\n?? Group9.pdf\n?? reports/execution/github-publication-2026-10-03/\n",
+  "preserved_operational_failures": [
+    "no upstream on original branch",
+    "sandbox process listing denied",
+    "first process stop guard rejected absolute executable path; corrected guard stopped only owned tree",
+    "original long inline plan-writing command was blocked by destructive-command hook on prose despite no destructive Git invocation; command did not run and no publication files existed afterward"
+  ],
+  "stopped_task_processes": [
+    89828,
+    89833,
+    89835,
+    89857,
+    89858
+  ]
+}

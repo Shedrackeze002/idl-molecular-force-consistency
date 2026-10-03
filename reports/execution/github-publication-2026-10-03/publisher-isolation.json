@@ -1,0 +1,9 @@
+{
+  "base": "663bc49640901904530c9a2ede3903cf43c87b9e",
+  "branch": "codex/project-handoff",
+  "independent_objects": true,
+  "lfs_version": "git-lfs/3.8.0 (GitHub; darwin arm64; go 1.27.0; git aece9221)",
+  "no_alternates": true,
+  "origin": "https://github.com/Shedrackeze002/idl-molecular-force-consistency.git",
+  "source_head": "17aa83c751f95f5a1aef54fd1974340bfc5a1527"
+}

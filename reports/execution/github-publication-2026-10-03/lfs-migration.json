@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "lfs",
+    "migrate",
+    "import",
+    "--include-ref=refs/heads/codex/project-handoff",
+    "--exclude-ref=refs/remotes/origin/main",
+    "--include=reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json,reports/execution/width-rate-replacement-2026-10-01/implementation.zip,reports/execution/width-rate-replacement-2026-10-01/raw.zip,reports/width-rate-replacement-diagnostics.json",
+    "--object-map=/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex/reports/execution/github-publication-2026-10-03/raw-rewritten-commits.csv"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "Sorting commits: ..., done.\nRewriting commits: 100% (74/74), done.\nUpdating refs: ..., done.\nCheckout: ..., done.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "git",
+    "clone",
+    "--no-local",
+    "--no-hardlinks",
+    "--no-checkout",
+    "--single-branch",
+    "--branch",
+    "codex/landscape17-baseline",
+    "/Users/shedrackeze/Desktop/CMU/INTRO DEEP LRNG/Project/Codex",
+    "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c",
+  "exit_code": 0,
+  "output": "Cloning into '/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher'...\n"
+}

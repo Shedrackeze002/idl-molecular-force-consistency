@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "fetch",
+    "origin",
+    "refs/heads/main:refs/remotes/origin/main"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "From https://github.com/Shedrackeze002/idl-molecular-force-consistency\n * [new branch]      main       -> origin/main\n"
+}

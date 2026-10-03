@@ -1,0 +1,12 @@
+{
+  "status": "PASS for publication plan only",
+  "identities": {
+    "docs/team/LFS_PUBLICATION_PLAN.md": "8df951cfdac3ce03ddbb65d9d1f61dce786e9d5c1d2e67af23091f54d2abf9f0",
+    "reports/execution/github-publication-2026-10-03/large-artifacts.json": "0b5f513c86b8990b51b61d36619bb78ea0536e65eb35fd7e0ca19a4aa8890048",
+    "docs/team/reviews/2026-10-03-lfs-engineering-followup.md": "d98d56ef473d8304192a4dec9c5936131592955c4a9abc672e70efa6cb0c33fa",
+    "docs/team/reviews/2026-10-03-lfs-preservation-followup.md": "4a8efae26c219d8c008c52140d174f5d6f1b39215e734859059a2eae0196c62c"
+  },
+  "initial_engineering_verdict": "REVISIONS REQUIRED; preserved",
+  "material_findings_resolved": true,
+  "migration_and_remote_success": false
+}

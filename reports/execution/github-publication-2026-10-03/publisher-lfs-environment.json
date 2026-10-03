@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "lfs",
+    "env"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "git-lfs/3.8.0 (GitHub; darwin arm64; go 1.27.0; git aece9221)\ngit version 2.54.0 (Apple Git-157)\n\nEndpoint=https://github.com/Shedrackeze002/idl-molecular-force-consistency.git/info/lfs (auth=none)\nLocalWorkingDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher\nLocalGitDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher/.git\nLocalGitStorageDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher/.git\nLocalMediaDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher/.git/lfs/objects\nLocalReferenceDirs=\nTempDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher/.git/lfs/tmp\nConcurrentTransfers=8\nTusTransfers=false\nBasicTransfersOnly=false\nSkipDownloadErrors=false\nFetchRecentAlways=false\nFetchRecentRefsDays=7\nFetchRecentCommitsDays=0\nFetchRecentRefsIncludeRemotes=true\nPruneOffsetDays=3\nPruneVerifyRemoteAlways=false\nPruneVerifyUnreachableAlways=false\nPruneRemoteName=origin\nLfsStorageDir=/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher/.git/lfs\nAccessDownload=none\nAccessUpload=none\nDownloadTransfers=basic,lfs-standalone-file,ssh\nUploadTransfers=basic,lfs-standalone-file,ssh\nGIT_EXEC_PATH=/Library/Developer/CommandLineTools/usr/libexec/git-core\nGIT_OPTIONAL_LOCKS=0\nGIT_PAGER=cat\ngit config filter.lfs.process = \"git-lfs filter-process\"\ngit config filter.lfs.smudge = \"git-lfs smudge -- %f\"\ngit config filter.lfs.clean = \"git-lfs clean -- %f\"\n"
+}

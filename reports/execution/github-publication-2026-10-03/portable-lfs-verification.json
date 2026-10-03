@@ -1,0 +1,9 @@
+{
+  "asset": "git-lfs-darwin-arm64-v3.8.0.zip",
+  "global_installer_executed": false,
+  "numerical_environment_changed": false,
+  "portable_binary_path": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/tools/extracted/git-lfs-3.8.0/git-lfs",
+  "release_tag": "v3.8.0",
+  "sha256": "sha256:caff76a7d070d8160c89bc39b6e85d98f24135b6fed038a3b4de2590d25102d8",
+  "status": "PASS_official_download_SHA256_size_archive_CRC"
+}

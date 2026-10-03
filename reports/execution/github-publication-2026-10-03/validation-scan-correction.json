@@ -1,0 +1,6 @@
+{
+  "status": "failed check retained; no migration retry",
+  "cause": "rev-list --objects output includes paths; batch-check fed whole lines treated those as missing objects; blob list empty and max() halted receipt, so no success was declared",
+  "correction": "feed only object IDs; require nonempty blobs and exact output count/type checks",
+  "migration_rerun": false
+}

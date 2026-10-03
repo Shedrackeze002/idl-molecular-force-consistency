@@ -1,0 +1,21 @@
+{
+  "base": "663bc49640901904530c9a2ede3903cf43c87b9e",
+  "complete_map_sha256": "f0005e8e50d3ef30df648c3d286757d2100c93d7ba12140487a904dc29028cde",
+  "exact_metadata_messages_parents_and_unaffected_trees": true,
+  "head_hydrated_sha256_verified": true,
+  "historical_pointers_verified": [
+    "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+    "reports/execution/width-rate-replacement-2026-10-01/implementation.zip",
+    "reports/execution/width-rate-replacement-2026-10-01/raw.zip",
+    "reports/width-rate-replacement-diagnostics.json"
+  ],
+  "identity_rows": 0,
+  "largest_ordinary_blob_bytes": 72826109,
+  "lfs_fsck_exit": 0,
+  "migrated_head": "a89a8d71c37881826712b27922dc5f7fc49e768c",
+  "ordinary_blob_count": 1606,
+  "rewritten_csv_rows": 74,
+  "source_and_mapped_commits": 74,
+  "source_head": "17aa83c751f95f5a1aef54fd1974340bfc5a1527",
+  "status": "PASS"
+}

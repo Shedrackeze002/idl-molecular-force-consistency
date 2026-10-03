@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "lfs",
+    "install",
+    "--local"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "Updated Git hooks.\nGit LFS initialized.\n"
+}

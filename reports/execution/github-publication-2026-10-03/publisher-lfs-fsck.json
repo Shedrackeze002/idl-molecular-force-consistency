@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "lfs",
+    "fsck",
+    "a89a8d71c37881826712b27922dc5f7fc49e768c"
+  ],
+  "cwd": "/private/tmp/idl-lfs-publishing-2026-10-03-17aa83c/publisher",
+  "exit_code": 0,
+  "output": "Git LFS fsck OK\n"
+}
