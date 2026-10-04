@@ -1,0 +1,120 @@
+{
+  "diagnostics": {
+    "per_branch": [
+      {
+        "branch": "plus",
+        "branch_key": "analytic/recover/plus",
+        "budget_exhausted": false,
+        "category": "matched_reference",
+        "connection_id": "recover",
+        "converged": true,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "seen_minimum": true
+      },
+      {
+        "branch": "minus",
+        "branch_key": "analytic/recover/minus",
+        "budget_exhausted": false,
+        "category": "matched_reference",
+        "connection_id": "recover",
+        "converged": true,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "seen_minimum": true
+      },
+      {
+        "branch": "plus",
+        "branch_key": "analytic/wrongshape/plus",
+        "budget_exhausted": false,
+        "category": "unmatched_converged",
+        "connection_id": "wrongshape",
+        "converged": true,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "seen_minimum": true
+      },
+      {
+        "branch": "minus",
+        "branch_key": "analytic/wrongshape/minus",
+        "budget_exhausted": true,
+        "category": "nonconverged",
+        "connection_id": "wrongshape",
+        "converged": false,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "seen_minimum": true
+      }
+    ]
+  },
+  "report": {
+    "branch_count": 4,
+    "category_totals": {
+      "ambiguous": 0,
+      "matched_reference": 2,
+      "nonconverged": 1,
+      "unmatched_converged": 1,
+      "unresolved": 0
+    },
+    "held_out_branch_count": 4,
+    "per_connection": [
+      {
+        "availability": "available",
+        "connection_id": "recover",
+        "counts": {
+          "ambiguous": 0,
+          "matched_reference": 2,
+          "nonconverged": 0,
+          "unmatched_converged": 0,
+          "unresolved": 0
+        },
+        "denominator": 2,
+        "denominators": {
+          "evaluated_branches": 2,
+          "shape_recovery_total": 2
+        },
+        "molecule": "analytic",
+        "rates": {
+          "ambiguous_rate": 0.0,
+          "matched_reference_rate": 1.0,
+          "unmatched_converged_rate": 0.0
+        },
+        "seen_minimum_by_branch": {
+          "minus": true,
+          "plus": true
+        }
+      },
+      {
+        "availability": "available",
+        "connection_id": "wrongshape",
+        "counts": {
+          "ambiguous": 0,
+          "matched_reference": 0,
+          "nonconverged": 1,
+          "unmatched_converged": 1,
+          "unresolved": 0
+        },
+        "denominator": 2,
+        "denominators": {
+          "evaluated_branches": 2,
+          "shape_recovery_total": 2
+        },
+        "molecule": "analytic",
+        "rates": {
+          "ambiguous_rate": 0.0,
+          "matched_reference_rate": 0.0,
+          "unmatched_converged_rate": 0.5
+        },
+        "seen_minimum_by_branch": {
+          "minus": true,
+          "plus": true
+        }
+      }
+    ],
+    "schema": 1
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "name": "aspirin-shape-recovery",
+  "molecule": "aspirin",
+  "archive_sha256": "3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b",
+  "split_manifest": "manifests/landscape17-aspirin-split.json",
+  "split_identity": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "preparation_policy": {
+    "duplicate_tolerance": 1e-05,
+    "endpoint_tolerance": 0.05,
+    "reference_tolerance": 1e-05,
+    "graph_factor": 1.2,
+    "graph_min_distance": 0.4,
+    "search_limit": 100000,
+    "seed": 20260929,
+    "nonstationary_force": 0.001,
+    "exact_energy_tolerance": 1e-07,
+    "exact_force_tolerance": 1e-06
+  },
+  "start_rule": {"kind": "first_stored_frame", "fraction": null},
+  "sensitivity_start_rule": {"kind": "fraction_of_ts_rmsd", "fraction": 0.1},
+  "relaxation": {
+    "max_force_evaluations": 1500,
+    "initial_step_size": 0.2,
+    "backtracking_factor": 0.5,
+    "min_backtracking_floor": 1e-08,
+    "convergence_tolerance_eV_per_A": 0.01,
+    "max_backtracking_attempts_per_step": 40
+  },
+  "report": {
+    "shape_recovery_denominator_description": "evaluated held-out branches per connection (the complete plus/minus pool), rates divided by that denominator, unavailable rather than zero percent when there are none",
+    "rate_definitions": {
+      "matched_reference_rate": "matched_reference count divided by the evaluated held-out branches for that connection, null when the connection is unavailable",
+      "unmatched_converged_rate": "unmatched_converged count divided by the evaluated held-out branches for that connection, null when the connection is unavailable",
+      "ambiguous_rate": "ambiguous count divided by the evaluated held-out branches for that connection, null when the connection is unavailable"
+    }
+  },
+  "outcome_categories": [
+    "matched_reference",
+    "unmatched_converged",
+    "ambiguous",
+    "unresolved",
+    "nonconverged"
+  ],
+  "units": {"positions": "angstrom", "energy": "eV", "forces": "eV/angstrom"}
+}
