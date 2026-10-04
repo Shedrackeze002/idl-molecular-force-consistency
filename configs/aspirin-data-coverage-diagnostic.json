@@ -1,0 +1,48 @@
+{
+  "backend": "cpu",
+  "comparison_updates": [
+    0,
+    100,
+    250,
+    500,
+    1000,
+    1500,
+    2000
+  ],
+  "data_directory": "data/processed/aspirin",
+  "early_stopping": false,
+  "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+  "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+  "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "expected_subsets_identity": "8139e442fca011efcbeb5f2d28d701c5f36030d61f045e5e652b98eb18b1be47",
+  "gate_fraction": 0.1,
+  "learning_rate": 0.001,
+  "max_updates": 2000,
+  "microbatch_size": 16,
+  "model": {
+    "cutoff_A": 5.0,
+    "energy_readout_init": "zero",
+    "features": 16,
+    "iterations": 2,
+    "max_degree": 1,
+    "radial_basis": 8
+  },
+  "reference_run": "runs/aspirin-force-diagnostics-2026-09-30/real",
+  "reference_sha256": {
+    "checkpoint-verification.json": "24e231afcdd58e5f34a759bf974a87dbe9e01f6d45adffd9324c99b4aa240e7b",
+    "config.json": "d8bfbe676f0e03f0de23bdc2b4b44610f3f5c8f21c67034cb31091b8765ba53f",
+    "history.json": "13488ec9153c6a0a85b7256cc408e14986a78b9e5f66070f60d66234810961a9",
+    "provenance.json": "4c5c05915e11250f3bddabae841469039232a6db03ac316074a8467ccb0913d9",
+    "summary.json": "3bab8e9f66cc747dacb6744cca0b93f316fd8568962fe736c7480b7382f7a650"
+  },
+  "replay_tolerance": {
+    "atol": 1e-10,
+    "rtol": 1e-08
+  },
+  "run_directory": "runs/aspirin-data-coverage-2026-09-30",
+  "seed": 0,
+  "status": "planned_unexecuted",
+  "subsets_manifest": "manifests/aspirin-data-coverage-subsets-planned.json",
+  "validation_interval": 100,
+  "wall_seconds": 1800
+}

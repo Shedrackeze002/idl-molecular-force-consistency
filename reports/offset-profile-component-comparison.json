@@ -1,0 +1,1022 @@
+{
+  "comparisons": {
+    "3600": {
+      "anchor": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.0035747717500386965,
+            "intervention": 0.005850905347178645
+          },
+          "energy_mse_eV2": {
+            "historical": 0.004448033425928156,
+            "intervention": 0.005958510474151751
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.005312762071368832,
+            "intervention": 0.004863026757067129
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 0.0008732616758894601,
+            "intervention": 0.00010760512697310562
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": -0.029551001267122238,
+            "intervention": 0.010373289110648831
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0035747717500386965,
+              "intervention": 0.005850905347178645
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004448033425928156,
+              "intervention": 0.005958510474151751
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005312762071368832,
+              "intervention": 0.004863026757067129
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0008732616758894601,
+              "intervention": 0.00010760512697310562
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.029551001267122238,
+              "intervention": 0.010373289110648831
+            }
+          }
+        }
+      },
+      "fitting": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.017975785733417605,
+            "intervention": 0.011962179103469193
+          },
+          "energy_mse_eV2": {
+            "historical": 0.017976363969020193,
+            "intervention": 0.011962179103469191
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.007776068662395142,
+            "intervention": 0.0072547593471500365
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 5.782356025880325e-07,
+            "intervention": 3.7210892455505784e-30
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": 0.0007604180446228459,
+            "intervention": 1.9290125052862095e-15
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0035747717500386965,
+              "intervention": 0.005850905347178645
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004448033425928156,
+              "intervention": 0.005958510474151751
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005312762071368832,
+              "intervention": 0.004863026757067129
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0008732616758894601,
+              "intervention": 0.00010760512697310562
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.029551001267122238,
+              "intervention": 0.010373289110648831
+            }
+          },
+          "01_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.00359624708245418,
+              "intervention": 0.006909843564835762
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004419838933578332,
+              "intervention": 0.007085788156216591
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.007538470893785291,
+              "intervention": 0.007105450858828685
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0008235918511241532,
+              "intervention": 0.00017594459138082968
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.028698290038330736,
+              "intervention": 0.013264410706127494
+            }
+          },
+          "22": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0012429765700343114,
+              "intervention": 0.0015330362519056485
+            },
+            "energy_mse_eV2": {
+              "historical": 0.020319804844745507,
+              "intervention": 0.006676816453843539
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.00375898754502514,
+              "intervention": 0.0031397393555206935
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0190768282747112,
+              "intervention": 0.005143780201937891
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.13811889180959713,
+              "intervention": 0.07172015199327098
+            }
+          },
+          "23": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.005273570157267295,
+              "intervention": 0.0045984128465010946
+            },
+            "energy_mse_eV2": {
+              "historical": 0.029846579431292694,
+              "intervention": 0.007792304048289921
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.010825847296849054,
+              "intervention": 0.00995604194536484
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.024573009274025392,
+              "intervention": 0.0031938912017888265
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.15675780450754404,
+              "intervention": 0.05651452204335472
+            }
+          },
+          "44": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.002636178046044469,
+              "intervention": 0.004125771084306257
+            },
+            "energy_mse_eV2": {
+              "historical": 0.0029535555942388175,
+              "intervention": 0.007491251640761781
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.003370200992304935,
+              "intervention": 0.002957929905703307
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0003173775481943487,
+              "intervention": 0.003365480556455525
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.017815093269313766,
+              "intervention": 0.058012762013677
+            }
+          },
+          "58_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.03134280699665982,
+              "intervention": 0.024611024061217714
+            },
+            "energy_mse_eV2": {
+              "historical": 0.03668814262927797,
+              "intervention": 0.03179640027277785
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.01627359256314996,
+              "intervention": 0.015208808511613521
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.005345335632618157,
+              "intervention": 0.007185376211560135
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.07311180227992028,
+              "intervention": -0.08476659844278367
+            }
+          },
+          "77": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.02493178572684925,
+              "intervention": 0.014280326952789447
+            },
+            "energy_mse_eV2": {
+              "historical": 0.03634067018443212,
+              "intervention": 0.01920785077905976
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.008274619356963622,
+              "intervention": 0.007692917656375706
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.011408884457582879,
+              "intervention": 0.004927523826270312
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.10681237970190009,
+              "intervention": -0.07019632345265892
+            }
+          },
+          "78_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0041109413239384055,
+              "intervention": 0.0066720614151078335
+            },
+            "energy_mse_eV2": {
+              "historical": 0.008794286708667946,
+              "intervention": 0.009688511002652356
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.006854068579714298,
+              "intervention": 0.0071141597867264116
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.004683345384729541,
+              "intervention": 0.0030164495875445213
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.06843497194219883,
+              "intervention": -0.054922213971621
+            }
+          }
+        }
+      }
+    },
+    "3700": {
+      "anchor": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.0031813957728495765,
+            "intervention": 0.005864742373587951
+          },
+          "energy_mse_eV2": {
+            "historical": 0.1348453640671307,
+            "intervention": 0.00604341758391674
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.005331590430123464,
+            "intervention": 0.0048287543013142776
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 0.13166396829428118,
+            "intervention": 0.00017867521032878807
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": -0.3628552993884493,
+            "intervention": 0.01336694468937416
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0031813957728495765,
+              "intervention": 0.005864742373587951
+            },
+            "energy_mse_eV2": {
+              "historical": 0.1348453640671307,
+              "intervention": 0.00604341758391674
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005331590430123464,
+              "intervention": 0.0048287543013142776
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.13166396829428118,
+              "intervention": 0.00017867521032878807
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.3628552993884493,
+              "intervention": 0.01336694468937416
+            }
+          }
+        }
+      },
+      "fitting": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.01869695015197242,
+            "intervention": 0.011978552055565767
+          },
+          "energy_mse_eV2": {
+            "historical": 0.13513795338588072,
+            "intervention": 0.01197855205556577
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.007767711452637091,
+            "intervention": 0.007199944155328062
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 0.11644100323390834,
+            "intervention": 1.0909237576987059e-29
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": -0.34123452819711597,
+            "intervention": 3.3029134982598407e-15
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0031813957728495765,
+              "intervention": 0.005864742373587951
+            },
+            "energy_mse_eV2": {
+              "historical": 0.1348453640671307,
+              "intervention": 0.00604341758391674
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005331590430123464,
+              "intervention": 0.0048287543013142776
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.13166396829428118,
+              "intervention": 0.00017867521032878807
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.3628552993884493,
+              "intervention": 0.01336694468937416
+            }
+          },
+          "01_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0037321351915337677,
+              "intervention": 0.006942659487446569
+            },
+            "energy_mse_eV2": {
+              "historical": 0.13793134335191345,
+              "intervention": 0.00720553997759712
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.007559310866148096,
+              "intervention": 0.007057058613738911
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.1341992081603797,
+              "intervention": 0.00026288049015055096
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.3663321009144294,
+              "intervention": 0.016213589675039608
+            }
+          },
+          "22": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0010300556296232166,
+              "intervention": 0.0015126658567817257
+            },
+            "energy_mse_eV2": {
+              "historical": 0.038036118437010755,
+              "intervention": 0.006403478135229946
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.003838669492438877,
+              "intervention": 0.003106467996493801
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.037006062807387545,
+              "intervention": 0.004890812278448221
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.19236959948855625,
+              "intervention": 0.06993434262540987
+            }
+          },
+          "23": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.005041537021711526,
+              "intervention": 0.004599322513995125
+            },
+            "energy_mse_eV2": {
+              "historical": 0.03776780380239203,
+              "intervention": 0.007636072996700864
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.010800344653596704,
+              "intervention": 0.00990167323162521
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.03272626678068051,
+              "intervention": 0.003036750482705738
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.18090402643578862,
+              "intervention": 0.055106719034122675
+            }
+          },
+          "44": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.001973645650277455,
+              "intervention": 0.004064465485001081
+            },
+            "energy_mse_eV2": {
+              "historical": 0.10057434089875601,
+              "intervention": 0.007455478990017054
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0034243260995234217,
+              "intervention": 0.0029376718449487887
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.09860069524847857,
+              "intervention": 0.003391013505015974
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.31400747642130844,
+              "intervention": 0.05823240940417951
+            }
+          },
+          "58_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.032152557009257246,
+              "intervention": 0.0244814787720761
+            },
+            "energy_mse_eV2": {
+              "historical": 0.21982639615783384,
+              "intervention": 0.032166993211445706
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.016029371625591458,
+              "intervention": 0.015045741957805994
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.18767383914857658,
+              "intervention": 0.007685514439369611
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.43321338754541805,
+              "intervention": -0.08766706587635753
+            }
+          },
+          "77": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.020201401168182365,
+              "intervention": 0.014338253707314366
+            },
+            "energy_mse_eV2": {
+              "historical": 0.22318472714305956,
+              "intervention": 0.0193058501710846
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.008204362565260801,
+              "intervention": 0.0076297575118204055
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.2029833259748772,
+              "intervention": 0.0049675964637702335
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.45053670879838104,
+              "intervention": -0.07048117808160015
+            }
+          },
+          "78_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.004331857146640991,
+              "intervention": 0.006618865040506079
+            },
+            "energy_mse_eV2": {
+              "historical": 0.18893753322894932,
+              "intervention": 0.009611585378534121
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.006953715888413908,
+              "intervention": 0.007092427784877107
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.18460567608230838,
+              "intervention": 0.0029927203380280426
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.4296576265845963,
+              "intervention": -0.05470576147014172
+            }
+          }
+        }
+      }
+    },
+    "3800": {
+      "anchor": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.0037763221874951357,
+            "intervention": 0.005681692344221905
+          },
+          "energy_mse_eV2": {
+            "historical": 0.004700503807479107,
+            "intervention": 0.006023095303865287
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.005227295170552201,
+            "intervention": 0.004790799607477494
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 0.0009241816199839718,
+            "intervention": 0.00034140295964338264
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": -0.03040035558976197,
+            "intervention": 0.01847709283527532
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0037763221874951357,
+              "intervention": 0.005681692344221905
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004700503807479107,
+              "intervention": 0.006023095303865287
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005227295170552201,
+              "intervention": 0.004790799607477494
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0009241816199839718,
+              "intervention": 0.00034140295964338264
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.03040035558976197,
+              "intervention": 0.01847709283527532
+            }
+          }
+        }
+      },
+      "fitting": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.017298321008028285,
+            "intervention": 0.012161559949201019
+          },
+          "energy_mse_eV2": {
+            "historical": 0.017303336020938115,
+            "intervention": 0.01216155994920102
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.007628727085498151,
+            "intervention": 0.007140854475857168
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 5.015012909828294e-06,
+            "intervention": 1.0833355937178202e-30
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": 0.0022394224500590088,
+            "intervention": 1.0408340855860843e-15
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0037763221874951357,
+              "intervention": 0.005681692344221905
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004700503807479107,
+              "intervention": 0.006023095303865287
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005227295170552201,
+              "intervention": 0.004790799607477494
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0009241816199839718,
+              "intervention": 0.00034140295964338264
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.03040035558976197,
+              "intervention": 0.01847709283527532
+            }
+          },
+          "01_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.003814451936373995,
+              "intervention": 0.006915797743323373
+            },
+            "energy_mse_eV2": {
+              "historical": 0.004661319057280491,
+              "intervention": 0.007329530381615568
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.007394926696824468,
+              "intervention": 0.007012826143473603
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0008468671209064968,
+              "intervention": 0.00041373263829219475
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.02910098144232419,
+              "intervention": 0.020340418832762386
+            }
+          },
+          "22": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.001224811773901312,
+              "intervention": 0.0014521897520021736
+            },
+            "energy_mse_eV2": {
+              "historical": 0.019393836136901713,
+              "intervention": 0.00635579517250257
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0036789182763556985,
+              "intervention": 0.0030793767595468577
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0181690243630004,
+              "intervention": 0.004903605420500397
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.13479252339429068,
+              "intervention": 0.07002574826805064
+            }
+          },
+          "23": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.005323950580750533,
+              "intervention": 0.004629051833655118
+            },
+            "energy_mse_eV2": {
+              "historical": 0.02928666420408761,
+              "intervention": 0.007532101132562414
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.010666066060350905,
+              "intervention": 0.009825394542307754
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.023962713623337076,
+              "intervention": 0.0029030492989072956
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.15479894580822273,
+              "intervention": 0.05387995266244483
+            }
+          },
+          "44": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0026746388039379514,
+              "intervention": 0.0037846949495390463
+            },
+            "energy_mse_eV2": {
+              "historical": 0.0029799369928547935,
+              "intervention": 0.00766635259495559
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0033292871162419104,
+              "intervention": 0.0029333528190240376
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.000305298188916842,
+              "intervention": 0.0038816576454165437
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.01747278423482766,
+              "intervention": 0.06230295053540036
+            }
+          },
+          "58_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.03111069567749456,
+              "intervention": 0.024516219794745032
+            },
+            "energy_mse_eV2": {
+              "historical": 0.035753411514407585,
+              "intervention": 0.03351928779111545
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.01581236488695502,
+              "intervention": 0.01484375909055348
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.004642715836913023,
+              "intervention": 0.009003067996370422
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.06813747747688509,
+              "intervention": -0.09488449818790434
+            }
+          },
+          "77": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.023947417524698623,
+              "intervention": 0.013707088334824723
+            },
+            "energy_mse_eV2": {
+              "historical": 0.03371690176659847,
+              "intervention": 0.018822656775321675
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.008173304280498565,
+              "intervention": 0.0075694459901494236
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.00976948424189985,
+              "intervention": 0.005115568440496953
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.09884070134261416,
+              "intervention": -0.07152320211299934
+            }
+          },
+          "78_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0040066662576075255,
+              "intervention": 0.006607536256763269
+            },
+            "energy_mse_eV2": {
+              "historical": 0.007934114687895158,
+              "intervention": 0.010043660441669594
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.006747654196206441,
+              "intervention": 0.007071880854324702
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.003927448430287633,
+              "intervention": 0.0034361241849063255
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.06266935798528363,
+              "intervention": -0.05861846283302152
+            }
+          }
+        }
+      }
+    },
+    "6000": {
+      "anchor": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.004883396577606338,
+            "intervention": 0.006075907937692252
+          },
+          "energy_mse_eV2": {
+            "historical": 0.007114939839938265,
+            "intervention": 0.006999080616555901
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.004530867645870908,
+            "intervention": 0.004293494802138282
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 0.002231543262331928,
+            "intervention": 0.0009231726788636489
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": -0.047239213184937026,
+            "intervention": 0.030383756826035335
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.004883396577606338,
+              "intervention": 0.006075907937692252
+            },
+            "energy_mse_eV2": {
+              "historical": 0.007114939839938265,
+              "intervention": 0.006999080616555901
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.004530867645870908,
+              "intervention": 0.004293494802138282
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.002231543262331928,
+              "intervention": 0.0009231726788636489
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.047239213184937026,
+              "intervention": 0.030383756826035335
+            }
+          }
+        }
+      },
+      "fitting": {
+        "pooled": {
+          "centered_energy_error_variance_eV2": {
+            "historical": 0.011983163512182258,
+            "intervention": 0.010880078056279094
+          },
+          "energy_mse_eV2": {
+            "historical": 0.01198320842349682,
+            "intervention": 0.010880078056279096
+          },
+          "force_mse_eV2_per_A2": {
+            "historical": 0.0065589689424798165,
+            "intervention": 0.006351944796216577
+          },
+          "mean_energy_error_squared_eV2": {
+            "historical": 4.4911314561212563e-08,
+            "intervention": 9.464039006018321e-29
+          },
+          "signed_mean_energy_error_eV": {
+            "historical": 0.00021192289768029449,
+            "intervention": 9.728329253277934e-15
+          }
+        },
+        "same_role_groups": {
+          "01": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.004883396577606338,
+              "intervention": 0.006075907937692252
+            },
+            "energy_mse_eV2": {
+              "historical": 0.007114939839938265,
+              "intervention": 0.006999080616555901
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.004530867645870908,
+              "intervention": 0.004293494802138282
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.002231543262331928,
+              "intervention": 0.0009231726788636489
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.047239213184937026,
+              "intervention": 0.030383756826035335
+            }
+          },
+          "01_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.004902234027652972,
+              "intervention": 0.007396126669535449
+            },
+            "energy_mse_eV2": {
+              "historical": 0.006735812615071827,
+              "intervention": 0.008560474969469246
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.00626540750086144,
+              "intervention": 0.006246560491522706
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0018335785874188549,
+              "intervention": 0.0011643482999337978
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.042820305783808396,
+              "intervention": 0.03412254826260486
+            }
+          },
+          "22": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0009770828743331326,
+              "intervention": 0.001105249452346593
+            },
+            "energy_mse_eV2": {
+              "historical": 0.008768998821744076,
+              "intervention": 0.0028805926709786368
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.002939387224211774,
+              "intervention": 0.0026491273064903815
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.007791915947410941,
+              "intervention": 0.0017753432186320436
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.08827182986327485,
+              "intervention": 0.04213482192476958
+            }
+          },
+          "23": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0052172049256029454,
+              "intervention": 0.004740406476944909
+            },
+            "energy_mse_eV2": {
+              "historical": 0.016763586667440267,
+              "intervention": 0.005791120384355381
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.009289151664485311,
+              "intervention": 0.008914090547095544
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.011546381741837324,
+              "intervention": 0.0010507139074104723
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": 0.10745409132200283,
+              "intervention": 0.032414717450727104
+            }
+          },
+          "44": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0029602118833476866,
+              "intervention": 0.0033835910710695413
+            },
+            "energy_mse_eV2": {
+              "historical": 0.0031718623190165286,
+              "intervention": 0.006955301325405565
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0029328169359857993,
+              "intervention": 0.0026452958828099594
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.00021165043566884263,
+              "intervention": 0.0035717102543360245
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.01454821073771076,
+              "intervention": 0.05976378714854025
+            }
+          },
+          "58_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.027976391782140606,
+              "intervention": 0.020902037821268916
+            },
+            "energy_mse_eV2": {
+              "historical": 0.029289757156369903,
+              "intervention": 0.030645532274587807
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0132154665432393,
+              "intervention": 0.012887917681264951
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.0013133653742293011,
+              "intervention": 0.009743494453318896
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.036240383196501955,
+              "intervention": -0.09870914067764391
+            }
+          },
+          "77": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.01908161091043163,
+              "intervention": 0.01472948636858874
+            },
+            "energy_mse_eV2": {
+              "historical": 0.020708692151092254,
+              "intervention": 0.0189897532094007
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.0074024499620608895,
+              "intervention": 0.006802509694714457
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.001627081240660624,
+              "intervention": 0.004260266840811959
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.04033709509447382,
+              "intervention": -0.06527071962842113
+            }
+          },
+          "78_2": {
+            "centered_energy_error_variance_eV2": {
+              "historical": 0.0031470153143280267,
+              "intervention": 0.005004959334787907
+            },
+            "energy_mse_eV2": {
+              "historical": 0.003312017817301432,
+              "intervention": 0.006218768999479516
+            },
+            "force_mse_eV2_per_A2": {
+              "historical": 0.005896204063123117,
+              "intervention": 0.006376561963696341
+            },
+            "mean_energy_error_squared_eV2": {
+              "historical": 0.00016500250297340555,
+              "intervention": 0.0012138096646916081
+            },
+            "signed_mean_energy_error_eV": {
+              "historical": -0.012845330006403321,
+              "intervention": -0.03483977130653426
+            }
+          }
+        }
+      }
+    }
+  },
+  "limits": "Fitting pooled zero mean is enforced. Group mean and variance and force errors remain empirical. No dense historical trajectory or held-out claims.",
+  "matched_updates": [
+    3600,
+    3700,
+    3800,
+    6000
+  ],
+  "method": "Population variance and squared pooled/group means; no per-group recalibration.",
+  "scope": "Four pre-existing selected width32 historical spike states, separate from62-point raw comparison.",
+  "status": "verified_saved_data"
+}

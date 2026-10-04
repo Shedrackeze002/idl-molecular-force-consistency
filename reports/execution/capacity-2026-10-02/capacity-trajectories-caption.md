@@ -1,0 +1,8 @@
+# Capacity trajectory figure caption
+
+Raw energy and force MSE divided by the original update-zero baselines for freshly initialized width-32 and width-64 models on aspirin. Panels show fitting energy, fitting force, anchor energy and anchor force. All vertical axes are logarithmic and retain the full observed peaks. Each arm has 63 saved observations: updates 0, 1, every 100 through 6,000, and 3,001. Points represent measured scores; connecting lines only join saved observations and do not establish continuous trajectories. The dashed 0.1 line marks the individual acceptance threshold; the joint criterion requires both metrics strictly below it on both roles. The 16 anchors are fitted members of the 128-structure fitting support. This single-seed comparison changes width at one selected rate and finite budget; no held-out performance, isolated expressivity mechanism or convergence claim is implied.
+
+Visual QA: the PNG was inspected at full tool-rendered size. All four panels, legends, threshold labels and full spike peaks are visible without cropping or overlap. The SVG and PNG hashes are retained in saved-closeout-verification.json. Matplotlib and Fontconfig emitted cache-permission warnings and used a temporary cache; rendering completed successfully. No numerical work was repeated to produce the figure.
+
+
+Historical source hashes identify the original research artifacts. Raw run archives, original launch packages and historical audit records referenced here are retained separately; this report is a research export. See [the reproduction note](../../../docs/REPRODUCTION.md).

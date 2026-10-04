@@ -1,0 +1,1334 @@
+                                                          Pushing the limits of unconstrained machine-learned interatomic potentials
+
+                                                               Filippo Bigi,1, ∗ Paolo Pegolo,1 Arslan Mazitov,1 Jonathan Schmidt,1 and Michele Ceriotti1, †
+                                                                               1
+                                                                                   Laboratory of Computational Science and Modeling, Institut des Matériaux,
+                                                                                    École Polytechnique Fédérale de Lausanne, 1015 Lausanne, Switzerland
+                                                                                                               (Dated: June 5, 2026)
+                                                                    Machine-learned interatomic potentials (MLIPs) are increasingly used to replace computationally
+                                                                 demanding electronic-structure calculations to model matter at the atomic scale. The most com-
+                                                                 monly used model architectures are constrained to fulfill a number of physical laws exactly, from
+                                                                 geometric symmetries to energy conservation. Evidence is mounting that relaxing some of these
+                                                                 constraints can be beneficial to the efficiency and (somewhat surprisingly) accuracy of MLIPs, even
+                                                                 though care should be taken to avoid qualitative failures associated with the breaking of physical
+
+
+
+
+arXiv:2601.16195v3 [physics.chem-ph] 4 Jun 2026
+                                                                 symmetries. Given the recent trend of scaling up models to larger numbers of parameters and train-
+                                                                 ing samples, a very important question is how unconstrained MLIPs behave in this limit. Here we
+                                                                 investigate this issue, showing that – when trained on large datasets—unconstrained models can
+                                                                 be superior in accuracy and speed when compared to physically constrained models. We assess
+                                                                 these models both in terms of benchmark accuracy and in terms of usability in practical scenarios,
+                                                                 focusing on static simulation workflows such as geometry optimization and lattice dynamics. We
+                                                                 conclude that accurate unconstrained models can be applied with confidence, especially since simple
+                                                                 inference-time modifications can be used to recover observables that are consistent with the relevant
+                                                                 physical symmetries.
+
+
+                                                                     I.    INTRODUCTION                                  to discard explicit physical symmetries in favor of un-
+                                                                                                                         constrained architectures where these are learned from
+                                                     The study of interatomic potentials has long under-                 the training data [8–10]. While unconstrained architec-
+                                                  pinned computational chemistry and materials science,                  tures can achieve high computational efficiency, most of-
+                                                  providing a framework for understanding how atoms in-                  ten by not enforcing rotational symmetries and/or con-
+                                                  teract and how their interactions govern stability, reac-              servation of energy, models trained for practitioners and
+                                                  tivity, and thermodynamic behavior. Interatomic poten-                 popular benchmarks [11] often rely on explicitly enforc-
+                                                  tials are essential in methods such as Monte Carlo sim-                ing all physical symmetries of the learning target.
+                                                  ulations [1], molecular dynamics [2], and geometry opti-                  In this work, we show that fully unconstrained ar-
+                                                  mization, where they enable mechanistic exploration of                 chitectures can be scaled to large and diverse datasets,
+                                                  atomic-scale processes across molecular, biological, and               achieving accuracies on par with state-of-the-art equiv-
+                                                  condensed-matter systems. Traditional potentials rely                  ariant neural networks. We find that unconstrained mod-
+                                                  on physically motivated analytic forms, which are cheap                els tend to be very efficient at inference time – a very de-
+                                                  to evaluate, but whose accuracy is fundamentally limited               sirable property in molecular simulations – although they
+                                                  by the simplicity of their mathematical formulation.                   often require a larger number of epochs to train from
+                                                     The past decade has witnessed the widespread                        scratch, as they need to infer the existence of symme-
+                                                  adoption of machine-learned interatomic potentials                     tries and conservation laws from training data. We also
+                                                  (MLIPs) [3].      By training on reference data from                   demonstrate their applicability to structural optimiza-
+                                                  quantum-mechanical calculations, MLIPs achieve accu-                   tion and lattice dynamics, showing that the potential
+                                                  racy approaching first-principles methods at highly re-                pitfalls of unconstrained models can be corrected with
+                                                  duced computational cost. While initial developments                   minimal effort.
+                                                  focused on system-specific training, the availability of in-
+                                                  creasingly diverse datasets [4] – spanning much of the
+                                                                                                                            II.   BACKGROUND AND RELATED WORK
+                                                  periodic table and containing millions of labeled config-
+                                                  urations – has driven the training of general-purpose (or
+                                                  universal) MLIPs [5], which can afford good-quality pre-                  A.    Interatomic potentials and their properties
+                                                  dictions across very diverse systems. This shift has en-
+                                                  couraged the adoption of more expressive architectures,                  An interatomic potential is a function describing the
+                                                  notably graph neural networks [6], as opposed to earlier               energy of an atomic structure:
+                                                  physically inspired functional forms which might be too
+                                                                                                                                               V ({ri , ai }N
+                                                                                                                                                            i=1 ),               (1)
+                                                  rigid or limited [7]. It has even prompted some models
+                                                                                                                         where ri are the three-dimensional positions of the
+                                                                                                                         atoms, ai are their atomic types (chemical elements), and
+                                                                                                                         i is an index running over the N atoms in the structure.
+                                                  ∗ filippo.bigi@epfl.ch
+                                                                                                                            a. E(3)-invariance. Interatomic potentials are in-
+                                                  † michele.ceriotti@epfl.ch
+                                                                                                                         variant under the transformations of the Euclidean group
+                                                                                                                                            2
+
+in three dimensions E(3), which includes translations,                            after inexpensive fine-tuning for downstream tasks. The
+rotations and reflections. Given a group element g ∈                              success of universal MLIPs demonstrates that generaliza-
+E(3) acting on all positions, then V ({g · ri , ai }N            i=1 ) =          tion across diverse systems is attainable and motivates
+V ({ri , ai }Ni=1 ).                                                              the exploration of increasingly expressive architectures
+   b. Permutational                 invariance. Interatomic           po-         and scaling strategies. In particular, there is growing in-
+tentials are invariant with respect to permuta-                                   terest in using functional forms that do not enforce all
+tions of atom indices, i.e., V (.., ri , ai , .., rj , aj , ..) =                 the physical properties of the potential, but learn them
+V (.., rj , aj , .., ri , ai , ..).                                               from the data, as will be discussed further in Sec. III A.
+   c. Locality. With few exceptions, atoms that are                                  a. Interatomic potentials and forces Most applica-
+distant from one another affect the potential en-                                 tions (including molecular dynamics, geometry optimiza-
+ergy function independently (in other words, they                                 tion, phonon calculations; see Sec. II C) make use pre-
+do not interact [12]). Mathematically, if atoms m                                 dominantly or exclusively of interatomic forces, as op-
+and n are distant (i.e., |rm − rn | is large), then                               posed to potential energies. In this context, forces can
+V ({ri , ai }N                        N                      N
+              i=1 ) − V ({ri , ai }i=1,i̸=n ) − V ({ri , ai }i=1,i̸=m ) +         be defined as the negative derivative of the potential en-
+              N
+V ({ri , ai }i=1,i̸=m,i̸=n ) ≈ 0.     1                                           ergy function V with respect to the atomic positions:
+                                                                                                fj = −∂V ({ri , ai }N
+                                                                                                                         
+                                                                                                                    i=1 ) ∂rj ,           (2)
+      B.    Machine-learned interatomic potentials                                where fj denotes the force acting on atom j. Al-
+                                                                                  though most MLIPs provide forces by automatic differ-
+   Machine-learned interatomic potentials [3, 13]                                 entiation through Eq. 2, several recent state-of-the-art
+(MLIPs) address the long-standing trade-off between                               MLIPs are trained and/or provide inference using “di-
+accuracy and efficiency in atomistic simulations. Classi-                         rect” forces [18, 21, 29–31], i.e., forces that are sim-
+cal empirical potentials are computationally cheap, but                           ply predicted as an additional head of the model. By
+their simple analytic forms severely limit transferability                        avoiding a backward differentiation step, this provides a
+and predictive power, and they are only available for a                           speedup of a factor between 2 and 3, depending on the
+few selected systems. Conversely, quantum-mechanical                              architecture [32], as well as reduced memory usage. Since
+methods such as density functional theory (DFT)                                   forces that do not obey Eq. 2 are not guaranteed to con-
+provide accurate energies and forces for any system, but                          serve energy in simulations, they are also referred to as
+their cost restricts applications to small systems or short                       non-conservative forces. In contrast, forces obeying Eq. 2
+timescales. MLIPs provide a middle ground: by training                            are also called conservative.
+flexible function approximators on quantum-mechanical
+data, they achieve near–first-principles accuracy while
+maintaining orders-of-magnitude lower computational                                         C.   Applications and benchmarks
+cost. Graph neural networks (GNNs) have emerged as
+particularly effective architectures for MLIPs, as they are                          MLIPs are routinely used for a wide range of applica-
+well-suited to incorporate essential physical symmetries                          tions. Conceptually, the most simple are geometry op-
+such as permutational and translational invariance, as                            timization and lattice dynamics calculations. Given a
+well as locality by virtue of constructing graph edges                            set of atomic types and initial positions, geometry opti-
+based on a cutoff radius. As a result of these aspects                            mization finds a nearby local minimum of the potential
+and due to their expressivity, GNNs can achieve high                              energy surface as a function of the atomic positions –
+accuracy and generalization across chemical systems,                              with low-energy minima being candidates for thermody-
+explaining their prevalence in current benchmarks [11]                            namically stable configurations. A more rigorous assess-
+and practical applications.                                                       ment of stability can be achieved by a convex hull con-
+   While early MLIPs were tailored to specific sys-                               struction, that consists of collecting several local minima,
+tems [13–15], recent years have seen the development                              differing by structure or composition, and determining
+of universal MLIPs [4, 5, 16–21] trained on increasingly                          those that have lower (free) energy than a mixture of
+large and diverse datasets [4, 22–28]. Universal MLIPs                            other phases with the same overall density or chemical
+promise to become general-purpose tools for computa-                              composition. To also incorporate finite-temperature ef-
+tional materials science and chemistry: pretrained on                             fects one can perform lattice dynamics (phonon) calcula-
+massive datasets, they can then be applied directly or                            tions, which involve computing the mass-scaled Hessian
+                                                                                  of the potential around a minimum, and diagonalizing
+                                                                                  it to obtain its eigenvalues (vibrational frequencies) and
+                                                                                  eigenvectors (the corresponding atomic displacements).
+1 One   can think of it as “the potential energy change in re-                    From lattice vibrations one can evaluate harmonic free
+  moving atom n is the same whether atom m is there or not”,                      energy corrections to the potential energy of the minima,
+  i.e. V ({ri , ai }N                    N                         N
+                    i=1 ) − V ({ri , ai }i=1,i̸=n ) ≈ V ({ri , ai }i=1,i̸=m ) −   as well as information on dynamical properties such as
+               N
+  V ({ri , ai }i=1,i̸=m,i̸=n ). Note that the condition is symmetric in           infrared or Raman spectra; anharmonic effects can be in-
+  the two atoms m and n.                                                          cluded considering phonon-phonon interactions via per-
+                                                                                                                          3
+
+turbation theory [33]. Alternatively, exact anharmonic-         be generated to provide symmetry information on a reso-
+ity can be obtained by explicitly sampling the Boltzmann        lution comparable to the scale over which one can expect
+distribution at the relevant temperature T , i.e. e−V /kB T ,   substantial changes in the learned interatomic potential,
+which can be achieved through Monte Carlo [1] or molec-         which we roughly estimate at about 0.1Å for MLIP ap-
+ular dynamics [2, 34, 35] simulations. Sampling based on        plications.
+the potential energy allows the computation of quantities          a. Translations. Learning the translational invari-
+such as order–disorder transition temperatures, phase di-       ance of the energy can be considered impossible, as one
+agrams, or specific heats. Between the two, molecular           would need to perform an infinite number of augmenta-
+dynamics simulations are often preferred for their supe-        tions. Fully periodic structures, however, require only a
+rior computational efficiency for medium-sized and large        finite number of translations within our assumptions: for
+systems [36]. Given that most of these applications rely        a 10 Å × 10 Å × 10 Å cell, one would need approximately
+heavily on interatomic forces, rather than only the po-         (10 Å / 0.1 Å)3 ≈ 106 augmentations. Besides the fact
+tential, direct force evaluation can speed up almost every      that this number of augmentations is too large to be prac-
+MLIP workflow.                                                  tical, the resulting potential energy surface would not be
+   Even though the ultimate test of the utility of a MLIP       transferable to ranges of Cartesian coordinates outside
+is whether it can be used reliably for practical atomistic      the training set. In practice, translational invariance is
+simulation tasks, it is often useful to have standardized       often achieved as a byproduct of enforcing locality, which
+benchmarks to encourage the development of more ac-             further explains why it is applied almost universally.
+curate and/or efficient MLIPs. Matbench-discovery [11]             b. Permutations. Considering a small number of
+was among the first to be introduced, and it features           neighbors of 30 within a single atomic environment, one
+the largest number of state-of-the-art architectures, but       would have to augment each structure 30! times to train
+it does not contain tests on molecular dynamics ap-             a permutationally unconstrained model, which is unfeasi-
+plications. Very recently, LAMbench [37] and MLIP               ble. Examples of models using random sampling of per-
+Arena [38] have also been proposed. In order to bench-          mutations appeared in the early days of the field [40],
+mark models for applications in organic chemistry and           but modern GNNs almost invariably enforce permuta-
+biochemistry, some practitioners evaluate model accu-           tion invariance by making use of permutationally invari-
+racy on the various test splits of the SPICE-MACE-OFF           ant pooling operations.
+dataset [27, 39], and the Open Molecules leaderboard and           c. Rotations. If we consider the furthest atom that
+community challenges [24] are also increasingly used in         contributes significantly to the description of an atomic
+this domain.                                                    environment within a GNN layer to be distant around
+                                                                4 Å from the central atom, a rotationally unconstrained
+                                                                model would have to learn invariance over a spherical
+          III.   THEORY AND METHODS                             surface of 4π(4Å)2 , yielding 4π(4Å)2 /(0.1Å)2 ≈ 20 000
+                                                                augmentations, which is attainable, especially for large
+   The question of whether a physical prior should be           datasets which contain similar environments with differ-
+built into the functional form of a MLIP or learned as          ent orientations, and which therefore contribute to the
+part of the training process is not one with a simple an-       sampling of rotational symmetry. At inference time, it is
+swer. The best strategy depends on how constraining             relatively easy to reduce symmetry breaking by averag-
+the functional form affects the expressivity of the archi-      ing over a grid of rotations, which makes it practical to
+tecture, as well as its computational cost – which in turn      relax this symmetry constraint.
+depends on how well the necessary mathematical opera-              d. Inversions. Data augmentation for the inversion
+tions are supported by modern libraries and hardware. It        symmetry only involves one additional structure, for a
+is also important to consider how hard it is to learn the       total of two. The low information requirement of this
+symmetry, and to monitor and correct for it at inference        symmetry results in equivariant architectures often at-
+time. Looking at the current landscape, modern GNN-             tempting to alleviate its cost, either by excluding pseu-
+based MLIPs almost universally enforce permutation and          dotensor representation from the neural network [41–43],
+translation symmetries, while several recent models relax       potentially losing expressivity, or by not enforcing inver-
+the requirement for rotational symmetry and energy con-         sion symmetry entirely [31, 44, 45], resulting in SE(3)-
+servation.                                                      invariant predictions as opposed to E(3)-invariant pre-
+                                                                dictions.
+                                                                   e. Energy conservation. As far as we are aware,
+    A.   What determines whether a symmetry is                  there is no simple way to formulate a conservative con-
+                    learnable?                                  straint in terms of data augmentation (without training
+                                                                on the Hessian of the potential energy function). The
+  One simple and convenient way to learn symmetries is          energy conservation condition is equivalent to that of a
+to apply data augmentation during training. The diffi-          symmetric Jacobian, which is a square matrix of size 3N ,
+culty in learning a symmetry can then be estimated in           for a total of 8010 constraints for a typical 30-atom train-
+terms of the number of transformed structures that must         ing structure. One way to probe this type of symmetry
+                                                                                                                                                                                 4
+
+                                                                                         GNN Layer (xNGNN)
+                                                        Node Features                                                                           Edge Features
+
+
+
+                aij
+                            Embedding                                                                                                                    Add
+
+
+                                                                                                                         Message Passing
+
+
+
+
+                                                                                                                                                                  Head
+                                 aij
+x,y,z,r
+                                                              Edge 
+Embedding                                       ij
+                                                                                                                                                                         Ei/fi
+                                                                                                                          Concat         Norm    MLP
+                                                                                                                    ji
+                                                                                       Transformer
+                                                                                                                                                 Add
+
+
+                 ai         Embedding
+
+
+
+
+                                                                                                  Transformer
+
+
+                                                                                                                                                                Head
+                      Edge Embedding
+                                                                                         Transformer Layer (xNTL)
+
+
+
+
+                                                                                                                                   Add
+                                                                                                                                                          MLP
+                      aij       Embedding
+                                                                                Norm
+
+                                                                                                                                   MLP
+                                               Concat   MLP                              Concat                 Split
+                                                                                                     MHA*                                                                Add
+                                                                                                                   Linear          MLP
+                                                                                Norm     Linear
+
+                      x,y,z,r      Linear
+                                                                                                                                   Add
+                                                                                                                                                          MLP
+
+
+
+
+FIG. 1. Illustration of the proposed architecture. ai and aij are the chemical elements of a center atom and a neighbor atom,
+respectively. Ei represents an atomic energy; all atomic energies are summed to obtain the total energy.
+*Attention weights are scaled to ensure smoothness as described in Ref. [9].
+
+
+breaking, which could be used as a penalty term during                                               up followed by cosine decay, as opposed to successive
+training, consists of checking for the symmetry of the Ja-                                           learning rate reductions. (5) Direct forces can be pre-
+cobian of the forces (i.e., the Hessian of the potential for                                         dicted by an additional head that outputs a 3-vector for
+an energy-conserving model). However, this is too expen-                                             each atom, similar to how atomic energies are predicted.
+sive to be done in practice, and non-conservative models                                             (6) For some of our models (see App. A), we use an adap-
+rely on the presence of geometrically close structures in                                            tive (but smooth and featuring linear time and memory
+the dataset to learn approximate energy conservation.                                                complexity in the number of neighbors) cutoff strategy,
+                                                                                                     described in App. A 2. A more comprehensive description
+                                                                                                     of the architecture is available in Fig. 1 and App. A.
+                      B.        Architecture
+
+   In order to explore the feasibility of training on large                                                 C.           Obtaining physical observables from
+datasets in a fully rotationally unconstrained fashion, we                                                                   unconstrained models
+choose the PET architecture [9], a GNN whose successive
+layers process the edges within each atomic neighborhood                                                While obtaining physically accurate observables from
+through a standard transformer, where each token corre-                                              unconstrained models has been demonstrated in some ap-
+sponds to one edge. To make the architecture and train-                                              plications, this practice has not been established in gen-
+ing protocol better adapted to larger-scale datasets, we                                             eral. In most cases small amounts of symmetry breaking
+apply some changes with respect to Ref. [9]: (1) We use                                              do not quantitatively affect the predicted properties (e.g.,
+a more modern transformer architecture, including root                                               the relative stability of different phases or compositions
+mean square layer normalization [46], the SwiGLU [47]                                                when performing a convex-hull construction). However,
+activation function, and pre-normalization [48]. (2) We                                              some care is required to avoid qualitative changes in re-
+increase by a factor of four the number of node features                                             sults, especially within automated workflows. It is worth
+for a given edge feature size (the two are instead the                                               remembering that the practical implementations of many
+same in Ref. [9]). Indeed, processing node features is ex-                                           electronic-structure methods often introduce similar ar-
+tremely cheap compared to edge features, as there are                                                tifacts: for instance, real-space grids break translational
+typically 30-50 times more edges than nodes in a chem-                                               and rotational symmetry, an issue that is still actively
+ical structure with typical cutoff radii. This allows one                                            worked on [49]. For symmetries associated with a com-
+to greatly increase the parameter counts of the models                                               pact group, it is always possible to reduce or eliminate
+while adding nearly zero overhead to training and infer-                                             the symmetry error by inference-time augmentation, e.g.,
+ence timings and memory usage. This change is appli-                                                 summing over a Lebedev grid [50], or by ensembling [51].
+cable to nearly all GNN-based MLIP architectures, not                                                   a. Molecular dynamics. Non-equivariant models
+only unconstrained ones. (3) We do not discard node                                                  can often be used out of the box in molecular dynamics
+features at every GNN layer, but pass them to the next.                                              simulations with minimal downsides [19, 50]. Systematic
+This is important in architectures with a larger number                                              long-time errors can be avoided by evaluating the MLIP
+of GNN layers (which are used in this work) and where                                                and its forces on a different random rotation (and
+the node features constitute a larger fraction of the to-                                            inversion) of the structure at every time step [50], with
+tal representation power of the neural network. (4) We                                               negligible overhead. Direct force models can also recover
+change the learning schedule to a standard linear warm-                                              quantitative physical observables in molecular dynam-
+                                                                                                                       5
+
+ics [32] using a multiple time-stepping algorithm [52]        pled Alexandria dataset [22, 23] and OMat24 [23] – to
+where conservative and non-conservative forces are            demonstrate its behavior in the large-data regime and to
+used together, with the computationally advantageous          compare it to state-of-the-art equivariant MLIPs. This
+non-conservative forces constituting the majority of the      “PET-OAM” model, trained on all three datasets in dif-
+evaluations.                                                  ferent stages (see App. A), contains 730M parameters.
+   b. Geometry optimization. Geometry optimization            Thanks to the increased size of the node representations
+with non-conservative force models was investigated in        and the unconstrained architecture, this large parameter
+Ref. [32], showing that, although inaccurate direct-force     count can be achieved without sacrificing computational
+models struggle to converge, accurate models have nearly      efficiency (see inference timings in Sec. IV B).
+no qualitative downsides. This is intuitive, as the target       The model was pre-trained using non-conservative
+force field is conservative, and therefore the model must     forces and stresses, then fine-tuned using their conser-
+be conservative at least up to its force error. A similar     vative counterparts. This two-step procedure was shown
+investigation on the effects of using rotationally uncon-     to save computational time in Refs. [32] and [31], often
+strained models for geometry optimization (Sec. IV A 0 a)     also resulting in better accuracies. Compared to other
+shows that symmetry breaking is possible but benign,          published training protocols [17, 20, 31], we find that our
+and possibly even beneficial as it can relax away from        rotationally unconstrained architecture takes more passes
+unstable high-symmetry structures. It might however be        through the data to train to convergence (although this
+necessary to use more permissive thresholds to identify       does not necessarily translate to a higher computational
+the symmetry of the relaxed structure than when using         cost, see Sec. IV B). This is not surprising: as argued in
+exactly equivariant models. Whenever the space group          Sec. III, an unconstrained model needs to learn the equiv-
+is known, it is also possible to restore exact symmetry by    ariance constraints during training. In contrast, trained
+projecting out the component of the forces incompatible       unconstrained models can be fine-tuned quickly: for ex-
+with the group action, or by averaging the model predic-      ample, as shown in App. B, a model trained on OMat24
+tions over the symmetries of the group. If computational      can be fine-tuned to the smaller Massive Atomistic Di-
+cost is not a limiting factor, averaging over inversions      versity (MAD) dataset [53] in fewer than 1/20th of the
+and/or a grid of rotations is also possible.                  epochs needed to train from scratch [19], while achieving
+   c. Frequency and phonon calculations. Phonon cal-          50% lower test error than training on MAD alone.
+culations often assume exact symmetry of the under-
+                                                                 a. Geometry optimization and phonon calculations
+lying structure, since phonon bands are plotted along
+                                                              from unconstrained models. As a demonstrative exam-
+high-symmetry lines in the lattice Brillouin zone (BZ).
+                                                              ple of the potential pitfalls of unconstrained models in
+This makes it especially important to either perform a
+                                                              static lattice calculations, we consider the case of ele-
+constrained-symmetry optimization, relax the symmetry-
+                                                              mental titanium. The stable phase of Ti at high tem-
+detection threshold, or fix the BZ sampling path to that
+                                                              perature is body-centered cubic (BCC), but it is stabi-
+of the high-symmetry group. The residual stress left
+                                                              lized by entropic effects, and static calculations find the
+after symmetry-constrained relaxation due to the lack
+                                                              low-temperature hexagonal-closed-packed (HCP) to be
+of equivariance is sufficiently small that phonons can
+                                                              preferred. In an equivariant model, symmetric but un-
+be computed at the symmetric minimum without arti-
+                                                              stable structures such as BCC exhibit zero forces and
+facts such as spurious soft modes. At the unconstrained,
+                                                              scalar stress, so any relaxation initialized in BCC remains
+slightly distorted minimum, BZ-integrated quantities like
+                                                              trapped within that symmetry. Non-equivariant mod-
+the phonon density of states are practically indistinguish-
+                                                              els are not bound by this constraint, and in fact resid-
+able from the symmetric case, indicating that the absence
+                                                              ual asymmetries drive the relaxation toward more stable
+of exact equivariance has little impact on global proper-
+                                                              close-packed structures—in this case, close to the face-
+ties. Direct-force models require additional care, as they
+                                                              centered cubic (FCC) structure that can be obtained with
+do not guarantee a vanishing total force, and their Ja-
+                                                              a continuous deformation path. Constraining the sym-
+cobian with respect to atomic displacements is not the
+                                                              metry by projecting out the incompatible force compo-
+(symmetric) Hessian of a potential energy function. In
+                                                              nents conserves the symmetry, for both conservative and
+practice, both conditions are easy to meet: the net force
+                                                              non-conservative forces. Due to the presence of a small
+is manually subtracted from the predictions, and the Ja-
+                                                              anisotropy in the stress, free relaxation leads to symme-
+cobian is symmetrized by default in most phonon codes
+                                                              try breaking—a small one for the stable HCP structure,
+(see Sec. IV A 0 a).
+                                                              and a dramatic deformation for the BCC cell, that re-
+                                                              laxes to a locally stable geometry close to FCC (Fig-
+                                                              ure 2—note that residual instabilities in the fully relaxed
+                    IV.   RESULTS
+                                                              phase come from unstable modes with wavelengths larger
+                                                              than the unit cell, and they vanish when using a super-
+          A.   Large-scale materials datasets                 cell). Note that O(3)-averaging reduces but does not
+                                                              eliminate the anisotropy, and so it delays but does not
+ We apply the proposed architecture to three large-scale      prevent relaxation of the unstable BCC initial configu-
+materials databases – the MPtrj dataset [4], the subsam-      ration. We perform conservative and non-conservative
+                                                                                                                            6
+
+
+
+
+FIG. 2. Geometry optimization and phonon calculations with PET-OAM. (a,b) Deviation of unit-cell lengths as a function of the
+maximum generalized force (force and stress component, as returned by ASE’s “FrechetCellFilter”) for BCC (a) and HCP (b)
+starting configurations. (c–e) Phonon bands of titanium starting from BCC, using conservative PET after constrained (c) and
+unconstrained (d) relaxation, and non-conservative PET after unconstrained relaxation (e). (g–i) Corresponding calculations
+starting from HCP. (f,j) Vibrational density of states for the two sets of calculations.
+
+
+relaxation for the 256 963 structures within the WBM
+                                                                TABLE I. Model performance on selected metrics from the
+dataset [54], with a convergence threshold of 0.05 eV/Å.
+                                                                matbench-discovery benchmark suite. We include the top 5
+We find that 70% (16%) of the final configurations are de-      openly available models from the benchmark leaderboard at
+tected to retain the symmetry of the the initial structure      the time of writing. For each metric, the best model is high-
+with the default threshold of 0.01 Å for the conservative      lighted in bold and the second best is underlined.
+(non-conservative) model, and 88% (81%) with a thresh-
+old of 0.1 Å. Notably, O(3)-averaging increases the num-        Model           DAF(↑) Acc.(↑) F1(↑) κSRME (↓) RMSD(↓)
+ber of symmetric structures to 77% with symprec 0.01 Å
+in the non-conservative case. We therefore recommend to          PET             6.075    0.977 0.924     0.119     0.060
+use looser convergence tolerances or to enforce rotational       eSEN [31]        6.069   0.977   0.925   0.170     0.061
+averaging whenever performing free geometry optimiza-            NequIP [41]      5.869   0.971   0.906   0.125     0.063
+tions with unconstrained models, especially when using           MatRIS [55]      6.039   0.976   0.921   0.218     0.060
+direct-force predictions.                                        SevenNet [20]    5.954   0.971   0.906   0.192     0.062
+
+   The outcomes of a phonon calculation depend mostly
+on the relaxed geometry. Using a constrained BCC struc-
+ture leads (as it should) to unstable phonon modes,             representative of the general behavior of unconstrained
+whereas the relaxed FCC structure is a local mini-              models for lattice dynamics calculations. An accurate
+mum and displays no unstable lattice vibrations. When           conservative, rotationally unconstrained model can be
+considering the stable HCP configuration, instead, the          used safely—as will be clear from the excellent perfor-
+phonon dispersion curves are almost identical regardless        mance on benchmarks that use vibrational properties—
+of whether or not the structure has been free to relax to       although care must be taken to avoid qualitative changes
+a slightly symmetry-broken geometry. We reiterate that          in the detected symmetry.
+automatic workflows might choose a dramatically differ-            b. The matbench-discovery benchmark Although
+ent BZ sampling path if a lower symmetry is detected.           public benchmarks should not be taken as the sole met-
+This is inconvenient, but has no consequence on physical        ric to assess the usefulness of a model, they provide an
+properties such as the total vibrational density of states,     objective scale on which one can compare different archi-
+that depend on an integral over the entire BZ. Even when        tectures. Among material-based benchmarks for MLIPs,
+symmetrizing the Hessian and removing the total force           matbench-discovery [11] features the widest variety of ar-
+component, non-conservative models tend to yield sig-           chitectures. This benchmark emphasizes metrics that
+nificantly different phonon dispersion curves. Increasing       reflect the ability of a model to be used for materials
+the finite-difference displacements used to estimate the        discovery, and especially its ability to detect the most
+Hessian helps stabilize calculations, but at present we         stable configurations among those of similar density or
+consider it to be safer to use a conservative model when        composition through a convex hull analysis. We focus
+evaluating phonons. These demonstrative examples are            on the following metrics, which are useful predictors of
+                                                                                                                                                        7
+
+
+                                           256 atoms                                     1000 atoms                            2744 atoms
+
+
+
+
+Days per million evaluations
+                                         MACE                                        6.5M
+                               101       eSEN                                                            4.7M
+                                         PET
+                                                                                              3.2M
+
+
+                                                                            190M
+                               100
+                                                                                   14M                       0.7M
+
+                                 10 1                         100       10 1                                 100     10 1                         100
+                                               MAE [eV]                                      MAE [eV]                             MAE [eV]
+FIG. 3. Accuracy-speed Pareto front for models trained on the SPICE dataset, at varying structure sizes. The energy error
+on the x-axis is the average of all subset-specific errors. Model sizes for the six benchmarked models are shown in the middle
+panel. More details are available in App. F.
+
+
+performance in material discovery workflows: (1) DAF                                            values. More details on the matbench-discovery evalua-
+(discovery acceleration factor): the acceleration factor                                        tion are available in App. C, where we also show results
+of material discovery through the model compared to                                             without rotational symmetrization and/or using non-
+brute-force search; (2) accuracy: this is the fractional                                        conservative forces. In particular, the non-conservative
+accuracy of the exercise if seen as a binary classification                                     heads of our models perform surprisingly well compared
+task (stable/unstable); (3) F1 score: harmonic mean of                                          to previous non-conservative results in the public do-
+precision and recall for the binary classification task. Be-                                    main [11]. Further benchmarking on LAMbench [37] and
+sides these three metrics, we will also use (4) an RMSD                                         MADBench [19] is available in App. D and E, confirming
+metric for geometry optimization (root-mean-square de-                                          the very strong performance of the models proposed in
+viation of the MLIP-optimized structure compared to                                             this work on materials.
+DFT) and (5) κSRME , which quantifies the quality of
+phonons calculated from the model [56]. The results (Ta-
+ble I) show that the methods proposed in the current                                                    B.      The SPICE molecular benchmark
+work reach state-of-the-art accuracy on materials discov-
+ery workflows, as well as on the calculation of static prop-                                       Unlike the material domain, applications of MLIPs to
+erties at local minima (phonons and optimized geome-                                            molecular systems have not yet seen the development of
+tries). All results we report here are obtained after rota-                                     established benchmark suites. Two of the most widely
+tional symmetrization by averaging over an SO(3) grid,                                          used large-scale MLIP benchmarks in the molecular do-
+although this has a significant effect only on the RMSD                                         main are the test accuracy on the SPICE [27] dataset
+                                                                                                (in the version proposed by Ref. [39]) and the Open
+                                                                                                Molecules leaderboard and community challenges [24]. In
+                                                                                                this section, we focus on the former; training and evalua-
+TABLE II. Test set accuracies for models trained on the                                         tion exercises on the large-scale OMol-1 dataset [24] are
+dataset presented in Ref. [39]. Energy MAEs are shown in                                        available in App. G.
+units of meV per atom; force MAEs are shown in units of                                            a. Training and accuracy We train a 190M-
+meV/Å. For each metric, the best model is highlighted in
+                                                                                                parameter model on SPICE, using conservative forces
+bold and the second best is underlined.
+                                                                                                throughout and training for three times the number of
+                                                                                                epochs reported by eSEN [31]. Although training times
+                                                                                                for the latter are not available, the inference timings in
+                                Subset     MACE       EScAIP        eSEN           PET
+                                                                                                Fig. 3 would suggest that the two models required around
+                                           E     F    E   F         E   F      E         F      the same amount of compute to train. The proposed un-
+PubChem          0.88 14.75 0.53 5.86 0.15 4.21 0.09 3.53                                       constrained architecture exceeds the accuracy of state-of-
+DES370K Mon. 0.59 6.58 0.41 3.48 0.13 1.24 0.10 1.00                                            the-art models on this benchmark (Table II), demonstrat-
+DES370K Dim. 0.54 6.62 0.38 2.18 0.15 2.12 0.12 1.20                                            ing its remarkable accuracy in the molecular domain.
+Dipeptides       0.42 10.19 0.31 5.21 0.07 2.00 0.05 1.55                                          b. Inference timings Molecular force fields are often
+Solv. Aminoacids 0.98 19.43 0.61 11.52 0.25 3.68 0.17 4.37                                      used to perform molecular dynamics simulations, mak-
+Water            0.83 13.57 0.72 10.31 0.15 2.50 0.13 3.05                                      ing inference efficiency of primary importance. Unlike
+QMugs            0.45 16.93 0.41 8.74 0.12 3.78 0.08 2.91                                       high-throughput workflows, molecular dynamics is not
+                                                                                                trivially parallelizable. Furthermore, large-scale simula-
+                                                                                                                         8
+
+tions are often needed in this domain to fully capture the    ter budget, and computational cost in general-purpose
+structural complexity of biochemical processes, increas-      MLIPs and their applications. The pre-trained models
+ing the computational cost of inference. Fig. 3 shows         we make available with this work span a broad range of
+three accuracy-speed Pareto fronts for the models pre-        parameter counts and computational cost, and can be
+sented in Table II for systems of varying numbers of          used by practitioners to quickly fine-tune models on be-
+atoms. From these experiments, it can be seen that the        spoke datasets, facilitating applications, as well as testing
+unconstrained models presented in this work constitute        the PET architecture on more challenging use cases be-
+an excellent compromise between accuracy and inference        yond the benchmarks we present. Given that, in this
+speed. More details on this benchmark are available in        domain, unconstrained models have received much less
+App. F.                                                       attention than equivariant neural networks, we are con-
+                                                              vinced that there is substantial potential for further im-
+                                                              provements in both accuracy and efficiency.
+                  V.    DISCUSSION
+
+   In this work, we have shown that unconstrained models
+                                                                  VI.    DATA AVAILABILITY STATEMENT
+(in the rotational sense and/or in the direct-force sense)
+can be scaled successfully to train on large datasets and
+afford accuracies and speed on par with state-of-the-art         The data that support the findings of this study are
+equivariant architectures for MLIPs. From our investiga-      openly available. The PET models are freely available
+tion it appears that, when compared to physically con-        at https://github.com/lab-cosmo/upet/, and they
+strained models, non-equivariant models must train for        can be run and fine-tuned using tools available from
+a larger number of epochs to converge training, although      https://metatensor.org/, which are also documented
+the lower cost largely compensates for that. Direct force     in Ref. 57. Examples of how to run geometry optimiza-
+models, on the other hand, show accelerated training (as      tion and phonon calculations with unconstrained models
+also observed in Refs. [31] and [32]) and can be fine-tuned   can be found at https://atomistic-cookbook.org/
+to obtain conservative models at a much reduced compu-        examples/pet-relaxation/pet-relaxation.html
+tational effort.                                              and     https://atomistic-cookbook.org/examples/
+   At inference time, we have demonstrated that ro-           pet-phonons/pet-phonons.html, respectively.
+tationally unconstrained models can be more efficient
+than equivariant models, although further tuning of ei-
+ther class of architectures, as well as software optimiza-
+                                                                             ACKNOWLEDGMENTS
+tion, might shift the balance in both directions. Non-
+conservative models consistently show the expected 2-3×
+theoretical speed-up over their conservative counterparts.      The authors would like to thank M. Langer, B. Wood
+Even though we were able to establish that rotationally       and M. Gao for helpful discussions.
+unconstrained models at scale can match the predictive          AM and MC acknowledge support from an Industrial
+accuracy of equivariant models on downstream tasks (at        Grant from BASF and from EPFL. FB was supported
+times with minor modifications to the evaluation proce-       by a project within the Platform for Advanced Scientific
+dure), non-conservative force models with equal or better     Computing (PASC), and by the MARVEL National Cen-
+test set accuracies compared to conservative models often     tre of Competence in Research (NCCR), funded by the
+fail to achieve the same quantitative performance. We         Swiss National Science Foundation (SNSF, grant num-
+conclude that they are best used as a pre-training step in    ber 182892) PP and MC acknowledge the funding from
+the training of conservative models [21, 31, 32] or in com-   the European Research Council (ERC) under the Eu-
+bination with conservative models for finite-temperature      ropean Union’s Horizon 2020 research and innovation
+applications [32].                                            programme (grant agreement No 101001890-FIAMMA).
+   Overall, this work shows that the PET architecture,        This work was supported by the Swiss AI Initiative (2025
+which had already proven itself as a lightweight model        Fellowship Program). JS acknowledges support from
+trained on a comparatively small dataset [19], retains ex-    the Swiss National Science Foundation (SNSF) under
+cellent performance at scale. It establishes rotationally     Ambizione grant number 233444. Computing resources
+unconstrained architectures as promising alternatives         were also provided by the Swiss National Supercomput-
+to achieve better trade-offs between accuracy, parame-        ing Centre under project no. lp26, lp95 and lp133.
+
+
+
+
+ [1] Nicholas Metropolis, Arianna W Rosenbluth, Marshall N     [2] B. J. Alder and T. E. Wainwright. Studies in molecular
+     Rosenbluth, Augusta H Teller, and Edward Teller. Equa-        dynamics. I. General method. The Journal of Chemical
+     tion of State Calculations by Fast Computing Machines.        Physics, 31(2):459–466, August 1959.
+     Journal of Chemical Physics, 21(6):1087–1092, 1953.
+                                                                                                                               9
+
+ [3] Jörg Behler and Michele Parrinello. Generalized Neural-           beyond equivariant message passing. Physical Review X,
+     Network Representation of High-Dimensional Potential-              14(2):021036, 2024.
+     Energy Surfaces. Physical Review Letters, 98(14):146401,      [18] Benjamin Rhodes, Sander Vandenhaute, Vaidotas
+     April 2007.                                                        Šimkus, James Gin, Jonathan Godwin, Tim Duignan,
+ [4] Bowen Deng, Peichen Zhong, KyuJung Jun, Janosh                     and Mark Neumann. Orb-v3: atomistic simulation at
+     Riebesell, Kevin Han, Christopher J Bartel, and Ger-               scale. arXiv preprint arXiv:2504.06231, 2025.
+     brand Ceder. Chgnet as a pretrained universal neural          [19] Arslan Mazitov, Filippo Bigi, Matthias Kellner, Paolo
+     network potential for charge-informed atomistic mod-               Pegolo, Davide Tisi, Guillaume Fraux, Sergey Pozd-
+     elling. Nature Machine Intelligence, 5(9):1031–1041,               nyakov, Philip Loche, and Michele Ceriotti. Pet-mad
+     2023.                                                              as a lightweight universal interatomic potential for ad-
+ [5] Chi Chen and Shyue Ping Ong. A universal graph deep                vanced materials modeling. Nature Communications,
+     learning interatomic potential for the periodic table. Na-         16(1), November 2025.
+     ture Computational Science, 2(11):718–728, 2022.              [20] Yutack Park, Jaesun Kim, Seungwoo Hwang, and Se-
+ [6] Alexandre Duval, Simon V Mathis, Chaitanya K Joshi,                ungwu Han. Scalable parallel algorithm for graph neu-
+     Victor Schmidt, Santiago Miret, Fragkiskos D Malliaros,            ral network interatomic potentials in molecular dynamics
+     Taco Cohen, Pietro Lio, Yoshua Bengio, and Michael                 simulations. Journal of chemical theory and computation,
+     Bronstein. A hitchhiker’s guide to geometric gnns for 3d           20(11):4857–4868, 2024.
+     atomic systems. arXiv preprint arXiv:2312.07511, 2023.        [21] Brandon M Wood, Misko Dzamba, Xiang Fu, Meng
+ [7] Sanggyu Chong, Tong Jiang, Michelangelo Domina, Fil-               Gao, Muhammed Shuaibi, Luis Barroso-Luque, Kareem
+     ippo Bigi, Federico Grasselli, Joonho Lee, and Michele             Abdelmaqsoud, Vahe Gharakhanyan, John R Kitchin,
+     Ceriotti. Resolving the body-order paradox of ma-                  Daniel S Levine, et al. Uma: A family of universal models
+     chine learning interatomic potentials. arXiv preprint              for atoms. arXiv preprint arXiv:2506.23971, 2025.
+     arXiv:2509.14146, 2025.                                       [22] Jonathan Schmidt, Tiago FT Cerqueira, Aldo H Romero,
+ [8] Johannes Gasteiger, Florian Becker, and Stephan                    Antoine Loew, Fabian Jäger, Hai-Chen Wang, Silvana
+     Günnemann. Gemnet: Universal directional graph neural             Botti, and Miguel AL Marques. Improving machine-
+     networks for molecules. Advances in Neural Information             learning models in materials science through large
+     Processing Systems, 34:6790–6802, 2021.                            datasets. Materials Today Physics, 48:101560, 2024.
+ [9] Sergey Pozdnyakov and Michele Ceriotti. Smooth, ex-           [23] Luis Barroso-Luque, Muhammed Shuaibi, Xiang Fu,
+     act rotational symmetrization for deep learning on point           Brandon M Wood, Misko Dzamba, Meng Gao, Ammar
+     clouds. In Advances in Neural Information Processing               Rizvi, C Lawrence Zitnick, and Zachary W Ulissi. Open
+     Systems, volume 36, pages 79469–79501. Curran Asso-                materials 2024 (omat24) inorganic materials dataset and
+     ciates, Inc., 2023.                                                models. arXiv preprint arXiv:2410.12771, 2024.
+[10] Max Eissler, Tim Korjakow, Stefan Ganscha, Oliver T.          [24] Daniel S Levine, Muhammed Shuaibi, Evan Wal-
+     Unke, Klaus-Robert Müller, and Stefan Gugler. How                 ter Clark Spotte-Smith, Michael G Taylor, Muhammad R
+     simple can you go? an off-the-shelf transformer approach           Hasyim, Kyle Michel, Ilyes Batatia, Gábor Csányi, Misko
+     to molecular dynamics, 2026.                                       Dzamba, Peter Eastman, et al. The open molecules
+[11] Janosh Riebesell, Rhys EA Goodall, Philipp Benner,                 2025 (omol25) dataset, evaluations, and models. arXiv
+     Yuan Chiang, Bowen Deng, Alpha A Lee, Anubhav Jain,                preprint arXiv:2505.08762, 2025.
+     and Kristin A Persson. Matbench discovery–a framework         [25] Lowik Chanussot, Abhishek Das, Siddharth Goyal,
+     to evaluate machine learning crystal stability predictions.        Thibaut Lavril, Muhammed Shuaibi, Morgane Riviere,
+     arXiv preprint arXiv:2308.14920, 2023.                             Kevin Tran, Javier Heras-Domingo, Caleb Ho, Weihua
+[12] E Prodan and W Kohn. Nearsightedness of electronic                 Hu, et al. Open catalyst 2020 (oc20) dataset and commu-
+     matter. Proceedings of the National Academy of Sciences,           nity challenges. Acs Catalysis, 11(10):6059–6072, 2021.
+     102(33):11635–11638, August 2005.                             [26] Richard Tran, Janice Lan, Muhammed Shuaibi, Bran-
+[13] Oliver T. Unke, Stefan Chmiela, Huziel E. Sauceda,                 don M Wood, Siddharth Goyal, Abhishek Das, Javier
+     Michael Gastegger, Igor Poltavsky, Kristof T. Schütt,             Heras-Domingo, Adeesh Kolluru, Ammar Rizvi, Nima
+     Alexandre Tkatchenko, and Klaus-Robert Müller. Ma-                Shoghi, et al. The open catalyst 2022 (oc22) dataset
+     chine Learning Force Fields. Chem. Rev., 121(16):10142–            and challenges for oxide electrocatalysts. ACS Catalysis,
+     10186, August 2021.                                                13(5):3066–3084, 2023.
+[14] Volker L. Deringer, Albert P. Bartók, Noam Bern-             [27] Peter Eastman, Pavan Kumar Behara, David L Dotson,
+     stein, David M. Wilkins, Michele Ceriotti, and Gábor              Raimondas Galvelis, John E Herr, Josh T Horton, Yuezhi
+     Csányi. Gaussian Process Regression for Materials and             Mao, John D Chodera, Benjamin P Pritchard, Yuanqing
+     Molecules. Chem. Rev., 121(16):10073–10141, August                 Wang, et al. Spice, a dataset of drug-like molecules and
+     2021.                                                              peptides for training machine learning potentials. Scien-
+[15] Jörg Behler. Four Generations of High-Dimensional Neu-            tific Data, 10(1):11, 2023.
+     ral Network Potentials. Chem. Rev., 121(16):10037–            [28] Arslan Mazitov, Sofiia Chorna, Guillaume Fraux, Marnik
+     10072, August 2021.                                                Bercx, Giovanni Pizzi, Sandip De, and Michele Ceriotti.
+[16] Ilyes Batatia, Philipp Benner, Yuan Chiang, Alin M                 Massive atomic diversity: a compact universal dataset
+     Elena, Dávid P Kovács, Janosh Riebesell, Xavier R Ad-            for atomistic machine learning. Scientific Data, 12(1),
+     vincula, Mark Asta, Matthew Avaylon, William J Bald-               November 2025.
+     win, et al. A foundation model for atomistic materials        [29] Mark Neumann, James Gin, Benjamin Rhodes, Steven
+     chemistry. arXiv preprint arXiv:2401.00096, 2023.                  Bennett, Zhiyi Li, Hitarth Choubisa, Arthur Hussey, and
+[17] Anton Bochkarev, Yury Lysogorskiy, and Ralf Drautz.                Jonathan Godwin. Orb: A fast, scalable neural network
+     Graph atomic cluster expansion for semilocal interactions          potential. arXiv preprint arXiv:2410.22570, 2024.
+                                                                                                                               10
+
+[30] Eric Qu and Aditi Krishnapriyan. The importance of be-        [42] Ilyes Batatia, David Peter Kovacs, Gregor N. C. Simm,
+     ing scalable: Improving the speed and accuracy of neu-             Christoph Ortner, and Gabor Csanyi. MACE: Higher or-
+     ral network interatomic potentials acrosfs chemical do-            der equivariant message passing neural networks for fast
+     mains. Advances in Neural Information Processing Sys-              and accurate force fields. In Alice H. Oh, Alekh Agar-
+     tems, 37:139030–139053, 2024.                                      wal, Danielle Belgrave, and Kyunghyun Cho, editors, Ad-
+[31] Xiang Fu, Brandon M Wood, Luis Barroso-Luque,                      vances in Neural Information Processing Systems, 2022.
+     Daniel S Levine, Meng Gao, Misko Dzamba, and                  [43] Albert Musaelian, Simon Batzner, Anders Johansson,
+     C Lawrence Zitnick. Learning smooth and expressive                 Lixin Sun, Cameron J Owen, Mordechai Kornbluth, and
+     interatomic potentials for physical property prediction.           Boris Kozinsky. Learning local equivariant representa-
+     arXiv preprint arXiv:2502.12147, 2025.                             tions for large-scale atomistic dynamics. Nature Com-
+[32] Filippo Bigi, Marcel Langer, and Michele Ceriotti. The             munications, 14(1):579, 2023.
+     dark side of the forces: assessing non-conservative force     [44] Yi-Lun Liao, Brandon Wood, Abhishek Das, and Tess
+     models for atomistic machine learning. arXiv preprint              Smidt.     Equiformerv2: Improved equivariant trans-
+     arXiv:2412.11569, 2024.                                            former for scaling to higher-degree representations. arXiv
+[33] R. Peierls. Zur kinetischen theorie der wärmeleitung in           preprint arXiv:2306.12059, 2023.
+     kristallen. Annalen der Physik, 395(8):1055–1101, 1929.       [45] J Thorben Frank, Oliver T Unke, and Klaus-Robert
+[34] Frank H Stillinger and Aneesur Rahman. Improved sim-               Müller. So3krates: Equivariant attention for interactions
+     ulation of liquid water by molecular dynamics Compar-              on arbitrary length-scales in molecular systems. arXiv
+     ison of simple potential functions for simulating liquid           preprint arXiv:2205.14276, 2022.
+     water Improved simulation of liquid water by molecular        [46] Biao Zhang and Rico Sennrich. Root mean square layer
+     dynamics*. The Journal of Chemical Physics The Jour-               normalization. Advances in neural information process-
+     nal of Chemical Physics The Journal of Chemical Physics            ing systems, 32, 2019.
+     I. General Method The Journal of Chemical Physics The         [47] Noam Shazeer. Glu variants improve transformer. arXiv
+     Journal of Chemical Physics The Journal of Chemical                preprint arXiv:2002.05202, 2020.
+     Physics, 601(10):1545–926, 1974.                              [48] Ruibin Xiong, Yunchang Yang, Di He, Kai Zheng, Shuxin
+[35] Hans C. Andersen. Molecular dynamics simulations at                Zheng, Chen Xing, Huishuai Zhang, Yanyan Lan, Liwei
+     constant pressure and/or temperature. The Journal of               Wang, and Tieyan Liu. On layer normalization in the
+     Chemical Physics, 72(4):2384–2393, 1980.                           transformer architecture. In International conference on
+[36] Michael P. Allen and Dominic J. Tildesley. Computer                machine learning, pages 10524–10533. PMLR, 2020.
+     Simulation of Liquids, volume 1. Oxford University            [49] Ben Durham, Matt I J Probert, and Phil J Hasnip. Beat-
+     Press, November 2017.                                              ing the egg-box effect in plane-wave DFT simulations.
+[37] Anyang Peng, Chun Cai, Mingyu Guo, Duo Zhang,                      Electron. Struct., 7(2):025004, June 2025.
+     Chengqian Zhang, Antoine Loew, Linfeng Zhang, and             [50] Marcel F Langer, Sergey N Pozdnyakov, and Michele
+     Han Wang. Lambench: A benchmark for large atomic                   Ceriotti. Probing the effects of broken symmetries
+     models. arXiv preprint arXiv:2504.19578, 2025.                     in machine learning. Mach. Learn.: Sci. Technol.,
+[38] Yuan Chiang, Tobias Kreiman, Elizabeth Weaver, Ishan               5(4):04LT01, December 2024.
+     Amin, Matthew Kuner, Christine Zhang, Aaron Kaplan,           [51] Jan E. Gerken and Pan Kessel. Emergent equivariance
+     Daryl Chrzan, Samuel M Blau, Aditi S Krishnapriyan,                in deep ensembles, 2024.
+     et al. Mlip arena: advancing fairness and transparency in     [52] M. Tuckerman, B. J. Berne, and G. J. Martyna. Re-
+     machine learning interatomic potentials through an open            versible multiple time scale molecular dynamics. The
+     and accessible benchmark platform. In AI for Accelerated           Journal of Chemical Physics, 97(3):1990, 1992.
+     Materials Design-ICLR 2025, 2025.                             [53] Arslan Mazitov, Sofiia Chorna, Guillaume Fraux, Marnik
+[39] Dávid Péter Kovács, J Harry Moore, Nicholas J Brown-            Bercx, Giovanni Pizzi, Sandip De, and Michele Ceriotti.
+     ing, Ilyes Batatia, Joshua T Horton, Yixuan Pu, Venkat             Massive atomic diversity: a compact universal dataset
+     Kapil, William C Witt, Ioan-Bogdan Magdau, Daniel J                for atomistic machine learning, 2025.
+     Cole, et al. Mace-off: Short-range transferable machine       [54] Hai-Chen Wang, Silvana Botti, and Miguel AL Marques.
+     learning force fields for organic molecules. Journal of the        Predicting stable crystalline compounds using chemical
+     American Chemical Society, 147(21):17598–17611, 2025.              similarity. npj Computational Materials, 7(1):12, 2021.
+[40] Grégoire Montavon, Katja Hansen, Siamac Fazli,               [55] HPC+AI Research Group, Institute of Computing Tech-
+     Matthias Rupp, Franziska Biegler, Andreas Ziehe,                   nology, Chinese Academy of Sciences. Matris: Official
+     Alexandre Tkatchenko, Anatole V. Lilienfeld, and Klaus-            pytorch implementation, 2025.
+     Robert Müller.       Learning invariant representations      [56] Balázs Póta, Paramvir Ahlawat, Gábor Csányi, and
+     of molecules for atomization energy prediction. In                 Michele Simoncelli. Thermal conductivity predictions
+     F. Pereira, C. J. C. Burges, L. Bottou, and K. Q. Wein-            with foundation atomistic models.          arXiv preprint
+     berger, editors, Advances in Neural Information Process-           arXiv:2408.00755, 2024.
+     ing Systems 25, pages 440–448. Curran Associates, Inc.,       [57] Filippo Bigi, Joseph W. Abbott, Philip Loche, Ar-
+     2012.                                                              slan Mazitov, Davide Tisi, Marcel F. Langer, Alexan-
+[41] Simon Batzner, Albert Musaelian, Lixin Sun, Mario                  der Goscinski, Paolo Pegolo, Sanggyu Chong, Rohit
+     Geiger, Jonathan P Mailoa, Mordechai Kornbluth,                    Goswami, Sofiia Chorna, Matthias Kellner, Michele Ce-
+     Nicola Molinari, Tess E Smidt, and Boris Kozinsky. E               riotti, and Guillaume Fraux. Metatensor and metatomic:
+     (3)-equivariant graph neural networks for data-efficient           foundational libraries for interoperable atomistic ma-
+     and accurate interatomic potentials. Nature communica-             chine learning, 2025.
+     tions, 13(1):2453, 2022.                                      [58] Ask Hjorth Larsen, Jens Jørgen Mortensen, Jakob
+                                                                        Blomqvist, Ivano E Castelli, Rune Christensen, Marcin
+                                                                 11
+
+     Dulak, Jesper Friis, Michael N Groves, Bjørk Ham-
+     mer, Cory Hargus, Eric D Hermes, Paul C Jen-
+     nings, Peter Bjerre Jensen, James Kermode, John R
+     Kitchin, Esben Leonhard Kolsbjerg, Joseph Kubal, Kris-
+     ten Kaasbjerg, Steen Lysgaard, Jón Bergmann Maron-
+     sson, Tristan Maxson, Thomas Olsen, Lars Pastewka,
+     Andrew Peterson, Carsten Rostgaard, Jakob Schiøtz, Ole
+     Schütt, Mikkel Strange, Kristian S Thygesen, Tejs Vegge,
+     Lasse Vilhelmsen, Michael Walter, Zhenhua Zeng, and
+     Karsten W Jacobsen. The atomic simulation environ-
+     ment—a python library for working with atoms. Journal
+     of Physics: Condensed Matter, 29(27):273002, 2017.
+[59] Balázs Póta, Paramvir Ahlawat, Gábor Csányi, and
+     Michele Simoncelli. Thermal conductivity predictions
+     with foundation atomistic models, 2025.
+[60] Duo Zhang, Xinzijian Liu, Xiangyu Zhang, Chengqian
+     Zhang, Chun Cai, Hangrui Bi, Yiming Du, Xuejian Qin,
+     Anyang Peng, Jiameng Huang, et al. Dpa-2: a large
+     atomic model as a multi-task learner. npj Computational
+     Materials, 10(1):293, 2024.
+[61] Stefan Chmiela, Valentin Vassilev-Galindo, Oliver T
+     Unke, Adil Kabylda, Huziel E Sauceda, Alexandre
+     Tkatchenko, and Klaus-Robert Müller. Accurate global
+     machine learning force fields for molecules with hundreds
+     of atoms. Science Advances, 9(2):eadf0873, 2023.
+[62] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer,
+     James Bradbury, Gregory Chanan, Trevor Killeen, Zem-
+     ing Lin, Natalia Gimelshein, Luca Antiga, et al. Pytorch:
+     An imperative style, high-performance deep learning li-
+     brary. Advances in neural information processing sys-
+     tems, 32, 2019.
+[63] Atsuto Seko, Atsushi Togo, Hiroyuki Hayashi, Koji
+     Tsuda, Laurent Chaput, and Isao Tanaka. Predic-
+     tion of low-thermal-conductivity compounds with first-
+     principles anharmonic lattice-dynamics calculations and
+     bayesian optimization. Physical Review Letters, 115(20),
+     November 2015.
+[64] Atsushi Togo, Kohei Shinohara, and Isao Tanaka. Spglib:
+     a software library for crystal symmetry search. Sci-
+     ence and Technology of Advanced Materials: Methods,
+     4(1):2384822, 2024.
+                                                                                                                              12
+
+
+                                                 Appendices
+                                         Appendix A: Model and training details
+
+                                                      1.    Architecture
+
+   The proposed architecture is based on a modified version of the original PET from Ref. [9], and it is implemented
+in the metatrain library [57]. Besides the changes to the architecture described in the main text, a number of further
+smaller modifications were made, namely:
+    • the use of skip connections instead of summing layer-wise predictions
+    • the use of more processed representations to make predictions
+    • a multi-layer perceptron is used to combine ij and ji representations during message passing, as opposed to a
+      plain sum
+These, along with the changes highlighted in the main text, are illustrated in Fig. 1. All proposed modifications
+improve the accuracy of training on diverse datasets. As an example, we report a 10-15% improvement in force MAE
+on the MAD dataset in Fig. A3 compared to literature results, with comparable computational efficiency. However,
+we do not exclude that further tuning of the architecture might improve accuracies and/or inference timings further.
+  Finally, we would like to stress that all experiments presented in this manuscript do not make use of the Equivariant
+Coordinate System Ensemble (ECSE) [9] to enforce exact energy invariance.
+
+
+                                                    2.     Adaptive cutoff
+
+  Diverse datasets that span the full periodic table include materials with wildly varying densities. This is problematic
+because the number of edges included within a fixed cutoff varies wildly. To ensure that the computational and
+parameter budget is allocated more uniformly across different structures, and that data can be packed more tightly
+in dense storage structures, it is useful to let the cutoff vary to include a roughly-constant number of neighbors. To
+achieve an adaptive cutoff in an efficient and simple manner, and such that the cutoff value depends smoothly on the
+coordinate of the atoms, we re-use some of the ideas introduced in Ref. 9. We define a large cutoff value rmax , over
+which all interatomic distances rij are computed. For each atom i in a structure, we then compute the number of
+neighbors within a grid of probe cutoff distances,
+                                                          X
+                                               nk (Ai ) =    fc (ri j, rk , ∆r),                                     (A1)
+                                                             j
+
+
+
+
+                                                                                      adaptive, n = 20
+                             0.125                                                    adaptive, n = 30
+                             0.100                                                    adaptive, n = 40
+                                                                                      adaptive, n = 50
+                  fraction
+                             0.075                                                    fixed, rcut = 6Å
+                             0.050
+                             0.025
+                             0.000
+                                     0    20          40          60          80         100         120
+                                                                  nneigh
+FIG. A1. Histogram of the number of neighbors selected by the adaptive cutoff algorithm with different target n̄, and compared
+with that for a fixed cutoff of 6Å. The dataset is a collection of 2700 structures randomly selected from the highly diverse MAD
+dataset [28].
+                                                                                                                     13
+
+where we use the smooth, infinitely differentiable function
+                                            
+                                            0
+                                                                               r ≥ rc
+                          fc (r, rc , ∆r) =   1 h                             i r ≤ rc − ∆r                        (A2)
+                                             1 1 + tanh           1
+                                            
+                                              2           tan[π(r+∆r−rc )/∆r]   elsewhere
+
+We then look for the cutoff value that would encompass a target number n̄ of neighbors, using the expression
+                                 X                               X
+                       r̄(Ai ) =    rk g((nk − n̄ + B(rk ))/∆n)/   g((nk − n̄ + B(rk ))/∆n).                       (A3)
+                                  k                                  k
+
+B(r) = n̄(r/rmax )3 is a “baseline”, corresponding to a uniform atom density integrating to n̄ at the maximum cutoff,
+that we add to the estimated number of neighbors and serves multiple purposes. It stabilizes the evaluation of
+r̄ in cases where there are fewer atoms within the outer cutoff than the target number and reduces the adaptive
+cutoff value in cases where there are many atoms close to the outer cutoff, avoiding selecting a number of actual
+active edges that is much larger than the target. The probe cutoff radii can be computed over a coarse grid; we
+use a spacing δr = ∆r/4 as a heuristic. The Gaussian width used to determine the adaptive cutoff value should
+be large enough to interpolate smoothly between grid points. Since the optimal width depends on the value of the
+estimated neighbor counts in the neighboring probe radii, we find that an effective strategy is to use an adaptive value
+∆nk = (nk+1 + B(rk+1 ) − nk−1 − B(rk−1 ))/2, computed as centered differences with respect to the neighbor counts
+(including the baseline correction, and using one-sided expressions at the edges). Finally, the weighting of a given
+edge is given by the mean of the weights of the corresponding two nodes to ensure symmetry, and edges with a weight
+of zero are discarded. These weights are then reused as the weights in PET’s attention mechanism (see Ref. [9]).
+
+
+                                                     3.   Training
+
+   All training and fine-tuning runs were executed with a standard cosine learning rate scheduler, with a linear warm-up
+stage corresponding to 10% of the total number of training steps. All training runs were executed in single-precision,
+without using TensorFloat-32 operations. A chemical-composition-based linear model was fitted for the energies and
+removed from the energy targets before the fitting exercises, except for fine-tuning runs. Furthermore, scaling of all
+targets to unit standard deviation across the training set was employed. A standard Huber loss was used for all training
+exercises, except for fine-tuning on the MAD dataset (Sec. B), where a MSE loss was used. The total loss is composed
+of a sum of individual terms for per-atom energies, forces and per-atom virials (we use stresses instead in the non-
+conservative case). Rotational and inversion-based data augmentation was employed for all training runs, according
+to the symmetry of the different targets (energy, forces, stress/virial). Gradient norm clipping to a value of 1.0 was
+used throughout. It should be noted that all conservative fine-tuning runs keep training the non-conservative force
+and stress outputs with a small weight in the loss function. This is done to allow multiple-time-stepping simulations
+using both conservative and non-conservative heads [32].
+   For the fine-tuning of the “OAM” model, we rejected all batches with more than 350 atoms (in a distributed setting,
+this implies rejection of all batches across all processes if even only one local batch is too large). This constraint,
+together with the adaptive cutoff strategy detailed in App. A 2, implicitly sets a limit to the memory usage per batch
+during training. In general, this allows one to push the size and parameter counts of the model on heterogeneous
+datasets without recurring to alternative strategies such as model sharding across devices.
+   The official training/validation/test splits were used for the OMat24 [23], sAlex [23], SPICE [39], MAD [28] and
+OMol25 [24] datasets. Since the MPtrj dataset [4] does not have official splits, as far as we are aware, we added it in
+its entirety to the training set for the OAM fine-tuning run.
+   See Sec. G for model and training details relative to the OMol models.
+                                                                                                                         14
+
+                                                 4.     Hyperparameters
+
+ The hyperparameters employed to train the models presented in this work are shown in Tab. III. See Sec. G for
+model and training hyperparameters relative to the OMol models.
+
+
+TABLE III. Model and training hyperparameters for the models evaluated in this work. A linear learning-rate warm-up of 10%
+of the total number of epochs was performed in all cases. The number of node features corresponds to four times that of edge
+features for all models. See Sec. G for model and training hyperparameters relative to the OMol models.
+                         Model                      OMat-NC OMat-C        OAM SPICE-L SPICE-S
+                       Training starts from           scratch   OMat-NC OMat-C scratch      scratch
+                       Parameter count                 730M      730M    730M   190M         14M
+                       Conservative training             no       yes     yes    yes          yes
+                       Number of epochs                  10         5       1    300          300
+                       Edge features                    640       640     640    512          192
+                       GNN layers                         5         5       5      3           3
+                       Attention layers                   3         3       3      2           1
+                       Graph cutoff radius (Å)         10.0      10.0    10.0    4.5         4.5
+                       Adaptive neighbor number          40        40      40      –           –
+                       Max learning rate                2e-4      1e-4    5e-6   2e-4         2e-4
+                       Batch size                      2048      2048     512    128          128
+                       Max atoms per batch                –         –     350      –           –
+                       E loss weight                    0.01       1.0     1.0    1.0         1.0
+                       F loss weight                     1.0       1.0     1.0    1.0         1.0
+                       S/V loss weight                  0.01       1.0     1.0     –           –
+                       E Huber threshold               0.015     0.015   0.010  0.003        0.003
+                       F Huber threshold               0.010     0.040   0.050  0.004        0.004
+                       S/V Huber threshold             0.005     0.030   0.050     –           –
+                                                                                                                                  15
+
+                                                           5.   Pareto frontier for PET-OMat models
+
+
+
+TABLE IV. Model hyperparameters for the PET-OMat models. The “OMat-XL” model we present here is what we call
+”OMat” elsewhere.
+                    Model                    OMat-XS OMat-S OMat-M OMat-L OMat-XL
+                       Parameter count                                     4.5M       25.9M   109M    255M   730M
+                       Edge features                                        128        256     384     512    640
+                       GNN layers                                            2           3       3      4       5
+                       Attention layers                                      1           1       2      2       3
+                       Graph cutoff radius (Å)                             7.5        8.0     8.5     9.0    10.0
+                       Adaptive neighbor number                              8          16      24     32      40
+
+   In addition to the very large model that we use to demonstrate the ability of the PET architecture to scale to
+large parameter counts, we perform a series of training exercises on the OMat24 dataset [23] using different sets of
+hyperparameters (Table A 5). Besides their value in the context of an ablation study on model complexity, we envisage
+these models to be used as foundation models to be fine-tuned on more focused and/or curated datasets, and we chose
+hyperparameters so as to span a broad range of cost/accuracy tradeoff scenarios.
+
+
+                                                                 PET-OMAT Pareto front
+                                                                                                        200000
+                                                                   XS
+
+
+
+                        force error (MAE) / meV/Å
+                                                                                                        100000
+                                                    100
+
+
+                                                                                                                 OOM atom count
+                                                                                                        50000
+                                                                                                        20000
+                                                                       S
+                                                                                                        10000
+                                                                                  M     L
+                                                    50                                           XL     5000
+                                                           20      50 100 200              500
+                                                             simulation time / µs/(atom step)
+
+FIG. A2. Pareto plot of accuracy (force MAE on a hold-out test set) and computational cost (measured from ASE [58]) for
+a series of PET models trained on the OMat24 dataset. The maximum system size that can be reached before hitting an
+out-of-memory error on the hardware we used (a single NVIDIA H100 GPU with 92 GB of memory) is visualized as the color
+and size of the data points.
+
+
+
+
+                                                          Appendix B: Fine-tuning on smaller datasets
+
+   As a demonstration of the fine-tuning capabilities of unconstrained architectures, we consider fine-tuning of two
+early versions of the models we trained on the OMat24 [23] dataset: PET-OMat-NC (non-conservative) and PET-
+OMat-C (conservative). We fine-tune these models on the MAD [28] dataset, which is smaller by more than 1000
+times, but which was nonetheless used to train a successful general-purpose interatomic potential in Ref. [19]. We
+compare the fine-tuned model with training from randomly initialized weights on the same dataset and with the
+reported accuracy from Ref. [19] in Fig. A3.
+   Fine-tuning our OMat models leads to halving of the validation energy and force errors compared to training
+from scratch. Furthermore, training time is greatly reduced: we found that it is possible to achieve near-converged
+validation metrics by fine-tuning for 100 epochs on a non-conservative OMat model and 30 epochs on a conservative
+OMat model, as opposed to 700 or more when training from scratch. We postulate that, once equivariance is learned
+on a larger datasets, fine-tuning is efficient and largely unaffected by any potential training-time slowdowns due to
+learning equivariance. This demonstrates the benefits of using our pre-trained models to achieve better accuracies
+on smaller datasets, whose targets can be computed consistently at high levels of theory (i.e., using more expensive
+                                                                                                                                                             16
+
+
+                                                                                                           103
+
+
+
+
+Val. energy MAE per atom (meV)
+                                                          PET-MAD                                                                    PET-MAD
+                                                          from scratch                                                               from scratch
+
+
+
+                                                                                  Val. force MAE (meV/Å)
+                                                          fine-tune PET-OMat-NC                                                      fine-tune PET-OMat-NC
+                                 102                      fine-tune PET-OMat-C                                                       fine-tune PET-OMat-C
+
+                                                                                                           102
+                                 101
+                                       0   100 200 300 400 500 600 700                                           0   100 200 300 400 500 600 700
+                                                    Epoch                                                                     Epoch
+
+FIG. A3. Validation set accuracy of the PET-MAD [19] model, a model trained from scratch on the MAD dataset using the
+architecture proposed in this work, and fine-tuning from a model trained on the OMat24 dataset.
+
+
+approximations of quantum mechanics). In Sec. E, we show that this “OMAD” model, when evaluated consistently,
+shows superior accuracy and transferability compared to OAM models.
+
+
+                                                          Appendix C: Matbench-discovery evaluation
+
+  Evaluation on matbench-discovery [11] is executed through scripts available in its public GitHub repository
+(https://github.com/janosh/matbench-discovery). At the time of writing, these differ only marginally from stan-
+dard scripts used to evaluate other architectures.
+
+
+TABLE V. Performance comparison of conservative and non-conservative models on the matbench-discovery benchmark, with
+and without rotational averaging.
+
+                                                  Model                 DAF(↑) Acc.(↑) F1(↑) κSRME (↓) RMSD(↓)
+                                                  PET-OAM (C, avg)        6.075     0.977 0.924                      0.119   0.060
+                                                  PET-OAM (C, raw)        6.018     0.975 0.921                      0.119   0.070
+                                                  PET-OAM (NC, avg)       6.100     0.976 0.922                      0.197   0.072
+                                                  PET-OAM (NC, raw)       5.968     0.973 0.913                      0.216   0.099
+
+
+
+   a. Effect of conservative predictions and rotational averaging Optionally, we employ SO(3)-averaging over a
+Lebedev grid with L = 3 and/or the non-conservative force and stress heads of our models. We report the results in
+Tab. V. While we do not find symmetrization to have an impact on the phonon-related task in the benchmark suite
+(at least in the conservative case), the effects are small but noticeable on materials discovery tasks, and sizable on
+geometry optimization accuracies. Although we were able to obtain relatively good metrics from non-conservative
+models (especially on κSRME when compared to the literature, see also the next paragraph), we find that non-
+conservative models consistently perform worse on the downstream tasks considered in matbench-discovery, despite
+them often achieving better training and validation accuracies if trained from scratch.
+   b. Effect of the finite-difference displacement on phonon calculations Tab. VI reports the performance of different
+models on the phonons task of matbench-discovery, which evaluates the symmetric mean relative error on lattice
+thermal conductivity [59], for varying finite-difference displacements in force-constant calculations. All results use
+central finite differences. We find that this choice is crucial for non-equivariant models (and it is also adopted for
+ORB models), as it can more than halve the error by averaging out small inconsistencies between symmetry-equivalent
+displacements (see also App. H). Our results show little variability with the displacement size, with optimal values
+slightly larger than the default 0.03 Å used in phonopy (and matbench-discovery). A similar investigation in Ref. [31]
+also found that the 0.03 Å standard is not optimal in general. Overall, the conservative model achieves state-of-the-art
+performance, while the non-conservative model remains competitive with conservative approaches and outperforms
+                                                                                                                        17
+
+other direct-force models on the leaderboard.
+
+            TABLE VI. Effect of finite-different displacement size on the κSRME metrics of matbench-discovery.
+                                                        Finite-difference displacement (Å)
+                                 Model
+                                                         0.01 0.03 0.05 0.07 0.10
+                                 PET-OAM (C, raw) 0.157 0.119 0.110 0.110 0.124
+                                 PET-OAM (NC, raw) 0.216 0.216 0.218 0.226 0.253
+
+
+
+
+                                         Appendix D: LAMbench evaluation
+
+   Although matbench-discovery [11] remains the most popular public benchmark for atomistic models in the materials
+domain, it is important to consider other available benchmarks to obtain a broader perspective of the performance
+of various models on a more diverse set of tasks. We evaluated the performance of our models using the recent
+LAMBench benchmark [37], which focuses on probing the generalizability, inference speed, and stability of universal
+models in atomistic simulations. For this benchmark, in addition to PET-MAD [19] and the PET-OMAD model
+described in App. B, we used a set of preliminary conservative and non-conservative models that we trained on
+the OMat24, subsampled Alexandria, and MPtrj datasets. When interpreting the results below, it is important
+to keep in mind that there is usually no consistency between the DFT settings used to prepare the
+benchmark data and model training sets. This lack of consistency can severely affect the quality of predictions
+because it introduces unavoidable and unlearnable noise in the target data, which cannot be separated from the real
+approximation errors of the models (more detail on this effect can be found in Ref. [19]). Therefore, the results in
+this section should only be used for qualitative model assessment. Generally, we recommend benchmarks which use
+consistent levels of DFT in order to perform quantitative assessments (see Sec. E below). We first run the force-
+field generalizability test resolved by three separate categories: Molecules, Inorganic Materials and Catalysis. In each
+category, the accuracy of each model in predicting energies, forces and stresses (if available) is evaluated across several
+out-of-domain category-specific datasets, and then the overall performance score is computed based on the averaged
+normalized error values. All technical details on the score calculation procedure can be found in Ref. [37].
+   The results of the evaluation are shown in Table VII. Among all models trained in this work, PET-OAM-C demon-
+strates the best score across all three domains, showing the best overall results on Molecules, and reaching the same
+accuracy as the DPA-3.1-3M on Inorganic Materials. In the Catalysis domain, both conservative and non-conservative
+PET-OAM models show second-best result, outperforming all other OAM-trained models in the list. The superior
+performance of the DPA-3.1-3M model in this case most likely originates from the presence of explicit catalytic data
+in the training set [60]. PET-OMAD performs notably worse compared to PET-OAM, and even falls behind the
+PET-MPtrj on Inorganic Materials, despite being pre-trained on the large OMat24 dataset. This effect stems from
+differences in ab initio theory levels used in the MAD dataset (on which PET-OMAD is ultimately fine-tuned) and
+other datasets, which usually have settings consistent (or nearly consistent) to those in the MPtrj dataset [4] or the
+Alexandria dataset [22], and therefore suffer much less from the difference in the theory baseline. As we demonstrate
+in Sec. E, PET-OMAD outperforms other models upon consistent evaluation. A more detailed discussion of the effect
+of the consistency of DFT settings in model evaluation can be found in Ref. [19].
+   In addition to force-field generalizability, we also perform the property prediction test, which includes reaction and
+activation energy prediction in catalytic reactions (OC20-NEB task), elastic constant prediction (elastic task), and
+conformer energy prediction for a selected set of organic molecules (Wiggle150 task). The results are shown in Tables
+VIII, IX, and X, respectively. The lack of explicit molecular and surface data in the OAM dataset lead to a dramatic
+decrease in PET-MP and PET-OAM model accuracy compared to bulk systems. At the same time, almost all PET
+models show high (and sometimes the best) success rates, which means that, in most cases, their MAE in predicting
+Ea is less than 0.1 eV. This combination is most likely caused by outliers in the data, which can corrupt the overall
+MAE values, while preserving the fraction of successful runs on a decent level.
+   At the same time, PET-OMAD achieves the third-best results in predicting reaction energies and barriers, closely
+competing with DPA-2.4-7M, and even demonstrating the highest success rate in predicting desorption. The presence
+of explicit molecular and surface data in the MAD dataset significantly improves the model’s ability to describe cat-
+alytic reactions. We note that these results are still obtained using inconsistent DFT targets, so further improvement
+would be expected upon consistent evaluation.
+   The conservative PET-OAM model achieves the best overall accuracy in predicting the shear modulus (Table IX),
+and competes closely with other universal models in predicting the bulk modulus. Upon comparing the results of the
+conservative (PET-OAM-C and PET-MPtrj-C) models against their non-conservative analogs (PET-OAM-NC) and
+                                                                                                                             18
+
+
+TABLE VII. Evaluation of various universal MLIPs on the force-field generalizability test of the LAMBench benchmark
+from Ref. [37]. Performances of PET-OAM, PET-MPtrj and PET-OMAD are computed in this work, and other results are
+reproduced from the reference paper [37]. The domain-specific score ranging from 0 to 1 is computed based on model errors in
+predicting energies and forces. For each metric, the best model is highlighted in bold and the second best is underlined.
+
+                                                                       Task
+                                Model
+                                                      Molecules Inorganic Materials Catalysis
+                                PET-OAM-C               0.85               0.84         0.74
+                                PET-OAM-NC               0.78              0.79         0.74
+                                PET-MPtrj-C              0.80              0.83         0.48
+                                PET-MPtrj-NC             0.69              0.77         0.46
+                                PET-MAD                  0.79              0.76         0.44
+                                PET-OMAD                 0.81              0.78         0.58
+                                DPA-2.4-7M               0.82              0.80         0.66
+                                DPA-3.1-3M               0.84              0.84         0.79
+                                MACE-MP-0                0.64              0.72         0.59
+                                MACE-MPA-0               0.66              0.79         0.62
+                                Orb-v2                   0.78              0.75         0.70
+                                Orb-v3                   0.82              0.82         0.71
+                                SevenNet-l3i5            0.75              0.76         0.51
+                                SevenNet-MF-ompa         0.75              0.83         0.66
+                                MatterSim-v1-5M          0.74              0.82         0.59
+                                GRACE-2L-OAM             0.75              0.82         0.67
+
+
+
+
+TABLE VIII. Performance of different universal models on the OC20-NEB task of the LAMBench benchmark. The mean
+absolute error (MAE) for reaction energy differences (∆E) and activation energies (Ea ) are given in eV. The success rates (in
+%) for transfer, desorption, and dissociation reactions are calculated as a fraction of the corresponding runs for which the MAE
+in Ea predictions is less than 0.1 eV. The best results per column are shown in bold, and the second-best are underlined.
+
+            Model                MAE ∆E (↓) MAE Ea (↓) % Transfer (↑) % Desorption (↑) % Dissociation (↑)
+            PET-OMAD                 0.331          1.289          69.14           98.43               66.46
+            PET-MPtrj-C              1.257          2.131         73.14             92.91              79.75
+            PET-MPtrj-NC             2.030          2.874         80.00             94.49              85.44
+            PET-OAM-NC               3.439          3.879         70.29             81.89              70.89
+            PET-OAM-C                4.210          4.438         62.29             85.83              72.78
+            DPA-3.1-3M               0.234         1.203           66.86           81.10               63.92
+            DPA-2.4-7M               0.306         1.271           68.57           69.29               77.85
+            PET-MAD                  0.471         1.408           63.43           98.43               77.85
+            SevenNet-l3i5            0.546         1.423           77.71           87.40               75.95
+            MACE-MPA-0               0.566         1.459           72.57           94.49               84.81
+            MACE-MP-0                0.580         1.468           76.57           90.55               84.81
+            GRACE-2L-OAM             0.704         1.583           65.14           90.55               72.15
+            SevenNet-MF-ompa         1.278         2.070           66.86           92.91               68.35
+            Orb-v3                   1.470         2.298           61.71           87.40               72.15
+            Orb-v2                   1.729         2.682           66.29           78.74               74.05
+            MatterSim-v1-5M          2.018         2.686           76.00           83.46               84.81
+
+
+
+(PET-MPtrj-NC), we clearly see that elastic moduli are very sensitive to the lack of energy conservation. This comes
+as no surprise, as geometry optimization is part of the protocol for calculating elastic moduli, and this it can fail upon
+having no relaxation constraints and no rotational averaging, as we show in Sections IV A 0 a and H. MAD-trained
+models (PET-MAD and PET-OMAD) show comparatively worse results due to a difference in the underlying DFT.
+This observation also indicates that some of the materials properties (like the elastic moduli) can be actually very
+sensitive to a choice of DFT flavor and settings.
+  Finally, our results on the Wiggle150 test show that PET-OAM-NC achieves the best results in predicting the
+energies of molecular conformers among the trained PET models, and second-best result overall, only falling behind
+                                                                                                                         19
+
+
+   TABLE IX. Performance of different universal models        TABLE X. Performance of different universal models on
+   in predicting the elastic constants from the LAMBench      the Wiggle150 test from the LAMBench benchmark. The
+   benchmark. The mean absolute errors (MAE) for shear        mean absolute error (MAE) and root mean squared error
+   modulus (GVRH ) and bulk modulus (KVRH ) are given in      (RMSE) in predicting the energies of the conformers are
+   GPa. The best results per column are shown in bold, and    given in kcal/mol. The best results per column are shown
+   the second-best are underlined.                            in bold, and the second-best are underlined.
+
+        Model               MAE GVRH MAE KVRH                           Model                MAE RMSE
+        PET-OAM-C              8.700        9.040                       PET-OAM-NC            6.127   7.741
+        PET-MPtrj-C            12.072      16.959                       PET-OAM-C             7.219 8.166
+        PET-OMAD               15.610      17.633                       PET-MP-C              8.385 9.653
+        PET-OAM-NC             23.041      23.756                       PET-OMAD             10.967 11.558
+        PET-MPtrj-NC           41.932      20.462                       PET-MP-NC            11.085 13.400
+        GRACE-2L-OAM            9.138      7.459                        DPA-3.1-3M       5.669 6.523
+        SevenNet-MF-ompa        9.540       9.463                       Orb-v2            6.463 8.270
+        Orb-v3                  9.749       7.582                       PET-MAD           8.798 9.818
+        MACE-MPA-0             10.270      15.026                       MatterSim-v1-5M 10.730 12.450
+        DPA-3.1-3M             10.766      10.131                       SevenNet-MF-ompa 10.970 12.800
+        MatterSim-v1-5M        12.751      14.948                       Orb-v3           11.922 12.894
+        PET-MAD                17.325      32.559                       GRACE-2L-OAM 12.140 13.994
+        DPA-2.4-7M             17.759      16.456                       SevenNet-l3i5    13.881 15.098
+        SevenNet-l3i5          19.421       9.934                       DPA-2.4-7M       14.843 15.698
+        MACE-MP-0              26.195      11.006                       MACE-MPA-0       14.915 16.677
+        Orb-v2                 66.074      44.082                       MACE-MP-0        26.597 28.513
+
+
+the DPA-3.1-3M model. This can be explained by the presence of explicit molecular data in the DPA-3.1-3M training
+set. The OAM dataset is designed to primarily describe inorganic materials with no information on molecules.
+However, the results across the various parts of the LAMBench indicate that PET-OAM models can still afford good
+predictions on molecular structures.
+
+
+                                        Appendix E: MADBench evaluation
+
+   MADBench is another minimalistic benchmark that is used to assess the accuracy of universal atomistic models
+across various domains, ensuring internal consistency of the reference ab initio theory [19]. It contains subsets
+sampled from popular datasets for atomistic machine learning, covering inorganic materials (represented by subsets of
+the MAD [28], MPtrj [4], matbench-discovery [11], and Alexandria [22] datasets), molecules (represented by subsets
+of the SPICE [27] and MD22 [61] datasets), and catalytic applications (a subset of the Open Catalyst 2020 [25]
+dataset), recomputed with a unified set of DFT settings to obtain internally coherent data on target energies, forces
+and stresses.
+   We evaluate the performance of our proposed models on MADBench and compare it against other model results
+from Ref. [19]. Here, we use the same set of the preliminary conservative and non-conservative models, mentioned
+above in Sec. D. The results are presented in Table XI. In almost all cases, the PET-OMAD model demonstrates the
+best overall accuracy in predicting both energies and forces, while falling behind PET-MPtrj and PET-OAM only on
+the MPtrj and Alexandria subsets, which have considerable overlap with the noted subsets in the training data. A
+similar effect is observed in the Orb-v2 results for Alexandria. The best accuracy in predicting forces from this subset
+is likely due to overfitting on the Alexandria data, which is part of this model’s training set. Upon comparing the
+PET-OMAD results against PET-MAD, one can see the combined effect of pre-training on the OMat24 dataset and
+using the updated architecture: PET-MAD errors are cut almost by half on the majority of the subsets.
+                                                                                                                     20
+
+
+TABLE XI. Evaluation of various universal MLIPs on the MADBench benchmark from Ref. [19]. Performance of the PET-
+OAM, PET-MPtrj and PET-OMAD models is computed in this work, and other results are reproduced from the reference
+paper [19]. For each subset and model, mean absolute errors are reported for raw energy (E) and force (F) predictions in
+meV/atom and meV/Å, respectively. We do not show force errors for the matbench-discovery subset, since forces are not
+available in the reference data.
+                   Model        MAD       MPtrj    Matbench Alexandria OC2020          SPICE      MD22
+                               E     F    E    F       E       E     F      E    F    E     F     E     F
+              PET-OMAD        6.0 29.2 12.1 36.0     10.6    26.3 30.4 8.0 51.6 2.4 44.6         3.4   53.4
+              PET-OAM-C    43.1 58.3 10.1 13.5       37.1    12.6   21.3   25.8 67.7 13.2 53.6 10.9 59.3
+              PET-OAM-NC 46.3 71.4 4.0 11.9          38.6    11.4   12.5   20.0 76.5 13.7 75.6 13.4 93.0
+              PET-MPtrj-C 55.8 101.3 5.5 9.1         41.8    36.5   51.7   42.4 117.3 13.0 81.8 7.4 101.0
+              PET-MPtrj-NC 91.3 102.2 2.9 7.8        48.7    44.6   47.7   34.7 119.1 34.7 103.1 19.4 122.8
+              PET-MAD       17.6 65.0 22.3 77.6      31.3    49.0   65.3 18.3 114.5 3.7 59.4 1.9 65.6
+              MACE-MP-0-L 81.6 181.5 15.1 50.8       58.5    65.4   79.5 82.4 169.6 10.6 166.8 9.4 182.9
+              MatterSim-5M 47.3 133.7 21.3 61.4      38.2    21.2   39.9 31.5 119.2 21.3 145.6 28.6 160.4
+              Orb-v2        52.9 96.2 5.6 21.9       37.9    13.2   10.5 19.8 99.3 59.0 140.8 174.3 220.7
+              SevenNet-l3i5 82.1 173.5 9.8 25.5      47.5    47.6   70.3 45.7 162.7 11.3 139.1 11.1 146.2
+                                                                                                                                               21
+
+                                                                   Appendix F: SPICE evaluation
+
+   In order to obtain timings for the MACE, eSEN and PET architectures, we perform inference with the same set-up
+described in Ref.[31], using the same hardware (a single Nvidia A100 80 GB GPU). The timings we present in this
+work are evaluated by us for PET and MACE, while the eSEN timings are taken from Ref.[31]. In Fig. A4 we further
+include the MACE-L timings reported in Ref. [31], showing that any potential differences due to the evaluation setup
+do not affect the results significantly (we suspect them to originate from different power GPU power settings on
+different clusters). Similarly, although we make use of torchscript compilation for PET evaluations (while MACE and
+eSEN do not), the differences we observed compared to eager-mode Pytorch [62] evaluations are minimal.
+   For completeness, we report accuracies of all evaluated models in Tab. XII. MACE and eSEN accuracies are taken
+from Refs. [39] and [31], respectively.
+
+
+TABLE XII. Test set accuracies for models trained on the dataset presented in Ref. [39]. Energy MAEs are shown in units
+of meV per atom; force MAEs are shown in units of meV/Å. For each metric, the best model is highlighted in bold and the
+second best is underlined.
+
+                                                Subset            MACE-S     MACE-L   eSEN-S     eSEN-L        PET-S      PET-L
+                                                                  E    F     E   F    E      F   E         F   E      F   E    F
+                                         PubChem              1.41 35.68 0.88 14.75 0.22 6.10 0.15 4.21 0.19 6.79 0.09 3.53
+                                         DES370K Monomers 1.04 17.63 0.59 6.58 0.17 1.85 0.13 1.24 0.19 2.23 0.10 1.00
+                                         DES370K Dimers       0.98 16.31 0.54 6.62 0.20 2.77 0.15 2.12 0.18 2.17 0.12 1.20
+                                         Dipeptides           0.84 25.07 0.42 10.19 0.10 3.04 0.07 2.00 0.11 3.58 0.05 1.55
+                                         Solvated Amino Acids 1.60 38.56 0.98 19.43 0.30 5.76 0.25 3.68 0.36 8.78 0.17 4.37
+                                         Water                1.67 28.53 0.83 13.57 0.24 3.88 0.15 2.50 0.27 6.11 0.13 3.05
+                                         QMugs                1.03 41.45 0.45 16.93 0.16 5.70 0.12 3.78 0.15 6.71 0.08 2.91
+
+
+
+
+                                           256 atoms                             1000 atoms                               2744 atoms
+
+
+
+
+Days per million evaluations
+                                        MACE
+                               101      eSEN
+                                        PET
+                                        MACE (from eSEN)
+
+                               100
+
+
+                                 10 1                       100       10 1                           100       10 1                      100
+                                            MAE [eV]                              MAE [eV]                                    MAE [eV]
+
+FIG. A4. Accuracy-speed Pareto front for models trained on the SPICE dataset, at varying number of atoms. Timings
+corresponding to MACE evaluations in Ref. [31] do not differ significantly from those presented in this work and might stem
+from different hardware power settings.
+
+
+
+
+                                                           Appendix G: The Open Molecules Benchmark
+
+  We trained additional models on the OMol-1 dataset [24] containing 140M systems. To accommodate the varying
+charge states and spin multiplicities present in the dataset, we introduced a system-conditioning embedding into the
+PET architecture that closely follows the embeddings introduced in Ref. [24]. Separate embeddings for charge and
+spin states, each matching the dimensionality of the node features, are projected onto the node dimensions via an
+additional linear layer. These embeddings are then added to the existing node embeddings at each message-passing
+                                                                                                                           22
+
+
+
+
+FIG. A5. (a) Finite-difference force derivative on one HCP Ti atom as a function of its displacement from symmetry-constrained
+equilibrium. (b-g) Phonon bands plotted along high-symmetry lines in the BZ corresponding to the relaxed structures.
+
+
+
+
+step. We initialize the projection layer to zero to stabilize training and to enable seamless combination of the system
+conditioning with already-pretrained models. During training, energies were pre-normalized by subtracting atomic
+energies using the neutral atomic reference values provided with the dataset, followed by additional linear fit. To
+enable efficient training despite the varying molecule sizes in OMol, we use max-atom batching rather than a fixed
+system number. Similar to the implementation in the fairchem package, we greedily fill batches until the next system
+would exceed the maximum number of atoms per batch, then start a new batch. Batches are created once, and their
+order is shuffled each epoch. The small, medium, and large models were trained for 15 epochs with a batch size of
+64,000 atoms, corresponding to an average of 1,454 systems per batch. The extra-small model was trained for 10
+epochs. The medium model was adapted to the domain by adding one additional message-passing layer; otherwise,
+the model hyperparameters correspond to those used in the OMat training exercises.
+  The conservative models were fine-tuned for 7 epochs with a batch size of 128,000 atoms and the learning rate of
+0.0002 was reduced to 0.0001 for the fine-tuning. We note that all models (and especially the conservatives models)
+would benefit from additional training, but we were constrained by available GPU resources and we plan to publish
+improved models in the future. Results for all models evaluated on the OMol validation splits without rotational
+symmetrization can be found in Table XIII. Metrics for the large conservative model with rotational symmetrization
+on the full FairChem benchmark have been published on the official leaderboard. The models (as well as newer
+versions) will be available as part of the upet repository.
+
+
+
+TABLE XIII. Energy (eV) and force MAE (eV/Å) for conservative and non-conservative PET models on the public OMOL
+validation set.
+                                                (a) Conservative models
+                                   Model Energy MAE Energy MAE/atom Force MAE
+                                   PET-S    0.438         0.0040      0.0160
+                                   PET-M    0.153         0.0014      0.0078
+                                   PET-L    0.082        0.00093      0.0071
+
+                                              (b) Non-conservative models
+                                   Model Energy MAE Energy MAE/atom Force MAE
+                                   PET-XS   0.191         0.0024      0.0212
+                                   PET-S     0.166        0.0021      0.0197
+                                   PET-M    0.0798        0.0010      0.0086
+                                   PET-L    0.0707       0.00095      0.0072
+                                                                                                                       23
+
+                    Appendix H: Details on geometry optimization and phonon calculations
+
+   Geometry optimizations are performed with ASE [58] version 3.26.0 using metatomic [57] calculators. Constrained
+optimizations use the FixSymmetry function and freezing the off-diagonal strain degrees of freedom in FrechetCell-
+Filter. The convergence threshold for forces and (appropriately scaled) stress components is set to 10−5 eV/Å.
+   Phonon bands are computed with ASE’s phonons module. The displacement used for finite-difference force constants
+is 0.03 Å. All calculations of interatomic force constants are done using central finite differences (rather than forward
+differences, as commonly done from first principles [63] and with equivariant models in matbench-discovery), to prevent
+numerical instabilities at small displacements caused by residual forces in the symmetry-constrained minimum (see
+Figure A5a).
+   In Figure A5(b–g) we plot again the phonon spectra from Figure 2, this time along the high-symmetry lines of the
+BZ corresponding to the Bravais lattice of each relaxed structures. The lattices are identified using spglib [64] with a
+tolerance (“symprec”) of 0.01. With this setting, unconstrained relaxations using the C model return FCC and HCP
+structures, while NC relaxations yield face-centered orthorombic (FCO) when starting from BCC and base-centered
+orthorombic (BCO) when starting from HCP. Relaxing the tolerance to 0.1 assigns the former as body-centered
+tetragonal and the latter as HCP, whereas tightening it to 0.001 reduces all unconstrained relaxations to triclinic P1.
+

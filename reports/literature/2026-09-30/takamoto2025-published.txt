@@ -1,0 +1,1878 @@
+       Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+
+                                Makoto Takamoto 1 Viktor Zaverkin 1 Mathias Niepert 1 2
+
+
+                          Abstract                                  As a result, they are typically limited to small- or medium-
+       Machine learning plays an increasingly important             sized systems and short simulation times, which constrains
+       role in computational chemistry and materials sci-           their applicability and the accuracy of predicted proper-
+       ence, complementing expensive ab initio and first-           ties. Classical force fields can extend these length and time
+       principles methods. However, machine-learned                 scales, providing a computationally efficient alternative to
+       interatomic potentials (MLIPs) often struggle                first-principles approaches but often lack accuracy. Machine-
+       with generalization and robustness, leading to un-           learned interatomic potentials (MLIPs) offer a promising
+       physical energy and force predictions in atom-               compromise between the accuracy of first-principles meth-
+       istic simulations. To address this, we propose               ods and the efficiency of classical force fields (Smith et al.,
+       a physics-informed, weakly supervised training               2017; Chanussot et al., 2021; Unke et al., 2021; Merchant
+       framework for MLIPs. Our method introduces                   et al., 2023; Kovács et al., 2023; Batatia et al., 2023).
+       two novel loss functions: one based on Taylor                Despite their promise, MLIPs face significant challenges.
+       expansions of the potential energy and another               In particular, they require training datasets that compre-
+       enforcing conservative force constraints. This               hensively cover both configurational (atomic positions) and
+       approach enhances accuracy, particularly in low-             compositional (atomic types) spaces, typically generated via
+       data regimes, and reduces the reliance on large,             molecular dynamics (MD) simulations based on ab initio or
+       expensive training datasets. Extensive experi-               first-principles methods. Due to the high computational cost
+       ments across benchmark datasets show up to 2×                of these simulations, the resulting datasets are often sparse,
+       reductions in energy and force errors for multi-             limiting the ability of MLIPs to generalize to new molecular
+       ple baseline models. Additionally, our method                and material systems.
+       improves the stability of molecular dynamics sim-
+       ulations and facilitates effective fine-tuning of ML         Active learning has been used to address the challenge of
+       foundation models on sparse, high-accuracy ab                data sparsity (Li et al., 2015; Vandermause et al., 2020; Za-
+       initio data. Code and scripts to reproduce the ex-           verkin & Kästner, 2021; Zaverkin et al., 2022; van der Oord
+       periments are available at https://github.                   et al., 2023; Zaverkin et al., 2024b), but it still relies on the
+       com/nec-research/PICPS-ML4Sci.                               generation of a substantial amount of first-principles data,
+                                                                    typically using DFT, to train an initial model capable of
+                                                                    guiding phase space exploration through extended MD sim-
+1. Introduction                                                     ulations. This motivates the development of methods that
+                                                                    can complement active learning by reducing the reliance on
+Ab initio and first-principles methods are essential for the        expensive data acquisition. Moreover, MLIPs often suffer
+computational exploration of molecular and material prop-           from limited generalization and robustness during MD simu-
+erties in the chemical sciences and engineering (Parrinello,        lations, exhibiting sensitivity to outliers and local structural
+1997; Carloni et al., 2002; Iftimie et al., 2005). How-             perturbations. These issues stem largely from the insuffi-
+ever, commonly employed ab initio and first-principles ap-          cient coverage of configurational and compositional spaces
+proaches such as coupled cluster (CC) (Purvis & Bartlett,           in existing datasets and data generation workflows.
+1982; Bartlett & Musiał, 2007) and density functional theory
+(DFT) (Hohenberg & Kohn, 1964; Kohn & Sham, 1965),                  Contributions. This paper addresses the challenges of train-
+respectively, require substantial computational resources.          ing machine-learned interatomic potentials (MLIPs) with
+                                                                    limited data by proposing a physics-informed weakly super-
+   1
+    NEC Laboratories Europe, Heidelberg, Germany 2 University       vised learning (PIWSL) approach. The method enables an
+of Stuttgart, Stuttgart, Germany. Correspondence to: Makoto         accurate prediction of potential energies and atomic forces
+Takamoto <makoto.takamoto@neclab.eu>.
+                                                                    in systems subjected to local perturbations. The main con-
+Proceedings of the 42 nd International Conference on Machine        tributions are: (i) We introduce PIWSL based on fundamen-
+Learning, Vancouver, Canada. PMLR 267, 2025. Copyright 2025         tal physical principles, such as the conservative nature of
+by the author(s).
+
+                                                                1
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+
+
+
+Figure 1: Schematic illustration of physics-informed weakly supervised losses used in this work. (a) Taylor-expansion-
+based weak label (WL) loss with approximate labels obtained from reference energies and atomic forces (Cooper et al.,
+2020). (b) Physics-inspired Taylor-expansion-consistency (PITC) loss with approximate labels obtained from energies and
+atomic forces predicted by an MLIP. (c) Physics-inspired spatial consistency (PISC) loss with approximate labels obtained
+from energies and atomic forces predicted by an MLIP. Here, E(S; θ) and Fi (S; θ) denote the potential energy and atomic
+forces predicted by an MLIP parametrized by θ, S and Sδr define the original atomic structure and the one perturbed by δr.
+
+
+forces. By leveraging a Taylor expansion of the potential en-        higher-body-order representations (Shapeev, 2016; Drautz,
+ergy, we derive two novel physics-informed loss functions,           2019; Zaverkin & Kästner, 2020; Zaverkin et al., 2021) and
+physics-informed Taylor consistency (PITC) and physics-              the emergence of equivariant message-passing neural net-
+informed spatial consistency (PISC), which form the core             works (MPNNs) (Thomas et al., 2018; Schütt et al., 2021;
+of the PIWSL framework (illustrated in figure 1b and c).             Shuaibi et al., 2021a; Passaro & Zitnick, 2023; Liao et al.,
+(ii) Through extensive experiments, we demonstrate that              2023; Batzner et al., 2022; Musaelian et al., 2023; Batatia
+PIWSL enables effective training of MLIPs without access             et al., 2022; Zaverkin et al., 2024a) significantly advanced
+to large datasets and enhances robustness during molecular           the field. These methods enable the cost-efficient generation
+dynamics (MD) simulations. (iii) We show that PIWSL                  of accurate MLIPs for modeling interactions in many-body
+improves the accuracy of total energy and atomic force pre-          atomic systems and account for crucial inductive biases,
+dictions, even when force labels are unavailable. This is par-       such as the invariance of the potential energy under rota-
+ticularly relevant for fine-tuning MLIP foundation models            tion. The evaluation of MLIPs for MD simulations has been
+with reference ab initio energies, where force calculations          addressed in previous work (Fu et al., 2023; Bihani et al.,
+(e.g., at the CCSD(T)/CBS level) are often computationally           2024).
+prohibitive (Smith et al., 2019; 2020; Zaverkin et al., 2023;
+                                                                     Physics-Informed Machine Learning. Physics-informed
+Hobza & Šponer, 2002; Feller et al., 2006). (iv) Finally, PI-
+                                                                     machine learning aims to embed known physical princi-
+WSL reduces sensitivity issues in MD simulations caused by
+                                                                     ples into the machine learning process. In the context of
+small training datasets by explicitly modeling the response
+                                                                     MLIPs, models based on equivariant message passing neu-
+of the potential energy to local atomic perturbations.
+                                                                     ral networks (MPNNs) enforce rotational invariance of the
+                                                                     predicted potential energy by design. These models lever-
+2. Related Work                                                      age equivariant features to capture and construct many-body
+                                                                     interactions in a manner consistent with the symmetries
+Machine-Learned Interatomic Potentials. The field of
+                                                                     of the underlying physical system (Thomas et al., 2018;
+machine-learned interatomic potentials (MLIPs) emerged
+                                                                     Batzner et al., 2022; Batatia et al., 2022; Musaelian et al.,
+over two decades ago (Blank et al., 1995) and has been one
+                                                                     2023; Liao et al., 2023; Zaverkin et al., 2024a). Further-
+of the most active research directions since then (Behler
+                                                                     more, physics constraints can be integrated via auxiliary loss
+& Parrinello, 2007; Artrith et al., 2011; Artrith & Urban,
+                                                                     functions, prompting ML models to learn important phys-
+2016; Smith et al., 2017; Shapeev, 2016; Schütt et al., 2017;
+                                                                     ical relationships, as demonstrated for physics-informed
+Thomas et al., 2018; Unke & Meuwly, 2019; Drautz, 2019;
+                                                                     neural networks (PINNs) (Raissi et al., 2019; Cai et al.,
+Zaverkin & Kästner, 2020; Zaverkin et al., 2021; Thomas
+                                                                     2022), which learn to model solutions of partial differen-
+et al., 2018; Schütt et al., 2021; Shuaibi et al., 2021a; Pas-
+                                                                     tial equations by minimizing residuals during training. The
+saro & Zitnick, 2023; Liao et al., 2023; Batatia et al., 2022;
+                                                                     application of physics-informed machine learning to molec-
+Batzner et al., 2022; Musaelian et al., 2023; Duval et al.,
+                                                                     ular modeling has garnered increasing interest in both the
+2023; Zaverkin et al., 2024a). The development of local
+
+                                                                 2
+                            Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+machine learning and computational chemistry communi-                     Here, ℓ denotes a point-wise loss function such as the abso-
+ties (Godwin et al., 2022; Shui et al., 2022; Ni et al., 2024;            lute and squared error between the predicted and reference
+Liao et al., 2024). In particular, DeNS (Liao et al., 2024),              total energies and atomic forces. Typically, reference en-
+an extension of NoisyNode (Godwin et al., 2022) designed                  ergies ESref and atomic forces Fref i,S are computed with ab
+for non-equilibrium structures, shares several similarities               initio or first-principles methods such as CC or DFT, respec-
+with our approach. PIWSL differs from DeNS in two key                     tively. The relative contributions of energies and forces in
+aspects: (1) PIWSL does not require force labels, allow-                  the loss function of Eq. (1) are balanced by the weighting
+ing it to fine-tune models using only energy data, which                  coefficients Ce and Cf .
+is useful for high-accuracy methods like CCSD(T)/CBS;
+                                                                          Weakly Supervised Learning. Generating many reference
+and (2) PIWSL operates without modifying the underlying
+                                                                          labels with a first-principles approach is challenging due to
+model architecture, whereas DeNS introduces architectural
+                                                                          the high computational cost. Furthermore, the calculation
+changes via an additional force module. The potential to
+                                                                          of atomic forces can be infeasible for some high-accuracy
+combine these two methods to enhance performance re-
+                                                                          ab initio methods, e.g., for CCSD(T)/CBS. In this work, we
+mains an open and promising direction for future research.
+                                                                          focus on weakly supervised learning methods to improve
+Previous work by Cooper et al. (2020) has provided key
+                                                                          the performance of MLIPs in scenarios where only a limited
+motivation for our current research and is discussed in more
+                                                                          amount of data is available. These involve the generation
+detail in subsequent sections.
+                                                                          of approximate but physically motivated total energies for
+                                                                          atomic structures generated by small perturbations of their
+3. Background and Problem Definition                                      atomic positions, i.e., Sδr = {ri + δri , Zi }N
+                                                                                                                        i=1 with a per-
+                                                                                                                          at
+
+
+                                                                          turbation vector δr, where δri is the perturbation vector
+Machine-Learned Interatomic Potentials. An atomic con-
+                                                                          for atom i. Approximate labels are computed with MLIPs
+figuration, denoted as S = {ri , Zi }N  i=1 , comprises Nat
+                                          at
+                                                                          during their training.
+atoms characterized by their positions ri ∈ R3 and atomic
+numbers Zi ∈ N. We consider machine-learned interatomic
+potentials (MLIPs) that map atomic configurations to scalar               4. Physics-informed Weakly Supervised
+energies, i.e., fθ : S 7→ E ∈ R, where θ denotes train-                      Learning
+able parameters. Let E(S; θ) be the energy predicted by an
+MLIP for configuration S. In most MLIPs, atomic forces                    Generating approximate labels for weakly supervised loss
+are obtained as the negative gradient of the potential energy             functions for MLIPs is particularly challenging. Small
+with respect to atomic positions:                                         perturbations in atomic structures can lead to significant
+                                                                          changes in energies and atomic forces, making standard
+                 Fi (S; θ) = −∇ri E (S; θ) .                              weak supervision techniques, effective in many ML do-
+                                                                          mains (Yang et al., 2022), inapplicable in this context. To
+Hence, these MLIPs ensure that the resulting forces are                   overcome this, we propose a physics-informed weakly su-
+conservative (curl-free) and the total energy is conserved                pervised learning (PIWSL) approach that leverages known
+during a dynamic simulation. However, some models are                     physical principles. Specifically, our method incorporates
+designed to predict atomic forces directly (Hu et al., 2021;              (i) a Taylor expansion of the potential energy to model the
+Passaro & Zitnick, 2023; Liao et al., 2023; Chanussot et al.,             system’s local response to atomic displacements, and (ii) a
+2021). While this approach avoids expensive gradient com-                 spatial consistency loss that encourages consistent energy
+putations, it does not enforce energy conservation (Chmiela               differences along two distinct spatial paths, composed of
+et al., 2017).                                                            three perturbation vectors in total, from a common refer-
+                                                                          ence configuration to the same target structure. These two
+Trainable parameters θ are optimized by minimizing loss                   components are combined into the PIWSL loss, which aug-
+functions on training data D comprising a total of Ntrain                 ments the supervised objective with physically grounded
+atomic configurations {S (k) }N
+                              k=1 as well as their energies
+                                train
+                                                                          weak supervision, improving both robustness and accuracy.
+                                           Nat
+{ES }S∈D and atomic forces {{Fref
+   ref
+                                      i,S }i=1 }S∈D :
+                                                                          4.1. Physics-Informed Taylor-Expansion-Based
+                                                                               Consistency Loss
+                 X
+   L (D; θ) =          L (S; θ)
+                 S∈D
+                 Xh                                                       This section introduces the physics-informed Taylor-
+                   Ce ℓ E (S; θ) , ESref                                  expansion-based consistency (PITC) loss. Particularly, we
+                                         
+             =
+                 S∈D                                                      relate the energy predicted directly for a displaced atomic
+                                Nat
+                                X                         i              configuration with the energy obtained by the Taylor expan-
+                         + Cf         ℓ Fi (S; θ), Fref
+                                                    i,S     .   (1)       sion from the original configuration; see figure 1 (b). We
+                                i=1                                       estimate the energy for an atomic structure S drawn from
+
+                                                                      3
+                                 Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+the training dataset with atomic positions displaced by a               energy at r+δr using Eq. (3) through the PITC loss. For the
+vector δr: Sδr = {ri + δri , Zi }N
+                                 i=1 . For this atomic config-
+                                   at
+                                                                        second path, we directly compute the energy E (Sδr′ ; θ) for
+uration, we expand the energy predicted by an MLIP in its               atomic positions displaced by δr′ , and use it to approximate
+second-order Taylor series around the atomic perturbation               E (Sδr ; θ) after applying the second perturbation vector
+vector δri and obtain                                                   δr′′ ≡ δr − δr′ . The physics-informed spatial consistency
+                                 Nat
+                                                                        (PISC) loss is formally defined as
+                                 X
+E (Sδr ; θ) ≈ E (S; θ) −               [⟨δri , Fi (S; θ)⟩
+                                                                                                                              
+                                                                        LPISC (S; θ) = ℓ E (Sδr ; θ) , EPITC (Sδr′ , δr′′ ; θ) , (4)
+                                 i=1
+  +k2nd ⟨δri , Fi (Sδr ; θ) − Fi (S; θ)⟩] + O ∥δr∥3 , (2)               where EPITC (Sδr , δr′ ; θ) is the potential energy estimated
+                                                   
+
+                                                                        via PITC formula in Eq. (2) from the configuration Sδr
+where ⟨·⟩ denotes the inner product, and we used the fol-               perturbed by δr′ . After jointly training with the PITC and
+lowing relation between forces and gradients of the energy              PISC losses, the three distinct estimations at Sδr become
+Fi ≡ −∇i E, i.e., defined as the negative gradients of the              spatially consistent. Importantly, our approach, grounded
+potential energy. The parameter k2nd controls the contribu-             in the conservative nature of interatomic forces, is not re-
+tion of the second-order term. Setting k2nd = 1/2 recovers              stricted to configurations involving two perturbation paths
+the exact second-order Taylor expansion, while k2nd = 0                 or three perturbation vectors. We explore several alternative
+leads to the first-order approximation1 . Using approximate             consistency configurations in section D.2.
+labels E (Sδr ; θ), we define the PITC loss as
+                                                                        4.3. Combined Physics-Informed Weakly Supervised
+                    
+LPITC (S; θ) = ℓ E (Sδr ; θ) , E (S; θ)
+                                                                             Loss
+     Nat                                                 
+                                                                        Together with the usual MLIP loss function defined in
+     X
+ −       ⟨δri , (1 − k2nd )Fi (S; θ) + k2nd Fi (Sδr ; θ)⟩ , (3)
+     i=1                                                                Eq. (1), the overall objective, which we refer to as the PI-
+                                                                        WSL loss, can be written as
+where ℓ denotes a point-wise loss for regression problems                                                   X
+and δr is either randomly sampled or determined adversari-                    arg min L̃ (D; θ) = arg min      (L (S; θ)
+ally; see section 4.4 for more details. Hence, whenever we                       θ                     θ    S∈D
+encounter a structure S in a batch during training, a new δr                  +CPITC LPITC (S; θ) + CPISC LPISC (S; θ)) ,        (5)
+is computed for each S. Empirically, second-order terms
+become important when MLIP prediction errors approach                   where CPITC and CPISC are the weights of the weakly
+the accuracy limit of first-order approximations, i.e., when            supervised PITC and PISC losses.
+first-order terms alone no longer suffice to improve accu-
+racy, or when the dataset predominantly consists of relaxed             4.4. Perturbation Directions and Magnitudes
+structures.                                                             The effectiveness of the proposed approach depends on
+                                                                        appropriate choices of the perturbation vectors δr. We in-
+4.2. Physics-Informed Spatial-Consistency Loss                          troduce and justify various strategies for generating the
+We propose a physics-informed approach for generating                   perturbations used in Eq. (3) and Eq. (4). Any vector δr can
+weak labels, grounded in the principle of conservative forces.          be written as δr ≡ ϵg/∥g∥2 , where ϵ is the magnitude of δr
+Specifically, we leverage the property that the energy dif-             and g/∥g∥2 is its direction. Physical constraints can limit
+ference between two points on a potential energy surface is             ϵ. Specifically, we can obtain the maximum perturbation
+independent of the path taken. To construct the weak super-             length from the validity of the Taylor expansion in Eq. (2),
+vision signal, we consider two distinct paths from a common             which, as discussed in section 5.3, is typically given as at
+reference point to the same target point, each composed of a            most 30% of the original bond length whose shortest exam-
+sequence of perturbation vectors. An example of two such                ple is the bond between carbon and hydrogen atoms, about
+paths is illustrated in 1(c). The proposed loss compares the            1.09 Å; see also figure 2 (c) and (d). The specific values of
+energy obtained by directly displacing the atomic positions             ϵ chosen for our experiments are provided in section B.1.
+of the original configuration S (denoted as A) by δr (from              To determine g/∥g∥2 we explore two strategies. First, we
+A to C), with the energy obtained through two consecutive               compute it as the unit vector of a perturbation vector sam-
+perturbations: δr′ (from A to B) followed by δr′′ (from B               pled from the uniform distribution on the interval (−1, 1)
+to C).                                                                  for each direction
+For the first path, we directly predict the energy with an                                  δrrnd ≡ ϵg/∥g∥2 .                    (6)
+MLIP, i.e., E (Sδr ; θ), which is related to the approximated
+                                                                        Second, we compute an adversarial direction following the
+     1
+         A more detailed derivation is provided in section D.2.2.       approach proposed by Goodfellow et al. (2014); Miyato
+
+                                                                    4
+                              Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+et al. (2018). This direction is defined as the gradient of the             To evaluate the effect and dependency of the physics-
+loss with respect to the atomic coordinates r, indicating the               informed weakly supervised approach in detail, we per-
+direction in which the prediction error increases most rapidly              formed the training on various datasets: ANI-1x as a hetero-
+for the current predicted energy. Assuming an L2 -norm                      geneous molecular dataset (Smith et al., 2020), TiO2 as a
+constraint on the perturbation magnitude, the adversarial                   dataset for inorganic materials (Artrith & Urban, 2016)4 , the
+direction can be approximated as in Miyato et al. (2018)                    revised MD17 (rMD17) dataset containing small molecules
+                                                                            with sampled configurational spaces for each (Chmiela et al.,
+ δradv ≡ ϵg/∥g∥2 , where g = ∇r Ldist (ypred , yref ), (7)                  2017; 2018; Christensen & von Lilienfeld, 2020), the MD22
+                                                                            dataset containing larger molecules (Chmiela et al., 2023),
+where Ldist denotes a distance-based objective function that                and LMNTO as another material dataset (Cooper et al.,
+is maximized by introducing the adversarial perturbation                    2020); the benchmark results for rMD17, MD22, and LM-
+δradv with ypred and yref representing the model prediction                 NTO are provided in section D.1. The detailed description
+and reference values, respectively. For computational effi-                 of each dataset is provided in section B.3.
+ciency, we primarily employ the random perturbation strat-
+egy defined in Eq. (6) in our experiments. A quantitative                   5.2. Benchmark Results
+comparison between random and adversarial perturbation
+directions is presented in section E.                                       We compare models trained using the PIWSL loss (see
+                                                                            Eq. (5)) with baseline models trained using the standard
+                                                                            supervised loss only (see Eq. (1)). We also compare our
+5. Experiments                                                              approach to a recently proposed data augmentation method
+We evaluate our method through extensive experiments de-                    that incorporates the task of denoising random perturba-
+signed to address the following objectives: (1) compare                     tions of the atomic coordinates into the learning objective
+PIWSL with established baselines, (2) analyze the effect of                 (NoisyNode) (Godwin et al., 2022). A comparison with
+PIWSL using the aspirin molecule, including molecular dy-                   weak label method (Cooper et al., 2020) is provided in sec-
+namics (MD) simulations, and (3) assess PIWSL’s ability to                  tion E. More details on the setup are provided in section B.1.
+enhance foundation model finetuning on sparse datasets, par-                In the following, all evaluation metrics are computed for the
+ticularly for energy and force prediction tasks where force                 test dataset.
+labels are unavailable.2 Unless otherwise noted, our experi-                Heterogeneous Molecular Dataset – ANI-1x. The re-
+ments use the first-order PITC. For the MD17 and MD22                       sults provided in Table 1 show that our approach improves
+datasets, however, the second-order term is incorporated to                 the baseline models’ performance in almost all cases. In
+meet target accuracy requirements.3                                         particular, the error reduction for the predicted energies is
+                                                                            often between 10 % and more than 50 %. Interestingly, we
+5.1. Models and datasets                                                    observe an improved accuracy for potential energies and
+                                                                            atomic forces because we include force prediction in PITC
+We trained the following representative models that are
+                                                                            and PISC losses, different from the previous work (Cooper
+provided in the Open Catalyst code base (Chanussot et al.,
+                                                                            et al., 2020). In most cases, except for SchNet, the data aug-
+2021): SchNet (Schütt et al., 2017), PaiNN (Schütt et al.,
+                                                                            mentation method (NoisyNode) deteriorates the accuracy
+2021), SpinConv (Shuaibi et al., 2021a), eSCN (Passaro
+                                                                            of the MLIPs because it does not incorporate the proper
+& Zitnick, 2023), and Equiformer v2 (Liao et al., 2023),
+                                                                            response of the energy and atomic forces to the perturbation
+covering MLIPs with a smaller (SchNet, SpinConv, PaiNN)
+                                                                            of atomic positions.
+and larger number of parameters (eSCN, Equiformer v2).
+Moreover, we also considered the MACE model (Batatia                        Dependence on Size of Training Data – ANI-1x. We train
+et al., 2022), a state-of-the-art model that we use to evaluate             MLIPs with training set sizes of [50, 102 , 103 , 104 , 105 ,
+the impact of PIWSL on the MD17(CCSD) and MD22                              106 , 5 × 106 ]. The results for training data sizes of 105 ,
+dataset. Unless otherwise mentioned and except for SchNet,                  106 , and 5 × 106 are provided in section D.1. The results
+forces are directly predicted and not computed through the                  are plotted in figure 2 (a) and (b). Although the observed
+negative gradient of the energy. The results where forces                   error reduction depends strongly on the type of MLIP used,
+are computed as negative energy gradients are analyzed in                   the benefit of the weakly supervised losses often decreases
+section E.1 and section D.9.                                                slightly with the number of training samples. This result can
+    2                                                                       be expected as the area covered by the weakly supervised
+      Additional results are presented in section E, including: (4) a
+comparison with a prior weakly supervised method, (5) an ablation           losses is also gradually covered by the reference data as the
+study, and (6) an analysis of random versus adversarial perturbation        number of training samples increases. Moreover, the gain in
+vectors.                                                                       4
+    3
+      The impact of the second-order term is discussed in sec-                   A review of solid-state materials datasets for MLIP training
+tion E.5.                                                                   can be found in (Lee et al., 2023), for example.
+
+
+                                                                        5
+                             Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table 1: Energy (E) and force (F) root-mean-square errors (RMSEs) for the ANI-1x dataset. The results are obtained
+by averaging over three independent runs. Energy RMSE is given in kcal/mol, while force RMSE is in kcal/mol/Å.
+
+                                                      Ntrain = 100                                    Ntrain = 1000
+                                          Baseline     Noisy Nodes             PIWSL       Baseline     Noisy Nodes           PIWSL
+                            E         65.09 ± 2.42     57.39 ± 0.05     60.30 ± 1.77   31.49 ± 0.01      31.10 ± 0.00    31.50 ± 0.00
+               SchNet
+                            F         29.06 ± 0.19     25.62 ± 0.01     28.20 ± 0.60   18.94 ± 0.01      18.10 ± 0.00    18.93 ± 0.00
+                            E        168.01 ± 1.22    464.55 ± 6.91   109.89 ± 11.46   56.62 ± 2.80    305.76 ± 33.93    24.53 ± 0.48
+               PaiNN
+                            F         21.33 ± 0.10     20.82 ± 0.03     18.76 ± 0.30   12.96 ± 0.06      14.25 ± 0.18    11.43 ± 0.05
+                            E        162.14 ± 7.55    147.73 ± 2.23    130.97 ± 8.58   43.59 ± 1.71   299.33 ± 419.10    39.44 ± 1.31
+               SpinConv
+                            F         21.22 ± 0.43     21.08 ± 0.43     21.61 ± 0.44   14.51 ± 1.07      15.83 ± 0.75    13.59 ± 0.20
+                            E        214.52 ± 7.55   521.92 ± 12.05    183.70 ± 9.79   59.59 ± 8.92    241.34 ± 20.16    21.03 ± 0.56
+               eSCN
+                            F         20.07 ± 0.27     23.68 ± 0.11     19.69 ± 0.05   12.50 ± 0.78      14.42 ± 0.84    11.83 ± 0.12
+                            E       398.71 ± 13.69    632.38 ± 0.11    154.98 ± 8.83   54.52 ± 4.52    854.33 ± 317.7    20.89 ± 0.50
+               Equiformer
+                            F         20.71 ± 0.05     21.82 ± 0.01     20.55 ± 0.05   10.10 ± 0.00      24.79 ± 2.05     9.68 ± 0.03
+
+
+Table 2: Energy (F) and force (F) root-mean-square errors (RMSEs) for the TiO2 dataset. The results are obtained by
+averaging over three independent runs. Energy RMSE is given in kcal/mol, while force RMSE is in kcal/mol/Å.
+
+                                                     Ntrain = 100                                     Ntrain = 2000
+                                          Baseline   Noisy Nodes              PIWSL        Baseline   Noisy Nodes            PIWSL
+                                E    17.21 ± 0.00    19.68 ± 0.00     17.08 ± 0.00     10.16 ± 0.00   44.44 ± 0.00      10.14 ± 0.00
+               SchNeta
+                                F     2.84 ± 0.00     2.70 ± 0.00      2.83 ± 0.00      1.87 ± 0.00    7.45 ± 0.00       1.85 ± 0.00
+                                E    14.41 ± 0.16             n/ab    13.95 ± 0.09      2.44 ± 0.03            n/ab      2.30 ± 0.10
+               PaiNNb
+                                F     1.59 ± 0.01             n/ab     1.56 ± 0.01      0.27 ± 0.02            n/ab      0.24 ± 0.00
+                                E    20.00 ± 0.42    18.76 ± 0.74     16.98 ± 0.99      2.78 ± 0.67    2.76 ± 0.42       2.05 ± 0.39
+               SpinConv
+                                F     1.58 ± 0.03     1.53 ± 0.03      1.59 ± 0.03      0.67 ± 0.15    0.61 ± 0.09       0.61 ± 0.05
+                                E    16.41 ± 1.10    20.92 ± 0.00     12.63 ± 0.78      1.78 ± 0.07   20.90 ± 0.00       0.90 ± 0.09
+               eSCN
+                                F     1.57 ± 0.04     1.66 ± 0.00      1.44 ± 0.03      0.42 ± 0.17    1.66 ± 0.00       0.16 ± 0.01
+                                E    18.21 ± 0.02    19.06 ± 0.02     13.93 ± 0.09      1.73 ± 0.05   18.54 ± 0.10       1.27 ± 0.02
+               Equiformer
+                                F     1.56 ± 0.01     1.64 ± 0.00      1.51 ± 0.19      0.13 ± 0.01    1.59 ± 0.00       0.13 ± 0.00
+a
+  We used a larger batch size of 32 for SchNet since we obtained extremely high errors for the batch size of 4. A more detailed discussion
+of the experimental results for SchNet is provided in section D.1.
+b
+  Because of a numerical instability of PaiNN when perturbing atomic coordinates, the cutoff radius is reduced from 12 Å to 5 Å in this
+experiment. Predicted values become n/a when atomic configurations are perturbed.
+
+
+accuracy of energy predictions is more significant than that                   values, close to or even less than 1 kcal/mol in predicted
+for forces trained only indirectly through the consistency                     energy, the PIWSL still reduces the error. This observation
+constraint in PITC; see Eq. (3). Finally, it is shown that the                 indicates strong evidence of the effectiveness of PIWSL
+improvement is more significant for highly parameterized                       applied to bulk materials.
+MLIPs, which benefit the most from increasing the training
+data size through PIWSL.                                                       5.3. Qualitative Impact of PIWSL
+Inorganic Bulk Materials – TiO2 . Titanium dioxide (TiO2 )                     We evaluate the prediction variance and robustness of an
+is a highly relevant metal oxide for industrial applications,                  MLIP model trained with PIWSL using the aspirin molecule,
+featuring several high-pressure phases. Thus, ML models                        focusing on the potential energy’s dependence on the C–H
+should be able to predict total energies and atomic forces for                 bond length. In this work, robustness refers to the prediction
+various high-pressure phases of TiO2 , considering periodic                    robustness of an MLIP to perturbations in atomic coordi-
+boundaries (relevant when aggregating over the local atomic                    nates. In the literature, the robustness of MLIPs also means
+neighborhood). The results for trained models are provided                     their stability during MD simulations. We train PaiNN on
+in Table 2. Similar to the ANI-1x dataset, our approach                        the rMD17 aspirin dataset using 100 and 200 configurations
+improves the accuracy of predicted energies and atomic                         with and without the PIWSL loss. The detailed training
+forces. Interestingly, even when the error in the potential                    setup and errors of the used MLIPs are summarized in sec-
+energy for 2000 training configurations reaches small RMSE
+
+                                                                          6
+                                                             Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+                          (a)                                                           (b)                                                               (c)                                                                                                (d)
+
+
+
+
+                                                                                                                                    Rel. energy in kcal/mol                                                                            Rel. energy in kcal/mol
+                         0.0
+
+
+
+
+       ∆log10(E-RMSE)                                               ∆log10(F-RMSE)
+                                                                                      0.00                                                                    6                                                                                                  6
+                        −0.2
+                                                                                                                                                              4                                                                                                  4
+                        −0.4                                                         −0.05
+                                                                                                                                                              2                                                                                                  2
+                        −0.6
+                                                                                     −0.10
+                                                                                                                                                              0                                                                                                  0
+                                100          1000        10000                                  100       1000        10000                                       1.0                                         1.2                                                          1.0            1.2
+                                  Training set size                                               Training set size                                               C-H distance in Å                                                                                       C-H distance in Å
+                                                    SchNet                   PaiNN                    SpinConv
+                                                             eSCN                            Equiformer                                                                                                      PIWSL               Baseline                                        Reference
+
+
+
+Figure 2: (a, b) Relative performance gains for MLIPs trained with PIWSL compared to those trained without it and
+(c, d) potential energy profiles for a C–H bond of the aspirin molecule. Relative performance gains are evaluated for (a)
+energy (E-) and (b) force (F-) RMSEs as: RMSEPIWSL /RMSEBaseline . These results are presented for the ANI-1x dataset.
+Potential energy profiles for a C–H bond of the aspirin molecule are presented for models trained using (c) 100 and (d) 200
+configurations. The red and blue arrows indicate the direction from the original structure (E(S; θ)) to the perturbed one
+(E(Sδr ; θ)), as defined by Eq. (2), for the baseline and PIWSL model predictions, respectively.
+
+                                  Equiformer                                           PaiNN                             PaiNN-GF                                                               1.0010
+                                                                                                                                                                                                                      PaiNN                                                      Equiformer v2
+                                                                                                                                                                                                                                   Baseline                                                      Baseline
+                 30                                                                                                                                                                                                                PIWSL                                                         PIWSL
+
+
+
+
+                                                                                                                                                                    Etotal (t)/Etotal (t = 0)
+                                                                                                                2                                                                               1.0005
+                                                             4                                             10
+
+
+Stability [ps]
+                 20
+                                                                                                                                                                                                1.0000
+
+                                                             2
+                 10                                                                                        101                                                                                  0.9995
+
+
+                  0                                          0                                                                                                                                  0.9990
+                                          1000                                        1000                            100                200                                                             0            2            4                                 0           10        20         30
+                                Training set size                           Training set size                          Training set size                                                                             Time [ps]                                                     Time [ps]
+                                                                        Baseline                 PIWSL
+
+                                                                                        (a)                                                                                                                                                                          (b)
+
+Figure 3: Stability analysis of the MLIP models during MD simulations. (a) Stability during MD simulations is assessed
+for the baseline MLIP models and those trained with PIWSL. Left/Middle: Models with the direct force branch. Right:
+Models with forces computed as negative gradients of the energy. All results are obtained for the aspirin molecule and MD
+simulations in the microcanonical (NVE) statistical ensemble. We measure stability during MD simulations according to Fu
+et al. (2023). (b) Plots of the total energy conservation observed in MD simulations using MLIP models with a force branch
+trained on 1,000 samples, with and without the proposed loss.
+
+
+tion D.3.1. We examine the potential energy varying the                                                                           rate force branches and do not guarantee the prediction of
+length of a C–H bond from 0.9 Å to 1.4 Å. The equilibrium                                                                         conservative forces. The proposed method reduces the curl
+C–H bond length is about 1.09 Å. The results in figure 2                                                                          of the predicted forces, as detailed in section D.10, although
+(c) and (d) demonstrate that the PIWSL method improves                                                                            complete elimination of the curl remains a challenge. In
+the predicted potential energy profile, indicating improved                                                                       summary, PIWSL minimizes individual energy and force
+robustness under perturbations of atom coordinates.                                                                               errors, thereby enhancing the overall accuracy of MLIPs.
+Although the estimated potential energies do not always                                                                           To further assess PIWSL’s impact, we evaluate the robust-
+match the reference values, the direction between the orig-                                                                       ness during MD simulations of the MLIP models trained
+inal and perturbed configurations, indicated by arrows in                                                                         with and without PIWSL. We consider MD simulations of
+figure 2, consistently follows the gradient of the reference                                                                      the aspirin molecule, with corresponding results presented
+potential energy, corresponding to the negative force. In fig-                                                                    in figure 3. We measured stability following the approach
+ure 2, we use a perturbation length of ||δr|| = 0.01 Å. This                                                                      proposed in Fu et al. (2023). A detailed experimental setup
+consistency with the energy gradient underscores the effec-                                                                       is provided in section D.3.2. The results demonstrate that
+tiveness of the PIWSL method, ensuring alignment between                                                                          PIWSL improves the stability of MD simulations for both
+predicted total energies and forces, and improving the corre-                                                                     the direct and gradient-based force prediction models. The
+sponding RMSE values. As discussed in section 4.2, PIWSL                                                                          simulation times in figure 3 are shorter than those reported
+also addresses a key limitation of MLIPs that employ sepa-                                                                        by Fu et al. (2023). This difference arises from our choice
+
+                                                                                                                              7
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+to perform MD simulations in the microcanonical (NVE)                Table 3: Results for models trained on the MD17(CCSD)
+statistical ensemble instead of the canonical (NVT) statis-          dataset without reference atomic forces. All models are
+tical ensemble in Fu et al. (2023) to assess stability more          trained on aspirin data without force labels. Energy RMSE
+accurately without the influence of a thermostat. Results            is given in kcal/mol, while force RMSE is in kcal/mol/Å.
+for MD simulations conducted in the canonical statistical
+ensemble are provided in section D.3.2. Figure 3 shows the               Model            Samples   Epoch                Baseline         PIWSL
+time evolution of the total energy during MD simulations,                                  950       100        E     1.21 ± 0.00     0.72 ± 0.01
+                                                                         MACE-OFF
+demonstrating that total energy is conserved within a 0.05 %                                                    Fa    6.90 ± 0.01     3.77 ± 0.13
+deviation until molecular degradation occurs. These results                                512       100        E     2.03 ± 0.03     1.21 ± 0.02
+                                                                         MACE-OFF
+indicate that PIWSL enhances the stability of MD simula-                                                        Fa   10.96 ± 0.13     6.55 ± 0.27
+tions without compromising total energy conservation.                    MACE (scratch)
+                                                                                           950       1000       E     3.27 ± 0.16     2.10 ± 0.30
+                                                                                                                Fa   18.05 ± 0.82    10.99 ± 0.18
+
+5.4. Fine-Tuning of Foundation Models                                a
+                                                                       We evaluated the accuracy of predicted atomic forces using
+                                                                     corresponding force labels provided in the test dataset (CCSD/cc-
+In this section, we present a case study demonstrating the           pVDZ level accuracy).
+application of PIWSL to the fine-tuning of foundation mod-
+els using a sparse dataset. The detailed experimental setup          Table 4: Energy (E) and force (F) mean-absolute errors
+is provided in section D.4. First, we consider fine-tuning           (MAEs) for MACE, MACE-OFF, and MACE-MP mod-
+MACE-OFF (large) (Kovács et al., 2023), a MACE model                 els fine-tuned on the MD22 dataset. All models are fine-
+pre-trained on the SPICE dataset (Eastman et al., 2023),             tuned using 50 training samples of the buckyball-catcher
+including QMugs and liquid water subsets (Isert et al., 2022;        molecule from MD22. Energy MAE is given in kcal/mol,
+Schran et al., 2021).5 The foundation model is fine-tuned            while force MAE is in kcal/mol/Å.
+using the aspirin dataset with energies and forces evaluated
+at the CCSD level of theory (CCSD/cc-pVDZ) (Chmiela                      Model             Train Epoch                 Baseline           PIWSL
+et al., 2018). In the following, we consider a more challeng-                                       800     E    1.046 ± 0.095      0.745 ± 0.031
+ing scenario, e.g., where CC energies are extrapolated to the            MACE (scratch)
+                                                                                                            F    0.294 ± 0.002      0.290 ± 0.002
+CBS limit, where force labels are typically unavailable due                                         100     E    2.111 ± 0.453      2.033 ± 0.149
+                                                                         MACE-MP
+to the high computational cost.                                                                             F    0.716 ± 0.009      0.700 ± 0.011
+                                                                                                    100     E    1.159 ± 0.154      0.992 ± 0.051
+We follow the fine-tuning procedure outlined in the official             MACE-OFF
+                                                                                                            F    0.346 ± 0.003      0.337 ± 0.001
+repository,6 , adjusting the learning rate from 10−2 to 10−3
+to enhance the final accuracy of the model. The results,
+presented in Table 3, show that PIWSL significantly im-
+proves model accuracy, achieving approximately 40 % lower            underscoring the importance of selecting an appropriate pre-
+RMSE values. Notably, the model trained with PIWSL on                trained model (Kjeldal & Eriksen, 2024). While a more
+512 samples performs similarly to the model trained without          exhaustive hyperparameter search could potentially yield
+it, using nearly doubled training set size, i.e., 950 configu-       further gains, such tuning is beyond the scope of this work.
+rations. These results highlight the data efficiency of our          Our primary aim is to demonstrate the relative efficacy of
+approach. Furthermore, both fine-tuned MACE-OFF mod-                 the PIWSL approach.
+els outperform models trained from scratch.
+We further evaluate the effectiveness of PIWSL on datasets           5.5. Computational Cost Analysis
+comprising conformations of a single large molecule.                 Training time. Table 5 presents the measured training
+Specifically, we consider the buckyball catcher molecule             times for experiments conducted with and without PIWSL.
+from the MD22 dataset (Chmiela et al., 2023), which con-             For all models except MACE-OFF, the reported training
+tains 148 atoms. For this experiment, we fine-tune two               time corresponds to a single training epoch, averaged over
+foundation models, MACE-MP (large) (Batatia et al., 2023)            five epochs. These experiments use 1000 training configura-
+and MACE-OFF (large) (Kovács et al., 2023), using only               tions from the ANI-1x dataset with a mini-batch size of six.
+50 samples to explore the sparse data regime. As shown               For MACE-OFF, the training time is measured per epoch
+in Table 4, PIWSL consistently improves fine-tuning per-             on the MD17(CCSD) dataset and averaged over ten epochs,
+formance. Notably, MACE-OFF outperforms MACE-MP,                     following the setup described in section 5.4.
+   5
+     As the official MACE repository supports only a gradient-       Table 5 shows that PIWSL increases training time by a factor
+based force model, our analysis is restricted to this case.          of approximately two to three relative to the baseline. This
+   6
+     https://mace-docs.readthedocs.io/en/
+                                                                     increase is primarily due to PIWSL effectively doubling
+latest/guide/finetuning.html
+                                                                     or tripling the number of training labels, which leads to a
+
+                                                                 8
+                                Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table 5: Training time comparison for experiments with                           6. Discussion and Limitations
+and without PIWSL. We measure the time required for a
+single training epoch and provide the results obtained as an                     This work introduces the PIWSL method, encompassing
+average over five epochs. All training times are provided in                     two distinct physics-informed weakly supervised loss func-
+seconds.                                                                         tions, for learning MLIPs. These losses provide the physics-
+                                                                                 informed weak labels based on the Taylor expansion (PITC
+            SchNet   PaiNN   SpinConv   eSCN     Equiformer v2   MACE-OFF        loss) and the spatial consistency (PISC loss) of the potential
+ Baseline     7.51    8.02      33.46   100.71          57.79         18.5       energy. These physics-informed weak labels enable any
+ PIWSL       12.84   23.48      86.28   328.48         177.55         31.7       MLIP to improve its accuracy and robustness, particularly
+                                                                                 in scenarios characterized by sparse training data, which are
+                                                                                 common when investigating a new molecular or material
+                                                                                 system. The improved accuracy and robustness of MLIPs
+proportional rise in computational cost.7                                        can allow running sufficiently long MD simulations, result-
+Importantly, the additional training time introduced by PI-                      ing in a more effective use of active learning approaches.
+WSL is negligible compared to the substantial cost and time                      Our extensive experiments demonstrate notable efficacy and
+required for data generation using methods such as DFT or                        efficiency of our method from various aspects: (i) depen-
+CC, especially as the number of atoms in atomic systems                          dence on the training dataset size, (ii) the potential energy
+increases. Furthermore, even the large MACE-OFF model                            prediction variance and robustness in terms of a perturba-
+requires less than double the training time while achieving                      tion on a C–H bond length as well as robustness during MD
+an approximately 40 % reduction in error. Finally, it is im-                     simulations, and (iii) application to the fine-tuning of foun-
+portant to emphasize that PIWSL affects only the training                        dation models. In particular, it is shown that our PIWSL
+time; the inference time remains unchanged.                                      method enables MLIPs to improve the accuracy of their
+                                                                                 force predictions even without force labels used explicitly
+                                                                                 during training. Therefore, PIWSL opens a new possibility
+Total number of training epochs. Table A19 compares                              for training MLIPs using highly accurate reference methods,
+extended training iterations, showing that while the baseline                    such as CCSD(T)/CBS.
+model begins to overfit, PIWSL continues to improve perfor-
+                                                                                 Limitations. The proposed PIWSL method is tailored to
+mance. Table A20 extends the results from Table 3, further
+                                                                                 ML models that predict atomic forces and total energies of
+confirming the robustness of PIWSL even under prolonged
+                                                                                 atomic systems. It cannot be applied to other ML problems
+training of the baseline model. A more detailed discussion is
+                                                                                 unrelated to computational chemistry or materials science.
+provided in section D.8. This finding is particularly relevant
+                                                                                 Although this work uses up to the second-order Taylor ex-
+in the sparse data regime, which is the focus of this work.
+                                                                                 pansion to obtain weak labels in Eq. (2), employing more
+                                                                                 sophisticated higher-order ordinary differential equations is
+Training sample efficiency. Throughout this section, we                          a viable alternative. Furthermore, while PIWSL was evalu-
+have demonstrated that PIWSL enhances model perfor-                              ated on the heterogeneous molecular dataset (ANI-1x), a po-
+mance. This improvement also implies greater sample ef-                          tential limitation of our analysis is that we performed it only
+ficiency during training. Notably, Table 3 illustrates that                      on homogeneous inorganic datasets (TiO2 and LMNTO),
+PIWSL achieves comparable or superior accuracy while                             which may not fully capture the method’s generalizability
+using only half the training data for fine-tuning a foundation                   across diverse inorganic systems.
+model. This property makes PIWSL especially advanta-
+geous in data-scarce scenarios, which are central to our                         Impact Statement
+investigation.
+                                                                                 This paper presents work whose goal is to advance the field
+                                                                                 of machine learning, in particular, machine learning for
+Conclusion. In summary, although PIWSL leads to an                               science. Due to the generic nature of pure science, there
+increase in training time due to the effective expansion of                      are many potential societal consequences of our work in
+training samples, the corresponding performance gains jus-                       the far future, none of which we feel must be specifically
+tify the additional computational cost—especially when                           highlighted here.
+compared to the high cost of generating new labels via DFT
+or CC. Moreover, PIWSL enables achieving lower errors                            Acknowledgements
+with a smaller number of training epochs.
+   7                                                                             MN acknowledges support from the Deutsche Forschungs-
+     We can reduce this overhead by employing the 2pt-PISC loss
+introduced in section D.2.2, which removes the need to estimate
+                                                                                 gemeinschaft (DFG, German Research Foundation) under
+the third conformation.                                                          Germany’s Excellence Strategy - EXC 2075 – 390740016
+
+                                                                             9
+                           Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+and the Stuttgart Center for Simulation Science (SimTech).             Behler, J. and Parrinello, M. Generalized neural-network
+                                                                         representation of high-dimensional potential-energy sur-
+References                                                               faces. Phys. Rev. Lett., 98:146401, 2007. 2
+
+Akiba, T., Sano, S., Yanase, T., Ohta, T., and Koyama, M.              Bihani, V., Mannan, S., Pratiush, U., Du, T., Chen, Z., Miret,
+  Optuna: A next-generation hyperparameter optimization                  S., Micoulaut, M., Smedskjaer, M. M., Ranu, S., and Kr-
+  framework. Int. Conf. Knowl. Discov. Data Min., 2019.                  ishnan, N. A. Egraffbench: evaluation of equivariant
+ 14, 15, 21                                                              graph neural network force fields for atomistic simula-
+                                                                         tions. Digital Discovery, 3(4):759–768, 2024. 2
+Artrith, N. and Urban, A. An implementation of artificial              Blank, T. B., Brown, S. D., Calhoun, A. W., and Doren, D. J.
+  neural-network potentials for atomistic materials sim-                 Neural network models of potential energy surfaces. J.
+  ulations: Performance for tio2. Comput. Mater. Sci.,                   Chem. Phys., 103:4129–4137, 1995. 2
+  114:135–150, 2016. ISSN 0927–0256. doi: https:
+  //doi.org/10.1016/j.commatsci.2015.11.047. 2, 5, 16                  Briganti, V. and Lunghi, A. Efficient generation of sta-
+                                                                         ble linear machine-learning force fields with uncertainty-
+Artrith, N., Morawietz, T., and Behler, J. High-dimensional              aware active learning. Mach. Learn.: Sci. Tech-
+  neural-network potentials for multicomponent systems:                  nol., 4:035005, jul 2023. doi: 10.1088/2632-2153/
+  Applications to zinc oxide. Phys. Rev. B, 83:153101,                   ace418. URL https://dx.doi.org/10.1088/
+  2011. 2                                                                2632-2153/ace418. 14
+                                                                       Cai, S., Mao, Z., Wang, Z., Yin, M., and Karniadakis, G. E.
+Bartlett, R. J. and Musiał, M. Coupled-cluster theory in
+                                                                         Physics-informed neural networks (pinns) for fluid me-
+  quantum chemistry. Rev. Mod. Phys., 79:291–352, 2007.
+                                                                         chanics: A review. Acta Mech. Sin., pp. 1–12, 2022.
+  doi: 10.1103/RevModPhys.79.291. 1
+                                                                         2
+Batatia, I., Kovacs, D. P., Simm, G. N. C., Ortner, C., and            Carloni, P., Rothlisberger, U., and Parrinello, M. The role
+  Csanyi, G. MACE: Higher Order Equivariant Message                      and perspective of ab initio molecular dynamics in the
+  Passing Neural Networks for Fast and Accurate Force                    study of biological systems. Acc. Chem. Res., 35:455–
+  Fields. Adv. Neural Inf. Process. Syst., 35:11423–11436,               464, 2002. doi: 10.1021/ar010018u. 1
+  2022. URL https://openreview.net/forum?
+  id=YPpSngE-ZU. 2, 5, 14, 18                                          Chanussot, L., Das, A., Goyal, S., Lavril, T., Shuaibi, M.,
+                                                                         Riviere, M., Tran, K., Heras-Domingo, J., Ho, C., Hu,
+Batatia, I., Benner, P., Chiang, Y., Elena, A. M., Kovács,               W., Palizhati, A., Sriram, A., Wood, B., Yoon, J., Parikh,
+  D. P., Riebesell, J., Advincula, X. R., Asta, M., Baldwin,             D., Zitnick, C. L., and Ulissi, Z. Open Catalyst 2020
+  W. J., Bernstein, N., Bhowmik, A., Blau, S. M., Cărare, V.,           (OC20) Dataset and Community Challenges. ACS Catal.,
+  Darby, J. P., De, S., Pia, F. D., Deringer, V. L., Elijošius,         11:6059–6072, 2021. doi: 10.1021/acscatal.0c04525. 1,
+  R., El-Machachi, Z., Fako, E., Ferrari, A. C., Genreith-               3, 5, 14
+  Schriever, A., George, J., Goodall, R. E. A., Grey, C. P.,           Chmiela, S., Tkatchenko, A., Sauceda, H. E., Poltavsky, I.,
+  Han, S., Handley, W., Heenen, H. H., Hermansson, K.,                   Schütt, K. T., and Müller, K.-R. Machine learning of
+  Holm, C., Jaafar, J., Hofmann, S., Jakob, K. S., Jung,                 accurate energy-conserving molecular force fields. Sci.
+  H., Kapil, V., Kaplan, A. D., Karimitari, N., Kroupa, N.,              Adv., 3:e1603015, 2017. 3, 5, 16
+  Kullgren, J., Kuner, M. C., Kuryla, D., Liepuoniute, G.,
+  Margraf, J. T., Magdău, I.-B., Michaelides, A., Moore,              Chmiela, S., Sauceda, H. E., Müller, K.-R., and Tkatchenko,
+  J. H., Naik, A. A., Niblett, S. P., Norwood, S. W., O’Neill,           A. Towards exact molecular dynamics simulations with
+  N., Ortner, C., Persson, K. A., Reuter, K., Rosen, A. S.,              machine-learned force fields. Nat. Commun., 9:3887,
+  Schaaf, L. L., Schran, C., Sivonxay, E., Stenczel, T. K.,              2018. 5, 8, 16, 22
+  Svahn, V., Sutton, C., van der Oord, C., Varga-Umbrich,              Chmiela, S., Vassilev-Galindo, V., Unke, O. T., Kabylda,
+  E., Vegge, T., Vondrák, M., Wang, Y., Witt, W. C., Zills,              A., Sauceda, H. E., Tkatchenko, A., and Müller, K.-
+  F., and Csányi, G. A foundation model for atomistic                    R. Accurate global machine learning force fields for
+  materials chemistry, 2023. 1, 8, 19                                    molecules with hundreds of atoms. Science Advances, 9
+                                                                         (2):eadf0873, 2023. 5, 8, 16, 18
+Batzner, S., Musaelian, A., Sun, L., Geiger, M., Mailoa,
+  J. P., Kornbluth, M., Molinari, N., Smidt, T. E., and                Christensen, A. S. and von Lilienfeld, O. A. On the role of
+  Kozinsky, B. E(3)-equivariant graph neural networks                    gradients for machine learning of molecular energies and
+  for data-efficient and accurate interatomic potentials. Nat.           forces. Mach. Learn.: Sci. Technol., 1:045018, oct 2020.
+  Commun., 13:2453, 2022. 2, 14                                          doi: 10.1088/2632-2153/abba6f. 5, 16
+
+                                                                  10
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Cooper, A. M., Kästner, J., Urban, A., and Artrith, N. Ef-              A graph neural network for large-scale quantum calcula-
+  ficient training of ann potentials by including atomic                tions. Int. Conf. Learn. Represent, 2021. 3
+  forces via taylor expansion and application to water and
+                                                                      Iftimie, R., Minary, P., and Tuckerman, M. E. Ab initio
+  a transition-metal oxide. npj Comput. Mater., 6:54, 2020.
+                                                                         molecular dynamics: Concepts, recent developments, and
+  2, 3, 5, 16, 18, 26
+                                                                         future trends. Proc. Natl. Acad. Sci., 102:6654–6659,
+Drautz, R. Atomic cluster expansion for accurate and trans-              2005. doi: 10.1073/pnas.0500193102. 1
+  ferable interatomic potentials. Phys. Rev. B, 99:014104,
+                                                                      Isert, C., Atz, K., Jiménez-Luna, J., and Schneider, G.
+  2019. 2
+                                                                         Qmugs, quantum mechanical properties of drug-like
+Duval, A., Mathis, S. V., Joshi, C. K., Schmidt, V., Miret,              molecules. Scientific Data, 9(1):273, 2022. 8, 22
+  S., Malliaros, F. D., Cohen, T., Liò, P., Bengio, Y., and           Kjeldal, F. and Eriksen, J. J. Transferability of atom-based
+  Bronstein, M. A hitchhiker’s guide to geometric gnns                  neural networks. Machine Learning: Science and Tech-
+  for 3d atomic systems. arXiv preprint arXiv:2312.07511,               nology, 5(4):045059, dec 2024. doi: 10.1088/2632-2153/
+  2023. 2                                                               ad9709. URL https://dx.doi.org/10.1088/
+Eastman, P., Behara, P. K., Dotson, D. L., Galvelis, R., Herr,          2632-2153/ad9709. 8
+  J. E., Horton, J. T., Mao, Y., Chodera, J. D., Pritchard,           Kohn, W. and Sham, L. J. Self-Consistent Equations Includ-
+  B. P., Wang, Y., et al. Spice, a dataset of drug-like                 ing Exchange and Correlation Effects. Phys. Rev., 140:
+  molecules and peptides for training machine learning                  A1133–A1138, 1965. doi: 10.1103/PhysRev.140.A1133.
+  potentials. Scientific Data, 10(1):11, 2023. 8, 22                    1
+Feller, D., Peterson, K. A., and Crawford, T. D. Sources of           Kovács, D. P., Moore, J. H., Browning, N. J., Batatia, I.,
+  error in electronic structure calculations on small chem-             Horton, J. T., Kapil, V., Witt, W. C., Magdău, I.-B., Cole,
+  ical systems. J. Chem. Phys., 124:054107, 2006. doi:                  D. J., and Csányi, G. Mace-off23: Transferable machine
+  10.1063/1.2137323. 2, 26                                              learning force fields for organic molecules, 2023. 1, 8,
+                                                                       19, 22
+Fu, X., Wu, Z., Wang, W., Xie, T., Keten, S., Gomez-
+  Bombarelli, R., and Jaakkola, T. S. Forces are not enough:          Lee, K. L. K., Gonzales, C., Nassar, M., Spellings, M.,
+  Benchmark and critical evaluation for machine learning                Galkin, M., and Miret, S. Matsciml: A broad, multi-
+  force fields with molecular simulations. Transact. Mach.              task benchmark for solid-state materials modeling. arXiv
+  Learn. Res., 2023. 2, 7, 8, 14, 15, 22, 25                            preprint arXiv:2309.05934, 2023. 5
+Godwin, J., Schaarschmidt, M., Gaunt, A. L., Sanchez-                 Li, Z., Kermode, J. R., and De Vita, A. Molecular dynamics
+  Gonzalez, A., Rubanova, Y., Veličković, P., Kirkpatrick,            with on-the-fly machine learning of quantum-mechanical
+ J., and Battaglia, P. Simple GNN regularisation for 3d                  forces. Phys. Rev. Lett., 114:096405, 2015. 1, 14
+  molecular property prediction and beyond. Int. Conf.
+ Learn. Represent., 2022. 3, 5, 15, 16                                Liao, Y.-L., Wood, B., Das, A., and Smidt, T. EquiformerV2:
+                                                                        Improved Equivariant Transformer for Scaling to Higher-
+Goodfellow, I. J., Shlens, J., and Szegedy, C. Explaining               Degree Representations. Int. Conf. Learn. Represent.,
+  and harnessing adversarial examples. Int. Conf. Learn.                2023. 2, 3, 5, 16
+ Represent., 2014. 4
+                                                                      Liao, Y.-L., Smidt, T., Shuaibi, M., and Das, A. General-
+Hobza, P. and Šponer, J. Toward true dna base-stacking                  izing denoising to non-equilibrium structures improves
+  energies: Mp2, ccsd(t), and complete basis set calcula-               equivariant force fields. Transactions on Machine Learn-
+  tions. J. Am. Chem. Soc., 124:11802–11808, 2002. doi:                 ing Research, 2024. ISSN 2835-8856. URL https://
+ 10.1021/ja026759n. 2, 26                                               openreview.net/forum?id=whGzYUbIWA. 3,
+                                                                        16
+Hohenberg, P. and Kohn, W. Inhomogeneous electron gas.
+ Phys. Rev., 136:B864–B871, 1964. doi: 10.1103/PhysRev.               Merchant, A., Batzner, S., Schoenholz, S. S., Aykol, M.,
+ 136.B864. 1                                                           Cheon, G., and Cubuk, E. D. Scaling deep learning
+                                                                       for materials discovery. Nature, 624:80–85, 2023. doi:
+Hoover, W. G. Canonical dynamics: Equilibrium phase-                   10.1038/s41586-023-06735-9. 1
+  space distributions. Physical review A, 31(3):1695, 1985.
+  22                                                                  Miyato, T., Maeda, S.-i., Koyama, M., and Ishii, S. Virtual
+                                                                       adversarial training: a regularization method for super-
+Hu, W., Shuaibi, M., Das, A., Goyal, S., Sriram, A.,                   vised and semi-supervised learning. IEEE Trans. Pattern
+  Leskovec, J., Parikh, D., and Zitnick, C. L. Forcenet:               Anal. Mach. Intell., 41:1979–1993, 2018. 4, 5
+
+                                                                 11
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Musaelian, A., Batzner, S., Johansson, A., Sun, L., Owen,            Shuaibi, M., Kolluru, A., Das, A., Grover, A., Sriram, A.,
+ C. J., Kornbluth, M., and Kozinsky, B. Learning local                 Ulissi, Z., and Zitnick, C. L. Rotation invariant graph
+ equivariant representations for large-scale atomistic dy-             neural networks using spin convolutions, 2021a. 2, 5
+ namics. Nat. Commun., 14:579, 2023. 2
+                                                                     Shuaibi, M., Sivakumar, S., Chen, R. Q., and Ulissi,
+Ni, Y., Feng, S., Ma, W.-Y., Ma, Z.-M., and Lan, Y. Sliced             Z. W. Enabling robust offline active learning for ma-
+  denoising: A physics-informed molecular pre-training                 chine learning potentials using simple physics-based pri-
+  method. Int. Conf. Learn. Represent., 2024. 3                        ors. Mach. Learn.: Sci. Technol., 2:025007, dec 2021b.
+                                                                       doi: 10.1088/2632-2153/abcc44. URL https://dx.
+Nosé, S. A unified formulation of the constant temperature
+                                                                       doi.org/10.1088/2632-2153/abcc44. 14
+  molecular dynamics methods. The Journal of chemical
+  physics, 81(1):511–519, 1984. 22                                   Shui, Z., Karls, D., Wen, M., Tadmor, E., Karypis, G., et al.
+Parrinello, M. From silicon to rna: The coming of age of               Injecting domain knowledge from empirical interatomic
+  ab initio molecular dynamics. Solid State Commun., 102:              potentials to neural networks for predicting material prop-
+  107–120, 1997. ISSN 0038–1098. doi: https://doi.org/10.              erties. Advances in Neural Information Processing Sys-
+  1016/S0038-1098(96)00723-5. 1                                        tems, 35:14839–14851, 2022. 3
+
+Passaro, S. and Zitnick, C. L. Reducing SO(3) Convolutions           Smith, J. S., Isayev, O., and Roitberg, A. E. ANI-1: An
+  to SO(2) for Efficient Equivariant GNNs. Int. Conf. Mach.            extensible neural network potential with DFT accuracy at
+  Learn., 202:27420–27438, 2023. 2, 3, 5                               force field computational cost. Chem. Sci., 8:3192–3203,
+                                                                       2017. doi: 10.1039/C6SC05720A. 1, 2
+Podryabinkin, E. V. and Shapeev, A. V. Active learning
+  of linearly parametrized interatomic potentials. Comput.           Smith, J. S., Nebgen, B. T., Zubatyuk, R., Lubbers, N.,
+  Mater. Sci., 140:171–180, 2017. doi: https://doi.org/10.             Devereux, C., Barros, K., Tretiak, S., Isayev, O., and
+  1016/j.commatsci.2017.08.031. 14                                     Roitberg, A. E. Approaching coupled cluster accuracy
+                                                                       with a general-purpose neural network potential through
+Purvis, G. D. and Bartlett, R. J. A full coupled-cluster               transfer learning. Nat. Commun., 10:2903, 2019. ISSN
+  singles and doubles model: The inclusion of disconnected             2041–1723. doi: 10.1038/s41467-019-10827-4. 2
+  triples. J. Chem. Phys., 76:1910–1918, 1982. doi: 10.
+  1063/1.443164. 1                                                   Smith, J. S., Zubatyuk, R., Nebgen, B., Lubbers, N., Barros,
+                                                                       K., Roitberg, A. E., Isayev, O., and Tretiak, S. The ani-
+Raissi, M., Perdikaris, P., and Karniadakis, G. E. Physics-
+                                                                      1ccx and ani-1x data sets, coupled-cluster and density
+  informed neural networks: A deep learning framework for
+                                                                       functional theory properties for molecules. Sci. Data, 7:
+  solving forward and inverse problems involving nonlinear
+                                                                      134, 2020. 2, 5, 16, 20, 24, 25, 26, 27, 28
+  partial differential equations. J. Comput. Phys., 378:686–
+  707, 2019. doi: 10.1016/j.jcp.2018.10.045. 2                       Thomas, N., Smidt, T., Kearnes, S., Yang, L., Li, L.,
+Schran, C., Thiemann, F. L., Rowe, P., Müller, E. A.,                  Kohlhoff, K., and Riley, P. Tensor field networks:
+  Marsalek, O., and Michaelides, A. Machine learning                   Rotation- and translation-equivariant neural networks for
+  potentials for complex aqueous systems made simple.                  3d point clouds, 2018. 2
+  Proceedings of the National Academy of Sciences, 118               Unke, O. T. and Meuwly, M. Physnet: A neural network for
+  (38):e2110077118, 2021. 8, 22                                        predicting energies, forces, dipole moments, and partial
+Schütt, K., Kindermans, P.-J., Sauceda Felix, H. E., Chmiela,          charges. J. Chem. Theory Comput., 15:3678–3693, 2019.
+  S., Tkatchenko, A., and Müller, K.-R. Schnet: A                      2
+  continuous-filter convolutional neural network for model-
+                                                                     Unke, O. T., Chmiela, S., Sauceda, H. E., Gastegger, M.,
+  ing quantum interactions. Adv. Neural Inf. Process. Syst.,
+                                                                       Poltavsky, I., Schütt, K. T., Tkatchenko, A., and Müller,
+  30:991–1001, 2017. 2, 5
+                                                                       K.-R. Machine Learning Force Fields. Chem. Rev., 121:
+Schütt, K. T., Unke, O. T., and Gastegger, M. Equivariant             10142–10186, 2021. doi: 10.1021/acs.chemrev.0c01111.
+  message passing for the prediction of tensorial properties          1
+  and molecular spectra. Int. Conf. Mach. Learn., 139:
+                                                                     van der Oord, C., Sachs, M., Kovács, D. P., Ortner,
+  9377–9388, 2021. 2, 5, 22
+                                                                       C., and Csányi, G. Hyperactive learning for data-
+Shapeev, A. V. Moment tensor potentials: A class of sys-               driven interatomic potentials. npj Comput. Mater., 9
+  tematically improvable interatomic potentials. Multi-                (1):168, Sep 2023. ISSN 2057-3960. doi: 10.1038/
+  scale Model. Simul., 14:1153–1173, 2016. doi: 10.1137/               s41524-023-01104-6. URL https://doi.org/10.
+  15M1054183. 2                                                        1038/s41524-023-01104-6. 1
+
+                                                                12
+                           Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Vandermause, J., Torrisi, S. B., Batzner, S., Xie, Y., Sun, L.,
+  Kolpak, A. M., and Kozinsky, B. On-the-fly active learn-
+  ing of interpretable bayesian force fields for atomistic
+  rare events. npj Comput. Mater., 6:20, 2020. 1, 14
+Verlet, L. Computer" experiments" on classical fluids. i.
+  thermodynamical properties of lennard-jones molecules.
+  Physical review, 159(1):98, 1967. 22
+
+Yang, X., Song, Z., King, I., and Xu, Z. A survey on deep
+  semi-supervised learning. IEEE Trans. Knowl. Data Eng.,
+  2022. 3
+Zaverkin, V. and Kästner, J. Gaussian Moments as Phys-
+  ically Inspired Molecular Descriptors for Accurate and
+  Scalable Machine Learning Potentials. J. Chem. Theory
+  Comput., 16:5410–5421, 2020. ISSN 1549-9618. doi:
+  10.1021/acs.jctc.0c00347. 2
+Zaverkin, V. and Kästner, J. Exploration of transferable and
+  uniformly accurate neural network interatomic potentials
+  using optimal experimental design. Mach. Learn.: Sci.
+  Technol., 2(3):035009, 2021. doi: 10.1088/2632-2153/
+  abe294. URL http://iopscience.iop.org/
+  article/10.1088/2632-2153/abe294. 1
+Zaverkin, V., Holzmüller, D., Steinwart, I., and Kästner, J.
+  Fast and Sample-Efficient Interatomic Neural Network
+  Potentials for Molecules and Materials Based on Gaus-
+  sian Moments. J. Chem. Theory Comput., 17:6658–6670,
+  2021. ISSN 1549-9618. doi: 10.1021/acs.jctc.1c00527.
+  2
+
+Zaverkin, V., Holzmüller, D., Steinwart, I., and Kästner, J.
+  Exploring chemical and conformational spaces by batch
+  mode deep active learning. Digital Discovery, 1:605–620,
+  2022. 1
+Zaverkin, V., Holzmüller, D., Bonfirraro, L., and Kästner,
+  J. Transfer learning for chemically accurate interatomic
+  neural network potentials. Phys. Chem. Chem. Phys., 25:
+  5383–5396, 2023. doi: 10.1039/D2CP05793J. 2
+Zaverkin, V., Alesiani, F., Maruyama, T., Errica, F., Chris-
+  tiansen, H., Takamoto, M., Weber, N., and Niepert, M.
+  Higher-rank irreducible cartesian tensors for equivariant
+  message passing, 2024a. 2
+Zaverkin, V., Holzmüller, D., Christiansen, H., Errica, F.,
+  Alesiani, F., Takamoto, M., Niepert, M., and Kästner,
+  J. Uncertainty-biased molecular dynamics for learning
+  uniformly accurate interatomic potentials. npj Comput.
+  Mater., 10:83, 2024b. 1, 14
+
+
+
+
+                                                                  13
+                            Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+A. Related Work
+Addressing Data Sparsity in MLIPs. Generating training datasets suitable for learning reliable MLIPs is challenging,
+especially when considering unexplored molecular and material systems. Numerous computationally expensive calculations
+with either ab initio or first-principles approaches are required for the latter. To mitigate this challenge, active learning (AL)
+methods, which utilize prediction uncertainty, can be applied (Li et al., 2015; Podryabinkin & Shapeev, 2017; Vandermause
+et al., 2020; Shuaibi et al., 2021b; Briganti & Lunghi, 2023; Zaverkin et al., 2024b). Furthermore, equivariant MLIPs often
+reduce required training dataset sizes through improved data efficiency (Batzner et al., 2022; Batatia et al., 2022).
+
+B. Experimental Setup, Baselines, and Datasets
+B.1. Experimental Setup
+Code for Experiments. The code used to run our experiments builds upon the recent work (Fu et al., 2023) and extends it to
+integrate the latest Open Catalyst Project code (Chanussot et al., 2021). We adopt hyper-parameters from the Open Catalyst
+(OC) project, tuned to the corresponding OC dataset. Note that we do not use this dataset in the presented work, whose
+main focus is training general-purpose MLIPs that can be used to run molecular dynamics (MD) simulations and geometry
+optimization. However, the OC dataset has been designed to investigate the latter, making it less suitable for the current
+study. Our modifications include adjusting the learning rate scheduler, details of which can be found in our repository. For
+potential energy and force prediction, we utilize mean-absolute error (MAE) and L2 -norm (L2MAE) losses with coefficients
+of 1 and 100, respectively. More details on the model hyperparameters are provided in our repository. For the PITC and
+PISC loss functions, we use the mean square error (MSE) loss based on an experiment in section D.5. When noise is applied
+to inorganic material datasets with periodic boundary conditions, atoms outside the unit cell are wrapped back into the cell
+when noise is applied.
+Training Details. For training MLIPs, we followed the setup in the Open Catalyst Project. We kept the mini-batch size
+consistent across all models, as shown in Table A1. We have chosen the mini-batch size based on the maximum memory
+needed by the most demanding models, such as eSCN and Equiformer v2. All experiments are performed on a single
+NVIDIA A100 GPU with 81.92 GB memory. To avoid overfitting, we stopped training when the validation loss stopped
+improving—the specific number of training iterations is provided in Table A2.
+We used perturbation vectors δr drawn from a uniform random distribution; see also section 4.4. Particularly, we defined
+δr ≡ ϵg, with each component of g drawn from a uniform random distribution in the interval (−1, 1). The magnitude
+ϵ is also drawn from a uniform random distribution and ϵ < ϵmax . This definition of δr differs from the one in Eq. (6),
+improving the computational efficiency of PIWSL by avoiding the calculation of square root and division.
+The remaining hyper-parameters are the coefficients for the PITC and PISC losses (CPITC , CPISC ) and the maximum
+magnitude ϵmax of the perturbation vector δr; see Table A3. These hyper-parameters are tuned using Optuna (Akiba et al.,
+2019) for PaiNN and Equiformer v2. We used 1000 configurations drawn randomly from the original ANI-1x dataset for
+training. Due to multiple local minima, Optuna identified several optimal hyper-parameter sets in each run. We selected
+the following representative combinations (CPITC , CPISC , ϵmax ) = Case A: (1.2, 0.8, 0.025), Case B: (1.0, 0, 0.01), Case
+C: (0.1, 0.01, 0.01), Case D: (1.2, 0.01, 0.025), Case E: (1.2, 0.01, 0.01), Case F: (1.2, 0.01, 0.015), Case G: (0.01, 0.001,
+0.025), and Case H: (0.1, 0.01, 0.025). We selected the hyper-parameters listed in Table A3 based on the validation dataset
+performance.
+Splitting Datasets. We split the original datasets into training, validation, and test sets for our experiments. We shuffled the
+original datasets using a random seed and selected the training datasets of predefined sizes. For validation, we selected
+the same number of configurations as in the training dataset if it exceeded 100 configurations; otherwise, we used 100
+
+
+Table A1: Employed mini-batch sizes. We provide mini-batch sized for all datasets and models employed in this work.
+
+
+                                                        ANI-1x      TiO2 a    rMD17      LMNTO
+                                   Mini-batch size         6           4        16           4
+a
+  As explained in Table 2, the mini-batch size of the SchNet model was changed to 32 due to high RMSE values observed with a mini-batch
+size of four as the training dataset size increased. A more detailed discussion of the results for SchNet is provided in section D.1.
+
+                                                                  14
+                            Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A2: Total number of training iterations. We provide the total number of training iterations for all datasets and
+training set sizes employed in this work. The number in the parentheses demonstrates the corresponding total number of
+training epochs.
+
+                               Ntrain          ANI-1x            TiO2           rMD17         LMNTO
+                                50        7500 (900)               –                  –              –
+                               100      10,000 (600)    10,000 (400)       7500 (1200)    10,000 (400)
+                              1000      40,000 (240)    10,000 (100)       10,000 (160)   10,000 (100)
+                            10,000      100,000 (60)               –                  –              –
+                           100,000      400,000 (30)               –                  –              –
+                         1,000,000       400,000 (3)               –                  –              –
+                         5,000,000       420,000 (1)               –                  –              –
+
+Table A3: Hyper-parameters for the PIWSL loss. We selected the following hyper-parameter combinations using
+Optuna (Akiba et al., 2019): (CPITC , CPISC , ϵmax )= Case A: (1.2, 0.8, 0.025), Case B: (1.0, 0, 0.01), Case C: (0.1, 0.01,
+0.01), Case D: (1.2, 0.01, 0.025), Case E: (1.2, 0.01, 0.01), Case F: (1.2, 0.01, 0.015), Case G: (0.01, 0.001, 0.025), and
+Case H: (0.1, 0.01, 0.025).
+
+                     Dataset            Size     Equiformer v2      eSCN     PaiNN    SpinConv      SchNet
+                                          50            A            C         B          A            A
+                                         100            A            C         A          D            A
+                     ANI-1x
+                                        1000            D            D         D          B            B
+                                      10,000            G            C         B          C            C
+                                     100,000            –            –         C          –            –
+                                   1,000,000            –            –         C          –            –
+                                   5,000,000            –            –         B          –            –
+                                         100            A            A         A          A            H
+                     TiO2
+                                        1000            G            A         C          A            C
+                                         100            B            B         B          A            B
+                     LMNTO
+                                        1000            B            A         B          B            B
+
+
+configurations to ensure sufficient validation size. For the rMD17 dataset, following (Fu et al., 2023), we used 9000
+configurations as a validation dataset and another 10,000 for testing. We used the same test dataset across different sizes of
+the training datasets for a fair performance comparison. We used 10,000 test configurations for ANI-1x and 1000 for TiO2
+and LMNTO.
+Training with Adversarial Directions. In our experiments, which defined perturbation vectors adversarially (see section E),
+we determined adversarial directions using Eq. (7). More concretely, we only considered the potential energy, i.e., ypred and
+ylabel , to avoid Hessian calculations. In addition, we considered the loss function for the potential energy as Ldist in Eq. (7).
+The expression of g = ∇r Ldist is then
+                                                               1
+                                q
+                      gS = ∇ri (E (S; θ) − ESref )2 = −             (Fi (S; θ) − Fref                   ref
+                                                                                    i,S )(E (S; θ) − ES ).                  (A1)
+                                                             2Ldist
+Note that we used the relation ∇ri ESref = −Fref i,S to obtain the final expression. Though E
+                                                                                              ref
+                                                                                                  can also be interpreted as a
+constant regarding atom positions. We have chosen this expression to avoid the case where the adversarial direction g points
+to Fref
+    i,S other than the very beginning of the training. Our experiments indicate that the employed expression is slightly better
+than its alternative. In our experiment, we also randomly flip the sign of gS to avoid overfitting to adversarial directions.
+
+B.2. Baseline Methods
+Data Augmentation with NoisyNode. In our experiments, we used the NoisyNode approach (Godwin et al., 2022) as
+one of the baseline methods. This method aims to improve the performance of ML models by adding a perturbation to
+
+                                                               15
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+node features, i.e., atomic coordinates, and makes ML models recover original labels. This approach enables ML models
+to be more robust to noise in the data. Although the original method recommends adding a decoder network to learn the
+denoising process, we do not utilize it following previous work (Liao et al., 2023) and add the perturbation vector to atomic
+coordinates similar to PIWSL losses, fixing energy and force labels. We implement the NoisyNode approach in our code.
+Thus, we can expect slightly different behavior compared to the recent work (Godwin et al., 2022; Liao et al., 2023) 8 .
+Taylor-Expansion-Based Weak Labels. Recent work proposed a similar Taylor-expansion-based weak label ap-
+proach (Cooper et al., 2020). Nonetheless, the loss is different from the one in Eq. (3) as the authors used reference
+energy and atomic force labels to estimate weak energy labels ESrefδr for perturbed atomic configurations Sδr
+
+
+                                                           Nat
+                                                           X
+                                       ESrefδr ≈ ESref −         δri , Fref           2
+                                                                                                                           (A2)
+                                                                                        
+                                                                        i,S + O ||δr||    .
+                                                           i=1
+
+
+
+The trainable parameters of MLIPs are optimized by minimizing the weak label (WL) loss
+
+
+                                                                             Nat
+                                                                                                !
+                                                                             X
+                                  LWL (S; θ) = ℓ     E (Sδr ; θ) , ESref −         δri , Fref
+                                                                                          i,S       .                      (A3)
+                                                                             i=1
+
+
+
+
+Figure 1 (a) illustrates the corresponding approach (Cooper et al., 2020), which computes the energy of a perturbed atomic
+configuration using a Taylor expansion based on reference energy and atomic force labels. This approach was originally
+applied to train MLIPs without explicit force labels.
+
+B.3. Description of the Datasets
+ANI-1x Dataset. The ANI-1x dataset is a heterogeneous molecular dataset and includes 63,865 organic molecules (with
+chemical elements H, C, N, and O) whose size ranges from 4 to 64 atoms (Smith et al., 2020). The ML model requires
+learning total energies and atomic forces for various molecules and their conformations. Total energies and atomic forces
+are obtained through DFT calculations.
+TiO2 Dataset. Titanium dioxide (TiO2 ) is an industrially relevant and well-studied material. TiO2 dataset includes 7815
+bulk structures of several TiO2 phases whose reference energies and forces are obtained through DFT calculations (Artrith
+& Urban, 2016). The number of atoms in a single configuration ranges from 6 to 95.
+rMD17 Dataset. The rMD17 dataset includes ten small organic molecules, including 100,000 configurations obtained by
+running MD simulations for each (Christensen & von Lilienfeld, 2020). The ML model requires learning the total energies
+and atomic forces for each molecule. In this revised version of the MD17 dataset, the molecules are taken from the original
+MD17 dataset (Chmiela et al., 2017; 2018). However, the energies and forces are recalculated at the PBE/def2-SVP level of
+theory using very tight SCF convergence and a very dense DFT integration grid.
+LMNTO Sataset. The Li-Mo-Ni-Ti oxide (LMNTO) is of technological significance as a potential high-capacity positive
+electrode material for lithium-ion batteries. It exhibits substitutional disorder, with Li, Mo, Ni, and Ti all sharing the same
+sub-lattice. This dataset includes LMNTO with the composition Li8 Mo2 Ni7 Ti7 O32 and configurations obtained from an
+MD simulation, resulting in approximately 2600 structures in total (Cooper et al., 2020).
+MD22 Dataset. The MD22 dataset (Chmiela et al., 2023) includes seven larger organic molecules, such as a small peptide
+and a double-walled nanotube, whose size ranges from 42 to 370 atoms. The dataset consists of MD trajectories sampled
+at temperatures between 400 and 500 K. The ML model requires learning the total energies and atomic forces for each
+molecule. The energies and forces are calculated at the PBE+MBD level of theory.
+   8
+    Note that NoisyNode assumes the unperturbed state to be the equilibrium structure, which may have contributed to the limited
+performance improvements observed in our experiments. Recently, efforts have been underway to develop an extended version of
+NoisyNode tailored for non-equilibrium structures, such as (Liao et al., 2024).
+
+                                                                 16
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A4: Energy (E) and force (F) root-mean-square errors (RMSEs) for the ANI-1x dataset. The results are obtained
+by averaging over three independent runs. Energy RMSE is given in kcal/mol, while force RMSE is in kcal/mol/Å.
+
+
+                                        Ntrain = 50                                        Ntrain = 10, 000
+                        Baseline        Noisy Nodes          PIWSL           Baseline       Noisy Nodes          PIWSL
+                E    90.08 ± 1.24       76.83 ± 0.75      83.90 ± 2.82     24.88 ± 0.01      24.86 ± 0.00     24.88 ± 0.00
+  Schnet
+                F    35.49 ± 0.36       31.13 ± 0.13      35.30 ± 0.87     13.36 ± 0.01      13.36 ± 0.00     13.36 ± 0.00
+                E    212.64 ± 1.14     440.11 ± 11.68    121.36 ± 4.13     19.14 ± 0.38     165.25 ± 4.87     14.10 ± 0.14
+  PaiNN
+                F     22.61 ± 0.04      22.50 ± 0.22     20.83 ± 0.28       8.24 ± 0.10      9.22 ± 0.09       7.89 ± 0.02
+                E    222.75 ± 7.12     219.85 ± 6.99     175.38 ± 9.77     19.42 ± 0.67     46.31 ± 10.31     18.81 ± 0.60
+  SpinConv
+                F    24.88 ± 0.88       24.61 ± 0.35     25.12 ± 0.58      10.31 ± 0.33      10.78 ± 0.66      9.94 ± 0.12
+                E   517.17 ± 31.98     583.90 ± 33.04    454.40 ± 11.10    12.65 ± 0.63    165.30 ± 33.11     10.66 ± 0.31
+  eSCN
+                F    22.51 ± 0.09       24.04 ± 0.15      22.28 ± 0.08      5.11 ± 0.30     11.51 ± 0.23       4.35 ± 0.15
+                E   498.58 ± 17.44     630.32 ± 0.32     433.88 ± 79.63     8.03 ± 0.21    970.95 ± 236.90     7.77 ± 0.14
+  Equiformer
+                F    22.86 ± 0.04      22.92 ± 0.00       22.72 ± 0.04      2.97 ± 0.00     29.28 ± 5.63       2.98 ± 0.00
+
+
+
+C. Differences in Gradients for Physics-Informed Losses
+The following considers the gradients of the proposed two losses. First, considering squared errors, we obtain the following
+gradients of the loss in Eq. (A2) with respect to trainable parameters
+                                                                 N
+                                                                                   !
+                                                                   at
+                               dLWL                              X                   dE (Sδr ; θ)
+                                      = 2 E (Sδr ; θ) − ES +ref               ref
+                                                                      ⟨δri , Fi,S ⟩               .                     (A4)
+                                dθ                               i=1
+                                                                                         dθ
+
+In contrast, for the PITC loss in Eq. (3) we obtain
+                                                               Nat
+                                                                                    !
+                            dLPITC                             X
+                                   =2 E (Sδr ; θ) − E (S; θ) +     ⟨δri , Fi (S; θ)⟩ ×
+                              dθ                               i=1
+                                                                                              !                         (A5)
+                                                                  Nat
+                                          dE (Sδr ; θ) dE (S; θ) X    d⟨δri , Fi (S; θ)⟩
+                                                      −         +                                 .
+                                              dθ          dθ      i=1
+                                                                              dθ
+
+The above equations indicate that the direction of the derivative of the PITC loss in Eq. (A5) is different from that of the
+weak label loss because of the incorporation of the predicted potential energy at the original and the force at the reference
+point. The gradient of PISC loss in Eq. (4) reads
+                                         Nat                                    Nat
+                                                                                                          !
+             dLPISC                      X                                      X
+                                                                                       ′′
+                       = 2 E (S; θ) −        ⟨δri , Fi (S; θ)⟩ − E (Sδr′ ; θ) +     ⟨δri , Fi (Sδr′ ; θ)⟩
+                dθ                       i=1                                    i=1
+                                                                                                                    !    (A6)
+                                          Nat                                        Nat
+                           dE (S; θ) X        d⟨δri , Fi (S; θ)⟩ dE (Sδr′ ; θ) X           d⟨δr′′i , Fi (Sδr′ ; θ)⟩
+                       ×              −                          −                +                                  .
+                               dθ         i=1
+                                                       dθ                 dθ         i=1
+                                                                                                      dθ
+
+
+D. Experiments
+D.1. Benchmark Results
+The following section provides additional results, complementing those provided in the main text.
+Additional Results for ANI-1x. Table A4 provides results for ANI-1x dataset and a training set sizes of 50 or 10,000; see
+also figure 2. The table demonstrates a considerable reduction of energy and force RMSEs for models trained using small
+training dataset sizes of 50 configurations. Furthermore, we find around 5 to 25 % error reduction for a larger training set
+size of 10,000, indicating the effectiveness of the PIWSL method for relatively large training set sizes. Finally, we provide
+
+                                                             17
+                              Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A5: Energy and force erorrs of PaiNN model trained on the ANI-1x dataset with 100,000, 1,000,000, and
+5,000,000 samples. The results are obtained by averaging over three independent runs. Energy errors are given in kcal/mol,
+while force errors are in kcal/mol/Å.
+
+
+                                     Ntrain     Force MAE        Force RMSE         Energy MAE         Energy RMSE
+                  Baseline         100,000      0.92 ± 0.00        3.70 ± 0.01        4.28 ± 0.15          6.14 ± 0.21
+                  PIWSL                         0.91 ± 0.01        3.72 ± 0.04        4.07 ± 0.17          5.83 ± 0.20
+                  Baseline       1,000,000      0.67 ± 0.00        2.74 ± 0.01        4.90 ± 0.23          6.56 ± 0.26
+                  PIWSL                         0.68 ± 0.00        2.77 ± 0.04        4.48 ± 0.05          6.06 ± 0.01
+                  Baseline     5,000,000a                0.53               2.18               3.94                5.24
+                  PIWSL                                  0.55               2.24               3.25                4.75
+a
+    Because of the computational cost, we performed only one training in the case of 5,000,000 training samples.
+
+
+Table A6: Energy (F) and force (F) root-mean-square errors (RMSEs) for the TiO2 dataset obtained for the SchNet
+model with a mini-batch size of four. The results are obtained by averaging over three independent runs. Energy RMSE is
+given in kcal/mol, while force RMSE is in kcal/mol/Å.
+
+
+                                          Ntrain = 100                                          Ntrain = 1000
+                             Baseline     Noisy Nodes              PIWSL            Baseline     Noisy Nodes              PIWSL
+                   E    18.85 ± 0.00      17.48 ± 0.00      17.58 ± 0.00      35.58 ± 0.00      58.08 ± 18.44      15.28 ± 0.12
+         SchNet
+                   F     2.74 ± 0.00       2.51 ± 0.00       2.74 ± 0.00       6.54 ± 0.00       18.40 ± 0.00       3.61 ± 0.27
+
+
+
+a result of PaiNN model trained on ANI-1x dataset with 100,000, 1,000,000, and 5,000,000 samples in Table A5, which
+demonstrates that PIWSL still improves the performance around 5% to 10%of the energy RMSE.
+Additional Results for SchNet Applied to TiO2 . In Table 2, we set the mini-batch size to 32 for training the SchNet
+model. This adjustment was made because training SchNet with a small mini-batch size of four increases RMSE values
+with a growing training dataset size. Table A6 demonstrates the performance of the SchNet model for a mini-batch size
+of four. Table A7 provides the results obtained for the SchNet model with a mini-batch size of four for the following
+training set sizes: 100, 200, 500, and 1000. This figure demonstrates that SchNet, with a mini-batch size of four, reaches
+its best performed with Ntrain = 200. These results indicate the difficulty of learning training data statistics from small
+mini-batches, probably due to the limited expressive power of SchNet.
+Results for LMNTO. Table A8 presents RMSE errors for LMNTO (Cooper et al., 2020). PIWSL shows the error reduction
+for most cases for this benchmark dataset, especially for small training set sizes (i.e., a training set of 100 configurations).
+Molecular Dynamics Trajectories for Large Molecules – MD22. Table A9 evaluates the impact of PIWSL on datasets
+containing conformations of a single large molecule. For this purpose, we selected the buckyball catcher molecule with
+natom = 148 atoms. To demonstrate the applicability of PIWSL, we trained a MACE model (Batatia et al., 2022) to
+prove that PIWSL enhances even the performance of a recent state-of-the-art model. The model structure and training
+configuration were based on those provided in the official repository9 with slight modifications: “max_L” was set to one and
+mini-batch size was adjusted to four. Following the original training setup (Chmiela et al., 2023), we randomly sampled 600
+configurations for the training dataset and 400 for the validation dataset and retained the remaining 5102 configurations for
+testing. To further validate PIWSL’s effectiveness in sparse data scenarios, we prepared a smaller training dataset comprising
+only 50 configurations while keeping the validation dataset size unchanged. The model was trained for 450 and 800 epochs
+for the 600-sample and 50-sample training datasets, respectively. The results presented in Table A9 demonstrate that our
+approach remains effective on average, particularly in the sparse data regime. In this study, the coefficient of the PITC and
+PISC losses are set as 0.01 and 0.001 with ϵmax = 0.01.
+     9
+         https://mace-docs.readthedocs.io/en/latest/examples/training_examples.html
+
+                                                                   18
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A7: Training dataset size dependence of SchNet with a mini-batch size of four. The results are presented for the
+TiO2 dataset and are obtained by averaging over three independent runs. Energy RMSE is given in kcal/mol, while force
+RMSE is in kcal/mol/Å.
+
+
+                                     Ntrain = 100    Ntrain = 200     Ntrain = 500       Ntrain = 1000
+                                E    18.85 ± 0.00    16.28 ± 0.00     24.42 ± 0.00        35.58 ± 0.00
+                     SchNet
+                                F     2.74 ± 0.00     2.56 ± 0.00      4.43 ± 0.00         6.54 ± 0.00
+
+
+
+Table A8: Energy (E) and force (F) root-mean-square errors (RMSEs) for the LMNTO dataset. The results are obtained
+by averaging over three independent runs. Energy RMSE is given in kcal/mol, while force RMSE is in kcal/mol/Å.
+
+                                             Ntrain = 100                                Ntrain = 1000
+        Model                    Baseline     NoisyNode          PIWSL        Baseline    NoisyNode          PIWSL
+                         E    4.46 ± 0.00    6.10 ± 0.00    4.45 ± 0.00   3.09 ± 0.00      3.25 ± 0.00   3.09 ± 0.00
+        SchNet
+                         F    9.24 ± 0.00    8.31 ± 0.00    9.24 ± 0.00   5.09 ± 0.00      5.21 ± 0.00   5.09 ± 0.00
+                         E    6.91 ± 0.02    7.09 ± 0.04    5.99 ± 0.02   3.26 ± 0.01      4.61 ± 0.03   2.98 ± 0.01
+        PaiNN
+                         F    4.75 ± 0.00    7.20 ± 0.01    4.75 ± 0.00   2.03 ± 0.00      2.55 ± 0.00   2.03 ± 0.00
+                         E    7.90 ± 0.00    7.83 ± 0.04    7.83 ± 0.01   4.90 ± 0.33      7.20 ± 0.06   3.95 ± 0.02
+        SpinConv
+                         F    4.63 ± 0.01    5.14 ± 0.04    4.71 ± 0.02   1.81 ± 0.01      2.33 ± 0.00   1.74 ± 0.00
+                         E    7.92 ± 0.00    7.92 ± 0.00    7.92 ± 0.00   7.93 ± 0.00      7.93 ± 0.00   6.40 ± 0.14
+        eSCN
+                         F    4.67 ± 0.01    7.59 ± 0.02    4.64 ± 0.01   1.54 ± 0.00      1.98 ± 0.06   1.53 ± 0.00
+                         E    7.40 ± 0.03    7.92 ± 0.00    7.32 ± 0.08   3.57 ± 0.05      7.04 ± 0.03   3.60 ± 0.02
+        Equiformer v2
+                         F    4.26 ± 0.00    7.60 ± 0.02    4.24 ± 0.02   1.34 ± 0.00      1.99 ± 0.00   1.34 ± 0.00
+
+
+
+
+In addition to the experiment of training from scratch, we conducted an additional study using the MACE foundation model
+to evaluate whether PIWSL could be effectively applied in the context of foundation models with finetuning. Specifically, we
+utilized two foundation models: MACE-MP ("large") (Batatia et al., 2023), a universal model, and MACE-OFF ("large_off")
+(Kovács et al., 2023), a model designed for organic force fields. Training was performed on the buckyball catcher molecule
+from the MD22 dataset. To simulate finetuning on a smaller dataset, the models were trained using 50 samples, consistent
+with the previous experiment. The official settings from the respective repositories were used, with adjustments made to the
+mini-batch size (set to 4) and the number of epochs (set to 100).
+The results, presented in Table 4, demonstrate that PIWSL is effective for the fine-tuning of foundation models. Moreover,
+the result indicates that the MACE-MP model provides worse results than MACE-OFF, emphasizing the importance of
+selecting an appropriate pre-trained model. For this experiment, we employed the second-order PITC loss and the two-point
+consistency loss defined in Eq. (A14) and Eq. (A11), with the coefficients set to 0.08.
+
+
+
+Table A9: Energy (E) and force (F) mean-absolute errors (MAEs) for the MD22 dataset. We have chosen buckyball
+catcher for our experiments. The results are obtained by averaging over three independent runs. Energy MAE is given in
+kcal/mol/atom, while force MAE is in kcal/mol/Å.
+
+                                                       Ntrain = 50                           Ntrain = 600
+        Dataset               Model                 Baseline       PIWSL                  Baseline        PIWSL
+        Buckyball catcher                E    1.046 ± 0.095      0.745 ± 0.031    0.587 ± 0.107      0.548 ± 0.015
+                              MACE
+                                         F    0.294 ± 0.002      0.290 ± 0.002    0.082 ± 0.001      0.082 ± 0.001
+
+
+                                                            19
+                           Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+D.2. Different Configurations for the Physics-Informed Spatial-Consistency Loss
+D.2.1. T RIANGLE -BASED
+
+Table A10: Results for different configurations of the PISC loss. The presented numerical values are the root mean
+square errors (RMSEs) for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors
+are obtained by averaging over three independent runs. All models are trained using 1000 configurations. The case 1, 2, and
+3 correspond to Eq. (4), Eq. (A8) and Eq. (A9), respectively.
+
+                         Model          Baseline     PISC (Case 1)      PISC (Case 2)        PISC (Case 3)
+                                   E    60.11                 45.24                  46.32              57.29
+                         PaiNN
+                                   F    13.10                 12.33                  12.42              13.28
+
+
+In section 4.2, we consider the following form of the PISC loss
+                                                                         Nat
+                                                                                                  !
+                                                                         X
+                           LPISC (S; θ) = ℓ E (Sδr ; θ) , E (Sδr′ ; θ) −        ′′
+                                                                             ⟨δri , Fi (Sδr′ ; θ)⟩ ,                         (A7)
+                                                                               i=1
+
+where δr, δr′ , δr′′ are related as δr′ + δr′′ = δr. In this section, as a variant of Eq. (4), we also consider the following three
+PISC losses
+                                                      Nat                                   Nat
+                                                                                                                     !
+                                                      X                                     X
+                                                                                                    ′′
+            LPISC,Case 2 (S; θ) = ℓ E (S; θ) −            ⟨δri , Fi (S; θ)⟩, E (Sδr′ ; θ) −     ⟨δri , Fi (Sδr′ ; θ)⟩ ,        (A8)
+                                                     i=1                                      i=1
+                                                                      N
+                                                                                                    !
+                                                                      X at
+
+             LPISC,Case 3 (S; θ) = ℓ E (Sδr′ ; θ) , E (Sδr ; θ) −           ⟨−δr′′i , Fi (Sδr ; θ)⟩ ,                        (A9)
+                                                                      i=1
+
+where the point at r + δr is the point where PIRC loss is imposed (see Eq. (3)). The results are provided in Table A10 and
+indicate that Eq. (4) (Case 1) shows a better performance than the other cases for both the potential energy and the force
+predictions. In this study, we used the ANI-1x dataset with 1000 training samples different from the one used to train the
+model used in the main body to avoid overfitting on the test dataset. For the coefficient of the PITC and PISC losses, we
+used 0.1 and 0.001 with ϵmax = 0.01.
+
+D.2.2. F URTHER VARIATIONS
+Two-Point Spacial Consistency. The flexibility of the PISC loss allows us to explore additional forms of spatial consistency.
+For example, instead of using a triangular configuration, we can impose spatial consistency between two points at r and
+r + δr, leading to the following expression:
+                                                                        Nat
+                                                                                                 !
+                                                                        X
+                          LPISC,2pt (S; θ) = ℓ E (S; θ) , E (Sδr ; θ) −     ⟨−δri , Fi (Sδr ; θ)⟩ .                         (A10)
+                                                                               i=1
+
+While not thoroughly investigated, we empirically observed that this loss delivers competitive performance when applied
+with the same coefficient value as the PITC loss.
+
+Two-Point Spacial Consistency with Label. Since the training sample includes a label, we can utilize this label
+information instead of predicting the potential energy of the original conformation to enforce two-point spatial consistency.
+                                                                              Nat
+                                                                                                       !
+                                                                              X
+                           LPISC,2ptwl (S; θ) = ℓ     ESref , E (Sδr ; θ) −       ⟨−δri , Fi (Sδr ; θ)⟩ .                   (A11)
+                                                                              i=1
+
+We observed that this loss function performs well when applying the MACE model to datasets without force labels, as
+discussed in subsection 5.4.
+
+                                                                20
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Second-order Term Consideration for PITC Loss. In Eq. (2), we considered only the first-order Taylor expansion. Here,
+we introduce a straightforward approach to approximately account for the second-order term. Using the energy and forces at
+r + δr, the second-order derivative of the potential energy can be approximated using the explicit finite difference method as:
+
+                                δrµ δrν ∂µ ∂ν E = δrµ δrν ∂µ Fν ≃ ⟨δr, F (Sδr ; θ) − F (S; θ)⟩,                         (A12)
+
+Then, Eq. (2) with the above second-order term can be written as:
+
+                 E (Sδr ; θ) ≈ E (S; θ)
+                                Nat
+                                X
+                                      [⟨δri , Fi (S; θ)⟩ + k2nd ⟨δri , Fi (Sδr ; θ) − Fi (S; θ)⟩] + O ∥δr∥3 ,
+                                                                                                           
+                            −
+                                i=1
+                                              Nat
+                                              X
+                                                    ⟨δri , (1 − k2nd )Fi (S; θ) + k2nd Fi (Sδr ; θ)⟩ + O ∥δr∥3 ,        (A13)
+                                                                                                              
+                            = E (S; θ) −
+                                              i=1
+
+where k2nd is a numeric parameter that controls the contribution of the second-order term. Note that setting k2nd = 0.5
+recovers the exact second-order expression, while k2nd = 0 reverts to the first-order approximation.
+Using Eq. (A13), the expression of the second-order PITC loss is given as:
+                                                       Nat
+                                                        X                                                   
+              LPITC (S; θ) = ℓ E (Sδr ; θ) , E (S; θ) −     ⟨δri , (1 − k2nd )Fi (S; θ) + k2nd Fi (Sδr ; θ)⟩ ,          (A14)
+                                                               i=1
+
+
+Note that the second-order term becomes significant under the following conditions: (1) the accuracy of the MLIP model
+surpasses the contribution of the first-order term, and (2) the original conformation is near the equilibrium state. The latter
+can be understood as follows. Considering a spring model as a two-body interaction, the potential energy can be expressed
+as:
+                                                            kbond
+                                                   V (r) =         (r − r0 )2 ,                                         (A15)
+                                                              2
+where kbond is the constant characterizing the strength of the two-body interaction, and r0 denotes the equilibrium bond
+length. Introducing a small perturbation δr in the bond length, the potential energy becomes:
+                                       kbond                                                 kbond 2
+                      V (r + δr) =           (r − r0 + δr)2 = V (r) + 2kbond ⟨r − r0 , δr⟩ +      δr .                  (A16)
+                                         2                                                     2
+At the equilibrium state (r = r0 ), the above equation demonstrates that the second-order term becomes dominant. Conse-
+quently, the second-order accuracy of the PITC loss function becomes crucial in such scenarios.
+
+PITS for Curl of Forces Another potential       direction is enforcing  a reduction in the curl of the forces. This can be
+achieved by leveraging Stokes’ theorem: Σ ∇ × F · dS = ∂Σ F · dl = 0 where Σ represents a specific surface regime,
+                                          R                  H
+
+and ∂Σ denotes its boundary. Similar to the PISC loss, the right-hand side of this equation can be effectively described by
+considering a triangular configuration, where the midpoints of the three sides correspond to r, r + δr, r + δr′ .
+
+D.3. Detailed Setups for Qualitative Analysis
+D.3.1. C–H P OTENTIAL E NERGY P ROFILE OF A SPIRIN
+This section describes the detailed setup and procedure for section 5.3. First, we trained PaiNN with and without
+PIWSL losses using the aspirin data from rMD17 with training set sizes of 100 and 200. For PIWSL, we used
+(CPITC , CPISC , ϵmax ) = (1.2, 0.01, 0.015). The other experimental setups are the same as for rMD17 experiments
+presented in section B.1. We used the PaiNN model with gradient-based forces to obtain the reference model and tuned
+the model hyper-parameter with Optuna (Akiba et al., 2019). The obtained models’ performance is provided in Table A11.
+Then, we prepared the aspirin molecule structures, including the corresponding atomic coordinates and atomic types. For
+these structures, we perturbed one of the C-H bonds with a bond length from 0.8 Å to 1.8 Å. We prepared 100 structures
+and estimated the corresponding potential energy with the pre-trained models. The aspirin data is provided in our publicly
+available source code.
+
+                                                                  21
+                             Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A11: Performance of PaiNN employed in figure 2 (c, d). All the models other than the reference model (Ntrain =
+1000) use the OC20’s hyper-parameters. For the reference model, we tuned the hyper-parameters of PaiNN model following
+the original paper (Schütt et al., 2021).
+
+
+                                              Ntrain = 100              Ntrain = 200           Ntrain = 1000
+                                            Baseline PIWSL            Baseline PIWSL             Baseline
+                                       E       6.55        5.64           5.11       4.48            0.68
+                            PaiNN
+                                       F       7.38        7.36           3.95       3.97            1.44
+
+
+
+D.3.2. MD S IMULATION S TABILITY A NALYSIS
+NVE-Ensembles This section describes the detailed setup and the procedure for our analysis of MD simulations in
+section 5.3. Because our implementation builds upon the source code provided by Fu et al. (2023), we used their scripts for
+performing MD simulations. However, we added a minor modification to enable MD simulations in the microcanonical
+(NVE) statistical ensemble, i.e., the particle position and velocity are updated with velocity Verlet algorithm(Verlet, 1967) 10 .
+We set the initial temperature to 300 K and the integration time step to 0.5 fs for all simulations. As defined by Fu et al.
+(2023), the stability of an MD simulation for a target molecule is defined as the time T during which the bond lengths satisfy
+the following condition
+                                            max |(||xi (T ) − xj (T )||) − bi,j | > ∆ ,                                   (A17)
+                                              (i,j)∈B
+
+where B denotes the set of all bonds, {i, j} denote the pair of bonded atoms, and bi,j denotes the equilibrium bond length.
+Following Fu et al. (2023), we set ∆ = 0.5Å. This definition indicates when the molecule experiences significant structural
+changes during the MD simulation.
+We trained PaiNN and Equiformer v2 models with and without PIWSL losses using the aspirin data from rMD17. We used
+training set sizes of 100 and 200 for PaiNN-GF and 1000 for PaiNN and Equiformer v2 with direct force. The corresponding
+stability values are presented in Table A12. The hyperparameters for the PIWSL loss are provided in Table A13. To train
+direct force model with 1000 samples, we used second-order PITC and PISC losses because of their good accuracy. The
+results for the stability of the PaiNN (direct and gradient-based force) and Equiformer v2 models are shown in Table A14.
+To select the hyperparameters in Table A13, a series of MD simulations with a fixed random number seed for the initial
+atomic velocities was used. For our final stability results in Table A12, a series of MD simulations with three different
+random seeds for velocities and the selected hyperparameters was used.
+
+NVT-Ensembles To investigate the effect of thermostats, we also performed MD simulations in the canonical (NVT)
+statistical ensemble, where temperature is maintained constant. To keep the temperature constant, we used Nosé-Hoover
+thermostat (Nosé, 1984; Hoover, 1985). The initial and target temperatures were both set to 300 K for all simulations. The
+integration time step was set to 0.5 fs and the characteristic parameter τ for the thermostat is set to 20 fs. The result, shown
+in figure A1, demonstrate that the thermostat stabilizes the simulations by mitigating the increase in kinetic energy.
+
+D.4. Training setup for MD17-CCSD(T) Experiments
+In this section, we provide the training setup of finetuning of MACE-OFF discussed in section 5.4. The considered model is
+MACE-OFF (large) (Kovács et al., 2023) which is the MACE model pretrained on SPICE (Eastman et al., 2023), QMugs
+(Isert et al., 2022), and liquid water (Schran et al., 2021) datasets. The foundation model is finetuned on the aspirin molecule
+data in CCSD dataset (Chmiela et al., 2018) whose potential energy is obtained at quantum-chemical CCSD level of
+accuracy. The data includes 1500 samples which are split into 950/50/500 as train/validation/test datasets. To emulate
+general coupling-cluster method dataset, we only use potential energy label for training. We utilize the set up provided in
+the official repository11 with modifying learning rate from 10−2 to 10−3 , to improve the performance. For the model trained
+scratch, we use the same architecture with setting energy weight to 40 and learning rate to 10−3 to improve the performance.
+For PIWSL, we used the second-order PITC and 2pt-with-label PISC losses Equation A10 with the following parameters:
+  10
+      Note that the total energy conservation necessary for the microcanonical statistical ensemble is in general not perfectly satisfied due
+to the numerical error, in particular, when the force is not calculated as the curl of the force.
+   11
+      https://mace-docs.readthedocs.io/en/latest/guide/finetuning.html
+
+                                                                     22
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A12: Stability of the models employed in the MD analysis. The presented numerical values are the stability defined
+by Eq. (A17) measured in ps. The results are obtained as an average over three different random seeds for the initial velocity
+of the atoms in the target aspirin molecule. "GF" denotes the gradient-based force prediction.
+
+
+                                                      Ntrain = 100      Ntrain = 200    Ntrain = 1000
+                                       Baseline               –              –              2.68 ± 0.13
+                        PaiNN
+                                       PIWSL                  –              –              4.65 ± 0.72
+                                       Baseline               –              –           14.53 ± 8.61
+                        Equiformer
+                                       PIWSL                  –              –           24.65 ± 8.24
+                                       Baseline        3.25 ± 3.98      220.5 ± 137.7           –
+                        PaiNN-GF
+                                       PIWSL          15.07 ± 10.09     267.7 ± 56.0            –
+
+
+Table A13: Hyper-parameters for the PIWSL loss used in the MD analysis. We used the following hyper-parameter for
+MD simulation analysis: (CPITC , CPISC , ϵmax )= Case α: (0.01, 0.001, 0.025), Case β: (1.2, 0.01, 0.01), Case γ: (1.2, 0.01,
+0.025), Case δ: (1.2, 0.01, 0.015), Case ϵ: (0.1, 0.01, 0.01), and Case ζ: (1.0, 0., 0.01). "GF" denotes the gradient-based
+force prediction.
+
+                                 Dataset       Size     Equiformer v2     PaiNN     PaiNN-GF
+                                 rMD17          100               α         δ           ϵ
+                                 (Aspirin)      200               β         β           ζ
+                                               1000               ϵ         γ           –
+
+
+
+(CPITC , CPISC , ϵ) = (0.55, 4.5, 0.01).
+
+D.5. Metric Dependence of PITC
+Table A15 provides the result of the metric dependence of PIWSL. For simplicity, we only consider the PITC loss (the
+coefficient of the PITC and PISC losses are set as 0.1 and 0). For the ReLU metric, we consider
+
+                                                      Nat
+                                                                                                                  !
+                                                      X
+              LReLU (S; θ) = ReLU          E (S; θ) −     ⟨δri , Fi (S; θ)⟩ − E (Sδr ; θ) − E (Sδr ; θ) ||δr||2       .   (A18)
+                                                        i=1
+
+
+This metric is zero when the difference between the two terms is less than the second-order term in δr. The results indicate
+that taking the second-order term into account does not improve the performance (see PITC MAE Loss and PITC ReLU
+Loss results), and the MSE loss function shows the best performance. In this study, we used the ANI-1x dataset and the
+1000 training samples. These samples differ from the one used to train the model in the main text to avoid overfitting the test
+dataset.
+
+D.6. Perturbation Magnitude Dependence
+In this section, we provide the result of the perturbation magnitude dependence of PIWSL, i.e., ∥δr∥ = ϵ. First, we consider
+only the 1st-order PITC loss (the coefficient of the PITC and PISC losses are set as 0.1 and 0.0). The results are provided in
+Table A16 and demonstrate that the longer perturbation vector length is fruitful for force predictions. However, values that
+are too large are harmful to predicting potential energy. In this study, we used the ANI-1x dataset and the 1000 training
+samples. These samples differ from the one used to train the model in the main text to avoid overfitting the test dataset.
+Second, we examine the sensitivity of the second-order PIWSL in the finetuning of MACE-OFF on the MD17 (CCSD)
+dataset, as discussed in section 5.4. The results, presented in Table A17, indicate that the model’s performance is not strongly
+affected by the choice of ϵmax , even in the second-order setting.
+
+                                                                  23
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A14: Energy and force errors for the models employed in the MD analysis. The presented numerical values are
+the root-mean-square errors (RMSEs) of energy (E) and force (F). Energy RMSE is given in kcal/mol, while force RMSE is
+in kcal/mol/Å. "GF" denotes the gradient-based force prediction.
+
+
+                                           Ntrain = 100             Ntrain = 200      Ntrain = 1000
+                                         Baseline PIWSL           Baseline PIWSL     Baseline PIWSL
+                                    E        6.55     5.64         5.11     4.48       2.30        0.99
+                  PaiNN-DF
+                                    F        7.38     7.36         3.95     3.97       1.63        1.61
+                                    E        4.79     4.64         4.92     4.82       1.39        1.19
+                  Equiformer v2
+                                    F        4.86     4.90         2.50     2.42       0.76        0.75
+                                    E        6.05     6.03         6.01     6.02         –           –
+                  PaiNN-GF
+                                    F        6.41     6.33         3.50     3.53         –           –
+
+
+Table A15: Metric dependence of PITC. The presented numerical values are the root mean square errors (RMSEs) for the
+ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors are obtained by averaging over
+three independent runs. All models are trained using 1000 configurations. MAE refers to the mean absolute error, and MSE
+denotes the mean square error.
+
+                   Model          Baseline     PITC MAE Loss        PITC MSE Loss     PITC ReLU Loss
+                             E       60.11               58.84               47.09                 60.47
+                   PaiNN
+                             F       13.10               13.18               12.19                 13.06
+
+
+D.7. Dependence of PITC on the Number of Perturbed Atoms
+This section provides the result of the perturbed atom number dependence of PIWSL. For simplicity, we only consider the
+PITC loss (the coefficient of the PIRC and PISC losses are set as 0.1 and 0). In this study, we randomly selected atoms in a
+training sample following the ratio of 0 %, 10 %, 20 %, 50 %, 75 %, 90 %, 100 %. The results are provided in Table A18,
+which indicates that around 75% to 100% ratio cases result in the best performance for the force and the potential energy
+prediction. However, the number dependence is rather complicated. Therefore, in the main text, we perturbed all the atoms
+(100 %) as a conservative choice. In this study, we used the ANI-1x dataset and the 1000 training samples. These samples
+differ from the one used to train the model in the main text to avoid overfitting the test dataset.
+
+D.8. Dependence on the Number of Training Iterations
+To show the effectiveness of our approach even in the case of longer training, we provide the result of the dependence of
+PIWSL on the number of training iterations. In this study, we performed training twice as long as in the main text, that
+is, 80,000 iterations for ANI-1x with 1000 training samples. The results are provided in Table A19 and indicate that our
+approach performs better in the longer training case. On the other hand, the training without PIWSL shows an overfitting to
+the validation dataset, reducing its performance compared to the shorter training case. In this study, we used the ANI-1x
+dataset and the 1000 training samples. These samples differ from the one used to train the model in the main text to avoid
+overfitting the test dataset. The coefficients of the PITC and PISC losses are 1.2 and 0.01, respectively.
+In Table A20, we also present the performance dependence on training length (measured in epochs) of MACE-OFF model
+finetuned on MD17 aspirin data with CCSD label. The results demonstrate that PIWSL achieves substantially better
+performance than the baseline, even when the latter is trained for ten times as many epochs.
+
+D.9. Additional Experiments with Gradient-Based Forces
+In this section, we provide the result of the training with the gradient-based force predictions. The results are provided
+in Table A21 and demonstrate that our PIWSL loss enables a better force prediction, even in the case of gradient-based
+force predictions. These results also indicate that our PIWSL method can improve the ML model performance in the case
+of MLIPs commonly applied in computational chemistry and materials science. We consider that this is partly due to the
+
+                                                             24
+                             Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+                                    Equiformer                                                       PaiNN
+                    300                                                      300
+
+
+       Stability [ps]                                           Stability [ps]
+                    200                                                      200
+
+                    100                                                      100
+
+                        0    100     200 1000                                       0      100     200 1000
+                              Training set size                                             Training set size
+                                                    Baseline                       PIWSL
+Figure A1: Stability analysis of the MLIP models during MD simulations. Stability during MD simulations is assessed
+for the baseline MLIP models and those trained with PIWSL. All results are obtained for the aspirin molecule and MD
+simulations in the canonical (N V T) statistical ensemble. We measure stability during MD simulations according to (Fu
+et al., 2023).
+
+
+
+Table A16: Perturbation magnitude dependence of PITC. The presented numerical values are the root mean square errors
+(RMSEs) for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors are obtained by
+averaging over three independent runs. All models are trained using 1000 configurations.
+
+                            Model        Baseline    ϵmax = 0.0005               ϵmax = 0.005   ϵmax = 0.05
+                                     E      60.11             60.43                     47.09        109.17
+                            PaiNN
+                                     F      13.10             12.75                     12.19         11.70
+
+
+
+
+effectiveness of the weak label at r + δr as indicated by the WL results, which show an improvement of the performance
+different from the case with the direct force branch (see also section E). We hypothesize that the further improvement results
+from the additional gradient calculation as indicated in Eq. (A5) and Eq. (A6). This observation also indicates that our
+PIWSL method can potentially improve other generic property prediction tasks by calculating their first derivatives in terms
+of the atomic coordinate and utilizing the proposed loss functions. In this study, the coefficient of the PITC and PISC losses
+are set as 0.1 and 0.01 with ϵmax = 0.01. The weak label loss coefficient is set as 0.1.
+
+D.10. Reducing Curl of Forces for Models with the Force Branch
+In this section, we study the effect of our loss functions on the curl of forces in the case of the model with the force
+branch. The results are provided in Table A22, which shows that our PITC loss reduces the curl of the predicted forces,
+allowing potentially better energy conservation during MD simulations. In this study, we used the ANI-1x dataset and
+the 1000 training samples. These samples differ from the one used to train the model in the main text to avoid overfitting
+the test dataset. The hyper-parameters of the PITC and PISC losses are (CPITC , CPISC , ϵmax ) = (1.2, 0.01, 0.025). It is
+theoretically possible to define a loss function aimed at directly minimizing the absolute value of the curl of forces. However,
+this approach necessitates calculating the Hessian matrix, which requires a substantial memory cost given the limitations
+of current computational resources. Developing a method to train with such a loss function while mitigating memory
+requirements is a promising direction for future research.
+
+                                                              25
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A17: Performance dependence of the second order PIWSL on ϵmax . The numerical values are MAEs for the
+energy in kcal/mol and force in kcal/mol/Åof MACE-OFF model finetuned on MD17-CC dataset.
+
+
+                        Model                 Baseline     ϵmax = 0.005     ϵmax = 0.01    ϵmax = 0.02
+                                        E           1.21             0.73          0.72           0.75
+                        MACE-OFF
+                                        F           6.90             4.20          3.77           4.04
+
+
+Table A18: Dependence of PITC on the number of perturbed atoms. The presented numerical values are the root mean
+square errors (RMSEs) for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors
+are obtained by averaging over three independent runs. All models are trained using 1000 configurations.
+
+                        Model          Baseline       10%     20%       50%     75%       90%   100 %
+                                  E         60.11    46.68   52.37     54.51   46.94   45.92    46.32
+                        PaiNN
+                                  F         13.10    13.03   12.62     12.16   12.14   12.24    12.42
+
+
+
+E. Further Analyses of PIWSL
+The following provides further analyses of our approach. We provide the results for Equiformer v2 and PaiNN since these
+models employ equivariant features and demonstrate a high accuracy on the ANI-1x dataset when trained using 1000
+configurations.
+
+E.1. Training MLIPs without Reference Forces
+In the following, we explore scenarios where only potential energy labels are available. This situation commonly arises when
+calculating energy labels with chemically accurate approaches, such as CCSD(T)/CBS (Hobza & Šponer, 2002; Feller et al.,
+2006), for which force calculation is infeasible. To consider practical applications, we examine two cases: (1) predicting
+force by a force branch (FB) and (2) predicting force as a gradient of the potential energy (GF). The former enables fast
+force prediction and is popular in the machine learning community, while the latter requires additional gradient calculation
+but yields curl-free force predictions. It is popular in computational chemistry as it ensures the conservation of the total
+energy during MD simulations. The results are provided in Table A23; training without reference forces is achieved by
+setting the relative force contribution to zero in Eq. (1). The PIWSL method consistently performs better than the baseline
+for the FB and GF cases. However, a more significant improvement in the force prediction performance is observed in the
+GF case. We attribute this phenomenon to the inherent nature of PIWSL, which requires consistency between the potential
+energy and atomic forces, as discussed in section 5.3. This result aligns with our expectations, confirming the capability of
+our PIWSL method to enable ML models to reduce the error in the predicted forces. Overall, PIWSL opens a new possibility
+for training MLIP models using highly accurate reference methods, such as CCSD(T)/CBS.
+
+E.2. Comparing PITC with the Taylor-Expansion-Based Weak Label Loss.
+We compare the PIWSL method with the Taylor-expansion-based weak label (WL) approach (Cooper et al., 2020), whose
+loss function is presented in Eq. (A3). For simplicity, we only consider the PITC loss in Eq. (3). For a fair comparison, we
+consider the following two cases. First, we train with reference forces and energies (w. RF). Second, we train the methods
+without reference forces and use only the reference energies. For the training with reference forces, we set the numeric
+coefficient of the PITC loss to 1.0; for the training without reference forces, the coefficient is set to 0.1. Note that the WL
+loss without the reference force is calculated using the predicted force labels. The results are provided in Table A24.
+Our PITC loss demonstrates the best accuracy in all cases, with and without the reference forces. Interestingly, PaiNN
+failed to learn the potential energy with the WL loss and reference forces. We hypothesize this to be due to the imbalance
+of the training between the energies and forces. Specifically, the WL loss trains only the potential energy, resulting in an
+inconsistency between the energy and force branches, which share the same readout layer that experiences more frequent
+updates using the potential energy. This hypothesis is supported by the results for the training without reference forces,
+where the error in energy is reduced compared to the baseline. A further validation in a similar experiment in the case of GF
+
+                                                               26
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A19: Dependence on the number of training iterations. The presented numerical values are the root mean square
+errors (RMSEs) for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors are
+obtained by averaging over three independent runs. All models are trained using 1000 configurations.
+
+                             Model     Iteration Number                 Baseline          PIWSL
+                                       40,000               E     56.62 ± 2.80       24.53 ± 0.16
+                                                            F     12.96 ± 0.18       11.43 ± 0.05
+                             PaiNN
+                                       80,000               E     59.92 ± 1.47       23.78 ± 0.16
+                                                            F     13.10 ± 0.19       11.50 ± 0.04
+
+Table A20: Dependence on the number of training iterations of MACE-OFF finetuning. The presented numerical
+values are the mean absolute errors (MAEs) for the MD17-CC, in terms of energy (in kcal/mol) and force (in kcal/mol/Å).
+
+                                Model           Epoch Number              Baseline     PIWSL
+                                                            100     E         1.21        0.72
+                                                                    F         6.90        3.77
+                                MACE-OFF
+                                                          1,000     E         1.19          –
+                                                                    F         6.24          –
+
+
+is provided in section D.9. However, the proposed PITC loss still performs better here. In summary, the PITC loss enables
+MLIPs to learn energies and forces consistent with each other and does it better than the previously proposed WL method.
+
+E.3. Ablating the Impact of PITC and PISC Losses.
+We conduct an ablation experiment to analyze the impact of PITC and PISC losses. Results in Table A25 indicate that the
+PITC loss predominantly improves the accuracy of resulting models, especially for PaiNN. Using just the PISC loss does not
+consistently improve accuracy but stabilizes training when combined with PITC. This combined approach notably benefits
+Equiformer v2. For Equiformer v2, we repeated the experiment five times to reduce the effect from an outlier on the PITC
+loss.
+
+E.4. Adversarial Directions for Perturbing Atomic Positions.
+The following discusses the dependence of the PIWSL’s performance on selecting the vector δr in Eq. (5) employed to
+perturb atomic positions. The detailed implementation and setups are provided in section B.1. Table A26 compares the
+results obtained for a randomly-sampled vector δr and for the one determined adversarially. The results demonstrate that
+both approaches improve the performance compared to the baseline without weak supervision, though the results might
+depend on the employed model.
+
+E.5. Performance Difference Between First and Second order PIWSL
+In this section, we present a comparison between first- and second-order PIWSL methods. We evaluate a foundation model,
+MACE-OFF, fine-tuned on the MD17 Aspirin dataset with CCSC(T) labels and the MD22 buckyball catcher dataset, as well
+as PaiNN-GF, a gradient-based force model trained on 1,000 samples from ANI-1x. The results are provided in Table A27.
+Our findings indicate that the second-order term becomes more significant as model performance improves, particularly
+when force prediction error becomes small. This suggests that the first-order term, which encourages the model to predict
+the potential energy of neighboring conformations based on a first-order Taylor expansion, plays a crucial role in promoting
+a smoother potential energy surface. This effect arises because, in MACE and PaiNN-GF models, force predictions are
+derived as the gradient of the potential energy surface.
+
+
+
+
+                                                            27
+                          Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+Table A21: Results of PIWSL with gradient-based force predictions. The presented numerical values are the root mean
+square errors (RMSEs) for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å) errors
+are obtained by averaging over three independent runs. All models are trained using 1000 configurations.
+
+                             Model               Baseline (GF)     PIWSL (GF)            WL (GF)
+                                            E    23.57 ± 0.62      18.62 ± 0.09    22.61 ± 0.50
+                             PaiNN
+                                            F    11.32 ± 0.08      10.94 ± 0.01    11.72 ± 0.06
+                                            E    29.07 ± 2.32      19.53 ± 0.32    21.07 ± 0.86
+                             Equiformer
+                                            F    11.90 ± 0.13      11.99 ± 0.03    11.90 ± 0.20
+
+Table A22: Curl of forces for models with the force branch. The presented numerical values are the absolute values of the
+total curl of the force evaluated for the ANI-1x dataset (Smith et al., 2020). Energy (in kcal/mol) and force (in kcal/mol/Å)
+errors are obtained by averaging over three independent runs. All models are trained using 1000 configurations.
+
+                                        Model                Baseline          PITC
+                                        PaiNN           45.18 ± 4.07    39.06 ± 0.58
+                                        Equiformer      29.62 ± 0.28    23.42 ± 0.09
+
+Table A23: Results for models trained on the ANI-1x dataset without reference forces. All models are trained using
+1000 training samples. FB refers to the setting where the force branch estimates the force, and GF denotes the setting where
+the force is estimated by the gradient of the potential energy with respect to the atomic coordinates.
+
+
+                                  Model          Case              Baseline         PIWSL
+                                                  FB     E    42.36 ± 0.30    25.42 ± 0.72
+                                                         F    24.25 ± 0.00    20.54 ± 0.08
+                                  PaiNN
+                                                  GF     E    41.83 ± 1.81    29.71 ± 0.55
+                                                         F    83.36 ± 2.85    24.02 ± 0.95
+                                                  FB     E    43.14 ± 0.86    29.48 ± 0.51
+                                                         F    24.25 ± 0.00    21.99 ± 0.49
+                                  Equiformer
+                                                  GF     E    42.55 ± 0.99    32.66 ± 1.11
+                                                         F    35.70 ± 0.78    21.83 ± 0.27
+
+
+Table A24: Comparison of PITC and the Taylor-expansion-based weak label loss. WL (+FP) denotes the Taylor-
+expansion-based method using reference energies and either reference (w. RF) or predicted (w/o. RF) forces; see Eq. (A3).
+The listed values are the RMSE values for energies in kcal/mol and atomic forces in kcal/mol/Å. All models are trained on
+the ANI-1x dataset using 1000 configurations, with (w.) and without (w/o.) reference atomic forces (RF).
+
+
+                     Model           Case                    Baseline             PITC        WL (+FP)
+                                     (w. RF)      E     56.62 ± 2.80    30.94± 0.56          81.86± 9.39
+                                                  F     12.96± 0.06     12.04± 0.04          14.54± 0.12
+                     PaiNN
+                                     (w/o. RF)    E     42.36± 0.30     25.42± 0.72          41.77± 4.82
+                                                  F     24.25± 0.00     20.54± 0.08          24.68± 0.54
+                                     (w. RF)      E     54.52± 4.52     23.16± 0.19          31.02± 3.99
+                                                  F     10.10± 0.00     10.03± 0.05          13.43± 0.92
+                     Equiformer
+                                     (w/o. RF)    E     43.14± 0.86     29.48± 0.51        88.59± 11.36
+                                                  F     24.25± 0.00     21.99± 0.49       293.41± 26.96
+
+
+                                                              28
+                        Physics-Informed Weakly Supervised Learning for Interatomic Potentials
+
+
+
+Table A25: Results for models with direct-force trained on the ANI-1x dataset with ablated weakly supervised losses.
+All models are trained using 1000 training samples. All results are obtained by averaging over three independent runs.
+Energy RMSE is given in kcal/mol, while force RMSE is given in kcal/mol/Å.
+
+
+                         Model           PITC      PISC                   E                 F
+                                           ✗         ✗         56.62 ± 2.80   12.96 ± 0.06
+                                           ✓         ✗         24.60 ± 0.18   11.51 ± 0.03
+                         PaiNN
+                                           ✗         ✓         58.30 ± 2.10   13.18 ± 0.29
+                                           ✓         ✓         24.53 ± 0.48   11.43 ± 0.05
+                                           ✗         ✗      54.52 ± 4.52      10.10 ± 0.00
+                                           ✓         ✗     32.64 ± 26.48       9.64 ± 0.03
+                         Equiformer
+                                           ✗         ✓      48.96 ± 4.96      10.30 ± 0.06
+                                           ✓         ✓      20.89 ± 0.50       9.68 ± 0.03
+
+
+
+
+Table A26: PIWSL’s performance dependence on the atomic position perturbation vector. The numerical values are
+RMSEs for the energy in kcal/mol and force in kcal/mol/Å. All results are provided for the ANI-1x dataset and models
+trained using 1000 configurations.
+
+
+                                         Baseline        Random (Eq. (6))     Adversarial (Eq. (7))
+                                  E    56.62 ± 2.80        24.53 ± 0.48             33.67 ± 1.12
+                   PaiNN
+                                  F    12.96 ± 0.18        11.43 ± 0.05             12.74 ± 0.14
+                                  E    54.52 ± 4.52        23.16 ± 0.50             20.54 ± 0.21
+                   Equiformer
+                                  F    10.10 ± 0.00        10.03 ± 0.03              9.93 ± 0.04
+
+
+
+
+Table A27: Performance difference between first and second order PIWSL. The numerical values are RMSEs (ANI-1x)
+and MAE (MD17-CC/MD22-BB) for the energy in kcal/mol and force in kcal/mol/Å. MD17-CC denotes MD17 aspirin data
+with CCSD label, MD22-BB denotes MD22 buckyball catcher data, and ANI-1x (1K) denotes 1000 samples from ANI-1x.
+
+
+             Dataset          Model                  Baseline      1st-order PIWSL      2nd-order PIWSL
+                                               E    1.21 ± 0.00       0.90 ± 0.03          0.72 ± 0.01
+             MD17-CC          MACE-OFF
+                                               F    6.90 ± 0.01       4.59 ± 0.16          3.77 ± 0.13
+                                               E    1.16 ± 0.15       1.16 ± 0.28          0.99 ± 0.05
+             MD22-BB          MACE-OFF
+                                               F    0.35 ± 0.00       0.35 ± 0.00          0.34 ± 0.00
+                                               E   23.57 ± 0.62      18.62 ± 0.09         18.88 ± 0.23
+             ANI-1x (1K)      PaiNN-GF
+                                               F   11.32 ± 0.08      10.94 ± 0.01         11.01 ± 0.00
+
+
+
+
+                                                          29
+

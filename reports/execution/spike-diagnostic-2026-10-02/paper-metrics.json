@@ -1,0 +1,955 @@
+{
+  "case_objective_fd_checks_passed": 16,
+  "execution": {
+    "cases": {
+      "width32-u3600": {
+        "case": {
+          "name": "width32-u3600",
+          "update": 3600,
+          "width": "width32"
+        },
+        "elapsed_seconds": 6.179228332999628,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width32-u3700": {
+        "case": {
+          "name": "width32-u3700",
+          "update": 3700,
+          "width": "width32"
+        },
+        "elapsed_seconds": 1.7914870000095107,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width32-u3800": {
+        "case": {
+          "name": "width32-u3800",
+          "update": 3800,
+          "width": "width32"
+        },
+        "elapsed_seconds": 1.7848824159882497,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width32-u6000": {
+        "case": {
+          "name": "width32-u6000",
+          "update": 6000,
+          "width": "width32"
+        },
+        "elapsed_seconds": 1.688895416999003,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width64-u4900": {
+        "case": {
+          "name": "width64-u4900",
+          "update": 4900,
+          "width": "width64"
+        },
+        "elapsed_seconds": 6.682039375009481,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width64-u5000": {
+        "case": {
+          "name": "width64-u5000",
+          "update": 5000,
+          "width": "width64"
+        },
+        "elapsed_seconds": 3.729796333005652,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width64-u5100": {
+        "case": {
+          "name": "width64-u5100",
+          "update": 5100,
+          "width": "width64"
+        },
+        "elapsed_seconds": 3.6910264170146547,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      },
+      "width64-u6000": {
+        "case": {
+          "name": "width64-u6000",
+          "update": 6000,
+          "width": "width64"
+        },
+        "elapsed_seconds": 3.645222332997946,
+        "executed": true,
+        "status": "completed",
+        "verification_valid": true
+      }
+    },
+    "elapsed_seconds": 36.18193837499712,
+    "execution_valid": true,
+    "fresh_integrity_failure": null,
+    "full_pilot": "pending",
+    "model_definitions_constructed": 2,
+    "optimizer_proposals": 0,
+    "random_parameter_initializations": 0,
+    "restored_states": 8,
+    "source_integrity": true,
+    "status": "completed",
+    "training_updates": 0,
+    "within_total_cap": true
+  },
+  "failed_individual_fd_steps": [
+    {
+      "absolute_error": 0.012876678739630165,
+      "autodiff": 120.41407647211625,
+      "case": "width64-u5100",
+      "finite_difference": 120.42695315085588,
+      "objective": "energy",
+      "step": 0.0001,
+      "valid": false
+    },
+    {
+      "absolute_error": 3.1798494105783615e-05,
+      "autodiff": 0.26581845582822744,
+      "case": "width64-u6000",
+      "finite_difference": 0.26578665733412166,
+      "objective": "force",
+      "step": 0.0001,
+      "valid": false
+    }
+  ],
+  "finite_difference_steps_passed": 30,
+  "finite_difference_steps_total": 32,
+  "full_pilot": "pending",
+  "increments": {
+    "width32": {
+      "anchor": {
+        "peak_to_next": {
+          "energy_mse_change_eV2": -0.1301448602596516,
+          "identity_error_eV2": 3.209238430557093e-17,
+          "mean_squared_change_eV2": -0.1307397866742972,
+          "offset_increase_share": null,
+          "offset_increase_share_unavailable_reason": "nonpositive_mse_increase",
+          "variance_change_eV2": 0.0005949264146455592
+        },
+        "pre_to_peak": {
+          "energy_mse_change_eV2": 0.13039733064120257,
+          "identity_error_eV2": -1.6479873021779667e-17,
+          "mean_squared_change_eV2": 0.1307907066183917,
+          "offset_increase_share": 1.0030167486961181,
+          "offset_increase_share_unavailable_reason": null,
+          "variance_change_eV2": -0.00039337597718912005
+        }
+      },
+      "fitting": {
+        "peak_to_next": {
+          "energy_mse_change_eV2": -0.1178346173649426,
+          "identity_error_eV2": 4.5102810375396984e-17,
+          "mean_squared_change_eV2": -0.11643598822099852,
+          "offset_increase_share": null,
+          "offset_increase_share_unavailable_reason": "nonpositive_mse_increase",
+          "variance_change_eV2": -0.0013986291439441363
+        },
+        "pre_to_peak": {
+          "energy_mse_change_eV2": 0.11716158941686053,
+          "identity_error_eV2": -3.122502256758253e-17,
+          "mean_squared_change_eV2": 0.11644042499830574,
+          "offset_increase_share": 0.9938447026696703,
+          "offset_increase_share_unavailable_reason": null,
+          "variance_change_eV2": 0.0007211644185548156
+        }
+      }
+    },
+    "width64": {
+      "anchor": {
+        "peak_to_next": {
+          "energy_mse_change_eV2": -4.678629061074072,
+          "identity_error_eV2": 1.9810542095655137e-15,
+          "mean_squared_change_eV2": -4.673462213279014,
+          "offset_increase_share": null,
+          "offset_increase_share_unavailable_reason": "nonpositive_mse_increase",
+          "variance_change_eV2": -0.0051668477950601414
+        },
+        "pre_to_peak": {
+          "energy_mse_change_eV2": 4.678676116260255,
+          "identity_error_eV2": -2.312386393477084e-15,
+          "mean_squared_change_eV2": 4.673458952069675,
+          "offset_increase_share": 0.9988849058877043,
+          "offset_increase_share_unavailable_reason": null,
+          "variance_change_eV2": 0.0052171641905825825
+        }
+      },
+      "fitting": {
+        "peak_to_next": {
+          "energy_mse_change_eV2": -4.873184370238927,
+          "identity_error_eV2": 3.0878077872387166e-16,
+          "mean_squared_change_eV2": -4.8699819680802605,
+          "offset_increase_share": null,
+          "offset_increase_share_unavailable_reason": "nonpositive_mse_increase",
+          "variance_change_eV2": -0.003202402158666604
+        },
+        "pre_to_peak": {
+          "energy_mse_change_eV2": 4.872951394934722,
+          "identity_error_eV2": 4.683753385137379e-16,
+          "mean_squared_change_eV2": 4.870016781679178,
+          "offset_increase_share": 0.9993977749791236,
+          "offset_increase_share_unavailable_reason": null,
+          "variance_change_eV2": 0.002934613255543426
+        }
+      }
+    }
+  },
+  "independent_result_review": "pending",
+  "known_work": {
+    "finite_difference": {
+      "attempted_calls": 512,
+      "returned_calls": 512,
+      "returned_structure_exposures": 8192,
+      "valid_calls": 512,
+      "valid_structure_exposures": 8192
+    },
+    "gradient": {
+      "attempted_calls": 256,
+      "returned_calls": 256,
+      "returned_structure_exposures": 4096,
+      "valid_calls": 256,
+      "valid_structure_exposures": 4096
+    },
+    "prediction": {
+      "attempted_calls": 72,
+      "returned_calls": 72,
+      "returned_structure_exposures": 1152,
+      "valid_calls": 72,
+      "valid_structure_exposures": 1152
+    }
+  },
+  "new_training_updates": 0,
+  "selected_case_metrics": {
+    "width32-u3600": {
+      "bias_check": {
+        "expected_unweighted_energy": 0.6855486585755095,
+        "expected_weighted_energy": 0.009998292321511068,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": 0.6855486585755086,
+        "observed_weighted_energy": 0.009998292321511056,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0035747717500386965,
+          "decomposition_error_eV2": -4.336808689942018e-19,
+          "energy_mse_eV2": 0.004448033425928156,
+          "force_mse_eV2_per_A2": 0.005312762071368832,
+          "mean_energy_error_squared_eV2": 0.0008732616758894601,
+          "offset_share": 0.19632534027264859,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": -0.029551001267122238
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.017975785733417605,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.017976363969020193,
+          "force_mse_eV2_per_A2": 0.007776068662395142,
+          "mean_energy_error_squared_eV2": 5.782356025880325e-07,
+          "offset_share": 3.216643830668664e-05,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": 0.0007604180446228459
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": 0.8097957128811304,
+        "force": -0.034444571572780525
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.8505316385904642,
+          "cosine_unavailable_reason": null,
+          "dot": -0.12234143912167168,
+          "energy_norm": 0.3336295664047575,
+          "energy_weighted_component_negative_weighted_joint_slope": 0.0110327515422452,
+          "force_norm": 0.4311402611238043,
+          "force_over_energy_norm": 1.29227234195649,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.06354048564023047,
+          "parameter_count": 13536
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.009998292321511056,
+          "energy_weighted_component_negative_weighted_joint_slope": -9.996584934638695e-05,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.8058647090830453,
+          "cosine_unavailable_reason": null,
+          "dot": -0.00604935779520818,
+          "energy_norm": 0.07191513535504086,
+          "energy_weighted_component_negative_weighted_joint_slope": 0.0008775711020743314,
+          "force_norm": 0.1043822929110173,
+          "force_over_energy_norm": 1.4514648744758383,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.004846305278153234,
+          "parameter_count": 32
+        },
+        "whole": {
+          "cosine": -0.847682530284624,
+          "cosine_unavailable_reason": null,
+          "dot": -0.12839079691687985,
+          "energy_norm": 0.3414387794640596,
+          "energy_weighted_component_negative_weighted_joint_slope": 0.011810356794973137,
+          "force_norm": 0.44359619907666425,
+          "force_over_energy_norm": 1.2991968861092942,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0683867909183837,
+          "parameter_count": 13569
+        }
+      }
+    },
+    "width32-u3700": {
+      "bias_check": {
+        "expected_unweighted_energy": -307.6371934087964,
+        "expected_weighted_energy": -4.4866933224866,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": -307.6371934087964,
+        "observed_weighted_energy": -4.4866933224866,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0031813957728495765,
+          "decomposition_error_eV2": -3.859759734048396e-17,
+          "energy_mse_eV2": 0.1348453640671307,
+          "force_mse_eV2_per_A2": 0.005331590430123464,
+          "mean_energy_error_squared_eV2": 0.13166396829428118,
+          "offset_share": 0.9764070808450951,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": -0.3628552993884493
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.01869695015197242,
+          "decomposition_error_eV2": -3.8163916471489756e-17,
+          "energy_mse_eV2": 0.13513795338588072,
+          "force_mse_eV2_per_A2": 0.007767711452637091,
+          "mean_energy_error_squared_eV2": 0.11644100323390834,
+          "offset_share": 0.8616454542671367,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": -0.34123452819711597
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -266003.99192906497,
+        "force": -467.9799114062199
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": 0.6557963389656083,
+          "cosine_unavailable_reason": null,
+          "dot": 617.8700882485616,
+          "energy_norm": 55.82534515168657,
+          "energy_weighted_component_negative_weighted_joint_slope": -3734.3392495534963,
+          "force_norm": 16.87705891093443,
+          "force_over_energy_norm": 0.3023189353344204,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -902.7052057317129,
+          "parameter_count": 13536
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 4.4866933224866,
+          "energy_weighted_component_negative_weighted_joint_slope": -20.130416970045843,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.6669436522612661,
+          "cosine_unavailable_reason": null,
+          "dot": 18.88007025528014,
+          "energy_norm": 10.30290014017037,
+          "energy_weighted_component_negative_weighted_joint_slope": -125.0298215536028,
+          "force_norm": 2.747609264633759,
+          "force_over_energy_norm": 0.26668309187245254,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -26.429426926381407,
+          "parameter_count": 32
+        },
+        "whole": {
+          "cosine": 0.6539359584359904,
+          "cosine_unavailable_reason": null,
+          "dot": 636.7501585038417,
+          "energy_norm": 56.945143160530414,
+          "energy_weighted_component_negative_weighted_joint_slope": -3879.499488077145,
+          "force_norm": 17.09925361395206,
+          "force_over_energy_norm": 0.3002758912335798,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -929.1346326580942,
+          "parameter_count": 13569
+        }
+      }
+    },
+    "width32-u3800": {
+      "bias_check": {
+        "expected_unweighted_energy": 2.0189329638847116,
+        "expected_weighted_energy": 0.029444856609300372,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": 2.0189329638847116,
+        "observed_weighted_energy": 0.029444856609300372,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0037763221874951357,
+          "decomposition_error_eV2": -4.336808689942018e-19,
+          "energy_mse_eV2": 0.004700503807479107,
+          "force_mse_eV2_per_A2": 0.005227295170552201,
+          "mean_energy_error_squared_eV2": 0.0009241816199839718,
+          "offset_share": 0.19661331164405818,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": -0.03040035558976197
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.017298321008028285,
+          "decomposition_error_eV2": 3.469446951953614e-18,
+          "energy_mse_eV2": 0.017303336020938115,
+          "force_mse_eV2_per_A2": 0.007628727085498151,
+          "mean_energy_error_squared_eV2": 5.015012909828294e-06,
+          "offset_share": 0.0002898292504844046,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": 0.0022394224500590088
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -4.645977526194755,
+        "force": -0.07440133534679852
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.4323070251319819,
+          "cosine_unavailable_reason": null,
+          "dot": -0.07534025475861676,
+          "energy_norm": 0.3749631005731836,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.06525707203283866,
+          "force_norm": 0.4647787458064739,
+          "force_over_energy_norm": 1.2395319568672076,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.1406790277948221,
+          "parameter_count": 13536
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.029444856609300372,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.0008669995807422599,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.546230539569556,
+          "cosine_unavailable_reason": null,
+          "dot": -0.004723905267730553,
+          "energy_norm": 0.07974000747799802,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.0016345635248606267,
+          "force_norm": 0.10845483799924477,
+          "force_over_energy_norm": 1.3601056913516065,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0070385466177118735,
+          "parameter_count": 32
+        },
+        "whole": {
+          "cosine": -0.4363228917505783,
+          "cosine_unavailable_reason": null,
+          "dot": -0.08006416002634731,
+          "energy_norm": 0.38447730123479185,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.06775863513844158,
+          "force_norm": 0.47726484726918794,
+          "force_over_energy_norm": 1.2413342627416457,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.147717574412534,
+          "parameter_count": 13569
+        }
+      }
+    },
+    "width32-u6000": {
+      "bias_check": {
+        "expected_unweighted_energy": 0.1910573522728841,
+        "expected_weighted_energy": 0.002786450289564397,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": 0.19105735227287735,
+        "observed_weighted_energy": 0.0027864502895642985,
+        "valid": true
+      },
+      "endpoint_reference_max_error": 0.0,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.004883396577606338,
+          "decomposition_error_eV2": -1.734723475976807e-18,
+          "energy_mse_eV2": 0.007114939839938265,
+          "force_mse_eV2_per_A2": 0.004530867645870908,
+          "mean_energy_error_squared_eV2": 0.002231543262331928,
+          "offset_share": 0.31364190176361223,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": -0.047239213184937026
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.011983163512182258,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.01198320842349682,
+          "force_mse_eV2_per_A2": 0.0065589689424798165,
+          "mean_energy_error_squared_eV2": 4.4911314561212563e-08,
+          "offset_share": 3.747853911407392e-06,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": 0.00021192289768029449
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -0.06239167921735245,
+        "force": -0.021523429396738923
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.8105755561889156,
+          "cosine_unavailable_reason": null,
+          "dot": -0.0790054208685279,
+          "energy_norm": 0.2832361698990691,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.0012173070705664424,
+          "force_norm": 0.3441237723144909,
+          "force_over_energy_norm": 1.2149711402929897,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.03941574980342771,
+          "parameter_count": 13536
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.0027864502895642985,
+          "energy_weighted_component_negative_weighted_joint_slope": -7.764305216212963e-06,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.6378900447613025,
+          "cosine_unavailable_reason": null,
+          "dot": -0.001615761472700925,
+          "energy_norm": 0.036064292054799406,
+          "energy_weighted_component_negative_weighted_joint_slope": 0.00031512831128705757,
+          "force_norm": 0.07023506886127594,
+          "force_over_energy_norm": 1.9474961203883971,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0033172034252472475,
+          "parameter_count": 32
+        },
+        "whole": {
+          "cosine": -0.8039158426073846,
+          "cosine_unavailable_reason": null,
+          "dot": -0.08062118234122882,
+          "energy_norm": 0.2855365570390671,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.0009099430644955997,
+          "force_norm": 0.3512180740934381,
+          "force_over_energy_norm": 1.23002839893942,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.04273295322867496,
+          "parameter_count": 13569
+        }
+      }
+    },
+    "width64-u4900": {
+      "bias_check": {
+        "expected_unweighted_energy": -0.1740254575703663,
+        "expected_weighted_energy": -0.002538050909163287,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": -0.1740254575703633,
+        "observed_weighted_energy": -0.0025380509091632434,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0021851382448932893,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.002189686692909145,
+          "force_mse_eV2_per_A2": 0.005611739415719831,
+          "mean_energy_error_squared_eV2": 4.548448015855903e-06,
+          "offset_share": 0.002077214073860487,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": 0.0021327090790485004
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.009555352235121207,
+          "decomposition_error_eV2": -1.734723475976807e-18,
+          "energy_mse_eV2": 0.009555389496062851,
+          "force_mse_eV2_per_A2": 0.008461949627994764,
+          "mean_energy_error_squared_eV2": 3.726094164589925e-08,
+          "offset_share": 3.899468636129593e-06,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": -0.0001930309344273587
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -0.36607211677760176,
+        "force": -0.015477911282621937
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.951607681471604,
+          "cosine_unavailable_reason": null,
+          "dot": -0.2830092671015748,
+          "energy_norm": 0.5368337078827871,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.005181162817606777,
+          "force_norm": 0.5539912944575597,
+          "force_over_energy_norm": 1.0319607102214954,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.023897087233187786,
+          "parameter_count": 43456
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.0025380509091632434,
+          "energy_weighted_component_negative_weighted_joint_slope": -6.441702417504367e-06,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.6241680404213391,
+          "cosine_unavailable_reason": null,
+          "dot": -0.004601048997383483,
+          "energy_norm": 0.06893746506927723,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.00015132509279433375,
+          "force_norm": 0.10693011180897556,
+          "force_over_energy_norm": 1.5511175483681978,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.006832999814096531,
+          "parameter_count": 64
+        },
+        "whole": {
+          "cosine": -0.9418080243484269,
+          "cosine_unavailable_reason": null,
+          "dot": -0.2876103160989583,
+          "energy_norm": 0.541247859775701,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.005338929612818566,
+          "force_norm": 0.5642166278533828,
+          "force_over_energy_norm": 1.0424366908114893,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.030730087047284305,
+          "parameter_count": 43521
+        }
+      }
+    },
+    "width64-u5000": {
+      "bias_check": {
+        "expected_unweighted_energy": 1989.5327927413236,
+        "expected_weighted_energy": 29.016073762573132,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": 1989.5327927413236,
+        "observed_weighted_energy": 29.016073762573132,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.007402302435475872,
+          "decomposition_error_eV2": -1.9654416982817224e-15,
+          "energy_mse_eV2": 4.680865802953164,
+          "force_mse_eV2_per_A2": 0.007027823210054165,
+          "mean_energy_error_squared_eV2": 4.67346350051769,
+          "offset_share": 0.9984186040046685,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": 2.161819488421198
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.012489965490664633,
+          "decomposition_error_eV2": 9.020562075079397e-17,
+          "energy_mse_eV2": 4.882506784430785,
+          "force_mse_eV2_per_A2": 0.010254620466342844,
+          "mean_energy_error_squared_eV2": 4.87001681894012,
+          "offset_share": 0.9974418949031484,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": 2.206811459762732
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -30934826.79946613,
+        "force": -40525.95241141161
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": 0.7010270670585239,
+          "cosine_unavailable_reason": null,
+          "dot": 60228.3054763123,
+          "energy_norm": 618.6991388992897,
+          "energy_weighted_component_negative_weighted_joint_slope": -443016.92995103484,
+          "force_norm": 138.86293691786892,
+          "force_over_energy_norm": 0.22444339774727357,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -79511.22072576833,
+          "parameter_count": 43456
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 29.016073762573132,
+          "energy_weighted_component_negative_weighted_joint_slope": -841.9325365950849,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.6306152003206111,
+          "cosine_unavailable_reason": null,
+          "dot": 739.9503326837894,
+          "energy_norm": 81.03093960520764,
+          "energy_weighted_component_negative_weighted_joint_slope": -7305.963505986598,
+          "force_norm": 14.48062344176479,
+          "force_over_energy_norm": 0.17870486893421336,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -949.6387879459774,
+          "parameter_count": 64
+        },
+        "whole": {
+          "cosine": 0.6990803907076464,
+          "cosine_unavailable_reason": null,
+          "dot": 60968.255808996095,
+          "energy_norm": 624.6571621174454,
+          "energy_weighted_component_negative_weighted_joint_slope": -451164.82599361654,
+          "force_norm": 139.61591494066224,
+          "force_over_energy_norm": 0.22350806715702434,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -80460.85951371433,
+          "parameter_count": 43521
+        }
+      }
+    },
+    "width64-u5100": {
+      "bias_check": {
+        "expected_unweighted_energy": -5.322217518808624,
+        "expected_weighted_energy": -0.07762116647166456,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": -5.3222175188086185,
+        "observed_weighted_energy": -0.07762116647166449,
+        "valid": true
+      },
+      "endpoint_reference_max_error": null,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0022354546404157304,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.0022367418790923783,
+          "force_mse_eV2_per_A2": 0.005568366164452272,
+          "mean_energy_error_squared_eV2": 1.2872386766476853e-06,
+          "offset_share": 0.0005754971946830177,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": 0.0011345654131197924
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.009287563331998028,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.00932241419185751,
+          "force_mse_eV2_per_A2": 0.008399957635575486,
+          "mean_energy_error_squared_eV2": 3.485085985948219e-05,
+          "offset_share": 0.003738394276658725,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": -0.0059034616844256885
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -206.82205425702946,
+        "force": -0.09993425821072649
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.07882513404718931,
+          "cosine_unavailable_reason": null,
+          "dot": -0.06797137779089857,
+          "energy_norm": 1.740544175975834,
+          "energy_weighted_component_negative_weighted_joint_slope": -2.9615226507324963,
+          "force_norm": 0.49542315975390955,
+          "force_over_energy_norm": 0.2846369351563003,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.1774727294296492,
+          "parameter_count": 43456
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.07762116647166449,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.006025045484421851,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.007302574594378368,
+          "cosine_unavailable_reason": null,
+          "dot": 0.00023163319420557542,
+          "energy_norm": 0.22042944126133307,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.048820771768989066,
+          "force_norm": 0.14389814464701658,
+          "force_over_energy_norm": 0.6528081903379513,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.020938309227059283,
+          "parameter_count": 64
+        },
+        "whole": {
+          "cosine": -0.07476784729208145,
+          "cosine_unavailable_reason": null,
+          "dot": -0.06773974459669299,
+          "energy_norm": 1.756162923131735,
+          "energy_weighted_component_negative_weighted_joint_slope": -3.016368467985907,
+          "force_norm": 0.5158980357138429,
+          "force_over_energy_norm": 0.29376433639417165,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.19841103865670848,
+          "parameter_count": 43521
+        }
+      }
+    },
+    "width64-u6000": {
+      "bias_check": {
+        "expected_unweighted_energy": -0.14048408031911974,
+        "expected_weighted_energy": -0.0020488711982425824,
+        "observed_force": 0.0,
+        "observed_unweighted_energy": -0.14048408031911386,
+        "observed_weighted_energy": -0.0020488711982424965,
+        "valid": true
+      },
+      "endpoint_reference_max_error": 0.0,
+      "residuals": {
+        "anchor": {
+          "centered_energy_error_variance_eV2": 0.0021536155977951664,
+          "decomposition_error_eV2": -4.336808689942018e-19,
+          "energy_mse_eV2": 0.0021536387316987695,
+          "force_mse_eV2_per_A2": 0.0053035089487986865,
+          "mean_energy_error_squared_eV2": 2.3133903603344463e-08,
+          "offset_share": 1.0741775425396747e-05,
+          "offset_share_unavailable_reason": null,
+          "record_count": 16,
+          "signed_mean_energy_error_eV": -0.00015209833530760442
+        },
+        "fitting": {
+          "centered_energy_error_variance_eV2": 0.007948309200339902,
+          "decomposition_error_eV2": 0.0,
+          "energy_mse_eV2": 0.007948333482229644,
+          "force_mse_eV2_per_A2": 0.00794262358651163,
+          "mean_energy_error_squared_eV2": 2.428188974271815e-08,
+          "offset_share": 3.0549661507039164e-06,
+          "offset_share_unavailable_reason": null,
+          "record_count": 128,
+          "signed_mean_energy_error_eV": -0.00015582647317679416
+        }
+      },
+      "scaled_objective_slopes_along_negative_weighted_joint": {
+        "energy": -0.38937909637139256,
+        "force": -0.017389258195496513
+      },
+      "state_unchanged": true,
+      "weighted_geometry": {
+        "backbone": {
+          "cosine": -0.9367141256230225,
+          "cosine_unavailable_reason": null,
+          "dot": -0.24046708068839703,
+          "energy_norm": 0.4959202217137913,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.005469785616258882,
+          "force_norm": 0.5176506266283264,
+          "force_over_energy_norm": 1.0438183481194607,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.027495090560301888,
+          "parameter_count": 43456
+        },
+        "head_bias": {
+          "cosine": null,
+          "cosine_unavailable_reason": "zero_gradient_norm",
+          "dot": 0.0,
+          "energy_norm": 0.0020488711982424965,
+          "energy_weighted_component_negative_weighted_joint_slope": -4.197873186987643e-06,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.5625960209801922,
+          "cosine_unavailable_reason": null,
+          "dot": -0.0035387564722199616,
+          "energy_norm": 0.06118512980014701,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.00020486363644087614,
+          "force_norm": 0.10280355539888276,
+          "force_over_energy_norm": 1.6802049081970856,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.007029814530431196,
+          "parameter_count": 64
+        },
+        "whole": {
+          "cosine": -0.9252683264689507,
+          "cosine_unavailable_reason": null,
+          "dot": -0.244005837160617,
+          "energy_norm": 0.4996845847997552,
+          "energy_weighted_component_negative_weighted_joint_slope": -0.00567884712588676,
+          "force_norm": 0.5277601180947173,
+          "force_over_energy_norm": 1.0561865107490023,
+          "force_over_energy_norm_unavailable_reason": null,
+          "force_weighted_component_negative_weighted_joint_slope": -0.034524905090733055,
+          "parameter_count": 43521
+        }
+      }
+    }
+  }
+}
