@@ -12,6 +12,8 @@ uv run --frozen force-consistency prepare --molecule aspirin --policy configs/pr
 
 Preparation reads the verified source archive, checks chemical graph and endpoint mappings, duplicate screens and source-grounded units, and exports arrays only after every selected branch passes. Nonempty outputs are protected. Choose another output directory for a repeat. Training rechecks manifest and array identities; test arrays remain inaccessible to fitting and selection.
 
+Endpoint evaluation must use [classified branch references](team/ENDPOINT_REFERENCES.md). Do not index the split's historical `endpoint_pair` by branch. Check the committed companion with `uv run --frozen python scripts/build_branch_references.py --check` before consuming it.
+
 Aspirin has 4,891 unique training records, 974 primary validation records and 1,127 test records across 26/5/6 whole connections. All 11 reference minima are training-seen, so this is a held-out-path/transition-state split and minimum diagnostics do not establish unseen-minimum generalization. Paracetamol remains blocked at `01_2/plus`.
 
 ## Training prerequisites

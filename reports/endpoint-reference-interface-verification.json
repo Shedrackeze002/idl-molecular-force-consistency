@@ -1,0 +1,33 @@
+{
+  "baseline_nodes_retained": 243,
+  "broader_suite_execution": "not_performed_collection_only",
+  "checks": {
+    "collection-final-v2": {
+      "elapsed_seconds": 1.3335902080289088,
+      "ending": "271 tests collected in 0.85s",
+      "exit_code": 0,
+      "log_sha256": "5fc184a24c25fc8aac188108a2aec4c72e10ef17e0f801685d21a3d76fca2fc6"
+    },
+    "data-final-v2": {
+      "elapsed_seconds": 1.067797416006215,
+      "ending": "60 passed in 0.78s",
+      "exit_code": 0,
+      "log_sha256": "3e3f215cc35454ec5744a9c8aae98d0770aef1c420588964253b351031f343a0"
+    }
+  },
+  "collected_cases": 271,
+  "data_checks_passed": 60,
+  "frozen_source_sha256": {
+    "docs/team/PROJECT_HANDOFF.md": "bc9a925cc8c6145e6eafa5844aec98f8eeb82d79a16a05af39e10641dfbfc931",
+    "manifests/landscape17-aspirin-split.json": "8bc2e734c1fc12792f98c4264eff56610f98ce41da70c80523297a73164e96b6",
+    "reports/landscape17-endpoints.json": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6"
+  },
+  "frozen_sources_unchanged": true,
+  "geometry_rematching_calls": 0,
+  "model_initializations": 0,
+  "new_reference_cases": 28,
+  "original_data_checks_passed": 32,
+  "retained_machine_local_receipt_sha256": "521df69b33488817da7a5951457dd096ef35dde54bdef084a42511cc94fdfcef",
+  "status": "data_acceptance_and_collection_PASS",
+  "training_calls": 0
+}
