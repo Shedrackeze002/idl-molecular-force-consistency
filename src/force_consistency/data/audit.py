@@ -12,6 +12,11 @@ class AuditError(ValueError):
 
 @dataclass(frozen=True)
 class Connection:
+    """Source inventory. endpoint_pair contains historical TS filename tokens.
+
+    These tokens have no guaranteed plus/minus orientation and must not choose
+    evaluation targets. Use verified per-branch endpoint reference classes.
+    """
     molecule: str
     connection_id: str
     branches: dict[str, tuple[str, ...]]
