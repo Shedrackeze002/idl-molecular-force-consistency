@@ -101,3 +101,13 @@ Every spec section maps to Task 1 (start set and taxonomy), Task 2 (relaxation),
 3. **Reviewers.** Two independent technical reviewers for this plan, as `TEAM.md` requires.
 4. **The last-nonstationary-frame rule is not usable.** The measurement above should be recorded in the thread so the rule is not reintroduced later.
 5. **Test groups stay closed.** The first test evaluation needs its own authorisation after freeze, separate from this implementation approval.
+
+---
+
+## Correction note, linked to the design spec (added 2026-10-04)
+
+This note records where the delivered implementation differs from the plan text above, from PR4's review round 2 (Task B). The plan above is retained unedited; these items are reconciliations, not rewrites, and each points at the design spec that governs it: `docs/research/specs/2026-10-03-shape-recovery-design.md`.
+
+1. **Branch reference source.** The branch's reference minimum comes from the committed endpoint classification's per-branch `reference_class` (`reports/landscape17-endpoints.json` for the real archive), following the spec's section 3 language and the preparation package's "endpoint classes, not filename pairs" rule — not from the manifest's positional `endpoint_pair`. The measured-inputs table above was produced before the reversed-pairing defect was analysed and still reflects a positional reading; this note supersedes that reading for the implementation. Tests: `test_branch_minimum_uses_classification_not_endpoint_pair` and the all-74-branch classification test in `tests/test_shape_recovery_starts.py`.
+2. **The 26-of-74 count.** The manifest's `endpoint_pair` disagrees with the committed classes on 26 of the 74 real aspirin branches (14 of 37 connections): reversals on 12 connections, plus the degenerate same-minimum pair on connection 66 (`endpoint_pair ['6','6']`) and one genuinely different pairing. The count, first documented in the review thread, is now stated in `evaluation/start_set.py`'s module docstring alongside the refusal of any silent fallback to the positional pairs.
+3. **The runner has been delivered.** The plan's Task 3 interface `evaluate_starts(start_set, arm, procedure) -> dict` exists as `evaluation/runner.py`: it drives a start set through one arm with the frozen relaxation, classifies every endpoint with the outcome taxonomy, refuses test-partition branches without the separate authorisation, and returns per-branch and per-connection outcomes (`tests/test_shape_recovery_runner.py`).

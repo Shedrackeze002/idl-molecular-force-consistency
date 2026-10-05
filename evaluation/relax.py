@@ -18,23 +18,32 @@ deterministic:
   at an accepted step's endpoint becomes the next step's direction. A
   run that never backtracks therefore spends exactly one evaluation per
   accepted step plus the first one.
-- Budget: every force call consumes exactly one unit. The budget check
-  runs before anything else each cycle, so a run whose last evaluation
-  would confirm convergence is still reported nonconverged. Budgets are
-  never extended and never silently converted into success.
-- Fixed point: the run keeps refining after the force rule is met, and
-  declares convergence only when the rule is met AND the next proposed
-  step cannot move any force component by more than the fixed point
-  tolerance (in eV/angstrom). Declaring convergence at the first sub
-  tolerance evaluation would freeze a structure still measurable distance
-  away from the arm's own fixed point.
-- Termination: the fixed point rule, budget exhaustion, a nonfinite
-  force, or backtracking exhaustion (no acceptable step scale). The
-  failure modes stay separate through "failure_reason": "no_progress"
-  covers a run stuck above the force rule with no admissible step, which
-  is a different endpoint from a budget that ran out or a force that went
-  nonfinite. The caller scores nonconvergence without ever reading the
-  endpoint as a shape.
+- Budget: every force attempt consumes exactly one unit. The count is
+  spent when the attempt is made, before the value is looked at, so a
+  supplier that raises still has its call accounted for. The declared
+  convergence rule is tested against the force the run already evaluated
+  before any budget-exhaustion claim is made, so a result established
+  within the allowed budget is reported as established, never thrown
+  away because the budget happened to be spent on it. Budgets are never
+  extended and never silently converted into success.
+- Convergence: the declared rule only. A run converges exactly when the
+  maximum absolute force component at an evaluated structure is at or
+  below convergence_tolerance_eV_per_A. No secondary "fixed point" gate
+  exists: the rule is the whole declaration, evaluated on the latest
+  force the budget bought (first the start's own force, then each
+  accepted step's endpoint force).
+- Termination: the declared rule, budget exhaustion, a refused force
+  evaluation, or backtracking exhaustion (no acceptable step scale, or a
+  structure that cannot move at any admissible scale while the rule is
+  unmet). The failure modes stay separate through "failure_reason":
+  "no_progress" covers a run stuck above the force rule with no
+  admissible step, which is a different endpoint from a budget that ran
+  out or a force that was refused. A refused force ("nonfinite_force",
+  "invalid_force_shape") is a recorded branch failure with
+  forces_finite=False: the run reports it and returns, instead of
+  aborting the caller or reading the refused array as physics. The
+  caller scores nonconvergence without ever reading the endpoint as a
+  shape.
 
 The convergence rule is a maximum per-atom force COMPONENT at or below the
 tolerance in eV/angstrom. It is deliberately not a norm: the norm mixes
@@ -62,9 +71,13 @@ _STEP_GROWTH_FACTOR = 2.0
 _STEP_GROWTH_CAP = 1.0
 
 # A proposed step whose largest force-component contribution falls below
-# this (in eV/angstrom units, multiplied by the step scale) is treated as
-# a fixed point: no further refinement can change the structure.
-_FIXED_POINT_TOLERANCE_A = 1e-9
+# this (in eV/angstrom units, multiplied by the step scale) cannot change
+# the structure by any measurable amount at any admissible scale. This is
+# a TERMINATION record only: when the force rule is NOT met and even the
+# largest admissible step cannot move the structure, the run stops with
+# the recorded "no_progress" reason. It is never part of the convergence
+# declaration, which is exactly and only the force rule.
+_NO_STEP_TOLERANCE_A = 1e-9
 
 
 def _validate_procedure(procedure):
@@ -136,16 +149,20 @@ def relax(start, force_fn, procedure):
     - converged, budget_exhausted, forces_finite: the three orthogonal
       facts the outcome taxonomy needs.
     - failure_reason: which rule stopped the run (None on convergence):
-      "budget_exhausted", "nonfinite_force", or "no_progress" when the
-      backtracking rule accepted no step or the structure sits stuck above
-      the convergence rule.
+      "budget_exhausted" when the budget ran out before the force rule
+      was met, "nonfinite_force" or "invalid_force_shape" when a force
+      evaluation was refused and recorded, or "no_progress" when the
+      backtracking rule accepted no step or the structure sits stuck
+      above the convergence rule.
     - final_positions: the endpoint in the start's own shape. Never NaN
       poisoned: the run stops at the last structure whose evaluation was
       finite, so the caller always receives a finite endpoint.
     - step_count and steps: how many accepted steps were taken, each with
       its accepted step size and the number of trial evaluations it cost.
-    - force_evaluation_count: the exact number of force_fn calls. Budget
-      accounting lives here and nowhere else.
+    - force_evaluation_count: the exact number of force attempts. A
+      refused evaluation (nonfinite or wrongly shaped) counts as the one
+      budget unit its attempt spent. Budget accounting lives here and
+      nowhere else.
     - history / force_history: the summary of every force evaluation seen.
     - final_max_force_component_eV_per_A: the maximum absolute force
       component at the endpoint, from the last evaluation.
@@ -176,27 +193,44 @@ def relax(start, force_fn, procedure):
         return float(np.max(np.abs(f)))
 
     def call_force(pos):
-        # One unit of budget per call, spent before the value is looked at.
-        nonlocal evals, forces_finite, failure_reason
+        # One unit of budget per ATTEMPT: the count is spent before the
+        # supplier runs, so a supplier that raises or refuses still has
+        # its call accounted for.
+        nonlocal evals
         if evals >= cap:
             return None
-        out = np.asarray(force_fn(pos), dtype=np.float64)
         evals += 1
+        try:
+            raw = force_fn(pos)
+        except (FloatingPointError, ValueError) as refused:
+            # A declared refusal from the arm (a nonfinite force raises
+            # FloatingPointError subclass NonfiniteValueError; a malformed
+            # array raises ValueError). It is recorded as the branch's
+            # force failure instead of aborting the whole run. Every
+            # other exception type is genuinely unexpected and keeps
+            # propagating: only these two declared refusals are routed.
+            stop("nonfinite_force" if isinstance(refused, FloatingPointError)
+                 else "invalid_force_shape")
+            return None
+        out = np.asarray(raw, dtype=np.float64)
+        if out.shape != np.asarray(pos).shape:
+            # A returned force that does not mirror the positions shape is
+            # a refusal, never physics. A scalar zero (broadcasting) is
+            # excluded here rather than being read as convergence.
+            stop("invalid_force_shape")
+            return None
         if not np.isfinite(out).all():
-            forces_finite = False
-            failure_reason = "nonfinite_force"
+            stop("nonfinite_force")
             return None
         return out
 
+    def stop(reason):
+        nonlocal forces_finite, failure_reason
+        forces_finite = False
+        failure_reason = reason
+
     while True:
-        if budget_exhausted or failure_reason == "nonfinite_force":
-            break
-        if evals >= cap:
-            # The budget is spent. Even if the last evaluation satisfied
-            # the force rule, the run had no evaluation left to act on
-            # that fact with, so it is honestly nonconverged.
-            budget_exhausted = True
-            failure_reason = failure_reason or "budget_exhausted"
+        if failure_reason is not None:
             break
         if known_force is None:
             known_force = call_force(positions)
@@ -204,27 +238,27 @@ def relax(start, force_fn, procedure):
                 break
             force_maximums.append(max_component(known_force))
 
-        next_step = scale * known_force
+        # The declared rule, tested on the force the budget already bought.
+        # No second condition is attached to it.
         if max_component(known_force) <= tol:
-            # The force rule is met at the last accepted structure. The
-            # run still has to show it cannot move further: convergence
-            # is declared only when the next proposed step is below the
-            # fixed point tolerance as well.
-            if max_component(next_step) <= _FIXED_POINT_TOLERANCE_A:
-                converged = True
-                break
-            # Otherwise refine: take the step and keep measuring.
-        elif max_component(next_step) <= _FIXED_POINT_TOLERANCE_A:
+            converged = True
+            break
+
+        next_step = scale * known_force
+        if max_component(next_step) <= _NO_STEP_TOLERANCE_A:
             # The structure cannot move at any admissible scale but the
             # force rule is not met: an honest stuck state, not a
             # converged one and not a budget one.
-            failure_reason = "no_progress"
+            failure_reason = failure_reason or "no_progress"
             break
 
         trials = 0
         accepted = False
         while trials < max_attempts:
             if evals >= cap:
+                # The budget is spent before an admissible trial step can
+                # be evaluated, so there is genuinely no further evidence
+                # to buy: the run is honestly nonconverged on budget.
                 budget_exhausted = True
                 failure_reason = failure_reason or "budget_exhausted"
                 break
@@ -234,6 +268,16 @@ def relax(start, force_fn, procedure):
             if trial_force is None:
                 break
             force_maximums.append(max_component(trial_force))
+            # A2: the trial endpoint was evaluated within the allowed
+            # budget. If its force satisfies the declared rule, the
+            # result is established now, before any budget-exhaustion
+            # claim; no extra evaluation is needed or taken.
+            if max_component(trial_force) <= tol:
+                positions = candidate
+                known_force = trial_force
+                steps.append({"accepted_step_size": scale, "trial_count": trials})
+                converged = True
+                break
             agree = float(np.sum(trial_force * known_force))
             if agree >= -_REVERSAL_FLOOR_ABS:
                 # The force at the candidate does not oppose the step, so
@@ -252,7 +296,11 @@ def relax(start, force_fn, procedure):
             scale = scale * factor
             if scale < floor:
                 scale = floor
-        if failure_reason == "nonfinite_force":
+        if failure_reason is not None:
+            break
+        if converged:
+            # Convergence was declared on the trial force just accepted:
+            # the run is finished, whatever the accepted flag says.
             break
         if budget_exhausted:
             break

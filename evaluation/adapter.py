@@ -33,10 +33,15 @@ tests/analytic_fixtures.py and force_consistency.data.types.FrameRecord):
 - A nonfinite force is a hard FloatingPointError carrying the refusal
   as a recorded info field. It is never silently zeroed or dropped.
 
-No trained checkpoint exists and none is reachable, and no weights
-format is frozen (runs/ is gitignored), so arm_from_checkpoint NEVER
-opens a file and NEVER guesses a format: it returns an arm that
-reports an explicit unavailable status with the recorded reason.
+Checkpoint stub wording (review round 2): the base repository DOES
+carry checkpoint serialization and loading helpers —
+`force_consistency.runs.save_checkpoint` and `load_checkpoint`, with the
+msgpack format and provenance checks the runs package uses. What is
+missing here is a USABLE checkpoint: no trained weights exist in this
+export (runs/ is gitignored) and no export-specific weights format is
+frozen, so arm_from_checkpoint NEVER opens a file and NEVER guesses a
+reader: it returns an arm that reports an explicit unavailable status
+with the recorded reason.
 """
 from pathlib import Path
 
@@ -232,13 +237,16 @@ def accepted_for_energy_metrics(arm):
 def arm_from_checkpoint(path, contract):
     """Bind a checkpoint path into an arm, without guessing any format.
 
-    No checkpoint exists in the repository (runs/ is gitignored) and no
-    weights format is frozen, so this constructor never opens the file
-    and never invents a reader. The returned arm records an explicit
-    unavailable status and refusal reason: one when no checkpoint is
-    present or reachable, the other when a path exists but no frozen
-    format can interpret it. Both refusals raise LookupError if a
-    consumer still asks the arm for physics.
+    The base repository has checkpoint serialization and loading
+    helpers (force_consistency.runs.save_checkpoint / load_checkpoint),
+    but no USABLE checkpoint is supplied in this export: runs/ is
+    gitignored and no trained weights ship here, and this adapter binds
+    no weights reader of its own. This constructor therefore never
+    opens the file and never invents a reader. The returned arm records
+    an explicit unavailable status and refusal reason: one when no
+    checkpoint is present or reachable, the other when a path exists
+    but no reader is bound here to interpret it. Both refusals raise
+    LookupError if a consumer still asks the arm for physics.
     """
     path = Path(path)
     if not path.exists():

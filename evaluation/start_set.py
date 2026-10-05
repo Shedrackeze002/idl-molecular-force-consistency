@@ -17,8 +17,9 @@ for the real archive), the same source the preparation package itself uses
 (splits.py: "Endpoint classes, not filename pairs, determine reference
 membership"). The manifest's endpoint_pair is never used: it is positional
 filename layout, and it demonstrably disagrees with the committed classes on
-12 of the 74 real aspirin branches (including full reversals on connections
-12 and 66).
+26 of the 74 real aspirin branches (14 of 37 connections), comprising
+reversals on 12 connections plus a degenerate same-minimum pair (connection
+66, endpoint_pair ['6','6']) and one genuinely different pairing.
 """
 from force_consistency.data.geometry import align_records
 from force_consistency.data.splits import canonical_hash
@@ -165,16 +166,19 @@ def _branch_minimum(key, molecule, connection_id, branch, byid, endpoint_classif
     against, so the reference is the committed classification's
     reference_class for that branch key ("molecule/connection/branch"),
     exactly as the preparation package resolves it (splits.py: "Endpoint
-    classes, not filename pairs, determine reference membership"). The
-    manifest's endpoint_pair is intentionally NOT consulted: it is
-    positional filename layout, it disagrees with the committed classes on
-    12 of the 74 real aspirin branches (reversed on connections 12 and 66),
-    and a silent fallback to it would hide exactly that defect.
+    classes, not filename pairs, determine reference membership").
 
     The classification must be supplied (build_start_set already enforces
     this for the sensitivity rule) and every branch it is asked about must
     be "matched" with a minimum reference_class; anything else raises a
     StartSetError naming the branch and the violated expectation.
+
+    The manifest's endpoint_pair is intentionally NOT consulted: it is
+    positional filename layout, it disagrees with the committed classes on
+    26 of the 74 real aspirin branches (14 of 37 connections), comprising
+    reversals on 12 connections plus a degenerate same-minimum pair
+    (connection 66, endpoint_pair ['6','6']) and one genuinely different
+    pairing, and a silent fallback to it would hide exactly that defect.
     """
     branch_key = f"{molecule}/{connection_id}/{branch}"
     if not isinstance(endpoint_classification, dict):

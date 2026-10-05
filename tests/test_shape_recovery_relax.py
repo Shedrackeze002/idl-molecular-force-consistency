@@ -29,6 +29,16 @@ def _procedure(**overrides):
     return base
 
 
+# Tolerance used when a test wants convergence to pin the endpoint to the
+# procedure's own fixed point. The declared rule converges when max |F| <=
+# the configured tolerance; a tightened CONFIGURATION is not a changed
+# rule. Value chosen from a measured trace of the double well: its steepest
+# descent step arithmetic stalls at max |F| ~ 3.2e-10 eV/angstrom, so
+# 1e-12 would never be met while 1e-9 is met at the stall (both wells
+# deterministic).
+_TIGHT_PROCEDURE = {"convergence_tolerance_eV_per_A": 1e-9}
+
+
 def _start(shape_offsets):
     positions = np.array(fixtures.FIXTURE_MINIMUM, dtype=np.float64, copy=True)
     positions = positions + np.asarray(shape_offsets, dtype=np.float64)
@@ -76,20 +86,47 @@ def test_double_well_started_on_the_right_stays_right():
 
     # Start at x = 0.6, on the +1 side of the barrier at 0.
     result = relax(_single_start([0.6, 0.3, -0.2]), fixtures.double_well_force,
-                   _procedure(max_force_evaluations=500))
+                   _procedure(**_TIGHT_PROCEDURE))
     assert result["status"] == "converged"
     np.testing.assert_allclose(
-        result["final_positions"][0], fixtures.DOUBLE_WELL_MINIMA[0], atol=1e-8)
+        result["final_positions"][0], fixtures.DOUBLE_WELL_MINIMA[0], atol=1e-9)
 
 
 def test_double_well_started_on_the_left_stays_left():
     from evaluation.relax import relax
 
     result = relax(_single_start([-0.75, -0.2, 0.1]), fixtures.double_well_force,
-                   _procedure(max_force_evaluations=500))
+                   _procedure(**_TIGHT_PROCEDURE))
     assert result["status"] == "converged"
     np.testing.assert_allclose(
-        result["final_positions"][0], fixtures.DOUBLE_WELL_MINIMA[1], atol=1e-8)
+        result["final_positions"][0], fixtures.DOUBLE_WELL_MINIMA[1], atol=1e-9)
+
+
+# Under the FROZEN 1e-2 tolerance the declared rule stops at the first
+# evaluation with every |F| component <= 1e-2, which on these ladders is
+# the step that lands nearest the minimum, not the minimum itself. The
+# basin side is the physics claim; the frozen tolerance's endpoint
+# precision is asserted against the measured endpoint force, which is the
+# rule the frozen config actually declares.
+
+def test_double_well_frozen_tolerance_stops_in_the_right_basin():
+    from evaluation.relax import relax
+
+    for start, expected_minimum in (
+            ([0.6, 0.3, -0.2], fixtures.DOUBLE_WELL_MINIMA[0]),
+            ([-0.75, -0.2, 0.1], fixtures.DOUBLE_WELL_MINIMA[1])):
+        result = relax(_single_start(start), fixtures.double_well_force,
+                       _procedure(max_force_evaluations=500))
+        assert result["status"] == "converged"
+        final = result["final_positions"][0]
+        # The endpoint sits in the EXPECTED basin, nowhere near the other
+        # well (the wells are 2 angstrom apart).
+        assert np.linalg.norm(final - expected_minimum) <= 1.0
+        # The endpoint force itself satisfies the declared rule it
+        # converged under (the rule is on the force, not on the position).
+        final_force = np.asarray(fixtures.double_well_force(
+            result["final_positions"]), dtype=np.float64)
+        assert float(np.max(np.abs(final_force))) <= 1e-2 + 1e-15
 
 
 def test_backtracking_shrinks_the_step_until_energy_would_fall():
@@ -223,18 +260,52 @@ def test_force_evaluation_count_is_exact():
     assert counter["calls"] <= 20
 
 
-def test_budget_respected_and_excess_marked_incomplete():
+def test_budget_respected_and_not_silently_extended():
     from evaluation.relax import relax
 
-    # A well that would converge but with a budget too small to get there:
-    # the run must be marked incomplete rather than silently truncated.
+    # The budget is an exact cap on force ATTEMPTS, counted in the result.
+    # A start whose declared-rule endpoint is reachable WITHIN the budget
+    # converges there (that is the A2 reviewer finding: a result
+    # established within the budget is not thrown away); a budget never
+    # buys an extra evaluation beyond the cap.
     tiny = _procedure(max_force_evaluations=5)
+    counter = {"calls": 0}
+
+    def counting_force(positions):
+        counter["calls"] += 1
+        return fixtures.harmonic_force(positions)
+
+    result = relax(_single_start([2.0, 1.0, 0.5]), counting_force, tiny)
+    assert counter["calls"] <= 5
+    assert result["force_evaluation_count"] == counter["calls"]
+    # Under the declared rule this start converges on the LAST budgeted
+    # attempt (measured: five evaluations, per-eval max |F| 1.5, 1.2, 0.72,
+    # 0.144, 0.0): the fifth evaluation is the landing's endpoint force and
+    # it satisfies the rule, so the result established within the budget
+    # is reported, not thrown away because the budget is now spent.
+    assert result["status"] == "converged"
+    assert result["budget_exhausted"] is False
+    assert result["force_evaluation_count"] == 5
+    np.testing.assert_allclose(
+        result["final_positions"][0], fixtures.HARMONIC_MINIMUM, atol=1e-12)
+
+
+def test_budget_exhaustion_marks_the_run_incomplete():
+    from evaluation.relax import relax
+
+    # A start that genuinely needs more evaluations than the budget
+    # allows: the run must stop unpaid, mark budget_exhausted, and NOT be
+    # silently truncated into a success.
+    tiny = _procedure(max_force_evaluations=2)
     result = relax(_single_start([2.0, 1.0, 0.5]), fixtures.harmonic_force, tiny)
     assert result["status"] == "nonconverged"
     assert result["budget_exhausted"] is True
-    assert result["force_evaluation_count"] == 5
-    np.testing.assert_allclose(
-        result["final_positions"][0], fixtures.HARMONIC_MINIMUM, atol=0.5)
+    assert result["force_evaluation_count"] == 2
+    # The endpoint is near where two budgeted attempts could reach, not
+    # claimed to be the minimum.
+    distance_to_minimum = float(np.linalg.norm(
+        result["final_positions"][0] - fixtures.HARMONIC_MINIMUM))
+    assert distance_to_minimum > 1e-4
     # It is NOT a success and MUST NOT be reported as converged.
     assert result["status"] != "converged"
 
@@ -345,3 +416,111 @@ def test_procedure_settings_are_validated():
     with pytest.raises(ValueError):
         relax(_single_start([1.0, 0.0, 0.0]), fixtures.harmonic_force,
               _procedure(backtracking_factor=1.0))
+
+
+# ---------------------------------------------------------------------------
+# Plain-supplier refusals (declared, recorded, never read as physics)
+# ---------------------------------------------------------------------------
+
+def _refusal_procedure():
+    return _procedure(max_force_evaluations=10)
+
+
+def test_scalar_zero_force_for_a_two_atom_start_is_a_recorded_refusal():
+    from evaluation.relax import relax
+
+    # A scalar zero broadcasts to every component, so without a shape
+    # check it would be read as instant convergence for any molecule
+    # size. It is a refusal, not physics.
+    def scalar_zero(positions):
+        return 0.0
+
+    result = relax(np.array([[1.0, 0.0, 0.0], [0.5, 0.2, 0.0]], dtype=np.float64),
+                   scalar_zero, _refusal_procedure())
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    assert result["forces_finite"] is False
+    assert result["budget_exhausted"] is False
+    assert result["step_count"] == 0
+    assert result["force_evaluation_count"] == 1
+    assert np.isfinite(np.asarray(result["final_positions"])).all()
+
+
+def test_mismatched_force_shape_is_a_recorded_refusal():
+    from evaluation.relax import relax
+
+    def wrong_shape(positions):
+        return np.zeros((3, 3), dtype=np.float64)
+
+    result = relax(np.array([[1.0, 0.0, 0.0], [0.5, 0.2, 0.0]], dtype=np.float64),
+                   wrong_shape, _refusal_procedure())
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    assert result["force_evaluation_count"] == 1
+
+
+def test_shape_mismatch_refusal_does_not_abort_a_batched_run():
+    from evaluation.relax import relax
+
+    # The batched run: a malformed batched return is refused the same way
+    # (batched (B, 2, 3) positions must come back (B, 2, 3); one batch of
+    # 1x1x1 zeros is a shape mismatch, not two converged molecules).
+    valid_batched = np.array([[[1.0, 0.0, 0.0], [0.5, 0.2, 0.0]],
+                              [[0.9, 0.1, 0.0], [0.4, 0.3, 0.1]]], dtype=np.float64)
+
+    def wrong_shape(positions):
+        return np.zeros((1, 1, 1), dtype=np.float64)
+
+    result = relax(valid_batched, wrong_shape, _refusal_procedure())
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+
+
+def test_nonfloating_refusal_types_are_never_swallowed():
+    from evaluation.relax import relax
+
+    class BombError(RuntimeError):
+        pass
+
+    def bomb(positions):
+        raise BombError("kaboom")
+
+    with pytest.raises(BombError):
+        relax(_single_start([1.0, 0.0, 0.0]), bomb, _refusal_procedure())
+
+
+def test_value_error_from_a_non_arm_source_is_a_recorded_shape_refusal():
+    from evaluation.relax import relax
+
+    # A ValueError raised inside the supplier while computing (not from
+    # the arm's contract) is routed to the same recorded refusal: the
+    # declared nonfinite/shape refusals, distinguished by where the
+    # refusal is detected (raise inside the supplier vs array inspection
+    # after it returns).
+    def poison_then_zero(positions):
+        raise ValueError("bad intermediate")
+
+    result = relax(_single_start([1.0, 0.0, 0.0]), poison_then_zero,
+                   _refusal_procedure())
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    assert result["force_evaluation_count"] == 1
+
+
+def test_nonfinite_refusal_is_counted_before_the_supplier_runs():
+    from evaluation.relax import relax
+
+    # The count is spent on the attempt: this supplier raises on the very
+    # first call, so the recorded count of exactly one proves the attempt
+    # was accounted for even though no value ever came back.
+    attempts = {"n": 0}
+
+    def raise_nonfinite(positions):
+        attempts["n"] += 1
+        raise FloatingPointError("refused: nonfinite force")
+
+    result = relax(_single_start([1.0, 0.0, 0.0]), raise_nonfinite,
+                   _refusal_procedure())
+    assert attempts["n"] == 1
+    assert result["failure_reason"] == "nonfinite_force"
+    assert result["force_evaluation_count"] == 1

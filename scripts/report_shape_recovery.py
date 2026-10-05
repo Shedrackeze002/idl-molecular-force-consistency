@@ -140,12 +140,37 @@ def run_fixture_slice(policy):
         )
         print(f"{key}: status={result['status']} category={outcome['category']} "
               f"evals={result['force_evaluation_count']}")
+        # The auditable branch record (review round 2): the endpoint,
+        # matching and relaxation evidence of THIS branch, serialized as
+        # plain data by the reporter. The reference is the branch's own
+        # minimum record; the start identity names the displaced fixture
+        # structure; the failure facts and exact force-call and step
+        # counts come from the relaxation result itself.
         evaluated[key] = {
             "category": outcome["category"],
             "seen_minimum": outcome["seen_minimum"],
             "partition": "validation",
             "budget_exhausted": outcome["budget_exhausted"],
             "converged": outcome["converged"],
+            "_audit_record": {
+                "reference": own,
+                "start": {"branch_key": f"{key}/start", "kind": "fixture-displacement"},
+                "arm": {"kind": arm["kind"], "arm_id": arm["arm_id"]},
+                "final_positions": result["final_positions"],
+                "rmsd_A": outcome["rmsd_A"],
+                "permutation": outcome["permutation"],
+                "rotation": outcome["rotation"],
+                "accepted_classes": outcome["accepted_classes"],
+                "failure": {
+                    "failed": result["status"] == "nonconverged",
+                    "failure_reason": result["failure_reason"],
+                    "budget_exhausted": result["budget_exhausted"],
+                    "converged": result["converged"],
+                    "forces_finite": result["forces_finite"],
+                },
+                "force_evaluation_count": result["force_evaluation_count"],
+                "step_count": result["step_count"],
+            },
         }
     return evaluated
 

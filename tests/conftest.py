@@ -52,7 +52,13 @@ def aspirin_records(aspirin_archive_path):
 
     path = aspirin_archive_path
     if not path.exists():
-        pytest.fail(f"Landscape17 archive not found at {path}; set LANDSCAPE17_ARCHIVE to the zip")
+        # The archive is a separately retained artifact, not a checkout
+        # requirement. A contributor without it still gets a green run:
+        # the real-data tests SKIP with the reason below instead of
+        # failing at fixture setup, and everything synthetic runs.
+        pytest.skip(
+            f"Landscape17 archive not found at {path}; set LANDSCAPE17_ARCHIVE "
+            f"to the frozen Landscape17.zip to run the real-data tests")
     return read_records(path, molecules=("aspirin",))
 
 

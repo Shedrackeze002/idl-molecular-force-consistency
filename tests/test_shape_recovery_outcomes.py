@@ -220,6 +220,97 @@ def test_nonconverged_takes_priority_over_every_comparison_verdict(synthetic_lan
 # result contract
 # ---------------------------------------------------------------------------
 
+def test_stalled_run_with_unused_budget_keeps_supplied_termination_facts(synthetic_landscape):
+    from evaluation.outcomes import classify_outcome
+
+    landscape = synthetic_landscape
+    references = build_minima_pool(landscape)
+    # A run that stops above the force rule on a stuck structure after 41
+    # of 100 budgeted evaluations. The category stays nonconverged either
+    # way, but the TERMINATION FACTS must come out exactly as supplied:
+    # overwriting budget_exhausted to True, or dropping the stop reason,
+    # misdescribes how the run ended.
+    final = _final_at(references["m1"].positions, "synthetic/final/stalled", landscape)
+    result = classify_outcome(
+        final, references["m0"], references, _policy(landscape),
+        budget_exhausted=False, converged=False, forces_finite=True,
+        seen_minimum=True, stop_reason="no_progress",
+    )
+    assert result["category"] == "nonconverged"
+    assert result["budget_exhausted"] is False
+    assert result["converged"] is False
+    assert result["forces_finite"] is True
+    assert result["stop_reason"] == "no_progress"
+
+
+def test_budget_exhausted_stop_reason_is_carried_through(synthetic_landscape):
+    from evaluation.outcomes import classify_outcome
+
+    landscape = synthetic_landscape
+    references = build_minima_pool(landscape)
+    final = _final_at(references["m1"].positions, "synthetic/final/budget", landscape)
+    result = classify_outcome(
+        final, references["m0"], references, _policy(landscape),
+        budget_exhausted=True, converged=False, forces_finite=True,
+        seen_minimum=True, stop_reason="budget_exhausted",
+    )
+    assert result["category"] == "nonconverged"
+    assert result["budget_exhausted"] is True
+    assert result["stop_reason"] == "budget_exhausted"
+
+
+def test_nonfinite_forced_stop_reason_matches_the_refusal(synthetic_landscape):
+    from evaluation.outcomes import classify_outcome
+
+    landscape = synthetic_landscape
+    references = build_minima_pool(landscape)
+    final = _final_at(references["m1"].positions, "synthetic/final/nf-reason", landscape)
+    result = classify_outcome(
+        final, references["m0"], references, _policy(landscape),
+        budget_exhausted=False, converged=False, forces_finite=True,
+        seen_minimum=True, nonfinite_force=True,
+    )
+    assert result["category"] == "nonconverged"
+    assert result["nonfinite_force"] is True
+    assert result["stop_reason"] == "nonfinite_force"
+
+
+def test_forged_stop_reason_is_rejected(synthetic_landscape):
+    import pytest
+
+    from evaluation.outcomes import classify_outcome
+
+    landscape = synthetic_landscape
+    references = build_minima_pool(landscape)
+    final = _final_at(references["m0"].positions, "synthetic/final/forged", landscape)
+    with pytest.raises(ValueError):
+        classify_outcome(
+            final, references["m0"], references, _policy(landscape),
+            budget_exhausted=False, converged=False, forces_finite=True,
+            seen_minimum=True, stop_reason="vibes",
+        )
+
+
+def test_unsupplied_stopped_run_defaults_to_the_honest_no_progress_reason(
+        synthetic_landscape):
+    # Compatibility: a caller that supplies the bare pre-review interface
+    # (no stop_reason) still gets an honest termination record, not a
+    # silently dropped fact.
+    from evaluation.outcomes import classify_outcome
+
+    landscape = synthetic_landscape
+    references = build_minima_pool(landscape)
+    final = _final_at(references["m0"].positions, "synthetic/final/bare", landscape)
+    result = classify_outcome(
+        final, references["m0"], references, _policy(landscape),
+        budget_exhausted=False, converged=False, forces_finite=True,
+        seen_minimum=True,
+    )
+    assert result["category"] == "nonconverged"
+    assert result["budget_exhausted"] is False
+    assert result["stop_reason"] == "no_progress"
+
+
 def test_result_carries_exactly_one_category_and_measured_fields(synthetic_landscape):
     from evaluation.outcomes import CATEGORY_NAMES, classify_outcome
 

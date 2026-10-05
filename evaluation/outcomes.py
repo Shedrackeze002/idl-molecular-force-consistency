@@ -29,7 +29,8 @@ CATEGORY_NAMES = ("matched_reference", "unmatched_converged", "ambiguous",
 
 def classify_outcome(final, reference, references, policy, *,
                      budget_exhausted, converged, forces_finite=True,
-                     seen_minimum=None, final_positions=None, nonfinite_force=False):
+                     seen_minimum=None, final_positions=None, nonfinite_force=False,
+                     stop_reason=None):
     """Classify one relaxation endpoint into exactly one category.
 
     final: the endpoint as a FrameRecord-like object with record_id,
@@ -44,6 +45,12 @@ def classify_outcome(final, reference, references, policy, *,
     forces_finite: True when every force evaluation in the run was finite.
     nonfinite_force: True when termination was triggered by a nonfinite
         force. It forces nonconverged even if a caller passed converged.
+    stop_reason: the relaxation's failure_reason, carried through on the
+        nonconverged outcomes so the way the run stopped stays visible.
+        None on every other category. Accepted values are exactly the
+        declared failure reasons ("budget_exhausted", "nonfinite_force",
+        "invalid_force_shape", "no_progress"); anything else is forged
+        and rejected.
     seen_minimum: the seen_minimum flag from the frozen manifest, carried
         onto every result unchanged.
     final_positions: optional explicit endpoint array for the audit trail;
@@ -56,6 +63,11 @@ def classify_outcome(final, reference, references, policy, *,
     """
     if budget_exhausted is None or converged is None:
         raise ValueError("budget_exhausted and converged must be explicit booleans")
+    declared_stop_reasons = ("budget_exhausted", "nonfinite_force",
+                             "invalid_force_shape", "no_progress")
+    if stop_reason is not None and stop_reason not in declared_stop_reasons:
+        raise ValueError(f"unknown stop_reason {stop_reason!r}; declared reasons are "
+                         f"{', '.join(declared_stop_reasons)} or None")
 
     if final_positions is None:
         final_positions = np.asarray(final.positions, dtype=np.float64)
@@ -70,17 +82,23 @@ def classify_outcome(final, reference, references, policy, *,
         category = "nonconverged"
         return _result(category, None, final=final, retained=retained,
                        seen_minimum=seen_minimum, budget_exhausted=budget_exhausted,
-                       converged=False, forces_finite=False, nonfinite_force=True)
+                       converged=False, forces_finite=False, nonfinite_force=True,
+                       stop_reason=stop_reason or ("nonfinite_force" if nonfinite_force else None))
 
     if budget_exhausted or not converged:
         # The budget ran out or the run stopped without meeting the force
         # rule. Whatever shape the endpoint shows, it is not evidence:
         # a nonconverged run is never counted as a wrong shape. The
-        # comparison is not attempted at all.
+        # comparison is not attempted at all. The caller's termination
+        # facts are preserved EXACTLY as supplied here: a run can stop
+        # without meeting the rule for reasons other than a spent budget
+        # (a stuck structure, for instance), and overwriting the flag or
+        # dropping the stop reason would misdescribe how the run ended.
         category = "nonconverged"
         return _result(category, None, final=final, retained=retained,
-                       seen_minimum=seen_minimum, budget_exhausted=True,
-                       converged=False, forces_finite=True, nonfinite_force=False)
+                       seen_minimum=seen_minimum, budget_exhausted=budget_exhausted,
+                       converged=False, forces_finite=True, nonfinite_force=False,
+                       stop_reason=stop_reason or "no_progress")
 
     if not structure_finite:
         # A finite run ended in a nonfinite structure. That is a
@@ -162,7 +180,7 @@ def classify_outcome(final, reference, references, policy, *,
 
 def _result(category, matching, *, final, retained, seen_minimum,
             budget_exhausted, converged, forces_finite, nonfinite_force,
-            comparison=None):
+            comparison=None, stop_reason=None):
     rmsd = None
     permutation = None
     rotation = None
@@ -196,6 +214,7 @@ def _result(category, matching, *, final, retained, seen_minimum,
         "forces_finite": forces_finite,
         "nonfinite_force": nonfinite_force,
         "category": category,
+        "stop_reason": stop_reason,
         "matching": matching,
         "comparison": comparison if comparison is not None else (matching if matching is not None else None),
         "rmsd_A": rmsd,
