@@ -1,5 +1,7 @@
 # Reproduction scope
 
+The subsequent branch-reference interface repair adds `endpoint_references.py`, its generator, classified companion and tests; it documents the legacy filename field without changing frozen split/classification evidence or existing test bodies. Default discovery now includes 20 modules. The repair's targeted data checks and collection results are recorded in [the interface report](../reports/endpoint-reference-interface.md); the export-era results below remain historical, and no broader numerical suite was rerun for this repair.
+
 This package supports source inspection, small synthetic/physical fixtures and the documented baseline data workflow. Complete historical reproduction also requires the separately retained original source/run/launch packages. Frozen configurations and source guards retain their original identities and do not approve a launch from this export. Obtain the matching package from the project lead, verify the recorded identities, and use its original environment and source revision before attempting an historical reproduction.
 
 ## Scientific exports
@@ -36,6 +38,7 @@ Default modules:
 - `tests/test_capacity_runs.py`
 - `tests/test_capacity_spikes.py`
 - `tests/test_connections_units.py`
+- `tests/test_endpoint_references.py`
 - `tests/test_diagnostics.py`
 - `tests/test_geometry_matching.py`
 - `tests/test_gradient_diagnostics.py`
