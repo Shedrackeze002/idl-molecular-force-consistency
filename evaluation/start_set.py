@@ -17,9 +17,14 @@ for the real archive), the same source the preparation package itself uses
 (splits.py: "Endpoint classes, not filename pairs, determine reference
 membership"). The manifest's endpoint_pair is never used: it is positional
 filename layout, and it demonstrably disagrees with the committed classes on
-26 of the 74 real aspirin branches (14 of 37 connections), comprising
-reversals on 12 connections plus a degenerate same-minimum pair (connection
-66, endpoint_pair ['6','6']) and one genuinely different pairing.
+26 of the 74 real aspirin branches (14 of 37 connections): reversals on
+both branches of 12 connections (24 branches: connections 12, 23, 310,
+46_2, 49, 56, 58_2, 59, 67, 78_2, 79 and 910), plus two branches whose
+filename-pair target differs from their classified target (44/minus, pair
+4, classified 10; 66/plus, pair 6, classified 9). Connection 66's
+endpoint_pair is the degenerate ['6','6'] and 66/minus itself agrees with
+the classification, so connection 66 is a single-branch mismatch, not a
+reversal.
 """
 from force_consistency.data.geometry import align_records
 from force_consistency.data.splits import canonical_hash
@@ -83,13 +88,30 @@ def build_start_set(split_manifest, records, policy, rule, endpoint_classificati
     connections_manifest = split_manifest.get("connections", {})
     out = {}
     for molecule, partitions in sorted(groups.items()):
+        molecule_connections = connections_manifest.get(molecule)
+        if not isinstance(molecule_connections, dict):
+            # The groups entry names a molecule the connections inventory
+            # does not describe. Failing here with a plain dictionary
+            # lookup would leave the mismatch unexplained, so the error
+            # names both sides of it instead.
+            raise StartSetError(
+                f"the split manifest names molecule {molecule!r} in groups "
+                f"but its connections inventory has no entry for it")
         held_out = []
         for partition in ("validation", "test"):
             for connection_id in partitions.get(partition, []):
                 if connection_id not in held_out:
                     held_out.append(connection_id)
         for connection_id in sorted(held_out):
-            connection = connections_manifest[molecule][connection_id]
+            connection = molecule_connections.get(connection_id)
+            if not isinstance(connection, dict):
+                # A held-out connection must exist in the inventory: a
+                # bare KeyError names only the missing key and loses
+                # which side of the manifest disagrees (review round 2).
+                raise StartSetError(
+                    f"the split manifest holds out connection {connection_id!r} "
+                    f"of molecule {molecule!r}, but its connections inventory "
+                    f"has no entry for it")
             for branch in sorted(connection["branches"]):
                 key = f"{molecule}/{connection_id}/{branch}"
                 out[key] = _select_start(key, molecule, connection_id, connection,
@@ -176,9 +198,14 @@ def _branch_minimum(key, molecule, connection_id, branch, byid, endpoint_classif
     The manifest's endpoint_pair is intentionally NOT consulted: it is
     positional filename layout, it disagrees with the committed classes on
     26 of the 74 real aspirin branches (14 of 37 connections), comprising
-    reversals on 12 connections plus a degenerate same-minimum pair
-    (connection 66, endpoint_pair ['6','6']) and one genuinely different
-    pairing, and a silent fallback to it would hide exactly that defect.
+    reversals on both branches of 12 connections (24 branches:
+    connections 12, 23, 310, 46_2, 49, 56, 58_2, 59, 67, 78_2, 79 and
+    910) plus two branches whose filename-pair target differs from their
+    classified target (44/minus, pair 4, classified 10; 66/plus, pair 6,
+    classified 9; connection 66's endpoint_pair is the degenerate
+    ['6','6'] and 66/minus itself agrees, so 66 is a single-branch
+    mismatch, not a reversal), and a silent fallback to it would hide
+    exactly that defect.
     """
     branch_key = f"{molecule}/{connection_id}/{branch}"
     if not isinstance(endpoint_classification, dict):

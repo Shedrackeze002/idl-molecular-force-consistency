@@ -50,30 +50,58 @@ import numpy as np
 UNITS = {"positions": "angstrom", "forces": "eV/angstrom", "energy": "eV"}
 
 
+class ArmConfigurationError(ValueError):
+    """An arm/start mismatch: configuration, not a model outcome.
+
+    Species encoding, atom count and the start's own array shape live in
+    the arm's construction dict and the start set. When they disagree, no
+    force has been computed and no physics is in question, so the error is
+    raised before any force call and propagates instead of being scored
+    as a branch outcome. It stays a ValueError subclass so existing
+    direct-callers' except ValueError clauses keep working.
+    """
+
+
 def _validated_positions(positions, arm_species, species, arm_name):
-    """Check the species encoding and the atom count before any physics.
+    """Check the arm/start compatibility before any physics.
 
     positions: unbatched (N, 3) or batched (B, N, 3), in angstrom.
     arm_species: the species tuple the arm was built with.
     species: the species tuple this call names, or None to use the
         arm's own.
     arm_name: which arm refused, for the error message.
+
+    Every failure raised here is an ArmConfigurationError, because the
+    mismatch lives in the assembled configuration (the arm was built for
+    a different species tuple, atom count or rank than the start it was
+    handed), not in any computed force. Raising it before the supplier
+    runs is what keeps a misconfigured arm out of the scored outcomes.
     """
     array = np.asarray(positions, dtype=np.float64)
     if array.ndim == 2:
+        # The unbatched (N, 3) form: N first, coordinates last.
+        if array.shape[1] != 3:
+            raise ArmConfigurationError(
+                f"{arm_name}: positions must have shape (N, 3) or "
+                f"(batch, N, 3), got {array.shape}")
         atoms = array.shape[0]
     elif array.ndim == 3:
+        # The batched (B, N, 3) form: the atoms axis is the middle one.
+        if array.shape[2] != 3:
+            raise ArmConfigurationError(
+                f"{arm_name}: positions must have shape (N, 3) or "
+                f"(batch, N, 3), got {array.shape}")
         atoms = array.shape[1]
     else:
-        raise ValueError(
+        raise ArmConfigurationError(
             f"{arm_name}: positions must have shape (N, 3) or (batch, N, 3), "
             f"got {array.shape}")
     if species is not None and tuple(species) != arm_species:
-        raise ValueError(
+        raise ArmConfigurationError(
             f"{arm_name}: species mismatch: the arm encodes {arm_species}, "
             f"the call named {tuple(species)}")
     if atoms != len(arm_species):
-        raise ValueError(
+        raise ArmConfigurationError(
             f"{arm_name}: shape mismatch: positions carry {atoms} atoms but "
             f"the arm encodes {len(arm_species)}: {arm_species}")
     return array
@@ -187,11 +215,21 @@ def callable_arm(force_fn, species, arm_id):
     def forces(positions, species=None, record_id=None):
         array = _validated_positions(positions, arm_species, species,
                                      f"callable arm {arm_id!r}")
-        out = np.asarray(force_fn(array), dtype=np.float64)
+        raw = force_fn(array)
+        try:
+            out = np.asarray(raw, dtype=np.float64)
+        except (TypeError, ValueError) as refused:
+            # A return that cannot become a numeric array at all is a
+            # refusal with its own recorded reason, not a crash in the
+            # accounting: the refusal text names the fact so the audit
+            # trail says WHY the attempt was refused.
+            raise ValueError(
+                f"callable arm {arm_id!r}: nonnumeric force return "
+                f"({refused})") from refused
         if out.shape != array.shape:
             raise ValueError(
-                f"callable arm {arm_id!r}: shape mismatch: the force function "
-                f"returned {out.shape} for positions {array.shape}")
+                f"callable arm {arm_id!r}: force shape mismatch: the force "
+                f"function returned {out.shape} for positions {array.shape}")
         _require_finite_values(out, record_id, "force")
         return out, _ok_info(record_id, arm_species, out.shape)
 

@@ -9,6 +9,12 @@ Two disciplines are tested here:
 - Partition authorisation: the test partition is evaluated only when an
   explicit authorisation flag is passed (the design spec's section 7);
   validation and train partitions need none.
+- The split binding (review round 2): a manifest carrying the explicit
+  "synthetic": {"reason": ...} declaration binds as an identified
+  fixture; a manifest without it is production and must recompute to
+  the approved split identity. Overlapping or incomplete partition
+  membership and every unauthorised test branch are refused BEFORE any
+  force call.
 - Recovery: the positive fixture now includes a NONRIGID start that sits
   outside the 0.05 angstrom match tolerance before relaxation and is
   matched only after relaxation, so the tests exercise recovery rather
@@ -109,6 +115,12 @@ class RecoveryLandscape:
             "groups": {"aspirin": {"train": [], "validation": ["80"],
                                    "test": ["81"]}},
             "policy": None,
+            # The explicit synthetic-fixture declaration (review round 2,
+            # fixtures interface): the marker lives INSIDE the manifest, so
+            # this test landscape never impersonates the approved
+            # production split and needs no extra call argument.
+            "synthetic": {"reason": "self-contained two-minimum recovery "
+                                    "landscape for runner tests"},
         }
 
     @staticmethod
@@ -352,6 +364,224 @@ def test_runner_arm_boundary_symbol_tuples_not_atomic_numbers(
 
 
 # ---------------------------------------------------------------------------
+# The split binding interface (review round 2, fixtures restored):
+# synthetic manifests are identified INSIDE the manifest, production
+# manifests are still identity-bound, and everything fails closed
+# BEFORE any force call.
+# ---------------------------------------------------------------------------
+
+def _force_spy_arm(minimum, counter):
+    """A bowl arm whose underlying supplier counts every real call."""
+    arm = _bowl_arm_for(minimum)
+    arm_forces = arm["forces"]
+
+    def counting_forces(positions, species=None, record_id=None):
+        counter["calls"] += 1
+        return arm_forces(positions, species=species, record_id=record_id)
+
+    arm["forces"] = counting_forces
+    return arm
+
+
+def _runner_call(landscape, manifest, **overrides):
+    from evaluation.runner import evaluate_starts
+
+    start_set = _recovery_start_set(landscape, manifest)
+    kwargs = dict(
+        start_set=start_set,
+        arm=_bowl_arm_for(recovery_minimum(0)),
+        procedure=_runner_procedure(),
+        endpoint_classification=_recovery_classification(landscape),
+        references=landscape.references(),
+        policy=landscape.policy(),
+        split_manifest=manifest,
+    )
+    kwargs.update(overrides)
+    return evaluate_starts(**kwargs)
+
+
+def _stripped_frozen_manifest(recovery_landscape):
+    """A frozen manifest clone with the synthetic declaration removed."""
+    manifest = copy.deepcopy(recovery_landscape.manifest)
+    manifest.pop("synthetic")
+    return manifest
+
+
+def test_unmarked_manifest_is_refused_as_production_and_reaches_no_force_call(
+        recovery_landscape):
+    from evaluation.runner import SplitBindingError
+
+    counter = {"calls": 0}
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(
+            recovery_landscape, _stripped_frozen_manifest(recovery_landscape),
+            arm=_force_spy_arm(recovery_minimum(0), counter))
+    message = str(excinfo.value)
+    # The refusal names what is missing and points at the reviewed marker.
+    assert "synthetic" in message
+    assert "impersonating the approved manifest" in message
+    assert counter["calls"] == 0
+
+
+def test_marker_without_a_reason_is_refused(recovery_landscape):
+    from evaluation.runner import SplitBindingError
+
+    for bad_marker in (True, "yes", {}, {"reason": "   "}):
+        manifest = copy.deepcopy(recovery_landscape.manifest)
+        manifest["synthetic"] = bad_marker
+        with pytest.raises(SplitBindingError) as excinfo:
+            _runner_call(recovery_landscape, manifest)
+        assert "reason" in str(excinfo.value) or "must be a dict" in str(excinfo.value)
+
+
+def test_approved_manifest_relabelled_synthetic_is_refused(
+        recovery_landscape, split_manifest):
+    from evaluation.runner import SplitBindingError
+
+    # Tamper route: the production manifest is relabelled as a synthetic
+    # fixture, hoping the fixture path would skip the identity binding.
+    tampered = copy.deepcopy(split_manifest)
+    tampered["synthetic"] = {"reason": "definitely a fixture"}
+    tampered.pop("identity")
+    with pytest.raises(SplitBindingError) as excinfo:
+        # The start set is built from the fixture landscape's own
+        # manifest, whose records it names; the tampered production
+        # manifest goes ONLY to the split binding, which is the thing
+        # under test here.
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     split_manifest=tampered)
+    message = str(excinfo.value)
+    assert "recomputes to the approved identity" in message
+    assert "must be bound as production" in message
+
+
+def test_manifest_edited_after_approval_is_refused_before_any_force_call(
+        recovery_landscape, split_manifest):
+    from evaluation.runner import SplitBindingError
+
+    # A production manifest whose partition groups were edited cannot
+    # recompute to the frozen identity, so relabelling a test connection
+    # into validation fails closed, and no force is ever called. Note
+    # this copy has no synthetic declaration: stripping the shipped self
+    # identity is not enough to pass it off as an unbound fixture.
+    tampered = copy.deepcopy(split_manifest)
+    tampered.pop("identity")
+    tampered["groups"] = {"aspirin": {"train": [], "validation": ["78", "00"],
+                                      "test": ["07_2", "25", "56", "67", "910"]}}
+    counter = {"calls": 0}
+    with pytest.raises(SplitBindingError) as excinfo:
+        # The recovery landscape's records do not fit the real manifest,
+        # so the run could not reach the force stage anyway; binding MUST
+        # fail first, which is exactly this assertion. The count proves
+        # the force supplier is untouched, not that the run is possible.
+        # The start set comes from the fixture landscape's own manifest;
+        # the edited production clone goes ONLY to the split binding.
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     arm=_force_spy_arm(recovery_minimum(0), counter),
+                     split_manifest=tampered)
+    assert "recomputes to identity" in str(excinfo.value)
+    assert "refuses every other one" in str(excinfo.value)
+    assert counter["calls"] == 0
+
+
+def test_fixture_binding_is_echoed_on_the_result(recovery_landscape,
+                                                frozen_recovery_manifest):
+    result = _runner_call(
+        recovery_landscape, frozen_recovery_manifest,
+        start_set={"aspirin/80/plus": _recovery_start_set(
+            recovery_landscape, frozen_recovery_manifest)["aspirin/80/plus"]})
+    assert result["split_binding"] == "fixture"
+    assert result["synthetic_fixture"] is True
+
+
+# ---------------------------------------------------------------------------
+# Partition overlap and completeness (review round 2): ambiguous or
+# incomplete manifests are refused before any force call.
+# ---------------------------------------------------------------------------
+
+def test_connection_named_in_two_partitions_is_refused_by_name(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.runner import PartitionOverlapError
+
+    counter = {"calls": 0}
+    ambiguous = copy.deepcopy(frozen_recovery_manifest)
+    # Connection 80 is now named by BOTH validation and test: a silent
+    # first-match lookup would resolve it to validation, which is the
+    # relabelling defect, so the manifest is refused explicitly.
+    ambiguous["groups"]["aspirin"]["test"] = ["81", "80"]
+    with pytest.raises(PartitionOverlapError) as excinfo:
+        _runner_call(
+            recovery_landscape, ambiguous, authorise_test_partition=True,
+            arm=_force_spy_arm(recovery_minimum(0), counter))
+    message = str(excinfo.value)
+    assert "'80'" in message or '"80"' in message
+    assert "validation" in message and "test" in message
+    assert counter["calls"] == 0
+
+
+def test_production_manifest_with_a_test_connection_moved_to_validation_is_refused(
+        recovery_landscape, frozen_recovery_manifest, split_manifest):
+    from evaluation.runner import SplitBindingError
+
+    # The reviewer's counterexample, in production form: take the APPROVED
+    # manifest, move a test connection into validation, and try to run it.
+    # A marked synthetic fixture may arrange its own partitions, but a
+    # production manifest must still recompute to the frozen identity, so
+    # this is refused by the binding BEFORE any force call instead of being
+    # scored under a validation label the frozen split never gave it.
+    counter = {"calls": 0}
+    moved = copy.deepcopy(split_manifest)
+    moved.pop("identity")
+    moved["groups"]["aspirin"]["validation"] = (
+        moved["groups"]["aspirin"]["validation"] + ["00"])
+    moved["groups"]["aspirin"]["test"] = [
+        connection for connection in moved["groups"]["aspirin"]["test"]
+        if connection != "00"]
+    with pytest.raises(SplitBindingError) as excinfo:
+        # The start set is built from the fixture landscape's own manifest,
+        # whose records it names; the edited production clone goes ONLY to
+        # the split binding, which is the guard under test here.
+        _runner_call(
+            recovery_landscape, copy.deepcopy(frozen_recovery_manifest),
+            arm=_force_spy_arm(recovery_minimum(0), counter),
+            split_manifest=moved)
+    message = str(excinfo.value)
+    assert "recomputes to identity" in message
+    assert counter["calls"] == 0
+
+
+def test_missing_partition_membership_is_refused_descriptively(
+        recovery_landscape, frozen_recovery_manifest):
+    counter = {"calls": 0}
+    incomplete = copy.deepcopy(frozen_recovery_manifest)
+    incomplete["groups"]["aspirin"]["validation"] = []
+    start_set = _recovery_start_set(recovery_landscape, incomplete)
+    # A branch whose connection is named by NO partition of the supplied
+    # manifest: the run must refuse it by name, with an explicit message,
+    # instead of raising a bare KeyError from the partition lookup.
+    template = copy.deepcopy(next(iter(start_set.values())))
+    template["molecule"] = "aspirin"
+    template["connection_id"] = "99"
+    template["branch"] = "plus"
+    start_set["aspirin/99/plus"] = template
+    with pytest.raises(ValueError) as excinfo:
+        # The test-partition authorisation is given here so the branch
+        # under test is the unlisted one, not the authorisation guard:
+        # without it that guard fires before any connection is looked up
+        # and the missing-partition path is never reached.
+        _runner_call(
+            recovery_landscape, incomplete, start_set=start_set,
+            authorise_test_partition=True,
+            arm=_force_spy_arm(recovery_minimum(0), counter))
+    message = str(excinfo.value)
+    assert "not named in any partition" in message
+    assert "aspirin/99/plus" in message
+    assert counter["calls"] == 0
+
+
+# ---------------------------------------------------------------------------
 # A6: the pre-relaxation geometry facts the recovery claim needs
 # ---------------------------------------------------------------------------
 
@@ -430,3 +660,200 @@ def test_nonrigid_positive_start_becomes_matched_after_relaxation(
     assert row["category"] == "matched_reference"
     assert row["rmsd_A"] <= 0.05
     assert row["start_record_id"] == start["record_id"]
+
+
+# ---------------------------------------------------------------------------
+# Item 1's own regressions: arm configuration errors, wrong shapes and
+# nonfinite forces driven through the public evaluate_starts interface.
+# ---------------------------------------------------------------------------
+
+def test_wrong_species_callable_arm_raises_arm_configuration_error(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import ArmConfigurationError, callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # An arm built for three DIFFERENT symbols: every species comparison
+    # against the fixture graph fails by construction.
+    wrong_species = ("N", "N", "N")
+    underlying_calls = {"n": 0}
+
+    def force(positions):
+        underlying_calls["n"] += 1
+        return np.zeros(np.asarray(positions).shape, dtype=np.float64)
+
+    wrong_arm = callable_arm(force, species=wrong_species, arm_id="wrong-species")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    with pytest.raises(ArmConfigurationError) as excinfo:
+        evaluate_starts(
+            validation_only, wrong_arm, _runner_procedure(),
+            _recovery_classification(recovery_landscape),
+            recovery_landscape.references(), recovery_landscape.policy(),
+            split_manifest=frozen_recovery_manifest,
+        )
+    # The refusal is a configuration error, raised BEFORE any force call:
+    # the arm's underlying supplier is never invoked and no branch is
+    # scored anywhere in the returned structure.
+    assert underlying_calls["n"] == 0
+    message = str(excinfo.value)
+    assert "species mismatch" in message
+    assert "wrong-species" in message
+
+
+def test_wrong_species_arm_refusal_is_loud_even_under_compatible_override(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import ArmConfigurationError, callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # The "compatible" opt-out relaxes the runner's own pre-validation,
+    # but the arm's contract still raises ArmConfigurationError on the
+    # first call and relax routes it out of the scored path: a wrongly
+    # configured arm is never scored, whatever the override says.
+    def force(positions):
+        return np.zeros(np.asarray(positions).shape, dtype=np.float64)
+
+    wrong_arm = callable_arm(force, species=("N", "N", "N"),
+                             arm_id="wrong-species-2")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    with pytest.raises(ArmConfigurationError):
+        evaluate_starts(
+            validation_only, wrong_arm, _runner_procedure(),
+            _recovery_classification(recovery_landscape),
+            recovery_landscape.references(), recovery_landscape.policy(),
+            split_manifest=frozen_recovery_manifest,
+            arm_start_compatibility="compatible",
+        )
+
+
+def test_finite_wrong_shape_force_reports_invalid_force_shape_not_nonfinite(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # A FINITE force array of the wrong shape (transposed: (3, N) instead
+    # of (N, 3)): a refusal, never physics, and never a nonfinite one.
+    def transposed_force(positions):
+        return np.zeros((np.asarray(positions).shape[1],
+                         np.asarray(positions).shape[0]), dtype=np.float64)
+
+    arm = callable_arm(transposed_force, species=SPECIES, arm_id="transposed")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    result = evaluate_starts(
+        validation_only, arm, _runner_procedure(),
+        _recovery_classification(recovery_landscape),
+        recovery_landscape.references(), recovery_landscape.policy(),
+        split_manifest=frozen_recovery_manifest,
+    )
+    for row in result["branches"].values():
+        assert row["status"] == "nonconverged"
+        assert row["stop_reason"] == "invalid_force_shape"
+        assert row["forces_finite"] is True
+        assert row["nonfinite_force"] is False
+        assert row["force_evaluation_count"] == 1
+        assert row["category"] == "nonconverged"
+        details = row["refusal_details"]
+        assert len(details) == 1
+        assert details[0]["reason"] == "invalid_force_shape"
+        assert details[0]["arm_id"] == "transposed"
+        assert "force shape" in details[0]["detail"]
+
+
+def test_genuine_nan_force_reports_nonfinite_and_not_forces_finite(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # A genuine NaN inside an otherwise correctly shaped force array.
+    def poisoned_force(positions):
+        array = np.asarray(positions, dtype=np.float64).copy()
+        array[..., 0] = np.nan
+        return array
+
+    arm = callable_arm(poisoned_force, species=SPECIES, arm_id="poisoned")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    result = evaluate_starts(
+        validation_only, arm, _runner_procedure(),
+        _recovery_classification(recovery_landscape),
+        recovery_landscape.references(), recovery_landscape.policy(),
+        split_manifest=frozen_recovery_manifest,
+    )
+    for row in result["branches"].values():
+        assert row["status"] == "nonconverged"
+        assert row["stop_reason"] == "nonfinite_force"
+        assert row["nonfinite_force"] is True
+        assert row["forces_finite"] is False
+        assert row["force_evaluation_count"] == 1
+        assert row["category"] == "nonconverged"
+
+
+def test_nonnumeric_supplier_return_is_a_recorded_refusal(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # A supplier returning a nonnumeric value: the arm's own contract
+    # records the refusal, and the runner's accounting turns it into the
+    # recorded branch failure instead of crashing the accounting.
+    def text_force(positions):
+        return "not a force array"
+
+    arm = callable_arm(text_force, species=SPECIES, arm_id="texty")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    result = evaluate_starts(
+        validation_only, arm, _runner_procedure(),
+        _recovery_classification(recovery_landscape),
+        recovery_landscape.references(), recovery_landscape.policy(),
+        split_manifest=frozen_recovery_manifest,
+    )
+    for row in result["branches"].values():
+        assert row["status"] == "nonconverged"
+        assert row["stop_reason"] == "invalid_force_shape"
+        assert row["refusal_details"][0]["arm_id"] == "texty"
+        assert "nonnumeric" in row["refusal_details"][0]["detail"]
+
+
+def test_two_arms_with_identical_refusal_wording_stay_distinguishable(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # Two arms whose suppliers raise the SAME wording: the recorded
+    # refusal details name WHICH arm refused, so the audit trail cannot
+    # collapse the two runs into one anonymous fact.
+    def refusing_force(positions):
+        raise ValueError("the same refusal wording")
+
+    arm_w = callable_arm(refusing_force, species=SPECIES, arm_id="arm-with-shape")
+    arm_s = callable_arm(refusing_force, species=SPECIES,
+                         arm_id="arm-with-scalar")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    first = evaluate_starts(
+        validation_only, arm_w, _runner_procedure(),
+        _recovery_classification(recovery_landscape),
+        recovery_landscape.references(), recovery_landscape.policy(),
+        split_manifest=frozen_recovery_manifest,
+    )
+    second = evaluate_starts(
+        validation_only, arm_s, _runner_procedure(),
+        _recovery_classification(recovery_landscape),
+        recovery_landscape.references(), recovery_landscape.policy(),
+        split_manifest=frozen_recovery_manifest,
+    )
+    first_details = [detail for row in first["branches"].values()
+                     for detail in row["refusal_details"]]
+    second_details = [detail for row in second["branches"].values()
+                      for detail in row["refusal_details"]]
+    assert all(detail["arm_id"] == "arm-with-shape" for detail in first_details)
+    assert all(detail["arm_id"] == "arm-with-scalar" for detail in second_details)
+    assert first_details[0]["arm_id"] != second_details[0]["arm_id"]

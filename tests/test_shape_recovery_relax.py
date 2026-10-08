@@ -439,11 +439,47 @@ def test_scalar_zero_force_for_a_two_atom_start_is_a_recorded_refusal():
                    scalar_zero, _refusal_procedure())
     assert result["status"] == "nonconverged"
     assert result["failure_reason"] == "invalid_force_shape"
-    assert result["forces_finite"] is False
+    # The values seen stay finite-labelled (review round 2): a wrongly
+    # shaped return carries no readable values at all, so only a genuine
+    # nonfinite VALUE sets forces_finite False.
+    assert result["forces_finite"] is True
     assert result["budget_exhausted"] is False
     assert result["step_count"] == 0
     assert result["force_evaluation_count"] == 1
     assert np.isfinite(np.asarray(result["final_positions"])).all()
+
+
+def test_refusal_record_names_the_arm_and_the_attempt():
+    from evaluation.relax import relax
+
+    # The audit trail must keep two same-wording refusals from two
+    # different arms distinguishable: each refusal detail records WHICH
+    # refusal, from WHICH arm, at WHICH attempt number.
+    def zero_scalar(positions):
+        return 0.0
+
+    first = relax(np.array([[1.0, 0.0, 0.0], [0.5, 0.2, 0.0]], dtype=np.float64),
+                  zero_scalar, _refusal_procedure(), arm={"arm_id": "arm-one"})
+    second = relax(np.array([[1.0, 0.0, 0.0], [0.5, 0.2, 0.0]], dtype=np.float64),
+                   zero_scalar, _refusal_procedure(), arm={"arm_id": "arm-two"})
+    # A direct plain-float return refuses with the measured shape detail:
+    # the scalar's array shape () next to the positions' (2, 3).
+    expected_detail = (f"force shape {np.asarray(0.0).shape} "
+                       f"for positions (2, 3)")
+    for result, arm_id in ((first, "arm-one"), (second, "arm-two")):
+        assert result["failure_reason"] == "invalid_force_shape"
+        assert result["refusal_details"] == [{
+            "reason": "invalid_force_shape",
+            "arm_id": arm_id,
+            "detail": expected_detail,
+            "force_evaluation_count": 1,
+        }]
+    # The two records name different arms despite the identical refusal
+    # wording, which is the entire point of the detail record.
+    assert (first["refusal_details"][0]["arm_id"]
+            != second["refusal_details"][0]["arm_id"])
+    assert (first["refusal_details"][0]["detail"]
+            == second["refusal_details"][0]["detail"])
 
 
 def test_mismatched_force_shape_is_a_recorded_refusal():

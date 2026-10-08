@@ -358,7 +358,13 @@ def test_render_includes_seven_category_disclaimer(tmp_path):
     render(report, diagnostics, tmp_path, stem="probe")
     text = (tmp_path / "probe.md").read_text()
     assert "not a minimum" in text
-    assert "fixture" in text.lower()
+    # No audit record reached this report, so the provenance says the
+    # arm is not recorded instead of claiming an arm it has no evidence
+    # for (review item 2: the rendered provenance must not name an
+    # analytic fixture arm when another arm ran).
+    assert "not recorded" in text.lower()
+    assert "analytic fixture" not in text.lower()
+    assert "fixture arm" not in text.lower()
 # ---------------------------------------------------------------------------
 # Review round 2: consistency validation, true convergence count, audit
 # record, partition labels (Task B: B1, B2, B3, B4)
@@ -639,3 +645,370 @@ def test_reporter_labels_connections_and_splits_partition_totals():
                report["category_totals"]["validation"].values())
     assert all(count == 0 for count in
                report["category_totals"]["test"].values())
+
+
+def test_reporter_rejects_failure_audit_contradicting_the_summary():
+    # Review item 5 acceptance: a branch whose summary contradicts its
+    # own force-failure facts is refused on all three surfaces the
+    # review names. Surface 1 is the review's own reproduction: a
+    # matched-reference summary kept unchanged while the nested
+    # _audit_record failure section is switched to failed=True,
+    # failure_reason nonfinite_force, forces_finite False, converged
+    # False, exactly what the reporter accepted before this guard.
+    from evaluation.reporter import build_report
+
+    evaluated = _sample_evaluated()
+    forged = copy.deepcopy(evaluated)
+    forged["aspirin/01/plus"]["_audit_record"] = {
+        "failure": {"failed": True, "failure_reason": "nonfinite_force",
+                    "budget_exhausted": False, "converged": False,
+                    "forces_finite": False},
+    }
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert "aspirin/01/plus" in message
+    assert "contradictory failure audit" in message
+    assert "failed=True" in message
+
+    # Surface 2: force-finiteness versus the stop facts the branch
+    # outcome itself carries (the runner copies relaxation /
+    # classify_outcome facts onto every branch). A converged shape
+    # verdict with forces_finite=False is the nonfinite-force
+    # contradiction; a stop reason on a shape verdict claims the run
+    # stopped before the rule was met, contradicting the verdict scored
+    # on a reached endpoint.
+    forged2 = copy.deepcopy(evaluated)
+    forged2["aspirin/01/plus"]["forces_finite"] = False
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged2)
+    message = str(excinfo.value)
+    assert "aspirin/01/plus" in message
+    assert "forces_finite" in message
+
+    forged3 = copy.deepcopy(evaluated)
+    forged3["aspirin/01/minus"].update(
+        category="nonconverged", converged=False, budget_exhausted=False,
+        stop_reason="no_progress")
+    report, diagnostics = build_report(forged3)
+    assert report["branch_count"] == 4
+
+    forged4 = copy.deepcopy(evaluated)
+    forged4["aspirin/10/plus"]["stop_reason"] = "no_progress"
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged4)
+    message = str(excinfo.value)
+    assert "aspirin/10/plus" in message
+    assert "stop_reason" in message
+
+    # Surface 3: the nested audit section against itself, isolated from
+    # surface 2 by sitting on a branch whose summary the section would
+    # otherwise agree with (nonconverged, budget not exhausted): a
+    # section recording failed=True with no failure reason (or
+    # failed=False carrying a declared failure reason) is self
+    # contradictory no matter what the summary says.
+    forged5 = copy.deepcopy(evaluated)
+    forged5["aspirin/01/minus"]["_audit_record"] = {
+        "failure": {"failed": True, "failure_reason": None,
+                    "budget_exhausted": False, "converged": False,
+                    "forces_finite": False},
+    }
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged5)
+    message = str(excinfo.value)
+    assert "aspirin/01/minus" in message
+    assert "failure_reason=None" in message
+
+    forged6 = copy.deepcopy(evaluated)
+    forged6["aspirin/01/plus"]["_audit_record"] = {
+        "failure": {"failed": False, "failure_reason": "nonfinite_force"},
+    }
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged6)
+    message = str(excinfo.value)
+    assert "aspirin/01/plus" in message
+    assert "failed=False" in message
+    assert "nonfinite_force" in message
+
+    # The honest fixture slice stays untouched: the reviewer's probe
+    # builds its contradiction from the unmodified fixture row, so the
+    # guard must leave that row valid and reject only the doctored one.
+    honest = _sample_evaluated()
+    honest["aspirin/01/plus"]["_audit_record"] = {
+        "failure": {"failed": False, "failure_reason": None,
+                    "budget_exhausted": False, "converged": True,
+                    "forces_finite": True},
+    }
+    report, diagnostics = build_report(honest)
+    plus = next(row for row in diagnostics["per_branch"]
+                if row["branch_key"] == "aspirin/01/plus")
+    assert plus["failure"]["failed"] is False
+    # The unmodified sample counts stay what they always were.
+    assert report["category_totals"]["held_out"]["matched_reference"] == 1
+    assert report["branch_count"] == 4
+
+
+# ---------------------------------------------------------------------------
+# Review item 2 (card B1): the runner's per-branch audit record survives
+# runner -> build_report -> render, and the rendered provenance names the
+# arm that ACTUALLY produced the numbers.
+# ---------------------------------------------------------------------------
+
+def _recovery_runner_result(connection_id="80", arm=None):
+    """One real evaluate_starts run over the recovery landscape.
+
+    The composition is the probe's: the self-contained landscape from
+    the runner test module, built explicitly here because pytest
+    fixtures do not cross test-module boundaries. arm defaults to the
+    bowl arm; the refused-branch regression passes its own.
+    """
+    import copy as _copy
+
+    import test_shape_recovery_runner as runner_support
+    from evaluation.runner import evaluate_starts
+
+    landscape = runner_support.RecoveryLandscape()
+    manifest = _copy.deepcopy(landscape.manifest)
+    classification = runner_support._recovery_classification(landscape)
+    references = landscape.references()
+    procedure = runner_support._runner_procedure()
+    if arm is None:
+        arm = runner_support._bowl_arm_for(
+            runner_support.recovery_minimum(0))
+    full_start_set = runner_support._recovery_start_set(landscape, manifest)
+    start_set = {key: entry for key, entry in full_start_set.items()
+                 if key.split("/")[1] == connection_id}
+    return evaluate_starts(
+        start_set, arm, procedure, classification, references,
+        landscape.policy(), split_manifest=manifest,
+        seen_minimum=True,
+    )
+
+
+def _assert_audit_facts_present(row):
+    """The twelve evidence facts, asserted on one saved branch row.
+
+    Shared by the successful and the refused end-to-end regression: a
+    row that survives the runner and the reporter must carry the arm
+    identity, the start identity, the branch's own reference identity,
+    the endpoint coordinates, the RMSD and mapping facts, the
+    structured failure facts, the exact force-call and step counts,
+    the per-branch wall-clock timing, the partition identity and the
+    effective settings.
+    """
+    assert row["arm"]["kind"] == "callable"
+    assert row["arm"]["arm_id"] == "recovery-bowl"
+    assert row["arm"]["status"] == "ready"
+    assert row["start"]["record_id"].endswith("frame_0")
+    assert row["reference"]["record_id"].startswith("recovery/minimum_")
+    assert row["final_positions"] and len(row["final_positions"]) == 3
+    assert row["rmsd_A"] is not None
+    assert row["permutation"] is not None
+    assert row["rotation"] is not None
+    assert "failure" in row and "stop_reason" in row["failure"]
+    assert isinstance(row["force_evaluation_count"], int)
+    assert row["force_evaluation_count"] > 0
+    assert isinstance(row["step_count"], int)
+    assert isinstance(row["timing_seconds"], float) and row["timing_seconds"] >= 0.0
+    assert row["partition"] in ("train", "validation", "test")
+    assert row["procedure"]["effective"]["max_force_evaluations"] == 300
+
+
+def test_runner_audit_record_survives_to_saved_report(tmp_path):
+    # End-to-end successful branch: evaluate_starts -> build_report ->
+    # render, then read the SAVED JSON back and assert the evidence
+    # chain arrived in full (review item 2).
+    import json as _json
+
+    from evaluation.reporter import build_report, render
+
+    result = _recovery_runner_result()
+    report, diagnostics = build_report(result["branches"])
+    out = render(report, diagnostics, tmp_path,
+                 stem="audit-chain-success")
+    saved = _json.loads((tmp_path / "audit-chain-success.json").read_text())
+
+    rows_by_key = {row["branch_key"]: row
+                   for row in saved["diagnostics"]["per_branch"]}
+    assert sorted(rows_by_key) == ["aspirin/80/minus", "aspirin/80/plus"]
+    for _key, row in rows_by_key.items():
+        assert row["category"] == "matched_reference"
+        _assert_audit_facts_present(row)
+    # The provenance names the arm that ACTUALLY produced the numbers.
+    assert saved["report"]["provenance"]["source"] == "audit_record"
+    assert (saved["report"]["provenance"]["arm"]["arm_id"]
+            == "recovery-bowl")
+    text = (tmp_path / "audit-chain-success.md").read_text()
+    assert "recovery-bowl" in text
+    assert "analytic fixture" not in text
+
+
+def test_runner_refused_branch_carries_audit_facts_to_report(tmp_path):
+    # End-to-end refused branch: a branch whose force supplier refuses
+    # every call (wrong shape, the declared invalid_force_shape route)
+    # still carries its structured failure facts, the refusing arm's
+    # identity, the counts the failed attempts spent, its own timing
+    # and the endpoint it stopped on, all the way into the saved
+    # report. A refused run is audited, not erased.
+    import json as _json
+
+    from conftest import SPECIES
+    from evaluation.adapter import callable_arm
+    from evaluation.reporter import build_report, render
+
+    def wrong_shape(positions):
+        return np.zeros((1, 1, 3), dtype=np.float64)
+
+    arm = callable_arm(wrong_shape, species=SPECIES,
+                       arm_id="refusing-shape-arm")
+    result = _recovery_runner_result(arm=arm)
+    branches = result["branches"]
+    assert branches, "the run must return branch outcomes to report"
+    for row in branches.values():
+        assert row["category"] == "nonconverged"
+        assert row["converged"] is False
+    report, diagnostics = build_report(branches)
+    out = render(report, diagnostics, tmp_path,
+                 stem="audit-chain-refused")
+    saved = _json.loads((tmp_path / "audit-chain-refused.json").read_text())
+    rows_by_key = {row["branch_key"]: row
+                   for row in saved["diagnostics"]["per_branch"]}
+    for _key, row in rows_by_key.items():
+        assert row["arm"]["arm_id"] == "refusing-shape-arm"
+        # The structured failure record: the declared reason, the
+        # per-refusal trail naming WHICH arm refused, and the counts
+        # the refused attempts spent.
+        failure = row["failure"]
+        assert failure["stop_reason"] == "invalid_force_shape"
+        assert failure["refusal_details"], "the refusal trail must not be empty"
+        assert failure["refusal_details"][0]["arm_id"] == "refusing-shape-arm"
+        assert row["force_evaluation_count"] > 0
+        # Timing and settings survive on the refused branch too.
+        assert isinstance(row["timing_seconds"], float)
+        assert row["procedure"]["effective"]["max_force_evaluations"] == 300
+        # The refused branch still carries its own reference identity and
+        # the endpoint the run stopped on (never NaN), so the seed-to-
+        # endpoint evidence survives the refusal too.
+        assert row["reference"]["record_id"]
+        assert row["final_positions"]
+    assert saved["report"]["provenance"]["arm"]["arm_id"] == "refusing-shape-arm"
+
+
+def test_reporter_caller_supplied_audit_record_survives_rendering(tmp_path):
+    # A caller-built record (no runner involved) survives build_report
+    # and the JSON round trip field for field, including the names this
+    # card's chain relies on, and the provenance names the record's arm.
+    import json as _json
+
+    from evaluation.reporter import build_report, render
+
+    record = {
+        "arm": {"kind": "callable", "arm_id": "caller-arm",
+                "status": "ready", "provides_energy": False},
+        "start": {"record_id": "caller/start/frame_0", "frame_index": 3},
+        "reference": {"record_id": "recovery/minimum_0"},
+        "final_positions": [[0.0, 0.0, 0.0], [1.4, 0.0, 0.0], [0.0, 1.3, 0.0]],
+        "rmsd_A": 0.012,
+        "permutation": [0, 1, 2],
+        "rotation": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        "failure": {"stop_reason": None, "failure_reason": None,
+                    "refusal_details": []},
+        "force_evaluation_count": 9,
+        "step_count": 2,
+        "timing_seconds": 0.25,
+        "procedure": {"effective": {"max_force_evaluations": 300}},
+    }
+    evaluated = {
+        "aspirin/01/plus": _outcome("aspirin/01/plus", "matched_reference", True),
+        "aspirin/01/minus": _outcome("aspirin/01/minus", "nonconverged", True),
+    }
+    evaluated["aspirin/01/plus"]["_audit_record"] = dict(record)
+    report, diagnostics = build_report(evaluated)
+    plus = next(row for row in diagnostics["per_branch"]
+                if row["branch_key"] == "aspirin/01/plus")
+    for name, expected in record.items():
+        assert plus[name] == expected, name
+    render(report, diagnostics, tmp_path, stem="caller-record")
+    saved = _json.loads((tmp_path / "caller-record.json").read_text())
+    row = next(r for r in saved["diagnostics"]["per_branch"]
+               if r["branch_key"] == "aspirin/01/plus")
+    for name, expected in record.items():
+        assert row[name] == expected, name
+    assert saved["report"]["provenance"]["arm"]["arm_id"] == "caller-arm"
+    text = (tmp_path / "caller-record.md").read_text()
+    assert "caller-arm" in text
+
+
+# ---------------------------------------------------------------------------
+# Review round 2 card C1: the fixture diagnostics audit must record the
+# ACTUAL force supplier and the EFFECTIVE procedure per branch (with the
+# synthetic 2-call override labelled against the configured 1,500), and a
+# nonrigid positive fixture must start outside the 0.05 angstrom match
+# tolerance and become matched after relaxation.
+# ---------------------------------------------------------------------------
+
+def _load_report_script():
+    # The reporter script lives under scripts/ and is only imported
+    # from the command line; loading it by file path keeps the frozen
+    # pyproject paths untouched.
+    import importlib.util
+    path = REPO / "scripts" / "report_shape_recovery.py"
+    spec = importlib.util.spec_from_file_location(
+        "report_shape_recovery_under_test", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_fixture_report_records_supplier_effective_procedure_and_nonrigid_positive():
+    from evaluation.reporter import build_report
+    from force_consistency.data.types import PreparationPolicy
+
+    module = _load_report_script()
+    evaluated = module.run_fixture_slice(PreparationPolicy())
+    report, diagnostics = build_report(evaluated)
+    rows = {row["branch_key"]: row for row in diagnostics["per_branch"]}
+
+    # The wrong-shape plus branch forces through a SHIFTED per-atom
+    # potential, so its audit entry must name that supplier, not pass
+    # under the standard harmonic arm's identity.
+    wrong_arm = rows["analytic/wrongshape/plus"]["arm"]
+    assert wrong_arm["force_supplier"] == \
+        "analytic-fixture-harmonic-shifted-per-atom-potential"
+    assert wrong_arm["arm_id"] == "analytic-fixture-8at-harmonic"
+
+    # The three branches that really use the standard arm keep saying so.
+    for key in ("analytic/recover/plus", "analytic/recover/minus",
+                "analytic/wrongshape/minus"):
+        assert rows[key]["arm"]["force_supplier"] == "analytic-fixture-harmonic"
+
+    # Every branch carries the EFFECTIVE procedure next to the configured
+    # one; an unoverridden branch shows both identical and no overrides.
+    for key, row in rows.items():
+        procedure = row["procedure"]
+        assert procedure["effective"] == procedure["configured"] or \
+            "overrides" in procedure
+    standard = rows["analytic/recover/plus"]["procedure"]
+    assert standard["configured"]["max_force_evaluations"] == 1500
+    assert standard["effective"]["max_force_evaluations"] == 1500
+    assert "overrides" not in standard
+
+    # The 2-call cap override on wrong-shape minus is recorded and
+    # LABELLED synthetic, with the configured 1,500 visible beside it.
+    minus_procedure = rows["analytic/wrongshape/minus"]["procedure"]
+    override = minus_procedure["overrides"]["max_force_evaluations"]
+    assert override["effective"] == 2
+    assert override["configured"] == 1500
+    assert override["label"] == "synthetic override"
+    assert minus_procedure["effective"]["max_force_evaluations"] == 2
+    assert minus_procedure["configured"]["max_force_evaluations"] == 1500
+    assert report["branch_count"] == len(rows) == 4
+
+    # The nonrigid positive fixture: a NONRIGID per-atom displacement that
+    # starts OUTSIDE the 0.05 angstrom match tolerance and becomes
+    # matched under the configured procedure. Both facts are printed.
+    nonrigid = module.run_nonrigid_positive_fixture(PreparationPolicy())
+    assert nonrigid["pre_relaxation_rmsd_A"] > 0.05
+    assert nonrigid["tolerance_A"] == 0.05
+    assert nonrigid["outcome"]["category"] == "matched_reference"
+    assert nonrigid["outcome"]["rmsd_A"] <= 0.05

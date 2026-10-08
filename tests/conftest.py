@@ -219,6 +219,12 @@ def synthetic_landscape():
         "connections": {"aspirin": connections},
         "groups": {"aspirin": {part: list(ids) for part, ids in GROUPS.items()}},
         "policy": asdict(PreparationPolicy()),
+        # The explicit synthetic-fixture declaration (review round 2,
+        # fixtures interface): the marker lives INSIDE the manifest, so
+        # the fixture needs no extra call argument and never impersonates
+        # the approved production split. Its reason is auditable.
+        "synthetic": {"reason": "deterministic two-minimum mini landscape "
+                                "for the frozen-rule test suite"},
     }
     manifest["identity"] = canonical_hash(
         {key: manifest[key] for key in ("archive_sha256", "connections", "groups", "policy")})

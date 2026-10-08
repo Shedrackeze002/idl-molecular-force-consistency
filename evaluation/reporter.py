@@ -6,12 +6,15 @@ caller attaches (branch_key, partition, seen_minimum). It validates
 every entry, counts the five outcome categories per connection, keeps
 the denominators consistent, and renders a JSON plus Markdown pair.
 
-Denominators. The rate denominators are the converged branches per
-connection (matched_reference, unmatched_converged and ambiguous), the
-denominator description frozen in configs/aspirin-shape-recovery.json.
-A connection whose denominator is zero is reported as unavailable, not
-as zero percent: the honest statement is that nothing converged there,
-not that every branch failed to recover the shape.
+Denominators. The rate denominators are the FULL evaluated held-out
+branch pool per connection, every evaluated held-out branch whether
+converged or not (the complete plus/minus pair), matching the denominator
+description frozen in configs/aspirin-shape-recovery.json. A connection
+whose denominator is zero is reported as unavailable, not as zero
+percent: the honest statement is that nothing was evaluated there, not
+that every branch failed to recover the shape. The connection's
+converged_count is the number of those branches that met the declared
+force rule; it is not the denominator and no rate divides by it.
 
 Discipline enforced here:
 
@@ -24,6 +27,15 @@ Discipline enforced here:
   failure on a reached endpoint) requires converged=True too. A
   contradicting pair is refused, so a nonconverged branch can never be
   reported as a recovered shape.
+- The caller's force-failure facts are reconciled with the same summary
+  (review item 5): the outcome-level nonfinite_force and
+  forces_finite flags, the stop reason, and the nested "_audit_record"
+  failure section must agree with the category, the convergence and
+  budget booleans, and with each other. A summary scored as recovered
+  while its own audit records a failed, nonfinite or nonconverged run
+  is refused with the branch key and the contradicting fact named; the
+  reporter never repairs the pair, and audit facts the caller omits
+  are never invented.
 - The two branches of one connection must carry the same partition
   label, and the label must be one of train / validation / test. A
   split-or-unknown label is misdescription, and is refused instead of
@@ -35,19 +47,23 @@ Discipline enforced here:
 
 Audit record. When the caller supplies an "_audit_record" dict on an
 outcome, the reporter retains, under explicit names on that branch, the
-reference identity, the start identity, the arm identity, the final
-positions, the RMSD and the mapping, the failure facts, and the actual
-force-call and step counts — in diagnostics.per_branch, in the rendered
-JSON, and as a per-branch audit row in the Markdown. Every audit value
-is normalized to plain-JSON data (FrameRecord-like objects become
-explicit named fields, numpy arrays become float lists) before
-rendering; an opaque object is never stored as its string repr, so a
-saved report round-trips through json.loads without loss. The ten
-per-branch summary fields kept in earlier rounds are all kept.
+reference identity, the start identity, the arm identity, the effective
+procedure (with any labelled synthetic override next to the configured
+value), the final positions, the RMSD and the mapping, the failure
+facts, and the actual force-call and step counts, all in
+diagnostics.per_branch, in the rendered JSON, and as a per-branch audit
+row in the Markdown. Every audit value is normalized to plain-JSON data
+(FrameRecord-like objects become explicit named fields, numpy arrays
+become float lists) before rendering; an opaque object is never stored
+as its string repr, so a saved report round-trips through json.loads
+without loss. The ten per-branch summary fields kept in earlier rounds
+are all kept.
 
 The disclaimer that a converged force-field fixed point is NOT a
-minimum, and that this slice ran on an analytic fixture arm rather
-than a trained model, is rendered into every Markdown report.
+minimum is rendered into every Markdown report, next to a provenance
+line naming the arm that actually produced the numbers (derived from
+the branches' own audit records, or an explicit not-recorded sentence
+when no record arrived).
 """
 import hashlib
 import json
@@ -219,6 +235,30 @@ def build_report(evaluated, expected_connections=None):
     def _count(rows, name):
         return sum(1 for row in rows if row["category"] == name)
 
+    # Provenance from the actual records (review item 2): the arm that
+    # produced the numbers is named from the branches' own audit
+    # records, never from a hardcoded arm kind. Distinct arm sections
+    # are compared on their full plain-JSON payload, branches carrying
+    # no record contribute nothing, and a report with no record at all
+    # renders an explicit not-recorded provenance instead of claiming
+    # some arm it has no evidence for.
+    arm_sections = []
+    for row in per_branch:
+        section = row.get("arm")
+        if section is not None and section not in arm_sections:
+            arm_sections.append(section)
+    if len(arm_sections) == 1:
+        provenance = {"source": "audit_record",
+                      "arm": dict(arm_sections[0])}
+    elif len(arm_sections) > 1:
+        provenance = {"source": "audit_record",
+                      "arm": {"mixed": list(arm_sections)}}
+    else:
+        provenance = {"source": "not_recorded",
+                      "arm": None,
+                      "note": ("no branch carried an audit record, so the "
+                               "producing arm is not recorded here")}
+
     report = {
         "schema": 2,
         "branch_count": len(per_branch),
@@ -227,6 +267,7 @@ def build_report(evaluated, expected_connections=None):
             "validation": len(validation_rows),
             "test": len(test_rows),
         },
+        "provenance": provenance,
         "per_connection": per_connection,
         "category_totals": {
             "held_out": {name: _count(held_out_branches_rows, name)
@@ -246,12 +287,16 @@ def _record_fields(key, outcome):
 
     The outcome may carry an "_audit_record" dict with any of: the
     reference identity ("reference"), the start identity ("start"), the
-    arm identity ("arm"), the final positions ("final_positions"), the
-    RMSD ("rmsd_A"), the mapping ("permutation", "rotation") and match
-    classes ("accepted_classes"), the failure facts ("failure"), and the
+    arm identity ("arm"), the effective procedure ("procedure", with any
+    labelled synthetic override next to the configured value), the final
+    positions ("final_positions"), the RMSD ("rmsd_A"), the mapping
+    ("permutation", "rotation") and match classes
+    ("accepted_classes"), the failure facts ("failure"), the
     actual force-call and step counts ("force_evaluation_count",
-    "step_count"). Each present field is retained on the branch row
-    under its own name, with its ten summary neighbours untouched.
+    "step_count"), and the branch's own wall-clock timing in seconds
+    ("timing_seconds", review item 2). Each present field is retained
+    on the branch row under its own name, with its ten summary
+    neighbours untouched.
 
     Every field is normalized to plain-JSON data before rendering —
     FrameRecord-like objects to explicit named fields, numpy arrays to
@@ -268,8 +313,9 @@ def _record_fields(key, outcome):
             f"{key}: _audit_record must be a dict of plain-JSON audit "
             f"fields, got {type(record).__name__}")
     identity_fields = {}
-    for name in ("reference", "start", "arm", "rmsd_A", "permutation",
-                 "rotation", "accepted_classes", "failure"):
+    for name in ("reference", "start", "arm", "procedure", "rmsd_A",
+                 "permutation", "rotation", "accepted_classes", "failure",
+                 "timing_seconds"):
         if name not in record:
             continue
         try:
@@ -396,7 +442,162 @@ def _validated_outcome(key, outcome):
                 f"{key}: {category} contradicts budget_exhausted=true; a "
                 f"branch whose budget ran out without the rule being met "
                 f"is nonconverged, never a shape verdict")
+    # Force-failure reconciliation (review item 5, card B2). The check
+    # above keeps the category honest against converged /
+    # budget_exhausted. This block reconciles the remaining surfaces
+    # the caller supplies: the outcome-level force flags (the runner
+    # carries them on every branch outcome), the stop reason, and the
+    # nested "_audit_record" failure section. Nothing here repairs a
+    # value: each checked fact is read from a dict the caller supplied,
+    # and every read is guarded so audit data the caller omitted is
+    # never invented. numpy booleans are normalized with bool() so a
+    # record built straight from a runner outcome validates.
+    _reconcile_failure_facts(key, outcome)
     return dict(outcome)
+
+
+def _bool_fact(value):
+    """True/False for a bool (or numpy bool) fact, None when absent."""
+    if value is None:
+        return None
+    if isinstance(value, np.bool_):
+        return bool(value)
+    return value
+
+
+def _reconcile_failure_facts(key, outcome):
+    """Reject a branch whose force-failure facts contradict its summary.
+
+    Three surfaces are checked, all of them facts the caller supplies:
+
+    1. Summary versus the outcome-level failure facts: the
+       nonfinite_force / forces_finite flags and the stop reason the
+       runner carries on the branch outcome must agree with the
+       category and the convergence facts (a nonfinite force forces
+       category nonconverged with converged=False and forces_finite
+       False; a stop reason on any category other than nonconverged
+       claims a run stopped before the rule was met, which contradicts
+       the shape verdict).
+    2. Summary versus the nested audit record: a supplied
+       _audit_record["failure"] section must agree with the branch
+       summary. A branch recorded as recovered (matched_reference or
+       unmatched_converged, converged=True) while its own audit says
+       failed=True, forces_finite=False or converged=False, is the
+       contradiction review item 5 reproduces and is refused with the
+       contradicting field named.
+    3. The nested audit section against itself: a nested dict that
+       records failed=True with failure_reason=None, or a failed=False
+       entry that carries a declared failure reason, is self
+       contradictory and refused.
+
+    Only presence and plain booleans are read out of the nested
+    section: nested failure data the caller omitted is not defaulted
+    into a fact, so a caller that supplies no audit record, or one
+    without a failure section, is validated exactly as before.
+    """
+    category = outcome["category"]
+    converged = outcome["converged"]
+    budget_exhausted = outcome["budget_exhausted"]
+
+    # Surface 1: summary versus the outcome-level force-failure facts.
+    nonfinite = _bool_fact(outcome.get("nonfinite_force"))
+    forces_finite = _bool_fact(outcome.get("forces_finite"))
+    if converged and nonfinite:
+        raise ValueError(
+            f"{key}: the summary records converged while nonfinite_force "
+            f"is recorded True; a run terminated by a nonfinite force is "
+            f"never reported as converged (the contradiction must be "
+            f"rejected, not repaired)")
+    if converged and forces_finite is False:
+        raise ValueError(
+            f"{key}: the summary records converged while forces_finite is "
+            f"recorded False; a run whose force values were nonfinite is "
+            f"never reported as converged (the contradiction must be "
+            f"rejected, not repaired)")
+    stop_reason = outcome.get("stop_reason")
+    declared_stops = ("budget_exhausted", "nonfinite_force",
+                      "invalid_force_shape", "no_progress")
+    if stop_reason is not None and category != "nonconverged":
+        raise ValueError(
+            f"{key}: the summary category {category!r} carries stop_reason "
+            f"{stop_reason!r}; a stop reason before the rule was met "
+            f"contradicts a verdict scored on a reached endpoint (the "
+            f"contradiction must be rejected, not repaired)")
+    if stop_reason is not None and stop_reason not in declared_stops:
+        raise ValueError(
+            f"{key}: unknown stop_reason {stop_reason!r}; the declared "
+            f"reasons are {', '.join(declared_stops)} or None")
+
+    # Surfaces 2 and 3: the nested audit failure section.
+    record = outcome.get("_audit_record")
+    if not isinstance(record, dict):
+        return
+    nested = _bool_fact(record.get("failure"))
+    if not isinstance(nested, dict):
+        return
+    failed = _bool_fact(nested.get("failed"))
+    nested_reason = nested.get("failure_reason")
+    nested_budget = _bool_fact(nested.get("budget_exhausted"))
+    nested_converged = _bool_fact(nested.get("converged"))
+    nested_finite = _bool_fact(nested.get("forces_finite"))
+    audit = (
+        f"audit failure section {nested!s} against summary category "
+        f"{category!r}, converged={converged!r}, budget_exhausted="
+        f"{budget_exhausted!r}")
+    # Surface 2: nested audit versus the summary. The nested failure
+    # section repeats the run's own force facts; it must agree with the
+    # summary the branch is counted under, whatever the category.
+    contradiction = None
+    if (failed is True
+            and category in ("matched_reference", "unmatched_converged",
+                             "ambiguous", "unresolved")):
+        contradiction = (
+            "the audit records failed=True while the summary claims a "
+            "shape or comparison verdict")
+    elif converged and nested_finite is False:
+        contradiction = (
+            "the audit records forces_finite=False while the summary "
+            "claims converged")
+    elif converged and nested_converged is False:
+        contradiction = (
+            "the audit records converged=False while the summary claims "
+            "converged")
+    elif (not converged) and nested_converged is True:
+        contradiction = (
+            "the audit records converged=True while the summary records "
+            "converged=False")
+    elif category == "nonconverged" and failed is False:
+        contradiction = (
+            "the audit records failed=False while the summary records the "
+            "branch nonconverged")
+    elif (not budget_exhausted) and nested_budget is True:
+        contradiction = (
+            "the audit records budget_exhausted=True while the summary "
+            "records budget_exhausted=False")
+    elif budget_exhausted and nested_budget is False:
+        contradiction = (
+            "the audit records budget_exhausted=False while the summary "
+            "records budget_exhausted=True")
+    if contradiction:
+        raise ValueError(
+            f"{key}: contradictory failure audit: {contradiction}: "
+            f"{audit}")
+
+    # Surface 3: the nested failure section against itself.
+    if failed is True and nested_reason is None:
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit records "
+            f"failed=True with failure_reason=None; a branch that failed "
+            f"records why (the contradiction must be rejected, not "
+            f"repaired)")
+    if (failed is False and isinstance(nested_reason, str)
+            and nested_reason in declared_stops):
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit records "
+            f"failed=False with the declared failure reason "
+            f"{nested_reason!r}; the run cannot have stopped on a declared "
+            f"reason it never met and stayed unfailed (the contradiction "
+            f"must be rejected, not repaired)")
 
 
 def _split_key(key):
@@ -496,23 +697,47 @@ def render(report, diagnostics, out_dir, stem):
 
     # Per-branch audit table: the fields the caller supplied, retained
     # and rendered (review round 2). Rows carry the reference identity,
-    # start identity, arm identity, RMSD and mapping, failure facts and
+    # start identity, arm identity, the effective procedure with any
+    # labelled synthetic override, RMSD and mapping, failure facts and
     # actual force-call and step counts, so the saved report can audit
-    # the own-reference match and the budget without reopening the run.
-    # Rows without an audit record show blank cells rather than invented
-    # facts.
+    # the own-reference match, the actual force supplier and the budget
+    # without reopening the run. Rows without an audit record show
+    # blank cells rather than invented facts.
     lines.append("| branch_key | partition | category | reference | start | arm | "
+                 "procedure | "
                  "final_positions | rmsd_A | permutation | rotation | failure | "
                  "force_evaluation_count | step_count |")
-    lines.append("|---|" + "---|" * 12)
-    audit_keys = ("reference", "start", "arm", "final_positions", "rmsd_A",
-                  "permutation", "rotation", "failure",
+    lines.append("|---|" + "---|" * 13)
+    audit_keys = ("reference", "start", "arm", "procedure", "final_positions",
+                  "rmsd_A", "permutation", "rotation", "failure",
                   "force_evaluation_count", "step_count")
     for row in diagnostics["per_branch"]:
         cells = [row["branch_key"], row["partition"], row["category"]]
         cells += [_audit_cell(row.get(name)) for name in audit_keys]
         lines.append("| " + " | ".join(str(cell) for cell in cells) + " |")
+    # The nonrigid positive fixture's measured evidence, when the caller
+    # produced one: outside the tolerance before relaxation, matched
+    # after. Blank (absent) for callers that did not run the fixture.
+    nonrigid = diagnostics.get("nonrigid_positive_fixture")
+    if nonrigid:
+        outcome = nonrigid["outcome"]
+        lines.append("")
+        lines.append(
+            "Nonrigid positive fixture: pre-relaxation rmsd_A "
+            f"{float(nonrigid['pre_relaxation_rmsd_A']):.6f} is OUTSIDE "
+            f"the {float(nonrigid['tolerance_A'])} angstrom match "
+            f"tolerance; after relaxation the category is "
+            f"{outcome['category']} with rmsd_A "
+            f"{float(outcome['rmsd_A']):.6f}.")
     lines.append("")
+    # The timing note, when the caller supplied one: it states where
+    # per-branch timing IS recorded and why this artifact carries
+    # timing_seconds as null, so a reader of the rendered report is never
+    # left guessing why a listed fact is empty.
+    timing_note = diagnostics.get("timing_note")
+    if timing_note:
+        lines.append(f"Timing: {timing_note}")
+    lines.append(_provenance_line(report))
     lines.append(_disclaimer())
     md_path.write_text("\n".join(lines) + "\n")
     return {"json": str(json_path), "md": str(md_path)}
@@ -569,5 +794,48 @@ def _disclaimer():
         "nonconverged); the seven-shape shorthand is not used. A converged "
         "endpoint is a force-field fixed point, not a minimum: it is never "
         "described as a minimum. A nonconverged run is never counted as a "
-        "wrong shape. These numbers come from an analytic fixture arm, not "
-        "from a trained model.")
+        "wrong shape.")
+
+
+def _provenance_line(report):
+    """The Markdown provenance sentence naming the ACTUAL producing arm.
+
+    The arm comes from the report's own provenance record (review item
+    2), which build_report derived from the branches' audit records: a
+    single arm is named directly, a mixed set is listed in full, and a
+    report with no audit record carries the explicit not-recorded
+    sentence instead of a claimed arm.
+    """
+    provenance = report.get("provenance") or {}
+    source = provenance.get("source")
+    arm = provenance.get("arm")
+    if source == "audit_record" and isinstance(arm, dict) and "mixed" not in arm:
+        arm_id = arm.get("arm_id")
+        kind = arm.get("kind")
+        if arm_id is not None:
+            return (f"Provenance: these numbers were produced by arm "
+                    f"{arm_id!r} (kind {kind!r}).")
+        return (f"Provenance: these numbers were produced by an arm of "
+                f"kind {kind!r} that recorded no arm id.")
+    if source == "audit_record" and isinstance(arm, dict):
+        sections = [section for section in arm.get("mixed", [])
+                    if isinstance(section, dict)]
+        # The arm id alone can repeat across branches that ran under
+        # DIFFERENT suppliers (the fixture slice has exactly one such
+        # pair), so when the sections disagree on the supplier the
+        # supplier is named too, and the rendered list is de-duplicated:
+        # a provenance line that prints the same id twice tells the reader
+        # nothing about what actually ran.
+        suppliers = {section.get("force_supplier") for section in sections}
+        listed = []
+        for section in sections:
+            entry = str(section.get("arm_id"))
+            supplier = section.get("force_supplier")
+            if len(suppliers) > 1 and supplier:
+                entry = f"{entry} via {supplier!r}"
+            if entry not in listed:
+                listed.append(entry)
+        return (f"Provenance: these numbers were produced by several arms "
+                f"({'; '.join(listed)}).")
+    return ("Provenance: the arm that produced these numbers is not "
+            "recorded in this report.")

@@ -39,11 +39,15 @@ deterministic:
   "no_progress" covers a run stuck above the force rule with no
   admissible step, which is a different endpoint from a budget that ran
   out or a force that was refused. A refused force ("nonfinite_force",
-  "invalid_force_shape") is a recorded branch failure with
-  forces_finite=False: the run reports it and returns, instead of
-  aborting the caller or reading the refused array as physics. The
-  caller scores nonconvergence without ever reading the endpoint as a
-  shape.
+  "invalid_force_shape") is a recorded branch failure: the run reports
+  it and returns, instead of aborting the caller or reading the refused
+  array as physics. The caller scores nonconvergence without ever
+  reading the endpoint as a shape. The two refusal facts stay
+  independent (review round 2): only a genuinely nonfinite value sets
+  "forces_finite" False (and the outcome's nonfinite_force flag), while
+  a wrongly shaped or malformed return refuses the run with its own
+  reason and leaves the values-seen-finite fact True, because a shape
+  that cannot be compared carries no nonfinite value.
 
 The convergence rule is a maximum per-atom force COMPONENT at or below the
 tolerance in eV/angstrom. It is deliberately not a norm: the norm mixes
@@ -54,6 +58,7 @@ Positions are (B, N, 3) in angstrom, forces come back (B, N, 3) in
 eV/angstrom. An (N, 3) start is accepted as the unbatched one-molecule
 form and the endpoint is returned in the same unbatched shape.
 """
+from evaluation.adapter import ArmConfigurationError
 import numpy as np
 
 # Dot products more negative than this absolute amount count as genuine
@@ -134,7 +139,7 @@ def _check_start(positions):
                 raise ValueError("start has coincident atoms in one molecule")
 
 
-def relax(start, force_fn, procedure):
+def relax(start, force_fn, procedure, *, arm=None):
     """Relax one start structure under the frozen procedure.
 
     start: positions shaped (B, N, 3) or the unbatched (N, 3), in
@@ -142,6 +147,11 @@ def relax(start, force_fn, procedure):
     force_fn: callable mapping positions (B, N, 3) to forces (B, N, 3) in
         eV/angstrom. It is called on whole arrays, never per atom.
     procedure: the frozen settings dict, validated by _validate_procedure.
+    arm: optional arm dict carrying the arm's identity. When supplied it
+        is only read for its arm_id, so a refused force records WHICH arm
+        refused instead of an anonymous refusal. Nothing else about the
+        arm is consulted and no force is ever read from it; the force
+        evaluation itself stays bound through force_fn alone.
 
     The returned dict carries:
 
@@ -154,6 +164,12 @@ def relax(start, force_fn, procedure):
       evaluation was refused and recorded, or "no_progress" when the
       backtracking rule accepted no step or the structure sits stuck
       above the convergence rule.
+    - refusal_details: [] on every run that saw no declared refusal. When
+      a refusal stopped the run it names which refusal happened, from
+      which arm (when the arm carries an arm_id) and at which attempt
+      number, so two refusals of one wording from two different arms stay
+      distinguishable in the audit trail instead of collapsing into one
+      bare reason string.
     - final_positions: the endpoint in the start's own shape. Never NaN
       poisoned: the run stops at the last structure whose evaluation was
       finite, so the caller always receives a finite endpoint.
@@ -188,9 +204,32 @@ def relax(start, force_fn, procedure):
     budget_exhausted = False
     converged = False
     failure_reason = None
+    refusal_details = []
+    arm_id = getattr(arm, "get", lambda _key, _default=None: None)("arm_id") if arm else None
 
     def max_component(f):
         return float(np.max(np.abs(f)))
+
+    def record_refusal(reason, detail, values_finite):
+        # The refusal is recorded with its own detail line before the run
+        # stops, so the audit trail carries WHICH arm refused and WHAT it
+        # refused, not a flat reason string. The attempt that hit the
+        # refusal has already been counted as the attempt it spent.
+        # values_finite is False only for a genuine nonfinite value: a
+        # wrongly shaped or malformed return carries no readable values,
+        # so it refuses the run without labelling the values nonfinite,
+        # and the outcome taxonomy derives its nonfinite_force flag from
+        # exactly this one fact.
+        nonlocal forces_finite, failure_reason
+        if not values_finite:
+            forces_finite = False
+        failure_reason = reason
+        refusal_details.append({
+            "reason": reason,
+            "arm_id": arm_id,
+            "detail": str(detail),
+            "force_evaluation_count": evals,
+        })
 
     def call_force(pos):
         # One unit of budget per ATTEMPT: the count is spent before the
@@ -202,32 +241,53 @@ def relax(start, force_fn, procedure):
         evals += 1
         try:
             raw = force_fn(pos)
+            out = np.asarray(raw, dtype=np.float64)
+            if out.shape != np.asarray(pos).shape:
+                # A returned force that does not mirror the positions shape is
+                # a refusal, never physics. A scalar zero (broadcasting) is
+                # excluded here rather than being read as convergence. The
+                # values seen stay finite-labelled: only a genuine nonfinite
+                # VALUE sets that fact (review round 2). The detail speaks
+                # the caller's shapes: an unbatched (N, 3) start is relaxed
+                # in the internal batched shape, and the audit record never
+                # invents a phantom batch axis the caller did not supply.
+                positions_label = (np.asarray(pos)[0].shape if unbatched
+                                   else np.asarray(pos).shape)
+                record_refusal(
+                    "invalid_force_shape",
+                    f"force shape {out.shape} for positions {positions_label}",
+                    values_finite=True)
+                return None
+            if not np.isfinite(out).all():
+                record_refusal(
+                    "nonfinite_force",
+                    "the returned force carries a nan or inf component",
+                    values_finite=False)
+                return None
+            return out
         except (FloatingPointError, ValueError) as refused:
-            # A declared refusal from the arm (a nonfinite force raises
-            # FloatingPointError subclass NonfiniteValueError; a malformed
-            # array raises ValueError). It is recorded as the branch's
-            # force failure instead of aborting the whole run. Every
-            # other exception type is genuinely unexpected and keeps
-            # propagating: only these two declared refusals are routed.
-            stop("nonfinite_force" if isinstance(refused, FloatingPointError)
-                 else "invalid_force_shape")
+            # Only the two DECLARED refusals are routed here (review
+            # round 2): a nonfinite value (FloatingPointError, including
+            # the arm's recorded NonfiniteValueError), and a ValueError
+            # raised INSIDE the supplier while computing, which the
+            # adapter's contract documents as the malformed-return or
+            # in-compute refusal fact (callable_arm's wrong output shape
+            # raises ValueError under the same contract). A configuration
+            # error (species, atom count or array rank mismatch:
+            # ArmConfigurationError, a ValueError subclass) and every
+            # undeclared error type escape this block and keep
+            # propagating, so a wrongly configured arm is never scored as
+            # a branch outcome, it fails the run loudly. Each routed
+            # refusal keeps its exception text as the record detail. The
+            # floating-point route alone touches the values-finite fact:
+            # a malformed-return ValueError carries no nonfinite value.
+            if isinstance(refused, ArmConfigurationError):
+                raise
+            if isinstance(refused, FloatingPointError):
+                record_refusal("nonfinite_force", refused, values_finite=False)
+            else:
+                record_refusal("invalid_force_shape", refused, values_finite=True)
             return None
-        out = np.asarray(raw, dtype=np.float64)
-        if out.shape != np.asarray(pos).shape:
-            # A returned force that does not mirror the positions shape is
-            # a refusal, never physics. A scalar zero (broadcasting) is
-            # excluded here rather than being read as convergence.
-            stop("invalid_force_shape")
-            return None
-        if not np.isfinite(out).all():
-            stop("nonfinite_force")
-            return None
-        return out
-
-    def stop(reason):
-        nonlocal forces_finite, failure_reason
-        forces_finite = False
-        failure_reason = reason
 
     while True:
         if failure_reason is not None:
@@ -319,6 +379,9 @@ def relax(start, force_fn, procedure):
         "budget_exhausted": budget_exhausted,
         "forces_finite": forces_finite,
         "failure_reason": failure_reason,
+        # The audit trail rides on EVERY return path: an empty list when
+        # nothing was refused, the recorded details when something was.
+        "refusal_details": refusal_details,
         "final_positions": positions,
         "step_count": len(steps),
         "steps": steps,
