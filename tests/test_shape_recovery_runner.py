@@ -497,6 +497,275 @@ def test_fixture_binding_is_echoed_on_the_result(recovery_landscape,
 
 
 # ---------------------------------------------------------------------------
+# Review round 3, gap 2: the synthetic interface is bound to REAL
+# provenance. The marker is an untrusted claim, so a marked manifest
+# carrying production provenance (the approved archive digest, or the
+# approved stored identity) is refused even when its partitions have
+# been edited first, which is the route that defeated the old
+# equal-the-approved-identity check.
+# ---------------------------------------------------------------------------
+
+def _edited_production_fixture_copy(split_manifest):
+    """The reviewer's witness manifest, rebuilt fresh every call.
+
+    Copy of the committed manifest, connection 25 moved from test to
+    validation, then the synthetic declaration added. The stored
+    identity is left as shipped: the witness keeps every approved
+    provenance fact except the edited groups.
+    """
+    tampered = copy.deepcopy(split_manifest)
+    groups = tampered["groups"]["aspirin"]
+    groups["test"] = [c for c in groups["test"] if c != "25"]
+    groups["validation"] = groups["validation"] + ["25"]
+    tampered["synthetic"] = {"reason": "configuration smoke test"}
+    return tampered
+
+
+def _recovery_start_set_from_synth(landscape, manifest, classification):
+    """build_start_set over the conftest synthetic landscape, rule FIXED."""
+    from evaluation.start_set import build_start_set
+
+    return build_start_set(
+        manifest, landscape["records"], landscape["policy"],
+        {"kind": "first_stored_frame"}, classification)
+
+
+def _force_spy_arm_for_synthetic(counter):
+    """A zero-force arm over the conftest SPECIES that counts real calls."""
+    from evaluation.adapter import callable_arm
+
+    def zero_force(positions):
+        counter["calls"] += 1
+        return np.zeros(np.asarray(positions).shape, dtype=np.float64)
+
+    return callable_arm(zero_force, species=SPECIES, arm_id="synthetic-spy")
+
+
+def test_edited_production_manifest_marked_synthetic_is_refused(
+        recovery_landscape, split_manifest):
+    # The witness from review round 3, finding 2: moving the test
+    # connection changes the recomputed identity, so the old guard's
+    # equality check no longer fired and the manifest bound as
+    # 'fixture'. The synthetic path now refuses on the APPROVED archive
+    # digest the copy still carries — a fact no partition edit removes.
+    from evaluation.runner import SplitBindingError
+
+    counter = {"calls": 0}
+    tampered = _edited_production_fixture_copy(split_manifest)
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     arm=_force_spy_arm(recovery_minimum(0), counter),
+                     split_manifest=tampered)
+    message = str(excinfo.value)
+    assert "APPROVED archive digest" in message
+    assert "must be bound as production" in message
+    assert counter["calls"] == 0
+
+
+def test_edited_production_manifest_marked_synthetic_identity_removed_is_refused(
+        recovery_landscape, split_manifest):
+    # The variant: the same witness with the stored identity field
+    # REMOVED. Removing a field must not help the relabelling; the
+    # approved archive digest still identifies the copy as production
+    # provenance and the binding still refuses before any force call.
+    from evaluation.runner import SplitBindingError
+
+    counter = {"calls": 0}
+    tampered = _edited_production_fixture_copy(split_manifest)
+    tampered.pop("identity", None)
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     arm=_force_spy_arm(recovery_minimum(0), counter),
+                     split_manifest=tampered)
+    message = str(excinfo.value)
+    assert "APPROVED archive digest" in message
+    assert counter["calls"] == 0
+
+
+def test_control_marker_only_without_partition_edit_stays_refused(
+        recovery_landscape, split_manifest):
+    # The control from the review: the marker added with NO partition
+    # edit. This passed before the round-3 change (the recomputed
+    # identity still equalled the approved one) and must keep passing
+    # after it: the manifest's own provenance says production.
+    from evaluation.runner import SplitBindingError
+
+    counter = {"calls": 0}
+    tampered = copy.deepcopy(split_manifest)
+    tampered["synthetic"] = {"reason": "configuration smoke test"}
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     arm=_force_spy_arm(recovery_minimum(0), counter),
+                     split_manifest=tampered)
+    message = str(excinfo.value)
+    assert "bound as production" in message
+    assert counter["calls"] == 0
+
+
+def test_stored_approved_identity_refuses_even_with_digest_washed(
+        recovery_landscape, split_manifest):
+    # The second edit-proof fact on its own: a marked manifest whose
+    # archive digest has been REPLACED (an attempt to wash the digest
+    # specifically) is still refused when the stored identity field is
+    # the approved one, so both production provenance facts
+    # independently carry the refusal.
+    from evaluation.runner import SplitBindingError
+
+    counter = {"calls": 0}
+    tampered = _edited_production_fixture_copy(split_manifest)
+    tampered["archive_sha256"] = "washed-digest"
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     arm=_force_spy_arm(recovery_minimum(0), counter),
+                     split_manifest=tampered)
+    message = str(excinfo.value)
+    assert "stores the APPROVED split identity" in message
+    assert counter["calls"] == 0
+
+
+def test_genuine_synthetic_fixture_still_binds_and_evaluates(
+        synthetic_landscape, synthetic_endpoint_classification):
+    # The flip side: a genuine fixture (its own digest, its own groups,
+    # no approved provenance anywhere) keeps binding as 'fixture' and
+    # keeps evaluating under the round-3 binding, so the guard against
+    # relabelled production manifests did not close the fixture path.
+    from evaluation.runner import evaluate_starts
+
+    from conftest import build_minima_pool
+
+    manifest = copy.deepcopy(synthetic_landscape["manifest"])
+    start_set = _recovery_start_set_from_synth(
+        synthetic_landscape, manifest, synthetic_endpoint_classification)
+    counter = {"calls": 0}
+    result = evaluate_starts(
+        start_set, _force_spy_arm_for_synthetic(counter),
+        _runner_procedure(), synthetic_endpoint_classification,
+        build_minima_pool(synthetic_landscape), synthetic_landscape["policy"],
+        split_manifest=manifest, authorise_test_partition=True)
+    assert result["split_binding"] == "fixture"
+    assert result["synthetic_fixture"] is True
+    assert result["branch_count"] == len(start_set)
+    assert counter["calls"] > 0
+    for row in result["branches"].values():
+        assert row["_audit_record"]["split_binding"] == "fixture"
+
+
+def test_production_binding_with_policy_off_the_approved_one_is_refused(
+        recovery_landscape, split_manifest):
+    # A production binding whose EFFECTIVE preparation policy differs
+    # from the approved manifest's policy is refused before any force
+    # call, naming the first differing field with both values — being
+    # an instance of PreparationPolicy is no longer enough.
+    from dataclasses import replace
+
+    from evaluation.runner import SplitBindingError
+
+    approved = PreparationPolicy(**split_manifest["policy"])
+    assert approved.endpoint_tolerance == 0.05
+    drifted = replace(approved, endpoint_tolerance=0.1)
+    counter = {"calls": 0}
+    with pytest.raises(SplitBindingError) as excinfo:
+        _runner_call(recovery_landscape,
+                     copy.deepcopy(recovery_landscape.manifest),
+                     split_manifest=split_manifest, policy=drifted,
+                     arm=_force_spy_arm(recovery_minimum(0), counter))
+    message = str(excinfo.value)
+    assert "'endpoint_tolerance'" in message
+    assert "0.1" in message and "0.05" in message
+    assert "match the approved manifest's policy" in message
+    assert counter["calls"] == 0
+
+
+def test_production_binding_runs_the_real_archive_slice_end_to_end(
+        aspirin_records, split_manifest, tmp_path):
+    # The positive production path, end to end on the REAL archive: the
+    # committed manifest under the approved policy binds 'approved',
+    # evaluates a real validation connection through the runner, and
+    # every saved audit record names the production binding.
+    import json as _json
+
+    from evaluation.adapter import callable_arm
+    from evaluation.reporter import build_report, render
+    from evaluation.runner import evaluate_starts
+    from evaluation.start_set import build_start_set
+
+    policy = PreparationPolicy(**split_manifest["policy"])
+    start_set = build_start_set(
+        split_manifest, aspirin_records, policy,
+        {"kind": "first_stored_frame"})
+    keys = ("aspirin/78/plus", "aspirin/78/minus")
+    slice_set = {key: start_set[key] for key in keys}
+    classification = _real_classification_payload()
+    references = {}
+    for key in keys:
+        record_id = classification[key]["reference_class"]
+        references[record_id] = next(
+            record for record in aspirin_records
+            if record.record_id == record_id)
+
+    def zero_force(positions):
+        return np.zeros(np.asarray(positions).shape, dtype=np.float64)
+
+    arm = callable_arm(zero_force, species=slice_set[keys[0]]["species"],
+                       arm_id="flat-zero")
+    result = evaluate_starts(
+        slice_set, arm, _runner_procedure(), classification, references,
+        policy, split_manifest=copy.deepcopy(split_manifest),
+        seen_minimum=True)
+    # The production binding fired and the branches were evaluated.
+    assert result["split_binding"] == "approved"
+    assert result["synthetic_fixture"] is False
+    assert result["branch_count"] == 2
+    for row in result["branches"].values():
+        assert row["partition"] == "validation"
+        assert row["converged"] is True
+        assert row["category"] == "unmatched_converged"
+        assert row["_audit_record"]["split_binding"] == "approved"
+    # The declaration survives into the SAVED per-branch evidence.
+    report, diagnostics = build_report(result["branches"])
+    out = render(report, diagnostics, tmp_path, stem="prod-binding")
+    saved = _json.loads((tmp_path / "prod-binding.json").read_text())
+    rows = {row["branch_key"]: row
+            for row in saved["diagnostics"]["per_branch"]}
+    assert sorted(rows) == sorted(keys)
+    for key in keys:
+        assert rows[key]["split_binding"] == "approved"
+
+
+def test_fixture_run_saved_audit_names_the_fixture_binding(
+        recovery_landscape, frozen_recovery_manifest, tmp_path):
+    # The fixture's saved per-branch evidence names ITS binding too:
+    # a reader of the diagnostics sees which contract each run ran under.
+    import json as _json
+
+    from evaluation.reporter import build_report, render
+
+    result = _runner_call(recovery_landscape, frozen_recovery_manifest,
+                          authorise_test_partition=True, seen_minimum=True)
+    assert result["split_binding"] == "fixture"
+    report, diagnostics = build_report(result["branches"])
+    render(report, diagnostics, tmp_path, stem="fixture-binding")
+    saved = _json.loads((tmp_path / "fixture-binding.json").read_text())
+    rows = saved["diagnostics"]["per_branch"]
+    assert rows
+    for row in rows:
+        assert row["split_binding"] == "fixture"
+
+
+def _real_classification_payload():
+    """The committed endpoint classification, loaded once, read-only."""
+    import json
+    from conftest import REPO
+
+    return json.loads(
+        (REPO / "reports" / "landscape17-endpoints.json").read_text())
+
+
+# ---------------------------------------------------------------------------
 # Partition overlap and completeness (review round 2): ambiguous or
 # incomplete manifests are refused before any force call.
 # ---------------------------------------------------------------------------
@@ -823,14 +1092,15 @@ def test_nonnumeric_supplier_return_is_a_recorded_refusal(
 
 def test_two_arms_with_identical_refusal_wording_stay_distinguishable(
         recovery_landscape, frozen_recovery_manifest):
-    from evaluation.adapter import callable_arm
+    from evaluation.adapter import MalformedForceReturn, callable_arm
     from evaluation.runner import evaluate_starts
 
-    # Two arms whose suppliers raise the SAME wording: the recorded
-    # refusal details name WHICH arm refused, so the audit trail cannot
-    # collapse the two runs into one anonymous fact.
+    # Two arms whose suppliers raise the SAME declared refusal wording
+    # (MalformedForceReturn, the round-3 declared malformed-return type):
+    # the recorded refusal details name WHICH arm refused, so the audit
+    # trail cannot collapse the two runs into one anonymous fact.
     def refusing_force(positions):
-        raise ValueError("the same refusal wording")
+        raise MalformedForceReturn("the same refusal wording")
 
     arm_w = callable_arm(refusing_force, species=SPECIES, arm_id="arm-with-shape")
     arm_s = callable_arm(refusing_force, species=SPECIES,
@@ -857,3 +1127,70 @@ def test_two_arms_with_identical_refusal_wording_stay_distinguishable(
     assert all(detail["arm_id"] == "arm-with-shape" for detail in first_details)
     assert all(detail["arm_id"] == "arm-with-scalar" for detail in second_details)
     assert first_details[0]["arm_id"] != second_details[0]["arm_id"]
+
+
+def test_arbitrary_supplier_value_error_propagates_and_scores_nothing(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    # Review round 3, gap 3, end to end: a supplier whose INTERNAL
+    # configuration is broken raises an ordinary ValueError. That is not
+    # a refusal — it propagates out of evaluate_starts and scores
+    # nothing, instead of being recorded as scored nonconverged branches.
+    calls = {"n": 0}
+
+    def force(positions):
+        calls["n"] += 1
+        raise ValueError("model configuration: missing radial basis parameter")
+
+    arm = callable_arm(force, species=SPECIES, arm_id="raises-valueerror")
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    with pytest.raises(ValueError) as excinfo:
+        evaluate_starts(
+            validation_only, arm, _runner_procedure(),
+            _recovery_classification(recovery_landscape),
+            recovery_landscape.references(), recovery_landscape.policy(),
+            split_manifest=frozen_recovery_manifest,
+        )
+    assert ("model configuration: missing radial basis parameter"
+            in str(excinfo.value))
+    # The first branch's attempt happened and nothing was scored: the
+    # run aborted on the first undeclared supplier error.
+    assert calls["n"] == 1
+
+
+def test_mixed_species_starts_are_refused_with_zero_supplier_calls(
+        recovery_landscape, frozen_recovery_manifest):
+    from evaluation.adapter import ArmConfigurationError
+    from evaluation.runner import evaluate_starts
+
+    # Review round 3, gap 4, end to end in the DEFAULT strict mode: one
+    # start in the set carries a species tuple the arm was not built
+    # for. The plan-building preflight must refuse the whole set BEFORE
+    # any force call: zero supplier calls, the branch and both species
+    # tuples named in the error.
+    counter = {"calls": 0}
+    arm = _force_spy_arm(recovery_minimum(0), counter)
+    start_set = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation_only = {key: entry for key, entry in start_set.items()
+                       if key.split("/")[1] == "80"}
+    keys = sorted(validation_only)
+    second = keys[1]
+    entry = dict(validation_only[second])
+    entry["species"] = ("N", "N", "N")
+    validation_only[second] = entry
+    with pytest.raises(ArmConfigurationError) as excinfo:
+        evaluate_starts(
+            validation_only, arm, _runner_procedure(),
+            _recovery_classification(recovery_landscape),
+            recovery_landscape.references(), recovery_landscape.policy(),
+            split_manifest=frozen_recovery_manifest,
+        )
+    message = str(excinfo.value)
+    assert "species mismatch" in message
+    assert "('N', 'N', 'N')" in message
+    assert "('C', 'H', 'O')" in message
+    assert counter["calls"] == 0

@@ -525,35 +525,57 @@ def test_nonfloating_refusal_types_are_never_swallowed():
         relax(_single_start([1.0, 0.0, 0.0]), bomb, _refusal_procedure())
 
 
-def test_value_error_from_a_non_arm_source_is_a_recorded_shape_refusal():
+def test_arbitrary_supplier_value_error_propagates_and_scores_nothing():
     from evaluation.relax import relax
 
-    # A ValueError raised inside the supplier while computing (not from
-    # the arm's contract) is routed to the same recorded refusal: the
-    # declared nonfinite/shape refusals, distinguished by where the
-    # refusal is detected (raise inside the supplier vs array inspection
-    # after it returns).
-    def poison_then_zero(positions):
-        raise ValueError("bad intermediate")
+    # A supplier's OWN ValueError (an internal model error: the round-3
+    # gap-3 witness) is NOT a refusal. It propagates out of relax and
+    # scores nothing: only the declared refusal exceptions carry the
+    # refusal fact (MalformedForceReturn, ForceShapeMismatch from the
+    # adapter's contract, and the recorded NonfiniteValueError), so any
+    # other ValueError is an undeclared error that fails the run loudly.
+    def broken_model(positions):
+        raise ValueError("model configuration: missing radial basis parameter")
 
-    result = relax(_single_start([1.0, 0.0, 0.0]), poison_then_zero,
-                   _refusal_procedure())
-    assert result["status"] == "nonconverged"
-    assert result["failure_reason"] == "invalid_force_shape"
-    assert result["force_evaluation_count"] == 1
+    with pytest.raises(ValueError) as excinfo:
+        relax(_single_start([1.0, 0.0, 0.0]), broken_model,
+              _refusal_procedure())
+    assert ("model configuration: missing radial basis parameter"
+            in str(excinfo.value))
+
+
+def test_bare_floating_point_error_from_a_supplier_propagates():
+    from evaluation.relax import relax
+
+    # The declared nonfinite refusal rides on NonfiniteValueError (the
+    # recorded-field carrier). A BARE FloatingPointError raised by the
+    # supplier itself is not that declaration, so it propagates like any
+    # other undeclared error instead of being scored as a refusal.
+    def bare_fpe(positions):
+        raise FloatingPointError("bare supplier failure")
+
+    with pytest.raises(FloatingPointError):
+        relax(_single_start([1.0, 0.0, 0.0]), bare_fpe,
+              _refusal_procedure())
 
 
 def test_nonfinite_refusal_is_counted_before_the_supplier_runs():
+    from evaluation.adapter import NonfiniteValueError
     from evaluation.relax import relax
 
     # The count is spent on the attempt: this supplier raises on the very
     # first call, so the recorded count of exactly one proves the attempt
-    # was accounted for even though no value ever came back.
+    # was accounted for even though no value ever came back. The refusal
+    # is DECLARED through NonfiniteValueError (review round 3), the
+    # recorded-field carrier the adapter and a supplier both use.
     attempts = {"n": 0}
 
     def raise_nonfinite(positions):
         attempts["n"] += 1
-        raise FloatingPointError("refused: nonfinite force")
+        raise NonfiniteValueError("refused: nonfinite force", {
+            "status": "unavailable",
+            "reason": "nonfinite force",
+        })
 
     result = relax(_single_start([1.0, 0.0, 0.0]), raise_nonfinite,
                    _refusal_procedure())

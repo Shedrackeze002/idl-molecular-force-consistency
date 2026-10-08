@@ -50,7 +50,9 @@ outcome, the reporter retains, under explicit names on that branch, the
 reference identity, the start identity, the arm identity, the effective
 procedure (with any labelled synthetic override next to the configured
 value), the final positions, the RMSD and the mapping, the failure
-facts, and the actual force-call and step counts, all in
+facts, the split binding the branch was evaluated under
+("approved" or "fixture", review round 3, gap 2), and the actual
+force-call and step counts, all in
 diagnostics.per_branch, in the rendered JSON, and as a per-branch audit
 row in the Markdown. Every audit value is normalized to plain-JSON data
 (FrameRecord-like objects become explicit named fields, numpy arrays
@@ -313,9 +315,9 @@ def _record_fields(key, outcome):
             f"{key}: _audit_record must be a dict of plain-JSON audit "
             f"fields, got {type(record).__name__}")
     identity_fields = {}
-    for name in ("reference", "start", "arm", "procedure", "rmsd_A",
-                 "permutation", "rotation", "accepted_classes", "failure",
-                 "timing_seconds"):
+    for name in ("reference", "start", "arm", "split_binding", "procedure",
+                 "rmsd_A", "permutation", "rotation", "accepted_classes",
+                 "failure", "timing_seconds"):
         if name not in record:
             continue
         try:
@@ -490,6 +492,20 @@ def _reconcile_failure_facts(key, outcome):
        entry that carries a declared failure reason, is self
        contradictory and refused.
 
+    The runner's nested audit section emits a different vocabulary
+    from the fixture script's: stop_reason, failure_reason,
+    nonfinite_force and refusal_details, and no "failed" key. Those
+    facts are reconciled on the same axes without requiring "failed":
+    the effective stop reason (whichever of stop_reason /
+    failure_reason is present and non-null, at outcome level and in
+    the nested section) must be a declared reason and must agree with
+    its twin where both appear; a declared stop reason on a branch
+    the summary counts as a reached endpoint is a contradiction;
+    nonfinite_force=True with forces_finite=True is a contradiction;
+    and nonfinite_force=True under a summary claiming converged is a
+    contradiction. Absent optional keys mean "not stated", never
+    "no contradiction": nothing is defaulted in, on either path.
+
     Only presence and plain booleans are read out of the nested
     section: nested failure data the caller omitted is not defaulted
     into a fact, so a caller that supplies no audit record, or one
@@ -514,7 +530,14 @@ def _reconcile_failure_facts(key, outcome):
             f"recorded False; a run whose force values were nonfinite is "
             f"never reported as converged (the contradiction must be "
             f"rejected, not repaired)")
+    if nonfinite is True and forces_finite is True:
+        raise ValueError(
+            f"{key}: the outcome records nonfinite_force True while "
+            f"forces_finite is True; a run terminated by a nonfinite force "
+            f"never reports finite forces (the contradiction must be "
+            f"rejected, not repaired)")
     stop_reason = outcome.get("stop_reason")
+    failure_reason = outcome.get("failure_reason")
     declared_stops = ("budget_exhausted", "nonfinite_force",
                       "invalid_force_shape", "no_progress")
     if stop_reason is not None and category != "nonconverged":
@@ -523,9 +546,24 @@ def _reconcile_failure_facts(key, outcome):
             f"{stop_reason!r}; a stop reason before the rule was met "
             f"contradicts a verdict scored on a reached endpoint (the "
             f"contradiction must be rejected, not repaired)")
-    if stop_reason is not None and stop_reason not in declared_stops:
+    if failure_reason is not None and category != "nonconverged":
         raise ValueError(
-            f"{key}: unknown stop_reason {stop_reason!r}; the declared "
+            f"{key}: the summary category {category!r} carries failure_reason "
+            f"{failure_reason!r}; a stop reason before the rule was met "
+            f"contradicts a verdict scored on a reached endpoint (the "
+            f"contradiction must be rejected, not repaired)")
+    effective_reason = next((name for name in (stop_reason, failure_reason)
+                             if name is not None), None)
+    if stop_reason is not None and failure_reason is not None \
+            and stop_reason != failure_reason:
+        raise ValueError(
+            f"{key}: stop_reason {stop_reason!r} and failure_reason "
+            f"{failure_reason!r} name different ways the run stopped; they "
+            f"carry one fact and must agree (the contradiction must be "
+            f"rejected, not repaired)")
+    if effective_reason is not None and effective_reason not in declared_stops:
+        raise ValueError(
+            f"{key}: unknown stop_reason {effective_reason!r}; the declared "
             f"reasons are {', '.join(declared_stops)} or None")
 
     # Surfaces 2 and 3: the nested audit failure section.
@@ -540,6 +578,9 @@ def _reconcile_failure_facts(key, outcome):
     nested_budget = _bool_fact(nested.get("budget_exhausted"))
     nested_converged = _bool_fact(nested.get("converged"))
     nested_finite = _bool_fact(nested.get("forces_finite"))
+    nested_stop = nested.get("stop_reason")
+    nested_failure_reason = nested.get("failure_reason")
+    nested_nonfinite = _bool_fact(nested.get("nonfinite_force"))
     audit = (
         f"audit failure section {nested!s} against summary category "
         f"{category!r}, converged={converged!r}, budget_exhausted="
@@ -598,6 +639,47 @@ def _reconcile_failure_facts(key, outcome):
             f"{nested_reason!r}; the run cannot have stopped on a declared "
             f"reason it never met and stayed unfailed (the contradiction "
             f"must be rejected, not repaired)")
+
+    # Surface 2, runner vocabulary (review round 3): the runner's nested
+    # section has no "failed" key, so the checks above cannot see its
+    # contradictions. Reconcile the facts the runner DOES emit, both
+    # against the summary and against each other, without defaulting any
+    # absent key into a fact. An absent key means "not stated", which on
+    # its own is no contradiction; the section against itself still
+    # refuses a declared reason on an unfailed branch, because an
+    # unfailed run cannot have stopped on a declared reason at all.
+    nested_effective = next((name for name in (nested_stop,
+                                               nested_failure_reason)
+                             if name is not None), None)
+    if nested_effective is not None and category != "nonconverged":
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit declares stop "
+            f"reason {nested_effective!r} while the summary category "
+            f"{category!r} records a reached endpoint; the two cannot "
+            f"describe the same run ({audit})")
+    if nested_effective is not None and nested_effective not in declared_stops:
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit carries the "
+            f"unknown stop reason {nested_effective!r}; the declared "
+            f"reasons are {', '.join(declared_stops)} or None ({audit})")
+    if (nested_stop is not None and nested_failure_reason is not None
+            and nested_stop != nested_failure_reason):
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit records "
+            f"stop_reason {nested_stop!r} and failure_reason "
+            f"{nested_failure_reason!r}; the two name one way of stopping "
+            f"and must agree ({audit})")
+    if converged and nested_nonfinite is True:
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit records "
+            f"nonfinite_force=True while the summary claims converged "
+            f"({audit})")
+    if nested_nonfinite is True and nested_finite is True:
+        raise ValueError(
+            f"{key}: contradictory failure audit: the audit records "
+            f"nonfinite_force=True with forces_finite=True; a run "
+            f"terminated by a nonfinite force never reports finite forces "
+            f"({audit})")
 
 
 def _split_key(key):

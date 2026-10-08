@@ -121,6 +121,28 @@ class NonfiniteValueError(FloatingPointError):
         self.info = info
 
 
+class MalformedForceReturn(ValueError):
+    """A declared refusal: a force return that is not a numeric array.
+
+    The arm's own wrapper raises this when its force function returns
+    something that cannot become a numeric array at all. It stays a
+    ValueError for existing direct-callers' except clauses, and the
+    relaxation procedure routes it as the declared malformed-return
+    refusal rather than as an arbitrary supplier error (review round 3).
+    """
+
+
+class ForceShapeMismatch(ValueError):
+    """A declared refusal: a force return whose shape is not physics.
+
+    Raised when the returned force array's shape does not mirror the
+    positions it was called on. The relaxation procedure records it as
+    invalid_force_shape with the values seen still finite-labelled
+    (review round 3 declares this class so catch sites can distinguish
+    a malformed RETURN from any other ValueError a supplier raises).
+    """
+
+
 def _require_finite_values(values, record_id, what):
     """Refuse any nonfinite value with a recorded field, never zero it."""
     if not np.isfinite(values).all():
@@ -222,12 +244,15 @@ def callable_arm(force_fn, species, arm_id):
             # A return that cannot become a numeric array at all is a
             # refusal with its own recorded reason, not a crash in the
             # accounting: the refusal text names the fact so the audit
-            # trail says WHY the attempt was refused.
-            raise ValueError(
+            # trail says WHY the attempt was refused. The declared
+            # exception type (review round 3) lets catch sites route this
+            # refusal without mistaking any other ValueError a supplier
+            # raises for a declared refusal.
+            raise MalformedForceReturn(
                 f"callable arm {arm_id!r}: nonnumeric force return "
                 f"({refused})") from refused
         if out.shape != array.shape:
-            raise ValueError(
+            raise ForceShapeMismatch(
                 f"callable arm {arm_id!r}: force shape mismatch: the force "
                 f"function returned {out.shape} for positions {array.shape}")
         _require_finite_values(out, record_id, "force")

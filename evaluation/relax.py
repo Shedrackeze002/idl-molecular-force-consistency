@@ -58,7 +58,8 @@ Positions are (B, N, 3) in angstrom, forces come back (B, N, 3) in
 eV/angstrom. An (N, 3) start is accepted as the unbatched one-molecule
 form and the endpoint is returned in the same unbatched shape.
 """
-from evaluation.adapter import ArmConfigurationError
+from evaluation.adapter import (ForceShapeMismatch, MalformedForceReturn,
+                                NonfiniteValueError)
 import numpy as np
 
 # Dot products more negative than this absolute amount count as genuine
@@ -265,24 +266,26 @@ def relax(start, force_fn, procedure, *, arm=None):
                     values_finite=False)
                 return None
             return out
-        except (FloatingPointError, ValueError) as refused:
-            # Only the two DECLARED refusals are routed here (review
-            # round 2): a nonfinite value (FloatingPointError, including
-            # the arm's recorded NonfiniteValueError), and a ValueError
-            # raised INSIDE the supplier while computing, which the
-            # adapter's contract documents as the malformed-return or
-            # in-compute refusal fact (callable_arm's wrong output shape
-            # raises ValueError under the same contract). A configuration
-            # error (species, atom count or array rank mismatch:
-            # ArmConfigurationError, a ValueError subclass) and every
-            # undeclared error type escape this block and keep
-            # propagating, so a wrongly configured arm is never scored as
-            # a branch outcome, it fails the run loudly. Each routed
-            # refusal keeps its exception text as the record detail. The
-            # floating-point route alone touches the values-finite fact:
-            # a malformed-return ValueError carries no nonfinite value.
-            if isinstance(refused, ArmConfigurationError):
-                raise
+        except (NonfiniteValueError, MalformedForceReturn,
+                ForceShapeMismatch) as refused:
+            # Only the three DECLARED refusal exceptions are routed here
+            # (review rounds 2 and 3): the arm's recorded nonfinite error
+            # (NonfiniteValueError, a FloatingPointError carrying the
+            # refusal as a recorded info field), and the two declared
+            # malformed-return exceptions from the adapter's own contract
+            # (MalformedForceReturn for a return that cannot become a
+            # numeric array, ForceShapeMismatch for a returned shape that
+            # does not mirror the positions). EVERY other exception keeps
+            # propagating: ArmConfigurationError (species, atom count or
+            # array rank mismatch — a configuration error, not an
+            # outcome) and a supplier's own ValueError, TypeError or any
+            # other undeclared type, because an internal model error or a
+            # misconfiguration is not a refusal, it fails the run loudly
+            # instead of being scored as a branch outcome (review round
+            # 3, gap 3). Each routed refusal keeps its exception text as
+            # the record detail. The nonfinite route alone touches the
+            # values-finite fact: a malformed return carries no nonfinite
+            # value.
             if isinstance(refused, FloatingPointError):
                 record_refusal("nonfinite_force", refused, values_finite=False)
             else:

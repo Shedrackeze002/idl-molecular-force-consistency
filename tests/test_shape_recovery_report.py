@@ -749,6 +749,115 @@ def test_reporter_rejects_failure_audit_contradicting_the_summary():
 
 
 # ---------------------------------------------------------------------------
+# Review round 3, gap 1 (card B): reconcile the failure vocabulary the
+# RUNNER emits (stop_reason / failure_reason / nonfinite_force, and no
+# "failed" key) against the summary, before any counting. The
+# regressions run on evaluate_starts output, as the reviewer asked.
+# ---------------------------------------------------------------------------
+
+def test_runner_nested_failure_reason_on_matched_summary_is_refused():
+    # Witness a: a matched runner row whose ONLY change is the nested
+    # failure_reason reading 'nonfinite_force'. The runner's audit
+    # section has no "failed" key, so the reason itself must be
+    # reconciled with the summary: a declared stop reason on a branch
+    # counted as a reached endpoint is refused before anything is
+    # counted.
+    from evaluation.reporter import build_report
+
+    branches = _recovery_runner_result()["branches"]
+    forged = copy.deepcopy(branches)
+    target = next(key for key, value in forged.items()
+                  if value["category"] == "matched_reference")
+    forged[target]["_audit_record"]["failure"]["failure_reason"] = \
+        "nonfinite_force"
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert target in message
+    assert "contradictory failure audit" in message
+    assert "nonfinite_force" in message
+    assert "matched_reference" in message
+
+
+def test_runner_nested_stop_reason_and_nonfinite_flag_on_matched_refused():
+    # Witness b: nested stop_reason='nonfinite_force' together with
+    # nonfinite_force=True on a matched runner row, saved with
+    # forces_finite=True unchanged. The effective stop reason
+    # contradicts the reached-endpoint summary and the nonfinite flag
+    # contradicts the converged summary; the record is refused as it
+    # stands, not repaired.
+    from evaluation.reporter import build_report
+
+    branches = _recovery_runner_result()["branches"]
+    forged = copy.deepcopy(branches)
+    target = next(key for key, value in forged.items()
+                  if value["category"] == "matched_reference")
+    nested = forged[target]["_audit_record"]["failure"]
+    nested["stop_reason"] = "nonfinite_force"
+    nested["nonfinite_force"] = True
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert target in message
+    assert "contradictory failure audit" in message
+    assert "nonfinite_force" in message
+
+
+def test_fixture_slice_failure_reason_witness_stays_refused():
+    # Regression 3: the fixture-slice witness refused before this
+    # round stays refused. The fixture audit carries failed=False, so
+    # surface 3 (unfailed with a declared reason) refuses it exactly
+    # as before; the runner-vocabulary checks must not have weakened
+    # that path, and the unmutated fixture slice still builds.
+    from force_consistency.data.types import PreparationPolicy
+
+    from evaluation.reporter import build_report
+
+    module = _load_report_script()
+    evaluated = module.run_fixture_slice(PreparationPolicy())
+    report, _diagnostics = build_report(evaluated)
+    assert report["branch_count"] == 4
+
+    target = next(key for key, value in evaluated.items()
+                  if value["category"] == "matched_reference")
+    evaluated[target]["_audit_record"]["failure"]["failure_reason"] = \
+        "nonfinite_force"
+    with pytest.raises(ValueError) as excinfo:
+        build_report(evaluated)
+    message = str(excinfo.value)
+    assert target in message
+    assert "failed=False" in message
+    assert "nonfinite_force" in message
+
+
+def test_honest_runner_slice_reports_its_categories_unchanged():
+    # Regression 4: the reconciliation refuses contradictions without
+    # refusing valid records. An honest evaluate_starts slice over the
+    # recovery landscape passes every new check and reports the same
+    # categories it always did: two matched_reference recoveries,
+    # nothing else, nothing dropped.
+    from evaluation.reporter import build_report
+
+    branches = _recovery_runner_result()["branches"]
+    report, diagnostics = build_report(branches)
+    assert report["branch_count"] == 2
+    assert {row["category"] for row in diagnostics["per_branch"]} == \
+        {"matched_reference"}
+    totals = report["category_totals"]
+    assert totals["held_out"]["matched_reference"] == 2
+    assert totals["held_out"]["nonconverged"] == 0
+    assert totals["validation"]["matched_reference"] == 2
+    assert totals["test"]["matched_reference"] == 0
+    # The nested runner facts arrive in the report unmodified: the
+    # reconciliation never normalises a valid record either.
+    row = diagnostics["per_branch"][0]
+    assert row["failure"]["stop_reason"] is None
+    assert row["failure"]["failure_reason"] is None
+    assert row["failure"]["forces_finite"] is True
+    assert row["failure"]["nonfinite_force"] is False
+
+
+# ---------------------------------------------------------------------------
 # Review item 2 (card B1): the runner's per-branch audit record survives
 # runner -> build_report -> render, and the rendered provenance names the
 # arm that ACTUALLY produced the numbers.

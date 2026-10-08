@@ -30,7 +30,6 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from force_consistency.data.splits import canonical_hash
-from force_consistency.data.source import SHA256
 from force_consistency.data.types import PreparationPolicy
 
 
@@ -215,7 +214,14 @@ def synthetic_landscape():
         }
 
     manifest = {
-        "archive_sha256": SHA256,
+        # The digest of the SYNTHETIC payload this manifest describes
+        # (review round 3, gap 2): a genuine fixture carries its own
+        # provenance, never the approved production archive digest,
+        # which would make this manifest a relabelled production
+        # landscape. The digest covers the manifest's canonical
+        # connection inventory, distinct from every fixture elsewhere
+        # in the suite and stable across runs.
+        "archive_sha256": canonical_hash({"connections": connections}),
         "connections": {"aspirin": connections},
         "groups": {"aspirin": {part: list(ids) for part, ids in GROUPS.items()}},
         "policy": asdict(PreparationPolicy()),
@@ -228,6 +234,20 @@ def synthetic_landscape():
     }
     manifest["identity"] = canonical_hash(
         {key: manifest[key] for key in ("archive_sha256", "connections", "groups", "policy")})
+
+    # The fixture must stay genuinely synthetic (review round 3, gap 2):
+    # if the runner's approved provenance ever changes, this manifest
+    # must NOT start carrying it silently — the guard would then see the
+    # approved digest here and refuse the fixture, so the disagreement
+    # surfaces as this loud fixture error instead of a binding refusal.
+    from evaluation.runner import APPROVED_ARCHIVE_SHA256, APPROVED_SPLIT_IDENTITY
+
+    assert manifest["archive_sha256"] != APPROVED_ARCHIVE_SHA256, (
+        "the synthetic fixture's archive digest now equals the approved "
+        "production digest; rebuild it from the fixture's own payload")
+    assert manifest["identity"] != APPROVED_SPLIT_IDENTITY, (
+        "the synthetic fixture's identity now equals the approved "
+        "production identity; rebuild it from the fixture's own payload")
 
     return {
         "records": records,

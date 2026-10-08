@@ -25,8 +25,9 @@ for the reporter to retain: the arm identity actually used, the start
 record id, the branch's own reference identity, the endpoint
 coordinates, the RMSD and mapping facts, the structured failure facts
 (including the refusal naming which arm refused), the force-evaluation
-and step counts, the per-branch wall-clock timing, and the effective
-settings the run actually used. The evidence is explicit names and
+and step counts, the per-branch wall-clock timing, the split binding
+the run was declared under (production or synthetic fixture), and the
+effective settings the run actually used. The evidence is explicit names and
 numbers only: no opaque object is stored as its repr, so the saved
 diagnostics round-trip through json.loads without loss.
 
@@ -246,11 +247,20 @@ def _bind_split_manifest(split_manifest, *, synthetic_declaration):
     recompute to the exact approved pairing (the identity equals the
     frozen APPROVED_SPLIT_IDENTITY, the archive digest equals the frozen
     archive digest, and the caller bound a real PreparationPolicy object
-    at the call site); anything else fails closed. A manifest carrying
-    the explicit synthetic declaration binds as a fixture instead and is
-    refused if it still carries the APPROVED identity: a production
-    manifest that has been relabelled 'synthetic' must not be admitted
-    as a fixture, it must go through the production binding.
+    at the call site, matching the approved policy field by field);
+    anything else fails closed.
+
+    A manifest carrying the explicit synthetic declaration binds as a
+    fixture instead, but the declaration alone is NOT trusted (review
+    round 3, finding 2): the marker is an untrusted claim, so the
+    binding also checks facts that editing the partitions cannot
+    change. A manifest still carrying the approved archive digest, or
+    the approved stored identity, is production evaluation that has
+    been relabelled 'synthetic' and is refused; it must go through the
+    production binding. Editing the partitions first changes the
+    recomputed identity, so the recomputed value is never the
+    discriminator here — the stored provenance facts are, which is why
+    removing the stored identity field defeats nothing either.
 
     The synthetic marker lives INSIDE the manifest, so the existing
     public call pattern (split_manifest=..., authorise_test_partition=...)
@@ -258,6 +268,7 @@ def _bind_split_manifest(split_manifest, *, synthetic_declaration):
     synthetic manifest missing the marker is refused: the escape hatch
     cannot be taken by accident or by omission.
     """
+    archive = split_manifest.get("archive_sha256")
     if synthetic_declaration is None:
         identity = _computable_identity(split_manifest)
         if identity is None:
@@ -279,7 +290,6 @@ def _bind_split_manifest(split_manifest, *, synthetic_declaration):
                 f"carry its own explicit {MANIFEST_SYNTHETIC_KEY!r} declaration "
                 f"instead of impersonating the approved manifest")
         if identity == APPROVED_SPLIT_IDENTITY:
-            archive = split_manifest.get("archive_sha256")
             if archive != APPROVED_ARCHIVE_SHA256:
                 raise SplitBindingError(
                     f"the supplied split manifest recomputes to the approved "
@@ -294,6 +304,20 @@ def _bind_split_manifest(split_manifest, *, synthetic_declaration):
             "synthetic fixture must carry its own explicit "
             f"{MANIFEST_SYNTHETIC_KEY!r} declaration instead of impersonating "
             "the approved manifest")
+    # The marker is an untrusted claim, so the synthetic path judges the
+    # manifest on PROVENANCE FACTS that editing the partitions cannot
+    # change (review round 3, finding 2). The recomputed identity is
+    # deliberately NOT the discriminator: an edited manifest recomputes
+    # to a different value, which is exactly what let the
+    # edit-then-mark route past the old equality check. The recomputed
+    # check stays first as the plain-relabel fast refusal (a manifest
+    # whose four identity payloads are still byte-identical to the
+    # approved ones cannot be a genuine independent fixture), and the
+    # two edit-proof checks below carry the verdict for every edited
+    # manifest: the approved archive digest found in a marked manifest
+    # is production provenance a partition edit cannot wash out, and a
+    # stored approved identity is the same fact on the identity field,
+    # whose removal therefore helps nothing.
     identity = _computable_identity(split_manifest)
     if identity is not None and identity == APPROVED_SPLIT_IDENTITY:
         raise SplitBindingError(
@@ -301,13 +325,94 @@ def _bind_split_manifest(split_manifest, *, synthetic_declaration):
             f"recomputes to the approved identity "
             f"({APPROVED_SPLIT_MANIFEST_PATH}); that manifest is production "
             f"evaluation and must be bound as production, not relabelled")
+    if archive == APPROVED_ARCHIVE_SHA256:
+        raise SplitBindingError(
+            f"the supplied manifest carries a synthetic declaration but the "
+            f"APPROVED archive digest {APPROVED_ARCHIVE_SHA256!r}, the "
+            f"provenance of the production landscape "
+            f"({APPROVED_SPLIT_MANIFEST_PATH}); that manifest is production "
+            f"evaluation and must be bound as production, not relabelled as "
+            f"a synthetic fixture")
+    if split_manifest.get("identity") == APPROVED_SPLIT_IDENTITY:
+        raise SplitBindingError(
+            f"the supplied manifest carries a synthetic declaration but "
+            f"stores the APPROVED split identity "
+            f"{APPROVED_SPLIT_IDENTITY!r} ({APPROVED_SPLIT_MANIFEST_PATH}); "
+            f"that manifest is production evaluation and must be bound as "
+            f"production, not relabelled as a synthetic fixture")
     return "fixture"
 
 
 def _approved_policy():
-    """The approved manifest's preparation policy, with the real data."""
+    """The approved manifest's preparation policy, read FROM the manifest.
+
+    The approved policy is the one recorded in the approved manifest itself,
+    which is the authority production evaluation is bound to. The dataclass
+    defaults happen to equal it field for field today, but binding to the
+    defaults would silently follow them if they ever drifted from the
+    manifest, so the manifest is read instead. The file's identity is
+    recomputed and must equal the frozen APPROVED_SPLIT_IDENTITY before its
+    policy is trusted, because the file is the gate's reference and a
+    reference that is merely assumed would move silently on a stray checkout
+    or merge. A missing, incomplete, unknown-fielded or non-numeric stored
+    policy is a hard error, never a fallback to the defaults.
+    """
+    import dataclasses
+    import json
+    import os
+
     from force_consistency.data.types import PreparationPolicy as Policy
-    return Policy()
+
+    manifest_file = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        APPROVED_SPLIT_MANIFEST_PATH)
+    with open(manifest_file, encoding="utf-8") as handle:
+        manifest = json.load(handle)
+    identity = _manifest_split_identity(manifest)
+    if identity != APPROVED_SPLIT_IDENTITY:
+        raise SplitBindingError(
+            f"the approved manifest file ({APPROVED_SPLIT_MANIFEST_PATH}) has "
+            f"identity {identity!r}, which is not the frozen approved "
+            f"{APPROVED_SPLIT_IDENTITY!r}; the file is the reference the "
+            f"production gate is bound to, so it is verified rather than "
+            f"trusted, and evaluation cannot run against a manifest that is "
+            f"not the approved one")
+    stored = manifest.get("policy")
+    fields = {field.name for field in dataclasses.fields(Policy)}
+    # The identity check above already covers the policy payload, so the four
+    # checks below cannot fire on a file whose identity matches the frozen one.
+    # They are kept as declared failure modes for the case where that frozen
+    # identity is ever recomputed from a manifest with a malformed policy.
+    if not isinstance(stored, dict):
+        raise SplitBindingError(
+            f"the approved manifest ({APPROVED_SPLIT_MANIFEST_PATH}) carries no "
+            f"stored preparation policy, so a production run cannot be bound to "
+            f"the approved preparation")
+    missing = sorted(name for name in fields if name not in stored)
+    if missing:
+        raise SplitBindingError(
+            f"the approved manifest ({APPROVED_SPLIT_MANIFEST_PATH}) stores an "
+            f"incomplete preparation policy: {', '.join(missing)} missing; "
+            f"production evaluation is bound to that policy and will not fall "
+            f"back to the dataclass defaults")
+    unknown = sorted(name for name in stored if name not in fields)
+    if unknown:
+        raise SplitBindingError(
+            f"the approved manifest ({APPROVED_SPLIT_MANIFEST_PATH}) stores a "
+            f"preparation policy with unknown field(s): {', '.join(unknown)}; "
+            f"the policy is refused rather than constructed with fields the "
+            f"dataclass does not declare")
+    nonnumeric = sorted(name for name, value in stored.items()
+                        if isinstance(value, bool)
+                        or not isinstance(value, (int, float)))
+    if nonnumeric:
+        raise SplitBindingError(
+            f"the approved manifest ({APPROVED_SPLIT_MANIFEST_PATH}) stores a "
+            f"preparation policy with non-numeric value(s) for: "
+            f"{', '.join(nonnumeric)}; the gate compares these field by field, "
+            f"so a value that is not a number is refused rather than compared "
+            f"as text")
+    return Policy(**stored)
 
 
 def _own_reference(branch_key, endpoint_classification, references):
@@ -446,8 +551,34 @@ def _arm_audit_record(arm):
     return record
 
 
+def _manifest_policy_fields(manifest):
+    """The manifest's own policy as a plain dataclass-field dict, or None."""
+    from force_consistency.data.types import PreparationPolicy
+
+    policy = manifest.get("policy")
+    if policy is None:
+        return None
+    return PreparationPolicy(**policy)
+
+
+def _policy_mismatch_field(supplied, approved):
+    """The first field name where the two policies disagree, or None.
+
+    The comparison walks the dataclass fields in their declared order,
+    so a refusal always names the same first difference for the same
+    pair of policies.
+    """
+    for name in approved.__dataclass_fields__:
+        supplied_value = getattr(supplied, name)
+        approved_value = getattr(approved, name)
+        if supplied_value != approved_value:
+            return name, supplied_value, approved_value
+    return None
+
+
 def _branch_audit_record(start_entry, arm, procedure,
-                         relaxation, outcome, own, elapsed_seconds):
+                         relaxation, outcome, own, elapsed_seconds,
+                         split_binding):
     """The per-branch evidence dict the reporter retains verbatim.
 
     Every field is plain-JSON data under an explicit name: the arm
@@ -464,7 +595,10 @@ def _branch_audit_record(start_entry, arm, procedure,
     the branch actually ran under, the same shape the fixtures script
     records, so the saved report reads one convention for both callers.
     The branch's partition label is not duplicated here: the row the
-    reporter already builds carries it.
+    reporter already builds carries it. The split binding ("approved"
+    or "fixture", the value the binding returned) rides on the record
+    under its own name so the saved diagnostics state which contract
+    the branch's numbers were produced under.
     """
     failure = {
         "stop_reason": outcome["stop_reason"],
@@ -476,6 +610,7 @@ def _branch_audit_record(start_entry, arm, procedure,
     }
     return {
         "arm": _arm_audit_record(arm),
+        "split_binding": split_binding,
         "start": {
             "record_id": start_entry["record_id"],
             "frame_index": start_entry.get("frame_index"),
@@ -525,28 +660,31 @@ def evaluate_starts(start_set, arm, procedure, endpoint_classification,
         partition. False (default) refuses test-partition branches with
         the branch names in the error.
     arm_start_compatibility: optional explicit override of how each
-        branch's arm/start compatibility is checked. None (default) is
-        the "strict" production discipline: every admitted branch's
-        species tuple and atom count are validated against the arm
-        BEFORE any force call, and an incompatible arm refuses the run
-        with ArmConfigurationError instead of being scored. Pass the
-        "compatible" string only under a reviewed, separately recorded
-        amendment to that discipline (the explicit, reviewed opt-out
-        interface; the flag is echoed on the result).
+    branch's arm/start compatibility is checked. None (default) is
+    the "strict" production discipline: every admitted branch's
+    species tuple and atom count are validated against the arm
+    BEFORE any force call, and an incompatible arm refuses the run
+    with ArmConfigurationError instead of being scored. Pass the
+    "compatible" string only under a reviewed, separately recorded
+    amendment to that discipline (the explicit, reviewed opt-out
+    interface; the flag is echoed on the result).
 
     The split binding (review round 2, with the fixtures interface
     restored) reads the manifest itself, so the public call pattern
     carries no extra argument. A manifest without the explicit
     "synthetic": {"reason": ...} declaration is production evaluation:
-    policy must be a real PreparationPolicy and the manifest must
-    recompute to the approved split identity and archive digest;
-    anything else fails closed BEFORE any force call, naming what
-    disagreed (relabelling a manifest cannot move a test connection
-    into another partition's label). A manifest carrying the
-    declaration binds as an explicitly identified synthetic fixture
-    (a production manifest relabelled synthetic is refused; its own
-    unambiguous groups stay enforced, so the overlap refusal still
-    applies). The binding is echoed on the result.
+    policy must be a real PreparationPolicy whose effective values
+    match the approved manifest's policy field by field (review round
+    3, gap 2) and the manifest must recompute to the approved split
+    identity and archive digest; anything else fails closed BEFORE any
+    force call, naming what disagreed (relabelling a manifest cannot
+    move a test connection into another partition's label). A manifest
+    carrying the declaration binds as an explicitly identified
+    synthetic fixture (a production manifest relabelled synthetic is
+    refused on its provenance facts, not on the recomputed identity
+    the relabelling edit defeats; its own unambiguous groups stay
+    enforced, so the overlap refusal still applies). The binding is
+    echoed on the result and carried on every branch's audit record.
 
     Returns a dict with the per-branch and per-connection outcomes (see
     the module docstring for the arm boundary, the authorisation
@@ -585,6 +723,25 @@ def evaluate_starts(start_set, arm, procedure, endpoint_classification,
             f"production evaluation requires a real PreparationPolicy as "
             f"policy (got {type(policy).__name__!r}), paired with the "
             f"approved split manifest")
+    if not synthetic_fixture:
+        # The policy is not merely required to be an instance of
+        # PreparationPolicy: its EFFECTIVE values must match the approved
+        # manifest's policy field by field (review round 3, gap 2), so a
+        # production run whose tolerances differ from the approved
+        # preparation is refused before any force call, naming the first
+        # differing field. Note the guard compares the SUPPLIED policy
+        # against the APPROVED manifest's policy, not against the
+        # (possibly edited) supplied manifest's.
+        mismatch = _policy_mismatch_field(policy, _approved_policy())
+        if mismatch is not None:
+            field, supplied_value, approved_value = mismatch
+            raise SplitBindingError(
+                f"production evaluation requires the effective preparation "
+                f"policy to match the approved manifest's policy: field "
+                f"{field!r} is {supplied_value!r} here but "
+                f"{approved_value!r} in the approved policy; relax and "
+                f"classify must run under the approved preparation, so the "
+                f"run is refused before any force call")
 
     # The manifest-wide partition validation BEFORE anything is admitted:
     # every branch's connection is resolved once, so an ambiguous or
@@ -620,14 +777,18 @@ def evaluate_starts(start_set, arm, procedure, endpoint_classification,
         pool_key, own = _own_reference(branch_key, endpoint_classification,
                                        references)
         if compatibility == "strict":
-            # Arm/start compatibility before anything is scored: species
-            # tuple, atom count and the start's own array shape, through
-            # the adapter's own validator. This is the exact check the
-            # arm would raise on its first call, moved ahead of every
-            # force evaluation, so a misconfigured arm is a loud
-            # configuration error instead of a scored branch outcome.
+            # Arm/start compatibility before anything is scored — on the
+            # start's OWN species tuple, exactly the encoding this
+            # branch's call would name, not just the arm's. This is the
+            # species check the arm would raise on its first call, moved
+            # ahead of every force evaluation with the atom-count and
+            # array-shape checks beside it, so a misconfigured
+            # arm/start pair fails closed here with zero supplier calls
+            # and both species tuples named in the error (review round 3,
+            # gap 4).
             _validated_positions(start_entry["positions"], arm["species"],
-                                 None, f"runner arm {arm.get('arm_id')!r} "
+                                 start_entry["species"],
+                                 f"runner arm {arm.get('arm_id')!r} "
                                  f"for {branch_key!r}")
         plans.append((branch_key, start_entry, partition, pool_key, own))
     if refused:
@@ -696,7 +857,7 @@ def evaluate_starts(start_set, arm, procedure, endpoint_classification,
             "refusal_details": relaxation["refusal_details"],
             "_audit_record": _branch_audit_record(
                 start_entry, arm, procedure,
-                relaxation, outcome, own, elapsed),
+                relaxation, outcome, own, elapsed, bound),
         }
 
     connections = {}
