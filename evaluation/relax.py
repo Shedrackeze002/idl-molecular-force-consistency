@@ -242,30 +242,6 @@ def relax(start, force_fn, procedure, *, arm=None):
         evals += 1
         try:
             raw = force_fn(pos)
-            out = np.asarray(raw, dtype=np.float64)
-            if out.shape != np.asarray(pos).shape:
-                # A returned force that does not mirror the positions shape is
-                # a refusal, never physics. A scalar zero (broadcasting) is
-                # excluded here rather than being read as convergence. The
-                # values seen stay finite-labelled: only a genuine nonfinite
-                # VALUE sets that fact (review round 2). The detail speaks
-                # the caller's shapes: an unbatched (N, 3) start is relaxed
-                # in the internal batched shape, and the audit record never
-                # invents a phantom batch axis the caller did not supply.
-                positions_label = (np.asarray(pos)[0].shape if unbatched
-                                   else np.asarray(pos).shape)
-                record_refusal(
-                    "invalid_force_shape",
-                    f"force shape {out.shape} for positions {positions_label}",
-                    values_finite=True)
-                return None
-            if not np.isfinite(out).all():
-                record_refusal(
-                    "nonfinite_force",
-                    "the returned force carries a nan or inf component",
-                    values_finite=False)
-                return None
-            return out
         except (NonfiniteValueError, MalformedForceReturn,
                 ForceShapeMismatch) as refused:
             # Only the three DECLARED refusal exceptions are routed here
@@ -291,6 +267,48 @@ def relax(start, force_fn, procedure, *, arm=None):
             else:
                 record_refusal("invalid_force_shape", refused, values_finite=True)
             return None
+        try:
+            # The RETURNED VALUE's conversion is guarded separately from
+            # the supplier call above (review round 4, gap 2): a plain
+            # supplier that returns something nonnumeric reaches the same
+            # declared malformed-return refusal the adapter's callable_arm
+            # contract raises as MalformedForceReturn — recorded, named by
+            # the arm when one was supplied, and never read as physics —
+            # instead of aborting the caller with a bare conversion
+            # ValueError. This guard wraps ONLY the conversion: exceptions
+            # raised by force_fn itself stay in the catch above, so an
+            # internal supplier error still propagates loudly instead of
+            # being recorded as a refusal. There is no fallback value and
+            # no convergence verdict on a malformed return.
+            out = np.asarray(raw, dtype=np.float64)
+        except (TypeError, ValueError) as malformed:
+            record_refusal("invalid_force_shape",
+                           f"nonnumeric force return ({malformed})",
+                           values_finite=True)
+            return None
+        if out.shape != np.asarray(pos).shape:
+            # A returned force that does not mirror the positions shape is
+            # a refusal, never physics. A scalar zero (broadcasting) is
+            # excluded here rather than being read as convergence. The
+            # values seen stay finite-labelled: only a genuine nonfinite
+            # VALUE sets that fact (review round 2). The detail speaks
+            # the caller's shapes: an unbatched (N, 3) start is relaxed
+            # in the internal batched shape, and the audit record never
+            # invents a phantom batch axis the caller did not supply.
+            positions_label = (np.asarray(pos)[0].shape if unbatched
+                               else np.asarray(pos).shape)
+            record_refusal(
+                "invalid_force_shape",
+                f"force shape {out.shape} for positions {positions_label}",
+                values_finite=True)
+            return None
+        if not np.isfinite(out).all():
+            record_refusal(
+                "nonfinite_force",
+                "the returned force carries a nan or inf component",
+                values_finite=False)
+            return None
+        return out
 
     while True:
         if failure_reason is not None:

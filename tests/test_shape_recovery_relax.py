@@ -582,3 +582,114 @@ def test_nonfinite_refusal_is_counted_before_the_supplier_runs():
     assert attempts["n"] == 1
     assert result["failure_reason"] == "nonfinite_force"
     assert result["force_evaluation_count"] == 1
+
+
+# ---------------------------------------------------------------------------
+# Round 4, gap 2: malformed RETURNS on the public direct path
+# ---------------------------------------------------------------------------
+
+def test_direct_supplier_returning_a_string_is_a_recorded_refusal():
+    from evaluation.relax import relax
+
+    # The public direct route (a plain force_fn, no arm wrapper) must
+    # record a nonnumeric RETURN as the declared malformed-return refusal,
+    # exactly as the callable_arm route does, so the documented refusal
+    # contract does not depend on how the supplier was bound. The returned
+    # value's conversion is guarded on its own, below the supplier call's
+    # narrowed catch: a bare conversion ValueError from np.asarray must
+    # become a recorded branch failure, not an abort of the caller.
+    attempts = {"n": 0}
+
+    def texty(positions):
+        attempts["n"] += 1
+        return "oops"
+
+    result = relax(_single_start([2.0, 0.0, 0.0]), texty,
+                   _refusal_procedure(), arm={"arm_id": "texty"})
+    assert attempts["n"] == 1
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    # A malformed return carries no readable values, so the values-seen
+    # fact stays finite-labelled (review round 2), and the run reports a
+    # finite endpoint instead of aborting.
+    assert result["forces_finite"] is True
+    assert result["budget_exhausted"] is False
+    assert result["step_count"] == 0
+    assert result["force_evaluation_count"] == 1
+    assert np.isfinite(np.asarray(result["final_positions"])).all()
+    assert result["refusal_details"] == [{
+        "reason": "invalid_force_shape",
+        "arm_id": "texty",
+        "detail": "nonnumeric force return (could not convert string to float: 'oops')",
+        "force_evaluation_count": 1,
+    }]
+
+
+def test_direct_supplier_returning_a_ragged_array_is_a_recorded_refusal():
+    from evaluation.relax import relax
+
+    # A ragged return cannot become a numeric array at all: the same
+    # recorded malformed-return refusal as the string return, never an
+    # abort of the caller and never read as physics.
+    attempts = {"n": 0}
+
+    def ragged(positions):
+        attempts["n"] += 1
+        return [[1.0, 2.0], [3.0]]
+
+    result = relax(_single_start([2.0, 0.0, 0.0]), ragged,
+                   _refusal_procedure())
+    assert attempts["n"] == 1
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    assert result["forces_finite"] is True
+    assert result["step_count"] == 0
+    assert result["force_evaluation_count"] == 1
+    assert np.isfinite(np.asarray(result["final_positions"])).all()
+    assert result["refusal_details"][0]["reason"] == "invalid_force_shape"
+    assert "nonnumeric force return" in result["refusal_details"][0]["detail"]
+
+
+def test_direct_supplier_own_value_error_still_propagates():
+    from evaluation.relax import relax
+
+    # The conversion guard introduced for malformed RETURNS must not
+    # swallow the supplier's OWN ValueError: an internal model error is
+    # not a refusal (round 3, gap 3), so it keeps propagating out of
+    # relax instead of being scored as a branch outcome. This re-pins the
+    # boundary against the new guard on the same call path.
+    def broken_model(positions):
+        raise ValueError("model configuration: missing radial basis parameter")
+
+    with pytest.raises(ValueError) as excinfo:
+        relax(_single_start([1.0, 0.0, 0.0]), broken_model,
+              _refusal_procedure())
+    assert ("model configuration: missing radial basis parameter"
+            in str(excinfo.value))
+
+
+def test_scalar_zero_start_refusal_survives_the_conversion_guard():
+    from evaluation.relax import relax
+
+    # The scalar zero that broadcasts to every component: still a recorded
+    # shape refusal through the refactored call path, naming the arm in
+    # the audit record with the measured shapes, exactly as before
+    # round 4.
+    def scalar_zero(positions):
+        return 0.0
+
+    result = relax(_single_start([2.0, 0.0, 0.0]), scalar_zero,
+                   _refusal_procedure(), arm={"arm_id": "scalar-arm"})
+    assert result["status"] == "nonconverged"
+    assert result["failure_reason"] == "invalid_force_shape"
+    assert result["forces_finite"] is True
+    assert result["budget_exhausted"] is False
+    assert result["step_count"] == 0
+    assert result["force_evaluation_count"] == 1
+    assert np.isfinite(np.asarray(result["final_positions"])).all()
+    assert result["refusal_details"] == [{
+        "reason": "invalid_force_shape",
+        "arm_id": "scalar-arm",
+        "detail": f"force shape {np.asarray(0.0).shape} for positions (1, 3)",
+        "force_evaluation_count": 1,
+    }]

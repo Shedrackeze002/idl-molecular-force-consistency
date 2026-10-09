@@ -467,6 +467,32 @@ def _bool_fact(value):
     return value
 
 
+
+
+# Reason-vs-facts contract (review round 4, card D, residual A1): for
+# each declared stop reason, what the facts stated beside it must
+# look like. Only STATED facts are checked: an absent optional key is
+# "not stated" and is never defaulted into a contradiction, so honest
+# rows that omit optional keys keep validating. The reason-vs-facts
+# raises quote this entry, and each contradicting stated fact is
+# named in the message.
+_reason_fact_requirements = {
+    "nonfinite_force":
+        "nonfinite_force not stated False, with forces_finite not "
+        "stated True",
+    "budget_exhausted":
+        "budget_exhausted not stated False, and nonfinite_force not "
+        "stated True",
+    "no_progress":
+        "budget_exhausted not stated True, forces_finite not stated "
+        "False, and nonfinite_force not stated True",
+    "invalid_force_shape":
+        "a nonempty refusal trail where the surface carries one, "
+        "forces_finite not stated False, and nonfinite_force not "
+        "stated True",
+}
+
+
 def _reconcile_failure_facts(key, outcome):
     """Reject a branch whose force-failure facts contradict its summary.
 
@@ -505,6 +531,29 @@ def _reconcile_failure_facts(key, outcome):
     and nonfinite_force=True under a summary claiming converged is a
     contradiction. Absent optional keys mean "not stated", never
     "no contradiction": nothing is defaulted in, on either path.
+
+    Review round 4, card B extends the reconciliation to the failed
+    branches' own repeated facts. On any branch whose summary states
+    an effective stop reason, the reason must sit beside facts it can
+    describe (nonfinite_force requires nonfinite_force=True with
+    forces_finite=False; budget_exhausted requires budget_exhausted
+    not stated False and nonfinite_force not stated True; no_progress
+    requires budget_exhausted not stated True, forces_finite not
+    stated False and nonfinite_force not stated True;
+    invalid_force_shape requires a nonempty refusal trail where the
+    surface carries one, forces_finite not stated False and
+    nonfinite_force not stated True (card D, residual A1: a shape
+    refusal means the returned value never became a numeric array, so
+    no nonfinite VALUE can have been seen), and the summary's own
+    failure facts must agree with the same facts in the nested audit
+    section wherever both surfaces state them: the effective stop
+    reason (whichever of stop_reason / failure_reason the surface
+    states) and the nonfinite_force, forces_finite, budget_exhausted
+    and converged facts. An absent optional key is "not stated" and
+    is never a contradiction, so no default is invented for it; the
+    same reason-vs-facts rule is then applied to the nested section's
+    own declared reason against the nested facts. Nothing existing is
+    loosened: every check the reconciliation already made stays.
 
     Only presence and plain booleans are read out of the nested
     section: nested failure data the caller omitted is not defaulted
@@ -565,6 +614,51 @@ def _reconcile_failure_facts(key, outcome):
         raise ValueError(
             f"{key}: unknown stop_reason {effective_reason!r}; the declared "
             f"reasons are {', '.join(declared_stops)} or None")
+
+    # Round 4, card B: a declared reason must sit beside facts it can
+    # describe, on its own surface. An absent optional fact is "not
+    # stated" and is never defaulted into a contradiction; a stated
+    # fact the reason cannot describe is refused, whatever surface
+    # declared the reason.
+    if effective_reason is not None:
+        summary_contradictions = []
+        if effective_reason == "nonfinite_force":
+            if nonfinite is False:
+                summary_contradictions.append("nonfinite_force=False")
+            if forces_finite is True:
+                summary_contradictions.append("forces_finite=True")
+        elif effective_reason == "budget_exhausted":
+            if budget_exhausted is False:
+                summary_contradictions.append("budget_exhausted=False")
+            if nonfinite is True:
+                summary_contradictions.append("nonfinite_force=True")
+        elif effective_reason == "no_progress":
+            if budget_exhausted is True:
+                summary_contradictions.append("budget_exhausted=True")
+            if forces_finite is False:
+                summary_contradictions.append("forces_finite=False")
+            if nonfinite is True:
+                summary_contradictions.append("nonfinite_force=True")
+        elif effective_reason == "invalid_force_shape":
+            refusal_trail = outcome.get("refusal_details")
+            if forces_finite is False:
+                summary_contradictions.append("forces_finite=False")
+            if nonfinite is True:
+                summary_contradictions.append("nonfinite_force=True")
+            if isinstance(refusal_trail, list) and not refusal_trail:
+                summary_contradictions.append("an empty refusal trail")
+        if summary_contradictions:
+            raise ValueError(
+                f"{key}: the summary surface declares stop reason "
+                f"{effective_reason!r}, but the stated facts beside it "
+                f"cannot describe it (nonfinite_force={nonfinite!r}, "
+                f"forces_finite={forces_finite!r}, "
+                f"budget_exhausted={budget_exhausted!r}): the reason "
+                f"{effective_reason!r} requires "
+                f"{_reason_fact_requirements[effective_reason]}; "
+                f"contradicting stated fact(s): "
+                f"{', '.join(summary_contradictions)} (the "
+                f"contradiction must be rejected, not repaired)")
 
     # Surfaces 2 and 3: the nested audit failure section.
     record = outcome.get("_audit_record")
@@ -680,6 +774,96 @@ def _reconcile_failure_facts(key, outcome):
             f"nonfinite_force=True with forces_finite=True; a run "
             f"terminated by a nonfinite force never reports finite forces "
             f"({audit})")
+
+    # Round 4, card B: every fact the summary states about a failed
+    # branch must agree with the same fact in the nested audit section.
+    # Only facts stated on BOTH surfaces are compared: an absent
+    # optional key is "not stated", never defaulted into a
+    # contradiction, so both vocabularies keep validating. The two
+    # reason keys are one repeated fact: the effective reason on each
+    # surface (stop_reason, then failure_reason) is what that surface
+    # says the run stopped on. A summary that states no reason at all
+    # (the fixture script's rows) is "not stated", not a disagreement;
+    # only two surfaces that BOTH state a reason and disagree are
+    # refused, with both accounts named.
+    summary_effective = effective_reason
+    if (nested_effective is not None and summary_effective is not None
+            and nested_effective != summary_effective):
+        raise ValueError(
+            f"{key}: contradictory failure audit: the summary records "
+            f"the stop reason {summary_effective!r} while the audit's "
+            f"own stop/failure reason reads {nested_effective!r}; the "
+            f"two surfaces must give one account of how the branch "
+            f"stopped ({audit})")
+    summary_facts = {"nonfinite_force": nonfinite,
+                     "forces_finite": forces_finite,
+                     "budget_exhausted": budget_exhausted,
+                     "converged": converged}
+    nested_facts = {"nonfinite_force": nested_nonfinite,
+                    "forces_finite": nested_finite,
+                    "budget_exhausted": nested_budget,
+                    "converged": nested_converged}
+    for fact, summary_value in summary_facts.items():
+        nested_value = nested_facts[fact]
+        if (summary_value is not None and nested_value is not None
+                and nested_value != summary_value):
+            raise ValueError(
+                f"{key}: contradictory failure audit: the summary "
+                f"records {fact}={summary_value!r} while the audit "
+                f"records {fact}={nested_value!r}; the two surfaces "
+                f"must agree on the fact they both state ({audit})")
+
+    # Round 4, card B, finished by card D (residual A1): the
+    # reason-vs-facts reconciliation applied to the nested surface's
+    # own declared reason, with the same rule and the same refusal
+    # requirements as the summary side. The nested section's budget and
+    # finiteness facts, not the summary's, are reconciled here, so a
+    # section whose own facts cannot describe its own reason is
+    # refused on its own evidence, with every contradicting STATED
+    # fact named in the refusal. A declared shape refusal beside a
+    # stated nonfinite_force=True is refused here too: the returned
+    # value never became a numeric array, so no nonfinite value can
+    # have been seen. An absent optional fact stays "not stated" on
+    # this surface too.
+    if nested_effective is not None:
+        nested_contradictions = []
+        if nested_effective == "nonfinite_force":
+            if nested_nonfinite is False:
+                nested_contradictions.append("nonfinite_force=False")
+            if nested_finite is True:
+                nested_contradictions.append("forces_finite=True")
+        elif nested_effective == "budget_exhausted":
+            if nested_budget is False:
+                nested_contradictions.append("budget_exhausted=False")
+            if nested_nonfinite is True:
+                nested_contradictions.append("nonfinite_force=True")
+        elif nested_effective == "no_progress":
+            if nested_budget is True:
+                nested_contradictions.append("budget_exhausted=True")
+            if nested_finite is False:
+                nested_contradictions.append("forces_finite=False")
+            if nested_nonfinite is True:
+                nested_contradictions.append("nonfinite_force=True")
+        elif nested_effective == "invalid_force_shape":
+            refusal_trail = nested.get("refusal_details")
+            if nested_finite is False:
+                nested_contradictions.append("forces_finite=False")
+            if nested_nonfinite is True:
+                nested_contradictions.append("nonfinite_force=True")
+            if isinstance(refusal_trail, list) and not refusal_trail:
+                nested_contradictions.append("an empty refusal trail")
+        if nested_contradictions:
+            raise ValueError(
+                f"{key}: contradictory failure audit: the audit surface "
+                f"declares stop reason {nested_effective!r}, but the "
+                f"stated facts beside it cannot describe it "
+                f"(nonfinite_force={nested_nonfinite!r}, "
+                f"forces_finite={nested_finite!r}, "
+                f"budget_exhausted={nested_budget!r}): the reason "
+                f"{nested_effective!r} requires "
+                f"{_reason_fact_requirements[nested_effective]}; "
+                f"contradicting stated fact(s): "
+                f"{', '.join(nested_contradictions)} ({audit})")
 
 
 def _split_key(key):

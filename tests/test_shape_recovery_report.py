@@ -1121,3 +1121,254 @@ def test_fixture_report_records_supplier_effective_procedure_and_nonrigid_positi
     assert nonrigid["tolerance_A"] == 0.05
     assert nonrigid["outcome"]["category"] == "matched_reference"
     assert nonrigid["outcome"]["rmsd_A"] <= 0.05
+
+
+# ---------------------------------------------------------------------------
+# Review round 4, card B (gap 1): the two surfaces must also agree on a
+# FAILED branch's repeated failure facts, and a declared reason must sit
+# beside facts it can describe. The witnesses mutate GENUINE failed
+# evaluate_starts rows over the recovery landscape — the all-NaN arm
+# (summary stop_reason nonfinite_force) and the one-call budget fixture
+# (summary stop_reason budget_exhausted). Before this round all four
+# mutations were ACCEPTED with the branch still counted nonconverged.
+# ---------------------------------------------------------------------------
+
+def _recovery_failed_runner_rows():
+    """Genuine failed runner rows: the all-NaN arm and the one-call budget.
+
+    Both runs use the self-contained recovery landscape from the runner
+    test module, so every witness mutates real runner output instead of
+    a caller-built dict. The composition is _recovery_runner_result's,
+    built explicitly because the two runs need different arms and
+    different procedures: the NaN arm refuses its first evaluation and
+    stops on nonfinite_force; the bowl arm under max_force_evaluations=1
+    spends its only attempt on the start force (finite, above the rule)
+    and stops on budget_exhausted.
+    """
+    import test_shape_recovery_runner as runner_support
+    from conftest import SPECIES
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    landscape = runner_support.RecoveryLandscape()
+    manifest = copy.deepcopy(landscape.manifest)
+    classification = runner_support._recovery_classification(landscape)
+    references = landscape.references()
+    procedure = runner_support._runner_procedure()
+    start_set = {key: entry for key, entry in
+                 runner_support._recovery_start_set(landscape, manifest).items()
+                 if key.split("/")[1] == "80"}
+
+    def nan_force(positions):
+        array = np.zeros(np.asarray(positions).shape, dtype=np.float64)
+        array[..., 0] = np.nan
+        return array
+
+    nan_arm = callable_arm(nan_force, species=SPECIES, arm_id="nan-recovery")
+    nan_branches = evaluate_starts(
+        start_set, nan_arm, procedure, classification, references,
+        landscape.policy(), split_manifest=manifest, seen_minimum=True,
+    )["branches"]
+    bowl_arm = runner_support._bowl_arm_for(runner_support.recovery_minimum(0))
+    budget_branches = evaluate_starts(
+        start_set, bowl_arm,
+        runner_support._runner_procedure(max_force_evaluations=1),
+        classification, references, landscape.policy(),
+        split_manifest=manifest, seen_minimum=True,
+    )["branches"]
+    return nan_branches, budget_branches
+
+
+def test_failed_branch_repeated_facts_between_surfaces_are_reconciled():
+    # The reviewer's four witnesses, all against genuine failed runner
+    # rows. Where both surfaces state the same failure fact they must
+    # agree; a reason must sit beside facts it can describe. Each
+    # mutated row is refused with error naming the two surfaces and
+    # the facts that disagree.
+    from evaluation.reporter import build_report
+
+    nan_branches, budget_branches = _recovery_failed_runner_rows()
+    # The witnesses' genuine facts, asserted so a fixture change here
+    # fails loudly instead of muting the witnesses below: the all-NaN
+    # arm stops on nonfinite_force with nonfinite values; the one-call
+    # budget stops on budget_exhausted with finite values and no
+    # refusal at all.
+    for row in nan_branches.values():
+        assert row["category"] == "nonconverged"
+        assert row["stop_reason"] == "nonfinite_force"
+        assert row["nonfinite_force"] is True
+        assert row["forces_finite"] is False
+        assert row["budget_exhausted"] is False
+        nested = row["_audit_record"]["failure"]
+        assert nested["nonfinite_force"] is True
+        assert nested["forces_finite"] is False
+        assert nested["refusal_details"]
+    for row in budget_branches.values():
+        assert row["category"] == "nonconverged"
+        assert row["stop_reason"] == "budget_exhausted"
+        assert row["nonfinite_force"] is False
+        assert row["forces_finite"] is True
+        assert row["budget_exhausted"] is True
+        assert row["_audit_record"]["failure"]["refusal_details"] == []
+
+    # MUTATION a: nested nonfinite_force flipped to False while the
+    # summary states nonfinite_force=True.
+    forged_a = copy.deepcopy(nan_branches)
+    key = sorted(forged_a)[0]
+    forged_a[key]["_audit_record"]["failure"]["nonfinite_force"] = False
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged_a)
+    message = str(excinfo.value)
+    assert key in message
+    assert "contradictory failure audit" in message
+    assert "nonfinite_force=True" in message
+    assert "nonfinite_force=False" in message
+    assert "summary" in message and "audit" in message
+
+    # MUTATION b: both nested reasons switched to 'invalid_force_shape'
+    # while the summary states the stop reason 'nonfinite_force'.
+    forged_b = copy.deepcopy(nan_branches)
+    key = sorted(forged_b)[0]
+    nested = forged_b[key]["_audit_record"]["failure"]
+    nested["stop_reason"] = "invalid_force_shape"
+    nested["failure_reason"] = "invalid_force_shape"
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged_b)
+    message = str(excinfo.value)
+    assert key in message
+    assert "contradictory failure audit" in message
+    assert "'nonfinite_force'" in message
+    assert "'invalid_force_shape'" in message
+
+    # MUTATION c: nested reason 'no_progress' against a summary that
+    # states the stop reason 'budget_exhausted'.
+    forged_c = copy.deepcopy(budget_branches)
+    key = sorted(forged_c)[0]
+    nested = forged_c[key]["_audit_record"]["failure"]
+    nested["stop_reason"] = "no_progress"
+    nested["failure_reason"] = "no_progress"
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged_c)
+    message = str(excinfo.value)
+    assert key in message
+    assert "contradictory failure audit" in message
+    assert "'budget_exhausted'" in message
+    assert "'no_progress'" in message
+
+    # MUTATION d: nested forces_finite flipped to False while the
+    # summary states forces_finite=True.
+    forged_d = copy.deepcopy(budget_branches)
+    key = sorted(forged_d)[0]
+    forged_d[key]["_audit_record"]["failure"]["forces_finite"] = False
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged_d)
+    message = str(excinfo.value)
+    assert key in message
+    assert "contradictory failure audit" in message
+    assert "forces_finite=True" in message
+    assert "forces_finite=False" in message
+
+
+def test_failed_branch_honest_and_omitted_optional_keys_still_pass():
+    # The constructive half: the unmutated rows are still ACCEPTED and
+    # the category totals are unchanged (every branch nonconverged,
+    # counted under its own partition), and an honest row whose audit
+    # simply omits an optional nested fact is accepted too: what one
+    # surface does not state is not a contradiction, and no default is
+    # invented for it.
+    from evaluation.reporter import build_report
+
+    nan_branches, budget_branches = _recovery_failed_runner_rows()
+    for branches in (nan_branches, budget_branches):
+        report, diagnostics = build_report(branches)
+        assert report["branch_count"] == 2
+        totals = report["category_totals"]["held_out"]
+        assert totals["nonconverged"] == 2
+        assert totals["matched_reference"] == 0
+        assert report["held_out_branch_counts"] == {"validation": 2, "test": 0}
+        assert {row["category"] for row in diagnostics["per_branch"]} == \
+            {"nonconverged"}
+
+    # The audit drops the optional budget_exhausted key on one row: the
+    # summary still states it, the audit does not, and the row
+    # validates with the same totals. (The runner's nested section
+    # never states "converged" either — the unmutated runs above
+    # already exercise that absent-key acceptance.)
+    pruned = copy.deepcopy(budget_branches)
+    key = sorted(pruned)[0]
+    del pruned[key]["_audit_record"]["failure"]["budget_exhausted"]
+    report, diagnostics = build_report(pruned)
+    assert report["branch_count"] == 2
+    assert report["category_totals"]["held_out"]["nonconverged"] == 2
+
+    # The audit drops the optional finiteness keys on one row of the
+    # all-NaN run: still accepted, still counted nonconverged.
+    pruned = copy.deepcopy(nan_branches)
+    key = sorted(pruned)[0]
+    nested = pruned[key]["_audit_record"]["failure"]
+    del nested["nonfinite_force"]
+    del nested["forces_finite"]
+    report, diagnostics = build_report(pruned)
+    assert report["branch_count"] == 2
+    assert report["category_totals"]["held_out"]["nonconverged"] == 2
+
+
+# ---------------------------------------------------------------------------
+# Review round 4, card D (residual A1): a stated reason must sit beside
+# stated facts it can describe, on each surface separately. A shape
+# refusal means the returned value never became a numeric array, so no
+# nonfinite value can have been seen; declaring 'invalid_force_shape'
+# while STATING nonfinite_force=True beside it is refused on both the
+# summary surface and the nested audit section. Before this round both
+# A1 shapes were accepted, because the finiteness fact was left
+# unstated while the nonfinite fact was stated.
+# ---------------------------------------------------------------------------
+
+def test_a1_summary_reason_invalid_force_shape_with_stated_nonfinite_force_is_refused():
+    # The summary A1 shape: failure_reason 'invalid_force_shape' with
+    # nonfinite_force=True stated beside it, forces_finite unstated
+    # and no audit record. The refusal names the surface, the reason
+    # and the contradicting stated fact.
+    from evaluation.reporter import build_report
+
+    forged = _outcome("aspirin/01/plus", "nonconverged", True,
+                      failure_reason="invalid_force_shape",
+                      nonfinite_force=True)
+    honest = _outcome("aspirin/01/minus", "nonconverged", True)
+    with pytest.raises(ValueError) as excinfo:
+        build_report({"aspirin/01/plus": forged,
+                      "aspirin/01/minus": honest})
+    message = str(excinfo.value)
+    assert "aspirin/01/plus" in message
+    assert "summary surface" in message
+    assert "'invalid_force_shape'" in message
+    assert "nonfinite_force=True" in message
+    assert ("contradicting stated fact(s): nonfinite_force=True"
+            in message)
+
+
+def test_a1_nested_reason_invalid_force_shape_with_stated_nonfinite_force_is_refused():
+    # The nested A1 shape: the audit section declares only stop_reason
+    # 'invalid_force_shape' with nonfinite_force=True beside it, while
+    # the summary states no reason and no finiteness fact. The nested
+    # surface's own facts cannot describe its own reason, and the
+    # refusal says so.
+    from evaluation.reporter import build_report
+
+    forged = _outcome("aspirin/01/plus", "nonconverged", True)
+    forged["_audit_record"] = {
+        "arm": {"kind": "callable", "arm_id": "forging-arm"},
+        "failure": {"stop_reason": "invalid_force_shape",
+                    "nonfinite_force": True},
+    }
+    honest = _outcome("aspirin/01/minus", "nonconverged", True)
+    with pytest.raises(ValueError) as excinfo:
+        build_report({"aspirin/01/plus": forged,
+                      "aspirin/01/minus": honest})
+    message = str(excinfo.value)
+    assert "aspirin/01/plus" in message
+    assert "contradictory failure audit" in message
+    assert "'invalid_force_shape'" in message
+    assert "nonfinite_force=True" in message
+    assert ("contradicting stated fact(s): nonfinite_force=True"
+            in message)
