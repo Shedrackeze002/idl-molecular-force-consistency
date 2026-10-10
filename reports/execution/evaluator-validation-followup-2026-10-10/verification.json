@@ -1,0 +1,85 @@
+{
+  "archive_sha256": "3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b",
+  "base_merge": "ff6117450387c65358e96aa3b47ee3e533c38d81",
+  "checks": {
+    "collection-final": {
+      "elapsed_seconds": 1.3742205419985112,
+      "exit_code": 0,
+      "summary": "470 tests collected in 0.92s"
+    },
+    "fixture-regeneration": {
+      "elapsed_seconds": 0.39115904198843054,
+      "exit_code": 0,
+      "summary": "[{\"json\": {\"sha256\": \"063ad8f026e14b208b8aa39311d673b5a8cfb682fbaef788f43e549ce0c5be37\", \"byte_identical\": true}, \"md\": {\"sha256\": \"b9d2e92adc8bbc62f709eda742dde71690d8586656d7dbf0c8eb94623ed46bbd\", \"byte_identical\": true}}, {\"json\": {\"sha256\": \"063ad8f026e14b208b8aa39311d673b5a8cfb682fbaef788f43e549ce0c5be37\", \"byte_identical\": true}, \"md\": {\"sha256\": \"b9d2e92adc8bbc62f709eda742dde71690d8586656d7dbf0c8eb94623ed46bbd\", \"byte_identical\": true}}]"
+    },
+    "focused-corrected": {
+      "elapsed_seconds": 11.680879167019157,
+      "exit_code": 0,
+      "summary": "227 passed in 11.25s"
+    },
+    "full-suite": {
+      "elapsed_seconds": 208.7108587080147,
+      "exit_code": 0,
+      "summary": "467 passed, 3 skipped in 206.52s (0:03:26)"
+    },
+    "full-suite-final": {
+      "elapsed_seconds": 199.1414044580015,
+      "exit_code": 0,
+      "summary": "467 passed, 3 skipped in 197.06s (0:03:17)"
+    },
+    "mutation-check": {
+      "elapsed_seconds": 0.19472895801300183,
+      "exit_code": 0,
+      "summary": "{\"test_backtracking_trials_cost_budgeted_evaluations\": \"MUTATION_REJECTED\", \"test_backtracking_shrinks_the_step_until_energy_would_fall\": \"MUTATION_REJECTED\"}"
+    },
+    "portable-fingerprint": {
+      "elapsed_seconds": 0.3093828749842942,
+      "exit_code": 0,
+      "summary": "3 passed, 14 deselected in 0.02s"
+    },
+    "red-input-validation": {
+      "elapsed_seconds": 0.725144584022928,
+      "exit_code": 1,
+      "summary": "47 failed, 10 passed, 43 deselected in 0.44s"
+    },
+    "red-payload-assertion": {
+      "elapsed_seconds": 1.1386080420052167,
+      "exit_code": 1,
+      "summary": "3 failed, 14 deselected in 0.85s"
+    }
+  },
+  "date": "2026-10-10",
+  "default_collected": 470,
+  "fixture_reports": "JSON and Markdown regenerate byte-identically twice. Frozen start hashes remain unchanged.",
+  "focused_cases": 227,
+  "full_passed": 467,
+  "full_skipped": 3,
+  "limits": "No new Windows/GPU validation, training, checkpoint inference or real held-out relaxation/scoring.",
+  "mutation_controls": "Both backtracking tests reject reversal-guard bypass. Archive-independent payload controls reject stale full digest, coordinates and frame-index drift after a matching positive control.",
+  "operational_failures": "Initial new runner test insertion caused a collection IndentationError; corrected while preserving the existing final assertion. Independent review harnesses initially omitted a budget stop reason and could not serialize FrameRecord; corrected after baseline comparison. Documentation preparation hit nested string syntax before execution. Failed and corrected logs retained in research evidence.",
+  "platform": "macOS",
+  "protected_sha256": {
+    "configs/aspirin-shape-recovery.json": "cd4bb2a659fca5f250ab9a036accfb1aa39eed453ada913ef9d61a411de7c87f",
+    "manifests/landscape17-aspirin-split.json": "8bc2e734c1fc12792f98c4264eff56610f98ce41da70c80523297a73164e96b6",
+    "reports/execution/shape-recovery-2026-10-03/start-set-hash.json": "74f80f050432405cab3262b81a9ff88737d83ec8fbea2bf492b566b153069479",
+    "reports/landscape17-endpoints.json": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6",
+    "reports/shape-recovery-fixture-diagnostics.json": "063ad8f026e14b208b8aa39311d673b5a8cfb682fbaef788f43e549ce0c5be37",
+    "reports/shape-recovery-fixture-diagnostics.md": "b9d2e92adc8bbc62f709eda742dde71690d8586656d7dbf0c8eb94623ed46bbd"
+  },
+  "python": "3.12",
+  "reproduce": {
+    "collection": "python -m pytest --collect-only -q",
+    "environment": "Locked project environment; explicit checkout src/root/tests imports for parent and child, frozen archive via LANDSCAPE17_ARCHIVE.",
+    "focused": "python -m pytest tests/test_shape_recovery_outcomes.py tests/test_shape_recovery_relax.py tests/test_shape_recovery_runner.py tests/test_shape_recovery_starts.py tests/test_shape_recovery_report.py tests/test_endpoint_references.py -q",
+    "full_suite": "python -m pytest -q"
+  },
+  "scope": "Input validation and regression/documentation corrections; no trained-model or main scientific evaluation.",
+  "source_sha256": {
+    "evaluation/outcomes.py": "8f5f7caa15b5b3125dd394a86424925b1a65d7d35c25622200bbe4fafc167871",
+    "evaluation/relax.py": "b5321a21dd17dd0f23e7d89575af96263f115812826faf7e73ebd2cd372b4c4e",
+    "tests/test_shape_recovery_outcomes.py": "8df7c643c885e3603afadfb3eff47f41798a9284709c49d784896a1003906ad3",
+    "tests/test_shape_recovery_relax.py": "4886eb6e47c2e474f7d66b30d2881d547687e14103959dbc1b423d5f8a631285",
+    "tests/test_shape_recovery_runner.py": "2b22aebd327b77edfe0df0f4b8486e34b2fb0004abc2efee1bed7671958c5516",
+    "tests/test_shape_recovery_starts.py": "7329b0edc183d1f63036ab1efab2c7a377c8d06e9e149e96fc8a1b178b139e23"
+  }
+}

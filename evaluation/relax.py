@@ -60,6 +60,7 @@ form and the endpoint is returned in the same unbatched shape.
 """
 from evaluation.adapter import (ForceShapeMismatch, MalformedForceReturn,
                                 NonfiniteValueError)
+from numbers import Integral
 import numpy as np
 
 # Dot products more negative than this absolute amount count as genuine
@@ -94,9 +95,12 @@ def _validate_procedure(procedure):
     for key in required:
         if key not in procedure:
             raise ValueError(f"The procedure is missing the setting {key!r}")
+    for name in ("max_force_evaluations", "max_backtracking_attempts_per_step"):
+        value = procedure[name]
+        if (isinstance(value, (bool, np.bool_)) or
+                not isinstance(value, Integral) or value <= 0):
+            raise ValueError(f"{name} must be a positive integer")
     cap = int(procedure["max_force_evaluations"])
-    if cap <= 0:
-        raise ValueError("max_force_evaluations must be a positive integer")
     initial = float(procedure["initial_step_size"])
     if not initial > 0.0:
         raise ValueError("initial_step_size must be positive")
@@ -110,8 +114,6 @@ def _validate_procedure(procedure):
     if not tol > 0.0:
         raise ValueError("convergence_tolerance_eV_per_A must be positive")
     attempts = int(procedure["max_backtracking_attempts_per_step"])
-    if attempts <= 0:
-        raise ValueError("max_backtracking_attempts_per_step must be positive")
     return cap, initial, factor, floor, tol, attempts
 
 

@@ -29,6 +29,44 @@ def _procedure(**overrides):
     return base
 
 
+@pytest.mark.parametrize("field", ["max_force_evaluations",
+                                   "max_backtracking_attempts_per_step"])
+@pytest.mark.parametrize("value", [True, np.bool_(True), 1.0, 1.9, "3",
+                                  None, 0, -1, [], {}])
+def test_integer_procedure_settings_refuse_before_force_calls(field, value):
+    from evaluation.relax import relax
+
+    calls = []
+
+    def force(positions):
+        calls.append(positions)
+        return fixtures.harmonic_force(positions)
+
+    with pytest.raises(ValueError, match=field):
+        relax(_single_start([2.0, 0.0, 0.0]), force,
+              _procedure(**{field: value}))
+    assert calls == []
+
+
+@pytest.mark.parametrize("integer", [int, np.int32, np.int64])
+def test_positive_integer_procedure_settings_preserve_counted_backtracking(integer):
+    from evaluation.relax import relax
+
+    calls = []
+
+    def force(positions):
+        calls.append(positions)
+        return fixtures.harmonic_force(positions)
+
+    result = relax(_single_start([2.0, 0.0, 0.0]), force,
+                   _procedure(initial_step_size=2.0,
+                              max_force_evaluations=integer(3),
+                              max_backtracking_attempts_per_step=integer(2)))
+    assert result["converged"] is True
+    assert result["steps"][0]["trial_count"] == 2
+    assert result["force_evaluation_count"] == len(calls) == 3
+
+
 # Tolerance used when a test wants convergence to pin the endpoint to the
 # procedure's own fixed point. The declared rule converges when max |F| <=
 # the configured tolerance; a tightened CONFIGURATION is not a changed
@@ -136,11 +174,13 @@ def test_backtracking_shrinks_the_step_until_energy_would_fall():
     # rule must recover and still converge. The observed step size of the
     # accepted step is recorded in the history.
     start = _single_start([2.5, 0.0, 0.0])
-    result = relax(start, fixtures.harmonic_force, _procedure(initial_step_size=1.0))
+    result = relax(start, fixtures.harmonic_force, _procedure(initial_step_size=2.0))
     assert result["status"] == "converged"
     assert result["steps"] and "accepted_step_size" in result["steps"][0]
     accepted = [s["accepted_step_size"] for s in result["steps"]]
     assert all(a > 0 for a in accepted)
+    assert accepted[0] < 2.0
+    assert result["steps"][0]["trial_count"] >= 2
 
 
 def test_max_component_rule_is_stated_per_component_not_as_a_norm():
@@ -328,9 +368,9 @@ def test_backtracking_trials_cost_budgeted_evaluations():
     # At least one step tried more than one candidate (the first trial plus
     # a rejected one) and the total count includes all trials.
     first_step_trials = result["steps"][0]["trial_count"]
-    assert first_step_trials >= 1
+    assert first_step_trials >= 2
     assert counter["calls"] == result["force_evaluation_count"]
-    assert counter["calls"] >= result["step_count"] + 1
+    assert counter["calls"] > result["step_count"] + 1
 
 
 # ---------------------------------------------------------------------------

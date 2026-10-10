@@ -258,9 +258,42 @@ def test_real_start_set_fingerprint_is_stable(aspirin_start_set_primary):
     # reports/execution/shape-recovery-2026-10-03/) must equal this digest.
     recorded = json.loads((REPO / "reports" / "execution" / "shape-recovery-2026-10-03" / "start-set-hash.json").read_text())
     assert recorded["start_record_id_map_sha256"] == keys_digest
+    assert recorded["start_set_payload_sha256"] == digest
     print(f"SHA256 of the canonical start-set payload: {digest}")
     print(f"SHA256 of the start record id map: {keys_digest}")
     assert len(digest) == 64 and len(keys_digest) == 64
+
+
+@pytest.mark.parametrize("mutation", ["saved_digest", "positions", "frame_index"])
+def test_frozen_payload_fingerprint_rejects_drift(
+        tmp_path, monkeypatch, mutation):
+    import sys
+
+    relative = Path("reports/execution/shape-recovery-2026-10-03/start-set-hash.json")
+    key = "synthetic/00/plus"
+    starts = {key: {"record_id": "synthetic/frame_0", "frame_index": 0,
+                    "positions": np.array([[0.0, 0.0, 0.0]])}}
+    # Golden hashes for this one-entry fixture use the same committed
+    # serialization, but are literal expectations independent of the test.
+    recorded = {
+        "artifact": "start-set-hash", "branch_count": 1, "schema": 1,
+        "start_record_id_map_sha256": "4581675f58db53fff4cf063ce65723858a4440370589ede776a1921d36c3f6d0",
+        "start_set_payload_sha256": "7962561ac51e44f3b04242dfe3c36238d8b57e868880b1bad5653dcc2fe245b9",
+    }
+    saved = tmp_path / relative
+    saved.parent.mkdir(parents=True)
+    saved.write_text(json.dumps(recorded))
+    monkeypatch.setattr(sys.modules[__name__], "REPO", tmp_path)
+    test_real_start_set_fingerprint_is_stable(starts)
+    if mutation == "saved_digest":
+        recorded["start_set_payload_sha256"] = "0" * 64
+    elif mutation == "positions":
+        starts[key]["positions"][0, 0] += 1e-6
+    else:
+        starts[key]["frame_index"] += 1
+    saved.write_text(json.dumps(recorded))
+    with pytest.raises(AssertionError):
+        test_real_start_set_fingerprint_is_stable(starts)
 
 
 def test_real_held_out_branches_have_intact_frame_order(aspirin_start_set_primary, aspirin_records):

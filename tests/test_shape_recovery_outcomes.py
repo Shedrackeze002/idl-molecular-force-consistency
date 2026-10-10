@@ -7,10 +7,47 @@ matched_reference, unmatched_converged, ambiguous, unresolved, nonconverged.
 """
 import copy
 import numpy as np
+import pytest
 
 from force_consistency.data.types import PreparationPolicy
 
 from conftest import build_minima_pool
+
+
+@pytest.mark.parametrize("field", [
+    "budget_exhausted", "converged", "forces_finite", "nonfinite_force",
+])
+@pytest.mark.parametrize("value", ["false", 0, 1, 1.0, None, [], {}, np.bool_(False)])
+def test_outcome_rejects_nonboolean_status_flags(synthetic_landscape, field, value):
+    from evaluation.outcomes import classify_outcome
+
+    references = build_minima_pool(synthetic_landscape)
+    flags = dict(budget_exhausted=False, converged=True,
+                 forces_finite=True, nonfinite_force=False)
+    flags[field] = value
+    with pytest.raises(ValueError, match=field):
+        classify_outcome(references["m0"], references["m0"], references,
+                         synthetic_landscape["policy"], **flags)
+
+
+def test_outcome_rejects_bad_flag_before_reading_endpoint():
+    from evaluation.outcomes import classify_outcome
+
+    with pytest.raises(ValueError, match="forces_finite"):
+        classify_outcome(None, None, {}, None, budget_exhausted=False,
+                         converged=True, forces_finite="false")
+
+
+def test_outcome_default_force_flags_remain_builtin_booleans(synthetic_landscape):
+    from evaluation.outcomes import classify_outcome
+
+    references = build_minima_pool(synthetic_landscape)
+    result = classify_outcome(references["m0"], references["m0"], references,
+                              synthetic_landscape["policy"],
+                              budget_exhausted=False, converged=True)
+    assert result["category"] == "matched_reference"
+    assert result["forces_finite"] is True
+    assert result["nonfinite_force"] is False
 
 
 def _final_at(positions_source, record_id, landscape):
