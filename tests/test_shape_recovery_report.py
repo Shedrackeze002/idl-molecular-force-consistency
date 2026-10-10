@@ -1372,3 +1372,104 @@ def test_a1_nested_reason_invalid_force_shape_with_stated_nonfinite_force_is_ref
     assert "nonfinite_force=True" in message
     assert ("contradicting stated fact(s): nonfinite_force=True"
             in message)
+
+
+# ---------------------------------------------------------------------------
+# Review round 5, card E: a budget stop beside a STATED forces_finite=False
+# is refused on each surface separately. The relaxation refuses a run on
+# its first nonfinite force and the budget-exhaustion assignment is only
+# reachable while no failure reason is set (evaluation/relax.py: the
+# refusal return and the exhaustion branch are mutually exclusive), so a
+# run that stopped on the budget can never have seen nonfinite values.
+# Only STATED facts are checked: an absent finiteness key on either
+# surface stays "not stated" and is never defaulted into the refusal.
+# ---------------------------------------------------------------------------
+
+def test_budget_row_both_surfaces_stating_forces_finite_false_is_refused():
+    # The reviewer's reproduction: forces_finite flipped to False on BOTH
+    # surfaces of an honest budget row. The summary surface's
+    # reason-vs-facts refusal fires first and names the surface, the
+    # stated reason and the exact contradicting stated fact.
+    from evaluation.reporter import build_report
+
+    _, budget_rows = _recovery_failed_runner_rows()
+    forged = copy.deepcopy(budget_rows)
+    key = sorted(forged)[0]
+    forged[key]["forces_finite"] = False
+    forged[key]["_audit_record"]["failure"]["forces_finite"] = False
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert key in message
+    assert "summary surface" in message
+    assert "'budget_exhausted'" in message
+    assert "forces_finite=False" in message
+    assert ("contradicting stated fact(s): forces_finite=False"
+            in message)
+
+
+def test_budget_row_summary_only_forces_finite_false_is_refused():
+    # Summary-only shape: forces_finite=False stated on the summary alone,
+    # the audit stating neither finiteness nor nonfinite. Still refused:
+    # the stated False cannot describe the budget reason on its own
+    # surface, and the audit's silence does not repair it.
+    from evaluation.reporter import build_report
+
+    _, budget_rows = _recovery_failed_runner_rows()
+    forged = copy.deepcopy(budget_rows)
+    key = sorted(forged)[0]
+    forged[key]["forces_finite"] = False
+    nested = forged[key]["_audit_record"]["failure"]
+    del nested["forces_finite"]
+    del nested["nonfinite_force"]
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert key in message
+    assert "summary surface" in message
+    assert "'budget_exhausted'" in message
+    assert "forces_finite=False" in message
+    assert ("contradicting stated fact(s): forces_finite=False"
+            in message)
+
+
+def test_budget_row_audit_only_forces_finite_false_is_refused():
+    # Audit-only shape: the nested section states forces_finite=False
+    # while the summary states no finiteness fact. The nested surface's
+    # own facts cannot describe its own budget reason: refused on the
+    # audit's own evidence, with the audit surface named.
+    from evaluation.reporter import build_report
+
+    _, budget_rows = _recovery_failed_runner_rows()
+    forged = copy.deepcopy(budget_rows)
+    key = sorted(forged)[0]
+    del forged[key]["forces_finite"]
+    forged[key]["_audit_record"]["failure"]["forces_finite"] = False
+    with pytest.raises(ValueError) as excinfo:
+        build_report(forged)
+    message = str(excinfo.value)
+    assert key in message
+    assert "contradictory failure audit" in message
+    assert "audit surface" in message
+    assert "'budget_exhausted'" in message
+    assert "forces_finite=False" in message
+    assert ("contradicting stated fact(s): forces_finite=False"
+            in message)
+
+
+def test_budget_row_absent_finiteness_keys_still_accepted():
+    # The optional-key half of the rule: with the finiteness keys absent
+    # on BOTH surfaces, the budget row still validates and the totals are
+    # unchanged — "not stated" is never defaulted into the new refusal.
+    from evaluation.reporter import build_report
+
+    _, budget_rows = _recovery_failed_runner_rows()
+    pruned = copy.deepcopy(budget_rows)
+    key = sorted(pruned)[0]
+    del pruned[key]["forces_finite"]
+    nested = pruned[key]["_audit_record"]["failure"]
+    del nested["forces_finite"]
+    del nested["nonfinite_force"]
+    report, diagnostics = build_report(pruned)
+    assert report["branch_count"] == 2
+    assert report["category_totals"]["held_out"]["nonconverged"] == 2

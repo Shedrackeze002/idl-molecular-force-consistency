@@ -481,8 +481,8 @@ _reason_fact_requirements = {
         "nonfinite_force not stated False, with forces_finite not "
         "stated True",
     "budget_exhausted":
-        "budget_exhausted not stated False, and nonfinite_force not "
-        "stated True",
+        "budget_exhausted not stated False, forces_finite not stated "
+        "False, and nonfinite_force not stated True",
     "no_progress":
         "budget_exhausted not stated True, forces_finite not stated "
         "False, and nonfinite_force not stated True",
@@ -536,8 +536,9 @@ def _reconcile_failure_facts(key, outcome):
     branches' own repeated facts. On any branch whose summary states
     an effective stop reason, the reason must sit beside facts it can
     describe (nonfinite_force requires nonfinite_force=True with
-    forces_finite=False; budget_exhausted requires budget_exhausted
-    not stated False and nonfinite_force not stated True; no_progress
+    budget_exhausted requires budget_exhausted
+    not stated False, forces_finite not stated False and
+    nonfinite_force not stated True; no_progress
     requires budget_exhausted not stated True, forces_finite not
     stated False and nonfinite_force not stated True;
     invalid_force_shape requires a nonempty refusal trail where the
@@ -630,6 +631,8 @@ def _reconcile_failure_facts(key, outcome):
         elif effective_reason == "budget_exhausted":
             if budget_exhausted is False:
                 summary_contradictions.append("budget_exhausted=False")
+            if forces_finite is False:
+                summary_contradictions.append("forces_finite=False")
             if nonfinite is True:
                 summary_contradictions.append("nonfinite_force=True")
         elif effective_reason == "no_progress":
@@ -813,17 +816,20 @@ def _reconcile_failure_facts(key, outcome):
                 f"records {fact}={nested_value!r}; the two surfaces "
                 f"must agree on the fact they both state ({audit})")
 
-    # Round 4, card B, finished by card D (residual A1): the
+    # Round 4, card B, finished by card D (residual A1) and round 5
+    # card E (budget finiteness): the
     # reason-vs-facts reconciliation applied to the nested surface's
     # own declared reason, with the same rule and the same refusal
-    # requirements as the summary side. The nested section's budget and
+    # summary side. The nested section's budget and
     # finiteness facts, not the summary's, are reconciled here, so a
     # section whose own facts cannot describe its own reason is
     # refused on its own evidence, with every contradicting STATED
     # fact named in the refusal. A declared shape refusal beside a
     # stated nonfinite_force=True is refused here too: the returned
     # value never became a numeric array, so no nonfinite value can
-    # have been seen. An absent optional fact stays "not stated" on
+    # have been seen (round 5 card E: a budget stop beside a stated
+    # forces_finite=False is likewise refused on both surfaces). An
+    # absent optional fact stays "not stated" on
     # this surface too.
     if nested_effective is not None:
         nested_contradictions = []
@@ -835,6 +841,8 @@ def _reconcile_failure_facts(key, outcome):
         elif nested_effective == "budget_exhausted":
             if nested_budget is False:
                 nested_contradictions.append("budget_exhausted=False")
+            if nested_finite is False:
+                nested_contradictions.append("forces_finite=False")
             if nested_nonfinite is True:
                 nested_contradictions.append("nonfinite_force=True")
         elif nested_effective == "no_progress":
