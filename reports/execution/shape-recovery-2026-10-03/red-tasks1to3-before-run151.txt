@@ -1,0 +1,437 @@
+FF...F..F.......FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                        [100%]
+================================== FAILURES ===================================
+______________ test_sensitivity_rule_fires_at_the_expected_frame ______________
+
+synthetic_landscape = {'records': [FrameRecord(record_id='Landscape17/aspirin/Conformations/coordsmin_0.xyz', molecule='aspirin', kind='mini... {0: 'Landscape17/aspirin/Conformations/coordsmin_0.xyz', 1: 'Landscape17/aspirin/Conformations/coordsmin_1.xyz'}, ...}
+frozen_synthetic_manifest = {'archive_sha256': '3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b', 'connections': {'aspirin': {'01...'duplicate_tolerance': 1e-05, 'endpoint_tolerance': 0.05, 'reference_tolerance': 1e-05, 'graph_factor': 1.2, ...}, ...}
+
+    def test_sensitivity_rule_fires_at_the_expected_frame(synthetic_landscape, frozen_synthetic_manifest):
+        from evaluation.start_set import build_start_set
+    
+>       start_set = build_start_set(
+            frozen_synthetic_manifest,
+            synthetic_landscape["records"],
+            synthetic_landscape["policy"],
+            {"kind": "fraction_of_ts_rmsd", "fraction": 0.10},
+        )
+
+tests\test_shape_recovery_starts.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\evaluation\start_set.py:68: in build_start_set
+    out[key] = _select_start(key, molecule, connection_id, connection,
+src\evaluation\start_set.py:105: in _select_start
+    chosen_index, distances = _sensitivity_choice(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+key = 'aspirin/10/minus', molecule = 'aspirin'
+frames = [FrameRecord(record_id='Landscape17/aspirin/SteepestDescent/10/coordsminus_000.xyz', molecule='aspirin', kind='path', ...   [-4.0e-06, -1.2e-06,  3.2e-06]]), source_sha256='b19777add217d7b28923fcae285ae77f4ae04cd89b908aadae1bd11777d5e6c6')]
+connection = {'molecule': 'aspirin', 'connection_id': '10', 'branches': {'plus': ['Landscape17/aspirin/SteepestDescent/10/coordsplu...eepestDescent/10/coordsminus_004.xyz']}, 'transition_state': 'Landscape17/aspirin/Conformations/coordsts_1_0.xyz', ...}
+byid = {'Landscape17/aspirin/Conformations/coordsmin_0.xyz': FrameRecord(record_id='Landscape17/aspirin/Conformations/coordsm...0., 0.],
+       [0., 0., 0.]]), source_sha256='0000000000000000000000000000000000000000000000000000000000000000'), ...}
+policy = PreparationPolicy(duplicate_tolerance=1e-05, endpoint_tolerance=0.05, reference_tolerance=1e-05, graph_factor=1.2, gra...arch_limit=100000, seed=20260929, nonstationary_force=0.001, exact_energy_tolerance=1e-07, exact_force_tolerance=1e-06)
+fraction = 0.1
+
+    def _sensitivity_choice(key, molecule, frames, connection, byid, policy, fraction):
+        """First stored frame within fraction times the TS-to-minimum RMSD.
+    
+        Returns the chosen frame index and the measured distance summary. When
+        no stored frame qualifies the rule raises: silently falling back to the
+        last frame would hide a rule that is undefined on that branch.
+        """
+        minimum = _branch_minimum(key, molecule, frames[0].connection_id, frames[0].branch,
+                                  connection, byid)
+        ts = byid.get(connection["transition_state"])
+        if ts is None:
+            raise StartSetError(f"{key}: transition state is missing from the records")
+    
+        # RMSD after the symmetry-aware alignment of each frame to the branch's
+        # own minimum, and of the transition state to the same minimum.
+        frame_rmsds = []
+        for record in frames:
+            aligned = align_records(record, minimum, policy)
+            if not aligned.search_complete:
+                raise StartSetError(f"{key}: alignment to the reference minimum is incomplete")
+            frame_rmsds.append(aligned.rmsd)
+        ts_alignment = align_records(ts, minimum, policy)
+        if not ts_alignment.search_complete:
+            raise StartSetError(f"{key}: alignment of the transition state is incomplete")
+        ts_rmsd = ts_alignment.rmsd
+    
+        threshold = fraction * ts_rmsd
+        chosen_index = None
+        for index, rmsd in enumerate(frame_rmsds):
+            if rmsd <= threshold:
+                chosen_index = index
+                break
+        if chosen_index is None:
+>           raise StartSetError(
+                f"{key}: no stored frame is within {fraction} of the TS-to-minimum RMSD")
+E           evaluation.start_set.StartSetError: aspirin/10/minus: no stored frame is within 0.1 of the TS-to-minimum RMSD
+
+src\evaluation\start_set.py:182: StartSetError
+____________ test_first_frame_rule_on_synthetic_matches_frame_zero ____________
+
+synthetic_landscape = {'records': [FrameRecord(record_id='Landscape17/aspirin/Conformations/coordsmin_0.xyz', molecule='aspirin', kind='mini... {0: 'Landscape17/aspirin/Conformations/coordsmin_0.xyz', 1: 'Landscape17/aspirin/Conformations/coordsmin_1.xyz'}, ...}
+frozen_synthetic_manifest = {'archive_sha256': '3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b', 'connections': {'aspirin': {'01...'duplicate_tolerance': 1e-05, 'endpoint_tolerance': 0.05, 'reference_tolerance': 1e-05, 'graph_factor': 1.2, ...}, ...}
+
+    def test_first_frame_rule_on_synthetic_matches_frame_zero(synthetic_landscape, frozen_synthetic_manifest):
+        from evaluation.start_set import build_start_set
+    
+        start_set = build_start_set(
+            frozen_synthetic_manifest,
+            synthetic_landscape["records"],
+            synthetic_landscape["policy"],
+            {"kind": "first_stored_frame"},
+        )
+        for key in ("aspirin/01/plus", "aspirin/11/minus", "aspirin/00/minus"):
+>           assert start_set[key]["frame_index"] == 0
+                   ^^^^^^^^^^^^^^
+E           KeyError: 'aspirin/11/minus'
+
+tests\test_shape_recovery_starts.py:71: KeyError
+__________________ test_real_start_set_fingerprint_is_stable __________________
+
+aspirin_start_set_primary = {'aspirin/00/minus': {'branch_key': 'aspirin/00/minus', 'record_id': 'Landscape17/aspirin/SteepestDescent/00/coordsmin...escent/07_2/coordsplus_000.xyz', 'frame_index': 0, 'rule': {'kind': 'first_stored_frame', 'fraction': None}, ...}, ...}
+
+    def test_real_start_set_fingerprint_is_stable(aspirin_start_set_primary):
+        import hashlib
+        import json
+    
+        payload = {key: {
+            "record_id": entry["record_id"],
+            "frame_index": entry["frame_index"],
+            "positions": np.asarray(entry["positions"], dtype=np.float64).tolist(),
+        } for key, entry in aspirin_start_set_primary.items()}
+        digest = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+        # Canonical-hash of the 22 branch keys plus start record ids.
+        keys_digest = hashlib.sha256(
+            json.dumps({k: v["record_id"] for k, v in payload.items()}, sort_keys=True).encode()).hexdigest()
+        # The recorded frozen start-set hash (see
+        # reports/execution/shape-recovery-2026-10-03/) must equal this digest.
+>       recorded = json.loads((REPO / "reports" / "execution" / "shape-recovery-2026-10-03" / "start-set-hash.json").read_text())
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_shape_recovery_starts.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/abodu/AppData/Local/Temp/work/reports/execution/shape-recovery-2026-10-03/start-set-hash.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\abodu\\AppData\\Local\\Temp\\work\\reports\\execution\\shape-recovery-2026-10-03\\start-set-hash.json'
+
+..\..\..\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1013: FileNotFoundError
+___________ test_final_at_the_other_minimum_is_unmatched_converged ____________
+
+synthetic_landscape = {'records': [FrameRecord(record_id='Landscape17/aspirin/Conformations/coordsmin_0.xyz', molecule='aspirin', kind='mini... {0: 'Landscape17/aspirin/Conformations/coordsmin_0.xyz', 1: 'Landscape17/aspirin/Conformations/coordsmin_1.xyz'}, ...}
+
+    def test_final_at_the_other_minimum_is_unmatched_converged(synthetic_landscape):
+        from evaluation.outcomes import classify_outcome
+    
+        landscape = synthetic_landscape
+        references = build_minima_pool(landscape)
+        final = _final_at(references["m1"].positions, "synthetic/final/at/m1", landscape)
+        result = classify_outcome(
+            final, references["m0"], references, _policy(landscape),
+            budget_exhausted=False, converged=True, forces_finite=True, seen_minimum=False,
+        )
+        # Converged to a fixed point that is not the branch's own reference:
+        # a wrong shape, not a failure to converge.
+>       assert result["category"] == "unmatched_converged"
+E       AssertionError: assert 'matched_reference' == 'unmatched_converged'
+E         
+E         - unmatched_converged
+E         + matched_reference
+
+tests\test_shape_recovery_outcomes.py:75: AssertionError
+_________ test_harmonic_single_atom_converges_to_the_analytic_minimum _________
+
+    def test_harmonic_single_atom_converges_to_the_analytic_minimum():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:51: ModuleNotFoundError
+______________ test_double_well_started_on_the_right_stays_right ______________
+
+    def test_double_well_started_on_the_right_stays_right():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:70: ModuleNotFoundError
+_______________ test_double_well_started_on_the_left_stays_left _______________
+
+    def test_double_well_started_on_the_left_stays_left():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:81: ModuleNotFoundError
+_________ test_backtracking_shrinks_the_step_until_energy_would_fall __________
+
+    def test_backtracking_shrinks_the_step_until_energy_would_fall():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:91: ModuleNotFoundError
+________ test_max_component_rule_is_stated_per_component_not_as_a_norm ________
+
+    def test_max_component_rule_is_stated_per_component_not_as_a_norm():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:105: ModuleNotFoundError
+______ test_constant_force_field_never_converges_and_keeps_its_endpoint _______
+
+    def test_constant_force_field_never_converges_and_keeps_its_endpoint():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:131: ModuleNotFoundError
+_____________ test_nonfinite_force_stops_the_run_and_is_reported ______________
+
+    def test_nonfinite_force_stops_the_run_and_is_reported():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:152: ModuleNotFoundError
+____________ test_nonfinite_positions_do_not_pass_through_silently ____________
+
+    def test_nonfinite_positions_do_not_pass_through_silently():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:175: ModuleNotFoundError
+____________________ test_force_evaluation_count_is_exact _____________________
+
+    def test_force_evaluation_count_is_exact():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:195: ModuleNotFoundError
+_____________ test_budget_respected_and_excess_marked_incomplete ______________
+
+    def test_budget_respected_and_excess_marked_incomplete():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:214: ModuleNotFoundError
+_____________ test_backtracking_trials_cost_budgeted_evaluations ______________
+
+    def test_backtracking_trials_cost_budgeted_evaluations():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:230: ModuleNotFoundError
+____ test_final_structure_is_bitwise_identical_across_two_fresh_processes _____
+
+    def test_final_structure_is_bitwise_identical_across_two_fresh_processes():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:257: ModuleNotFoundError
+________________ test_same_inputs_in_process_reproduce_bitwise ________________
+
+    def test_same_inputs_in_process_reproduce_bitwise():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:296: ModuleNotFoundError
+_____________ test_start_positions_must_be_finite_and_well_shaped _____________
+
+    def test_start_positions_must_be_finite_and_well_shaped():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:311: ModuleNotFoundError
+____________________ test_procedure_settings_are_validated ____________________
+
+    def test_procedure_settings_are_validated():
+>       from evaluation.relax import relax
+E       ModuleNotFoundError: No module named 'evaluation.relax'
+
+tests\test_shape_recovery_relax.py:321: ModuleNotFoundError
+___________________ test_analytic_arm_reports_full_contract ___________________
+
+    def test_analytic_arm_reports_full_contract():
+>       from evaluation.adapter import analytic_fixture_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:22: ModuleNotFoundError
+____________ test_analytic_arm_forces_are_exact_at_known_positions ____________
+
+    def test_analytic_arm_forces_are_exact_at_known_positions():
+>       from evaluation.adapter import analytic_fixture_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:37: ModuleNotFoundError
+_________ test_analytic_arm_preserves_atom_order_and_species_encoding _________
+
+    def test_analytic_arm_preserves_atom_order_and_species_encoding():
+>       from evaluation.adapter import analytic_fixture_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:50: ModuleNotFoundError
+_________________ test_callable_arm_wraps_any_force_function __________________
+
+    def test_callable_arm_wraps_any_force_function():
+>       from evaluation.adapter import callable_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:70: ModuleNotFoundError
+________________ test_callable_arm_shape_mismatch_is_rejected _________________
+
+    def test_callable_arm_shape_mismatch_is_rejected():
+>       from evaluation.adapter import callable_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:81: ModuleNotFoundError
+______________ test_checkpoint_arm_returns_explicit_unavailable _______________
+
+tmp_path = WindowsPath('C:/Users/abodu/AppData/Local/Temp/pytest-of-abodu/pytest-1/test_checkpoint_arm_returns_ex0')
+
+    def test_checkpoint_arm_returns_explicit_unavailable(tmp_path):
+>       from evaluation.adapter import arm_from_checkpoint
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:96: ModuleNotFoundError
+________ test_checkpoint_arm_refuses_when_path_is_present_but_unusable ________
+
+tmp_path = WindowsPath('C:/Users/abodu/AppData/Local/Temp/pytest-of-abodu/pytest-1/test_checkpoint_arm_refuses_wh0')
+
+    def test_checkpoint_arm_refuses_when_path_is_present_but_unusable(tmp_path):
+>       from evaluation.adapter import arm_from_checkpoint
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:110: ModuleNotFoundError
+_ test_direct_force_arm_accepted_for_shape_recovery_refused_for_energy_metrics _
+
+    def test_direct_force_arm_accepted_for_shape_recovery_refused_for_energy_metrics():
+>       from evaluation.adapter import callable_arm, accepted_for_shape_recovery, accepted_for_energy_metrics
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:126: ModuleNotFoundError
+___________ test_refusal_is_a_recorded_field_not_an_exception_only ____________
+
+    def test_refusal_is_a_recorded_field_not_an_exception_only():
+>       from evaluation.adapter import callable_arm, accepted_for_energy_metrics
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:138: ModuleNotFoundError
+_________ test_nonfinite_forces_are_reported_unavailable_never_zeroed _________
+
+    def test_nonfinite_forces_are_reported_unavailable_never_zeroed():
+>       from evaluation.adapter import callable_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:146: ModuleNotFoundError
+_______________ test_adapter_round_trip_positions_species_order _______________
+
+tmp_path = WindowsPath('C:/Users/abodu/AppData/Local/Temp/pytest-of-abodu/pytest-1/test_adapter_round_trip_positi0')
+
+    def test_adapter_round_trip_positions_species_order(tmp_path):
+>       from evaluation.adapter import analytic_fixture_arm
+E       ModuleNotFoundError: No module named 'evaluation.adapter'
+
+tests\test_shape_recovery_report.py:160: ModuleNotFoundError
+____________ test_reporter_counts_categories_and_denominators_sum _____________
+
+    def test_reporter_counts_categories_and_denominators_sum():
+>       from evaluation.reporter import build_report
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:208: ModuleNotFoundError
+______________ test_reporter_rejects_forged_or_missing_outcomes _______________
+
+    def test_reporter_rejects_forged_or_missing_outcomes():
+>       from evaluation.reporter import build_report
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:225: ModuleNotFoundError
+_______________ test_reporter_preserves_seen_minimum_per_branch _______________
+
+    def test_reporter_preserves_seen_minimum_per_branch():
+>       from evaluation.reporter import build_report
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:246: ModuleNotFoundError
+____ test_reporter_train_partition_branch_is_excluded_from_held_out_pools _____
+
+    def test_reporter_train_partition_branch_is_excluded_from_held_out_pools():
+>       from evaluation.reporter import build_report
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:257: ModuleNotFoundError
+_______ test_reporter_zero_denominator_connection_reported_unavailable ________
+
+    def test_reporter_zero_denominator_connection_reported_unavailable():
+>       from evaluation.reporter import build_report
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:270: ModuleNotFoundError
+_____________________ test_render_writes_json_and_md_pair _____________________
+
+tmp_path = WindowsPath('C:/Users/abodu/AppData/Local/Temp/pytest-of-abodu/pytest-1/test_render_writes_json_and_md0')
+
+    def test_render_writes_json_and_md_pair(tmp_path):
+>       from evaluation.reporter import build_report, render
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:287: ModuleNotFoundError
+_______________ test_render_includes_seven_category_disclaimer ________________
+
+    def test_render_includes_seven_category_disclaimer():
+>       from evaluation.reporter import build_report, render
+E       ModuleNotFoundError: No module named 'evaluation.reporter'
+
+tests\test_shape_recovery_report.py:306: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_shape_recovery_starts.py::test_sensitivity_rule_fires_at_the_expected_frame
+FAILED tests/test_shape_recovery_starts.py::test_first_frame_rule_on_synthetic_matches_frame_zero
+FAILED tests/test_shape_recovery_starts.py::test_real_start_set_fingerprint_is_stable
+FAILED tests/test_shape_recovery_outcomes.py::test_final_at_the_other_minimum_is_unmatched_converged
+FAILED tests/test_shape_recovery_relax.py::test_harmonic_single_atom_converges_to_the_analytic_minimum
+FAILED tests/test_shape_recovery_relax.py::test_double_well_started_on_the_right_stays_right
+FAILED tests/test_shape_recovery_relax.py::test_double_well_started_on_the_left_stays_left
+FAILED tests/test_shape_recovery_relax.py::test_backtracking_shrinks_the_step_until_energy_would_fall
+FAILED tests/test_shape_recovery_relax.py::test_max_component_rule_is_stated_per_component_not_as_a_norm
+FAILED tests/test_shape_recovery_relax.py::test_constant_force_field_never_converges_and_keeps_its_endpoint
+FAILED tests/test_shape_recovery_relax.py::test_nonfinite_force_stops_the_run_and_is_reported
+FAILED tests/test_shape_recovery_relax.py::test_nonfinite_positions_do_not_pass_through_silently
+FAILED tests/test_shape_recovery_relax.py::test_force_evaluation_count_is_exact
+FAILED tests/test_shape_recovery_relax.py::test_budget_respected_and_excess_marked_incomplete
+FAILED tests/test_shape_recovery_relax.py::test_backtracking_trials_cost_budgeted_evaluations
+FAILED tests/test_shape_recovery_relax.py::test_final_structure_is_bitwise_identical_across_two_fresh_processes
+FAILED tests/test_shape_recovery_relax.py::test_same_inputs_in_process_reproduce_bitwise
+FAILED tests/test_shape_recovery_relax.py::test_start_positions_must_be_finite_and_well_shaped
+FAILED tests/test_shape_recovery_relax.py::test_procedure_settings_are_validated
+FAILED tests/test_shape_recovery_report.py::test_analytic_arm_reports_full_contract
+FAILED tests/test_shape_recovery_report.py::test_analytic_arm_forces_are_exact_at_known_positions
+FAILED tests/test_shape_recovery_report.py::test_analytic_arm_preserves_atom_order_and_species_encoding
+FAILED tests/test_shape_recovery_report.py::test_callable_arm_wraps_any_force_function
+FAILED tests/test_shape_recovery_report.py::test_callable_arm_shape_mismatch_is_rejected
+FAILED tests/test_shape_recovery_report.py::test_checkpoint_arm_returns_explicit_unavailable
+FAILED tests/test_shape_recovery_report.py::test_checkpoint_arm_refuses_when_path_is_present_but_unusable
+FAILED tests/test_shape_recovery_report.py::test_direct_force_arm_accepted_for_shape_recovery_refused_for_energy_metrics
+FAILED tests/test_shape_recovery_report.py::test_refusal_is_a_recorded_field_not_an_exception_only
+FAILED tests/test_shape_recovery_report.py::test_nonfinite_forces_are_reported_unavailable_never_zeroed
+FAILED tests/test_shape_recovery_report.py::test_adapter_round_trip_positions_species_order
+FAILED tests/test_shape_recovery_report.py::test_reporter_counts_categories_and_denominators_sum
+FAILED tests/test_shape_recovery_report.py::test_reporter_rejects_forged_or_missing_outcomes
+FAILED tests/test_shape_recovery_report.py::test_reporter_preserves_seen_minimum_per_branch
+FAILED tests/test_shape_recovery_report.py::test_reporter_train_partition_branch_is_excluded_from_held_out_pools
+FAILED tests/test_shape_recovery_report.py::test_reporter_zero_denominator_connection_reported_unavailable
+FAILED tests/test_shape_recovery_report.py::test_render_writes_json_and_md_pair
+FAILED tests/test_shape_recovery_report.py::test_render_includes_seven_category_disclaimer
+37 failed, 12 passed in 5.06s

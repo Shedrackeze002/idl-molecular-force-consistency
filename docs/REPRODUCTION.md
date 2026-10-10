@@ -1,6 +1,6 @@
 # Reproduction scope
 
-The subsequent branch-reference interface repair adds `endpoint_references.py`, its generator, classified companion and tests; it documents the legacy filename field without changing frozen split/classification evidence or existing test bodies. Default discovery now includes 20 modules. The repair's targeted data checks and collection results are recorded in [the interface report](../reports/endpoint-reference-interface.md); the export-era results below remain historical, and no broader numerical suite was rerun for this repair.
+The subsequent branch-reference interface repair adds `endpoint_references.py`, its generator, classified companion and tests; it documents the legacy filename field without changing frozen split/classification evidence or existing test bodies. Default discovery was 20 modules when that repair was written (the export's 19 original default modules plus `tests/test_endpoint_references.py`); after PR4's review it includes 25, because the five shape-recovery study modules also entered `pyproject.toml`'s default `testpaths` (see Test boundary). The repair's targeted data checks and collection results are recorded in [the interface report](../reports/endpoint-reference-interface.md); the export-era results below remain historical, and no broader numerical suite was rerun for this repair.
 
 This package supports source inspection, small synthetic/physical fixtures and the documented baseline data workflow. Complete historical reproduction also requires the separately retained original source/run/launch packages. Frozen configurations and source guards retain their original identities and do not approve a launch from this export. Obtain the matching package from the project lead, verify the recorded identities, and use its original environment and source revision before attempting an historical reproduction.
 
@@ -16,11 +16,15 @@ The historical source-bound `scripts/report_width_rate_replacement.py` and perso
 
 ## Test boundary
 
-All 36 original test modules remain byte-identical at their original paths. Some historical tests also provide synthetic helpers imported by current tests. `pyproject.toml` lists 19 default modules explicitly, so helpers retain their original paths without bringing source-bound historical tests into default collection. This reduces regression coverage; the omitted modules include synthetic/controller tests as well as archival checks. No equivalent replacement coverage is claimed.
+All 36 original test modules remain byte-identical at their original paths. Some historical tests also provide synthetic helpers imported by current tests. `pyproject.toml` lists 19 original default modules explicitly, so helpers retain their original paths without bringing source-bound historical tests into default collection. This reduces regression coverage; the omitted modules include synthetic/controller tests as well as archival checks. No equivalent replacement coverage is claimed.
 
 The attempted complete original set on the export produced **168 failed, 482 passed, 3 skipped and 3 errors** in 337.75 seconds. The saved failures require original runs, processed arrays, audit/source-pin files, protected canonical-byte identities or the separately retained audit reporter. The initial attempt also lacked a checkout-relative runtime and did not explicitly pin inherited child imports; the default verification pins parent and child imports to exported source. The complete failed attempt remains retained. It is not reported as a passing full suite.
 
-Default verification uses the existing locked Python 3.12 environment, explicit exported-source imports and no historical data overlay. Current default result: **240 passed, 3 skipped in 183.60 seconds**, with 243 collected cases. Parent and child imports were verified to resolve this export. The historical 656-test prelaunch result is evidence for the original implementation, not a result for this export.
+Default verification uses the existing locked Python 3.12 environment, explicit exported-source imports and no historical data overlay. Current default discovery collects 379 cases across the 25 `testpaths` modules (measured with `pytest --collect-only -q` on this checkout, `LANDSCAPE17_ARCHIVE` set to the separately retained archive). Parent and child imports were verified to resolve this export. Export-era historical results, superseded and not current: **240 passed, 3 skipped in 183.60 seconds**, with 243 collected cases. The historical 656-test prelaunch result is evidence for the original implementation, not a result for this export. A full assertion-level rerun of the default set on the current tree was recorded during this verification. Its failures sit in the source-bound historical modules that fail closed here (capacity, width/rate and offset-profile report and run modules, plus the width-rate replacement helper's `os.O_DIRECTORY` incompatibility on Windows child directories). That rerun also recorded transient import-time failures in `tests/test_shape_recovery_runner.py` alone: a concurrent study edit landed in `evaluation/runner.py` while the run was in flight, briefly leaving the module syntactically unimportable, and the module is valid again since. The shape-recovery modules are then verified by the focused shape-recovery suites rerun on the current tree after that edit.
+
+Default modules of the shape-recovery study (added to the default list after the export froze it, during PR4's review): `tests/test_shape_recovery_outcomes.py`, `tests/test_shape_recovery_relax.py`, `tests/test_shape_recovery_report.py`, `tests/test_shape_recovery_runner.py` and `tests/test_shape_recovery_starts.py` are also in `pyproject.toml`'s default `testpaths`, so ordinary collection includes them.
+
+Archive prerequisite: the real-data tests in `tests/test_shape_recovery_starts.py` read the frozen Landscape17 archive (SHA-256 `3870ecfd6a5404c6654efba22f003f645e2f4dffffad1b5a22770d3437b3027b`). They resolve it from `LANDSCAPE17_ARCHIVE` when that environment variable is set, and otherwise fall back to `data/Landscape17.zip` in the checkout. The archive is a separately retained artifact, not a checkout requirement, so the real-data tests SKIP with that reason when neither location has the zip and the rest of the default suite still passes green. A run with the archive set, as used for the verification below, runs them in full.
 
 Run the default supported set from this checkout:
 
@@ -45,6 +49,11 @@ Default modules:
 - `tests/test_offset_profile_report.py`
 - `tests/test_optimizer_diagnostics.py`
 - `tests/test_representation.py`
+- `tests/test_shape_recovery_outcomes.py`
+- `tests/test_shape_recovery_relax.py`
+- `tests/test_shape_recovery_report.py`
+- `tests/test_shape_recovery_runner.py`
+- `tests/test_shape_recovery_starts.py`
 - `tests/test_source_xyz.py`
 - `tests/test_splits_prepare.py`
 - `tests/test_training_contract.py`

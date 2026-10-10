@@ -1,0 +1,1011 @@
+{
+  "diagnostics": {
+    "nonrigid_positive_fixture": {
+      "audit_record": {
+        "arm": {
+          "arm_id": "analytic-fixture-8at-harmonic",
+          "force_supplier": "analytic-fixture-harmonic",
+          "kind": "analytic_fixture"
+        },
+        "final_positions": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.4,
+            0.0
+          ],
+          [
+            0.0,
+            -1.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.5
+          ],
+          [
+            0.0,
+            0.0,
+            -1.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.6
+          ],
+          [
+            0.0,
+            0.0,
+            1.9
+          ]
+        ],
+        "force_evaluation_count": 5,
+        "permutation": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "procedure": {
+          "configured": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          },
+          "effective": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          }
+        },
+        "reference": {
+          "branch": null,
+          "connection_id": null,
+          "frame_index": null,
+          "kind": "minimum",
+          "molecule": "analytic",
+          "positions": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.4,
+              0.0
+            ],
+            [
+              0.0,
+              -1.4,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.5
+            ],
+            [
+              0.0,
+              0.0,
+              -1.5
+            ],
+            [
+              0.0,
+              0.0,
+              0.6
+            ],
+            [
+              0.0,
+              0.0,
+              1.9
+            ]
+          ],
+          "record_id": "fixture-minimum",
+          "source_path": "fixture-minimum",
+          "species": [
+            "C",
+            "C",
+            "O",
+            "O",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "rmsd_A": 6.852668491422923e-18,
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            7.080503983578806e-18
+          ],
+          [
+            0.0,
+            -7.080503983578806e-18,
+            1.0
+          ]
+        ],
+        "start": {
+          "branch_key": "analytic/nonrigid/positive/start",
+          "kind": "nonrigid-per-atom-displacement",
+          "positions": [
+            [
+              1.1,
+              0.0,
+              0.0
+            ],
+            [
+              -1.1,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.5999999999999999,
+              0.0
+            ],
+            [
+              0.0,
+              -1.5999999999999999,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.3
+            ],
+            [
+              0.0,
+              0.0,
+              -1.4
+            ],
+            [
+              0.0,
+              0.0,
+              0.52
+            ],
+            [
+              0.0,
+              0.0,
+              2.1
+            ]
+          ]
+        },
+        "step_count": 4
+      },
+      "outcome": {
+        "category": "matched_reference",
+        "rmsd_A": 6.852668491422923e-18
+      },
+      "pre_relaxation_rmsd_A": 0.15666445033893303,
+      "tolerance_A": 0.05
+    },
+    "per_branch": [
+      {
+        "accepted_classes": [
+          "fixture-minimum"
+        ],
+        "arm": {
+          "arm_id": "analytic-fixture-8at-harmonic",
+          "force_supplier": "analytic-fixture-harmonic",
+          "kind": "analytic_fixture"
+        },
+        "branch": "plus",
+        "branch_key": "analytic/recover/plus",
+        "budget_exhausted": false,
+        "category": "matched_reference",
+        "connection_id": "recover",
+        "converged": true,
+        "failure": {
+          "budget_exhausted": false,
+          "converged": true,
+          "failed": false,
+          "failure_reason": null,
+          "forces_finite": true
+        },
+        "final_positions": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.4,
+            0.0
+          ],
+          [
+            0.0,
+            -1.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.5
+          ],
+          [
+            0.0,
+            0.0,
+            -1.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.6
+          ],
+          [
+            0.0,
+            0.0,
+            1.9
+          ]
+        ],
+        "force_evaluation_count": 5,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "permutation": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "procedure": {
+          "configured": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          },
+          "effective": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          }
+        },
+        "reference": {
+          "branch": null,
+          "connection_id": null,
+          "frame_index": null,
+          "kind": "minimum",
+          "molecule": "analytic",
+          "positions": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.4,
+              0.0
+            ],
+            [
+              0.0,
+              -1.4,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.5
+            ],
+            [
+              0.0,
+              0.0,
+              -1.5
+            ],
+            [
+              0.0,
+              0.0,
+              0.6
+            ],
+            [
+              0.0,
+              0.0,
+              1.9
+            ]
+          ],
+          "record_id": "fixture-minimum",
+          "source_path": "fixture-minimum",
+          "species": [
+            "C",
+            "C",
+            "O",
+            "O",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "rmsd_A": 6.852668491422923e-18,
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            7.080503983578806e-18
+          ],
+          [
+            0.0,
+            -7.080503983578806e-18,
+            1.0
+          ]
+        ],
+        "seen_minimum": true,
+        "start": {
+          "branch_key": "analytic/recover/plus/start",
+          "kind": "fixture-displacement"
+        },
+        "step_count": 4,
+        "timing_seconds": null
+      },
+      {
+        "accepted_classes": [
+          "fixture-minimum"
+        ],
+        "arm": {
+          "arm_id": "analytic-fixture-8at-harmonic",
+          "force_supplier": "analytic-fixture-harmonic",
+          "kind": "analytic_fixture"
+        },
+        "branch": "minus",
+        "branch_key": "analytic/recover/minus",
+        "budget_exhausted": false,
+        "category": "matched_reference",
+        "connection_id": "recover",
+        "converged": true,
+        "failure": {
+          "budget_exhausted": false,
+          "converged": true,
+          "failed": false,
+          "failure_reason": null,
+          "forces_finite": true
+        },
+        "final_positions": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.4,
+            0.0
+          ],
+          [
+            0.0,
+            -1.4,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.5
+          ],
+          [
+            0.0,
+            0.0,
+            -1.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.6
+          ],
+          [
+            0.0,
+            0.0,
+            1.9
+          ]
+        ],
+        "force_evaluation_count": 5,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "permutation": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "procedure": {
+          "configured": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          },
+          "effective": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          }
+        },
+        "reference": {
+          "branch": null,
+          "connection_id": null,
+          "frame_index": null,
+          "kind": "minimum",
+          "molecule": "analytic",
+          "positions": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.4,
+              0.0
+            ],
+            [
+              0.0,
+              -1.4,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.5
+            ],
+            [
+              0.0,
+              0.0,
+              -1.5
+            ],
+            [
+              0.0,
+              0.0,
+              0.6
+            ],
+            [
+              0.0,
+              0.0,
+              1.9
+            ]
+          ],
+          "record_id": "fixture-minimum",
+          "source_path": "fixture-minimum",
+          "species": [
+            "C",
+            "C",
+            "O",
+            "O",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "rmsd_A": 6.852668491422923e-18,
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            7.080503983578806e-18
+          ],
+          [
+            0.0,
+            -7.080503983578806e-18,
+            1.0
+          ]
+        ],
+        "seen_minimum": true,
+        "start": {
+          "branch_key": "analytic/recover/minus/start",
+          "kind": "fixture-displacement"
+        },
+        "step_count": 4,
+        "timing_seconds": null
+      },
+      {
+        "accepted_classes": [],
+        "arm": {
+          "arm_id": "analytic-fixture-8at-harmonic",
+          "force_supplier": "analytic-fixture-harmonic-shifted-per-atom-potential",
+          "kind": "analytic_fixture"
+        },
+        "branch": "plus",
+        "branch_key": "analytic/wrongshape/plus",
+        "budget_exhausted": false,
+        "category": "unmatched_converged",
+        "connection_id": "wrongshape",
+        "converged": true,
+        "failure": {
+          "budget_exhausted": false,
+          "converged": true,
+          "failed": false,
+          "failure_reason": null,
+          "forces_finite": true
+        },
+        "final_positions": [
+          [
+            1.6,
+            0.0,
+            0.0
+          ],
+          [
+            -1.6,
+            0.0,
+            0.0
+          ],
+          [
+            0.6,
+            1.4,
+            0.0
+          ],
+          [
+            -0.6,
+            -1.4,
+            0.0
+          ],
+          [
+            0.6,
+            0.0,
+            1.5
+          ],
+          [
+            -0.6,
+            0.0,
+            -1.5
+          ],
+          [
+            0.6,
+            0.0,
+            0.6
+          ],
+          [
+            -0.6,
+            0.0,
+            1.9
+          ]
+        ],
+        "force_evaluation_count": 5,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "permutation": null,
+        "procedure": {
+          "configured": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          },
+          "effective": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          }
+        },
+        "reference": {
+          "branch": null,
+          "connection_id": null,
+          "frame_index": null,
+          "kind": "minimum",
+          "molecule": "analytic",
+          "positions": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.4,
+              0.0
+            ],
+            [
+              0.0,
+              -1.4,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.5
+            ],
+            [
+              0.0,
+              0.0,
+              -1.5
+            ],
+            [
+              0.0,
+              0.0,
+              0.6
+            ],
+            [
+              0.0,
+              0.0,
+              1.9
+            ]
+          ],
+          "record_id": "fixture-minimum",
+          "source_path": "fixture-minimum",
+          "species": [
+            "C",
+            "C",
+            "O",
+            "O",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "rmsd_A": null,
+        "rotation": null,
+        "seen_minimum": true,
+        "start": {
+          "branch_key": "analytic/wrongshape/plus/start",
+          "kind": "fixture-displacement"
+        },
+        "step_count": 4,
+        "timing_seconds": null
+      },
+      {
+        "accepted_classes": null,
+        "arm": {
+          "arm_id": "analytic-fixture-8at-harmonic",
+          "force_supplier": "analytic-fixture-harmonic",
+          "kind": "analytic_fixture"
+        },
+        "branch": "minus",
+        "branch_key": "analytic/wrongshape/minus",
+        "budget_exhausted": true,
+        "category": "nonconverged",
+        "connection_id": "wrongshape",
+        "converged": false,
+        "failure": {
+          "budget_exhausted": true,
+          "converged": false,
+          "failed": true,
+          "failure_reason": "budget_exhausted",
+          "forces_finite": true
+        },
+        "final_positions": [
+          [
+            1.4,
+            0.4,
+            0.4
+          ],
+          [
+            -0.6,
+            0.4,
+            0.4
+          ],
+          [
+            0.4,
+            1.7999999999999998,
+            0.4
+          ],
+          [
+            0.4,
+            -0.9999999999999999,
+            0.4
+          ],
+          [
+            0.4,
+            0.4,
+            1.9
+          ],
+          [
+            0.4,
+            0.4,
+            -1.1
+          ],
+          [
+            0.4,
+            0.4,
+            1.0
+          ],
+          [
+            0.4,
+            0.4,
+            2.3
+          ]
+        ],
+        "force_evaluation_count": 2,
+        "held_out": true,
+        "molecule": "analytic",
+        "partition": "validation",
+        "permutation": null,
+        "procedure": {
+          "configured": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 1500,
+            "min_backtracking_floor": 1e-08
+          },
+          "effective": {
+            "backtracking_factor": 0.5,
+            "convergence_tolerance_eV_per_A": 0.01,
+            "initial_step_size": 0.2,
+            "max_backtracking_attempts_per_step": 40,
+            "max_force_evaluations": 2,
+            "min_backtracking_floor": 1e-08
+          },
+          "overrides": {
+            "max_force_evaluations": {
+              "configured": 1500,
+              "effective": 2,
+              "label": "synthetic override"
+            }
+          }
+        },
+        "reference": {
+          "branch": null,
+          "connection_id": null,
+          "frame_index": null,
+          "kind": "minimum",
+          "molecule": "analytic",
+          "positions": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              -1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.4,
+              0.0
+            ],
+            [
+              0.0,
+              -1.4,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.5
+            ],
+            [
+              0.0,
+              0.0,
+              -1.5
+            ],
+            [
+              0.0,
+              0.0,
+              0.6
+            ],
+            [
+              0.0,
+              0.0,
+              1.9
+            ]
+          ],
+          "record_id": "fixture-minimum",
+          "source_path": "fixture-minimum",
+          "species": [
+            "C",
+            "C",
+            "O",
+            "O",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "rmsd_A": null,
+        "rotation": null,
+        "seen_minimum": true,
+        "start": {
+          "branch_key": "analytic/wrongshape/minus/start",
+          "kind": "fixture-displacement"
+        },
+        "step_count": 1,
+        "timing_seconds": null
+      }
+    ],
+    "timing_note": "Per-branch timing is recorded on the evaluation path, where the runner measures each branch. This fixture artifact is required to regenerate byte for byte, so its rows carry timing_seconds as null rather than a wall-clock value that would differ between runs."
+  },
+  "report": {
+    "branch_count": 4,
+    "category_totals": {
+      "held_out": {
+        "ambiguous": 0,
+        "matched_reference": 2,
+        "nonconverged": 1,
+        "unmatched_converged": 1,
+        "unresolved": 0
+      },
+      "test": {
+        "ambiguous": 0,
+        "matched_reference": 0,
+        "nonconverged": 0,
+        "unmatched_converged": 0,
+        "unresolved": 0
+      },
+      "validation": {
+        "ambiguous": 0,
+        "matched_reference": 2,
+        "nonconverged": 1,
+        "unmatched_converged": 1,
+        "unresolved": 0
+      }
+    },
+    "held_out_branch_count": 4,
+    "held_out_branch_counts": {
+      "test": 0,
+      "validation": 4
+    },
+    "per_connection": [
+      {
+        "availability": "available",
+        "connection_id": "recover",
+        "converged_count": 2,
+        "counts": {
+          "ambiguous": 0,
+          "matched_reference": 2,
+          "nonconverged": 0,
+          "unmatched_converged": 0,
+          "unresolved": 0
+        },
+        "denominator": 2,
+        "denominators": {
+          "evaluated_branches": 2,
+          "shape_recovery_total": 2
+        },
+        "molecule": "analytic",
+        "partition": "validation",
+        "rates": {
+          "ambiguous_rate": 0.0,
+          "matched_reference_rate": 1.0,
+          "unmatched_converged_rate": 0.0
+        },
+        "seen_minimum_by_branch": {
+          "minus": true,
+          "plus": true
+        }
+      },
+      {
+        "availability": "available",
+        "connection_id": "wrongshape",
+        "converged_count": 1,
+        "counts": {
+          "ambiguous": 0,
+          "matched_reference": 0,
+          "nonconverged": 1,
+          "unmatched_converged": 1,
+          "unresolved": 0
+        },
+        "denominator": 2,
+        "denominators": {
+          "evaluated_branches": 2,
+          "shape_recovery_total": 2
+        },
+        "molecule": "analytic",
+        "partition": "validation",
+        "rates": {
+          "ambiguous_rate": 0.0,
+          "matched_reference_rate": 0.0,
+          "unmatched_converged_rate": 0.5
+        },
+        "seen_minimum_by_branch": {
+          "minus": true,
+          "plus": true
+        }
+      }
+    ],
+    "provenance": {
+      "arm": {
+        "mixed": [
+          {
+            "arm_id": "analytic-fixture-8at-harmonic",
+            "force_supplier": "analytic-fixture-harmonic",
+            "kind": "analytic_fixture"
+          },
+          {
+            "arm_id": "analytic-fixture-8at-harmonic",
+            "force_supplier": "analytic-fixture-harmonic-shifted-per-atom-potential",
+            "kind": "analytic_fixture"
+          }
+        ]
+      },
+      "source": "audit_record"
+    },
+    "schema": 2
+  }
+}
