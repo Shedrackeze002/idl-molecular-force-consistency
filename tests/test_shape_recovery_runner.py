@@ -241,6 +241,32 @@ def test_runner_evaluates_validation_branches_end_to_end(
         assert connection["counts"]["matched_reference"] == 2
 
 
+@pytest.mark.parametrize("field", ["max_force_evaluations",
+                                   "max_backtracking_attempts_per_step"])
+@pytest.mark.parametrize("value", [1.9, True])
+def test_runner_refuses_malformed_integer_procedure_before_any_force_call(
+        recovery_landscape, frozen_recovery_manifest, field, value):
+    from evaluation.adapter import callable_arm
+    from evaluation.runner import evaluate_starts
+
+    starts = _recovery_start_set(recovery_landscape, frozen_recovery_manifest)
+    validation = {key: entry for key, entry in starts.items()
+                  if key.split("/")[1] == "80"}
+    calls = []
+
+    def force(positions):
+        calls.append(positions)
+        return recovery_minimum(0) - positions
+
+    arm = callable_arm(force, species=SPECIES, arm_id="integer-preflight")
+    with pytest.raises(ValueError, match=field):
+        evaluate_starts(validation, arm, _runner_procedure(**{field: value}),
+                        _recovery_classification(recovery_landscape),
+                        recovery_landscape.references(), recovery_landscape.policy(),
+                        split_manifest=frozen_recovery_manifest, seen_minimum=True)
+    assert calls == []
+
+
 def test_runner_test_partition_is_refused_without_authorisation(
         recovery_landscape, frozen_recovery_manifest):
     from evaluation.runner import PartitionAuthorisationError, evaluate_starts

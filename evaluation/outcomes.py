@@ -61,8 +61,12 @@ def classify_outcome(final, reference, references, policy, *,
     rmsd, permutation and rotation where available, and the retained
     endpoint and seen_minimum flag.
     """
-    if budget_exhausted is None or converged is None:
-        raise ValueError("budget_exhausted and converged must be explicit booleans")
+    for name, value in (("budget_exhausted", budget_exhausted),
+                        ("converged", converged),
+                        ("forces_finite", forces_finite),
+                        ("nonfinite_force", nonfinite_force)):
+        if type(value) is not bool:
+            raise ValueError(f"{name} must be an explicit boolean")
     declared_stop_reasons = ("budget_exhausted", "nonfinite_force",
                              "invalid_force_shape", "no_progress")
     if stop_reason is not None and stop_reason not in declared_stop_reasons:
