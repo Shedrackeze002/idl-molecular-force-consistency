@@ -1,0 +1,517 @@
+{
+  "date": "2026-10-15",
+  "scope": "Reviewed numerical code and compact balanced evidence; original packages retained separately",
+  "source_revision_original": "1f5edddd042625237f2694f0101829ea5f2c1e80",
+  "source_inventory_original": {
+    "pyproject.toml": "ae5595d50d97ac81e28ccdbebd42c37f4918f3d8785fb62fca18b6d04cf321ab",
+    "src/force_consistency/__init__.py": "99faee9d92bcfe69daf3ed6e2577b1fcc894914d3b85d5e7228c5c03ee16b00b",
+    "src/force_consistency/capacity_contract.py": "b98fc5e584d7bbe1e2b14723e6456b1f52091fe59cc7978e0ffe065e4ecc23ef",
+    "src/force_consistency/capacity_report.py": "fa81adc7fcde9280fa9cb64e4adefb2e040b8e8e95d881ab97f218a351aae27a",
+    "src/force_consistency/capacity_runs.py": "e336840e110c12b005ccde6630b68c42a49ffe25191970a1dcd404a3536ab70c",
+    "src/force_consistency/cli.py": "be8ee478e325d0ea088b12488dcda6c3973e495c35c9f8fa2aff7f50bc37e342",
+    "src/force_consistency/convergence_runs.py": "b2eae05a8ca69253c140e6f905ad4fefe966f8e95bb0928767f4fd44e819751b",
+    "src/force_consistency/coverage.py": "13ef795d66c20c7a839555608ac9556d4b68a163fa358cfedf6329d44dfd5cd4",
+    "src/force_consistency/coverage_matrix.py": "b54d25565336a2273a2d7816daadebcc8eb6f79092837506456765a280ce3c5a",
+    "src/force_consistency/coverage_runs.py": "9c6dbeadac9b094ab088f49419c0f7c01c7e6c600a54326e6f7c455f3f391997",
+    "src/force_consistency/data/__init__.py": "07edae732e1f38f356369ee977ee9fbb2e22b6103e58bf74c5004ba83b7cd93c",
+    "src/force_consistency/data/audit.py": "0b8d41c8149b9dedfcdfbe7fa129fcf1723244f4ffd98f44611cd9664e912ab8",
+    "src/force_consistency/data/geometry.py": "81a592b9379c81471a59f8147ded74cda3b05e28628cf783b486e925c205edf1",
+    "src/force_consistency/data/matching.py": "1de0f37c4f9be98cf688aa896a31562603d1d42cc9af7db59d92f115d878bd53",
+    "src/force_consistency/data/prepare.py": "3280b11a42fe178c7d3ddce877d5a2ae482e4c3424ee30071c8b99b4778c8e74",
+    "src/force_consistency/data/source.py": "bc7b7aac2945cee6bfc746935052f78437414802fd85ffc201b728925afa7229",
+    "src/force_consistency/data/splits.py": "b9cc69d86cfb1876215117a873e442b2e7de2e76019c151b581c04bff6a69f80",
+    "src/force_consistency/data/types.py": "cd2774e75c0611ddb2c6c14bd5f9ac6c4afbd9e60b5d4ccbe602cf703e44b4f6",
+    "src/force_consistency/data/units.py": "1ea1983ba9eed7846451bca2e552381b060eacae9346a1c8f3fdb24f8b67d29d",
+    "src/force_consistency/data/xyz.py": "8bb2dbdda93759bce3fc6ea66c9dec63a0d1d8ff07f88fc0b233e29641db94ed",
+    "src/force_consistency/diagnostics.py": "a70d3b2bc9b2cc615093288af121e3f7af67c02907d2dfa69caf8f0df3101df3",
+    "src/force_consistency/gradient_diagnostics.py": "e3324b57a98899eb8038a64cd0ad6874932df31874d1d2de7217960b7c55ccd4",
+    "src/force_consistency/gradient_runs.py": "6adee300674f3301304007c1f58645200dcd1eaa20e79605e6f041e1119c2c96",
+    "src/force_consistency/late_rate.py": "bdcb516013a018a95171c1e81626e4983633bc8a88d397b6c5a335773f7741a3",
+    "src/force_consistency/loss_balance.py": "0ff64dcbad7a44f93b362d43d82336d500780cb41f893df27e7539b2f616dfbd",
+    "src/force_consistency/loss_balance_runs.py": "e11e31a997c0815f444747855a9590fea7563d812fa75c591e32cc81e05397a4",
+    "src/force_consistency/metrics.py": "901e93774e5d075303180abd58540f45889e1e9768d10b81a99e3c040a0784d5",
+    "src/force_consistency/models/__init__.py": "7509bed2e10c99f6e1053a1d1a77084b1a77cd31735afc85d04814618e60787e",
+    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+    "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+    "src/force_consistency/objectives.py": "d5e20e8bf93fa412cdb216e9f7923e354ee52ad96ce854600ba847dd0dca7242",
+    "src/force_consistency/optimizer_diagnostics.py": "476bd921d1ed687220efca54c83652c1dafb5757f259d008f6233a5dc537f8ee",
+    "src/force_consistency/optimizer_runs.py": "d5b701c51c2c17a040136f281477d8d2a775c99fd56793d212af561590f170ec",
+    "src/force_consistency/representation.py": "e8d7d777f3b44fd774164a164f60970095b9441f489945979f85e70e86e8ff7d",
+    "src/force_consistency/runs.py": "aebd78ced104d35ff11a125e85e20a3aa2c67792a131a09f0d343893a3694d6e",
+    "src/force_consistency/train.py": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
+    "src/force_consistency/width_rate_contract.py": "3dd435c39af69507ccd3e279631b28d59d39f64b9d7af3bb116084a39e5997bd",
+    "src/force_consistency/width_rate_recovery.py": "bb8f8f870e7956302c37aaa997e9f4a2f0b2dad8b842f21419f0923cafae55d7",
+    "src/force_consistency/width_rate_recovery_contract.py": "61fdd11e71b8ca2c43e88aa35052a422d29e22867fe3b683dce8d002460c24d7",
+    "src/force_consistency/width_rate_replacement.py": "1ba6486808718e99abc853ce5ae0051c692c591aff5e3a4fcfd82b6abb30769b",
+    "src/force_consistency/width_rate_replacement_contract.py": "d060f420c6b7432a213afacc44d858ae164932930bf6c350a76c432ae5b4df81",
+    "src/force_consistency/width_rate_runs.py": "89bc461c6cc9308cfdca1dd9315510bda24fc2a3ac0f9bbdd5d728d65aef6295",
+    "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+  },
+  "publication_context_differences": [
+    "public endpoint audit warning docstring",
+    "curated test discovery with three added modules",
+    "publication HEAD differs from original run HEAD"
+  ],
+  "files": [
+    {
+      "artifact": "reviewed-shared-trainer/src/force_consistency/models/direct.py",
+      "published_path": "src/force_consistency/models/direct.py",
+      "original_sha256": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+      "published_sha256": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+      "original_bytes": 2167,
+      "published_bytes": 2167,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/src/force_consistency/objectives.py",
+      "published_path": "src/force_consistency/objectives.py",
+      "original_sha256": "d5e20e8bf93fa412cdb216e9f7923e354ee52ad96ce854600ba847dd0dca7242",
+      "published_sha256": "d5e20e8bf93fa412cdb216e9f7923e354ee52ad96ce854600ba847dd0dca7242",
+      "original_bytes": 2891,
+      "published_bytes": 2891,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/src/force_consistency/train.py",
+      "published_path": "src/force_consistency/train.py",
+      "original_sha256": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
+      "published_sha256": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
+      "original_bytes": 21384,
+      "published_bytes": 21384,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/tests/test_direct_model.py",
+      "published_path": "tests/test_direct_model.py",
+      "original_sha256": "e41d432f6a2f9c92bf86aa32689c83654c5bdce1c255e426a2ed1c051484aab0",
+      "published_sha256": "e41d432f6a2f9c92bf86aa32689c83654c5bdce1c255e426a2ed1c051484aab0",
+      "original_bytes": 3779,
+      "published_bytes": 3779,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/tests/test_consistency_objective.py",
+      "published_path": "tests/test_consistency_objective.py",
+      "original_sha256": "e0e16955a5391ad9811880b60aaf81df1e24d937ee51dfaccd312430cd8132ee",
+      "published_sha256": "e0e16955a5391ad9811880b60aaf81df1e24d937ee51dfaccd312430cd8132ee",
+      "original_bytes": 4792,
+      "published_bytes": 4792,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/tests/test_arm_training.py",
+      "published_path": "tests/test_arm_training.py",
+      "original_sha256": "732d242ea275eeed45481b2e969867ccf03d70aad970a028ede1680789247248",
+      "published_sha256": "732d242ea275eeed45481b2e969867ccf03d70aad970a028ede1680789247248",
+      "original_bytes": 8177,
+      "published_bytes": 8177,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "reviewed-shared-trainer/configs/aspirin-direct-midterm.json",
+      "published_path": "configs/aspirin-direct-midterm.json",
+      "original_sha256": "3bf0fa873151e8a791082e347d290d2555a0294a9abcff8680a581b66524dd57",
+      "published_sha256": "3bf0fa873151e8a791082e347d290d2555a0294a9abcff8680a581b66524dd57",
+      "original_bytes": 641,
+      "published_bytes": 641,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/summary.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/summary.json",
+      "original_sha256": "57d2556ce2565b0eb241a47e363d6cfa8f945ada3a39246942cfa8fd24033633",
+      "published_sha256": "57d2556ce2565b0eb241a47e363d6cfa8f945ada3a39246942cfa8fd24033633",
+      "original_bytes": 143896,
+      "published_bytes": 143896,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/provenance.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/provenance.json",
+      "original_sha256": "ebabb7e4ac487ea9487142689fe595ebfcf246984c3ecb431fefb7391963d5d0",
+      "published_sha256": "ebabb7e4ac487ea9487142689fe595ebfcf246984c3ecb431fefb7391963d5d0",
+      "original_bytes": 6456,
+      "published_bytes": 6456,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/config.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/config.json",
+      "original_sha256": "e401cfaf4ff54a9fd5c615265c1dffa972008dcb2c2065f88cf1b8ef2429ac3e",
+      "published_sha256": "672ea11b641ed70da26132a752dbe25d8d443700cc8a0fe09d31708f5beb12e1",
+      "original_bytes": 846,
+      "published_bytes": 778,
+      "transform": "structured location-only normalization",
+      "changed_fields": [
+        {
+          "field": ".data_directory",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".run_directory",
+          "action": "normalize machine-specific or retained-package location"
+        }
+      ]
+    },
+    {
+      "artifact": "first-energy-engineering-fit/losses.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/losses.json",
+      "original_sha256": "e569f028292d0f652ae59545efcf21964af882e521cfee407d86b1fce73bcbc4",
+      "published_sha256": "e569f028292d0f652ae59545efcf21964af882e521cfee407d86b1fce73bcbc4",
+      "original_bytes": 351540,
+      "published_bytes": 351540,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/validation.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/validation.json",
+      "original_sha256": "df931b099cba633f04539d156ee3e4d78a5ed4f6b278aed95e81b094d18395e6",
+      "published_sha256": "df931b099cba633f04539d156ee3e4d78a5ed4f6b278aed95e81b094d18395e6",
+      "original_bytes": 748367,
+      "published_bytes": 748367,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/checkpoint-verification.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/checkpoint-verification.json",
+      "original_sha256": "ce82e9d9202785828b762b2d9667cb8f50c047ab392bdfd6204bd9e44898f54b",
+      "published_sha256": "ce82e9d9202785828b762b2d9667cb8f50c047ab392bdfd6204bd9e44898f54b",
+      "original_bytes": 162,
+      "published_bytes": 162,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/best-checkpoint-verification.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/best-checkpoint-verification.json",
+      "original_sha256": "53b7dd70e5b37ecd92eebed396830d13e098b80b69c942feaeb909dc628b8bd2",
+      "published_sha256": "53b7dd70e5b37ecd92eebed396830d13e098b80b69c942feaeb909dc628b8bd2",
+      "original_bytes": 140,
+      "published_bytes": 140,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/checkpoint-reference.npz",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/checkpoint-reference.npz",
+      "original_sha256": "5057583adb0e8f18c706d875d155a652e016283384031f260d68398cf1497fa4",
+      "published_sha256": "5057583adb0e8f18c706d875d155a652e016283384031f260d68398cf1497fa4",
+      "original_bytes": 2558,
+      "published_bytes": 2558,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-energy-engineering-fit/best-checkpoint-reference.npz",
+      "published_path": "reports/evidence/2026-10-15/e3x/energy/best-checkpoint-reference.npz",
+      "original_sha256": "034ac0ced7552611ed59d42f5c8c2d7e82290f1c034f3dad4bfd504021689258",
+      "published_sha256": "034ac0ced7552611ed59d42f5c8c2d7e82290f1c034f3dad4bfd504021689258",
+      "original_bytes": 2558,
+      "published_bytes": 2558,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/summary.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/summary.json",
+      "original_sha256": "133f34fb7b34664b1eecf364569a5e3b8821d45eed43174a4c3336f714a30249",
+      "published_sha256": "133f34fb7b34664b1eecf364569a5e3b8821d45eed43174a4c3336f714a30249",
+      "original_bytes": 143896,
+      "published_bytes": 143896,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/provenance.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/provenance.json",
+      "original_sha256": "e2fdc35cfbd3bacc7e82b865699501646334d38cc36ba03b96fa23a7b692e8e6",
+      "published_sha256": "e2fdc35cfbd3bacc7e82b865699501646334d38cc36ba03b96fa23a7b692e8e6",
+      "original_bytes": 6456,
+      "published_bytes": 6456,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/config.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/config.json",
+      "original_sha256": "d42bcd47cbf64cdacb847f0badf70d4732d1ace0e5487c6004e0b2f96dc6882c",
+      "published_sha256": "d9ef20cb94cc8a09f43b442c84c0258fbb1379b9963a758264f701d874acd318",
+      "original_bytes": 846,
+      "published_bytes": 778,
+      "transform": "structured location-only normalization",
+      "changed_fields": [
+        {
+          "field": ".data_directory",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".run_directory",
+          "action": "normalize machine-specific or retained-package location"
+        }
+      ]
+    },
+    {
+      "artifact": "first-direct-engineering-fit/losses.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/losses.json",
+      "original_sha256": "00ccfdcc42699bce548b8fda9d28b11ab20ba13eaa3d1b7ec305abcb7e8d060d",
+      "published_sha256": "00ccfdcc42699bce548b8fda9d28b11ab20ba13eaa3d1b7ec305abcb7e8d060d",
+      "original_bytes": 351697,
+      "published_bytes": 351697,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/validation.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/validation.json",
+      "original_sha256": "d7a53981bf658a63f7e3392864e509848f74aee2aeaad24db801bc6462edd908",
+      "published_sha256": "d7a53981bf658a63f7e3392864e509848f74aee2aeaad24db801bc6462edd908",
+      "original_bytes": 748367,
+      "published_bytes": 748367,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/checkpoint-verification.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/checkpoint-verification.json",
+      "original_sha256": "556102a4d72029ca2300c4cd75237fdb79b434ed8898c7e04928942b5c1a08e6",
+      "published_sha256": "556102a4d72029ca2300c4cd75237fdb79b434ed8898c7e04928942b5c1a08e6",
+      "original_bytes": 161,
+      "published_bytes": 161,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/best-checkpoint-verification.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/best-checkpoint-verification.json",
+      "original_sha256": "53b7dd70e5b37ecd92eebed396830d13e098b80b69c942feaeb909dc628b8bd2",
+      "published_sha256": "53b7dd70e5b37ecd92eebed396830d13e098b80b69c942feaeb909dc628b8bd2",
+      "original_bytes": 140,
+      "published_bytes": 140,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/checkpoint-reference.npz",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/checkpoint-reference.npz",
+      "original_sha256": "17d850dcccd3b6a2c2ff8ba90081c44a1de6026df89bbea49ebd7d067c2556f3",
+      "published_sha256": "17d850dcccd3b6a2c2ff8ba90081c44a1de6026df89bbea49ebd7d067c2556f3",
+      "original_bytes": 2558,
+      "published_bytes": 2558,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-direct-engineering-fit/best-checkpoint-reference.npz",
+      "published_path": "reports/evidence/2026-10-15/e3x/direct/best-checkpoint-reference.npz",
+      "original_sha256": "a2140a540acded9f94abc6fa9df6b6da5ee1d5f4069d154b07042a3b115b23c1",
+      "published_sha256": "a2140a540acded9f94abc6fa9df6b6da5ee1d5f4069d154b07042a3b115b23c1",
+      "original_bytes": 2558,
+      "published_bytes": 2558,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-paired-engineering-fits/RESULT_SUMMARY.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/result_summary.json",
+      "original_sha256": "b967468051be8161cc01245d741a30ecc821e9d9faf7b5031c3ae0870f021102",
+      "published_sha256": "7d88f2f2f6db8edbab24f9e6a02ac284d44a1ded751fea21475977dfb8de0bbd",
+      "original_bytes": 2889,
+      "published_bytes": 2889,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "first-paired-engineering-fits/LAUNCH_SPEC.json",
+      "published_path": "reports/evidence/2026-10-15/e3x/launch_spec.json",
+      "original_sha256": "f44e032a0fe15126e6b03c7ad2ad74fde258ec385a2b774e6c85decd4c94d16f",
+      "published_sha256": "d6fc49329cce42398562a400927fbf1d7349836216686def9b601eae5696558a",
+      "original_bytes": 7223,
+      "published_bytes": 6853,
+      "transform": "structured location-only normalization",
+      "changed_fields": [
+        {
+          "field": ".workspace",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".input_directory",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".configs.energy.original",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".configs.energy.run_directory",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".configs.direct.original",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".configs.direct.run_directory",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".supervisor_source",
+          "action": "normalize machine-specific or retained-package location"
+        }
+      ]
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/report.json",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/report.json",
+      "original_sha256": "a14938dc9a1b9fe6f8498ee8f7dd59c7208741b1888062456542091bf63fc433",
+      "published_sha256": "85f70bb8865c23df86fa94303471f77bd76b03083fb184f6dbf513874b22c998",
+      "original_bytes": 26549,
+      "published_bytes": 25202,
+      "transform": "structured location-only normalization",
+      "changed_fields": [
+        {
+          "field": ".admission.installed_sources.mace.cli.run_train.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.mace.tools.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.mace.tools.arg_parser.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.mace.tools.checkpoint.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.mace.tools.train.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.mace.tools.utils.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".admission.installed_sources.torch_ema.ema.path",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".provenance.review_input_pins",
+          "action": "omit private review-location map"
+        }
+      ]
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/final-s1.json",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/final-s1.json",
+      "original_sha256": "a83a5b1ca02dfb5880c17d72aa222aa983c0135281b643e0d8dfdf8c999a21ae",
+      "published_sha256": "a83a5b1ca02dfb5880c17d72aa222aa983c0135281b643e0d8dfdf8c999a21ae",
+      "original_bytes": 2629,
+      "published_bytes": 2629,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/selected-s1.json",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/selected-s1.json",
+      "original_sha256": "0b361e4883b03a08eab536f22be427892e89d7e6bdde68fb565765bb9940423f",
+      "published_sha256": "0b361e4883b03a08eab536f22be427892e89d7e6bdde68fb565765bb9940423f",
+      "original_bytes": 2642,
+      "published_bytes": 2642,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/final-train-predictions.npz",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/final-train-predictions.npz",
+      "original_sha256": "0194f98411bd02637cc22408fcad17d9b183094912dc3f684af2ec408ff607ba",
+      "published_sha256": "0194f98411bd02637cc22408fcad17d9b183094912dc3f684af2ec408ff607ba",
+      "original_bytes": 2407967,
+      "published_bytes": 2407967,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/final-valid-predictions.npz",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/final-valid-predictions.npz",
+      "original_sha256": "22bf7d88815ae3a84ecb8717c497f11311f058c1a862f8efd0e08a5efda0d3cd",
+      "published_sha256": "22bf7d88815ae3a84ecb8717c497f11311f058c1a862f8efd0e08a5efda0d3cd",
+      "original_bytes": 480430,
+      "published_bytes": 480430,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/selected-train-predictions.npz",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/selected-train-predictions.npz",
+      "original_sha256": "8624e5da4222255cdf44be03f661c9fa8750a1dae3b767a10873133bbe759462",
+      "published_sha256": "8624e5da4222255cdf44be03f661c9fa8750a1dae3b767a10873133bbe759462",
+      "original_bytes": 2408266,
+      "published_bytes": 2408266,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "MACE-Run-A-independent-rescore/selected-valid-predictions.npz",
+      "published_path": "reports/evidence/2026-10-15/mace-runA/selected-valid-predictions.npz",
+      "original_sha256": "291d455e479d021a4a6f04f6bd6186ed7025531dd0294c681e4d3dedc443f84e",
+      "published_sha256": "291d455e479d021a4a6f04f6bd6186ed7025531dd0294c681e4d3dedc443f84e",
+      "original_bytes": 480472,
+      "published_bytes": 480472,
+      "transform": "byte-identical",
+      "changed_fields": []
+    },
+    {
+      "artifact": "prior-diagnostic/force-isolation-diagnostics.json",
+      "published_path": "reports/evidence/2026-10-15/prior-diagnostics/force-isolation-diagnostics.json",
+      "original_sha256": "5b6c5672427e3030bb488e684cb901ca02a0cd490553817955e83d8421fe043f",
+      "published_sha256": "0b4f311b7308a73fa14470db8342d80e3faf14892f2935776a68a370c92c24db",
+      "original_bytes": 4409063,
+      "published_bytes": 4408995,
+      "transform": "structured location-only normalization",
+      "changed_fields": [
+        {
+          "field": ".control_root",
+          "action": "normalize machine-specific or retained-package location"
+        },
+        {
+          "field": ".summary.checkpoint_verification.binding.root",
+          "action": "normalize machine-specific or retained-package location"
+        }
+      ]
+    },
+    {
+      "artifact": "prior-diagnostic/force-isolation-component-comparison.json",
+      "published_path": "reports/evidence/2026-10-15/prior-diagnostics/force-isolation-component-comparison.json",
+      "original_sha256": "e61295f87a08ecbab9c7ac240825dbde9ad6f071fab44da7cdd4eb353be9b4e6",
+      "published_sha256": "e61295f87a08ecbab9c7ac240825dbde9ad6f071fab44da7cdd4eb353be9b4e6",
+      "original_bytes": 46325,
+      "published_bytes": 46325,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    },
+    {
+      "artifact": "prior-diagnostic/angular-degree-diagnostics.json",
+      "published_path": "reports/evidence/2026-10-15/prior-diagnostics/angular-degree-diagnostics.json",
+      "original_sha256": "026bc7cfa180a1bacdd51827869cb498fc758519adda9a21882cd25e6c20b1d8",
+      "published_sha256": "026bc7cfa180a1bacdd51827869cb498fc758519adda9a21882cd25e6c20b1d8",
+      "original_bytes": 62644,
+      "published_bytes": 62644,
+      "transform": "structured location-only normalization",
+      "changed_fields": []
+    }
+  ]
+}

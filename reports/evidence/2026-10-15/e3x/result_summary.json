@@ -1,0 +1,73 @@
+{
+  "rows": {
+    "direct": {
+      "best_equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+      "best_update": 0,
+      "compilation_seconds": 0.7412670421181247,
+      "discarded_warmup_frame_exposures": 4,
+      "elapsed_seconds": 23.559820957947522,
+      "final_validation": {
+        "energy_mae_eV": 0.10634340760779157,
+        "equal_connection_force_mae_eV_per_A": 0.06622239554560543,
+        "pooled_force_mae_eV_per_A": 0.06597973994359092,
+        "record_count": 974,
+        "update": 1000
+      },
+      "initial_validation": {
+        "energy_mae_eV": 0.2019505591697434,
+        "equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+        "pooled_force_mae_eV_per_A": 0.062261978776441435,
+        "record_count": 974,
+        "update": 0
+      },
+      "initialization_seconds": 3.736509707989171,
+      "parameter_count": 4769,
+      "sampled_frame_exposures": 4000,
+      "status": "passed",
+      "steady_update_seconds_mean": 0.0017208946853643284,
+      "steady_update_seconds_total": 1.7208946853643283,
+      "stop_reason": "max_updates",
+      "summary_sha256": "133f34fb7b34664b1eecf364569a5e3b8821d45eed43174a4c3336f714a30249",
+      "unattributed_seconds": 15.058629479492083,
+      "updates": 1000,
+      "validation_seconds_total": 2.294397377059795,
+      "warmup_execution_seconds": 0.008122665924020112
+    },
+    "energy": {
+      "best_equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+      "best_update": 0,
+      "compilation_seconds": 1.4902442079037428,
+      "discarded_warmup_frame_exposures": 4,
+      "elapsed_seconds": 32.98015658301301,
+      "final_validation": {
+        "energy_mae_eV": 0.13033257314115626,
+        "equal_connection_force_mae_eV_per_A": 0.07046767329260104,
+        "pooled_force_mae_eV_per_A": 0.07025167128783222,
+        "record_count": 974,
+        "update": 1000
+      },
+      "initial_validation": {
+        "energy_mae_eV": 0.2019505591697434,
+        "equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+        "pooled_force_mae_eV_per_A": 0.062261978776441435,
+        "record_count": 974,
+        "update": 0
+      },
+      "initialization_seconds": 3.944832833018154,
+      "parameter_count": 4737,
+      "sampled_frame_exposures": 4000,
+      "status": "passed",
+      "steady_update_seconds_mean": 0.00376135586714372,
+      "steady_update_seconds_total": 3.7613558671437204,
+      "stop_reason": "max_updates",
+      "summary_sha256": "57d2556ce2565b0eb241a47e363d6cfa8f945ada3a39246942cfa8fd24033633",
+      "unattributed_seconds": 19.8263610888971,
+      "updates": 1000,
+      "validation_seconds_total": 3.937210378004238,
+      "warmup_execution_seconds": 0.02015220804605633
+    }
+  },
+  "scientific_adequacy": false,
+  "source_revision": "1f5edddd042625237f2694f0101829ea5f2c1e80",
+  "status": "ACCEPTED_ENGINEERING_EXECUTION_WITH_NEGATIVE_VALIDATION_FINDING"
+}
