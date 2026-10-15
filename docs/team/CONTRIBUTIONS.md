@@ -12,3 +12,9 @@ Created 3 October 2026. Proposed owners are drawn from the submitted proposal. G
 Owners update their own entries through their PRs, adding rows as needed for separate deliverables. Record the actual author, change, verification command/result, evidence path, reviewer, limitations and integration status. Distinguish plans, synthetic fixture checks, verified measured results and incomplete/failed runs. Attribute collaborative work accurately. Record review and writing contributions alongside code, without assuming those alone satisfy the course policy.
 
 A useful completed record links an issue, the owner's PR and authored commits, the accepted code/tests/configuration, and the resulting report or evidence note. Check author attribution after merge. Preserve historical failures and corrections in the evidence trail. Do not populate commit links or successful statuses until those artifacts exist.
+
+## 15 October 2026 contribution update
+
+Shedrack implemented the shared energy/direct/consistency model/trainer and tests, completed the first two engineering fits, and independently scored/closed the first full-data MACE reference. Both results have two independent technical result reviews; negative E3x validation findings remain explicit. This update publishes the reviewed code and evidence without transferring private research history or teammate credit. The publication PR records the actual new authored commit; prior public PR #6 commit894c363 remains maintenance credit.
+
+Olufunke's original PR #4 authored commits and merge remain credited; trained-model integration/control/writing remain outstanding. Idris and Emmanuel retain their workstreams; no completed code/results are credited without linked evidence. Proposed work and writing ownership are not completed contribution.

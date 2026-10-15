@@ -1,3 +1,15 @@
+# Current reproduction update — 15 October 2026
+
+The new shared energy/direct/consistency model and trainer files are published with their three test modules. Default discovery now includes 28 modules: the previous 25 plus test_direct_model.py, test_consistency_objective.py and test_arm_training.py. The environment lock and existing historical test boundaries are unchanged. Public-context verification: **493 passed, 12 skipped in 242.38 seconds**. Skips concern separately retained data/archive artifacts; they are not passed checks.
+
+MACE Run A is complete and independently scored. The first energy/direct engineering fits completed 1,000 updates but selected update 0 and did not improve validation force MAE. The scientific baseline/controlled comparison, trained recovery and main test remain pending. JAX/E3x GPU verification is separate from completed MACE Colab training.
+
+Use [current result reproduction/access](reproduce-oct15-results.md), [current status](team/PROJECT_STATUS.md) and [dated evidence](../reports/evidence/2026-10-15/README.md). Original training source fingerprints remain historical; publication context is explicitly different. The source-unchanged and pending-work statements in the original export description below apply to that dated export.
+
+---
+
+## Original export scope and preserved historical boundary
+
 # Reproduction scope
 
 The subsequent branch-reference interface repair adds `endpoint_references.py`, its generator, classified companion and tests; it documents the legacy filename field without changing frozen split/classification evidence or existing test bodies. Default discovery was 20 modules when that repair was written (the export's 19 original default modules plus `tests/test_endpoint_references.py`); after PR4's review it includes 25, because the five shape-recovery study modules also entered `pyproject.toml`'s default `testpaths` (see Test boundary). The repair's targeted data checks and collection results are recorded in [the interface report](../reports/endpoint-reference-interface.md); the export-era results below remain historical, and no broader numerical suite was rerun for this repair.

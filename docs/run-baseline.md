@@ -20,13 +20,13 @@ Aspirin has 4,891 unique training records, 974 primary validation records and 1,
 
 The original random-readout and zero-readout learning checks both failed. Later full-batch, coverage, loss-balance, continuation, width/rate, late-rate, capacity and offset-profile diagnostics also failed their applicable real-label joint learning gate. Read [the experiment index](../reports/PAPER_EVIDENCE_LOG.md) before planning a new run.
 
-The CLI and frozen configurations provide historical reference behavior. Run and checkpoint directories are protected; do not overwrite them. Source-bound diagnostic configurations require separately retained original launch packages, and their guards fail closed in this export. A new trial needs a new plan, source identity, output directory and launch verification. The full pilot remains pending.
+The CLI and frozen configurations provide historical reference behavior. Run and checkpoint directories are protected; do not overwrite them. Source-bound diagnostic configurations require separately retained original launch packages, and their guards fail closed in this export. A new trial needs a new plan, source identity, output directory and launch verification. The first full-support energy/direct engineering fits have now completed 1,000 updates under the shared trainer; both selected update 0 and did not establish adequate force learning. The coordinator adopted revised adequacy criteria on 14 October. Failed tiny-subset gates remain diagnostic outcomes; they are not silently changed to passes. Read [current protocol status](research/PROTOCOL_STATUS.md) and [project status](team/PROJECT_STATUS.md) before a new launch.
 
-The energy-derived model uses float64 physical energy residuals in eV and forces in eV/Å. Training-only standard deviations scale losses, never physical derivatives. Validation is exhaustive at zero, each scheduled interval and the endpoint, including partial batches. Equal-connection force MAE selects checkpoints; pooled MAE is reported separately. Legacy checkpoints without selection controls remain inference-readable and cannot resume fitting.
+The shared trainer selects `arm="energy"`, `"direct"` or `"consistency"`; consistency strength and fixed supervised energy/force weights are explicit configuration fields. Both LAST and BEST checkpoints have separate fresh-process prediction checks. Initialization parameter/full-state identities are saved before updates. The energy-derived model uses float64 physical energy residuals in eV and forces in eV/Å. Training-only standard deviations scale losses, never physical derivatives. Validation is exhaustive at zero, each scheduled interval and the endpoint, including partial batches. Equal-connection force MAE selects checkpoints; pooled MAE is reported separately. Legacy checkpoints without selection controls remain inference-readable and cannot resume fitting.
 
-## GPU verification still required
+## E3x GPU verification still required
 
-CMU, Colab and Kaggle are available options, but this project has not verified a GPU launch on them. The locked optional Linux CUDA 12 environment is installed with:
+MACE Run A and Run B trained on Colab and their saved results were independently verified. That does not verify the separate JAX/E3x GPU environment. E3x GPU execution on CMU, Colab or Kaggle still requires its own measured verification. The locked optional Linux CUDA 12 environment is installed with:
 
 ```sh
 uv sync --frozen --group dev --extra gpu

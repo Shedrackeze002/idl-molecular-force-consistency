@@ -1,0 +1,29 @@
+{
+  "arm": "energy",
+  "backend": "cpu",
+  "batch_size": 4,
+  "consistency_strength": 0.0,
+  "data_directory": "retained-research-checkout/data/processed/aspirin",
+  "expected_learning_subset_hash": null,
+  "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "learning_rate": 0.001,
+  "loss_weights": {
+    "energy": 1.0,
+    "force": 1.0
+  },
+  "max_updates": 1000,
+  "mode": "pilot",
+  "model": {
+    "cutoff_A": 5.0,
+    "energy_readout_init": "zero",
+    "features": 16,
+    "iterations": 2,
+    "max_degree": 1,
+    "radial_basis": 8
+  },
+  "resume_checkpoint": null,
+  "run_directory": "retained-research-checkout/runs/aspirin-e3x-energy-engineering-2026-10-15",
+  "seed": 0,
+  "validation_interval": 100,
+  "wall_seconds": 3600
+}

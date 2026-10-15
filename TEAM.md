@@ -12,4 +12,4 @@ Before each trial, record rationale, fixed settings, controls, data roles and ac
 
 Use whole-connection data partitions and training-only preprocessing. Keep test data closed during fitting and selection. Report fitted-anchor results as fitted, and CPU timings as CPU timings. Sparse observations do not establish continuous stability or a causal mechanism.
 
-Preserve existing source datasets, run directories, reports and historical evidence. Use a fresh protected output directory for new work, with a new source identity and verified launch gate. The full pilot remains blocked until its prerequisites pass.
+Preserve existing source datasets, run directories, reports and historical evidence. Use a fresh protected output directory for new work, with a new source identity and verified launch gate. The coordinator adopted the revised adequacy protocol on14 October: failed tiny-subset gates remain diagnostics. New scientific launches still require reviewed source/config/budget records, and no adequacy or recovery claim follows from an engineering smoke pass.

@@ -1,0 +1,8 @@
+{
+  "backend": "cpu",
+  "maximum_prediction_difference": 0.0,
+  "role": "best",
+  "status": "passed",
+  "tolerance": 1e-10,
+  "update": 0
+}

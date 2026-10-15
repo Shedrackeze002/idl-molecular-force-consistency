@@ -1,0 +1,81 @@
+{
+  "epoch": 2047,
+  "predictions": {
+    "valid": {
+      "path": "final-valid-predictions.npz",
+      "sha256": "22bf7d88815ae3a84ecb8717c497f11311f058c1a862f8efd0e08a5efda0d3cd"
+    }
+  },
+  "s1": {
+    "absolute_tolerance": 0,
+    "metrics": {
+      "mae_f": {
+        "absolute_difference": 2.3418766925686896e-17,
+        "local": 0.00525983286381519,
+        "logged": 0.005259832863815167,
+        "passed": true,
+        "relative_difference": 4.4523785321764635e-15
+      },
+      "rmse_f": {
+        "absolute_difference": 3.469446951953614e-17,
+        "local": 0.02641038976153195,
+        "logged": 0.026410389761531917,
+        "passed": true,
+        "relative_difference": 1.3136674556037947e-15
+      }
+    },
+    "passed": true,
+    "relative_tolerance": 1e-06
+  },
+  "validation": {
+    "absolute_energy_mae_eV": 0.0074618421825479,
+    "energy_mae_eV": 0.0074618421825989,
+    "energy_offset_eV": -17647.258992926312,
+    "equal_connection_force_mae_eV_per_A": 0.005348956868537277,
+    "force_component_count": 61362,
+    "force_mse_eV2_per_A2": 0.0006975086873560318,
+    "force_mse_fraction_of_zero_force": 0.03206087651011,
+    "force_rmse_eV_per_A": 0.02641038976153195,
+    "per_group": {
+      "13": {
+        "energy_absolute_sum": 0.7835813888034328,
+        "force_absolute_sum": 59.89612988700104,
+        "force_component_count": 10395,
+        "force_mae_eV_per_A": 0.005762013457142957,
+        "record_count": 165
+      },
+      "18": {
+        "energy_absolute_sum": 2.0790330123634897,
+        "force_absolute_sum": 59.98756933147041,
+        "force_component_count": 13671,
+        "force_mae_eV_per_A": 0.0043879430423136865,
+        "record_count": 217
+      },
+      "18_2": {
+        "energy_absolute_sum": 0.9804720220903608,
+        "force_absolute_sum": 78.05994628691002,
+        "force_component_count": 14301,
+        "force_mae_eV_per_A": 0.005458355799378366,
+        "record_count": 227
+      },
+      "66": {
+        "energy_absolute_sum": 1.3029743194908798,
+        "force_absolute_sum": 50.32284290425162,
+        "force_component_count": 12537,
+        "force_mae_eV_per_A": 0.004013946151731006,
+        "record_count": 199
+      },
+      "78": {
+        "energy_absolute_sum": 2.1217735431031732,
+        "force_absolute_sum": 74.48737577979479,
+        "force_component_count": 10458,
+        "force_mae_eV_per_A": 0.0071225258921203665,
+        "record_count": 166
+      }
+    },
+    "pooled_force_mae_eV_per_A": 0.00525983286381519,
+    "record_count": 974,
+    "residual_energy_mae_eV": 0.0074618421825989,
+    "zero_force_mse_eV2_per_A2": 0.02175575852195061
+  }
+}
