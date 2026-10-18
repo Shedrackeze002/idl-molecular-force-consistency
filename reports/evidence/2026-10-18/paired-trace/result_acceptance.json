@@ -1,0 +1,46 @@
+{
+  "comparative_recovery_benefit_established": false,
+  "completion_audit_sha256": "fd33f8cf33b952155e41561614243116fbde81d4b955bc4044baa6ffa8fcb2fd",
+  "date_kigali": "2026-10-18",
+  "endpoint_maximum_difference_A": 0.0,
+  "force_attempts": 38853,
+  "main_test_access": false,
+  "nearby_stationary_point_absence_established": false,
+  "numerical_seconds": 74.89804079208989,
+  "original_A2": "failed",
+  "output_bytes": 424269373,
+  "output_inventory_sha256": "b36806bc0d027d214cce3526c33c529864220b881bfa7bd603a9e959b5f10dba",
+  "records_sha256": "3a1324d0193f5cf3884d5b037da23f878dba30fa5f18d229b0711a268236b9fd",
+  "reference_control_counts": {
+    "consistency-0.1-0": {
+      "count": 6,
+      "matches": 0
+    },
+    "consistency-0.1-1": {
+      "count": 6,
+      "matches": 0
+    },
+    "direct-0": {
+      "count": 6,
+      "matches": 1
+    },
+    "direct-1": {
+      "count": 6,
+      "matches": 0
+    },
+    "energy-0": {
+      "count": 6,
+      "matches": 4
+    }
+  },
+  "replayed_outcomes": 4,
+  "retry_performed": false,
+  "review_sha256": {
+    "retained-research-output/reports/execution/e3x-paired-trace-2026-10-18/ENGINEERING_RESULT_REVIEW.md": "9826e4dd05f506413ce388b2282b4fb2e903bf677aa76cc19d5a95f578214213",
+    "retained-research-output/reports/execution/e3x-paired-trace-2026-10-18/SCIENTIFIC_RESULT_REVIEW.md": "d39c4055a133c830cb27190393c4ab0a64c646b61a7a8f93ac63a3ae5b7e9f11"
+  },
+  "scope": "Four post-hoc selected validation replays and thirty fixed reference-start controls under the unchanged procedure; not new A2 or test evidence.",
+  "sole_cause_established": false,
+  "status": "ACCEPTED_BOUNDED_PAIRED_TRACE_AND_REFERENCE_CONTROLS",
+  "supervisor_seconds": 75.75786899996456
+}

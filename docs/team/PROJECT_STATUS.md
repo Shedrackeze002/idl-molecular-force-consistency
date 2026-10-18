@@ -1,3 +1,7 @@
+# Project status and progress
+
+See [the18October research update](../../reports/E3X_PROJECT_UPDATE_2026-10-18.md) for current accepted evidence. Earlier status below is historical.
+
 # Project status — 15 October 2026
 
 The data and evaluator infrastructure are established, MACE Run A is a verified reference, and all three E3x training paths are implemented. The controlled energy/direct/consistency comparison and shape-recovery hypothesis remain unanswered.

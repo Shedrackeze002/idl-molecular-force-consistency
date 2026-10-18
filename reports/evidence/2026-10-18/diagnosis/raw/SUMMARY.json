@@ -1,0 +1,56 @@
+{
+  "cause_established": false,
+  "interpretation": "Exact-reference stationarity mismatch does not exclude a valid nearby point. Endpoint-only force/graph observations do not establish solver causality, conservativity or chemical bond breaking.",
+  "models": {
+    "consistency-0.1-0": {
+      "endpoint_flag_discrepancy_count": 0,
+      "maximum_centroid_torque_norm_eV": 55.83657994603735,
+      "maximum_net_force_norm_eV_per_A": 23.644161282188595,
+      "maximum_start_parity_difference": 9.414691248821327e-14,
+      "reference_count": 11,
+      "reference_labels_above_force_threshold": 0,
+      "reference_prediction_above_force_threshold": 11
+    },
+    "consistency-0.1-1": {
+      "endpoint_flag_discrepancy_count": 0,
+      "maximum_centroid_torque_norm_eV": 388.0176279367471,
+      "maximum_net_force_norm_eV_per_A": 230.21280678675026,
+      "maximum_start_parity_difference": 6.000755448098971e-14,
+      "reference_count": 11,
+      "reference_labels_above_force_threshold": 0,
+      "reference_prediction_above_force_threshold": 11
+    },
+    "direct-0": {
+      "endpoint_flag_discrepancy_count": 0,
+      "maximum_centroid_torque_norm_eV": 952.3579174893296,
+      "maximum_net_force_norm_eV_per_A": 292.81292012509994,
+      "maximum_start_parity_difference": 5.029310301551959e-14,
+      "reference_count": 11,
+      "reference_labels_above_force_threshold": 0,
+      "reference_prediction_above_force_threshold": 11
+    },
+    "direct-1": {
+      "endpoint_flag_discrepancy_count": 0,
+      "maximum_centroid_torque_norm_eV": 135.28612162910582,
+      "maximum_net_force_norm_eV_per_A": 37.90863710733201,
+      "maximum_start_parity_difference": 4.907185768843192e-14,
+      "reference_count": 11,
+      "reference_labels_above_force_threshold": 0,
+      "reference_prediction_above_force_threshold": 11
+    },
+    "energy-0": {
+      "endpoint_flag_discrepancy_count": 0,
+      "maximum_centroid_torque_norm_eV": 8.579661020019128e-15,
+      "maximum_net_force_norm_eV_per_A": 2.0380985511143445e-15,
+      "maximum_start_parity_difference": 4.574118861455645e-14,
+      "reference_count": 11,
+      "reference_labels_above_force_threshold": 0,
+      "reference_prediction_above_force_threshold": 11
+    }
+  },
+  "molecular_force_evaluations": 155,
+  "official_outcomes_unchanged": true,
+  "original_A2": "failed",
+  "status": "complete_diagnosis_result_reviews_pending",
+  "supplier_calls": 40
+}

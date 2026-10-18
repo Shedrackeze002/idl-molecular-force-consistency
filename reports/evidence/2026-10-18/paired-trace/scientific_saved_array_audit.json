@@ -1,0 +1,399 @@
+{
+  "additional_model_queries": 0,
+  "cause_established": false,
+  "checks": 947793,
+  "controls": {
+    "consistency-0.1-0": {
+      "controls": 6,
+      "nonconverged": 4,
+      "successes": 0,
+      "unmatched_converged": 2
+    },
+    "consistency-0.1-1": {
+      "controls": 6,
+      "nonconverged": 3,
+      "successes": 0,
+      "unmatched_converged": 3
+    },
+    "direct-0": {
+      "controls": 6,
+      "matched_reference": 1,
+      "nonconverged": 3,
+      "successes": 1,
+      "unmatched_converged": 2
+    },
+    "direct-1": {
+      "controls": 6,
+      "nonconverged": 2,
+      "successes": 0,
+      "unmatched_converged": 4
+    },
+    "energy-0": {
+      "controls": 6,
+      "matched_reference": 4,
+      "nonconverged": 1,
+      "successes": 4,
+      "unmatched_converged": 1
+    }
+  },
+  "elapsed_seconds": 10.015402749995701,
+  "force_attempts": 38853,
+  "independence": "Independent raw-array decision, graph, force, displacement and component reductions; frozen official matcher reused only as geometric definition, no production trace reducers reused.",
+  "individual_controls": [
+    {
+      "force_converged": true,
+      "geometry_status": "matched",
+      "maximum_force_component_eV_per_A": 0.009981306294122763,
+      "model_id": "energy-0",
+      "operational_success": true,
+      "own_RMSD_A_if_complete": 0.029405547339415836,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "matched",
+      "maximum_force_component_eV_per_A": 0.009370302280694465,
+      "model_id": "energy-0",
+      "operational_success": true,
+      "own_RMSD_A_if_complete": 0.0108495428442023,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "matched",
+      "maximum_force_component_eV_per_A": 0.00992503486546037,
+      "model_id": "energy-0",
+      "operational_success": true,
+      "own_RMSD_A_if_complete": 0.011420819047645978,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "matched",
+      "maximum_force_component_eV_per_A": 0.009993435950316903,
+      "model_id": "energy-0",
+      "operational_success": true,
+      "own_RMSD_A_if_complete": 0.007177970548208573,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.009958027584615614,
+      "model_id": "energy-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": 0.08039756839288444,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.017339490330924856,
+      "model_id": "energy-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": 0.11968531824065017,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "matched",
+      "maximum_force_component_eV_per_A": 0.009957319999851902,
+      "model_id": "direct-0",
+      "operational_success": true,
+      "own_RMSD_A_if_complete": 0.027783707782135215,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 4.275341123969722,
+      "model_id": "direct-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.0,
+      "model_id": "direct-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 4.819118417145093,
+      "model_id": "direct-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.0,
+      "model_id": "direct-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.05634597777752749,
+      "model_id": "direct-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": 0.11563249193972953,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.0035527235041392727,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 1.7397648065367524,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 1.5727758255830406e-14,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 1.0072430486091841,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 8.224445913102242,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 3.0267131108720577,
+      "model_id": "consistency-0.1-0",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.0,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 29.256801625579058,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.0,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.008977858696604914,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 8.42210023186857,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.008311316899843052,
+      "model_id": "direct-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.022055004196003886,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": 0.060518455468004835,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.00944701319796932,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 5.2206846633936325e-17,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": true,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 0.008416664905038425,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "stop_reason": null
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 37.35878916639184,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "force_converged": false,
+      "geometry_status": "unmatched",
+      "maximum_force_component_eV_per_A": 256.3894174655261,
+      "model_id": "consistency-0.1-1",
+      "operational_success": false,
+      "own_RMSD_A_if_complete": null,
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "stop_reason": "budget_exhausted"
+    }
+  ],
+  "main_test_access": false,
+  "original_A2": "failed",
+  "records_sha256": "3a1324d0193f5cf3884d5b037da23f878dba30fa5f18d229b0711a268236b9fd",
+  "replays": [
+    {
+      "endpoint_difference_A": 0.0,
+      "first_accepted_disconnected_state": 986,
+      "first_disconnected_trial": 986,
+      "largest_jump_query": 1004,
+      "maximum_accepted_vector_displacement_A": 436.72078405587564,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "direct-0"
+      }
+    },
+    {
+      "endpoint_difference_A": 0.0,
+      "first_accepted_disconnected_state": null,
+      "first_disconnected_trial": null,
+      "largest_jump_query": 225,
+      "maximum_accepted_vector_displacement_A": 0.08649155651033158,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "consistency-0.1-0"
+      }
+    },
+    {
+      "endpoint_difference_A": 0.0,
+      "first_accepted_disconnected_state": null,
+      "first_disconnected_trial": null,
+      "largest_jump_query": 41,
+      "maximum_accepted_vector_displacement_A": 0.006082678188837439,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "energy-0"
+      }
+    },
+    {
+      "endpoint_difference_A": 0.0,
+      "first_accepted_disconnected_state": 2,
+      "first_disconnected_trial": 2,
+      "largest_jump_query": 2,
+      "maximum_accepted_vector_displacement_A": 268.04720049051,
+      "task": {
+        "branch_key": "aspirin/13/plus",
+        "kind": "replay",
+        "model_id": "energy-0"
+      }
+    }
+  ],
+  "result_sha256": "eecea0e0dcd40ff11a97cb071ccc579a3504ecf2648747e037841fd163482218",
+  "status": "PASS_INDEPENDENT_SCIENTIFIC_SAVED_ARRAY_AUDIT"
+}

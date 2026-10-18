@@ -1,0 +1,26 @@
+{
+  "category": "unmatched_converged",
+  "checkpoint_binding": {
+    "best_update": 174000,
+    "checkpoint_sha256": "e18821f7dc79b8059d0c12ff7358e587b15d62e0d74666d321b040645651f654",
+    "score_sha256": "d8dc1d90d5ea0588d5ff9972ff353c12c9db4e2caa69f02eac911f0b326ce589"
+  },
+  "first_accepted_disconnected_state": 986,
+  "first_disconnected_trial": 986,
+  "force_evaluation_count": 1017,
+  "maximum_accepted_path_atom_displacement_from_start_A": 437.58400769191303,
+  "reference_control": null,
+  "reproduction": {
+    "historical_path_bit_identity_established": false,
+    "maximum_endpoint_difference_A": 0.0,
+    "status": "reproduced_recorded_outcome"
+  },
+  "step_count": 510,
+  "stop_reason": null,
+  "task": {
+    "branch_key": "aspirin/18/plus",
+    "kind": "replay",
+    "model_id": "direct-0"
+  },
+  "trace_directory": "00-direct-0"
+}

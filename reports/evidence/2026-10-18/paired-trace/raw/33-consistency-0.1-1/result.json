@@ -1,0 +1,46 @@
+{
+  "category": "nonconverged",
+  "checkpoint_binding": {
+    "best_update": 187000,
+    "checkpoint_sha256": "a89a5d879edd2d02a5e516eacb740fb1fc91bee05d9d0c8f4b6142ace7f4e1a1",
+    "score_sha256": "8f510db945c779eb749fea2a16361ba97bcba6cbd35fa8ddbaef8e79356f25ba"
+  },
+  "first_accepted_disconnected_state": null,
+  "first_disconnected_trial": null,
+  "force_evaluation_count": 1500,
+  "maximum_accepted_path_atom_displacement_from_start_A": 3.0027533391199497,
+  "reference_control": {
+    "exact_stationary_point_or_stable_minimum_established": false,
+    "final_max_force_component_eV_per_A": 256.3894174655261,
+    "geometry": {
+      "accepted_classes": [],
+      "incomplete": [],
+      "mapping": null,
+      "record_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz/control-endpoint",
+      "reference_class": null,
+      "reference_record": null,
+      "reference_unresolved": [],
+      "scores": {
+        "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+      },
+      "status": "unmatched"
+    },
+    "nearby_stationary_point_absence_established": false,
+    "operational_force_converged_own_match": false,
+    "own_alignment": {
+      "reason": "graph_mismatch",
+      "rmsd_A": null,
+      "search_complete": false
+    },
+    "stop_reason": "budget_exhausted"
+  },
+  "reproduction": null,
+  "step_count": 743,
+  "stop_reason": "budget_exhausted",
+  "task": {
+    "kind": "reference_control",
+    "model_id": "consistency-0.1-1",
+    "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz"
+  },
+  "trace_directory": "33-consistency-0.1-1"
+}

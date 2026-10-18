@@ -1,0 +1,12 @@
+{
+  "additional_model_queries": 0,
+  "all_34_terminal_facts_verified": true,
+  "checks": 274,
+  "files_rehashed": 172,
+  "output_bytes": 424269373,
+  "output_inventory_sha256": "b36806bc0d027d214cce3526c33c529864220b881bfa7bd603a9e959b5f10dba",
+  "parent_elapsed_seconds": 75.75786899996456,
+  "result_sha256": "eecea0e0dcd40ff11a97cb071ccc579a3504ecf2648747e037841fd163482218",
+  "status": "PASS_INDEPENDENT_TERMINAL_AND_INVENTORY_AUDIT",
+  "worker_elapsed_seconds": 74.89804079208989
+}

@@ -1,0 +1,673 @@
+{
+  "branch_count": 10,
+  "branches": {
+    "aspirin/13/minus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_3.xyz"
+          ]
+        ],
+        "own_class_nearest": true,
+        "rmsd_A": 0.30886829046288333,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 0.8941524693130904,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 0.3721083738201682,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 0.852219826724485,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 0.6053591980591785,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 0.30886829046288333,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.06220316676681,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 1.220876166974767,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.4945346081395774,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.433560866624394,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 1.1599380631336442,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.3977689565357667
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/13/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/13/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/13/coordsminus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/13/plus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_1.xyz"
+          ]
+        ],
+        "own_class_nearest": true,
+        "rmsd_A": 0.28281763609610894,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 0.852153234539215,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 0.28281763609610894,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 0.857910744813423,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 0.6195503983203895,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 0.38742712567644105,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.0376617221313449,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 1.241178395573034,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.4869807071784484,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.4020093167604153,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 1.1390777374921623,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.3737953220211203
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/13/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/13/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/13/coordsplus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/18/minus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_5.xyz"
+          ]
+        ],
+        "own_class_nearest": false,
+        "rmsd_A": 0.7606657682533499,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.307291754646823,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.1138863930553378,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2885251175533152,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.2557192749448436,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.1426389241861763,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.3421934951949712,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.7606657682533499,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.0954440648569446,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.0753804439250725,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.8583570233222793,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.352664869001015
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/18/coordsminus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/18/plus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_5.xyz"
+          ]
+        ],
+        "own_class_nearest": false,
+        "rmsd_A": 0.848234264256087,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.2440947666198545,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.0346251928505494,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2574485549540024,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.1944027396216872,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.1127444334725611,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.2821234053440056,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.848234264256087,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.145969700615714,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.127645193600794,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.9341455354521669,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.3963091663120468
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/18/coordsplus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/18_2/minus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_8.xyz"
+          ]
+        ],
+        "own_class_nearest": true,
+        "rmsd_A": 0.6673878084360967,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.2686554711736964,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.0499169877702899,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.312187625901426,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 0.9749332050453979,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.1172470406828008,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.3634722334980351,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.9001045025026164,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.1238580183686717,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 0.9982465576946586,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.6673878084360967,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 0.9980500253825281
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsminus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/18_2/plus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_8.xyz"
+          ]
+        ],
+        "own_class_nearest": false,
+        "rmsd_A": 0.7180696624449325,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.2222891448170694,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.0015969293087166,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2654743645016355,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 0.9173065791344619,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.0687728381968509,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.2873070015847188,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.93513901181607,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.1470619707734746,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.026000019173332,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.7180696624449325,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.0275475636786848
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsplus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/66/minus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_6.xyz"
+          ]
+        ],
+        "own_class_nearest": true,
+        "rmsd_A": 1.12037723167879,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.3529989675315721,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.4943919656317677,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2619351007344508,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.4774620757061292,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.3109728347519884,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.320548275374477,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 1.2102245214645553,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.12037723167879,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.232722769950706,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 1.4063303555473736,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.3299911301304383
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/66/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/66/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/66/coordsminus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/66/plus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_7.xyz"
+          ]
+        ],
+        "own_class_nearest": false,
+        "rmsd_A": 1.1499468924701717,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.3636020065294785,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.4839249382689048,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2817119769156713,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.4781536935388255,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.3177171239899268,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.3248051858061871,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 1.2865143447019172,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 1.1611269562161135,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 1.1499468924701717,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 1.3596778758367645,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 1.255255452510719
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/78/minus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_5.xyz"
+          ]
+        ],
+        "own_class_nearest": false,
+        "rmsd_A": 0.5463319844126551,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.315893941693693,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.3755707914644058,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2545107102782065,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.4250373739933746,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.3092827181536575,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.3809400091211281,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.5463319844126551,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 0.6090381530114539,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 0.5570801464899128,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.5671342751623094,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 0.9749967831222635
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/78/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/78/coordsminus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/78/coordsminus_000.xyz",
+      "step_count": 0
+    },
+    "aspirin/78/plus": {
+      "force_evaluation_count": 0,
+      "nearest": {
+        "nearest_classes": [
+          [
+            "Landscape17/aspirin/Conformations/coordsmin_7.xyz"
+          ]
+        ],
+        "own_class_nearest": true,
+        "rmsd_A": 0.45455861030067063,
+        "scores_A": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": 1.2664398163072508,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 1.403163859373479,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": 1.2206183041751644,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": 1.4555363543485318,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": 1.331956033438721,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": 1.3378552088608167,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": 0.6279524354920407,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": 0.5145522819722309,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": 0.45455861030067063,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": 0.6445375809224004,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": 0.932112000637352
+        },
+        "status": "matched"
+      },
+      "own_geometry_match": false,
+      "own_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/78/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "pool_match": {
+        "accepted_classes": [],
+        "incomplete": [],
+        "mapping": null,
+        "record_id": "Landscape17/aspirin/SteepestDescent/78/coordsplus_000.xyz",
+        "reference_class": null,
+        "reference_record": null,
+        "reference_unresolved": [],
+        "scores": {
+          "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+          "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+        },
+        "status": "unmatched"
+      },
+      "reference_id": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "start_record_id": "Landscape17/aspirin/SteepestDescent/78/coordsplus_000.xyz",
+      "step_count": 0
+    }
+  },
+  "force_evaluation_count": 0,
+  "interpretation": "Unmodified-start geometry only; no model force convergence measured; nearest assignment is context, not a gate",
+  "nearest_context_status": "verified",
+  "nearest_own_class_count": 5,
+  "own_geometry_count": 0,
+  "own_geometry_status": "verified",
+  "schema": 1,
+  "step_count": 0
+}
