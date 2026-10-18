@@ -18,3 +18,6 @@ reproduction. Olufunke retains runner/reporter integration. See the
 identity and deferred parity checks. Real MACE inference/recovery follows
 the midterm draft; no additional seeds or repeated training are needed for
 this control.
+
+
+The [18 October actionable handover](IDRIS_MACE_HANDOVER_2026-10-18.md) now gives checkout instructions, private packet access and digest, source/model identities, units/gauge, row mapping and completion evidence. It does not claim the loader or reproduction is complete. Please also review the MACE section and your contribution statement in the [midsemester draft](../../reports/midsemester-2026-10-18/README.md).

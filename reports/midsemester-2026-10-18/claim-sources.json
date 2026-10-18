@@ -1,0 +1,329 @@
+{
+  "schema": 1,
+  "purpose": "Numerical-claim source identities; original retained and normalized published bytes distinguished",
+  "sources": {
+    "manifests/landscape17-aspirin-split.json": {
+      "sha256": "8bc2e734c1fc12792f98c4264eff56610f98ce41da70c80523297a73164e96b6",
+      "bytes": 526889,
+      "scope": "published file",
+      "pointers": [
+        "groups.aspirin.train/validation/test; lengths26/5/6"
+      ]
+    },
+    "data/processed/aspirin/manifest.json": {
+      "sha256": "eee42a8c444658593ed52abae33ed0c32b4a850d6e24f709b100f44c21c93774",
+      "bytes": 3537370,
+      "scope": "original retained metadata; not included in clone",
+      "pointers": [
+        "partitions.{train,validation,test}.arrays.positions.shape; recordcounts4891/974/1127, atoms21",
+        "normalization: training-derived scales and energy offset"
+      ]
+    },
+    "reports/evidence/2026-10-18/baseline/A/score.json": {
+      "sha256": "251bcf41d0b9962ee1ffeae31c4bbe5094fde84cc65ebfab049e77907bc482ef",
+      "bytes": 8227,
+      "scope": "published file",
+      "pointers": [
+        "best_update",
+        "equal_connection_force_mae_eV_per_A",
+        "energy_mae_eV",
+        "zero_force_equal_connection_mae_eV_per_A",
+        "record_count",
+        "connection_count"
+      ]
+    },
+    "reports/evidence/2026-10-18/baseline/B/score.json": {
+      "sha256": "a70e887227ece1b674bb1657bef9fbc8188d40fa5693d1ee969d18b9b52025ae",
+      "bytes": 8227,
+      "scope": "published file",
+      "pointers": [
+        "best_update",
+        "equal_connection_force_mae_eV_per_A",
+        "energy_mae_eV",
+        "zero_force_equal_connection_mae_eV_per_A",
+        "record_count",
+        "connection_count"
+      ]
+    },
+    "reports/evidence/2026-10-18/baseline/C/score.json": {
+      "sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+      "bytes": 8226,
+      "scope": "published file",
+      "pointers": [
+        "best_update",
+        "equal_connection_force_mae_eV_per_A",
+        "energy_mae_eV",
+        "zero_force_equal_connection_mae_eV_per_A",
+        "record_count",
+        "connection_count"
+      ]
+    },
+    "reports/evidence/2026-10-18/baseline/acceptance.json": {
+      "sha256": "8c50f4a1358363e575f3f8f42cd118f184598ebea99ae5f561a3bb0777315d8a",
+      "bytes": 1542,
+      "scope": "published file",
+      "pointers": [
+        "threshold_eV_per_A",
+        "trained_updates_per_candidate",
+        "selected_candidate",
+        "selected_update"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/energy-1/config.json": {
+      "sha256": "75d668f4e9073ad502df175d999520b9d03a09eabb04d88419eebf2061198a3b",
+      "bytes": 827,
+      "scope": "published file",
+      "pointers": [
+        "model",
+        "batch_size",
+        "learning_rate",
+        "max_updates",
+        "loss_weights",
+        "seed",
+        "validation_interval"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/energy-1/summary.json": {
+      "sha256": "a4ba2adcab9bf2ff3c10df8c4a38bfecbc40f67d58102e19c225cddd77e7edd3",
+      "bytes": 144069,
+      "scope": "published file",
+      "pointers": [
+        "parameter_count",
+        "precision",
+        "updates",
+        "backend"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/direct-0/config.json": {
+      "sha256": "ff0a9c07e940344dbb37505679c4ebf5db6f39a5b50acc200f2969ae53faa07b",
+      "bytes": 828,
+      "scope": "published file",
+      "pointers": [
+        "model",
+        "batch_size",
+        "learning_rate",
+        "max_updates",
+        "loss_weights",
+        "seed",
+        "validation_interval"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/direct-0/summary.json": {
+      "sha256": "bade756e350478c138f7b28c46a8025352c2342052f37fc76b0f7f821e75af47",
+      "bytes": 144077,
+      "scope": "published file",
+      "pointers": [
+        "parameter_count",
+        "precision",
+        "updates",
+        "backend"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-0/config.json": {
+      "sha256": "dc3a602369b84b3f28820feba6542fa8b7ef030280ef7044c9d4f9dc69639dc9",
+      "bytes": 842,
+      "scope": "published file",
+      "pointers": [
+        "model",
+        "batch_size",
+        "learning_rate",
+        "max_updates",
+        "loss_weights",
+        "seed",
+        "validation_interval"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-0/summary.json": {
+      "sha256": "4efbd6f7cb5e841486dbfc854bc0d3da3d9091a69b61c00e320f54cdf3aa7291",
+      "bytes": 144082,
+      "scope": "published file",
+      "pointers": [
+        "parameter_count",
+        "precision",
+        "updates",
+        "backend"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/acceptance.json": {
+      "sha256": "69a7f376302a648bb58f5edea74e034a1a832ceb87bf68cecc17f99ba87ef3da",
+      "bytes": 4264,
+      "scope": "published file",
+      "pointers": [
+        "two_seed_arm_summaries: eacharmmean_energy/force/seedrange",
+        "selected_consistency_lambda"
+      ]
+    },
+    "reports/evidence/2026-10-18/controlled/completion-audit.json": {
+      "sha256": "409b3df2d4e8d29694383c5bb7639ce30edcb0cbace3fe9b456adb9d920c4707",
+      "bytes": 9443,
+      "scope": "published file",
+      "pointers": [
+        "rows:fit/scoretimes fordirect/consistency.1 seeds0/1; ratio1.9850919712219894",
+        "rows:diagnostic normalizedresidualMSE"
+      ]
+    },
+    "reports/evidence/2026-10-15/mace-runA/report.json": {
+      "sha256": "85f70bb8865c23df86fa94303471f77bd76b03083fb184f6dbf513874b22c998",
+      "bytes": 25202,
+      "scope": "path-normalized published report; original hash separately in MACE contract",
+      "pointers": [
+        "models.final.validation.equal_connection_force_mae_eV_per_A",
+        "models.final.validation.pooled_force_mae_eV_per_A",
+        "models.final.validation.force_rmse_eV_per_A",
+        "provenance.completion.epoch_count"
+      ]
+    },
+    "reports/evidence/2026-10-18/recovery/acceptance.json": {
+      "sha256": "111e24ecf9c4410f11af8ef61bdc3d1315ec8f29c69d0781d9d7fca2a87256a9",
+      "bytes": 1628,
+      "scope": "published file",
+      "pointers": [
+        "model_recovery_counts",
+        "no_relaxation_own_count",
+        "branches_per_model",
+        "independent_connection_count",
+        "A2"
+      ]
+    },
+    "reports/evidence/2026-10-18/recovery/completion-audit.json": {
+      "sha256": "6c86f9585b21bdf0e90ae32930e3fee149fa936ba4db19450e4ba21758b9f59f",
+      "bytes": 5930,
+      "scope": "published file",
+      "pointers": [
+        "models",
+        "summary",
+        "A2"
+      ]
+    },
+    "reports/evidence/2026-10-18/diagnosis/acceptance.json": {
+      "sha256": "775bb60be11cb062d9aef0dc64d32e67aae05841ec87e7f3226a3566bb52e8ee",
+      "bytes": 2157,
+      "scope": "published file",
+      "pointers": [
+        "molecular_force_evaluations",
+        "all_isolated_exact_zero_force_endpoints",
+        "dual_head_force_converged_disconnected_endpoints",
+        "endpoint_force_flag_discrepancies",
+        "own_reference_predictions_above_threshold_per_model",
+        "reference_labels_below_force_threshold"
+      ]
+    },
+    "reports/evidence/2026-10-18/diagnosis/raw/SUMMARY.json": {
+      "sha256": "6e09b20309e0e28fe203ed107bf72c0550ec58339ddfed8036450f7fe3e61080",
+      "bytes": 2423,
+      "scope": "published file",
+      "pointers": [
+        "molecular_force_evaluations",
+        "models:reference_count/reference_prediction_above_force_threshold/endpoint_flag_discrepancy_count"
+      ]
+    },
+    "reports/evidence/2026-10-18/paired-trace/result_acceptance.json": {
+      "sha256": "9839a58780a06632be5e9ae3506d352270308f9a2564cd58d881ae050fac46d5",
+      "bytes": 1715,
+      "scope": "published file",
+      "pointers": [
+        "reference_control_counts",
+        "replayed_outcomes",
+        "original_A2",
+        "endpoint_maximum_difference_A"
+      ]
+    },
+    "reports/E3X_RECOVERY_DIAGNOSIS_REVIEW_ADDENDUM_2026-10-18.md": {
+      "sha256": "c29567a46338b9ddc69fde100e5f98fb66d5f2dff68e2cb56fbd8ef34b7a2d78",
+      "bytes": 2652,
+      "scope": "published file",
+      "pointers": [
+        "exact-reference label force upperbound2.745meV/A",
+        "23convergeddual-head disconnected/7allisolated/2energyconnected"
+      ]
+    },
+    "reports/E3X_PAIRED_TRACE_2026-10-18.md": {
+      "sha256": "8f85628af8a4e63d35c9168df6c38c8780502a26261215077cdf18470720b1da",
+      "bytes": 6382,
+      "scope": "published file",
+      "pointers": [
+        "selected largest accepted displacement436.720784/268.047200A",
+        "original results retained"
+      ]
+    },
+    "reports/evidence/2026-10-18/verification-scope.json": {
+      "sha256": "7bc74059c2974ba4f32ec8ca73b4986211e1e6d122b5bd9b6251c86a35b736c2",
+      "bytes": 1242,
+      "scope": "published file",
+      "pointers": [
+        "nine model-free fixtures; no trained-test scoring/selection"
+      ]
+    },
+    "src/force_consistency/objectives.py": {
+      "sha256": "d5e20e8bf93fa412cdb216e9f7923e354ee52ad96ce854600ba847dd0dca7242",
+      "bytes": 2891,
+      "scope": "published file",
+      "pointers": [
+        "supervised_loss,consistency_loss:normalizedMSE and lambda"
+      ]
+    },
+    "src/force_consistency/train.py": {
+      "sha256": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
+      "bytes": 21384,
+      "scope": "published file",
+      "pointers": [
+        "build_step:Adam;BESTvalidation selection;parameter_count"
+      ]
+    },
+    "evaluation/relax.py": {
+      "sha256": "b5321a21dd17dd0f23e7d89575af96263f115812826faf7e73ebd2cd372b4c4e",
+      "bytes": 21243,
+      "scope": "published file",
+      "pointers": [
+        "relax:forceagreement/convergenceorder/scale-growth andforceattempts"
+      ]
+    },
+    "scripts/launch_e3x_comparison.py": {
+      "sha256": "4cb64de6920bda7e3f3c0e5d4c2707bdb93e76a3d3d7fd66e64bbc1a274d9011",
+      "bytes": 14677,
+      "scope": "published file",
+      "pointers": [
+        "matching_decision"
+      ]
+    },
+    "docs/team/ENDPOINT_REFERENCES.md": {
+      "sha256": "4de34e01ed1106f516e961aa1a15d3fed3bdbaf9f374547f4187453a67acb873",
+      "bytes": 3065,
+      "scope": "published file",
+      "pointers": [
+        "classificationderived targetand26/74legacy errors"
+      ]
+    },
+    "docs/team/CONTRIBUTIONS.md": {
+      "sha256": "5a3738b864988355b6ac0c722f02dc3a6e35d04c54276d12639444b740f5200c",
+      "bytes": 3677,
+      "scope": "published file",
+      "pointers": [
+        "completed vs assigned roles"
+      ]
+    },
+    "runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/A/validation.json": {
+      "sha256": "e1918b6e2ee80c1f0edb8a44acc25d3515de55af80114a1b661cc92f71f76712",
+      "scope": "original retained history, compact columns exported",
+      "pointers": [
+        "all401update/forceMAE/energyMAE rows;5group sums/counts;BESTindex"
+      ]
+    },
+    "runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/B/validation.json": {
+      "sha256": "7ec17772db068c584dc1b1e96dac52104c8de521f36a374e62900417bb4f6109",
+      "scope": "original retained history, compact columns exported",
+      "pointers": [
+        "all401update/forceMAE/energyMAE rows;5group sums/counts;BESTindex"
+      ]
+    },
+    "runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/validation.json": {
+      "sha256": "36ceb4d38b6fc1dbb2eac8e2d55a6da75fd3a2dec55ee5e13729c29d76dbbd65",
+      "scope": "original retained history, compact columns exported",
+      "pointers": [
+        "all401update/forceMAE/energyMAE rows;5group sums/counts;BESTindex"
+      ]
+    }
+  },
+  "figure_data_sha256": "e0f91444b0b931fc9fac98ff0f66bc0b66ba882cadd93403e7a52d9a78044b09",
+  "raw_models_or_archive_read_for_report": false
+}

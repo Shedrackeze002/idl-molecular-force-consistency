@@ -1,3 +1,9 @@
+# Midsemester draft and handover ready, 18 October 2026
+
+A substantive five-page working report is ready in the required course style, with two figures, predictive/recovery tables, limitations and three next actions. Two independent reviews checked numerical claims, the 32-source identity ledger and every rendered page. [Report and source](../../reports/midsemester-2026-10-18/README.md) · [team review assignments](../../reports/midsemester-2026-10-18/TEAM_REVIEW.md). Writing began on 18 October, superseding the earlier 20 October start. This is not a submitted report; live course instructions and member contribution statements remain to confirm.
+
+[Idris's handover](IDRIS_MACE_HANDOVER_2026-10-18.md) is actionable, with a separately retained 15.5 MB model/validation packet and verified hashes. Idris keeps loader/admission/reproduction ownership, Olufunke runner/reporter integration. No new scientific training/inference or solver change. Earlier snapshots below are historical.
+
 # MACE preparation update — 18 October 2026
 
 The shared ASE calculator bridge is synthetic-tested in both existing environments and independently reviewed. [Preparation result](../../reports/MACE_EVALUATOR_PREPARATION_2026-10-18.md) and [contract](../mace-evaluator-contract.md) distinguish this engineering result from pending checkpoint loading/parity/recovery. Idris retains loader/reproduction and Olufunke runner/reporter integration. Real MACE inference follows the midterm draft; the solver is unchanged. Earlier research results below remain authoritative for their recorded scope.
