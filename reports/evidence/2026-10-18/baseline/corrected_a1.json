@@ -1,0 +1,16 @@
+{
+  "a1_passed": true,
+  "consumed_slots": 3,
+  "disclosure": "Selection and adequacy use the same five validation connections; optimistic floor test. No test or recovery claim.",
+  "eligible_candidates": [
+    "C",
+    "B",
+    "A"
+  ],
+  "scope": "Corrected scoring assessment of the same three consumed scientific slots; independent saved-result reviews pending",
+  "scoring_repair_manifest_sha256": "3ddbdc4d3e21cc51b2b60e98d2c2d90bb86a3f0c817082df651ad54b1d231abd",
+  "selected_candidate": "C",
+  "selected_score": 0.03458740829384409,
+  "supersedes_operational_assessment_sha256": "7aacc90b75c45600423db3a72ce21bb47220c2a46b36df09f0b287d92357905e",
+  "threshold_eV_per_A": 0.05
+}

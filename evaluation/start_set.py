@@ -38,7 +38,8 @@ class StartSetError(ValueError):
 KNOWN_RULES = ("first_stored_frame", "fraction_of_ts_rmsd")
 
 
-def build_start_set(split_manifest, records, policy, rule, endpoint_classification=None):
+def build_start_set(split_manifest, records, policy, rule, endpoint_classification=None,
+                    *, partitions=("validation", "test")):
     """Select the start structure for every held-out branch.
 
     split_manifest: the frozen split manifest as a parsed dict.
@@ -57,11 +58,18 @@ def build_start_set(split_manifest, records, policy, rule, endpoint_classificati
         It is REQUIRED for fraction_of_ts_rmsd (a StartSetError is raised
         without it) and is not consulted by first_stored_frame, which
         never reads a minimum.
+    partitions: requested held-out partitions. The default preserves both
+        validation and test; use ("validation",) when test payloads must
+        remain unread. The supplied manifest is never filtered or changed.
 
     Returns a dict keyed by "molecule/connection/branch" holding the start
     record id, stored frame index, the rule identity, the start structure
     as the original archive FrameRecord, and the measured distances used.
     """
+    if (not isinstance(partitions, (tuple, list)) or not partitions
+            or len(set(partitions)) != len(partitions)
+            or any(p not in ("validation", "test") for p in partitions)):
+        raise StartSetError("partitions must be a nonempty distinct validation/test sequence")
     if not isinstance(rule, dict) or "kind" not in rule:
         raise StartSetError("The start rule must be a dict with a 'kind' key")
     kind = rule["kind"]
@@ -87,7 +95,7 @@ def build_start_set(split_manifest, records, policy, rule, endpoint_classificati
     groups = split_manifest.get("groups", {})
     connections_manifest = split_manifest.get("connections", {})
     out = {}
-    for molecule, partitions in sorted(groups.items()):
+    for molecule, partition_groups in sorted(groups.items()):
         molecule_connections = connections_manifest.get(molecule)
         if not isinstance(molecule_connections, dict):
             # The groups entry names a molecule the connections inventory
@@ -98,8 +106,8 @@ def build_start_set(split_manifest, records, policy, rule, endpoint_classificati
                 f"the split manifest names molecule {molecule!r} in groups "
                 f"but its connections inventory has no entry for it")
         held_out = []
-        for partition in ("validation", "test"):
-            for connection_id in partitions.get(partition, []):
+        for partition in partitions:
+            for connection_id in partition_groups.get(partition, []):
                 if connection_id not in held_out:
                     held_out.append(connection_id)
         for connection_id in sorted(held_out):

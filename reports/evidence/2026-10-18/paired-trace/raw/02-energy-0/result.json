@@ -1,0 +1,26 @@
+{
+  "category": "nonconverged",
+  "checkpoint_binding": {
+    "best_update": 184500,
+    "checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+    "score_sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b"
+  },
+  "first_accepted_disconnected_state": null,
+  "first_disconnected_trial": null,
+  "force_evaluation_count": 1500,
+  "maximum_accepted_path_atom_displacement_from_start_A": 0.760535801887595,
+  "reference_control": null,
+  "reproduction": {
+    "historical_path_bit_identity_established": false,
+    "maximum_endpoint_difference_A": 0.0,
+    "status": "reproduced_recorded_outcome"
+  },
+  "step_count": 748,
+  "stop_reason": "budget_exhausted",
+  "task": {
+    "branch_key": "aspirin/18/plus",
+    "kind": "replay",
+    "model_id": "energy-0"
+  },
+  "trace_directory": "02-energy-0"
+}

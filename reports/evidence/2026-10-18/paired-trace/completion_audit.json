@@ -1,0 +1,78 @@
+{
+  "additional_model_calls": 0,
+  "all_saved_decisions_and_summaries_recomputed": true,
+  "checks": 272001,
+  "controls": {
+    "consistency-0.1-0": {
+      "count": 6,
+      "matches": 0
+    },
+    "consistency-0.1-1": {
+      "count": 6,
+      "matches": 0
+    },
+    "direct-0": {
+      "count": 6,
+      "matches": 1
+    },
+    "direct-1": {
+      "count": 6,
+      "matches": 0
+    },
+    "energy-0": {
+      "count": 6,
+      "matches": 4
+    }
+  },
+  "elapsed_seconds": 18.530880916980095,
+  "files": 172,
+  "force_attempts": 38853,
+  "historical_source_inputs_verified": true,
+  "independence_limit": "Coordinator audit reuses observer reductions; independent result reviews still required.",
+  "main_test_access": false,
+  "original_A2": "failed",
+  "output_bytes": 424269373,
+  "replays": [
+    {
+      "endpoint_max_abs_difference_A": 0.0,
+      "first_accepted_disconnected_state": 986,
+      "maximum_accepted_atom_displacement_A": 436.72078405587564,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "direct-0"
+      }
+    },
+    {
+      "endpoint_max_abs_difference_A": 0.0,
+      "first_accepted_disconnected_state": null,
+      "maximum_accepted_atom_displacement_A": 0.08649155651033158,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "consistency-0.1-0"
+      }
+    },
+    {
+      "endpoint_max_abs_difference_A": 0.0,
+      "first_accepted_disconnected_state": null,
+      "maximum_accepted_atom_displacement_A": 0.006082678188837439,
+      "task": {
+        "branch_key": "aspirin/18/plus",
+        "kind": "replay",
+        "model_id": "energy-0"
+      }
+    },
+    {
+      "endpoint_max_abs_difference_A": 0.0,
+      "first_accepted_disconnected_state": 2,
+      "maximum_accepted_atom_displacement_A": 268.04720049051,
+      "task": {
+        "branch_key": "aspirin/13/plus",
+        "kind": "replay",
+        "model_id": "energy-0"
+      }
+    }
+  ],
+  "status": "PASS_COORDINATOR_SAVED_ARRAY_AUDIT"
+}

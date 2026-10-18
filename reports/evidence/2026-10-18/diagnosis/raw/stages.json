@@ -1,0 +1,38 @@
+[
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 4.2563663750188425,
+    "stage": "geometry",
+    "status": "completed"
+  },
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 8.534787541022524,
+    "stage": "energy-0",
+    "status": "completed"
+  },
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 7.197210833081044,
+    "stage": "direct-0",
+    "status": "completed"
+  },
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 7.091114750015549,
+    "stage": "consistency-0.1-0",
+    "status": "completed"
+  },
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 7.143912291969173,
+    "stage": "direct-1",
+    "status": "completed"
+  },
+  {
+    "automatic_retry": false,
+    "elapsed_seconds": 7.534641125006601,
+    "stage": "consistency-0.1-1",
+    "status": "completed"
+  }
+]

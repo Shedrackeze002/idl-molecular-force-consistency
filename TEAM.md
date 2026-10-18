@@ -13,3 +13,8 @@ Before each trial, record rationale, fixed settings, controls, data roles and ac
 Use whole-connection data partitions and training-only preprocessing. Keep test data closed during fitting and selection. Report fitted-anchor results as fitted, and CPU timings as CPU timings. Sparse observations do not establish continuous stability or a causal mechanism.
 
 Preserve existing source datasets, run directories, reports and historical evidence. Use a fresh protected output directory for new work, with a new source identity and verified launch gate. The coordinator adopted the revised adequacy protocol on14 October: failed tiny-subset gates remain diagnostics. New scientific launches still require reviewed source/config/budget records, and no adequacy or recovery claim follows from an engineering smoke pass.
+
+
+## Publish completed results
+
+After every completed trial or accepted research result, update GitHub with the relevant code, result, supporting evidence and current status. Include unsuccessful and interrupted outcomes with their limitations. Use a bounded change and verify the remote commit and file identities. Keep personal tool configuration, tool identities, private review instructions and operating transcripts out of shared files and commit/PR text; retain those records locally. Publication must not silently convert a pending review or incomplete run into an accepted scientific result.

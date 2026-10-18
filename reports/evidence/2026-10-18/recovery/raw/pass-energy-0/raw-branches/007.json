@@ -1,0 +1,329 @@
+{
+  "_audit_record": {
+    "accepted_classes": null,
+    "arm": {
+      "arm_id": "e3x-energy-seed0-best184500-905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+      "checkpoint_identity": {
+        "arm": "energy",
+        "backend": "cpu",
+        "best_update": 184500,
+        "checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+        "dataset_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+        "embedded_best_identity": {
+          "control_sha256": "5e5b93b35a42c1702d99859f82434c567da203fec1f8b615b2d04a01f603e13d",
+          "embedded_best_state_sha256": "4921c061397651e33b96852cc2cecbc1e085a021f08d36ea22c97abca2d4fb5d",
+          "exact_original_payload_match": true,
+          "payload_sha256": "4921c061397651e33b96852cc2cecbc1e085a021f08d36ea22c97abca2d4fb5d"
+        },
+        "energy_convention": "training-offset residual eV",
+        "energy_offset_eV": -17647.258992926312,
+        "forces_are_energy_gradient": true,
+        "lambda": 0.0,
+        "precision": "float64",
+        "score_sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+        "seed": 0,
+        "source_fingerprint": "a046011a0efdfab2835b00e42f446e691b453b1f30854f8accce26c6292f4da5"
+      },
+      "kind": "checkpoint",
+      "provides_energy": true,
+      "status": "ready"
+    },
+    "failure": {
+      "budget_exhausted": true,
+      "failure_reason": "budget_exhausted",
+      "forces_finite": true,
+      "nonfinite_force": false,
+      "refusal_details": [],
+      "stop_reason": "budget_exhausted"
+    },
+    "final_positions": [
+      [
+        1.8945196425999393,
+        -0.8463207826242711,
+        0.7129134663436918
+      ],
+      [
+        0.8597356114688478,
+        1.5791492985741618,
+        -0.12884736045379816
+      ],
+      [
+        2.6598767310220275,
+        0.3080445800189113,
+        0.8380964568554481
+      ],
+      [
+        2.1340722685833873,
+        1.5257852269483165,
+        0.42337227228629204
+      ],
+      [
+        -1.9635935615204678,
+        1.253267186800135,
+        -1.8341592743822086
+      ],
+      [
+        0.6112324479583664,
+        -0.8181961550690673,
+        0.15903891055474165
+      ],
+      [
+        0.12691440459166348,
+        0.4025157121197953,
+        -0.3486423877172241
+      ],
+      [
+        -1.1041232497806293,
+        -2.30433129496284,
+        0.9505014721489992
+      ],
+      [
+        -2.941212786158486,
+        0.6267062383195676,
+        -2.1223419333778906
+      ],
+      [
+        0.342806757858409,
+        -3.098779188353112,
+        -0.5364564423497723
+      ],
+      [
+        -0.1645748974099155,
+        -2.1062916736255617,
+        0.2330862474350066
+      ],
+      [
+        -1.7052562359692152,
+        2.692291232217532,
+        -2.1835752855272053
+      ],
+      [
+        -0.986364235623802,
+        0.6102778050315163,
+        -1.1350942729766544
+      ],
+      [
+        1.0294915987390687,
+        -2.7076798427812254,
+        -1.096580158427569
+      ],
+      [
+        2.29627293944789,
+        -1.7906104481860232,
+        1.0737860411476312
+      ],
+      [
+        0.4318946448988927,
+        2.5421175687166637,
+        -0.38659635945350984
+      ],
+      [
+        3.656678994738326,
+        0.2545718386151633,
+        1.2650511322875337
+      ],
+      [
+        2.70793517280465,
+        2.442100278751463,
+        0.5247327287434466
+      ],
+      [
+        -1.6405580554449328,
+        3.280703075621714,
+        -1.2622919025875052
+      ],
+      [
+        -2.5034021839136176,
+        3.0719039991161945,
+        -2.8166916983984374
+      ],
+      [
+        -0.7359551788904035,
+        2.7836854647509623,
+        -2.68155433215101
+      ]
+    ],
+    "force_evaluation_count": 1500,
+    "permutation": null,
+    "procedure": {
+      "effective": {
+        "backtracking_factor": 0.5,
+        "convergence_tolerance_eV_per_A": 0.01,
+        "initial_step_size": 0.2,
+        "max_backtracking_attempts_per_step": 40,
+        "max_force_evaluations": 1500,
+        "min_backtracking_floor": 1e-08
+      }
+    },
+    "reference": {
+      "branch": null,
+      "connection_id": null,
+      "frame_index": null,
+      "kind": "minimum",
+      "molecule": "aspirin",
+      "positions": [
+        [
+          1.82414145,
+          -0.54578988,
+          0.52442854
+        ],
+        [
+          0.73129371,
+          1.61285594,
+          -0.82607559
+        ],
+        [
+          2.55100821,
+          0.63171397,
+          0.41192097
+        ],
+        [
+          1.99722681,
+          1.71529049,
+          -0.26347072
+        ],
+        [
+          -2.4060741,
+          0.26542809,
+          -0.73977188
+        ],
+        [
+          0.54803752,
+          -0.66942816,
+          -0.03509826
+        ],
+        [
+          0.01029637,
+          0.42730513,
+          -0.72174068
+        ],
+        [
+          -0.92133726,
+          -2.40709792,
+          -0.78682907
+        ],
+        [
+          -3.3887716,
+          0.18183033,
+          -1.41596743
+        ],
+        [
+          -0.02099572,
+          -2.64538691,
+          1.22614746
+        ],
+        [
+          -0.20028438,
+          -1.9671716,
+          0.06608194
+        ],
+        [
+          -2.41313048,
+          0.30653452,
+          0.77056059
+        ],
+        [
+          -1.1938891,
+          0.37889994,
+          -1.37846745
+        ],
+        [
+          0.47464399,
+          -2.10263757,
+          1.85490509
+        ],
+        [
+          2.27584139,
+          -1.40346882,
+          1.01962323
+        ],
+        [
+          0.28210542,
+          2.43964541,
+          -1.36777767
+        ],
+        [
+          3.54669872,
+          0.699082,
+          0.8398585
+        ],
+        [
+          2.554227,
+          2.64318791,
+          -0.35895624
+        ],
+        [
+          -2.16241021,
+          -0.67707478,
+          1.18034713
+        ],
+        [
+          -3.4276013,
+          0.5543256,
+          1.08351648
+        ],
+        [
+          -1.70803994,
+          1.040634,
+          1.16979821
+        ]
+      ],
+      "record_id": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "source_path": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "species": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "O",
+        "O",
+        "O",
+        "C",
+        "C",
+        "O",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    "rmsd_A": null,
+    "rotation": null,
+    "split_binding": "approved",
+    "start": {
+      "frame_index": 0,
+      "record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz",
+      "relax_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz/relax"
+    },
+    "step_count": 748,
+    "timing_seconds": 2.229397249990143
+  },
+  "accepted_classes": null,
+  "branch": "plus",
+  "branch_key": "aspirin/66/plus",
+  "budget_exhausted": true,
+  "category": "nonconverged",
+  "connection_id": "66",
+  "converged": false,
+  "final_record_id": "aspirin/66/plus/final",
+  "force_evaluation_count": 1500,
+  "forces_finite": true,
+  "matching_status": null,
+  "molecule": "aspirin",
+  "nonfinite_force": false,
+  "partition": "validation",
+  "refusal_details": [],
+  "rmsd_A": null,
+  "seen_minimum": true,
+  "start_record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz",
+  "status": "nonconverged",
+  "step_count": 748,
+  "stop_reason": "budget_exhausted"
+}

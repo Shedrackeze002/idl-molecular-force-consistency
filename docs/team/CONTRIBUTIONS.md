@@ -18,3 +18,10 @@ A useful completed record links an issue, the owner's PR and authored commits, t
 Shedrack implemented the shared energy/direct/consistency model/trainer and tests, completed the first two engineering fits, and independently scored/closed the first full-data MACE reference. Both results have two independent technical result reviews; negative E3x validation findings remain explicit. This update publishes the reviewed code and evidence without transferring private research history or teammate credit. The publication PR records the actual new authored commit; prior public PR #6 commit894c363 remains maintenance credit.
 
 Olufunke's original PR #4 authored commits and merge remain credited; trained-model integration/control/writing remain outstanding. Idris and Emmanuel retain their workstreams; no completed code/results are credited without linked evidence. Proposed work and writing ownership are not completed contribution.
+
+
+## 18 October 2026 update
+
+Shedrack completed the three full-data energy candidates, the controlled fitting/scoring comparison, trained-checkpoint evaluator integration, own-reference control, fixed validation recovery and endpoint diagnosis. The observational tracing/control code and its four replays plus thirty reference-start controls are also completed and independently verified. This publication records the reviewed code and accepted evidence. Earlier unsuccessful learning and scoring attempts remain documented.
+
+Olufunke retains credit for the original evaluator in PR #4 and its fixes; this integration does not reassign her authored work. Idris retains MACE reproduction/inference responsibilities and Emmanuel retains physical/cost analysis. No completed work or writing is credited without evidence. Midterm writing remains October 20–23. The publication PR links the actual authored commit.

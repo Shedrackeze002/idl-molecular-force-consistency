@@ -36,3 +36,23 @@ MACE Run A final validation force MAE is 0.00525983286381519 eV/Å pooled and 0.
 Both first E3x fits completed 1,000 updates with finite LAST/BEST reloads. Both BEST checkpoints remain at update 0, with zero-force MAE 0.06250438966560673 eV/Å. Final energy-derived/direct MAEs are 0.07046767329260104/0.06622239554560543 eV/Å. Energy MAE improves while force validation worsens; no causal mechanism, recipe selection, adequacy or matching is established. Independent E3x arithmetic checks saved group reductions and checkpoint controls, not a full-array rescore. Successful engineering execution and unsuccessful learning outcomes are both retained.
 
 The failed tiny-subset gates remain diagnostic outcomes under adopted protocol v3. Scientific adequacy, all-arm costs/common budget, matched comparisons across seeds, relaxation and the main test remain pending. Historical source guards are unchanged; publication provenance differs from original training provenance. Complete journals and original packages remain retained separately. The compact export manifest records original/published SHA values and location-only transformations. No new training was performed for publication.
+
+
+### RESEARCH-RESULTS-2026-10-18 — accepted comparison and negative recovery
+
+Published the accepted full-data energy baseline, corrected BEST scoring, all nine controlled fits and predictions, eight consistency diagnostics, fifty branch recovery evaluations and 155 fixed force probes. C passes A1 at 34.587408 meV/Å. Only λ=0.1 matches direct under the original rule: mean force MAEs 38.024188 versus 38.186315 meV/Å, with lower finite-record disagreement, higher auxiliary energy error and about 1.985 times fit-plus-score time. Every model recovered 0/10, against a no-relaxation control of 0/10; A2 failed. No recovery benefit, main-hypothesis or test-performance claim follows.
+
+All fifty endpoint stopping flags reproduce. Every model misses the force threshold at all eleven exact reference minima. All 23 converged dual-head endpoints are disconnected; seven are fully isolated with zero force. Both converged energy endpoints remain connected, while a nonconverged energy endpoint also separated. The actual solver caps scale rather than displacement and checks trial convergence first. A failed reference-start control cannot prove no nearby stationary point exists.
+
+Earlier tiny-subset, learning, environment/import and BEST serialization-order failures remain retained; scoring repair changed no learned weights. The fixed nine-fit schedule itself completed without retry. Full original histories/checkpoints remain retained, while public compact exports preserve original/exported identities and numerical parity. See reports/E3X_PROJECT_UPDATE_2026-10-18.md and reports/evidence/2026-10-18/export-manifest.json.
+
+### PAIRED-TRACE-2026-10-18 — accepted diagnostic, original A2 unchanged
+
+One fixed package completed four historical replays and thirty reference-start controls, using 38,853 force attempts in 74.898 seconds locally. All four endpoints reproduce exactly with unchanged counts, stop flags and categories. The selected direct trace accepts a largest atom displacement of 436.721 Å; the separated energy trace accepts 268.047 Å. These post-hoc selected paths do not establish prevalence, physical dissociation, sole solver causality or consistency benefit.
+
+Operational reference-start own matches are energy 4/6, direct seed 0 1/6, and 0/6 for each other model. Success does not establish an exact stationary point or stable minimum; failure does not establish nonexistence. All raw position/force arrays, query journals, returned solver records and compact results are exported; large derived per-query graph summaries remain retained and are regenerable. Both independent audits accept; all earlier evidence and original A2 failure remain unchanged. No additional run or intervention follows automatically.
+
+
+### VERIFICATION-SCOPE-2026-10-18 — structural archive checks
+
+The publication default suite passed 502 tests with 3 skips. Nine existing model-free fixtures parsed all aspirin archive records, including held-out test paths, for structural/start-set assertions. No trained checkpoint was scored on test data or selected from these checks. The scientific diagnostic remained restricted to its 21 bound validation/reference members. This distinguishes archive handling from trained-model test evaluation; future routine verification will explicitly restrict the archive fixtures. See reports/evidence/2026-10-18/verification-scope.json.

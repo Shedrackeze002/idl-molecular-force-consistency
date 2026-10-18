@@ -1,0 +1,95 @@
+{
+  "category": "matched_reference",
+  "checkpoint_binding": {
+    "best_update": 174000,
+    "checkpoint_sha256": "e18821f7dc79b8059d0c12ff7358e587b15d62e0d74666d321b040645651f654",
+    "score_sha256": "d8dc1d90d5ea0588d5ff9972ff353c12c9db4e2caa69f02eac911f0b326ce589"
+  },
+  "first_accepted_disconnected_state": null,
+  "first_disconnected_trial": null,
+  "force_evaluation_count": 346,
+  "maximum_accepted_path_atom_displacement_from_start_A": 0.059134538843620583,
+  "reference_control": {
+    "exact_stationary_point_or_stable_minimum_established": false,
+    "final_max_force_component_eV_per_A": 0.009957319999851902,
+    "geometry": {
+      "accepted_classes": [
+        "Landscape17/aspirin/Conformations/coordsmin_1.xyz"
+      ],
+      "incomplete": [],
+      "mapping": {
+        "permutation": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "rmsd": 0.027783707782135215,
+        "rotation": [
+          [
+            0.9999868695852941,
+            -0.004320314591814341,
+            0.002756000513795064
+          ],
+          [
+            0.004319469551554482,
+            0.9999906222202564,
+            0.00031249694021959434
+          ],
+          [
+            -0.002757324753719972,
+            -0.000300588376701864,
+            0.9999961533960169
+          ]
+        ],
+        "translation": [
+          -0.004710747871842485,
+          0.006031698250892486,
+          -0.0016304594372418958
+        ]
+      },
+      "record_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz/control-endpoint",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_unresolved": [],
+      "scores": {
+        "Landscape17/aspirin/Conformations/coordsmin_1.xyz": 0.027783707782135215
+      },
+      "status": "matched"
+    },
+    "nearby_stationary_point_absence_established": false,
+    "operational_force_converged_own_match": true,
+    "own_alignment": {
+      "reason": null,
+      "rmsd_A": 0.027783707782135215,
+      "search_complete": true
+    },
+    "stop_reason": null
+  },
+  "reproduction": null,
+  "step_count": 171,
+  "stop_reason": null,
+  "task": {
+    "kind": "reference_control",
+    "model_id": "direct-0",
+    "reference_id": "Landscape17/aspirin/Conformations/coordsmin_1.xyz"
+  },
+  "trace_directory": "10-direct-0"
+}

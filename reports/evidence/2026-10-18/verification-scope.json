@@ -1,0 +1,19 @@
+{
+  "scope": "Publication software verification, separate from the validation-only scientific diagnostic.",
+  "default_tests": {
+    "passed": 502,
+    "skipped": 3,
+    "seconds": 236.02
+  },
+  "focused_tests": {
+    "passed": 163,
+    "seconds": 72.71
+  },
+  "additional_real_archive_fixtures_activated": 9,
+  "fixture_behavior": "Existing aspirin_records fixture parses all aspirin records, including held-out test-path positions and labels, for model-free start-set/order/reference-contract assertions. One zero-force runner fixture evaluates validation connection78 only.",
+  "trained_checkpoint_test_prediction_calls": 0,
+  "test_driven_model_or_solver_selection": false,
+  "scientific_diagnostic_archive_scope": "Only the already bound21validation-start/reference members; unchanged.",
+  "future_default_test_boundary": "Set LANDSCAPE17_ARCHIVE to an unavailable sentinel for routine default checks; run the validation-specific guarded loader checks separately. Full archive structural fixtures require explicit broader-scope recording.",
+  "interpretation": "No trained-model test score is established. Test-evaluation closure does not mean no archive-level test record was ever parsed during preparation or software verification."
+}

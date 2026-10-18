@@ -1,0 +1,99 @@
+{
+  "A1_redecided": false,
+  "completion_audit_sha256": "409b3df2d4e8d29694383c5bb7639ce30edcb0cbace3fe9b456adb9d920c4707",
+  "cost_scope": "Sum of supervised fit/scoring/diagnostic elapsed receipts, not complete calendar/setup/debug/coordination cost",
+  "future_numerical_recovery_requires_separate_reviewed_protocol": true,
+  "launch_records_sha256": "cc8c3832e4b13b2999767d21a81810360cfba1de0906781dfcacbcae3cfcc675",
+  "main_test_authorized_or_executed": false,
+  "matched_pair_checkpoint_identities": {
+    "consistency-0.1-0": {
+      "best_update": 125500,
+      "checkpoint": "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0/best.msgpack",
+      "checkpoint_sha256": "32202e1573d93f6ab874da671e679a0cfffd315549ef3476bcab1dc3df540fac",
+      "score_sha256": "de9605d89fb6e8d36bce0c7f9f1d25c02e40eb4ecc2b0a3cd3c7882d506e9076"
+    },
+    "consistency-0.1-1": {
+      "best_update": 187000,
+      "checkpoint": "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-1/best.msgpack",
+      "checkpoint_sha256": "a89a5d879edd2d02a5e516eacb740fb1fc91bee05d9d0c8f4b6142ace7f4e1a1",
+      "score_sha256": "8f510db945c779eb749fea2a16361ba97bcba6cbd35fa8ddbaef8e79356f25ba"
+    },
+    "direct-0": {
+      "best_update": 174000,
+      "checkpoint": "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/direct-0/best.msgpack",
+      "checkpoint_sha256": "e18821f7dc79b8059d0c12ff7358e587b15d62e0d74666d321b040645651f654",
+      "score_sha256": "d8dc1d90d5ea0588d5ff9972ff353c12c9db4e2caa69f02eac911f0b326ce589"
+    },
+    "direct-1": {
+      "best_update": 189500,
+      "checkpoint": "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/direct-1/best.msgpack",
+      "checkpoint_sha256": "65882da97b1c0ae5af3018b4ace7af539a98343355bcaeac68212a20fd618d85",
+      "score_sha256": "acb326be3ecd118f2016219e4e8bc7f90c0c1308491f9cc6fe78bcf0886e5cc1"
+    }
+  },
+  "no_new_training_or_tuning": true,
+  "observed_kigali": "2026-10-17T14:01:45.517728+02:00",
+  "observed_utc": "2026-10-17T12:01:45.517728+00:00",
+  "recovery_or_main_hypothesis_established": false,
+  "result_inventory_sha256": "f69fcb6322c8648e6f0a0d901a8d9083c96710b19a5df612753173e96bfc6ab1",
+  "result_review_sha256": {
+    "ENGINEERING_RESULT_REVIEW.md": "462b94bcc3fd4c6f41dbcd475b387d4869259addadb97466ef1fa480d0540314",
+    "SCIENTIFIC_RESULT_REVIEW.md": "8c39c99c6b504deccf047902c19329e2eafc6d061e4576e6bb5a3b9bc4907440"
+  },
+  "selected_consistency_lambda": 0.1,
+  "stage_hours_sum": 11.905850257476462,
+  "status": "ACCEPTED_TWO_SEED_VALIDATION_COMPARISON",
+  "two_seed_arm_summaries": {
+    "consistency-0.1": {
+      "gap_to_direct": 0.00016212687320006636,
+      "matched": true,
+      "mean_energy_mae_eV": 0.08700586761647332,
+      "mean_force_mae_eV_per_A": 0.03802418837530175,
+      "seed_force_mae_eV_per_A": [
+        0.039275000995502254,
+        0.03677337575510124
+      ],
+      "seed_range_eV_per_A": 0.002501625240401012
+    },
+    "consistency-1": {
+      "gap_to_direct": 0.003503425560891206,
+      "matched": false,
+      "mean_energy_mae_eV": 0.1123411816026223,
+      "mean_force_mae_eV_per_A": 0.03468288968761061,
+      "seed_force_mae_eV_per_A": [
+        0.03564317076006131,
+        0.03372260861515991
+      ],
+      "seed_range_eV_per_A": 0.001920562144901397
+    },
+    "consistency-10": {
+      "gap_to_direct": 0.001538762009917545,
+      "matched": false,
+      "mean_energy_mae_eV": 0.16166200716380752,
+      "mean_force_mae_eV_per_A": 0.03972507725841936,
+      "seed_force_mae_eV_per_A": [
+        0.04038998404728921,
+        0.03906017046954951
+      ],
+      "seed_range_eV_per_A": 0.0013298135777397024
+    },
+    "direct": {
+      "mean_energy_mae_eV": 0.07668418043673315,
+      "mean_force_mae_eV_per_A": 0.038186315248501815,
+      "seed_force_mae_eV_per_A": [
+        0.03729086455387475,
+        0.039081765943128885
+      ],
+      "seed_range_eV_per_A": 0.0017909013892541334
+    },
+    "energy": {
+      "mean_energy_mae_eV": 0.12872504843659865,
+      "mean_force_mae_eV_per_A": 0.03489287309166883,
+      "seed_force_mae_eV_per_A": [
+        0.03458740829384409,
+        0.03519833788949358
+      ],
+      "seed_range_eV_per_A": 0.0006109295956494912
+    }
+  }
+}

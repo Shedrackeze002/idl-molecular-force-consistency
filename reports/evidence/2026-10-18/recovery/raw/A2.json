@@ -1,0 +1,8 @@
+{
+  "branch_denominator": 10,
+  "limitation": "Ten paired branches from five connections; A2 failure is weak evidence; no tuning/retry",
+  "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+  "no_relaxation_count": 0,
+  "recovered_branches": 0,
+  "status": "failed"
+}
