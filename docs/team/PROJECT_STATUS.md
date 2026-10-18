@@ -1,3 +1,7 @@
+# MACE preparation update — 18 October 2026
+
+The shared ASE calculator bridge is synthetic-tested in both existing environments and independently reviewed. [Preparation result](../../reports/MACE_EVALUATOR_PREPARATION_2026-10-18.md) and [contract](../mace-evaluator-contract.md) distinguish this engineering result from pending checkpoint loading/parity/recovery. Idris retains loader/reproduction and Olufunke runner/reporter integration. Real MACE inference follows the midterm draft; the solver is unchanged. Earlier research results below remain authoritative for their recorded scope.
+
 # Project status and progress
 
 See [the18October research update](../../reports/E3X_PROJECT_UPDATE_2026-10-18.md) for current accepted evidence. Earlier status below is historical.

@@ -9,3 +9,12 @@ Updated 15 October 2026. Shedrack completed the first MACE reference, including 
 5. Write reproducibility/compute and MACE methods/results, distinguishing independently authored work from Shedrack's first reference.
 
 Own authored commits and evidence are required. These are remaining assignments, not verified completion. [Status](PROJECT_STATUS.md) · [access/reproduction](../reproduce-oct15-results.md).
+
+18 October clarification: Shedrack prepared a synthetic-tested shared ASE
+calculator bridge. This does not implement or reassign Idris's MACE
+checkpoint loader, model identity/environment admission or independent
+reproduction. Olufunke retains runner/reporter integration. See the
+[shared contract](../mace-evaluator-contract.md) for the final-primary model
+identity and deferred parity checks. Real MACE inference/recovery follows
+the midterm draft; no additional seeds or repeated training are needed for
+this control.

@@ -56,3 +56,10 @@ Operational reference-start own matches are energy 4/6, direct seed 0 1/6, and 0
 ### VERIFICATION-SCOPE-2026-10-18 — structural archive checks
 
 The publication default suite passed 502 tests with 3 skips. Nine existing model-free fixtures parsed all aspirin archive records, including held-out test paths, for structural/start-set assertions. No trained checkpoint was scored on test data or selected from these checks. The scientific diagnostic remained restricted to its 21 bound validation/reference members. This distinguishes archive handling from trained-model test evaluation; future routine verification will explicitly restrict the archive fixtures. See reports/evidence/2026-10-18/verification-scope.json.
+
+
+### MACE-EVALUATOR-PREPARATION-2026-10-18 — synthetic bridge accepted
+
+Prepared shared ASE calculator bridge outside the frozen evaluator/source inventories. Two independent implementation reviews accepted the final source. Both existing environments pass the same 11 synthetic unittest cases; focused 113 tests and 19 subtests, plus 132 additional tests and one expected skip, pass with broad archive fixtures disabled. All 54 inventoried frozen source/scorer files unchanged. Retained initial missing-module RED and a reproduced/fixed dummy element X constructor failure; a reviewer command needed corrected PYTHONPATH. Existing regression code emits 44 NumPy deprecation warnings. No dependencies, solver or checkpoint bytes changed.
+
+Metadata-only verification checked primary final EMA Run A file/hash and accepted score report. Zero checkpoint deserializations, trained-model inference calls or archive payload reads. Provenance tags do not verify weights. Idris retains checkpoint-loader/admission/reproduction work, Olufunke runner/reporter integration. Actual parity and unchanged procedure on 10 validation starts and 6 reference controls follow the midterm draft under their execution record. No recovery/portability/throughput/causal or test-generalization claim. See reports/MACE_EVALUATOR_PREPARATION_2026-10-18.md and reports/evidence/2026-10-18/mace-bridge-preparation.json.
