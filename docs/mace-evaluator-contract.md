@@ -69,8 +69,10 @@ environment: CPU, one Torch thread, `default_dtype='float64'`,
 `enable_cueq=False`, `enable_oeq=False`, `compile_mode=None`, one ASE
 structure per prediction. Accepted versions are Python 3.12.13,
 MACE 0.3.16, Torch 2.14.1, ASE 3.29.0 and NumPy 2.5.3. The loader must
-verify the actual package/source identities against the retained score
-package, not just package version labels. It also establishes the model's
+verify actual package/source identities against the packet's
+`ACCEPTED_IDENTITY.json` with `verify_environment.py`, not just version
+labels. The full original scorer package remains an optional historical
+audit, separately retained by the coordinator. It also establishes the model's
 residual-energy gauge and atom/Z sequence from an admitted frame.
 
 ## Verification performed and deferred
@@ -107,3 +109,56 @@ training exposure. Its recovery is not established, and a comparison does
 not isolate a causal effect of force consistency. Decide on any revised
 solver only after this control; apply a reviewed revision identically to
 the existing checkpoints and starts.
+
+## Rebuild and check the environment
+
+The accepted scorer ran on **macOS arm64, Python 3.12.13** (full platform
+identity in `ACCEPTED_IDENTITY.json`). This is the validated scoring host,
+not proof of the lock's original resolution host. The retained lock header
+records `uv pip compile --generate-hashes --python 3.12`; it does not prove
+a universal cross-platform lock. The following commands target a fresh
+local environment, from the directory containing the extracted packet:
+
+```bash
+uv venv --python 3.12.13 .venv-mace
+uv pip sync --python .venv-mace/bin/python --require-hashes mace-idris-handoff/environment/requirements.lock
+.venv-mace/bin/python mace-idris-handoff/verify_environment.py
+```
+
+These commands were checked against the installed CLI; no fresh install
+was performed for this handover. On another OS, preserve any installation
+failure and propose a separately reviewed compatible lock and parity
+check. Do not silently replace pinned versions. A platform difference is
+reported separately and requires review; it is not an automatic GPU ban.
+
+`verify_environment.py` uses distribution metadata without importing Torch
+or MACE. It checks Python, seven package versions and eight source files.
+For every pin, `source_files` gives the distribution, installed-relative
+path and expected digest. The exact operation is:
+
+```python
+from importlib import metadata
+import hashlib
+path = metadata.distribution(pin['distribution']).locate_file(pin['relative_path'])
+actual_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+```
+
+These are raw file hashes, including the calculator source and seven
+training-related module files, not directory hashes. A PASS establishes
+only installed metadata/source-byte agreement, not model admission,
+hardware portability or prediction parity. Save its JSON output with the
+loader's separate admission receipt.
+
+## Review, approval and transfer
+
+Idris drafts the loader, admission receipt and bounded parity plan. Shedrack
+coordinates two independent reviews and approves the plan and admission
+receipt after their findings are resolved; scientific execution still
+needs the coordinator's explicit bounded authorization. Olufunke is the
+assigned runner/reporter integration owner; her acceptance and timing are
+not yet confirmed. Agree timing at the next team circulation rather than
+assuming a member deadline.
+
+Shedrack will transfer the packet privately as an attachment or controlled
+link. The packet is prepared locally; delivery and receipt are not yet
+claimed. Keep its weights/data out of GitHub.

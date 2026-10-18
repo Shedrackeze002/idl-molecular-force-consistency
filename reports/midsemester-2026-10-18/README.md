@@ -5,6 +5,8 @@ Started 18 October 2026 at the coordinator's request, superseding the earlier
 the compiled draft. It uses the unmodified course `neurips_2019.sty`.
 The old 15 October outline remains preserved separately.
 
+Revised after independent review on 18 October: cutoff interpretation, validation-selection sensitivity, seen targets, connected trace controls and explicit all-model recovery failure are corrected. `selection-sensitivity.json` records the saved-value arithmetic; no new inference was run.
+
 This draft is for team review. It is not submitted to Canvas. Completed
 results, failed experiments, diagnostic findings and pending work are
 separated. No new model training, checkpoint inference or recovery was run
@@ -40,7 +42,7 @@ maximum BEST metric difference is about 6.94e-18 eV/Å, within the explicit
   changes from the submitted proposal against `EVIDENCE_MAP.md`.
 - Resolve the report's working-draft label only after team/content approval.
 - Ensure graders can reach the intended reviewed code/results revision.
-  The results and MACE preparation PRs were open when this draft began;
+  The repository is PRIVATE. [PR #10](https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/10) is the reviewed draft target, stacked on open PR #9 then #8. Confirm staff access and a specific final reviewed commit or tag. These PRs remain open;
   publication is not the same as merging into the default branch.
 
 The course's maximum-five-minute video is a separate December deliverable,

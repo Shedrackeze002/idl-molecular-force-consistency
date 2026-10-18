@@ -12,7 +12,7 @@ DATA = json.loads((ROOT/'figures/plot-data.json').read_text())
 plt.rcParams.update({'font.size': 9, 'axes.spines.top': False,
                      'axes.spines.right': False, 'pdf.fonttype': 42})
 
-fig, ax = plt.subplots(figsize=(6.2, 2.05), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(6.2, 1.85), constrained_layout=True)
 colors = {'A': '#64748b', 'B': '#c66b25', 'C': '#167477'}
 for name in ('A', 'B', 'C'):
     curve = DATA['baseline_curves'][name]
@@ -21,7 +21,7 @@ for name in ('A', 'B', 'C'):
             [1000*r['equal_connection_force_mae_eV_per_A'] for r in rows],
             color=colors[name], label=name, linewidth=1.2)
     ax.plot(curve['best_update']/1000, 1000*curve['best_force_mae_eV_per_A'],
-            'o', color=colors[name], markersize=4)
+            {'A':'o','B':'s','C':'^'}[name], color=colors[name], markersize=6, markeredgecolor='white', markeredgewidth=.6)
 ax.axhline(50, linestyle='--', color='#475569', linewidth=.8, label='A1 threshold')
 ax.set(xlabel='Training updates (thousands)',
        ylabel='Force MAE (meV/Å)', xlim=(0, 200), ylim=(30, 84))
@@ -32,7 +32,7 @@ plt.close(fig)
 
 names = ['energy', 'direct', 'consistency-0.1', 'consistency-1', 'consistency-10']
 labels = ['Energy', 'Direct', 'λ = 0.1', 'λ = 1', 'λ = 10']
-fig, ax = plt.subplots(figsize=(6.2, 1.95), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(6.2, 1.75), constrained_layout=True)
 for index, name in enumerate(names):
     row = DATA['controlled_summaries'][name]
     values = 1000*np.array(row['seed_force_mae_eV_per_A'])

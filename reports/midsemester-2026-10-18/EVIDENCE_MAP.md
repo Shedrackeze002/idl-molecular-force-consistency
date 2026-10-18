@@ -18,6 +18,7 @@ is needed to reproduce this report's tables and figures.
 | Figure 1, all 401 points per candidate | Original retained `runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/{A,B,C}/validation.json`; compact exact column extraction in `figures/plot-data.json`; every point independently reduced from five group sums/counts |
 | Two-seed force/energy means and ranges | `reports/evidence/2026-10-18/controlled/acceptance.json:two_seed_arm_summaries`; C0 reused plus nine subsequent fits |
 | Figure 2 | Same accepted per-seed force scores; marks and means, no confidence intervals |
+| Selection sensitivity and seen targets | `selection-sensitivity.json`: population SD over 101 correlated checks at updates150000–200000, nine final-minus-BEST gaps, exact matching gap and accepted original-branch seen flags; not measurement uncertainty |
 | Matching rule | `scripts/launch_e3x_comparison.py:matching_decision`; mean gap bounded by 10% of smaller mean and each arm's seed range; not individual-seed matching |
 | 1.985 fit-plus-score ratio | `reports/evidence/2026-10-18/controlled/completion-audit.json:rows`; sum two lambda0.1 fit+score times divided by sum two direct fit+score times; excludes diagnostics and other overhead |
 | Finite-record consistency improvement | Same completion audit and eight saved diagnostic records; does not establish global conservativity |

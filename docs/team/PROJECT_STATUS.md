@@ -1,3 +1,11 @@
+# Midsemester review corrections, 18 October 2026
+
+The additional review has been received and its required wording/handover corrections are implemented. The five-page working draft now explains all-model recovery failure, seen target minima, cutoff-limited fragment forces, validation-selection sensitivity and the two connected replay controls. Original scientific findings are unchanged; no new model runs. Both final independent reviews approve the revised draft and handover for team circulation. PR #10 contains the report corrections; submission still needs confirmed contributions, live Canvas instructions, grader access to the PRIVATE repository and a specific reviewed revision.
+
+The version2 Idris packet preserves the original packet and all scientific payload bytes. It adds environment-build and reproducible raw-source-hash instructions, plus a metadata-only verifier. Loader/admission/parity remain Idris's contribution; private packet delivery and integration acceptance are pending. Earlier snapshots below are historical.
+
+---
+
 # Midsemester draft and handover ready, 18 October 2026
 
 A substantive five-page working report is ready in the required course style, with two figures, predictive/recovery tables, limitations and three next actions. Two independent reviews checked numerical claims, the 32-source identity ledger and every rendered page. [Report and source](../../reports/midsemester-2026-10-18/README.md) · [team review assignments](../../reports/midsemester-2026-10-18/TEAM_REVIEW.md). Writing began on 18 October, superseding the earlier 20 October start. This is not a submitted report; live course instructions and member contribution statements remain to confirm.

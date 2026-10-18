@@ -24,21 +24,21 @@ git switch -c idris-mace-loader origin/mace-evaluator-preparation
 If you already have uncommitted work or that branch name exists, preserve
 your work and use your existing branch rather than resetting it.
 
-Ask Shedrack for **`mace-idris-handoff-2026-10-18.tar.gz`**, a prepared local
+Ask Shedrack for **`mace-idris-handoff-2026-10-18-v2.tar.gz`**, a prepared local
 bundle of about 15.5 MB. It contains the primary model, validation inputs
 and memberships, saved predictions, environment lock, source pins,
 contract and a standalone checksum verifier. Model/data bytes are retained
 separately from GitHub. The packet contains no test partition.
 
 Archive SHA-256:
-`3bc05529e933772019659d7c315cab77f14c2c18de0c31010a216e6300352f65`.
+`ff92c74b83d3103a2542f1564d93be3b153f5342faef2675f9845d9d99958119`.
 Verify this digest, extract into a new folder, then run:
 
 ```bash
 python3 mace-idris-handoff/verify_bundle.py
 ```
 
-Expected: `PASS: 10 inventoried files; no model loaded`. The manifest itself
+Expected: `PASS: 11 inventoried files; no model loaded`. The manifest itself
 is excluded from its member inventory and authenticated by the archive
 digest. Do not commit the packet, weights or validation data to your PR.
 
@@ -117,3 +117,56 @@ frozen runner's limited arm audit fields.
 Do not substitute the secondary selected model or Run B, retrain, add
 seeds, tune the solver or score test data. MACE's predictive reference is
 established; its relaxation recovery is still unmeasured.
+
+## Rebuild and check the environment
+
+The accepted scorer ran on **macOS arm64, Python 3.12.13** (full platform
+identity in `ACCEPTED_IDENTITY.json`). This is the validated scoring host,
+not proof of the lock's original resolution host. The retained lock header
+records `uv pip compile --generate-hashes --python 3.12`; it does not prove
+a universal cross-platform lock. The following commands target a fresh
+local environment, from the directory containing the extracted packet:
+
+```bash
+uv venv --python 3.12.13 .venv-mace
+uv pip sync --python .venv-mace/bin/python --require-hashes mace-idris-handoff/environment/requirements.lock
+.venv-mace/bin/python mace-idris-handoff/verify_environment.py
+```
+
+These commands were checked against the installed CLI; no fresh install
+was performed for this handover. On another OS, preserve any installation
+failure and propose a separately reviewed compatible lock and parity
+check. Do not silently replace pinned versions. A platform difference is
+reported separately and requires review; it is not an automatic GPU ban.
+
+`verify_environment.py` uses distribution metadata without importing Torch
+or MACE. It checks Python, seven package versions and eight source files.
+For every pin, `source_files` gives the distribution, installed-relative
+path and expected digest. The exact operation is:
+
+```python
+from importlib import metadata
+import hashlib
+path = metadata.distribution(pin['distribution']).locate_file(pin['relative_path'])
+actual_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+```
+
+These are raw file hashes, including the calculator source and seven
+training-related module files, not directory hashes. A PASS establishes
+only installed metadata/source-byte agreement, not model admission,
+hardware portability or prediction parity. Save its JSON output with the
+loader's separate admission receipt.
+
+## Review, approval and transfer
+
+Idris drafts the loader, admission receipt and bounded parity plan. Shedrack
+coordinates two independent reviews and approves the plan and admission
+receipt after their findings are resolved; scientific execution still
+needs the coordinator's explicit bounded authorization. Olufunke is the
+assigned runner/reporter integration owner; her acceptance and timing are
+not yet confirmed. Agree timing at the next team circulation rather than
+assuming a member deadline.
+
+Shedrack will transfer the packet privately as an attachment or controlled
+link. The packet is prepared locally; delivery and receipt are not yet
+claimed. Keep its weights/data out of GitHub.

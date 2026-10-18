@@ -295,8 +295,8 @@
       ]
     },
     "docs/team/CONTRIBUTIONS.md": {
-      "sha256": "5a3738b864988355b6ac0c722f02dc3a6e35d04c54276d12639444b740f5200c",
-      "bytes": 3677,
+      "sha256": "2f6928e59f8de02e9b152ed8aade2216563ee467205a56d52270568bc7654213",
+      "bytes": 4549,
       "scope": "published file",
       "pointers": [
         "completed vs assigned roles"
@@ -321,6 +321,18 @@
       "scope": "original retained history, compact columns exported",
       "pointers": [
         "all401update/forceMAE/energyMAE rows;5group sums/counts;BESTindex"
+      ]
+    },
+    "reports/midsemester-2026-10-18/selection-sensitivity.json": {
+      "sha256": "63fe500fe9aec2577facc6939632d613a62d4b58111db1f37c0ca7170b0c8f3a",
+      "bytes": 3984,
+      "scope": "saved-value arithmetic; no new inference",
+      "pointers": [
+        "definition",
+        "baseline_late_population_statistics",
+        "controlled_final_minus_best_meV_per_A",
+        "matching_gap_meV_per_A",
+        "all_original_target_minima_seen"
       ]
     }
   },
