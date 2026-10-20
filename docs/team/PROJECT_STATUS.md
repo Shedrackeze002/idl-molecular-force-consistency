@@ -1,3 +1,9 @@
+# CPU reproduction and interruption checks PASS, 20 October 2026
+
+[Preflight evidence](../../reports/evidence/2026-10-20/representation/preflight.json) verifies the1000-update historical E64 replay and actual2000-update scalar hard-interruption/resume, including completed-fit no-op. These are engineering checks, not full scalar scientific results. The local CPU study can reuse the accepted E64 seeds under the pinned identity record; four fresh scalar fits follow final launch review. No test/recovery claim or paid compute. Earlier entries below are historical.
+
+---
+
 # CPU representation implementation verified synthetically, 20 October 2026
 
 The thin CPU wrapper, capacity/configuration controls, independent endpoint scorer and four-cell notebook have two independent implementation approvals. [Verification record](../../reports/evidence/2026-10-20/representation/implementation.json) and [run instructions](../run-representation-study.md). Counts:E6443521,SPwidth88has43473,S64has25473. No trained scalar result follows from synthetic tests. Next perform the1000-update E64 reproduction and2000-update hard-interruption/resume checks, then review their launch receipts before four full scalar fits. Accepted source/models remain unchanged. Earlier status entries below are historical.

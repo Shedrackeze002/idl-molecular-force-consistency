@@ -1,0 +1,9 @@
+{
+  "counts": "<execution-evidence>/parameter-counts.json",
+  "full_scientific_scalar_fit_started": false,
+  "historical_run_unchanged": true,
+  "main_test_opened": false,
+  "reproduction": "<execution-evidence>/reproduction.json",
+  "resume": "<execution-evidence>/resume.json",
+  "status": "PASS"
+}

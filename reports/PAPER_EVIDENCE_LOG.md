@@ -146,3 +146,12 @@ Implemented the reviewed CPU protocol and shape count, small segment/resume wrap
 Retained regression failures and fixes: empty-run directory orchestration metadata; corrupt completion/checkpoint fallback; partial scoring in fresh attempts; wrong E64 reference seed/recipe mapping; decoded embeddedBEST after raw hash authentication; corrupt/nonfinite old timing recorded unknown. Cached metric/prediction checksums and reused scorer helper identities retained. No owner protocol, GPU list, six-hour pause, source rewrite or model retry.
 
 Real1000update E64 reproduction and2000update hard-interruption/resume verification remain pending; historical reference reuse is conditional. No full scalar scientificfit, test/recovery evaluation, package install or paid allocation occurred. Next commit the execution identity, perform bounded CPU verification, review the filled launch receipts, then serial SP0,S640,S641,SP1. Midterm release/admin checks and teammate work remain separate.
+
+
+### REPRESENTATION-CPU-PREFLIGHT-2026-10-20-001 — reproduction and deliberate interruption checks PASS
+
+Fresh E64seed0 through1000updates matches the complete originalC0 validation events at0/500/1000 to1e-10absolute, including perconnection support. Original config/provenance/history/BEST/LAST hashes captured before and unchanged after verification. Static exact recipe/source/environment/seed and current prepareddata identities are pinned for both historical E64 references. This licenses conditional reuse, not a fresh200000update reproduction or a new predictive result.
+
+Fresh SP88seed0 uninterrupted2000updates compared with a separate worker group sentSIGKILL after saved1000/before1500 and resumed to2000. Parameters, optimizer, RNG, authenticated decodedBEST/control and full scheduled history agree to1e-10, with exact nonfloating identities. A completed re-invocation skips without checkpoint change. Signal delivery and waited outerprocess are recorded; descendant exit was not independently observed. Verification states remain separate and will not seed full fits.
+
+Counts, synthetic physics/configuration tests and actual resume/reproduction receipts support the filled CPU launch record. Four full scalar fits remain pending final launch review. No main-test/recovery evaluation, longrange/foundationmodel run, GPU allocation, CU cost or source rewrite. All failures/corrections remain retained; no numerical retuning or hidden trial replacement.
