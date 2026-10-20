@@ -1,0 +1,40 @@
+{
+  "status": "TWO_REVIEWED_IMPLEMENTATION_SYNTHETIC_VERIFICATION_ONLY",
+  "parameter_counts": {
+    "E64": 43521,
+    "SP": 43473,
+    "S64": 25473,
+    "SP_width": 88
+  },
+  "relative_parameter_gap": 0.001102915833735438,
+  "test_scope": {
+    "earlier_full_synthetic_regression_suite_passed": 48,
+    "final_focused_suite_passed": 15,
+    "no_main_archive_access": true
+  },
+  "frozen_source_files_unchanged": 54,
+  "implementation_sha256": {
+    ".gitignore": "02a72f92162627c163f07cb957b34745ed7209fa4351569488393be7ff1b0a89",
+    "configs/representation-study/cpu.json": "593168a2fa21130284bcb64706c5d4c5247543a44cc7ed9905a074b5d216400d",
+    "docs/run-representation-study.md": "ce495641e23512283c2b64de258508079a4664e2ed8ccb9bab7d905ed0cf4dd4",
+    "experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/representation_study/__init__.py": "1765977703892577b3aec317e6309fa961bdf6da64c01c1c9ab4dc0a02b73e0a",
+    "experiments/representation_study/analysis.py": "07819e33106f95c8253ab7f2d04007219754de7199826dc6ff28bc0d3b53398d",
+    "experiments/representation_study/protocol.py": "9c3ed791294a9e6f4c831b522f4bde77cd55e8ed6d4ff86591358e1dc9888f11",
+    "experiments/representation_study/runner.py": "6fe041dd8ad22bfa02328245518281f6f3089670cf62cd080f4065b3e2377402",
+    "notebooks/representation_comparison.ipynb": "cf36ae2d37992ef9428fed2b14df8c785c5b8ffb26880ab23c2ddda51cb77540",
+    "tests/test_representation_analysis.py": "34503deeb98fb7ec2aefa14e0ec60e8be289d484f175e1d044c31f2f0e4c63c4",
+    "tests/test_representation_notebook.py": "c99f1898d80ae0f57c33952c045cfe60a5551ead0cccbe0b6de514463f4fb6e0",
+    "tests/test_representation_protocol.py": "e976809c01dcfb578891464927f33ffba02f961b216a89cf080e06f157d19ea1",
+    "tests/test_representation_resume.py": "a1b92d1e37d00e710474c187cf38ea3e565b9dcac47ce1bfe6cf94eb2cf4a562"
+  },
+  "conditional_reference_reuse": "1000-update reproduction still pending",
+  "real_data_resume": "deliberate interruption test still pending",
+  "full_scalar_fit_started": false,
+  "paid_compute_used": false,
+  "limitations": [
+    "synthetic verification is not a scientific training result",
+    "historical CPU cost does not measure new scalar timing",
+    "old source/models remain unchanged"
+  ]
+}

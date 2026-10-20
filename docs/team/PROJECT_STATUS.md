@@ -1,3 +1,9 @@
+# CPU representation implementation verified synthetically, 20 October 2026
+
+The thin CPU wrapper, capacity/configuration controls, independent endpoint scorer and four-cell notebook have two independent implementation approvals. [Verification record](../../reports/evidence/2026-10-20/representation/implementation.json) and [run instructions](../run-representation-study.md). Counts:E6443521,SPwidth88has43473,S64has25473. No trained scalar result follows from synthetic tests. Next perform the1000-update E64 reproduction and2000-update hard-interruption/resume checks, then review their launch receipts before four full scalar fits. Accepted source/models remain unchanged. Earlier status entries below are historical.
+
+---
+
 # CPU representation-study revision accepted, 20 October 2026
 
 The [amended specification](../research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md) and [implementation plan](../research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md) have two independent amended approvals. Use the existing local CPU trainer and at most four new scalar fits; reuse the two accepted E64 fits only after a1000-update reproduction check. Add the late20validation mean alongside BEST/LAST. The coordinator authorizes overnight CPU availability; actual scalar timings and parameter counts remain unmeasured. [Budget record](../../reports/evidence/2026-10-20/representation-budget.json) distinguishes historical timing from provisional scheduling.
