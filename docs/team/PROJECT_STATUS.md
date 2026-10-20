@@ -1,3 +1,11 @@
+# Representation-comparison plan accepted, 20 October 2026
+
+Two independent technical reviews approve the amended [study specification](../research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md) and [implementation plan](../research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md). The proposed E64/SP/S64 comparison uses energy-derived forces, paired seeds and at most six200000-update fits, with capacity and fixed-recipe limitations explicit. Both families' force outputs remain equivariant. [Budget scenarios](../../reports/evidence/2026-10-20/representation-budget.json) are arithmetic examples, not measured Colab forecasts.
+
+Next deliverable: implement configuration/parameter/physics controls and simple full-state checkpoint recovery, then the runner/notebook. JAX/E3x GPU readiness and end-to-end timing are unmeasured; paid operations and scientific training require the subsequent reviewed runtime/launch record. Current source/models/results/report are unchanged, main test remains closed to trained scoring, and teammate roles are retained. The October23report release proceeds independently. Earlier snapshots below are historical.
+
+---
+
 # Compute planning: Colab only, 20 October 2026
 
 Shedrack confirmed that project GPU plans must assume Colab is the only available remote compute until ORCHARD access is granted. ORCHARD discussions continue independently and must not become a project dependency. The current CU balance is not a study limit: Shedrack can purchase up to 1,000 additional CU using a stated $100 envelope at his quoted rate. Do not defer useful experiments merely for a balance top-up; estimate consumption so replenishment can be arranged. Plan around Colab hardware availability, session interruptions and checkpoint recovery, while assuming no ORCHARD/PSC allocation or guaranteed GPU type. Local CPU checks remain available under their existing budgets. Current model results, report and task ownership are unchanged. Earlier snapshots below are historical.

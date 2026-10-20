@@ -1,0 +1,34 @@
+{
+  "status": "TWO_REVIEWED_PLANNING_DOCUMENTS_NOT_IMPLEMENTATION_OR_LAUNCH",
+  "date": "2026-10-20",
+  "public_base": "aa2ca00fd564450b58dfb87febce05411e7a963d",
+  "source_file_sha256": {
+    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+    "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+    "src/force_consistency/train.py": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
+    "src/force_consistency/runs.py": "aebd78ced104d35ff11a125e85e20a3aa2c67792a131a09f0d343893a3694d6e",
+    "pyproject.toml": "1c2d56a6a97816312fbb264f69a4f418a4b823abe0cac6b73aa8dd9a478866d4",
+    "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f",
+    "configs/aspirin-e3x-v3-C.template.json": "13ea2367f648ba8b5eefe7991a558525308c648a45b40462701b4b36bf3b9e30",
+    "reports/evidence/2026-10-18/controlled/completion-audit.json": "409b3df2d4e8d29694383c5bb7639ce30edcb0cbace3fe9b456adb9d920c4707"
+  },
+  "accepted_document_sha256": {
+    "REPRESENTATION_COMPARISON_SPEC_2026-10-20.md": "93a7fdf5b156d3120cee937a4136127e3cf7d280965d5fd57f626f22a486b922",
+    "REPRESENTATION_COMPARISON_BUDGET_2026-10-20.json": "77e2a52d284a207628120a285e3668d00af15168fd930da28d48bd07b9c22d91",
+    "REPRESENTATION_COMPARISON_PLAN_2026-10-20.md": "1e50a6832ff93135a2c9f40cf45ed77df7b8764a4c7c577066e73aee6d76eb50"
+  },
+  "review_findings_resolved": [
+    "required third non-test diagnostic partition",
+    "explicit copied-state GPU resume probes and tolerances",
+    "seconds/update and complete checkpoint/reconnect cost accounting",
+    "RMSE aggregation and signed paired deltas",
+    "standalone inference benchmark remains teammate work"
+  ],
+  "budget_scenarios_arithmetic_verified": true,
+  "gpu_timing_measured": false,
+  "parameter_count_measured_for_new_models": false,
+  "new_model_data_or_remote_operation": false,
+  "frozen_files_unchanged": 54,
+  "midterm_report_unchanged": true
+}
