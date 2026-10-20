@@ -1,3 +1,11 @@
+# Faculty feedback assessed, 20 October 2026
+
+The reported professor feedback and checked literature/resource implications are recorded in the [reviewed assessment](../../reports/FACULTY_FEEDBACK_ASSESSMENT_2026-10-20.md). Our E3x models already use equivariant graph message passing. A representation comparison is a proposed new study, not a description of existing force-formulation results. Retaining the October 23 midterm scope and assessing one architecture extension afterward is recommended; no new direction or run is adopted. Long-range interactions remain a separate feasibility direction, with no causal claim for the observed failures.
+
+ORCHARD is a documented PI-sponsored access route; approval, job/storage arrangements and sponsorship are not established. Next: discuss sponsorship with the PI and use the professor's offered fallback if needed. Two independent reviews accept this assessment; report/model/source/results and teammate responsibilities are unchanged. The existing midterm release checks remain open. Earlier snapshots below are historical.
+
+---
+
 # Midsemester review corrections, 18 October 2026
 
 The additional review has been received and its required wording/handover corrections are implemented. The five-page working draft now explains all-model recovery failure, seen target minima, cutoff-limited fragment forces, validation-selection sensitivity and the two connected replay controls. Original scientific findings are unchanged; no new model runs. Both final independent reviews approve the revised draft and handover for team circulation. PR #10 contains the report corrections; submission still needs confirmed contributions, live Canvas instructions, grader access to the PRIVATE repository and a specific reviewed revision.
