@@ -1,7 +1,7 @@
 {
   "status": "REVIEWED_FEEDBACK_ASSESSMENT_NOT_EXPERIMENT_APPROVAL",
   "date": "2026-10-20",
-  "assessment_sha256": "b6d3391c049b53b267fa14f43294649b6b5effc3aa062e3852db3a965b91a2b3",
+  "assessment_sha256": "8fc68cf095e81b48796152ea9d1230f6e117aabebcf468cc1f3e37c6beda8de0",
   "reviewed_project_revision": "e14b1235a99f89caaaf88f66dee1ec4197370e1a",
   "published_implementation_file_sha256": {
     "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
@@ -57,5 +57,15 @@
   "new_model_runs": false,
   "remote_access_or_messages": false,
   "current_report_changed": false,
-  "new_direction_adopted": false
+  "new_direction_adopted": false,
+  "original_reviewed_assessment_sha256": "b6d3391c049b53b267fa14f43294649b6b5effc3aa062e3852db3a965b91a2b3",
+  "coordinator_amendment": {
+    "date": "2026-10-20",
+    "remote_gpu_assumption": "Colab only until ORCHARD access is granted",
+    "current_cu_balance_is_study_limit": false,
+    "additional_purchase_envelope_USD": 100,
+    "purchasable_CU_at_coordinator_quoted_rate": 1000,
+    "price_independently_verified": false,
+    "purchase_or_run_performed": false
+  }
 }

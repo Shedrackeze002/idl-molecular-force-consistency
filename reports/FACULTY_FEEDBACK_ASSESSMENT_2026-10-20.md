@@ -65,3 +65,8 @@ Next access step: Shedrack asks the PI about sponsoring the ORCHARD request, wit
 ## Decision and ownership boundaries
 
 Recommended sequence: complete the midterm release checks; retain the current scientific question while assessing a bounded representation comparison; pursue ORCHARD sponsorship in parallel; keep explicit long-range modeling a separate feasibility/literature direction. These are recommendations awaiting the coordinator/team's choice, not approved experiments or claimed teammate acceptance. No new implementation or launch plan is frozen. Any adopted experiment must receive the usual two independent technical reviews and a reviewed budget before execution.
+
+
+## Coordinator update — Colab-only planning, 20 October 2026
+
+The coordinator confirmed that all GPU feasibility and experiment plans must assume Colab alone until ORCHARD access is actually granted. ORCHARD discussions proceed separately; neither ORCHARD nor pending PSC/other cluster capacity is a dependency for completing the project. A subsequent clarification makes current unit balance a replenishment detail rather than a reason to restrict the study: up to $100 is available to buy 1,000 additional CU at the coordinator's quoted $10/100 CU. This is available purchasing capacity, not a verified account balance or independent retail-price check. Estimate consumption and arrange top-ups as needed. The relevant constraints are Colab hardware availability, memory, session behavior and reliable checkpoint resumption. No new experiment, purchase or resource allocation is performed by this update.

@@ -1,3 +1,9 @@
+# Compute planning: Colab only, 20 October 2026
+
+Shedrack confirmed that project GPU plans must assume Colab is the only available remote compute until ORCHARD access is granted. ORCHARD discussions continue independently and must not become a project dependency. The current CU balance is not a study limit: Shedrack can purchase up to 1,000 additional CU using a stated $100 envelope at his quoted rate. Do not defer useful experiments merely for a balance top-up; estimate consumption so replenishment can be arranged. Plan around Colab hardware availability, session interruptions and checkpoint recovery, while assuming no ORCHARD/PSC allocation or guaranteed GPU type. Local CPU checks remain available under their existing budgets. Current model results, report and task ownership are unchanged. Earlier snapshots below are historical.
+
+---
+
 # Faculty feedback assessed, 20 October 2026
 
 The reported professor feedback and checked literature/resource implications are recorded in the [reviewed assessment](../../reports/FACULTY_FEEDBACK_ASSESSMENT_2026-10-20.md). Our E3x models already use equivariant graph message passing. A representation comparison is a proposed new study, not a description of existing force-formulation results. Retaining the October 23 midterm scope and assessing one architecture extension afterward is recommended; no new direction or run is adopted. Long-range interactions remain a separate feasibility direction, with no causal claim for the observed failures.
