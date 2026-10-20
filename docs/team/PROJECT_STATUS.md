@@ -1,3 +1,11 @@
+# CPU representation-study revision accepted, 20 October 2026
+
+The [amended specification](../research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md) and [implementation plan](../research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md) have two independent amended approvals. Use the existing local CPU trainer and at most four new scalar fits; reuse the two accepted E64 fits only after a1000-update reproduction check. Add the late20validation mean alongside BEST/LAST. The coordinator authorizes overnight CPU availability; actual scalar timings and parameter counts remain unmeasured. [Budget record](../../reports/evidence/2026-10-20/representation-budget.json) distinguishes historical timing from provisional scheduling.
+
+The earlier GPU/storage/cost framework is superseded, with its records preserved. The wrapper uses existing hashed full-state saves and one scheduled-state fallback, rejects off-grid BEST contamination, skips verified completed fits and resumes incomplete work without owner files or six-hour pauses. Implementation and verification remain pending; no new fit or model initialization occurred. Current report remains five pages with corrected table captions and explicit GNN wording. Grader access, contributions, live Canvas and final team approval remain open. Earlier status entries below are historical.
+
+---
+
 # Representation-comparison plan accepted, 20 October 2026
 
 Two independent technical reviews approve the amended [study specification](../research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md) and [implementation plan](../research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md). The proposed E64/SP/S64 comparison uses energy-derived forces, paired seeds and at most six200000-update fits, with capacity and fixed-recipe limitations explicit. Both families' force outputs remain equivariant. [Budget scenarios](../../reports/evidence/2026-10-20/representation-budget.json) are arithmetic examples, not measured Colab forecasts.

@@ -32,7 +32,7 @@ We use aspirin from Landscape17, with 21 atoms per structure and hybrid-DFT ener
 
 Branch destinations come from empirical endpoint classifications, not the ordering of filename pairs. That distinction corrected 26 of 74 branch targets that would otherwise be assigned incorrectly. Structural matching minimizes all-atom RMSD over permitted symmetry mappings and alignment. No trained model has been scored on the test partition. Earlier model-free software fixtures did parse test coordinates and labels for structural checks; they did not select models or solver settings. This distinction is retained in the evidence record.
 \subsection{Shared architecture and training objective}
-The E3x models take atomic numbers and coordinates and produce a molecular scalar energy and atomic force vectors. The common backbone has 64 features, two interactions, maximum degree one, eight radial functions and a 5~\AA\ cutoff. Energy-derived forces are $\widehat{\mathbf F}^{E}=-\nabla_{\mathbf R}\widehat E$. The direct and consistency arms share an auxiliary supervised energy head and a vector force head; ordinary direct prediction is not a force-only fit. The energy model has 43,521 parameters; the dual-head models have 43,649.
+The E3x models are message-passing graph neural networks that take atomic numbers and coordinates and produce a molecular scalar energy and atomic force vectors. The common backbone has 64 features, two interactions, maximum degree one, eight radial functions and a 5~\AA\ cutoff. Energy-derived forces are $\widehat{\mathbf F}^{E}=-\nabla_{\mathbf R}\widehat E$. The direct and consistency arms share an auxiliary supervised energy head and a vector force head; ordinary direct prediction is not a force-only fit. The energy model has 43,521 parameters; the dual-head models have 43,649.
 
 With training-derived scales $s_E,s_F$, we minimize
 \begin{equation}
@@ -60,6 +60,7 @@ C achieved 34.587~meV/\AA\ at update 184,500, compared with B's 40.370 and A's 4
 We then fixed C's recipe for nine subsequent fits: energy seed 1, two direct seeds and two seeds for each $\lambda\in\{0.1,1,10\}$. Reusing C seed 0 gives ten final-setting fits in total. Table~\ref{tab:prediction} reports both seed variation and the two-seed means.
 \begin{table}[H]
 \centering\small
+\caption{Validation scores at force-selected BEST. The seed range is descriptive, not a confidence interval. Energy errors use the same saved checkpoints.}\label{tab:prediction}
 \begin{tabular}{lrrr}\toprule
 Formulation & Force MAE, mean & Seed min--max & Energy MAE, mean\\
  & \multicolumn{2}{c}{meV/\AA} & meV/molecule\\\midrule
@@ -69,7 +70,6 @@ Consistency $\lambda=0.1$ & 38.024 & 36.773--39.275 & 87.006\\
 Consistency $\lambda=1$ & 34.683 & 33.723--35.643 & 112.341\\
 Consistency $\lambda=10$ & 39.725 & 39.060--40.390 & 161.662\\\bottomrule
 \end{tabular}
-\caption{Validation scores at force-selected BEST. The seed range is descriptive, not a confidence interval. Energy errors use the same saved checkpoints.}\label{tab:prediction}
 \end{table}
 BEST is optimistic because it minimizes 401 validation checks. Over updates 150,000--200,000, baseline trajectory standard deviations are 2.2--3.1~meV/\AA; these describe correlated training variation, not measurement uncertainty. In the nine subsequent fits, BEST is 0.1--7.4~meV/\AA\ below the final error. The 0.162~meV/\AA\ mean gap for $\lambda=0.1$ is much smaller than that variation, so matching is an operational rule rather than demonstrated equivalence.
 
@@ -86,6 +86,7 @@ We evaluated five specific checkpoints: energy C seed 0, direct seeds 0/1 and ma
 The fixed procedure proposes $\mathbf R_{\mathrm{trial}}=\mathbf R+\eta\mathbf F$, initially $\eta=0.2$~\AA$^2$/eV. Accepted-step growth doubles $\eta$ up to 1.0; backtracking halves it, with a $10^{-8}$ floor and at most 40 trials. Each branch has 1,500 force attempts. Trial convergence is checked first; otherwise force agreement permits acceptance when $\mathbf F_{\mathrm{trial}}\cdot\mathbf F_{\mathrm{known}}\geq-10^{-12}$. There is no energy-decrease test. This caps scale, not displacement, despite inaccurate historical docstring wording. We retained the source and original results.
 \begin{table}[H]
 \centering\small
+\caption{All models recover 0/10 original branches, whose six target classes are seen in training. Post-hoc reference-start controls use those classes and do not change A2.}
 \begin{tabular}{lrr}\toprule
 Checkpoint & Wrong converged / nonconverged & Reference-start recovery\\\midrule
 Energy C seed 0 & 2 / 8 & 4/6\\
@@ -94,7 +95,6 @@ Direct seed 1 & 4 / 6 & 0/6\\
 Consistency 0.1 seed 0 & 6 / 4 & 0/6\\
 Consistency 0.1 seed 1 & 9 / 1 & 0/6\\\bottomrule
 \end{tabular}
-\caption{All models recover 0/10 original branches, whose six target classes are seen in training. Post-hoc reference-start controls use those classes and do not change A2.}
 \end{table}
 A 155-evaluation diagnostic reproduced all 50 stopping flags. Every model exceeded the force criterion at all 11 exact DFT minima, whose label forces remained below 2.745~meV/\AA. This does not rule out nearby points satisfying our tolerances. All 23 converged dual-head endpoints had disconnected 5~\AA\ neighbor graphs, so they are not intact molecular conformations. Beyond the cutoff, separated fragments exert no learned force on each other, although internal fragment forces may remain. Seven endpoints had every atom isolated: their direct force is automatically exactly zero. Both converged energy endpoints remained connected, but a separate nonconverged energy endpoint also separated.
 

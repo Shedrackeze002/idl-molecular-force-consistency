@@ -1,34 +1,58 @@
 {
-  "status": "TWO_REVIEWED_PLANNING_DOCUMENTS_NOT_IMPLEMENTATION_OR_LAUNCH",
+  "schema": 2,
+  "status": "TWO_REVIEWED_CPU_PLAN_NOT_IMPLEMENTED_OR_LAUNCHED",
   "date": "2026-10-20",
-  "public_base": "aa2ca00fd564450b58dfb87febce05411e7a963d",
-  "source_file_sha256": {
-    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
-    "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
-    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
-    "src/force_consistency/train.py": "098eb8bbfb59599a1c8e9730b89fbfb1cb00db5b3b947eacf148ee9f26e08dfb",
-    "src/force_consistency/runs.py": "aebd78ced104d35ff11a125e85e20a3aa2c67792a131a09f0d343893a3694d6e",
-    "pyproject.toml": "1c2d56a6a97816312fbb264f69a4f418a4b823abe0cac6b73aa8dd9a478866d4",
-    "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f",
-    "configs/aspirin-e3x-v3-C.template.json": "13ea2367f648ba8b5eefe7991a558525308c648a45b40462701b4b36bf3b9e30",
-    "reports/evidence/2026-10-18/controlled/completion-audit.json": "409b3df2d4e8d29694383c5bb7639ce30edcb0cbace3fe9b456adb9d920c4707"
-  },
+  "supersedes_public_commit": "10ef31b1dd0d413c836dfa46ddd64aa1b3faa61c",
   "accepted_document_sha256": {
-    "REPRESENTATION_COMPARISON_SPEC_2026-10-20.md": "93a7fdf5b156d3120cee937a4136127e3cf7d280965d5fd57f626f22a486b922",
-    "REPRESENTATION_COMPARISON_BUDGET_2026-10-20.json": "77e2a52d284a207628120a285e3668d00af15168fd930da28d48bd07b9c22d91",
-    "REPRESENTATION_COMPARISON_PLAN_2026-10-20.md": "1e50a6832ff93135a2c9f40cf45ed77df7b8764a4c7c577066e73aee6d76eb50"
+    "docs/research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md": "621a3498f33123c87cd2d3831fd5702f995754b191e37a9427846174772066c4",
+    "docs/research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md": "1e2ee6806d827911d54d0a186b83402f6a4fbb8826b07021dd2546614b245c4b",
+    "reports/evidence/2026-10-20/representation-budget.json": "5d314f241975b060453835e0d8006af327c5bc3cf8143d008c88d144e4fcaeb3"
   },
-  "review_findings_resolved": [
-    "required third non-test diagnostic partition",
-    "explicit copied-state GPU resume probes and tolerances",
-    "seconds/update and complete checkpoint/reconnect cost accounting",
-    "RMSE aggregation and signed paired deltas",
-    "standalone inference benchmark remains teammate work"
+  "historical_metadata": {
+    "C-seed0/config.json": {
+      "sha256": "518b5ee984a7bd911119f8e639280a91e761256a2d482b471d3da7143e486db0",
+      "bytes": 904
+    },
+    "C-seed0/provenance.json": {
+      "sha256": "7145f75169b41928472e41bc1c892290535a1f7333b3ea36a6fc4b2d3a7507e4",
+      "bytes": 6614
+    },
+    "C-seed0/summary.json": {
+      "sha256": "5502f0cf9316140ce1a3afe96d9643dc3f91a4c245d6e1847dc7545d12fca436",
+      "bytes": 144077
+    },
+    "C-seed0/validation.json": {
+      "sha256": "36ceb4d38b6fc1dbb2eac8e2d55a6da75fd3a2dec55ee5e13729c29d76dbbd65",
+      "bytes": 27283454
+    },
+    "energy-seed1/config.json": {
+      "sha256": "56b13737821a861c799a0295cb9e4e679f6d3c4efafca8697bf64b48ea629965",
+      "bytes": 899
+    },
+    "energy-seed1/provenance.json": {
+      "sha256": "b6ac8614667fbb4d84bf454587cf4de69a09de024c02b518fd6b79d06e68280f",
+      "bytes": 6614
+    },
+    "energy-seed1/summary.json": {
+      "sha256": "a4ba2adcab9bf2ff3c10df8c4a38bfecbc40f67d58102e19c225cddd77e7edd3",
+      "bytes": 144069
+    },
+    "energy-seed1/validation.json": {
+      "sha256": "f579e9e26a63f2d3821301731f59356653a2ff79efa990f317ed9bef30a8afb1",
+      "bytes": 27283494
+    }
+  },
+  "conditional_e64_reuse": true,
+  "new_metric": "mean of20scheduled validation checks190500through200000",
+  "scheduled_resume_copy": "one authenticated fallback per segment; off-grid BEST/control ineligible",
+  "frozen_source_files_unchanged": 54,
+  "new_parameter_count_reproduction_scalar_timing_or_fit": false,
+  "removed_from_active_plan": [
+    "GPU readiness stage",
+    "CU scenario table",
+    "checkpoint-count/reconnect formula",
+    "GPU migration rules",
+    "per-checkpoint optimizer-step probes"
   ],
-  "budget_scenarios_arithmetic_verified": true,
-  "gpu_timing_measured": false,
-  "parameter_count_measured_for_new_models": false,
-  "new_model_data_or_remote_operation": false,
-  "frozen_files_unchanged": 54,
-  "midterm_report_unchanged": true
+  "retained_historical_records": true
 }

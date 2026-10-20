@@ -1,64 +1,27 @@
 {
-  "status": "PLANNING_SCENARIOS_NOT_MEASURED_GPU_FORECAST",
-  "max_configurations": 3,
-  "seeds": [
-    0,
-    1
-  ],
-  "max_fits": 6,
+  "schema": 2,
+  "status": "CPU_PRIMARY_REVISED_PLAN_NOT_MEASURED_SCALAR_COST",
+  "date": "2026-10-20",
+  "supersedes": "Earlier same-day six-fit Colab scenario budget at commit10ef31b1dd0d413c836dfa46ddd64aa1b3faa61c; preserved in history",
+  "primary_platform": "local CPU, pinned Python3.12.13",
+  "historical_e64_trainer_elapsed_seconds": {
+    "seed0": 4874.939501292072,
+    "seed1": 4104.61344241607
+  },
+  "historical_energy1_external_stage_seconds": 4108.549603833002,
+  "scalar_timing_measured": false,
+  "scalar_full_fit_count_max": 4,
+  "scalar_full_fit_count_if_deduplicated": 2,
   "updates_per_fit": 200000,
-  "validation_interval": 500,
-  "validation_checks_per_full_fit": 401,
-  "gpu_timing_measured": false,
-  "historical_energy_seed1_cpu_fit_seconds": 4108.549603833002,
-  "historical_value_is_gpu_forecast": false,
-  "cu_purchase_envelope": 1000,
-  "user_quoted_CU_per_USD": 10,
-  "initial_paid_readiness_proposal_gpu_hours": 2,
-  "scenario_reserve_factor": 1.25,
-  "aggregate_setup_scoring_allowance_hours": 2,
-  "scenarios": [
-    {
-      "whole_fit_hours": 2,
-      "rate_CU_per_hour": 10,
-      "forecast_with_reserve_CU": 175.0,
-      "implied_USD_at_user_rate": 17.5
-    },
-    {
-      "whole_fit_hours": 4,
-      "rate_CU_per_hour": 10,
-      "forecast_with_reserve_CU": 325.0,
-      "implied_USD_at_user_rate": 32.5
-    },
-    {
-      "whole_fit_hours": 8,
-      "rate_CU_per_hour": 10,
-      "forecast_with_reserve_CU": 625.0,
-      "implied_USD_at_user_rate": 62.5
-    },
-    {
-      "whole_fit_hours": 12,
-      "rate_CU_per_hour": 10,
-      "forecast_with_reserve_CU": 925.0,
-      "implied_USD_at_user_rate": 92.5
-    },
-    {
-      "whole_fit_hours": 4,
-      "rate_CU_per_hour": 5.3,
-      "forecast_with_reserve_CU": 172.25,
-      "implied_USD_at_user_rate": 17.225
-    }
+  "e64_reuse": "conditional on1000-update fresh reproduction",
+  "cpu_availability": "Coordinator authorizes overnight local CPU execution",
+  "provisional_queue_hours": [
+    5,
+    7
   ],
-  "scenarios_are_not_live_prices": true,
-  "allocation_or_purchase_performed": false,
-  "current_CU_balance_is_study_limit": false,
-  "scenario_excludes_explicit_extra_reconnect_cost": true,
-  "measured_forecast_contract": {
-    "q_units": "seconds/update = p95(100-update-block seconds)/100",
-    "checkpoint_trigger_bound": "ceil(200000/5000)+ceil(T_seconds/600)+401+1",
-    "checkpoint_forecast": "T = base_seconds + trigger_bound(T)*save_seconds, monotone upward; unresolved if save>=600s or divergent",
-    "reconnect_allowance": "ceil(sum_fit_seconds/(8*3600)); 8h is accounting assumption, not pause/session guarantee",
-    "unknown_rate": "report GPU-hours; CU remains scenario",
-    "pilot_counted": "once in total, not subtracted twice"
-  }
+  "queue_time_is_not_measured_upper_bound": true,
+  "paid_gpu_stage_planned": false,
+  "cu_use_planned": 0,
+  "gpu_only_contingency_requires_separate_measured_case": true,
+  "new_numerical_execution": false
 }

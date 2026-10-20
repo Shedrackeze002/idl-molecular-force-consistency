@@ -49,3 +49,8 @@ The course's maximum-five-minute video is a separate December deliverable,
 not asserted here as a midterm requirement. MACE real-model admission and
 recovery are still pending. This report does not require them to be
 invented or silently launched.
+
+
+## Layout follow-up, 20 October
+
+Table captions are above their tables to avoid colliding with the rules under the unchanged course style. Section3.2 explicitly identifies the E3x models as message-passing graph neural networks. Current PDF remains five pages, SHA-256 `8273d1b0c8674f1dc950592deac80a133af33dc6e82d69afa91f109b92be4242`. Scientific values, plots and claim-source bindings are unchanged. The representation study is not a new result in this report. Existing release checks remain open.

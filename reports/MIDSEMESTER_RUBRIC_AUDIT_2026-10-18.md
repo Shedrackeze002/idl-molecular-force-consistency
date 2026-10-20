@@ -1,3 +1,9 @@
+# Report layout follow-up, 20 October 2026
+
+The table-caption spacing was corrected and the architecture is explicitly described as a message-passing graph neural network. The report remains five pages, with unchanged scientific claims, numerical tables/plot arrays and course style. Current PDF SHA-256: `8273d1b0c8674f1dc950592deac80a133af33dc6e82d69afa91f109b92be4242`. All five rendered pages were inspected. The original saved-rubric mapping below remains applicable; its quoted earlier PDF identity is historical. Live Canvas, grader access, contributions and final team approval remain open. No new experiment or submission occurred.
+
+---
+
 # Midsemester course-rubric audit — 18 October 2026
 
 **Verdict: the current report satisfies the substantive document requirements in the saved course midterm rubric. It remains a working draft, not a submission-ready or submitted deliverable.** This is a requirements assessment, not a prediction of the grade.
