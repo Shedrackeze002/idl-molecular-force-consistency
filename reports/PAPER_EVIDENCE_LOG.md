@@ -155,3 +155,10 @@ Fresh E64seed0 through1000updates matches the complete originalC0 validation eve
 Fresh SP88seed0 uninterrupted2000updates compared with a separate worker group sentSIGKILL after saved1000/before1500 and resumed to2000. Parameters, optimizer, RNG, authenticated decodedBEST/control and full scheduled history agree to1e-10, with exact nonfloating identities. A completed re-invocation skips without checkpoint change. Signal delivery and waited outerprocess are recorded; descendant exit was not independently observed. Verification states remain separate and will not seed full fits.
 
 Counts, synthetic physics/configuration tests and actual resume/reproduction receipts support the filled CPU launch record. Four full scalar fits remain pending final launch review. No main-test/recovery evaluation, longrange/foundationmodel run, GPU allocation, CU cost or source rewrite. All failures/corrections remain retained; no numerical retuning or hidden trial replacement.
+
+
+### REPRESENTATION-CPU-LAUNCH-2026-10-20-001 — serial science queue running
+
+Actual SPseed0 progress observed at update8500of200000 on localCPU at2026-10-20T23:27:31.353783+02:00; completion is not claimed. Four declared fresh fits run serially SP0,S640,S641,SP1. Both reviewed preflight and launch conditions pass, existing E64seed0/1 reused after required reproduction and source/recipe/data/seed binding. Reference BEST/LAST rescored independently; late20trajectory metrics are available, not new training. Verification states are separate.
+
+Execution revision79dba2745350e16aa11e6f4e39b5011229ec5fd0 stays pinned, while results publish through the separate clean checkout. Idle-sleep prevention runs with the job. No ColabGPU or CU, test scoring or recovery. Training progress is not selected-checkpoint quality, study completion or representation superiority. Each completed/failed/incomplete outcome will be published with its evidence and interpretation-review status.

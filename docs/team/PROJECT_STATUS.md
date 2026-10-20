@@ -1,3 +1,9 @@
+# CPU representation queue running, 20 October 2026
+
+SPseed0 reached update8500of200000 at2026-10-20T23:27:31.353783+02:00. [Launch snapshot](../../reports/evidence/2026-10-20/representation/launch.json). The serial queue is SP0,S640,S641,SP1; two accepted E64 seeds are reused, with fresh BEST/LAST validation rescores. Reproduction, physical/configuration controls, actual hard-interruption/resume and both launch reviews pass. This is progress, not a completed study or a superiority claim. No GPU/CU, main-test or recovery evaluation. Per-fit raw outcomes publish automatically pending independent interpretation review. Earlier entries below are historical.
+
+---
+
 # CPU reproduction and interruption checks PASS, 20 October 2026
 
 [Preflight evidence](../../reports/evidence/2026-10-20/representation/preflight.json) verifies the1000-update historical E64 replay and actual2000-update scalar hard-interruption/resume, including completed-fit no-op. These are engineering checks, not full scalar scientific results. The local CPU study can reuse the accepted E64 seeds under the pinned identity record; four fresh scalar fits follow final launch review. No test/recovery claim or paid compute. Earlier entries below are historical.

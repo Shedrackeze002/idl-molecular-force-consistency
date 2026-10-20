@@ -1,0 +1,43 @@
+{
+  "active_fit": "SP-0",
+  "future_outcomes": "automatically publish raw outcome after each fit with interpretation review pending",
+  "gpu_or_CU_used": false,
+  "latest_observed_update": 8500,
+  "launch_review": "two independent approvals",
+  "main_test_or_recovery_evaluated": false,
+  "observed_at_kigali": "2026-10-20T23:27:31.353783+02:00",
+  "parameter_counts": {
+    "E64": 43521,
+    "S64": 25473,
+    "SP88": 43473
+  },
+  "preflight": "E64 reproduction and SP88hardinterruption/resume PASS",
+  "queue_order": [
+    "SP-0",
+    "S64-0",
+    "S64-1",
+    "SP-1"
+  ],
+  "source_commit_stays_pinned": true,
+  "source_execution_revision": "79dba2745350e16aa11e6f4e39b5011229ec5fd0",
+  "source_sha256": {
+    ".gitignore": "02a72f92162627c163f07cb957b34745ed7209fa4351569488393be7ff1b0a89",
+    "configs/representation-study/cpu.json": "593168a2fa21130284bcb64706c5d4c5247543a44cc7ed9905a074b5d216400d",
+    "docs/run-representation-study.md": "ce495641e23512283c2b64de258508079a4664e2ed8ccb9bab7d905ed0cf4dd4",
+    "experiments/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "experiments/representation_study/__init__.py": "1765977703892577b3aec317e6309fa961bdf6da64c01c1c9ab4dc0a02b73e0a",
+    "experiments/representation_study/analysis.py": "07819e33106f95c8253ab7f2d04007219754de7199826dc6ff28bc0d3b53398d",
+    "experiments/representation_study/protocol.py": "9c3ed791294a9e6f4c831b522f4bde77cd55e8ed6d4ff86591358e1dc9888f11",
+    "experiments/representation_study/runner.py": "6fe041dd8ad22bfa02328245518281f6f3089670cf62cd080f4065b3e2377402",
+    "notebooks/representation_comparison.ipynb": "cf36ae2d37992ef9428fed2b14df8c785c5b8ffb26880ab23c2ddda51cb77540",
+    "scripts/e3x_phase_common.py": "a1d514b581f4375cbc6449523cddf1cd5f732e5a3f0644b2c4083bc86d3e23e7",
+    "scripts/evaluate_e3x_adequacy.py": "581f727a321d1e75537b807d9d6c81a68eac17dd29fa11a186c0789dc9105a8e",
+    "tests/test_representation_analysis.py": "34503deeb98fb7ec2aefa14e0ec60e8be289d484f175e1d044c31f2f0e4c63c4",
+    "tests/test_representation_notebook.py": "c99f1898d80ae0f57c33952c045cfe60a5551ead0cccbe0b6de514463f4fb6e0",
+    "tests/test_representation_protocol.py": "e976809c01dcfb578891464927f33ffba02f961b216a89cf080e06f157d19ea1",
+    "tests/test_representation_resume.py": "a1b92d1e37d00e710474c187cf38ea3e565b9dcac47ce1bfe6cf94eb2cf4a562"
+  },
+  "status": "RUNNING_NOT_COMPLETE",
+  "target_updates_per_fit": 200000,
+  "verification_states_not_used_to_initialize_scientific_fits": true
+}
