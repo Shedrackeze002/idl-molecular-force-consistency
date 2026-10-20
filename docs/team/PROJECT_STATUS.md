@@ -1,3 +1,9 @@
+# CPU representation outcome: SP-0, 20 October 2026
+
+Latest serial queue outcome: **completed**. [Raw result](../../reports/evidence/2026-10-20/representation/SP-0/outcome.json) and saved validation scores are published with independent result review pending. Completed training is distinct from accepted scientific interpretation. Existing0/10recovery/main-test boundary and teammate ownership are unchanged. Other queue fits may still be running; see the execution evidence before claiming study completion. Earlier entries below are historical.
+
+---
+
 # CPU representation queue running, 20 October 2026
 
 SPseed0 reached update8500of200000 at2026-10-20T23:27:31.353783+02:00. [Launch snapshot](../../reports/evidence/2026-10-20/representation/launch.json). The serial queue is SP0,S640,S641,SP1; two accepted E64 seeds are reused, with fresh BEST/LAST validation rescores. Reproduction, physical/configuration controls, actual hard-interruption/resume and both launch reviews pass. This is progress, not a completed study or a superiority claim. No GPU/CU, main-test or recovery evaluation. Per-fit raw outcomes publish automatically pending independent interpretation review. Earlier entries below are historical.

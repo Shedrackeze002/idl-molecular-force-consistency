@@ -162,3 +162,8 @@ Counts, synthetic physics/configuration tests and actual resume/reproduction rec
 Actual SPseed0 progress observed at update8500of200000 on localCPU at2026-10-20T23:27:31.353783+02:00; completion is not claimed. Four declared fresh fits run serially SP0,S640,S641,SP1. Both reviewed preflight and launch conditions pass, existing E64seed0/1 reused after required reproduction and source/recipe/data/seed binding. Reference BEST/LAST rescored independently; late20trajectory metrics are available, not new training. Verification states are separate.
 
 Execution revision79dba2745350e16aa11e6f4e39b5011229ec5fd0 stays pinned, while results publish through the separate clean checkout. Idle-sleep prevention runs with the job. No ColabGPU or CU, test scoring or recovery. Training progress is not selected-checkpoint quality, study completion or representation superiority. Each completed/failed/incomplete outcome will be published with its evidence and interpretation-review status.
+
+
+### REPRESENTATION-CPU-OUTCOME-SP-0-397019eacc41 — CPU fit outcome, 2026-10-20T23:58:55.845286+02:00
+
+SP-0: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.04104627288284203/0.05252223343762975/0.04627642265021941. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/SP-0/outcome.json.
