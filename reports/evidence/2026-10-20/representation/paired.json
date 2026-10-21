@@ -1,4 +1,19 @@
 {
   "acceptance": "descriptive raw summary, interpretation review pending",
-  "pairs": {}
+  "pairs": {
+    "S64": {
+      "best_mean_delta": 0.004649346048927437,
+      "best_seed_deltas": [
+        0.005677046544878557,
+        0.0036216455529763172
+      ],
+      "interpretation": "descriptive fixed-recipe comparison",
+      "late20_mean_delta": 0.004247827441255278,
+      "late20_seed_deltas": [
+        0.005053523264171134,
+        0.0034421316183394224
+      ],
+      "sign": "scalar minus E64; positive favors E64; no statistical superiority claim"
+    }
+  }
 }

@@ -181,3 +181,8 @@ The unchanged runner verified and skipped SP-0, reused its verified scores/publi
 ### REPRESENTATION-CPU-OUTCOME-S64-0-87cd6aab8cb5 — CPU fit outcome, 2026-10-21T08:31:38.018560+02:00
 
 S64-0: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.04026445483872265/0.049631881936485205/0.04406187550769058. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/S64-0/outcome.json.
+
+
+### REPRESENTATION-CPU-OUTCOME-S64-1-ac5e3075213e — CPU fit outcome, 2026-10-21T09:02:18.527932+02:00
+
+S64-1: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.03881998344246991/0.04219450804343614/0.04247125108972674. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/S64-1/outcome.json.
