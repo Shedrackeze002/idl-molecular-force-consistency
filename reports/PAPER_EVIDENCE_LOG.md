@@ -176,3 +176,8 @@ SP-0 completed all 200,000 updates in 1,971.80 seconds (about 32.9 minutes). Ind
 The successful result push was followed by an immediate PR-head assertion failure, which stopped the queue before the next fit. All six original published files were subsequently verified at immutable commit 10f5c4e and the missing local receipt reconstructed without another training run. The exact failed API response was not recorded, so delayed metadata refresh is a hypothesis. Seven verification tests and two independent technical reviews approve the operational repair. Model code, data, settings, execution revision and update budgets remain unchanged.
 
 The unchanged runner verified and skipped SP-0, reused its verified scores/publication, and started S64-0; actual progress observed at update 7000. S64-1 and SP-1 remain pending. Local CPU only, no CU cost. No main-test/recovery evaluation or new tuning. Failure evidence and original artifacts remain retained. See reports/evidence/2026-10-21/representation-publication-recovery.json. Earlier running-status entries are historical.
+
+
+### REPRESENTATION-CPU-OUTCOME-S64-0-87cd6aab8cb5 — CPU fit outcome, 2026-10-21T08:31:38.018560+02:00
+
+S64-0: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.04026445483872265/0.049631881936485205/0.04406187550769058. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/S64-0/outcome.json.

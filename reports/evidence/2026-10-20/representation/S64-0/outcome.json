@@ -1,0 +1,111 @@
+{
+  "acceptance": "raw completed/incomplete/failed outcome; independent scientific result review pending",
+  "candidate": "S64-0",
+  "raw_queue_sha256": "87e7fd6f07d937dbf5f63e3e5d99f42d5d911cccfcc0b64fedcb011ea00719ea",
+  "scope": "validation only; no test/recovery/statistical superiority claim",
+  "score": {
+    "analysis_source_sha256": "07819e33106f95c8253ab7f2d04007219754de7199826dc6ff28bc0d3b53398d",
+    "backend": "cpu",
+    "checkpoint_sha256": {
+      "best": "d9be7dd4da63706eb7387e302fcc21b10ea7b74e68da195cc43dafa9ecc85aee",
+      "last": "824dbebc41d5a3217e88a233ed0f31de5a8b958d051f6963dd32149df2a99172"
+    },
+    "final_segment_elapsed_seconds": 1843.3080682500731,
+    "history": {
+      "best_equal_connection_force_mae_eV_per_A": 0.04026445483872265,
+      "best_update": 195500,
+      "last_equal_connection_force_mae_eV_per_A": 0.049631881936485205,
+      "late20_equal_connection_force_mae_eV_per_A": 0.04406187550769058,
+      "late20_updates": [
+        190500,
+        191000,
+        191500,
+        192000,
+        192500,
+        193000,
+        193500,
+        194000,
+        194500,
+        195000,
+        195500,
+        196000,
+        196500,
+        197000,
+        197500,
+        198000,
+        198500,
+        199000,
+        199500,
+        200000
+      ]
+    },
+    "model": {
+      "cutoff_A": 5.0,
+      "energy_readout_init": "zero",
+      "features": 64,
+      "iterations": 2,
+      "max_degree": 0,
+      "radial_basis": 8
+    },
+    "no_test_or_recovery_claim": true,
+    "parameter_count": 25473,
+    "prediction_files": {
+      "best": "9617de91e878d181687bee099676a45942e7bc2442d7e088d8c1aa1e83abb252",
+      "last": "7a58e2e74c0e2ef5aa80893c0ce4dc2f7b5a4858db0aaa0331b629f1a0eca6ed"
+    },
+    "roles": {
+      "best": {
+        "connection_count": 5,
+        "energy_mae_eV": 0.15101898834744057,
+        "equal_connection_force_mae_eV_per_A": 0.040264454838722645,
+        "per_connection_force_mae_eV_per_A": {
+          "13": 0.04736765669023928,
+          "18": 0.03993932485979527,
+          "18_2": 0.04016807095313661,
+          "66": 0.040990968289415584,
+          "78": 0.0328562534010265
+        },
+        "pooled_component_force_rmse_eV_per_A": 0.07658374274739084,
+        "pooled_force_mae_eV_per_A": 0.0402587163336665,
+        "record_count": 974,
+        "zero_force_equal_connection_mae_eV_per_A": 0.06250438966560673
+      },
+      "last": {
+        "connection_count": 5,
+        "energy_mae_eV": 0.147508142768826,
+        "equal_connection_force_mae_eV_per_A": 0.049631881936485225,
+        "per_connection_force_mae_eV_per_A": {
+          "13": 0.056862858357599244,
+          "18": 0.04801940292767245,
+          "18_2": 0.0509360973337186,
+          "66": 0.05032626994156713,
+          "78": 0.04201478112186867
+        },
+        "pooled_component_force_rmse_eV_per_A": 0.08295522480184801,
+        "pooled_force_mae_eV_per_A": 0.04964523361772585,
+        "record_count": 974,
+        "zero_force_equal_connection_mae_eV_per_A": 0.06250438966560673
+      }
+    },
+    "score_directory": "<retained-runs>/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001",
+    "seed": 0,
+    "segment_timing": [
+      {
+        "compilation_seconds": 1.1770877088420093,
+        "elapsed_seconds": 1843.3080682500731,
+        "segment": "000001",
+        "steady_update_seconds_mean": 0.0015635518025490455,
+        "timing_status": "recorded",
+        "validation_seconds_total": 72.15527264005505,
+        "warmup_execution_seconds": 0.0078426250256598
+      }
+    ],
+    "source_fingerprint": "a046011a0efdfab2835b00e42f446e691b453b1f30854f8accce26c6292f4da5",
+    "status": "independently_scored_validation_only",
+    "training_revision": "79dba2745350e16aa11e6f4e39b5011229ec5fd0"
+  },
+  "segment": "<retained-runs>/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001",
+  "skipped": false,
+  "status": "completed",
+  "updates": 200000
+}
