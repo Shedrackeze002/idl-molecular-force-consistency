@@ -186,3 +186,8 @@ S64-0: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstro
 ### REPRESENTATION-CPU-OUTCOME-S64-1-ac5e3075213e — CPU fit outcome, 2026-10-21T09:02:18.527932+02:00
 
 S64-1: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.03881998344246991/0.04219450804343614/0.04247125108972674. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/S64-1/outcome.json.
+
+
+### REPRESENTATION-CPU-OUTCOME-SP-1-ee65c6980ee7 — CPU fit outcome, 2026-10-21T09:34:58.681023+02:00
+
+SP-1: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.04166924613571395/0.043646744874561286/0.04574342503314263. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/SP-1/outcome.json.

@@ -1,3 +1,9 @@
+# CPU representation outcome: SP-1, 20 October 2026
+
+Latest serial queue outcome: **completed**. [Raw result](../../reports/evidence/2026-10-20/representation/SP-1/outcome.json) and saved validation scores are published with independent result review pending. Completed training is distinct from accepted scientific interpretation. Existing0/10recovery/main-test boundary and teammate ownership are unchanged. Other queue fits may still be running; see the execution evidence before claiming study completion. Earlier entries below are historical.
+
+---
+
 # CPU representation outcome: S64-1, 20 October 2026
 
 Latest serial queue outcome: **completed**. [Raw result](../../reports/evidence/2026-10-20/representation/S64-1/outcome.json) and saved validation scores are published with independent result review pending. Completed training is distinct from accepted scientific interpretation. Existing0/10recovery/main-test boundary and teammate ownership are unchanged. Other queue fits may still be running; see the execution evidence before claiming study completion. Earlier entries below are historical.

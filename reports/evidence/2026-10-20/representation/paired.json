@@ -14,6 +14,20 @@
         0.0034421316183394224
       ],
       "sign": "scalar minus E64; positive favors E64; no statistical superiority claim"
+    },
+    "SP": {
+      "best_mean_delta": 0.006464886417609155,
+      "best_seed_deltas": [
+        0.006458864588997942,
+        0.006470908246220368
+      ],
+      "interpretation": "descriptive fixed-recipe comparison",
+      "late20_mean_delta": 0.00699118798422764,
+      "late20_seed_deltas": [
+        0.007268070406699967,
+        0.006714305561755313
+      ],
+      "sign": "scalar minus E64; positive favors E64; no statistical superiority claim"
     }
   }
 }
