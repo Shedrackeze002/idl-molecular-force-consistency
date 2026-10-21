@@ -1,3 +1,15 @@
+# CPU representation study resumed — 21 October 2026
+
+**One of four new fits complete; S64-0 is running** (observed at update 7000/200,000). SP-0 completed, independently scored and published; S64-1 and SP-1 remain pending. Two existing E64 fits are reused after verification.
+
+SP-0 BEST validation force MAE is 41.05 meV/angstrom; E64 seed0 is 34.59. These are single-seed fixed-recipe observations, with paired interpretation pending. BEST, LAST and late20 are co-reported.
+
+The queue stopped after SP-0 because publication verification failed after a successful push. Its six remote files now verify, the operational check is repaired, and SP-0 was skipped on restart. Model code, settings and data are unchanged. No paid GPU or CU. [Failure and recovery evidence](../../reports/evidence/2026-10-21/representation-publication-recovery.json).
+
+Next: finish the remaining three fits, independently review the paired BEST/late20 comparisons, then decide what is supported for the report. Existing report submission/access/contribution checks remain open. Earlier entries below are historical.
+
+---
+
 # CPU representation outcome: SP-0, 20 October 2026
 
 Latest serial queue outcome: **completed**. [Raw result](../../reports/evidence/2026-10-20/representation/SP-0/outcome.json) and saved validation scores are published with independent result review pending. Completed training is distinct from accepted scientific interpretation. Existing0/10recovery/main-test boundary and teammate ownership are unchanged. Other queue fits may still be running; see the execution evidence before claiming study completion. Earlier entries below are historical.
