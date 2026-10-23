@@ -5,7 +5,7 @@
 | Abstract; Introduction; Literature Review | Page 1 |
 | Data; model architecture; loss, normalization and runtime | Page 2 |
 | Metrics and matching/adequacy rules; relaxation; baseline settings and Figure 1 | Page 3 |
-| Predictive accuracy/cost and Table 1; MACE exposure; recovery and endpoint diagnostics | Page 4 |
+| Predictive accuracy/cost and Table 1 with separate MACE reference row; Section 5.3 MACE Reference Result; recovery and endpoint diagnostics | Page 4 |
 | Table 2; remaining trace diagnostics; representation; conclusion, limits, proposal changes, future work and contributions | Page 5 |
 | Five references | Page 6, excluded from the main-text limit |
 

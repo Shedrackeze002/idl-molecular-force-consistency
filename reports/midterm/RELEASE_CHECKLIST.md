@@ -9,7 +9,7 @@
 - [ ] Verify staff access to the private fixed research snapshot.
 - [ ] Obtain all four contribution confirmations and authored evidence.
 - [ ] Verify live Canvas upload/group instructions and exact due time/timezone.
-- [ ] Obtain team approval of PDF SHA-256 `366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392`.
+- [ ] Obtain team approval of PDF SHA-256 `36440317bbc666b22bcab427700d06710fa68d1e49b8b4b706b46fead73b7ca7`.
 - [ ] Authorized final submission after those checks.
 
 The earlier full content clearance applies to its prior exact PDF. Current source compiles; the current export meets the page limit and passes layout checks. Assigned roles remain; no new completed deliverable is confirmed for Aaron or Idris. No permission change, merge or submission has occurred.

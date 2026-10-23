@@ -6,8 +6,8 @@
   "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 42,
-  "prose_sentences": 127,
-  "max_sentence_words": 31,
+  "prose_sentences": 124,
+  "max_sentence_words": 28,
   "language_flags": [],
   "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
   "five_predictive_rows_unchanged": true,
@@ -18,11 +18,14 @@
   "original_figure_unchanged": true,
   "all_pages_rendered": true,
   "character_bounds_flags": [],
-  "compile_warnings": [],
+  "compile_warnings": [
+    "Underfull \\vbox (badness 3354) has occurred while \\output is active []",
+    "Underfull \\vbox (badness 2460) has occurred while \\output is active []"
+  ],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392",
-  "pdf_bytes": 79807,
+  "pdf_sha256": "36440317bbc666b22bcab427700d06710fa68d1e49b8b4b706b46fead73b7ca7",
+  "pdf_bytes": 79520,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -46,8 +49,8 @@
   ],
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
-  "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Bounded terminology and wording correction; all numerical results, tables, loss, figure, course formatting and bibliography preserved. Built-in compilation and exported-file checks pass; no new experiment or independent scientific-result clearance.",
+  "tables_loss_figure_and_bibliography_unchanged": false,
+  "review_scope": "Manuscript emphasis and layout revision, verified against saved MACE scoring. Added an explicit single-seed reference row; original E3x numerical rows and recovery rows, loss, figure, course style and bibliography preserved. No new experiment or independent scientific-result clearance.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -57,12 +60,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20096,
-      "sha256": "8a18f8a89c625857127b837ef9d378ac80d5eab41a2c20a340c5bd338cf81c9b"
+      "bytes": 19561,
+      "sha256": "515691dcbc1c78951a3bbe44b1efd75722e313488e7d48a9232e6ce8a9701e92"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 79807,
-      "sha256": "366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392"
+      "bytes": 79520,
+      "sha256": "36440317bbc666b22bcab427700d06710fa68d1e49b8b4b706b46fead73b7ca7"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -77,20 +80,20 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1744,
-      "sha256": "40dd6b46a2ee1c04965aba2f55e776e5f071d5edafbb399e9094526798fc6f5d"
+      "bytes": 2107,
+      "sha256": "27a4cde66096fdf1a2676f514cc518973d2c74cc397db03cc02ba2ca2778ca3b"
     },
     "CHANGES.md": {
-      "bytes": 4786,
-      "sha256": "69f56735d98aeb69c7edfa4c12fff72369ac91df674a8989b4cac988db13e430"
+      "bytes": 5531,
+      "sha256": "d914eed10c7ab99ed127c5828dec48e7f01071a0f0f6e4ce042f94460b642675"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1234,
-      "sha256": "c9a0b8dffbd1d3860c2ec359b84a17f031b4c9b6de5f354d53b228ae5387dc13"
+      "sha256": "c3ce983ebf14e2f8136320132e3493f31644f68fef75833c4327de53705f3a5e"
     },
     "EVIDENCE_MAP.md": {
-      "bytes": 1095,
-      "sha256": "7672df91cd76789e01b350b1d8a20ed292cb63f58f23ee557d5378e3bbe75cbe"
+      "bytes": 1148,
+      "sha256": "c04da0ca122155a8e881f3f017eb4a86f1735c91872f464a99933d44f4b6daba"
     },
     "source-records.json": {
       "bytes": 1159,
@@ -101,7 +104,7 @@
       "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
-  "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters; Figure 1 page 3, Table 2 page 5",
+  "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters; Figure 1 page 3, prediction table and MACE subsection page 4, recovery Table 2 page 5. Two underfull vertical-box warnings without visible defects.",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
@@ -110,13 +113,13 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "8a18f8a89c625857127b837ef9d378ac80d5eab41a2c20a340c5bd338cf81c9b",
+    "source_sha256": "515691dcbc1c78951a3bbe44b1efd75722e313488e7d48a9232e6ce8a9701e92",
     "built_in_compile": "success",
-    "body_sentences": 127,
-    "max_sentence_words": 31,
+    "body_sentences": 124,
+    "max_sentence_words": 28,
     "sentence_or_paragraph_flags": [],
     "abstract_unchanged_from_pre_edit_source": false,
-    "numerical_tables_and_loss_unchanged": true,
+    "numerical_tables_and_loss_unchanged": false,
     "current_pdf_export": "complete; six total pages, five main-text pages",
     "prior_preview_report": {
       "pages": 6,
@@ -130,11 +133,13 @@
       "main_text_pages": 5,
       "reference_start_page": 6,
       "basis": "Measured from exported PDF"
-    }
+    },
+    "original_numerical_rows_and_loss_preserved": true,
+    "mace_reference_row_added": true
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06",
+    "pdf_sha256": "366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -145,7 +150,7 @@
     "abstract_max_sentence_words": 27
   },
   "current_checks": {
-    "tables_and_loss_preserved": true,
+    "tables_and_loss_preserved": false,
     "bibliography_preserved": true,
     "course_style_and_preamble_preserved": true,
     "figure_asset_preserved": true,
@@ -155,8 +160,14 @@
     "undefined_references": 0,
     "all_pages_visual_pass": true,
     "abstract_clarity_changed": true,
-    "energy_slope_definition_and_three_models_present": true
+    "energy_slope_definition_and_three_models_present": true,
+    "original_numerical_rows_and_loss_preserved": true,
+    "mace_reference_row_added": true,
+    "user_edited_introduction_preserved": true,
+    "mace_section_page": 4,
+    "mace_result_in_abstract_table_subsection_and_conclusion": true
   },
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
-  "solver_constants_verified_against_github_snapshot": true
+  "solver_constants_verified_against_github_snapshot": true,
+  "original_numerical_rows_loss_figure_and_bibliography_preserved": true
 }
