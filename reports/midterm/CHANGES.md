@@ -13,3 +13,5 @@ No result, experiment, permission or submission changed. Earlier editions remain
 F1/F2 follow-up, 23 October: corrected the faculty sentence grammar to "Feedback from a faculty member, a professor of materials science, ..." and scoped the 64-channel statement to "The three compared model types". These are the only two manuscript replacements. Rebuilt five main pages plus references; no optional edits or additional independent review.
 
 Research reference update, 23 October: link the code and evidence to the completed representation snapshot `3fa5969`. The scientific manuscript content is unchanged.
+
+Abstract clarification, 23 October: the evaluation cannot rank methods by recovery success because every tested model state recovered zero targets. Numerical results and all other manuscript text are unchanged.

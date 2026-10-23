@@ -1,5 +1,5 @@
 {
-  "status": "PASS_RESEARCH_LINK_SOURCE_DIFF_BUILD_AND_LAYOUT",
+  "status": "PASS_ABSTRACT_CLAUSE_DIFF_BUILD_AND_LAYOUT",
   "pages": 6,
   "main_text_pages": 5,
   "reference_start_page": 6,
@@ -24,8 +24,8 @@
   ],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba",
-  "pdf_bytes": 77569,
+  "pdf_sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae",
+  "pdf_bytes": 77573,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -50,7 +50,7 @@
   "two_bounded_plan_and_final_reviews_pass": true,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Prior scientific and editorial corrections retained. Latest change replaces only the research snapshot URL and printed identifier; no new scientific review or experiment.",
+  "review_scope": "Prior scientific and editorial corrections retained. Latest change clarifies one abstract clause; source diff, build and layout checked. No experiment or new scientific interpretation.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -60,12 +60,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 19487,
-      "sha256": "fa06d945fbc12c77dbf68c35fbb3c8246d728355b025b460a4d73b75394e0668"
+      "bytes": 19504,
+      "sha256": "202f2356ee3984389400918954fd92d20a6a35ae816e2445e55cb7f429d0045e"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 77569,
-      "sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba"
+      "bytes": 77573,
+      "sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -84,12 +84,12 @@
       "sha256": "890f329ba4c143d30c84dda810824064d205a86a9420ebca2bafce8d89caaca6"
     },
     "CHANGES.md": {
-      "bytes": 1941,
-      "sha256": "9b519e56ef6d5e6bcde1177707d5425c1f7218bfef0bc4f4c876d48ce873ad51"
+      "bytes": 2153,
+      "sha256": "782ae65f0ec6078645c3bc8de5ff999fad744f46fb518a7f4375f1f3aa48fafd"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1186,
-      "sha256": "f0d8aa5bac53566bba24d7d32b63a184bbe8f1121d8e2fcd3815558a8c28bf7d"
+      "sha256": "51ef2e7d5ebdc02e61d44d33e01ded09d7123eb45a8d1edad7ff6e7d812d0439"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1113,
@@ -104,12 +104,18 @@
       "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
-  "visual_inspection": "Page 5 inspected; other five page images unchanged from prior verified PDF",
+  "visual_inspection": "Page 1 inspected after abstract clarification; pages 2\u20136 pixel-identical to prior verified PDF",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
     "pdf_and_tex_unchanged": true,
     "archive_inventory": "reports/archive/midterm/relocations.json",
     "archive_files_byte_preserved": true
+  },
+  "latest_wording_check": {
+    "one_abstract_clause_changed": true,
+    "other_source_unchanged": true,
+    "pages2_to6_pixel_identical": true,
+    "abstract_max_sentence_words": 27
   }
 }

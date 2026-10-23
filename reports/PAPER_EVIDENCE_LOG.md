@@ -311,3 +311,8 @@ The midterm now links research code and evidence to completed representation sna
 ### MIDTERM-CANONICAL-2026-10-23-001 — report organization
 
 Designated reports/midterm as the canonical report directory. Moved seven earlier editions into reports/archive/midterm with each file preserved byte-for-byte; relocations.json maps original paths and hashes to archived locations. The canonical TeX, PDF, style and figure bytes are unchanged. Canonical PDF SHA-256: 885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba. Current navigation and team review assignments point to the canonical source. No experiment, scientific result or submission changed.
+
+
+### MIDTERM-ABSTRACT-2026-10-23-001 — recovery conclusion wording
+
+Clarified that this evaluation cannot rank the methods by recovery success. Exactly one abstract clause changed; all numerical results, equations, tables and other manuscript text are unchanged. Rebuilt five main pages plus references. Page 1 visually checked; pages 2–6 render pixel-identically to the previous verified PDF. PDF SHA-256: 97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae. No experiment or submission occurred.
