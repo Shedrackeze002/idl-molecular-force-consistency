@@ -49,7 +49,6 @@
   "tables_loss_figure_and_bibliography_unchanged": false,
   "review_scope": "Authorized reporting revision using saved evidence: paragraph consolidation, absolute scoped times, connected reference-start successes, selection optimism and secondary post-hoc matching. Original numerical table cells, loss, course style and bibliography preserved. Threshold legend changed with saved figure data retained. No new experiment or independent new-result clearance.",
   "release_checks_pending": [
-    "Staff access",
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
     "Exact-PDF team approval",
@@ -77,16 +76,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 2647,
-      "sha256": "46ee784cf2afaaa1c52064b1de9df59fc048e03e4b1bdbeac423da3776f00e9a"
+      "bytes": 2791,
+      "sha256": "070c41ea5cbc53ff8e7ceabb6e9afe490efac73ee2db21c4c2c058a2e58a1cbd"
     },
     "CHANGES.md": {
       "bytes": 6559,
       "sha256": "4b7d4f881b1e3951ed2ee9d38f03506f8f4387b56d5b286a64253e1b9803edd5"
     },
     "RELEASE_CHECKLIST.md": {
-      "bytes": 1234,
-      "sha256": "68f913e86e457049418e3fc4abe182c09005693f66b89aa5e517b8a69663f747"
+      "bytes": 1342,
+      "sha256": "fac575809d32ff4e36432d9b379d593cb38197a66433596fcac8d1bd0df1948c"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1384,
@@ -97,8 +96,8 @@
       "sha256": "345fa620dd9de66ebf833cddaeac23d2c0f50deac29372a2e22fc13254299955"
     },
     "TEAM_REVIEW.md": {
-      "bytes": 1330,
-      "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
+      "bytes": 1381,
+      "sha256": "4f6dc9b2f04c32c82478f6a18bca3976337b42c38822ce75e4b90c6ef125d83f"
     },
     "build_baseline_figure.py": {
       "bytes": 1528,
@@ -107,6 +106,10 @@
     "additional-checks.json": {
       "bytes": 5860,
       "sha256": "b9cdf233f604b0bb81c7d2ccde3c64f33ff3079ebfb9045cd59ed363bdb7bf7d"
+    },
+    "public-access-check.json": {
+      "bytes": 1703,
+      "sha256": "8deecfcc3fea11269a2a1e4b6ba3614a50d59966cac58be8abc16739c0142cb3"
     }
   },
   "visual_inspection": "All six pages inspected without overlap, clipping or missing glyphs. Figure 1 page 3, prediction table/MACE subsection page 4, recovery Table 2 page 5; references page 6. No layout warnings.",
@@ -183,5 +186,12 @@
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
   "solver_constants_verified_against_github_snapshot": true,
   "original_numerical_rows_loss_figure_and_bibliography_preserved": false,
-  "figure_data_preserved": true
+  "figure_data_preserved": true,
+  "repository_public_access": {
+    "status": "PASS_ANONYMOUS_HTTP_200",
+    "date": "2026-10-24",
+    "evidence": "public-access-check.json",
+    "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+    "current_report_bytes_verified": true
+  }
 }

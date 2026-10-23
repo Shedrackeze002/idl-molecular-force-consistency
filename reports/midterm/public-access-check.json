@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-24",
+  "repository_visibility": "PUBLIC",
+  "authentication": "No credentials or GitHub session supplied; curl configuration disabled.",
+  "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+  "report_commit": "138941063bd7f74583299d5430c25ef47c67b7fa",
+  "checks": [
+    {
+      "name": "repository",
+      "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency",
+      "http_status": 200,
+      "anonymous": true,
+      "sha256": "5d5e6e7db9fb0d5afe85a20e47cd5dac288b1d153aa1bc7f6813f91dfafbf901"
+    },
+    {
+      "name": "research_snapshot",
+      "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/tree/3fa5969e5a0c2fdeaebc76a05bace20799715203",
+      "http_status": 200,
+      "anonymous": true,
+      "sha256": "0d11682dab164588eb9e6b1f708c8bc07cdf6414a9d2c676b0ed9b606bdb0e5f"
+    },
+    {
+      "name": "snapshot_evaluator",
+      "url": "https://raw.githubusercontent.com/Shedrackeze002/idl-molecular-force-consistency/3fa5969e5a0c2fdeaebc76a05bace20799715203/evaluation/relax.py",
+      "http_status": 200,
+      "anonymous": true,
+      "sha256": "b5321a21dd17dd0f23e7d89575af96263f115812826faf7e73ebd2cd372b4c4e"
+    },
+    {
+      "name": "current_report",
+      "url": "https://raw.githubusercontent.com/Shedrackeze002/idl-molecular-force-consistency/138941063bd7f74583299d5430c25ef47c67b7fa/reports/midterm/group9_Midterm_IDL.pdf",
+      "http_status": 200,
+      "anonymous": true,
+      "sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9"
+    }
+  ],
+  "report_pdf_bytes_match": true,
+  "scope": "Verifies anonymous read access; does not verify course submission or team approval."
+}

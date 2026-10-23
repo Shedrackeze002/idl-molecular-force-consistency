@@ -11,4 +11,4 @@ Review [the current PDF](group9_Midterm_IDL.pdf) and [source](group9_Midterm_IDL
 
 Each member confirms their name, actual contributions and authored links. Make substantive corrections under the appropriate member identity. Assigned work remains separate from completed contribution credit.
 
-Use the [release checklist](RELEASE_CHECKLIST.md) to record staff access, live course requirements and team approval of the exact PDF. The current PDF already has no working-draft label. Report approval and submission remain separate actions.
+Anonymous public access is verified. Use the [release checklist](RELEASE_CHECKLIST.md) to record contribution confirmations, live course requirements and team approval of the exact PDF. The current PDF already has no working-draft label. Report approval and submission remain separate actions.
