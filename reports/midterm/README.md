@@ -15,3 +15,5 @@ Research code and evidence are linked to fixed snapshot `3fa5969e5a0c2fdeaebc76a
 Anonymous public access to the repository, cited research snapshot, evaluator and current PDF is verified; see [the access check](public-access-check.json). Remaining [release checks](RELEASE_CHECKLIST.md) are contribution confirmations, live Canvas instructions and deadline, and approval of the exact PDF. Page-limit compliance is established for this export; no submission is implied.
 
 The default branch README now links directly to this report directory and the fixed research snapshot; its older status narrative is labelled as the 15 October checkpoint. Anonymous access to the navigation links and fresh report export is verified.
+
+Saved export updated on 24 October after the conclusion revision. Superseded export bytes and matching source are preserved in [the dated archive](../archive/midterm/exports-2026-10-24/README.md). The local delivery PDF is a symbolic link to this canonical PDF; the editor preview is separate from the saved export.

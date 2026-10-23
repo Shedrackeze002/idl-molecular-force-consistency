@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36",
-  "pdf_bytes": 80313,
+  "pdf_sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf",
+  "pdf_bytes": 80353,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -47,7 +47,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": false,
-  "review_scope": "Authorized final reproducibility and navigation corrections, retaining latest user edits. Existing numerical table cells, loss, figure, course style and references preserved. No new experiment or independent scientific-result clearance.",
+  "review_scope": "Export and archive consolidation after the conclusion revision. Source edits preserved; numerical tables, loss, figure and bibliography unchanged. No new experiment.",
   "release_checks_pending": [
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
@@ -56,12 +56,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20835,
-      "sha256": "ab5f416d96899dea8bcaab10432e994c88625678f0ed74e5d621371aacab3274"
+      "bytes": 20878,
+      "sha256": "4c220f5263b56895a4e1997ede9a2899630457cf23f1eda83a197a2a8dbb2aa5"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 80313,
-      "sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36"
+      "bytes": 80353,
+      "sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -76,16 +76,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 3315,
-      "sha256": "084adb42a1624abbf6eb4bc9ecf51847d6d97f1287194886f3bc20837ddc210c"
+      "bytes": 3632,
+      "sha256": "32be1e2912185085ee636b17ebe66b1e86f799ff98570b8322a5e6a2d3dbc6f8"
     },
     "CHANGES.md": {
-      "bytes": 7507,
-      "sha256": "e032056416d79dce0b1bb9e16c83662e731f8005351e75a77f7f2358d7d37652"
+      "bytes": 7947,
+      "sha256": "37e1b242d051de92ef90627d9e24c38ae5a09acc8d0f5340dd708bc2f3132950"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1342,
-      "sha256": "b000e98cade68ef6ea5548af34ab664bbca42525879d21cd893515a2baf8e230"
+      "sha256": "50f23fc13efff4fe8a48588bb370e312418bbb994c3e70ef513ae2e2ea33ddd1"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1368,
@@ -121,7 +121,7 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "ab5f416d96899dea8bcaab10432e994c88625678f0ed74e5d621371aacab3274",
+    "source_sha256": "4c220f5263b56895a4e1997ede9a2899630457cf23f1eda83a197a2a8dbb2aa5",
     "built_in_compile": "success",
     "body_sentences": 126,
     "max_sentence_words": 32,
@@ -147,7 +147,8 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9",
+    "pdf_sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36",
+    "archive": "reports/archive/midterm/exports-2026-10-24",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -167,7 +168,7 @@
     "overfull_boxes": 0,
     "undefined_references": 0,
     "all_pages_visual_pass": true,
-    "abstract_clarity_changed": true,
+    "abstract_clarity_changed": false,
     "energy_slope_definition_and_three_models_present": true,
     "original_numerical_rows_and_loss_preserved": true,
     "mace_reference_row_added": true,
@@ -199,7 +200,8 @@
     "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
     "current_report_bytes_verified": true,
     "report_commit": "df6c86b9a4bf31cf2a2a2c38be63195335d6c31f",
-    "main_readme_commit": "63250d8025483ca6172808da17ddaf7f4bbe532e"
+    "main_readme_commit": "63250d8025483ca6172808da17ddaf7f4bbe532e",
+    "scope": "Historical access check for the prior report export; current export publication verified separately."
   },
   "user_edited_paragraph_retained": {
     "scope": "Endpoint diagnostic and trace paragraph",
@@ -214,5 +216,12 @@
     ],
     "report_and_research_links_verified": true,
     "report_branch_merged": false
+  },
+  "export_consolidation": {
+    "canonical_pdf": "reports/midterm/group9_Midterm_IDL.pdf",
+    "delivery_path": "output/pdf/group9_Midterm_IDL.pdf",
+    "delivery_is_relative_symbolic_link": true,
+    "old_export_preserved": true,
+    "editor_preview_is_separate": true
   }
 }

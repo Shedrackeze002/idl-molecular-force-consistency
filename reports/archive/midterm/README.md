@@ -13,3 +13,5 @@ Every archived file retains its original bytes. Relative links and source-record
 | midterm-round3-2026-10-23 | [Record](midterm-round3-2026-10-23/README.md) |
 | midterm-faculty-context-2026-10-23 | [Record](midterm-faculty-context-2026-10-23/README.md) |
 | midterm-maintext-2026-10-23 | [Record](midterm-maintext-2026-10-23/README.md) |
+
+The [superseded 24 October export](exports-2026-10-24/README.md) preserves the previous saved PDF and matching source, with checksums and former locations.

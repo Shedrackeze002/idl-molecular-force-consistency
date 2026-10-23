@@ -9,7 +9,7 @@
 - [x] Verify anonymous public access to the repository, cited research snapshot, evaluator and current report (24 October 2026).
 - [ ] Obtain all four contribution confirmations and authored evidence.
 - [ ] Verify live Canvas upload/group instructions and exact due time/timezone.
-- [ ] Obtain team approval of PDF SHA-256 `4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36`.
+- [ ] Obtain team approval of PDF SHA-256 `e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf`.
 - [ ] Authorized final submission after those checks.
 
 The earlier full content clearance applies to its prior exact PDF. Current source compiles; the current export meets the page limit and passes layout checks. Assigned roles remain; no new completed deliverable is confirmed for Aaron or Idris. The repository is now public, and anonymous access is verified. No merge or submission has occurred.
