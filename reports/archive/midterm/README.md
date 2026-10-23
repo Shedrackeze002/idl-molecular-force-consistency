@@ -17,3 +17,5 @@ Every archived file retains its original bytes. Relative links and source-record
 The [superseded 24 October export](exports-2026-10-24/README.md) preserves the previous saved PDF and matching source, with checksums and former locations.
 
 The [edition before the abstract clarity revision](abstract-before-clarity-2026-10-24/README.md) preserves the source and PDF that immediately preceded it.
+
+The [edition before hypothesis and synthesis clarification](before-rubric-strengthening-2026-10-24/README.md) preserves its exact source and PDF.

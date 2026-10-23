@@ -6,7 +6,7 @@
   "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 27,
-  "prose_sentences": 126,
+  "prose_sentences": 125,
   "max_sentence_words": 32,
   "language_flags": [],
   "sentence_and_paragraph_scope": "Descriptive prose and abstract, excluding headings. Sentences checked against the recorded word ceiling. The latest user-authored merged diagnostic/trace paragraph is retained with nine sentences; other descriptive paragraphs have at most six.",
@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "7079ceeba1da443df8a4ff42bed79a783d6982a937b5b85ebbbd761516c427ca",
-  "pdf_bytes": 80349,
+  "pdf_sha256": "cddf779881b7a36d69fa19992d91624100403f2d83d3f5d9b47ea983db81da7c",
+  "pdf_bytes": 80414,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -49,7 +49,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": false,
-  "review_scope": "Bounded abstract clarity revision. All source outside the abstract is unchanged; pages 2\u20136 pixel-identical. Editorial review, not a measured novice-comprehension test. No new experiment.",
+  "review_scope": "Three bounded prose areas: Introduction hypothesis, Literature Review connections and gap, Conclusion synthesis. Abstract and all other manuscript source unchanged. No new experiment, score guarantee or scientific-result acceptance.",
   "release_checks_pending": [
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
@@ -58,12 +58,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20892,
-      "sha256": "9e00c137c528aa85037eac51ecac39bcb79405b4ebe8b2b73de1862179112adc"
+      "bytes": 20998,
+      "sha256": "a714a84f52e74c114d8c8b6394c24a51af12908c8203e8d2d1ab99371dcc8c94"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 80349,
-      "sha256": "7079ceeba1da443df8a4ff42bed79a783d6982a937b5b85ebbbd761516c427ca"
+      "bytes": 80414,
+      "sha256": "cddf779881b7a36d69fa19992d91624100403f2d83d3f5d9b47ea983db81da7c"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -78,16 +78,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 4051,
-      "sha256": "754f5b8a37e554483935ca2d0da366de49a1108e277dc5a7a0c49d6878f00761"
+      "bytes": 4455,
+      "sha256": "c75691bd5a4cfbb2a02d769d51e89406f07cf06d4c22424eb4656de97634168b"
     },
     "CHANGES.md": {
-      "bytes": 8655,
-      "sha256": "a9fc5537d762251adaea4bec10f7971c5d789ee4567564fe3ca1496cafea110c"
+      "bytes": 9366,
+      "sha256": "100197e67f06ece9ebc11ef86858be702dc403c3a12fc9249b4561c358855346"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1342,
-      "sha256": "608a433e9f7cd5e21d2cf70bb66c4c9a7f897d7d7b29aa6b7c202097faf6a8c2"
+      "sha256": "3c445dccd615f48b4d65096c18ba66119319436961ccce7507dc0d7eb98c090a"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1368,
@@ -123,9 +123,9 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "9e00c137c528aa85037eac51ecac39bcb79405b4ebe8b2b73de1862179112adc",
+    "source_sha256": "a714a84f52e74c114d8c8b6394c24a51af12908c8203e8d2d1ab99371dcc8c94",
     "built_in_compile": "success",
-    "body_sentences": 126,
+    "body_sentences": 125,
     "max_sentence_words": 32,
     "sentence_or_paragraph_flags": [],
     "abstract_unchanged_from_pre_edit_source": false,
@@ -149,8 +149,8 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf",
-    "archive": "reports/archive/midterm/abstract-before-clarity-2026-10-24",
+    "pdf_sha256": "7079ceeba1da443df8a4ff42bed79a783d6982a937b5b85ebbbd761516c427ca",
+    "archive": "reports/archive/midterm/before-rubric-strengthening-2026-10-24",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -170,7 +170,7 @@
     "overfull_boxes": 0,
     "undefined_references": 0,
     "all_pages_visual_pass": true,
-    "abstract_clarity_changed": true,
+    "abstract_clarity_changed": false,
     "energy_slope_definition_and_three_models_present": true,
     "original_numerical_rows_and_loss_preserved": true,
     "mace_reference_row_added": true,
@@ -190,8 +190,12 @@
     "energy_baseline_fits_explicitly_reused": true,
     "supervised_vs_worker_time_explicit": true,
     "latest_separate_planned_work_heading_retained": true,
-    "body_outside_abstract_unchanged": true,
-    "pages2_to6_pixel_identical": true
+    "body_outside_abstract_unchanged": false,
+    "pages2_to6_pixel_identical": false,
+    "abstract_unchanged": true,
+    "hypothesis_explicit": true,
+    "paper_specific_literature_connections": true,
+    "agreement_vs_recovery_synthesis": true
   },
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
   "solver_constants_verified_against_github_snapshot": true,
