@@ -1,13 +1,13 @@
 {
-  "status": "CURRENT_EXPORT_VERIFIED_PAGE_LIMIT_EXCEEDED",
-  "pages": 7,
-  "main_text_pages": 6,
-  "reference_start_page": 7,
+  "status": "PASS_FIVE_MAIN_PAGES_CURRENT_EXPORT",
+  "pages": 6,
+  "main_text_pages": 5,
+  "reference_start_page": 6,
   "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 42,
-  "prose_sentences": 130,
-  "max_sentence_words": 28,
+  "prose_sentences": 127,
+  "max_sentence_words": 30,
   "language_flags": [],
   "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
   "five_predictive_rows_unchanged": true,
@@ -18,13 +18,11 @@
   "original_figure_unchanged": true,
   "all_pages_rendered": true,
   "character_bounds_flags": [],
-  "compile_warnings": [
-    "Underfull vertical box; no visible overlap or clipping"
-  ],
+  "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437",
-  "pdf_bytes": 81056,
+  "pdf_sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06",
+  "pdf_bytes": 79705,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -47,9 +45,9 @@
     "Conclusion and Future Work"
   ],
   "two_bounded_plan_and_final_reviews_pass": false,
-  "all_six_pages_visually_inspected": false,
+  "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Current source compiles; all seven exported pages rendered and inspected. Page limit is exceeded. Prior scientific clearances remain bound to earlier exact artifacts.",
+  "review_scope": "Current wording and length revision checked against saved records; abstract, numerical tables, loss, figure asset, course style and bibliography preserved. Built-in compilation and file export pass; no new experiment or new independent scientific-result clearance.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -59,12 +57,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 21063,
-      "sha256": "24830e56de86aa4409feb310e3888e5ca0ab6fce8204fc1383066cf3c584ea28"
+      "bytes": 20000,
+      "sha256": "9945c4050b67a5d54edbdd60cd416cf9f4f1bba3359b124adfe75146d50ab9d4"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 81056,
-      "sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437"
+      "bytes": 79705,
+      "sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -79,20 +77,20 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1540,
-      "sha256": "a6a89de6f543ac56918a23903a9521d8335ca420eec34718878e92170a53a959"
+      "bytes": 1398,
+      "sha256": "322f3c14a0492938421b833ee8078f8f43fab7b5719c77484f5ad2edebe5d87e"
     },
     "CHANGES.md": {
-      "bytes": 3282,
-      "sha256": "e496ceff7bf954bdc573fadbbc578e668756c8a91500f0da0afd2ad3ce73467d"
+      "bytes": 3979,
+      "sha256": "8a75a6e76d3af724054ff0ef084d73d6046626ab3f44521b8571c49ea84dad22"
     },
     "RELEASE_CHECKLIST.md": {
-      "bytes": 1297,
-      "sha256": "0dafb6ee5bc25a0669f0f08918c28ccaba4b06999f908017f04022cd6aad142b"
+      "bytes": 1234,
+      "sha256": "6536cb28202e28fc97aed8ca308bcf8ebc9abee641fab7e48131960eff2a9367"
     },
     "EVIDENCE_MAP.md": {
-      "bytes": 1113,
-      "sha256": "aa87ea3759e44439fefde630b7bbf103757cba2c275437a619ccb3598caf1b51"
+      "bytes": 1095,
+      "sha256": "7672df91cd76789e01b350b1d8a20ed292cb63f58f23ee557d5378e3bbe75cbe"
     },
     "source-records.json": {
       "bytes": 1159,
@@ -103,7 +101,7 @@
       "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
-  "visual_inspection": "All seven exported pages inspected; no overlap, clipping or missing characters",
+  "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters; Figure 1 page 3, Table 2 page 5",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
@@ -111,27 +109,15 @@
     "archive_inventory": "reports/archive/midterm/relocations.json",
     "archive_files_byte_preserved": true
   },
-  "latest_wording_check": {
-    "one_abstract_clause_changed": true,
-    "other_source_unchanged": true,
-    "pages2_to6_pixel_identical": true,
-    "abstract_max_sentence_words": 27
-  },
-  "last_exported_pdf": {
-    "sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae",
-    "pages": 6,
-    "main_text_pages": 5,
-    "scope": "Prior exported PDF; does not include the latest source changes."
-  },
   "source_verification": {
-    "source_sha256": "24830e56de86aa4409feb310e3888e5ca0ab6fce8204fc1383066cf3c584ea28",
+    "source_sha256": "9945c4050b67a5d54edbdd60cd416cf9f4f1bba3359b124adfe75146d50ab9d4",
     "built_in_compile": "success",
-    "body_sentences": 139,
-    "max_sentence_words": 29,
+    "body_sentences": 127,
+    "max_sentence_words": 30,
     "sentence_or_paragraph_flags": [],
     "abstract_unchanged_from_pre_edit_source": true,
     "numerical_tables_and_loss_unchanged": true,
-    "current_pdf_export": "complete; seven total pages, six main-text pages",
+    "current_pdf_export": "complete; six total pages, five main-text pages",
     "prior_preview_report": {
       "pages": 6,
       "main_text_pages": 5,
@@ -140,12 +126,34 @@
       "tool_visual_inspection": false
     },
     "current_export_page_count": {
-      "pages": 7,
-      "main_text_pages": 6,
-      "reference_start_page": 7,
+      "pages": 6,
+      "main_text_pages": 5,
+      "reference_start_page": 6,
       "basis": "Measured from exported PDF"
     }
   },
-  "page_limit_met": false,
-  "all_seven_pages_visually_inspected": true
+  "page_limit_met": true,
+  "previous_export": {
+    "pdf_sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437",
+    "pages": 7,
+    "main_text_pages": 6
+  },
+  "historical_abstract_clause_check": {
+    "one_abstract_clause_changed": true,
+    "other_source_unchanged": true,
+    "pages2_to6_pixel_identical": true,
+    "abstract_max_sentence_words": 27
+  },
+  "current_checks": {
+    "abstract_preserved": true,
+    "tables_and_loss_preserved": true,
+    "bibliography_preserved": true,
+    "course_style_and_preamble_preserved": true,
+    "figure_asset_preserved": true,
+    "figure1_page": 3,
+    "table2_page": 5,
+    "overfull_boxes": 0,
+    "undefined_references": 0,
+    "all_pages_visual_pass": true
+  }
 }
