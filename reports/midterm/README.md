@@ -1,9 +1,9 @@
 # Group 9 midterm report
 
-This is the canonical midterm report. Read [the PDF](group9_Midterm_IDL.pdf), edit [the source](group9_Midterm_IDL.tex), and use [team review assignments](TEAM_REVIEW.md) for remaining checks. The report contains five main-text pages and references on page 6 in the unchanged course template.
+This is the canonical midterm report. Edit [the current source](group9_Midterm_IDL.tex), and use [team review assignments](TEAM_REVIEW.md) for remaining checks. The latest source clarifies method rules, exposure accounting and diagnostic interpretation, and compiles successfully in the document editor.
 
-The PDF and manuscript are byte-identical to the latest verified edition. Research code and evidence are linked to completed snapshot `3fa5969e5a0c2fdeaebc76a05bace20799715203`. The report is published separately here. Model settings, results, tables, equations, figure and bibliography are unchanged.
+The [saved PDF](group9_Midterm_IDL.pdf) is the previous export. It has five main-text pages and references on page 6; it does not yet include the latest source edits. A current export and page-layout confirmation are pending. Do not treat the previous PDF as the current submission candidate.
 
-Earlier editions are in the [midterm archive](../archive/midterm/README.md). Their original files and hashes remain intact. The [relocation inventory](../archive/midterm/relocations.json) maps historical source-record paths to current locations.
+Research code and evidence are linked to completed snapshot `3fa5969e5a0c2fdeaebc76a05bace20799715203`. No numerical table, loss equation, model setting or experimental artifact changed. Earlier editions are in the [midterm archive](../archive/midterm/README.md), with original files and hashes retained in the [relocation inventory](../archive/midterm/relocations.json).
 
-Rebuild from this directory with `tectonic group9_Midterm_IDL.tex`. Local figure and course-style files are included. [Verification](verification.json) records artifact checks; [evidence map](EVIDENCE_MAP.md) identifies supporting records. [Release checks](RELEASE_CHECKLIST.md) remain open: staff access, contribution confirmations, live Canvas instructions and deadline, and team approval. No submission is implied.
+The source, local figure and course-style files belong to this directory. [Verification](verification.json) distinguishes current-source checks from the previous PDF export. [Release checks](RELEASE_CHECKLIST.md) remain open: a current PDF, staff access, contribution confirmations, live Canvas instructions and deadline, and team approval. No submission is implied.

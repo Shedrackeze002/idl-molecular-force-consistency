@@ -316,3 +316,8 @@ Designated reports/midterm as the canonical report directory. Moved seven earlie
 ### MIDTERM-ABSTRACT-2026-10-23-001 — recovery conclusion wording
 
 Clarified that this evaluation cannot rank the methods by recovery success. Exactly one abstract clause changed; all numerical results, equations, tables and other manuscript text are unchanged. Rebuilt five main pages plus references. Page 1 visually checked; pages 2–6 render pixel-identically to the previous verified PDF. PDF SHA-256: 97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae. No experiment or submission occurred.
+
+
+### MIDTERM-METHODS-2026-10-23-001 — method and diagnostic reporting
+
+Clarified adequacy criteria, exact relaxation acceptance, normalization, selected energy/force trade-off, matching uncertainty, exposure accounting and diagnostic scope in the canonical source. Recorded versions and descriptive representation errors were checked against saved provenance and scores. MACE and E3x training membership identities match for all 4,891 records; exposure ratio is 12.5184. Current user-authored abstract, tables, loss, figure and bibliography are preserved. Built-in compilation succeeds; source checks find no sentence above 35 words or paragraph above six sentences. No new experiment or submission occurred. Current PDF export and preview/page-layout confirmation remain pending; the saved PDF is explicitly labelled as the previous export.

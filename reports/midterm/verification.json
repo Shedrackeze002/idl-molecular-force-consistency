@@ -1,9 +1,9 @@
 {
-  "status": "PASS_ABSTRACT_CLAUSE_DIFF_BUILD_AND_LAYOUT",
-  "pages": 6,
-  "main_text_pages": 5,
-  "reference_start_page": 6,
-  "reference_pages": 1,
+  "status": "CURRENT_SOURCE_COMPILES_PDF_EXPORT_PENDING",
+  "pages": null,
+  "main_text_pages": null,
+  "reference_start_page": null,
+  "reference_pages": null,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 42,
   "prose_sentences": 130,
@@ -16,7 +16,7 @@
   "original_report_pdf_unchanged": true,
   "prior_short_sentence_pdf_unchanged": true,
   "original_figure_unchanged": true,
-  "all_pages_rendered": true,
+  "all_pages_rendered": false,
   "character_bounds_flags": [],
   "compile_warnings": [
     "Expected Unicode inputenc notice",
@@ -47,10 +47,10 @@
     "Results and Discussion",
     "Conclusion and Future Work"
   ],
-  "two_bounded_plan_and_final_reviews_pass": true,
-  "all_six_pages_visually_inspected": true,
+  "two_bounded_plan_and_final_reviews_pass": false,
+  "all_six_pages_visually_inspected": false,
   "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Prior scientific and editorial corrections retained. Latest change clarifies one abstract clause; source diff, build and layout checked. No experiment or new scientific interpretation.",
+  "review_scope": "Prior scientific records and exact prior report clearances remain preserved. Current source has reporting clarifications and passed source/language checks plus built-in compilation. Current PDF export/layout confirmation remains pending.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -60,8 +60,8 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 19504,
-      "sha256": "202f2356ee3984389400918954fd92d20a6a35ae816e2445e55cb7f429d0045e"
+      "bytes": 21065,
+      "sha256": "d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7"
     },
     "group9_Midterm_IDL.pdf": {
       "bytes": 77573,
@@ -80,16 +80,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1288,
-      "sha256": "890f329ba4c143d30c84dda810824064d205a86a9420ebca2bafce8d89caaca6"
+      "bytes": 1365,
+      "sha256": "d2c3038172b7d6566ab52a0f708949f499d6270cd5270eb093b36be7cc90052a"
     },
     "CHANGES.md": {
-      "bytes": 2153,
-      "sha256": "782ae65f0ec6078645c3bc8de5ff999fad744f46fb518a7f4375f1f3aa48fafd"
+      "bytes": 2860,
+      "sha256": "b4f7460b7cbed49ebb8eafa119da0de3d63b0e3dfffcc97546cf9e93045df8b2"
     },
     "RELEASE_CHECKLIST.md": {
-      "bytes": 1186,
-      "sha256": "51ef2e7d5ebdc02e61d44d33e01ded09d7123eb45a8d1edad7ff6e7d812d0439"
+      "bytes": 1242,
+      "sha256": "de3881d1b7fa18266f81553390c3f593e15657f4487aab5a65785159c68a1972"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1113,
@@ -104,7 +104,7 @@
       "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
-  "visual_inspection": "Page 1 inspected after abstract clarification; pages 2\u20136 pixel-identical to prior verified PDF",
+  "visual_inspection": "Previous exported PDF inspected previously; current preview not inspected through tools.",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
@@ -117,5 +117,22 @@
     "other_source_unchanged": true,
     "pages2_to6_pixel_identical": true,
     "abstract_max_sentence_words": 27
+  },
+  "last_exported_pdf": {
+    "sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae",
+    "pages": 6,
+    "main_text_pages": 5,
+    "scope": "Prior exported PDF; does not include the latest source changes."
+  },
+  "source_verification": {
+    "source_sha256": "d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7",
+    "built_in_compile": "success",
+    "body_sentences": 139,
+    "max_sentence_words": 29,
+    "sentence_or_paragraph_flags": [],
+    "abstract_unchanged_from_pre_edit_source": true,
+    "numerical_tables_and_loss_unchanged": true,
+    "current_preview_page_count": "Not returned by compiler; awaiting preview confirmation",
+    "current_pdf_export": "pending"
   }
 }

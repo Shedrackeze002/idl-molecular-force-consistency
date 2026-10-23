@@ -15,3 +15,5 @@ F1/F2 follow-up, 23 October: corrected the faculty sentence grammar to "Feedback
 Research reference update, 23 October: link the code and evidence to the completed representation snapshot `3fa5969`. The scientific manuscript content is unchanged.
 
 Abstract clarification, 23 October: the evaluation cannot rank methods by recovery success because every tested model state recovered zero targets. Numerical results and all other manuscript text are unchanged.
+
+Method reporting clarification, 23 October: defined the 50 meV/Å fitting threshold and baseline recovery criterion; specified force-dot-product step acceptance; added normalization scales, runtime versions and verified training-exposure accounting. Explained the energy/force trade-off, matching uncertainty, diagnostic evaluation count and selected trace cases. Added descriptive representation scores and consolidated general limitations. Displayed coefficients and trace displacements are rounded; exact settings and evidence remain preserved. Abstract, numerical tables, loss equation, figure and bibliography are unchanged from the current source before these edits. No new experiment was performed.
