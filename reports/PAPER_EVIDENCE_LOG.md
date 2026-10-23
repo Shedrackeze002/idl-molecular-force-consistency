@@ -306,3 +306,8 @@ The final manuscript review required F1/F2 and otherwise passed. Applied only th
 ### MIDTERM-REFERENCE-2026-10-23-001 — fixed research snapshot
 
 The midterm now links research code and evidence to completed representation snapshot 3fa5969e5a0c2fdeaebc76a05bace20799715203. Source, evaluation, configurations, manifests, scripts and evidence match the report branch at verification. Only the manuscript URL and displayed commit identifier changed. Tables, equations, numerical results, figure and bibliography remain unchanged. The rebuilt PDF has five main pages and a reference-only sixth page; numerical, link and page-layout checks pass. PDF SHA-256: 885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba. No experiment or submission occurred.
+
+
+### MIDTERM-CANONICAL-2026-10-23-001 — report organization
+
+Designated reports/midterm as the canonical report directory. Moved seven earlier editions into reports/archive/midterm with each file preserved byte-for-byte; relocations.json maps original paths and hashes to archived locations. The canonical TeX, PDF, style and figure bytes are unchanged. Canonical PDF SHA-256: 885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba. Current navigation and team review assignments point to the canonical source. No experiment, scientific result or submission changed.

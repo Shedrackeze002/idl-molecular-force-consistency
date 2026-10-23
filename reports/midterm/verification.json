@@ -80,8 +80,8 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1153,
-      "sha256": "32ea2c59d4d66da10394da96aed54824931b8777313a94a406e8804de5c23f64"
+      "bytes": 1288,
+      "sha256": "890f329ba4c143d30c84dda810824064d205a86a9420ebca2bafce8d89caaca6"
     },
     "CHANGES.md": {
       "bytes": 1941,
@@ -92,14 +92,24 @@
       "sha256": "f0d8aa5bac53566bba24d7d32b63a184bbe8f1121d8e2fcd3815558a8c28bf7d"
     },
     "EVIDENCE_MAP.md": {
-      "bytes": 1097,
-      "sha256": "0caabd230e7fe811a59e33dd068b7cf99804087cc0167d6fe139d4aa2d18221e"
+      "bytes": 1113,
+      "sha256": "aa87ea3759e44439fefde630b7bbf103757cba2c275437a619ccb3598caf1b51"
     },
     "source-records.json": {
-      "bytes": 939,
-      "sha256": "db24f83180491ece82adfc0499522208dc359aa5bd03568dd8f4cf653e1efd94"
+      "bytes": 1159,
+      "sha256": "345fa620dd9de66ebf833cddaeac23d2c0f50deac29372a2e22fc13254299955"
+    },
+    "TEAM_REVIEW.md": {
+      "bytes": 1330,
+      "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
   "visual_inspection": "Page 5 inspected; other five page images unchanged from prior verified PDF",
-  "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203"
+  "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+  "canonical_directory": "reports/midterm",
+  "relocation": {
+    "pdf_and_tex_unchanged": true,
+    "archive_inventory": "reports/archive/midterm/relocations.json",
+    "archive_files_byte_preserved": true
+  }
 }

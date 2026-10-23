@@ -9,4 +9,4 @@
 | Endpoint diagnostics, representation study, Conclusion and Future Work, proposal changes, next actions, member roles and GitHub | Page 5 |
 | Five references | Page 6, excluded from main-text limit |
 
-Original numerical claim bindings remain at `../midsemester-2026-10-18/claim-sources.json`. Representation supporting evidence remains at `reports/evidence/2026-10-20/representation/` in the repository, outside submitted prose. B1-B10/R1-R4 scientific dispositions remain unchanged. The saved rubric requires this content without mandating exact earlier printed headings. Live Canvas, access, confirmations and approval remain separate release checks.
+Original numerical claim bindings remain at `../archive/midterm/midsemester-2026-10-18/claim-sources.json`. Representation supporting evidence remains at `reports/evidence/2026-10-20/representation/` in the repository, outside submitted prose. B1-B10/R1-R4 scientific dispositions remain unchanged. The saved rubric requires this content without mandating exact earlier printed headings. Live Canvas, access, confirmations and approval remain separate release checks.

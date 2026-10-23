@@ -19,5 +19,7 @@
     "commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
     "scope": "Research code and evidence; current report published separately",
     "research_paths_unchanged_from_report_branch": true
-  }
+  },
+  "relocation_inventory": "reports/archive/midterm/relocations.json",
+  "historical_source_paths": "Original recorded paths are retained as provenance keys; consult the relocation inventory for current file locations."
 }
