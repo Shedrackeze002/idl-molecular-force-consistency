@@ -5,11 +5,11 @@
   "reference_start_page": 6,
   "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
-  "prose_paragraphs": 26,
+  "prose_paragraphs": 27,
   "prose_sentences": 126,
   "max_sentence_words": 32,
   "language_flags": [],
-  "sentence_and_paragraph_scope": "Descriptive body and abstract, excluding headings and inline bold run-in labels. Mathematics and units replaced by tokens for whitespace counts; captions, tables and references separately checked.",
+  "sentence_and_paragraph_scope": "Descriptive prose and abstract, excluding headings. Sentences checked against the recorded word ceiling. The latest user-authored merged diagnostic/trace paragraph is retained with nine sentences; other descriptive paragraphs have at most six.",
   "five_predictive_rows_unchanged": true,
   "five_recovery_rows_checked": true,
   "course_style_unchanged": true,
@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9",
-  "pdf_bytes": 80110,
+  "pdf_sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36",
+  "pdf_bytes": 80313,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -47,7 +47,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": false,
-  "review_scope": "Authorized reporting revision using saved evidence: paragraph consolidation, absolute scoped times, connected reference-start successes, selection optimism and secondary post-hoc matching. Original numerical table cells, loss, course style and bibliography preserved. Threshold legend changed with saved figure data retained. No new experiment or independent new-result clearance.",
+  "review_scope": "Authorized final reproducibility and navigation corrections, retaining latest user edits. Existing numerical table cells, loss, figure, course style and references preserved. No new experiment or independent scientific-result clearance.",
   "release_checks_pending": [
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
@@ -56,12 +56,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20673,
-      "sha256": "ce2297b8d95f99b5262e867faf0643be9525d17cdb037c95210a007f096bfa8b"
+      "bytes": 20835,
+      "sha256": "ab5f416d96899dea8bcaab10432e994c88625678f0ed74e5d621371aacab3274"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 80110,
-      "sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9"
+      "bytes": 80313,
+      "sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -76,20 +76,20 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 2791,
-      "sha256": "070c41ea5cbc53ff8e7ceabb6e9afe490efac73ee2db21c4c2c058a2e58a1cbd"
+      "bytes": 3064,
+      "sha256": "f6a302bf236af8698719ace0105e716ad8cda11d47ce486c7760425bea311579"
     },
     "CHANGES.md": {
-      "bytes": 6559,
-      "sha256": "4b7d4f881b1e3951ed2ee9d38f03506f8f4387b56d5b286a64253e1b9803edd5"
+      "bytes": 7507,
+      "sha256": "e032056416d79dce0b1bb9e16c83662e731f8005351e75a77f7f2358d7d37652"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1342,
-      "sha256": "fac575809d32ff4e36432d9b379d593cb38197a66433596fcac8d1bd0df1948c"
+      "sha256": "b000e98cade68ef6ea5548af34ab664bbca42525879d21cd893515a2baf8e230"
     },
     "EVIDENCE_MAP.md": {
-      "bytes": 1384,
-      "sha256": "e794e4c5b179fb2048cec83d5f0f6c960a2c75e826bd1eac8366b0129039ad8e"
+      "bytes": 1368,
+      "sha256": "c9a617e0ccd1795ec825c0752a470f3a18bc011d25da21497de7aad9d4df3264"
     },
     "source-records.json": {
       "bytes": 1159,
@@ -104,15 +104,15 @@
       "sha256": "b60284b7a267226591e5327942e2fdcef18bcc56cab78bf126c4e088896b994c"
     },
     "additional-checks.json": {
-      "bytes": 5860,
-      "sha256": "b9cdf233f604b0bb81c7d2ccde3c64f33ff3079ebfb9045cd59ed363bdb7bf7d"
+      "bytes": 9011,
+      "sha256": "7efae890d32d98d88c9125d08e0090cbedd274994f0739ce1f7be5598d089590"
     },
     "public-access-check.json": {
       "bytes": 1703,
       "sha256": "8deecfcc3fea11269a2a1e4b6ba3614a50d59966cac58be8abc16739c0142cb3"
     }
   },
-  "visual_inspection": "All six pages inspected without overlap, clipping or missing glyphs. Figure 1 page 3, prediction table/MACE subsection page 4, recovery Table 2 page 5; references page 6. No layout warnings.",
+  "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters. Figure 1 page 3; Tables 1 and 2 page 4; Endpoint Diagnostics starts page 5; references page 6. No layout warnings or table-interrupted split words.",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
@@ -121,7 +121,7 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "ce2297b8d95f99b5262e867faf0643be9525d17cdb037c95210a007f096bfa8b",
+    "source_sha256": "ab5f416d96899dea8bcaab10432e994c88625678f0ed74e5d621371aacab3274",
     "built_in_compile": "success",
     "body_sentences": 126,
     "max_sentence_words": 32,
@@ -147,7 +147,7 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "36440317bbc666b22bcab427700d06710fa68d1e49b8b4b706b46fead73b7ca7",
+    "pdf_sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -163,7 +163,7 @@
     "course_style_and_preamble_preserved": true,
     "figure_asset_preserved": false,
     "figure1_page": 3,
-    "table2_page": 5,
+    "table2_page": 4,
     "overfull_boxes": 0,
     "undefined_references": 0,
     "all_pages_visual_pass": true,
@@ -181,7 +181,12 @@
     "secondary_match_is_post_hoc": true,
     "consistency1_recovery_unmeasured": true,
     "reference_force_statistic_explicit": true,
-    "reference_start_control_connectivity_explicit": true
+    "reference_start_control_connectivity_explicit": true,
+    "table2_pinned_within_structural_recovery": true,
+    "diagnostic_section_start_page": 5,
+    "energy_baseline_fits_explicitly_reused": true,
+    "supervised_vs_worker_time_explicit": true,
+    "latest_separate_planned_work_heading_retained": true
   },
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
   "solver_constants_verified_against_github_snapshot": true,
@@ -193,5 +198,9 @@
     "evidence": "public-access-check.json",
     "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
     "current_report_bytes_verified": true
+  },
+  "user_edited_paragraph_retained": {
+    "scope": "Endpoint diagnostic and trace paragraph",
+    "sentences": 9
   }
 }

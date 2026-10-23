@@ -99,7 +99,13 @@
     "reports/evidence/2026-10-18/paired-trace/raw/08-energy-0/result.json": "5d46225dc96c7ccf7e2a07949d6edeacc7a82cf40629568272a24fce5dd323ea",
     "reports/evidence/2026-10-18/paired-trace/raw/08-energy-0/relaxation.json": "db64eea8b85d9100e537f1178966dac4f47a4bf0217d1608814a157b6d43ff05",
     "reports/evidence/2026-10-18/paired-trace/raw/09-energy-0/result.json": "ad83a6a0b0cc548746f079fa094f9add8f4c9274af89aa5db59cb3faeeaa9391",
-    "reports/evidence/2026-10-18/paired-trace/raw/09-energy-0/relaxation.json": "d7cc01c787a4d1f7b38016325dd9953c040fdb937efc3c3760f96d9703cb0495"
+    "reports/evidence/2026-10-18/paired-trace/raw/09-energy-0/relaxation.json": "d7cc01c787a4d1f7b38016325dd9953c040fdb937efc3c3760f96d9703cb0495",
+    "reports/evidence/2026-10-18/controlled/direct-0/summary.json": "bade756e350478c138f7b28c46a8025352c2342052f37fc76b0f7f821e75af47",
+    "reports/evidence/2026-10-18/controlled/direct-1/summary.json": "ba07e12b48883cb4e045a03057d5aadaa07c1d214e071c8423cd81e672e377ff",
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-0/summary.json": "4efbd6f7cb5e841486dbfc854bc0d3da3d9091a69b61c00e320f54cdf3aa7291",
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-1/summary.json": "f12460df396cb436c6d6e312111e05597b635a03f5c0ae58ed3d603ac51b2bfb",
+    "reports/evidence/2026-10-20/representation/E64-0/score.json": "3642ee5cdfec131059252694879e638524cbbe9d6d21babf1853b3c4963c9971",
+    "reports/evidence/2026-10-20/representation/E64-1/score.json": "e19364831b69c5e94714f144f827453433cad48f8825ad29e2ae84978c4dcb11"
   },
   "connectivity_definition": "Number of connected components with an edge for an atom pair strictly closer than 5 angstroms; computed from saved final positions.",
   "figure": {
@@ -110,5 +116,60 @@
     "build_script": "reports/midterm/build_baseline_figure.py",
     "old_figure_sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
     "current_figure_sha256": "6c162f5142ebb578244a3e4354e94d2681957a4a3fb1940e33e9074fe5c01a22"
-  }
+  },
+  "timing_definition": "Mean supervised fitting-stage plus scoring-stage elapsed time, including their overhead, excluding separate diagnostics and unmeasured project overhead; not worker-only elapsed time or inference timing.",
+  "worker_and_supervised_timing": [
+    {
+      "arm": "direct",
+      "seed": 0,
+      "worker_elapsed_seconds": 2996.981212790939,
+      "supervised_fit_seconds": 3002.1372755829943,
+      "scoring_seconds": 5.836591999977827,
+      "surrounding_fit_stage_overhead_seconds": 5.156062792055309,
+      "supervised_fit_plus_score_seconds": 3007.973867582972
+    },
+    {
+      "arm": "direct",
+      "seed": 1,
+      "worker_elapsed_seconds": 2842.153061249992,
+      "supervised_fit_seconds": 2846.5328850829974,
+      "scoring_seconds": 5.375373582937755,
+      "surrounding_fit_stage_overhead_seconds": 4.379823833005503,
+      "supervised_fit_plus_score_seconds": 2851.908258665935
+    },
+    {
+      "arm": "consistency-0.1",
+      "seed": 0,
+      "worker_elapsed_seconds": 5383.110502874944,
+      "supervised_fit_seconds": 5387.797184041003,
+      "scoring_seconds": 5.057759499992244,
+      "surrounding_fit_stage_overhead_seconds": 4.686681166058406,
+      "supervised_fit_plus_score_seconds": 5392.854943540995
+    },
+    {
+      "arm": "consistency-0.1",
+      "seed": 1,
+      "worker_elapsed_seconds": 6228.238633124973,
+      "supervised_fit_seconds": 6233.427179582999,
+      "scoring_seconds": 6.122837999952026,
+      "surrounding_fit_stage_overhead_seconds": 5.188546458026394,
+      "supervised_fit_plus_score_seconds": 6239.550017582951
+    }
+  ],
+  "energy_baseline_fit_reuse": [
+    {
+      "seed": 0,
+      "representation_score": "reports/evidence/2026-10-20/representation/E64-0/score.json",
+      "original_score": "reports/evidence/2026-10-18/baseline/C/score.json",
+      "same_best_checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+      "new_fit_performed": false
+    },
+    {
+      "seed": 1,
+      "representation_score": "reports/evidence/2026-10-20/representation/E64-1/score.json",
+      "original_score": "reports/evidence/2026-10-18/controlled/energy-1/score.json",
+      "same_best_checkpoint_sha256": "155bad1a8b3debcc33cc88be3adb807f05fe793cb999b3cdb96b21fad79d33c1",
+      "new_fit_performed": false
+    }
+  ]
 }
