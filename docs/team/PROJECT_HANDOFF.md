@@ -1,5 +1,7 @@
 # Group 9: project handoff and proposed ownership
 
+> Current progress is maintained in [Project status](PROJECT_STATUS.md). As of 15 October 2026, both MACE runs and the first energy/direct engineering fits are complete. The3 October progress and immediate steps below are historical; current tasks are in the owner lists. Original authored handoff prose is preserved.
+
 3 October 2026. Prepared for Shedrack Eze, Olufunke Abodunrin, Emmanuel Aaron and Muhammed Idris, as named in the submitted proposal. This is a proposed work allocation assuming comparable technical ability; assignments can be exchanged by agreement. It records no completed contribution for anyone. The October 23 midterm and December 9 report dates below are planning targets from the proposal, to be checked against the current course schedule.
 
 ## Brief progress report for the team
@@ -23,7 +25,7 @@ Shedrack takes the largest workstream because he has the implementation context 
 | **Emmanuel Aaron** | Physical-consistency evaluation, cost measurements and comparative analysis | Draft metrics/output schemas and implement analytic conservative/nonconservative fixtures, with tests for units, unavailable values and failure routing | Closed-loop work, energy/direct-force disagreement where a corresponding energy exists, matched-hardware inference timing and connection-level analysis/plots. Own physical consistency, error/cost comparisons and uncertainty analysis. |
 | **Muhammed Idris** | Same-split MACE reference and reproducible compute setup | Draft the MACE/data-export and GPU verification plans; audit artifact availability, reuse the existing aspirin loader and GPU instructions | Tested MACE export/inference adapter, same-split training configuration, verified compute smoke checks and a trained reference checkpoint after approval. Own MACE methods/results and runtime reproducibility. |
 
-These assignments give every team member independent engineering work while the baseline fitting investigation continues.
+These assignments give the other three members independent engineering work while the baseline fitting investigation continues. They should use synthetic controls and training-only fixtures initially. No one needs to reproduce the completed diagnostic sequence to demonstrate a contribution.
 
 ## Boundaries and dependencies
 
@@ -58,12 +60,12 @@ The first PR is successful when another member can run its documented small fixt
 
 ## Read these before starting
 
-Read `TEAM.md`, this brief and `docs/run-baseline.md` first. Then read the following source appropriate to the workstream; the experiment index points to targeted scientific reports.
+Read `TEAM.md`, this brief and `docs/run-baseline.md` first. Then read the following source appropriate to the workstream; the large evidence log is an index for targeted lookup, not a required cover-to-cover read.
 
 - Scope and claim limits: `proposal.tex` and `CLAIM_AUDIT.md`. The submitted proposal's “No models have been trained” sentence described submission-time status; the dated current reports supersede it.
 - Current data state: `manifests/landscape17-preparation-status.json` and `manifests/landscape17-aspirin-split.json`.
 - Existing lessons: `reports/force-learning-diagnostics.md`, `reports/data-coverage-diagnostics.md`, `reports/capacity-spike-paper-findings.md` and `reports/offset-profile-paper-findings.md`.
 - Width/rate authority: use `reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.md`. The original failed matrix and earlier invalid replacement report are preserved historical attempts.
 - Literature and citations: `reports/literature/2026-09-30/READING_MAP.md`, `registry.json` and `references.bib`; extend targeted reading and cite primary sources without restarting the intake.
-- Lead's immediate task: `docs/research/plans/2026-10-03-force-isolation.md` with historical launch records retained separately as described in `docs/REPRODUCTION.md`.
+- Lead's immediate task: [current project status](PROJECT_STATUS.md) and [published evidence](../../reports/evidence/2026-10-15/README.md).
 - Contribution record: `docs/team/CONTRIBUTIONS.md`. All assignments are proposed until the team agrees; no contribution is credited in advance.

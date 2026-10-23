@@ -1,0 +1,629 @@
+{
+  "admission": {
+    "CPU_threads": 1,
+    "accelerated_kernels": false,
+    "calculator_source_sha256": "97b17cef8d5880071068d1a05a97f1d432ffc57db00d23ba86c2c3049114a8ad",
+    "device": "cpu",
+    "dtype": "float64",
+    "environment_deviations": [
+      "Linux/CUDA training to macOS/CPU scoring",
+      "Python3.13 training to Python3.12 scoring; strict S1 remains required"
+    ],
+    "history_rows": 2004993,
+    "installed_sources": {
+      "mace.cli.run_train": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/cli/run_train.py",
+        "sha256": "4f219fce454279b54cb7a10af30e8e8508cb7b83b3ffa6981ed89dbe7dc8de8b"
+      },
+      "mace.tools": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/tools/__init__.py",
+        "sha256": "3e01c003cbf1b68624fe34c317312bca2e54357721ffb1ca63330b9b4e00d3d7"
+      },
+      "mace.tools.arg_parser": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/tools/arg_parser.py",
+        "sha256": "9e583bbadc58492861655932c2dc71a069731eece3946ebc681e43f628149d86"
+      },
+      "mace.tools.checkpoint": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/tools/checkpoint.py",
+        "sha256": "82641f53f222d2333f5bd023323d2b077b229d6fe2e6bac986d26c5fbb19dc00"
+      },
+      "mace.tools.train": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/tools/train.py",
+        "sha256": "ca700fa6685e75124ca725d83b2fa55303c0803c48a2ac0c4b543f8f63aa4dfc"
+      },
+      "mace.tools.utils": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/mace/tools/utils.py",
+        "sha256": "50d20a3a1fc45ff421fa945781e16243763473b79b413232f9721a75a63a3b0a"
+      },
+      "torch_ema.ema": {
+        "path": "retained-research-checkout/baselines/mace/.venv/lib/python3.12/site-packages/torch_ema/ema.py",
+        "sha256": "704475f89a37f5dc0681080aa8cba7d1a665bb886a9d3e1becddc21ffa9d6473"
+      }
+    },
+    "models_deserialized": false,
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "prediction_batch": "one ASE structure",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "versions": {
+      "ase": "3.29.0",
+      "e3nn": "0.4.4",
+      "mace-torch": "0.3.16",
+      "numpy": "2.5.3",
+      "torch": "2.14.1",
+      "torch-ema": "0.3",
+      "torchmetrics": "1.9.0"
+    }
+  },
+  "admission_only": false,
+  "claim_scope": "Run A single-seed MACE-only same-split reference",
+  "elapsed_seconds": 1152.628629666986,
+  "ended_at_utc": "2026-10-14T16:59:29.746907+00:00",
+  "limitations": [
+    "Single seed; final epoch primary, selected checkpoint secondary",
+    "Validation used by scheduler and secondary checkpoint selection",
+    "Training frame exposures are committed production exposures, not total compute including diagnostics or lost partial attempts",
+    "No causal, setup-specific, relaxation or test-generalization conclusion",
+    "A full-data E3x baseline under the same metric and selection rule remains required for setup-specific comparison",
+    "Single-composition zero-E0 energies are not identifiable by element",
+    "Linux/CUDA/Python3.13 to macOS/CPU/Python3.12; both strict S1 checks required",
+    "Hard7200second supervisor and independent saved-result reviews are external launch/acceptance requirements"
+  ],
+  "models": {
+    "final": {
+      "epoch": 2047,
+      "predictions": {
+        "train": {
+          "path": "final-train-predictions.npz",
+          "sha256": "0194f98411bd02637cc22408fcad17d9b183094912dc3f684af2ec408ff607ba"
+        },
+        "valid": {
+          "path": "final-valid-predictions.npz",
+          "sha256": "22bf7d88815ae3a84ecb8717c497f11311f058c1a862f8efd0e08a5efda0d3cd"
+        }
+      },
+      "s1": {
+        "absolute_tolerance": 0,
+        "metrics": {
+          "mae_f": {
+            "absolute_difference": 2.3418766925686896e-17,
+            "local": 0.00525983286381519,
+            "logged": 0.005259832863815167,
+            "passed": true,
+            "relative_difference": 4.4523785321764635e-15
+          },
+          "rmse_f": {
+            "absolute_difference": 3.469446951953614e-17,
+            "local": 0.02641038976153195,
+            "logged": 0.026410389761531917,
+            "passed": true,
+            "relative_difference": 1.3136674556037947e-15
+          }
+        },
+        "passed": true,
+        "relative_tolerance": 1e-06
+      },
+      "train": {
+        "absolute_energy_mae_eV": 0.0027304677193983034,
+        "energy_mae_eV": 0.002730467719415526,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 308133,
+        "force_mse_eV2_per_A2": 7.426799218510744e-07,
+        "force_mse_fraction_of_zero_force": 4.612878946855326e-05,
+        "force_rmse_eV_per_A": 0.0008617887919038367,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.0005752059489657191,
+        "record_count": 4891,
+        "residual_energy_mae_eV": 0.002730467719415526,
+        "zero_force_mse_eV2_per_A2": 0.01610013898928285
+      },
+      "train_diverse128": {
+        "absolute_energy_mae_eV": 0.0029921825551753045,
+        "energy_mae_eV": 0.002992182555160772,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 8064,
+        "force_mse_eV2_per_A2": 6.971401971889809e-07,
+        "force_mse_fraction_of_zero_force": 4.949891794507769e-05,
+        "force_rmse_eV_per_A": 0.0008349492183294628,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.0005667579173417373,
+        "record_count": 128,
+        "residual_energy_mae_eV": 0.002992182555160772,
+        "zero_force_mse_eV2_per_A2": 0.014083948218070219
+      },
+      "train_narrow16": {
+        "absolute_energy_mae_eV": 0.0046904892637940065,
+        "energy_mae_eV": 0.004690489263930815,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 1008,
+        "force_mse_eV2_per_A2": 6.149053780430564e-07,
+        "force_mse_fraction_of_zero_force": 6.068008798882596e-05,
+        "force_rmse_eV_per_A": 0.0007841590259909379,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.0005569600300061023,
+        "record_count": 16,
+        "residual_energy_mae_eV": 0.004690489263930815,
+        "zero_force_mse_eV2_per_A2": 0.010133561081129106
+      },
+      "validation": {
+        "absolute_energy_mae_eV": 0.0074618421825479,
+        "energy_mae_eV": 0.0074618421825989,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": 0.005348956868537277,
+        "force_component_count": 61362,
+        "force_mse_eV2_per_A2": 0.0006975086873560318,
+        "force_mse_fraction_of_zero_force": 0.03206087651011,
+        "force_rmse_eV_per_A": 0.02641038976153195,
+        "per_group": {
+          "13": {
+            "energy_absolute_sum": 0.7835813888034328,
+            "force_absolute_sum": 59.89612988700104,
+            "force_component_count": 10395,
+            "force_mae_eV_per_A": 0.005762013457142957,
+            "record_count": 165
+          },
+          "18": {
+            "energy_absolute_sum": 2.0790330123634897,
+            "force_absolute_sum": 59.98756933147041,
+            "force_component_count": 13671,
+            "force_mae_eV_per_A": 0.0043879430423136865,
+            "record_count": 217
+          },
+          "18_2": {
+            "energy_absolute_sum": 0.9804720220903608,
+            "force_absolute_sum": 78.05994628691002,
+            "force_component_count": 14301,
+            "force_mae_eV_per_A": 0.005458355799378366,
+            "record_count": 227
+          },
+          "66": {
+            "energy_absolute_sum": 1.3029743194908798,
+            "force_absolute_sum": 50.32284290425162,
+            "force_component_count": 12537,
+            "force_mae_eV_per_A": 0.004013946151731006,
+            "record_count": 199
+          },
+          "78": {
+            "energy_absolute_sum": 2.1217735431031732,
+            "force_absolute_sum": 74.48737577979479,
+            "force_component_count": 10458,
+            "force_mae_eV_per_A": 0.0071225258921203665,
+            "record_count": 166
+          }
+        },
+        "pooled_force_mae_eV_per_A": 0.00525983286381519,
+        "record_count": 974,
+        "residual_energy_mae_eV": 0.0074618421825989,
+        "zero_force_mse_eV2_per_A2": 0.02175575852195061
+      }
+    },
+    "selected": {
+      "epoch": 1987,
+      "predictions": {
+        "train": {
+          "path": "selected-train-predictions.npz",
+          "sha256": "8624e5da4222255cdf44be03f661c9fa8750a1dae3b767a10873133bbe759462"
+        },
+        "valid": {
+          "path": "selected-valid-predictions.npz",
+          "sha256": "291d455e479d021a4a6f04f6bd6186ed7025531dd0294c681e4d3dedc443f84e"
+        }
+      },
+      "s1": {
+        "absolute_tolerance": 0,
+        "metrics": {
+          "mae_f": {
+            "absolute_difference": 9.540979117872439e-18,
+            "local": 0.0052423233769284035,
+            "logged": 0.005242323376928394,
+            "passed": true,
+            "relative_difference": 1.819990571329984e-15
+          },
+          "rmse_f": {
+            "absolute_difference": 3.8163916471489756e-17,
+            "local": 0.02607135397430812,
+            "logged": 0.02607135397430808,
+            "passed": true,
+            "relative_difference": 1.463825642085879e-15
+          }
+        },
+        "passed": true,
+        "relative_tolerance": 1e-06
+      },
+      "train": {
+        "absolute_energy_mae_eV": 0.004326952825377734,
+        "energy_mae_eV": 0.004326952825385721,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 308133,
+        "force_mse_eV2_per_A2": 8.433997483257183e-07,
+        "force_mse_fraction_of_zero_force": 5.238462530585185e-05,
+        "force_rmse_eV_per_A": 0.000918367980890949,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.0005960836664629668,
+        "record_count": 4891,
+        "residual_energy_mae_eV": 0.004326952825385721,
+        "zero_force_mse_eV2_per_A2": 0.01610013898928285
+      },
+      "train_diverse128": {
+        "absolute_energy_mae_eV": 0.004312636234288902,
+        "energy_mae_eV": 0.004312636234367579,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 8064,
+        "force_mse_eV2_per_A2": 7.718951130715862e-07,
+        "force_mse_fraction_of_zero_force": 5.480672756814148e-05,
+        "force_rmse_eV_per_A": 0.0008785756160237923,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.0005884235693432237,
+        "record_count": 128,
+        "residual_energy_mae_eV": 0.004312636234367579,
+        "zero_force_mse_eV2_per_A2": 0.014083948218070219
+      },
+      "train_narrow16": {
+        "absolute_energy_mae_eV": 0.008193351497084223,
+        "energy_mae_eV": 0.008193351497254402,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": null,
+        "force_component_count": 1008,
+        "force_mse_eV2_per_A2": 6.859801139797226e-07,
+        "force_mse_fraction_of_zero_force": 6.769388455724283e-05,
+        "force_rmse_eV_per_A": 0.0008282391647221971,
+        "per_group": {},
+        "pooled_force_mae_eV_per_A": 0.000579412347309719,
+        "record_count": 16,
+        "residual_energy_mae_eV": 0.008193351497254402,
+        "zero_force_mse_eV2_per_A2": 0.010133561081129106
+      },
+      "validation": {
+        "absolute_energy_mae_eV": 0.008135946585570097,
+        "energy_mae_eV": 0.008135946585574585,
+        "energy_offset_eV": -17647.258992926312,
+        "equal_connection_force_mae_eV_per_A": 0.005332516276879746,
+        "force_component_count": 61362,
+        "force_mse_eV2_per_A2": 0.0006797154980536717,
+        "force_mse_fraction_of_zero_force": 0.031243015377646722,
+        "force_rmse_eV_per_A": 0.02607135397430812,
+        "per_group": {
+          "13": {
+            "energy_absolute_sum": 1.1747022157478089,
+            "force_absolute_sum": 59.57324056850981,
+            "force_component_count": 10395,
+            "force_mae_eV_per_A": 0.0057309514736421175,
+            "record_count": 165
+          },
+          "18": {
+            "energy_absolute_sum": 1.677858253394939,
+            "force_absolute_sum": 59.33146149153207,
+            "force_component_count": 13671,
+            "force_mae_eV_per_A": 0.0043399503687756615,
+            "record_count": 217
+          },
+          "18_2": {
+            "energy_absolute_sum": 1.4269113759795669,
+            "force_absolute_sum": 78.28430481411777,
+            "force_component_count": 14301,
+            "force_mae_eV_per_A": 0.0054740441097907684,
+            "record_count": 227
+          },
+          "66": {
+            "energy_absolute_sum": 2.127462284266982,
+            "force_absolute_sum": 49.58241082982398,
+            "force_component_count": 12537,
+            "force_mae_eV_per_A": 0.003954886402634121,
+            "record_count": 199
+          },
+          "78": {
+            "energy_absolute_sum": 1.5174778449603514,
+            "force_absolute_sum": 74.90802935109734,
+            "force_component_count": 10458,
+            "force_mae_eV_per_A": 0.007162749029556066,
+            "record_count": 166
+          }
+        },
+        "pooled_force_mae_eV_per_A": 0.0052423233769284035,
+        "record_count": 974,
+        "residual_energy_mae_eV": 0.008135946585574585,
+        "zero_force_mse_eV2_per_A2": 0.02175575852195061
+      }
+    }
+  },
+  "no_test_data_reads": true,
+  "production_inference_calls": 11730,
+  "provenance": {
+    "archive_sha256": "f359b44767b6a587ae0e6518deef5feb34713526fcbc689ba14f1f09b683279d",
+    "completion": {
+      "ema_num_updates": 2002944,
+      "epoch_count": 2048,
+      "epoch_index": 2047,
+      "frame_exposures": 10014720,
+      "loader": {
+        "batch_size": 5,
+        "dataset_records": 4891,
+        "drop_last": true,
+        "steps_per_epoch": 978
+      },
+      "logged_eval": {
+        "epoch": 2047,
+        "head": "Default",
+        "loss": 0.06975092305991873,
+        "mae_e": 0.007461842182598939,
+        "mae_e_per_atom": 0.0003553258182189971,
+        "mae_f": 0.005259832863815167,
+        "mode": "eval",
+        "q95_e": 0.020673152463566376,
+        "q95_f": 0.02244337332945054,
+        "rel_mae_f": 8.447904937654057,
+        "rel_rmse_f": 17.90555111561252,
+        "rmse_e": 0.010276281865634743,
+        "rmse_e_per_atom": 0.0004893467555064163,
+        "rmse_f": 0.026410389761531917,
+        "time": 4.738017320632935
+      },
+      "optimizer_steps": 2002944,
+      "protocol": "3d261fc669c87e790119e27fef542cbe07c15555f3f9d612cac42f083844b399",
+      "results_file": "/content/drive/MyDrive/IDL-Landscape17/MACE-Run-A-A10040/e6d65d2f2a097fd11330cabda5335b1ceb89f865bd72b3a43688020e89bf4b36/attempts/6a8effda7cd641c494fef217ecd2ed25/work-production/results/runA_run-0_train.txt",
+      "results_sha256": "159c1aac3247fb4e26f144874b80350e2fc6474e0ad206f122afb882fc83486c",
+      "selected_epoch": 1987,
+      "status": "VERIFIED_COMPLETE"
+    },
+    "export_receipt_sha256": "685dfa4f1bc85dfda87bdf27e634412c76f7c6282f65f3bca453326b621bada5",
+    "generation": "generation-002048-0d145947109f4a34ad9158bf9b7f30c7",
+    "inventory": {
+      "completion.json": {
+        "bytes": 1242,
+        "sha256": "878df62cd894c25e708575def8766ba3b0d5694967492f8bb70888f7036caee8"
+      },
+      "fullstate.pt": {
+        "bytes": 104979115,
+        "sha256": "f3c3df901e9cd506daba5fa95a410a888665be15b7f1dc8aabf17c25850aef3b"
+      },
+      "metrics.jsonl": {
+        "bytes": 180052801,
+        "sha256": "159c1aac3247fb4e26f144874b80350e2fc6474e0ad206f122afb882fc83486c"
+      },
+      "models/final_epoch.model": {
+        "bytes": 23397415,
+        "sha256": "fbd128215c0d74f5d9e5d3ccde778763221f987535dcc8ce4f4f8471a5b35407"
+      },
+      "models/selected.model": {
+        "bytes": 23397415,
+        "sha256": "edf38f9d5a05520dae62cc15c2b43221061507bafe6626be02d2de9aef4ec97f"
+      },
+      "selected/runA_run-0_epoch-1987.pt": {
+        "bytes": 72251683,
+        "sha256": "84e9318cb80e56370a7fbca4598501cc9824f959570ce26867c58225f4a5c40b"
+      }
+    },
+    "notebook_sha256": "2e851f6e1f75e516138ec9f246ec5b9f1ebec41ba953c3c8f696f4b7663f54d1",
+    "payload_sha256": "79dcff28f70de143385ec3f94e78ac5c2e11898aedbdf285138b508bcac1a6a5",
+    "preflight_sha256": "bf07b740d690966b35882fc475c6ee8e0ee9a89e50c148ffa31a7464a6cdd254",
+    "protocol": "3d261fc669c87e790119e27fef542cbe07c15555f3f9d612cac42f083844b399",
+    "receipt_sha256": "d671d67afc35742e011716cb7df7cdd0e358c6f45643b35bdb0723672289e5ed",
+    "source_inventory": {
+      "colab_runA.py": {
+        "bytes": 17595,
+        "sha256": "15b77cc0270a11cceee5a1379b80123c88e03b3a3e4c3f5744fdefec47331ed8"
+      },
+      "config.json": {
+        "bytes": 3893,
+        "sha256": "ae3f11b8e287662623dbccecf03d27bb13ad2bad27dd06f70fdeec6afcb6c1bc"
+      },
+      "data/export-receipt.json": {
+        "bytes": 1244,
+        "sha256": "685dfa4f1bc85dfda87bdf27e634412c76f7c6282f65f3bca453326b621bada5"
+      },
+      "data/train.extxyz": {
+        "bytes": 11648700,
+        "sha256": "94efa8b5f5db5d3237e7a6a3df7db425f476f372c65646b59e6dd8850f5fe232"
+      },
+      "data/train.memberships.json": {
+        "bytes": 691810,
+        "sha256": "de7ab3ceb97ec7a16831db953b1b6e716cec5de8f9cb3f4f016a391fe3cdfb2b"
+      },
+      "data/valid.extxyz": {
+        "bytes": 2319725,
+        "sha256": "b1d5ef64f434ee9dffb523874ccada47023be4acec57cbbd2f544e201e5ec148"
+      },
+      "data/valid.memberships.json": {
+        "bytes": 138729,
+        "sha256": "2536021ee9966bf9fd930c83bfd92ed63f91bacca3f51e251368caf5db7466e8"
+      },
+      "gpu_migration_probe.py": {
+        "bytes": 8969,
+        "sha256": "a254d3f7e185f009dd5f978b25c1b6bc9069856c268b29c756347bb538148e3c"
+      },
+      "requirements-linux-py313.lock": {
+        "bytes": 104384,
+        "sha256": "4764e50816995955e169bcfd6edf6fd82e7b407c9df3743f6500cf72b25823cc"
+      },
+      "requirements-linux.lock": {
+        "bytes": 104378,
+        "sha256": "55a03dcad7389a5b74aa3d6336822cbd083b8263734b995747949b5c9c9b7f2c"
+      },
+      "resume_store.py": {
+        "bytes": 7756,
+        "sha256": "8b0946b8a8a01a418d607aa6706bdba4a6198e9421637763d208cfdf22a7821f"
+      },
+      "subsets.json": {
+        "bytes": 31949,
+        "sha256": "a35a3bca09e757ced446e64d417e29014be0904435f476933bedf10110c0b338"
+      },
+      "train_final.py": {
+        "bytes": 12554,
+        "sha256": "fc2fdfcfa48aa26b60583cdd0c233aa0a30b40c4eb906e5bef79fc584384a087"
+      },
+      "train_resume.py": {
+        "bytes": 22024,
+        "sha256": "1ae8ef0b5e7ed15919f529eaeba3ff0c4744f6b37944c1f7bcde8c4c649f88b7"
+      }
+    },
+    "subset_manifest_sha256": "a35a3bca09e757ced446e64d417e29014be0904435f476933bedf10110c0b338",
+    "training_environment": {
+      "capability": [
+        8,
+        0
+      ],
+      "device": "cuda",
+      "driver": "580.82.07",
+      "gpu_count": 1,
+      "gpu_memory": 42405855232,
+      "gpu_name": "NVIDIA A100-SXM4-40GB",
+      "loader_source_sha256": "5729d20b7d9101bba6e6fb9b5d7d2be27612a2473d09abb2ae79290e866b8129",
+      "packages": {
+        "ase": "3.29.0",
+        "e3nn": "0.4.4",
+        "mace-torch": "0.3.16",
+        "numpy": "2.5.3",
+        "torch": "2.14.1",
+        "torch-ema": "0.3",
+        "torchmetrics": "1.9.0"
+      },
+      "platform": "Linux",
+      "python": [
+        3,
+        13
+      ],
+      "source_hashes": {
+        "mace.cli.run_train": "4f219fce454279b54cb7a10af30e8e8508cb7b83b3ffa6981ed89dbe7dc8de8b",
+        "mace.tools": "3e01c003cbf1b68624fe34c317312bca2e54357721ffb1ca63330b9b4e00d3d7",
+        "mace.tools.arg_parser": "9e583bbadc58492861655932c2dc71a069731eece3946ebc681e43f628149d86",
+        "mace.tools.checkpoint": "82641f53f222d2333f5bd023323d2b077b229d6fe2e6bac986d26c5fbb19dc00",
+        "mace.tools.train": "ca700fa6685e75124ca725d83b2fa55303c0803c48a2ac0c4b543f8f63aa4dfc",
+        "mace.tools.utils": "50d20a3a1fc45ff421fa945781e16243763473b79b413232f9721a75a63a3b0a",
+        "torch_ema.ema": "704475f89a37f5dc0681080aa8cba7d1a665bb886a9d3e1becddc21ffa9d6473"
+      },
+      "torch_cuda": "13.0"
+    }
+  },
+  "q_ref": {
+    "checkpoint_side_disagreement": false,
+    "inconclusive_band_by_model": {
+      "final": false,
+      "selected": false
+    },
+    "inconclusive_band_inclusive": [
+      0.045,
+      0.055
+    ],
+    "margin_below_0_0500_eV_per_A": {
+      "final": 0.044651043131462724,
+      "selected": 0.04466748372312026
+    },
+    "primary": "final_epoch_ema",
+    "primary_diverse128_fraction": 4.949891794507769e-05,
+    "reading": "MACE_WORKING_REFERENCE",
+    "runA_training_fit_le_0_1": true,
+    "scope": "Single-seed MACE-only same-split observation; no setup-specific or test-generalization conclusion",
+    "secondary": "MACE_weighted_validation_loss_selected",
+    "strict_diverse128_lt_0_1": true,
+    "validation_le_0_0500": {
+      "final": true,
+      "selected": true
+    },
+    "validation_threshold_eV_per_A": 0.05
+  },
+  "scorer_sha256": "48ca2340a2071ef16658704c2589983680d375dd9210bb2294634bd67a6f1e7b",
+  "started_at_utc": "2026-10-14T16:40:17.103824+00:00",
+  "status": "PASS_SCORING_AND_S1",
+  "zero_force_references": {
+    "train": {
+      "absolute_energy_mae_eV": 0.0,
+      "energy_mae_eV": 0.0,
+      "energy_offset_eV": -17647.258992926312,
+      "equal_connection_force_mae_eV_per_A": null,
+      "force_component_count": 308133,
+      "force_mse_eV2_per_A2": 0.01610013898928285,
+      "force_mse_fraction_of_zero_force": 1.0,
+      "force_rmse_eV_per_A": 0.126886323097814,
+      "per_group": {},
+      "pooled_force_mae_eV_per_A": 0.055057783321358,
+      "record_count": 4891,
+      "residual_energy_mae_eV": 0.0,
+      "zero_force_mse_eV2_per_A2": 0.01610013898928285
+    },
+    "train_diverse128": {
+      "absolute_energy_mae_eV": 0.0,
+      "energy_mae_eV": 0.0,
+      "energy_offset_eV": -17647.258992926312,
+      "equal_connection_force_mae_eV_per_A": null,
+      "force_component_count": 8064,
+      "force_mse_eV2_per_A2": 0.014083948218070219,
+      "force_mse_fraction_of_zero_force": 1.0,
+      "force_rmse_eV_per_A": 0.1186758114278989,
+      "per_group": {},
+      "pooled_force_mae_eV_per_A": 0.05086910733258925,
+      "record_count": 128,
+      "residual_energy_mae_eV": 0.0,
+      "zero_force_mse_eV2_per_A2": 0.014083948218070219
+    },
+    "train_narrow16": {
+      "absolute_energy_mae_eV": 0.0,
+      "energy_mae_eV": 0.0,
+      "energy_offset_eV": -17647.258992926312,
+      "equal_connection_force_mae_eV_per_A": null,
+      "force_component_count": 1008,
+      "force_mse_eV2_per_A2": 0.010133561081129106,
+      "force_mse_fraction_of_zero_force": 1.0,
+      "force_rmse_eV_per_A": 0.10066559035305513,
+      "per_group": {},
+      "pooled_force_mae_eV_per_A": 0.04827626806547619,
+      "record_count": 16,
+      "residual_energy_mae_eV": 0.0,
+      "zero_force_mse_eV2_per_A2": 0.010133561081129106
+    },
+    "valid": {
+      "absolute_energy_mae_eV": 0.0,
+      "energy_mae_eV": 0.0,
+      "energy_offset_eV": -17647.258992926312,
+      "equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+      "force_component_count": 61362,
+      "force_mse_eV2_per_A2": 0.02175575852195061,
+      "force_mse_fraction_of_zero_force": 1.0,
+      "force_rmse_eV_per_A": 0.14749833396330486,
+      "per_group": {
+        "13": {
+          "energy_absolute_sum": 0.0,
+          "force_absolute_sum": 843.31244782,
+          "force_component_count": 10395,
+          "force_mae_eV_per_A": 0.0811267386070226,
+          "record_count": 165
+        },
+        "18": {
+          "energy_absolute_sum": 0.0,
+          "force_absolute_sum": 855.0058452500001,
+          "force_component_count": 13671,
+          "force_mae_eV_per_A": 0.06254157305610417,
+          "record_count": 217
+        },
+        "18_2": {
+          "energy_absolute_sum": 0.0,
+          "force_absolute_sum": 851.9382220099995,
+          "force_component_count": 14301,
+          "force_mae_eV_per_A": 0.05957193357177817,
+          "record_count": 227
+        },
+        "66": {
+          "energy_absolute_sum": 0.0,
+          "force_absolute_sum": 768.2303077200004,
+          "force_component_count": 12537,
+          "force_mae_eV_per_A": 0.0612770445656856,
+          "record_count": 199
+        },
+        "78": {
+          "energy_absolute_sum": 0.0,
+          "force_absolute_sum": 502.03271887999995,
+          "force_component_count": 10458,
+          "force_mae_eV_per_A": 0.0480046585274431,
+          "record_count": 166
+        }
+      },
+      "pooled_force_mae_eV_per_A": 0.062261978776441435,
+      "record_count": 974,
+      "residual_energy_mae_eV": 0.0,
+      "zero_force_mse_eV2_per_A2": 0.02175575852195061
+    }
+  }
+}
