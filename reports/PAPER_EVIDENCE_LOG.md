@@ -321,3 +321,8 @@ Clarified that this evaluation cannot rank the methods by recovery success. Exac
 ### MIDTERM-METHODS-2026-10-23-001 — method and diagnostic reporting
 
 Clarified adequacy criteria, exact relaxation acceptance, normalization, selected energy/force trade-off, matching uncertainty, exposure accounting and diagnostic scope in the canonical source. Recorded versions and descriptive representation errors were checked against saved provenance and scores. MACE and E3x training membership identities match for all 4,891 records; exposure ratio is 12.5184. Current user-authored abstract, tables, loss, figure and bibliography are preserved. Built-in compilation succeeds; source checks find no sentence above 35 words or paragraph above six sentences. No new experiment or submission occurred. Current PDF export and preview/page-layout confirmation remain pending; the saved PDF is explicitly labelled as the previous export.
+
+
+### MIDTERM-PAGINATION-2026-10-23-001 — current preview format
+
+Current editor preview confirmed as six total pages: five main-text pages and references on page 6. Source SHA-256 d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7 remains unchanged from the successful built-in compile. This is preview confirmation, not a new exported PDF or tool-based visual inspection. Current PDF export and final release checks remain pending.

@@ -80,16 +80,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1365,
-      "sha256": "d2c3038172b7d6566ab52a0f708949f499d6270cd5270eb093b36be7cc90052a"
+      "bytes": 1442,
+      "sha256": "99a7810465e7ab59eaaccaa8c3fc43d2c6fc261c01b93510a91ee87bd279c387"
     },
     "CHANGES.md": {
       "bytes": 2860,
       "sha256": "b4f7460b7cbed49ebb8eafa119da0de3d63b0e3dfffcc97546cf9e93045df8b2"
     },
     "RELEASE_CHECKLIST.md": {
-      "bytes": 1242,
-      "sha256": "de3881d1b7fa18266f81553390c3f593e15657f4487aab5a65785159c68a1972"
+      "bytes": 1254,
+      "sha256": "aa2527fedd768d5f3558293bcbbdff89117f618adcd25adf6e68843a4939de84"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1113,
@@ -132,7 +132,13 @@
     "sentence_or_paragraph_flags": [],
     "abstract_unchanged_from_pre_edit_source": true,
     "numerical_tables_and_loss_unchanged": true,
-    "current_preview_page_count": "Not returned by compiler; awaiting preview confirmation",
+    "current_preview_page_count": {
+      "pages": 6,
+      "main_text_pages": 5,
+      "reference_start_page": 6,
+      "basis": "Coordinator confirmed current editor preview on 23 October 2026",
+      "tool_visual_inspection": false
+    },
     "current_pdf_export": "pending"
   }
 }
