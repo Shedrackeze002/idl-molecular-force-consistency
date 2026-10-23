@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf",
-  "pdf_bytes": 80353,
+  "pdf_sha256": "7079ceeba1da443df8a4ff42bed79a783d6982a937b5b85ebbbd761516c427ca",
+  "pdf_bytes": 80349,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -33,7 +33,9 @@
       "Results",
       "Conclusion"
     ],
-    "first_person_pronouns": 0
+    "first_person_pronouns": 0,
+    "max_sentence_words": 29,
+    "nonexpert_terms_explained": true
   },
   "manuscript_first_person_pronouns": 0,
   "main_sections": [
@@ -47,7 +49,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": false,
-  "review_scope": "Export and archive consolidation after the conclusion revision. Source edits preserved; numerical tables, loss, figure and bibliography unchanged. No new experiment.",
+  "review_scope": "Bounded abstract clarity revision. All source outside the abstract is unchanged; pages 2\u20136 pixel-identical. Editorial review, not a measured novice-comprehension test. No new experiment.",
   "release_checks_pending": [
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
@@ -56,12 +58,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20878,
-      "sha256": "4c220f5263b56895a4e1997ede9a2899630457cf23f1eda83a197a2a8dbb2aa5"
+      "bytes": 20892,
+      "sha256": "9e00c137c528aa85037eac51ecac39bcb79405b4ebe8b2b73de1862179112adc"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 80353,
-      "sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf"
+      "bytes": 80349,
+      "sha256": "7079ceeba1da443df8a4ff42bed79a783d6982a937b5b85ebbbd761516c427ca"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -76,16 +78,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 3632,
-      "sha256": "32be1e2912185085ee636b17ebe66b1e86f799ff98570b8322a5e6a2d3dbc6f8"
+      "bytes": 4051,
+      "sha256": "754f5b8a37e554483935ca2d0da366de49a1108e277dc5a7a0c49d6878f00761"
     },
     "CHANGES.md": {
-      "bytes": 7947,
-      "sha256": "37e1b242d051de92ef90627d9e24c38ae5a09acc8d0f5340dd708bc2f3132950"
+      "bytes": 8655,
+      "sha256": "a9fc5537d762251adaea4bec10f7971c5d789ee4567564fe3ca1496cafea110c"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1342,
-      "sha256": "50f23fc13efff4fe8a48588bb370e312418bbb994c3e70ef513ae2e2ea33ddd1"
+      "sha256": "608a433e9f7cd5e21d2cf70bb66c4c9a7f897d7d7b29aa6b7c202097faf6a8c2"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1368,
@@ -121,7 +123,7 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "4c220f5263b56895a4e1997ede9a2899630457cf23f1eda83a197a2a8dbb2aa5",
+    "source_sha256": "9e00c137c528aa85037eac51ecac39bcb79405b4ebe8b2b73de1862179112adc",
     "built_in_compile": "success",
     "body_sentences": 126,
     "max_sentence_words": 32,
@@ -147,8 +149,8 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36",
-    "archive": "reports/archive/midterm/exports-2026-10-24",
+    "pdf_sha256": "e0c5c951f3686c8d46c2d6792f64acb1c86fc3aeaaf5dfc492a63f2bda5cb7cf",
+    "archive": "reports/archive/midterm/abstract-before-clarity-2026-10-24",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -168,7 +170,7 @@
     "overfull_boxes": 0,
     "undefined_references": 0,
     "all_pages_visual_pass": true,
-    "abstract_clarity_changed": false,
+    "abstract_clarity_changed": true,
     "energy_slope_definition_and_three_models_present": true,
     "original_numerical_rows_and_loss_preserved": true,
     "mace_reference_row_added": true,
@@ -187,7 +189,9 @@
     "diagnostic_section_start_page": 5,
     "energy_baseline_fits_explicitly_reused": true,
     "supervised_vs_worker_time_explicit": true,
-    "latest_separate_planned_work_heading_retained": true
+    "latest_separate_planned_work_heading_retained": true,
+    "body_outside_abstract_unchanged": true,
+    "pages2_to6_pixel_identical": true
   },
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
   "solver_constants_verified_against_github_snapshot": true,

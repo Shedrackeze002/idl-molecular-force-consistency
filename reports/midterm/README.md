@@ -17,3 +17,5 @@ Anonymous public access to the repository, cited research snapshot, evaluator an
 The default branch README now links directly to this report directory and the fixed research snapshot; its older status narrative is labelled as the 15 October checkpoint. Anonymous access to the navigation links and fresh report export is verified.
 
 Saved export updated on 24 October after the conclusion revision. Superseded export bytes and matching source are preserved in [the dated archive](../archive/midterm/exports-2026-10-24/README.md). The local delivery PDF is a symbolic link to this canonical PDF; the editor preview is separate from the saved export.
+
+The current abstract explains force prediction, the three approaches, error units and exploratory recovery checks for readers new to molecular machine learning. Its six sentences retain the MACE result and cost/recovery limits. Only the abstract changed in this edition; pages 2–6 are pixel-identical. The [preceding source and PDF](../archive/midterm/abstract-before-clarity-2026-10-24/README.md) remain preserved.
