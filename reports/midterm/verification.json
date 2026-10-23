@@ -76,8 +76,8 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 3064,
-      "sha256": "f6a302bf236af8698719ace0105e716ad8cda11d47ce486c7760425bea311579"
+      "bytes": 3315,
+      "sha256": "084adb42a1624abbf6eb4bc9ecf51847d6d97f1287194886f3bc20837ddc210c"
     },
     "CHANGES.md": {
       "bytes": 7507,
@@ -108,8 +108,8 @@
       "sha256": "7efae890d32d98d88c9125d08e0090cbedd274994f0739ce1f7be5598d089590"
     },
     "public-access-check.json": {
-      "bytes": 1703,
-      "sha256": "8deecfcc3fea11269a2a1e4b6ba3614a50d59966cac58be8abc16739c0142cb3"
+      "bytes": 2167,
+      "sha256": "215a5165a34213385f5ea31f03b4eb1959069383ff36615f144777d40afd991f"
     }
   },
   "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters. Figure 1 page 3; Tables 1 and 2 page 4; Endpoint Diagnostics starts page 5; references page 6. No layout warnings or table-interrupted split words.",
@@ -197,10 +197,22 @@
     "date": "2026-10-24",
     "evidence": "public-access-check.json",
     "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
-    "current_report_bytes_verified": true
+    "current_report_bytes_verified": true,
+    "report_commit": "df6c86b9a4bf31cf2a2a2c38be63195335d6c31f",
+    "main_readme_commit": "63250d8025483ca6172808da17ddaf7f4bbe532e"
   },
   "user_edited_paragraph_retained": {
     "scope": "Endpoint diagnostic and trace paragraph",
     "sentences": 9
+  },
+  "default_branch_navigation": {
+    "status": "PASS",
+    "branch": "main",
+    "commit": "63250d8025483ca6172808da17ddaf7f4bbe532e",
+    "changed_paths": [
+      "README.md"
+    ],
+    "report_and_research_links_verified": true,
+    "report_branch_merged": false
   }
 }

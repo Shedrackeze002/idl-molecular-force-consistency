@@ -3,21 +3,22 @@
   "repository_visibility": "PUBLIC",
   "authentication": "No credentials or GitHub session supplied; curl configuration disabled.",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
-  "report_commit": "138941063bd7f74583299d5430c25ef47c67b7fa",
+  "report_commit": "df6c86b9a4bf31cf2a2a2c38be63195335d6c31f",
+  "main_readme_commit": "63250d8025483ca6172808da17ddaf7f4bbe532e",
   "checks": [
     {
       "name": "repository",
       "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency",
       "http_status": 200,
       "anonymous": true,
-      "sha256": "5d5e6e7db9fb0d5afe85a20e47cd5dac288b1d153aa1bc7f6813f91dfafbf901"
+      "sha256": "73f332b62abba11681c53f8748d3d8bf99df25ef540671483e3911377c45eb06"
     },
     {
       "name": "research_snapshot",
       "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/tree/3fa5969e5a0c2fdeaebc76a05bace20799715203",
       "http_status": 200,
       "anonymous": true,
-      "sha256": "0d11682dab164588eb9e6b1f708c8bc07cdf6414a9d2c676b0ed9b606bdb0e5f"
+      "sha256": "8a99a8357f9ba0370c3211f25174f700424a1cb58ee665b5abcac3a568c145d2"
     },
     {
       "name": "snapshot_evaluator",
@@ -28,12 +29,20 @@
     },
     {
       "name": "current_report",
-      "url": "https://raw.githubusercontent.com/Shedrackeze002/idl-molecular-force-consistency/138941063bd7f74583299d5430c25ef47c67b7fa/reports/midterm/group9_Midterm_IDL.pdf",
+      "url": "https://raw.githubusercontent.com/Shedrackeze002/idl-molecular-force-consistency/df6c86b9a4bf31cf2a2a2c38be63195335d6c31f/reports/midterm/group9_Midterm_IDL.pdf",
       "http_status": 200,
       "anonymous": true,
-      "sha256": "9854432512f69805e412d8351c9a344cbdbbead56426c974d9f639b384e3b2c9"
+      "sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36"
+    },
+    {
+      "name": "main_readme",
+      "url": "https://raw.githubusercontent.com/Shedrackeze002/idl-molecular-force-consistency/63250d8025483ca6172808da17ddaf7f4bbe532e/README.md",
+      "http_status": 200,
+      "anonymous": true,
+      "sha256": "2b395aaa35bd40d506f790096f02f3a8590eb46bc263a9e1cd0f3ed0cb42b46a"
     }
   ],
   "report_pdf_bytes_match": true,
-  "scope": "Verifies anonymous read access; does not verify course submission or team approval."
+  "main_readme_pointer_verified": true,
+  "scope": "Anonymous read access and default-branch report navigation verified; no course submission or team approval implied."
 }
