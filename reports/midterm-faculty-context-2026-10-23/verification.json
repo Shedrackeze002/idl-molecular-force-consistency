@@ -1,0 +1,32 @@
+{
+  "status": "PASS_INTERNAL_PATH_REMOVAL_AND_LAYOUT",
+  "pages": 5,
+  "prose_paragraphs": 43,
+  "prose_sentences": 128,
+  "max_sentence_words": 28,
+  "language_flags": [],
+  "maximum_allowed_sentence_words": 35,
+  "profile": "ASD-STE100-based with user-authorized 35-word exception; not formal compliance",
+  "sentences_above_25_words": 7,
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "c8e958669bd808f0e6bbcfdc3b0f07cdf4694052c4285e490888c2a0fecbd3ab",
+  "pdf_bytes": 76911,
+  "only_change_from_previous": "Remove printed repository-relative evidence path from Section 6.",
+  "pages_1_to_4_render_identical": true,
+  "page_5_visually_inspected": true,
+  "supporting_evidence_path": "reports/evidence/2026-10-20/representation/",
+  "review_scope": "Prior full content review applied to round3 PDF. Subsequent user-requested faculty attribution and removal of printed evidence path are locally verified; no new full independent review."
+}

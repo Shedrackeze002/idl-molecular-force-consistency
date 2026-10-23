@@ -1,3 +1,89 @@
+# Midterm research reference verified — 23 October 2026
+
+The [current report](../../reports/midterm-report-style-2026-10-23/README.md) links code and evidence to completed research snapshot `3fa5969`. Its scientific content is unchanged. Numerical and link checks pass; the PDF has five main pages plus references. Earlier status entries below are historical.
+
+---
+
+# Midterm formal report structure — 23 October 2026
+
+The [current report](../../reports/midterm-report-style-2026-10-23/README.md) has a single-paragraph abstract, impersonal wording throughout and standard academic headings. Saved rubric content is retained; explicit course requirements take precedence over ordinary heading conventions. The unchanged relaxation procedure is in Methodology, with results separate. Five main pages plus reference-only page6 remain. Two bounded plan/final checks and local numerical/language/visual checks passed.
+
+Staff access, four contribution confirmations, live Canvas instructions/exact deadline and team approval of the updated PDF remain open. Prior report editions remain unchanged. No experiment, permission change, merge or submission occurred. Earlier status entries below are historical.
+
+---
+
+# Midterm: five main pages plus references — 23 October 2026
+
+The [current report](../../reports/midterm-maintext-2026-10-23/README.md) follows the coordinator-confirmed rule: five pages of main text, excluding references. The bibliography is on page 6. Useful model/data/training explanations have been restored; scientific results are unchanged. Two independent bounded plan/final checks and all-page artifact checks passed. Prior report editions remain unchanged.
+
+Staff access, four contribution confirmations, live Canvas instructions/exact deadline and exact-PDF team approval remain open. No new experiment, permission change, merge or submission occurred. Earlier five-total-page status entries below are historical and superseded for length interpretation.
+
+---
+
+# Midterm submission wording cleaned — 23 October 2026
+
+The [current five-page report](../../reports/midterm-faculty-context-2026-10-23/README.md) no longer prints the internal representation-evidence path. Supporting documentation retains the exact location. Faculty attribution, scientific limitations and the visible GitHub link remain. Local build, language and layout checks pass. Staff access, contribution confirmations, live course instructions/deadline and exact-PDF team approval remain open. Earlier status entries below are historical.
+
+---
+
+# Midterm faculty context updated — 23 October 2026
+
+The [current report](../../reports/midterm-faculty-context-2026-10-23/README.md) adds the coordinator's exact attribution to feedback from a professor of material science. It remains five pages; this is the only manuscript change from the preserved content-cleared edition. Local checks passed. Staff access, four contribution confirmations, live Canvas instructions/deadline and exact-PDF team approval remain open. Earlier snapshots below are historical.
+
+---
+
+# Midterm content clear; release checks open — 23 October 2026
+
+The [five-page midterm](../../reports/midterm-round3-2026-10-23/README.md) has independent **CONTENT CLEAR** status. No required manuscript changes remain; the exact reviewed PDF is unchanged. [Clearance receipt](../../reports/midterm-round3-2026-10-23/CONTENT_CLEARANCE.json) binds the verdict to the source, PDF and research-report publication.
+
+Submission is **ADMINISTRATIVELY BLOCKED**. Resolve the [four release checks](../../reports/midterm-round3-2026-10-23/RELEASE_CHECKLIST.md): staff access, four contribution confirmations, live Canvas instructions/exact due time/timezone, and approval of the exact PDF. No merge or visibility change is inferred as necessary; no submission occurred. Earlier pending-review snapshots below are historical.
+
+---
+
+# Midterm R1-R4 corrections published, 23 October 2026
+
+The [third review edition](../../reports/midterm-round3-2026-10-23/README.md) corrects all four requested manuscript items and retains B1-B10. The PDF remains five pages in the unchanged course template. Numerical, language and visual checks passed; independent content clearance is pending. The coordinator confirmed Aaron's and Idris's assigned roles with no newly confirmed completed work.
+
+[Release checks](../../reports/midterm-round3-2026-10-23/RELEASE_CHECKLIST.md) remain separate: private grader access, four contribution confirmations, live Canvas instructions and exact due time, and final team approval. No scientific run, visibility change, merge or submission occurred. Earlier snapshots below are historical.
+
+---
+
+# Selected midterm content corrected, 23 October 2026
+
+The [corrected five-page version B](../../reports/midterm-final-review-2026-10-23/README.md) incorporates all ten required review items, absolute-force precision and correct work/quadrature wording. [Change map](../../reports/midterm-final-review-2026-10-23/REVIEW_CHANGES.md) and [release checklist](../../reports/midterm-final-review-2026-10-23/RELEASE_CHECKLIST.md) distinguish verified content from remaining submission tasks. Both independent source reviews and final numerical/language/visual checks passed. Earlier report versions remain preserved; no new model experiment or scientific acceptance changed.
+
+Research code/evidence is linked to immutable snapshot 66d0821, rather than a moving PR. Private grader access, four member contribution confirmations, live Canvas instructions and final team approval of the exact PDF remain unconfirmed. Footer wording is updated, but no visibility change, invitation, merge or submission occurred. Earlier status snapshots below are historical.
+
+---
+
+# Midterm explanatory revision, 21 October 2026
+
+Use the [revised five-page explanatory report](../../reports/midterm-ste35-2026-10-21/README.md). Connected prose replaces short fragments while novice definitions, scientific claims and numerical evidence remain intact. Reviews, numerical checks and all-five-page visual checks passed. Prior versions remain preserved. No experiment or scientific acceptance changed; submission release checks remain open. Earlier status below is historical.
+
+---
+
+# Alternate explanatory midterm report, 21 October 2026
+
+The [separate five-page version](../../reports/midterm-ste-2026-10-21/README.md), named group9_Midterm_IDL, uses short explanatory prose and the unchanged course template. It passed numerical, visual and substantive saved-rubric checks. The [earlier report](../../reports/midsemester-2026-10-18/README.md) and [41-page novice meeting guide](../../reports/team-explainer-2026-10-21-novice/README.md) remain preserved. No experiment or accepted scientific result changed. Live instructions, contributions, grader access and final team approval remain open. Earlier status entries below are historical.
+
+---
+
+# Meeting guide rewritten for readers without prior background, 21 October 2026
+
+Use the [41-page revised guide](../../reports/team-explainer-2026-10-21-novice/README.md) for the team and professor meeting. Pages 2-3 provide a self-contained spoken opening; later pages explain terminology beside the results, failed trials and changes of direction. The earlier technical edition remains as history. All final pages and numerical tables passed artifact checks; no experiment or scientific acceptance changed. All four new scalar fits and both reused E64 fits are complete. Their fixed-recipe interpretation remains pending independent scientific review. The shape-recovery question remains open; the real MACE loader, admission/parity and improved relaxation controls remain next work. Course submission release checks remain separate. Earlier status snapshots below are historical.
+
+---
+
+# Meeting guide and completed representation queue — 21 October 2026
+
+The [25-page meeting guide](../../reports/team-explainer-2026-10-21/meeting-brief.pdf) covers the complete project trail and current limits. Start with pages 2, 9, 12, 16, 19 and 20; pages 21-22 contain questions and answers. [Editable source and evidence map](../../reports/team-explainer-2026-10-21/README.md). This is separate from the five-page midsemester submission draft.
+
+All four new scalar fits are complete, with the two existing E64 fits reused after checks. Saved-result arithmetic and all 24 remote per-fit file identities pass. SP has higher force error than E64 by 6.465 meV/angstrom at BEST and 6.991 at Late20; S64 has gaps 4.649 and 4.248. Both seeds and both measures have the same sign. These are descriptive fixed-recipe results; scalar recipes were not separately tuned, and broad scientific interpretation remains pending review. No trained main-test or new recovery result is implied.
+
+Next: finish MACE loader admission/parity, integrate the unchanged MACE recovery control, agree a separately declared displacement-capped solver study, complete physical/inference-cost analysis, and resolve the midterm access/contribution/release checks. Earlier entries below are historical.
+
+---
+
 # CPU representation outcome: SP-1, 20 October 2026
 
 Latest serial queue outcome: **completed**. [Raw result](../../reports/evidence/2026-10-20/representation/SP-1/outcome.json) and saved validation scores are published with independent result review pending. Completed training is distinct from accepted scientific interpretation. Existing0/10recovery/main-test boundary and teammate ownership are unchanged. Other queue fits may still be running; see the execution evidence before claiming study completion. Earlier entries below are historical.

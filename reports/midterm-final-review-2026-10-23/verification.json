@@ -1,0 +1,88 @@
+{
+  "status": "PASS_SCIENTIFIC_CORRECTIONS_LANGUAGE_VISUAL_AND_SAVED_RUBRIC",
+  "pages": 5,
+  "prose_paragraphs": 43,
+  "prose_sentences": 126,
+  "max_sentence_words": 28,
+  "language_flags": [],
+  "maximum_allowed_sentence_words": 35,
+  "profile": "ASD-STE100-based with user-authorized 35-word exception; not formal compliance",
+  "sentences_above_25_words": 6,
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "0381515aeab84b87a7b308006cdebbc8000b8354b3d88351527d61ba516e720f",
+  "pdf_bytes": 76141,
+  "visual_review": {
+    "all_five_final_pages_inspected": true,
+    "no_clipping_overlap_or_broken_glyphs_observed": true
+  },
+  "review_scope": "Two independent plan and source reviews approved. Bounded final summary/access wording concision checked by coordinator; all B1-B10 retained.",
+  "source_tables_and_loss_byte_identical_to_prior": true,
+  "same_five_ordered_reference_destinations": true,
+  "saved_representation_scores_checked": 6,
+  "release_checks_pending": [
+    "Private grader access",
+    "Four contribution confirmations",
+    "Live Canvas exact instructions/timezone",
+    "Final team approval",
+    "Submission"
+  ],
+  "files": {
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 76141,
+      "sha256": "0381515aeab84b87a7b308006cdebbc8000b8354b3d88351527d61ba516e720f"
+    },
+    "group9_Midterm_IDL.tex": {
+      "bytes": 19018,
+      "sha256": "e0e853019845215aed5648b69c8fc2b0755134c449c1914c06a55d5805ed587e"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    "README.md": {
+      "bytes": 2987,
+      "sha256": "97a58f235721bcadcfe44303eab2fd386fbe09999e6edf2583e5d8fcdfa47e82"
+    },
+    "REVIEW_CHANGES.md": {
+      "bytes": 2685,
+      "sha256": "681534df06a8b7fdd0379d0c2dafb5df0ab4a5640d868a838cc6c4a53de6da18"
+    },
+    "RELEASE_CHECKLIST.md": {
+      "bytes": 1126,
+      "sha256": "9e67646da4016d8be761f40acb7eba66ef0d30ff84eafc7f2322d50c5c060de3"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 2181,
+      "sha256": "90df6735bde2494d90c914ec33e5830493813e1c6031cf7acdd77a9481e31fb4"
+    },
+    "representation-score-check.json": {
+      "bytes": 1764,
+      "sha256": "1da026158120d0d423e18129b4ecf6f49a77177c774944aa6787dd6a85892a83"
+    },
+    "source-records.json": {
+      "bytes": 4560,
+      "sha256": "0193cc6385fd6fd9a379201614b4c5604feecfa7c0c62fb34a958439fdc04a0a"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    }
+  }
+}

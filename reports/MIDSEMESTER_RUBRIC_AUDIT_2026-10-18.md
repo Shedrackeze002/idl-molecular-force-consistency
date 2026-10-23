@@ -1,3 +1,9 @@
+# Page-limit clarification, 23 October 2026
+
+The coordinator confirmed that the five-page main-text limit **excludes references**. Earlier checks of five total pages below are historical and must not be treated as a current limit. The current `reports/midterm-maintext-2026-10-23/group9_Midterm_IDL.pdf` has five main pages and a separate references page. Two bounded plan/final checks and local build/language/numerical/visual checks passed. This user-confirmed page rule does not establish that live Canvas upload instructions, deadline/timezone, staff access, contribution confirmations or final team approval have been checked.
+
+---
+
 # Report layout follow-up, 20 October 2026
 
 The table-caption spacing was corrected and the architecture is explicitly described as a message-passing graph neural network. The report remains five pages, with unchanged scientific claims, numerical tables/plot arrays and course style. Current PDF SHA-256: `8273d1b0c8674f1dc950592deac80a133af33dc6e82d69afa91f109b92be4242`. All five rendered pages were inspected. The original saved-rubric mapping below remains applicable; its quoted earlier PDF identity is historical. Live Canvas, grader access, contributions and final team approval remain open. No new experiment or submission occurred.

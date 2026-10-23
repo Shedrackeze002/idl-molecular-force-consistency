@@ -1,0 +1,105 @@
+{
+  "status": "PASS_RESEARCH_LINK_SOURCE_DIFF_BUILD_AND_LAYOUT",
+  "pages": 6,
+  "main_text_pages": 5,
+  "reference_start_page": 6,
+  "reference_pages": 1,
+  "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
+  "prose_paragraphs": 42,
+  "prose_sentences": 130,
+  "max_sentence_words": 28,
+  "language_flags": [],
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "Expected Unicode inputenc notice",
+    "One underfull vertical box, baseline figure page; visually inspected with no overlap or clipping"
+  ],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba",
+  "pdf_bytes": 77569,
+  "abstract": {
+    "paragraphs": 1,
+    "sentences": 6,
+    "sequence": [
+      "Introduction",
+      "Problem",
+      "Methodology",
+      "Results",
+      "Conclusion"
+    ],
+    "first_person_pronouns": 0
+  },
+  "manuscript_first_person_pronouns": 0,
+  "main_sections": [
+    "Introduction",
+    "Literature Review",
+    "Data and Preprocessing",
+    "Methodology",
+    "Results and Discussion",
+    "Conclusion and Future Work"
+  ],
+  "two_bounded_plan_and_final_reviews_pass": true,
+  "all_six_pages_visually_inspected": true,
+  "tables_loss_figure_and_bibliography_unchanged": true,
+  "review_scope": "Prior scientific and editorial corrections retained. Latest change replaces only the research snapshot URL and printed identifier; no new scientific review or experiment.",
+  "release_checks_pending": [
+    "Staff access",
+    "Four contribution confirmations",
+    "Live Canvas instructions and exact due time/timezone",
+    "Exact-PDF team approval",
+    "Submission"
+  ],
+  "files": {
+    "group9_Midterm_IDL.tex": {
+      "bytes": 19487,
+      "sha256": "fa06d945fbc12c77dbf68c35fbb3c8246d728355b025b460a4d73b75394e0668"
+    },
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 77569,
+      "sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    },
+    "README.md": {
+      "bytes": 1153,
+      "sha256": "32ea2c59d4d66da10394da96aed54824931b8777313a94a406e8804de5c23f64"
+    },
+    "CHANGES.md": {
+      "bytes": 1941,
+      "sha256": "9b519e56ef6d5e6bcde1177707d5425c1f7218bfef0bc4f4c876d48ce873ad51"
+    },
+    "RELEASE_CHECKLIST.md": {
+      "bytes": 1186,
+      "sha256": "f0d8aa5bac53566bba24d7d32b63a184bbe8f1121d8e2fcd3815558a8c28bf7d"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 1097,
+      "sha256": "0caabd230e7fe811a59e33dd068b7cf99804087cc0167d6fe139d4aa2d18221e"
+    },
+    "source-records.json": {
+      "bytes": 939,
+      "sha256": "db24f83180491ece82adfc0499522208dc359aa5bd03568dd8f4cf653e1efd94"
+    }
+  },
+  "visual_inspection": "Page 5 inspected; other five page images unchanged from prior verified PDF",
+  "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203"
+}

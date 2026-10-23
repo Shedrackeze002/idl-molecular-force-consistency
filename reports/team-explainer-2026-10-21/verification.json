@@ -1,0 +1,56 @@
+{
+  "status": "FINAL_ARTIFACT_CHECKS_AND_VISUAL_REVIEW_PASS",
+  "date": "2026-10-21",
+  "pdf_pages": 25,
+  "every_page_title_and_footer_on_its_expected_page": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": 0,
+  "body_sentence_count": 376,
+  "heuristic_length_flags": [],
+  "length_scope": "Descriptive body/callouts at most25 whitespace words per sentence, instruction bullets at most20; paragraph count at most6. Bibliographic titles and table metadata excluded. Not a full dictionary/meaning certification.",
+  "scientific_scope": "Validation evidence, four completed scalar fits, bounded descriptive interpretation; no trained main-test/recovery extension.",
+  "representation_table_matches_saved_queue": true,
+  "source_file_identities": 66,
+  "publication_tool_identity_scan": "PASS",
+  "files": {
+    "meeting-brief.pdf": {
+      "bytes": 122158,
+      "sha256": "4c83235ae0a0cb9152f95d1f152df3532d36e0ceb5c1a2bcbc253a8267777484"
+    },
+    "brief.md": {
+      "bytes": 49793,
+      "sha256": "10f36f9597de9c8a9bec07e7240690f6318d351b3e31e6a39900954ef94bb39a"
+    },
+    "brief.json": {
+      "bytes": 85878,
+      "sha256": "ea6277b684028cd93d2dc6b8cdeabf19ae70986b519da75619c737f1789962df"
+    },
+    "SOURCES.md": {
+      "bytes": 20860,
+      "sha256": "8c6247ddab1a163bd13120f53492369df71e4f1aef51744f4da528f8cf1dc240"
+    },
+    "sources.json": {
+      "bytes": 28118,
+      "sha256": "103778683ec0d098c7ecd50efa5d929ac74159fac531222c5480aec20569e476"
+    },
+    "build.py": {
+      "bytes": 9594,
+      "sha256": "abbfc4da0953e3fbfeb7fd1821d48100b8021e15609a0bfaddd363dbc1beab23"
+    },
+    "README.md": {
+      "bytes": 2322,
+      "sha256": "67778c570a6be17f476d6d70975b3771b8cbe72414da2113260f8367d3d70f7a"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    }
+  },
+  "visual_review": {
+    "all_25_final_pages_viewed_in_contact_sheets": true,
+    "scientific_review_of_early_and_recent_content": "APPROVED_WITH_FINITE_CORRECTIONS_APPLIED",
+    "technical_language_review": "BOUNDED_REVIEW_APPROVED_WITH_FINITE_COPY_EDITS_APPLIED",
+    "no_visible_overflow_overlap_or_missing_glyphs": true,
+    "scope_not_formal_STE_certification": true
+  }
+}
