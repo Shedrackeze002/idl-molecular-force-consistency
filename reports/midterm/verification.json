@@ -7,7 +7,7 @@
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 42,
   "prose_sentences": 127,
-  "max_sentence_words": 30,
+  "max_sentence_words": 31,
   "language_flags": [],
   "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
   "five_predictive_rows_unchanged": true,
@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06",
-  "pdf_bytes": 79705,
+  "pdf_sha256": "366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392",
+  "pdf_bytes": 79807,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -47,7 +47,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Current wording and length revision checked against saved records; abstract, numerical tables, loss, figure asset, course style and bibliography preserved. Built-in compilation and file export pass; no new experiment or new independent scientific-result clearance.",
+  "review_scope": "Bounded terminology and wording correction; all numerical results, tables, loss, figure, course formatting and bibliography preserved. Built-in compilation and exported-file checks pass; no new experiment or independent scientific-result clearance.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -57,12 +57,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 20000,
-      "sha256": "9945c4050b67a5d54edbdd60cd416cf9f4f1bba3359b124adfe75146d50ab9d4"
+      "bytes": 20096,
+      "sha256": "8a18f8a89c625857127b837ef9d378ac80d5eab41a2c20a340c5bd338cf81c9b"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 79705,
-      "sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06"
+      "bytes": 79807,
+      "sha256": "366b9ee76a27f891404943de121ebe0211d1408933e2406f0ef7dc16bb0de392"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -77,16 +77,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1398,
-      "sha256": "322f3c14a0492938421b833ee8078f8f43fab7b5719c77484f5ad2edebe5d87e"
+      "bytes": 1744,
+      "sha256": "40dd6b46a2ee1c04965aba2f55e776e5f071d5edafbb399e9094526798fc6f5d"
     },
     "CHANGES.md": {
-      "bytes": 3979,
-      "sha256": "8a75a6e76d3af724054ff0ef084d73d6046626ab3f44521b8571c49ea84dad22"
+      "bytes": 4786,
+      "sha256": "69f56735d98aeb69c7edfa4c12fff72369ac91df674a8989b4cac988db13e430"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1234,
-      "sha256": "6536cb28202e28fc97aed8ca308bcf8ebc9abee641fab7e48131960eff2a9367"
+      "sha256": "c9a0b8dffbd1d3860c2ec359b84a17f031b4c9b6de5f354d53b228ae5387dc13"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1095,
@@ -110,12 +110,12 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "9945c4050b67a5d54edbdd60cd416cf9f4f1bba3359b124adfe75146d50ab9d4",
+    "source_sha256": "8a18f8a89c625857127b837ef9d378ac80d5eab41a2c20a340c5bd338cf81c9b",
     "built_in_compile": "success",
     "body_sentences": 127,
-    "max_sentence_words": 30,
+    "max_sentence_words": 31,
     "sentence_or_paragraph_flags": [],
-    "abstract_unchanged_from_pre_edit_source": true,
+    "abstract_unchanged_from_pre_edit_source": false,
     "numerical_tables_and_loss_unchanged": true,
     "current_pdf_export": "complete; six total pages, five main-text pages",
     "prior_preview_report": {
@@ -134,9 +134,9 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437",
-    "pages": 7,
-    "main_text_pages": 6
+    "pdf_sha256": "45c073cfbb6f739d895e3a96ec658b6b8eef3991bca94500109c6acd129dda06",
+    "pages": 6,
+    "main_text_pages": 5
   },
   "historical_abstract_clause_check": {
     "one_abstract_clause_changed": true,
@@ -145,7 +145,6 @@
     "abstract_max_sentence_words": 27
   },
   "current_checks": {
-    "abstract_preserved": true,
     "tables_and_loss_preserved": true,
     "bibliography_preserved": true,
     "course_style_and_preamble_preserved": true,
@@ -154,6 +153,10 @@
     "table2_page": 5,
     "overfull_boxes": 0,
     "undefined_references": 0,
-    "all_pages_visual_pass": true
-  }
+    "all_pages_visual_pass": true,
+    "abstract_clarity_changed": true,
+    "energy_slope_definition_and_three_models_present": true
+  },
+  "research_snapshot_scope": "Research code/evidence, not the later report revision",
+  "solver_constants_verified_against_github_snapshot": true
 }
