@@ -1,9 +1,11 @@
 # Group 9 midterm report
 
-This is the canonical midterm report. Edit [the current source](group9_Midterm_IDL.tex), and use [team review assignments](TEAM_REVIEW.md) for remaining checks. The latest source clarifies method rules, exposure accounting and diagnostic interpretation, and compiles successfully in the document editor.
+This is the canonical midterm report. Read [the current PDF](group9_Midterm_IDL.pdf), edit [the source](group9_Midterm_IDL.tex), and use [team review assignments](TEAM_REVIEW.md) for remaining checks.
 
-The [saved PDF](group9_Midterm_IDL.pdf) is the previous export. It has five main-text pages and references on page 6; it does not yet include the latest source edits. The current editor preview is confirmed to contain five main-text pages and references on page 6. A current PDF export remains pending. Do not treat the previous PDF as the current submission candidate.
+The latest export contains **six main-text pages and references on page 7**. It exceeds the five-page main-text limit and requires shortening before submission. An earlier six-total-page preview report is superseded for export validation by this file's measured page count. The current PDF and source match; no content was shortened during export.
 
-Research code and evidence are linked to completed snapshot `3fa5969e5a0c2fdeaebc76a05bace20799715203`. No numerical table, loss equation, model setting or experimental artifact changed. Earlier editions are in the [midterm archive](../archive/midterm/README.md), with original files and hashes retained in the [relocation inventory](../archive/midterm/relocations.json).
+Both built-in compilation and the file export succeed. All seven exported pages were rendered and inspected, with no clipping, overlapping text or missing characters. One curly apostrophe was replaced with an ASCII apostrophe for compatibility with the unchanged course template. Source settings, numerical tables, equations, figures and bibliography are retained.
 
-The source, local figure and course-style files belong to this directory. [Verification](verification.json) distinguishes current-source checks from the previous PDF export. [Release checks](RELEASE_CHECKLIST.md) remain open: a current PDF, staff access, contribution confirmations, live Canvas instructions and deadline, and team approval. No submission is implied.
+Research code and evidence are linked to completed snapshot `3fa5969e5a0c2fdeaebc76a05bace20799715203`. Earlier editions remain in the [midterm archive](../archive/midterm/README.md), with original files and hashes retained in the [relocation inventory](../archive/midterm/relocations.json).
+
+[Verification](verification.json) records the current PDF identity, page count and limits. [Release checks](RELEASE_CHECKLIST.md) remain open: page-limit compliance, staff access, contribution confirmations, live Canvas instructions and deadline, and approval of the exact PDF. No submission is implied.

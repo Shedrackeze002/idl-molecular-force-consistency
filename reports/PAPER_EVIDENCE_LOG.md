@@ -326,3 +326,8 @@ Clarified adequacy criteria, exact relaxation acceptance, normalization, selecte
 ### MIDTERM-PAGINATION-2026-10-23-001 — current preview format
 
 Current editor preview confirmed as six total pages: five main-text pages and references on page 6. Source SHA-256 d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7 remains unchanged from the successful built-in compile. This is preview confirmation, not a new exported PDF or tool-based visual inspection. Current PDF export and final release checks remain pending.
+
+
+### MIDTERM-EXPORT-2026-10-23-001 — current PDF exported, page limit exceeded
+
+Exported the current canonical source. The actual file has seven total pages: six main-text pages and references on page 7. This supersedes the earlier six-page preview report for exported-file validation. Built-in compile succeeds; a template-font warning was fixed by changing one curly apostrophe to ASCII, without changing wording. All seven exported pages were rendered and visually inspected with no clipping/overlap or missing glyphs. One underfull vertical-box warning remains without a visible defect. The PDF exceeds the five-main-page limit and is not ready for submission; no shortening was performed during export. PDF SHA-256: e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437. Source SHA-256: 24830e56de86aa4409feb310e3888e5ca0ab6fce8204fc1383066cf3c584ea28. No experiment or submission occurred.

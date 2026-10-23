@@ -1,9 +1,9 @@
 {
-  "status": "CURRENT_SOURCE_COMPILES_PDF_EXPORT_PENDING",
-  "pages": null,
-  "main_text_pages": null,
-  "reference_start_page": null,
-  "reference_pages": null,
+  "status": "CURRENT_EXPORT_VERIFIED_PAGE_LIMIT_EXCEEDED",
+  "pages": 7,
+  "main_text_pages": 6,
+  "reference_start_page": 7,
+  "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
   "prose_paragraphs": 42,
   "prose_sentences": 130,
@@ -16,16 +16,15 @@
   "original_report_pdf_unchanged": true,
   "prior_short_sentence_pdf_unchanged": true,
   "original_figure_unchanged": true,
-  "all_pages_rendered": false,
+  "all_pages_rendered": true,
   "character_bounds_flags": [],
   "compile_warnings": [
-    "Expected Unicode inputenc notice",
-    "One underfull vertical box, baseline figure page; visually inspected with no overlap or clipping"
+    "Underfull vertical box; no visible overlap or clipping"
   ],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae",
-  "pdf_bytes": 77573,
+  "pdf_sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437",
+  "pdf_bytes": 81056,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -50,7 +49,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": false,
   "tables_loss_figure_and_bibliography_unchanged": true,
-  "review_scope": "Prior scientific records and exact prior report clearances remain preserved. Current source has reporting clarifications and passed source/language checks plus built-in compilation. Current PDF export/layout confirmation remains pending.",
+  "review_scope": "Current source compiles; all seven exported pages rendered and inspected. Page limit is exceeded. Prior scientific clearances remain bound to earlier exact artifacts.",
   "release_checks_pending": [
     "Staff access",
     "Four contribution confirmations",
@@ -60,12 +59,12 @@
   ],
   "files": {
     "group9_Midterm_IDL.tex": {
-      "bytes": 21065,
-      "sha256": "d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7"
+      "bytes": 21063,
+      "sha256": "24830e56de86aa4409feb310e3888e5ca0ab6fce8204fc1383066cf3c584ea28"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 77573,
-      "sha256": "97f8fa792bfeebeadfd830f9cc7a7aa9c11e2cabde13060130772782e933aaae"
+      "bytes": 81056,
+      "sha256": "e4708b50afc86e3eabc556616b0a47b890022b1246109d1f8d29697e99027437"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -80,16 +79,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 1442,
-      "sha256": "99a7810465e7ab59eaaccaa8c3fc43d2c6fc261c01b93510a91ee87bd279c387"
+      "bytes": 1540,
+      "sha256": "a6a89de6f543ac56918a23903a9521d8335ca420eec34718878e92170a53a959"
     },
     "CHANGES.md": {
-      "bytes": 2860,
-      "sha256": "b4f7460b7cbed49ebb8eafa119da0de3d63b0e3dfffcc97546cf9e93045df8b2"
+      "bytes": 3282,
+      "sha256": "e496ceff7bf954bdc573fadbbc578e668756c8a91500f0da0afd2ad3ce73467d"
     },
     "RELEASE_CHECKLIST.md": {
-      "bytes": 1254,
-      "sha256": "aa2527fedd768d5f3558293bcbbdff89117f618adcd25adf6e68843a4939de84"
+      "bytes": 1297,
+      "sha256": "0dafb6ee5bc25a0669f0f08918c28ccaba4b06999f908017f04022cd6aad142b"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1113,
@@ -104,7 +103,7 @@
       "sha256": "87118ed8965340f3f0336394146a8b8afd9fd3b158861e53535c9dcfa0bf4216"
     }
   },
-  "visual_inspection": "Previous exported PDF inspected previously; current preview not inspected through tools.",
+  "visual_inspection": "All seven exported pages inspected; no overlap, clipping or missing characters",
   "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
   "canonical_directory": "reports/midterm",
   "relocation": {
@@ -125,20 +124,28 @@
     "scope": "Prior exported PDF; does not include the latest source changes."
   },
   "source_verification": {
-    "source_sha256": "d263062b28c33f783618955fdaf825c8c54e01ad6c9ee518cc1112fb47a35fb7",
+    "source_sha256": "24830e56de86aa4409feb310e3888e5ca0ab6fce8204fc1383066cf3c584ea28",
     "built_in_compile": "success",
     "body_sentences": 139,
     "max_sentence_words": 29,
     "sentence_or_paragraph_flags": [],
     "abstract_unchanged_from_pre_edit_source": true,
     "numerical_tables_and_loss_unchanged": true,
-    "current_preview_page_count": {
+    "current_pdf_export": "complete; seven total pages, six main-text pages",
+    "prior_preview_report": {
       "pages": 6,
       "main_text_pages": 5,
       "reference_start_page": 6,
       "basis": "Coordinator confirmed current editor preview on 23 October 2026",
       "tool_visual_inspection": false
     },
-    "current_pdf_export": "pending"
-  }
+    "current_export_page_count": {
+      "pages": 7,
+      "main_text_pages": 6,
+      "reference_start_page": 7,
+      "basis": "Measured from exported PDF"
+    }
+  },
+  "page_limit_met": false,
+  "all_seven_pages_visually_inspected": true
 }
