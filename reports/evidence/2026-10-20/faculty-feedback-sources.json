@@ -1,0 +1,71 @@
+{
+  "status": "REVIEWED_FEEDBACK_ASSESSMENT_NOT_EXPERIMENT_APPROVAL",
+  "date": "2026-10-20",
+  "assessment_sha256": "8fc68cf095e81b48796152ea9d1230f6e117aabebcf468cc1f3e37c6beda8de0",
+  "reviewed_project_revision": "e14b1235a99f89caaaf88f66dee1ec4197370e1a",
+  "published_implementation_file_sha256": {
+    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+    "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+    "configs/aspirin-e3x-v3-C.template.json": "13ea2367f648ba8b5eefe7991a558525308c648a45b40462701b4b36bf3b9e30"
+  },
+  "original_retained_implementation_file_sha256": {
+    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+    "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a",
+    "configs/aspirin-e3x-v3-C.template.json": "0c3d045b9ff6b8f989622886b53146cdd3112b1f54e9d082085ea57b01fc56a5"
+  },
+  "published_config_changes_are_key_order_only": true,
+  "unchanged_midterm_pdf_sha256": "8e965fc0ae7b05fe60250132d80c2e8b529e20cc2d5ecef31057a9b1cbc44521",
+  "external_repo_versions": [
+    {
+      "repository": "orbital-materials/orb-models",
+      "commit": "1794f852543600d1611d2a3728a95142574f5dc2",
+      "date": "2026-09-26T10:23:48Z",
+      "source_files": {
+        "MODELS.md": {
+          "sha256": "1fc0af7c8c9314a40862bf5e6c1898c12ae87d6c035e0b129724743a7d4483a4",
+          "bytes": 6737
+        }
+      }
+    },
+    {
+      "repository": "janosh/matbench-discovery",
+      "commit": "2b7bff925a6aff10240cf6ef0f59149f51adff7b",
+      "date": "2026-10-19T09:00:04Z",
+      "source_files": {
+        "readme.md": {
+          "sha256": "95c8b8e5c076d6ff1eb9292bc9646fb2cd2ffe45131a24cc0ae1fb84c69ce107",
+          "bytes": 3347
+        }
+      }
+    }
+  ],
+  "official_resource_urls": [
+    "https://www.cmu.edu/rcd/",
+    "https://www.cmu.edu/rcd/request.html",
+    "https://www.cmu.edu/rcd/faq.html"
+  ],
+  "screened_paper_urls": [
+    "https://arxiv.org/abs/2408.15165",
+    "https://arxiv.org/abs/2512.18029",
+    "https://arxiv.org/abs/2502.12147"
+  ],
+  "full_papers_reviewed": false,
+  "matbench_requested_site_unavailable": true,
+  "exact_current_leaderboard_order_verified": false,
+  "new_model_runs": false,
+  "remote_access_or_messages": false,
+  "current_report_changed": false,
+  "new_direction_adopted": false,
+  "original_reviewed_assessment_sha256": "b6d3391c049b53b267fa14f43294649b6b5effc3aa062e3852db3a965b91a2b3",
+  "coordinator_amendment": {
+    "date": "2026-10-20",
+    "remote_gpu_assumption": "Colab only until ORCHARD access is granted",
+    "current_cu_balance_is_study_limit": false,
+    "additional_purchase_envelope_USD": 100,
+    "purchasable_CU_at_coordinator_quoted_rate": 1000,
+    "price_independently_verified": false,
+    "purchase_or_run_performed": false
+  }
+}

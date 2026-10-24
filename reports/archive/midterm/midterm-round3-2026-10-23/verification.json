@@ -1,0 +1,99 @@
+{
+  "status": "PASS_LOCAL_CORRECTIONS_LANGUAGE_NUMERICAL_AND_VISUAL_CHECKS",
+  "pages": 5,
+  "prose_paragraphs": 43,
+  "prose_sentences": 128,
+  "max_sentence_words": 28,
+  "language_flags": [],
+  "maximum_allowed_sentence_words": 35,
+  "profile": "ASD-STE100-based with user-authorized 35-word exception; not formal compliance",
+  "sentences_above_25_words": 6,
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "a09cbdfd39e352846dd00b60346147a7d0e400ffc4cdd0d228e0e633e6ff2888",
+  "pdf_bytes": 77191,
+  "visual_review": {
+    "all_five_pages_inspected": true,
+    "no_clipping_overlap_or_broken_glyphs_observed": true
+  },
+  "review_scope": "Two independent plan/source checks passed. Final GitHub paragraph alignment is a formatting-only change. Independent content clearance remains pending. Subsequent full independent review returned CONTENT CLEAR for the exact published source/PDF. No manuscript changes followed.",
+  "r1_r4_applied": true,
+  "b1_b10_preserved": true,
+  "scientific_tables_loss_figure_unchanged": true,
+  "contribution_confirmation": "Assigned roles retained; no new completed deliverables confirmed for Aaron or Idris.",
+  "release_checks_pending": [
+    "Private grader access",
+    "Four contribution confirmations",
+    "Live Canvas instructions and exact due time",
+    "Final team approval",
+    "Submission"
+  ],
+  "files": {
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 77191,
+      "sha256": "a09cbdfd39e352846dd00b60346147a7d0e400ffc4cdd0d228e0e633e6ff2888"
+    },
+    "group9_Midterm_IDL.tex": {
+      "bytes": 19222,
+      "sha256": "d7ea990ac054d037df3a32a7d19a818d97be6d4433539310993ea64b89dd7467"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    "README.md": {
+      "bytes": 2296,
+      "sha256": "8ee48ef12227b6b92391035f0e4a046db2ac97da731a63eca74a7816350c36e0"
+    },
+    "REVIEW_CHANGES.md": {
+      "bytes": 1747,
+      "sha256": "1fcb7ae5137945b7a27392c62fe5afb55bf2c468e47eb78e4bbad3497d39dfec"
+    },
+    "RELEASE_CHECKLIST.md": {
+      "bytes": 1679,
+      "sha256": "fa3f03d2058e845c00f5e4c3b9dbf3252ae545029894143bde5217127b12d97e"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 2408,
+      "sha256": "d712a1bdc6d1a0121701b453efdaf56138a0df564f217b3dbd38ee64f3a73476"
+    },
+    "representation-score-check.json": {
+      "bytes": 1764,
+      "sha256": "1da026158120d0d423e18129b4ecf6f49a77177c774944aa6787dd6a85892a83"
+    },
+    "source-records.json": {
+      "bytes": 4909,
+      "sha256": "ffc90764b923afc929bde7d44fa4aab1307065df2218539c7e7c8f47469c0d36"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    },
+    "CONTENT_CLEARANCE.json": {
+      "bytes": 1228,
+      "sha256": "c91b6a1d21918ecbc101c6a44caea1f399f0e228a2a39dd8b58590ee7e9caba1"
+    }
+  },
+  "independent_content_review": {
+    "verdict": "CONTENT CLEAR",
+    "date": "2026-10-23",
+    "pdf_sha256": "a09cbdfd39e352846dd00b60346147a7d0e400ffc4cdd0d228e0e633e6ff2888",
+    "receipt": "CONTENT_CLEARANCE.json"
+  }
+}

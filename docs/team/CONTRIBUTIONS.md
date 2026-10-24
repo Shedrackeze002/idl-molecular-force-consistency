@@ -25,3 +25,10 @@ Olufunke's original PR #4 authored commits and merge remain credited; trained-mo
 Shedrack completed the three full-data energy candidates, the controlled fitting/scoring comparison, trained-checkpoint evaluator integration, own-reference control, fixed validation recovery and endpoint diagnosis. The observational tracing/control code and its four replays plus thirty reference-start controls are also completed and independently verified. This publication records the reviewed code and accepted evidence. Earlier unsuccessful learning and scoring attempts remain documented.
 
 Olufunke retains credit for the original evaluator in PR #4 and its fixes; this integration does not reassign her authored work. Idris retains MACE reproduction/inference responsibilities and Emmanuel retains physical/cost analysis. No completed work or writing is credited without evidence. Midterm writing remains October 20–23. The publication PR links the actual authored commit.
+
+
+## Midsemester draft preparation, 18 October 2026
+
+Shedrack prepared the first substantive five-page report draft, original figures from accepted saved outputs, the numerical-claim source ledger and the MACE reproduction handover. Two independent reviews checked the content, artifact identities and rendered layout. Report writing began earlier than the previously planned 20 October window. This preparation does not credit pending writing or analyses to other members.
+
+All four members have [section review assignments](../../reports/midterm/TEAM_REVIEW.md). Each confirms actual authored contributions and commits substantive edits under their own identity. The draft retains Olufunke's evaluator attribution and labels Emmanuel/Idris's remaining work as assignments, not completed results. Team/content and live submission confirmation remain open.

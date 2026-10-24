@@ -1,0 +1,49 @@
+{
+  "scope": "Read saved exported score JSON only; no model loaded or prediction recomputed.",
+  "all_paired_E64_errors_lower": true,
+  "rows": [
+    {
+      "run": "E64-0",
+      "sha256": "3642ee5cdfec131059252694879e638524cbbe9d6d21babf1853b3c4963c9971",
+      "best_meV_per_A": 34.587408293844085,
+      "last_meV_per_A": 37.790945322231885,
+      "late20_meV_per_A": 39.00835224351945
+    },
+    {
+      "run": "E64-1",
+      "sha256": "e19364831b69c5e94714f144f827453433cad48f8825ad29e2ae84978c4dcb11",
+      "best_meV_per_A": 35.19833788949361,
+      "last_meV_per_A": 39.339652729092165,
+      "late20_meV_per_A": 39.02911947138732
+    },
+    {
+      "run": "SP-0",
+      "sha256": "7ca18b272f4a8dab9ddd93020a4c72a5fe564418147f7214b2c7b1985084995a",
+      "best_meV_per_A": 41.04627288284203,
+      "last_meV_per_A": 52.52223343762975,
+      "late20_meV_per_A": 46.27642265021941
+    },
+    {
+      "run": "SP-1",
+      "sha256": "444ba9d27e27e9f8d787b5b35ac6db471b7391d6bb118b7c16a1d37e64583a70",
+      "best_meV_per_A": 41.66924613571395,
+      "last_meV_per_A": 43.646744874561286,
+      "late20_meV_per_A": 45.74342503314263
+    },
+    {
+      "run": "S64-0",
+      "sha256": "1d90f8bf7acfed086e2ba0c2d77a8f1877c390bddad1b2759d9a06eac3cd5db0",
+      "best_meV_per_A": 40.26445483872265,
+      "last_meV_per_A": 49.63188193648521,
+      "late20_meV_per_A": 44.06187550769058
+    },
+    {
+      "run": "S64-1",
+      "sha256": "d58786b30abc73888a1926a6b444e419b91fa72cf36deab139f46bbfb165ea7e",
+      "best_meV_per_A": 38.81998344246991,
+      "last_meV_per_A": 42.194508043436144,
+      "late20_meV_per_A": 42.47125108972674
+    }
+  ],
+  "limit": "Saved exported scores only; no new model inference, training or scientific interpretation acceptance."
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 2,
+  "status": "TWO_REVIEWED_CPU_PLAN_NOT_IMPLEMENTED_OR_LAUNCHED",
+  "date": "2026-10-20",
+  "supersedes_public_commit": "10ef31b1dd0d413c836dfa46ddd64aa1b3faa61c",
+  "accepted_document_sha256": {
+    "docs/research/REPRESENTATION_COMPARISON_SPEC_2026-10-20.md": "621a3498f33123c87cd2d3831fd5702f995754b191e37a9427846174772066c4",
+    "docs/research/REPRESENTATION_COMPARISON_PLAN_2026-10-20.md": "1e2ee6806d827911d54d0a186b83402f6a4fbb8826b07021dd2546614b245c4b",
+    "reports/evidence/2026-10-20/representation-budget.json": "5d314f241975b060453835e0d8006af327c5bc3cf8143d008c88d144e4fcaeb3"
+  },
+  "historical_metadata": {
+    "C-seed0/config.json": {
+      "sha256": "518b5ee984a7bd911119f8e639280a91e761256a2d482b471d3da7143e486db0",
+      "bytes": 904
+    },
+    "C-seed0/provenance.json": {
+      "sha256": "7145f75169b41928472e41bc1c892290535a1f7333b3ea36a6fc4b2d3a7507e4",
+      "bytes": 6614
+    },
+    "C-seed0/summary.json": {
+      "sha256": "5502f0cf9316140ce1a3afe96d9643dc3f91a4c245d6e1847dc7545d12fca436",
+      "bytes": 144077
+    },
+    "C-seed0/validation.json": {
+      "sha256": "36ceb4d38b6fc1dbb2eac8e2d55a6da75fd3a2dec55ee5e13729c29d76dbbd65",
+      "bytes": 27283454
+    },
+    "energy-seed1/config.json": {
+      "sha256": "56b13737821a861c799a0295cb9e4e679f6d3c4efafca8697bf64b48ea629965",
+      "bytes": 899
+    },
+    "energy-seed1/provenance.json": {
+      "sha256": "b6ac8614667fbb4d84bf454587cf4de69a09de024c02b518fd6b79d06e68280f",
+      "bytes": 6614
+    },
+    "energy-seed1/summary.json": {
+      "sha256": "a4ba2adcab9bf2ff3c10df8c4a38bfecbc40f67d58102e19c225cddd77e7edd3",
+      "bytes": 144069
+    },
+    "energy-seed1/validation.json": {
+      "sha256": "f579e9e26a63f2d3821301731f59356653a2ff79efa990f317ed9bef30a8afb1",
+      "bytes": 27283494
+    }
+  },
+  "conditional_e64_reuse": true,
+  "new_metric": "mean of20scheduled validation checks190500through200000",
+  "scheduled_resume_copy": "one authenticated fallback per segment; off-grid BEST/control ineligible",
+  "frozen_source_files_unchanged": 54,
+  "new_parameter_count_reproduction_scalar_timing_or_fit": false,
+  "removed_from_active_plan": [
+    "GPU readiness stage",
+    "CU scenario table",
+    "checkpoint-count/reconnect formula",
+    "GPU migration rules",
+    "per-checkpoint optimizer-step probes"
+  ],
+  "retained_historical_records": true
+}

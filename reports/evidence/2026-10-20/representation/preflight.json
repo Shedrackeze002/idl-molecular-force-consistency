@@ -1,0 +1,16 @@
+{
+  "gpu_or_cu_used": false,
+  "main_test_or_recovery_used": false,
+  "new_scientific_fit_started": false,
+  "parameter_counts": {
+    "E64": 43521,
+    "S64": 25473,
+    "SP88": 43473
+  },
+  "physics_and_wrapper_tests": "48earlierfullsuite and15finalfocusedPASS, no archive access",
+  "reference_reuse_condition_met": "seed0validation events0/500/1000 match full accepted saved events to1e-10; both historical configs/source/data/seed identities pinned",
+  "resume_condition_met": "SP88hard interruption from saved1000 to2000 agrees in params/optimizer/RNG/decodedBEST/fullcontrolhistory to1e-10; completed rerun no-op",
+  "short_check_states_reused_for_full_fits": false,
+  "source_execution_revision": "79dba2745350e16aa11e6f4e39b5011229ec5fd0",
+  "status": "CPU_PREFLIGHT_PASS_FULL_FITS_PENDING_LAUNCH_REVIEW"
+}

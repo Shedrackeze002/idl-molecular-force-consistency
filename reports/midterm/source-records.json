@@ -1,0 +1,25 @@
+{
+  "scope": "Formal report organization and impersonal wording; no model execution",
+  "source_files": {
+    "reports/midterm-maintext-2026-10-23/group9_Midterm_IDL.tex": {
+      "bytes": 19639,
+      "sha256": "540dc6ec05786a487ac4af804f784d604d65ad68a276bc963d555ff6f97797af"
+    },
+    "reports/midterm-maintext-2026-10-23/group9_Midterm_IDL.pdf": {
+      "bytes": 77438,
+      "sha256": "fed98f1b53707dba48a413081293139be8981680710ea470987a2c305438876b"
+    }
+  },
+  "saved_course_rubric": {
+    "filename": "11-785_Project_Grading_Information.pdf",
+    "sha256": "0ad90675f62911b5266ae2168fcec20e414fe43ada5ebf44a04b5f94a4447a71",
+    "scope": "Report criteria on pages1-2; no live Canvas verification"
+  },
+  "research_snapshot": {
+    "commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+    "scope": "Research code and evidence; current report published separately",
+    "research_paths_unchanged_from_report_branch": true
+  },
+  "relocation_inventory": "reports/archive/midterm/relocations.json",
+  "historical_source_paths": "Original recorded paths are retained as provenance keys; consult the relocation inventory for current file locations."
+}

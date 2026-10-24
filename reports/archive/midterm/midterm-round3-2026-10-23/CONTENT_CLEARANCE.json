@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-23",
+  "content_verdict": "CONTENT CLEAR",
+  "submission_verdict": "ADMINISTRATIVELY BLOCKED",
+  "required_manuscript_changes": [],
+  "cleared_report_publication": "24e3af63c69f3e6d9c34cae847d22eb0213e2f1e",
+  "pdf_sha256": "a09cbdfd39e352846dd00b60346147a7d0e400ffc4cdd0d228e0e633e6ff2888",
+  "source_sha256": "d7ea990ac054d037df3a32a7d19a818d97be6d4433539310993ea64b89dd7467",
+  "scope": "Full independent manuscript review reported no required changes; B1-B10 and R1-R4 pass. Exact local and published PDF identity rechecked. No manuscript edit or rebuild performed.",
+  "optional_items_deferred": [
+    "Hidden A and B BEST markers; caption remains accurate",
+    "More exact wording for compatible force directions"
+  ],
+  "review_limits": [
+    "Citation publisher metadata not re-fetched",
+    "Raw representation scores not reopened in final review",
+    "PDF not rebuilt in final review"
+  ],
+  "release_checks_pending": [
+    "Verify staff access to the private fixed snapshot",
+    "Obtain all four contribution confirmations",
+    "Verify live Canvas instructions and exact due time/timezone",
+    "Obtain team approval of this exact PDF"
+  ],
+  "new_experiments": false,
+  "submitted": false
+}

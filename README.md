@@ -1,5 +1,7 @@
 # Landscape17 molecular force consistency
 
+Canonical midterm: [PDF](reports/midterm/group9_Midterm_IDL.pdf) · [source and review checks](reports/midterm/README.md) · [earlier editions](reports/archive/midterm/README.md).
+
 Updated 15 October 2026. Group 9 studies whether energy–force consistency improves reference-shape recovery on unseen Landscape17 connections after accounting for force error and cost. The proposal is submitted; the main controlled comparison remains pending.
 
 The aspirin data pipeline and evaluator are established. MACE Run A completed2,048 epochs and independent scoring verifies validation pooled force MAE5.26 meV/Å/RMSE26.41 meV/Å. Shared E3x energy/direct/consistency training paths are implemented. Both first 1,000-update energy/direct engineering fits completed technical controls, but neither improved selected force validation: both BEST checkpoints remain update 0. These negative findings are retained.

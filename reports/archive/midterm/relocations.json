@@ -1,0 +1,628 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "canonical": "reports/midterm/group9_Midterm_IDL.pdf",
+  "canonical_pdf_sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba",
+  "scope": "Original paths and bytes before report-directory relocation. Archived file contents unchanged; canonical navigation metadata updated separately.",
+  "directories": {
+    "reports/midsemester-2026-10-18": "reports/archive/midterm/midsemester-2026-10-18",
+    "reports/midterm-ste-2026-10-21": "reports/archive/midterm/midterm-ste-2026-10-21",
+    "reports/midterm-ste35-2026-10-21": "reports/archive/midterm/midterm-ste35-2026-10-21",
+    "reports/midterm-final-review-2026-10-23": "reports/archive/midterm/midterm-final-review-2026-10-23",
+    "reports/midterm-round3-2026-10-23": "reports/archive/midterm/midterm-round3-2026-10-23",
+    "reports/midterm-faculty-context-2026-10-23": "reports/archive/midterm/midterm-faculty-context-2026-10-23",
+    "reports/midterm-maintext-2026-10-23": "reports/archive/midterm/midterm-maintext-2026-10-23",
+    "reports/midterm-report-style-2026-10-23": "reports/midterm"
+  },
+  "files": [
+    {
+      "original": "reports/midsemester-2026-10-18/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/EVIDENCE_MAP.md",
+      "bytes": 5247,
+      "sha256": "449257686859d4b41188f1e98357a9cbdb3badf334ec0ab51765ca1002921031",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/README.md",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/README.md",
+      "bytes": 3371,
+      "sha256": "3da29b29b2375609e5dfbc64d53a1ddd78a17677016cfc24b42659f6498d3eca",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/TEAM_REVIEW.md",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/TEAM_REVIEW.md",
+      "bytes": 1777,
+      "sha256": "6d5fef326f7f0c3f510cb57e73c6d6e13a69849de5ac73470cc40d3c7bd47c66",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/build_figures.py",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/build_figures.py",
+      "bytes": 2580,
+      "sha256": "12a1bb665cd1af3b9adebc396585f1bf233ccbda55a8c3b7e37daad77abeeef5",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/claim-sources.json",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/claim-sources.json",
+      "bytes": 12204,
+      "sha256": "6514e5cf587f0a384e3298f94b5109e2ca337891bec5e695364889826121fc7d",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/figures/baseline-curves.png",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/figures/baseline-curves.png",
+      "bytes": 114853,
+      "sha256": "732502a0ef3332915d2ce7d0facad2ce6d54fff672dafac16b17dbfe4ef32f00",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/figures/controlled-force.pdf",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/figures/controlled-force.pdf",
+      "bytes": 16202,
+      "sha256": "d1daba3a83439d0a20ed90cf9873a36fabef3ede07e6a390184cec049e07e194",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/figures/controlled-force.png",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/figures/controlled-force.png",
+      "bytes": 21770,
+      "sha256": "e5590821ad614ce654ad00ce105ad54d3323f108459c8b630f0f40be20f43b78",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/figures/plot-data.json",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/figures/plot-data.json",
+      "bytes": 203536,
+      "sha256": "e0f91444b0b931fc9fac98ff0f66bc0b66ba882cadd93403e7a52d9a78044b09",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/main.pdf",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/main.pdf",
+      "bytes": 94456,
+      "sha256": "8273d1b0c8674f1dc950592deac80a133af33dc6e82d69afa91f109b92be4242",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/main.tex",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/main.tex",
+      "bytes": 18580,
+      "sha256": "e5cd6944cdd42fc52f2f113ade8fe4c328af66b06363a6b592bea3fca36acb6f",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/neurips_2019.sty",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midsemester-2026-10-18/selection-sensitivity.json",
+      "current": "reports/archive/midterm/midsemester-2026-10-18/selection-sensitivity.json",
+      "bytes": 3984,
+      "sha256": "63fe500fe9aec2577facc6939632d613a62d4b58111db1f37c0ca7170b0c8f3a",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/.gitattributes",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/EVIDENCE_MAP.md",
+      "bytes": 3248,
+      "sha256": "2bf1430d28d53f9c7de0efd1fe6bd7f54ed982c758389a4a874c49742c41723e",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/README.md",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/README.md",
+      "bytes": 2878,
+      "sha256": "3bdf77b9e8214f53e8704fb2316b736a8610ce899a6cec01f04868b7225b7c4b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/group9_Midterm_IDL.pdf",
+      "bytes": 77077,
+      "sha256": "49920b1cf1d6c080da1fd451b9739f95766a5118c777f5301109fd1b58b3570b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/group9_Midterm_IDL.tex",
+      "bytes": 18672,
+      "sha256": "da263639f5e115ea98f44c934b8dababb14d973783b67ac48b7d99e3c6d47428",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/source-records.json",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/source-records.json",
+      "bytes": 2069,
+      "sha256": "bf1ffd30640fe3d298cc6f070c28c039e6833bae27b7c28b489683cf7c3c3822",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste-2026-10-21/verification.json",
+      "current": "reports/archive/midterm/midterm-ste-2026-10-21/verification.json",
+      "bytes": 2610,
+      "sha256": "02e581dfcf4c736e868e0b424e05945345dd7467cc68603880fc215cd3160825",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/.gitattributes",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/EVIDENCE_MAP.md",
+      "bytes": 3457,
+      "sha256": "764db3af317eb0fa35f121ce0aab69f85430920b0dbc623febf6dd260e178409",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/README.md",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/README.md",
+      "bytes": 2024,
+      "sha256": "3c4f3523638976ef15c124c21ba4e7e5784ce0c275c91a3dc038cfd5eacf2623",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/group9_Midterm_IDL.pdf",
+      "bytes": 77253,
+      "sha256": "1da46801ee70f1df40285e14d50cb3fb7bcd851b7c51094ff070f6ee6f3b04b4",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/group9_Midterm_IDL.tex",
+      "bytes": 18984,
+      "sha256": "2ac260bf6c090d7dd4dd09affaee619ebcb80ae2d134f5cdd4422d5885dae3a8",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/source-records.json",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/source-records.json",
+      "bytes": 2572,
+      "sha256": "0108a1aa71c7ca24734902ac6212df295122a931a1a79a8f18ca3776e34e0375",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-ste35-2026-10-21/verification.json",
+      "current": "reports/archive/midterm/midterm-ste35-2026-10-21/verification.json",
+      "bytes": 2930,
+      "sha256": "28acf5b95d4e4aab0af03adb7c2a763b6135cd5053a2a6fa40a33e214ed61147",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/.gitattributes",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/EVIDENCE_MAP.md",
+      "bytes": 2181,
+      "sha256": "90df6735bde2494d90c914ec33e5830493813e1c6031cf7acdd77a9481e31fb4",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/README.md",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/README.md",
+      "bytes": 2579,
+      "sha256": "e9ea2554a142ceaefcea95522deeca4b8449842ad62ec5598411a649e7491d32",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/RELEASE_CHECKLIST.md",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/RELEASE_CHECKLIST.md",
+      "bytes": 1126,
+      "sha256": "9e67646da4016d8be761f40acb7eba66ef0d30ff84eafc7f2322d50c5c060de3",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/REVIEW_CHANGES.md",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/REVIEW_CHANGES.md",
+      "bytes": 2685,
+      "sha256": "681534df06a8b7fdd0379d0c2dafb5df0ab4a5640d868a838cc6c4a53de6da18",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/group9_Midterm_IDL.pdf",
+      "bytes": 76141,
+      "sha256": "0381515aeab84b87a7b308006cdebbc8000b8354b3d88351527d61ba516e720f",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/group9_Midterm_IDL.tex",
+      "bytes": 19018,
+      "sha256": "e0e853019845215aed5648b69c8fc2b0755134c449c1914c06a55d5805ed587e",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/representation-score-check.json",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/representation-score-check.json",
+      "bytes": 1764,
+      "sha256": "1da026158120d0d423e18129b4ecf6f49a77177c774944aa6787dd6a85892a83",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/source-records.json",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/source-records.json",
+      "bytes": 4560,
+      "sha256": "0193cc6385fd6fd9a379201614b4c5604feecfa7c0c62fb34a958439fdc04a0a",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-final-review-2026-10-23/verification.json",
+      "current": "reports/archive/midterm/midterm-final-review-2026-10-23/verification.json",
+      "bytes": 3406,
+      "sha256": "cae9d0b1b2fe8ac8e0236343088dbd60ac75d96a0ebff6af216d548549649f3f",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/.gitattributes",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/CONTENT_CLEARANCE.json",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/CONTENT_CLEARANCE.json",
+      "bytes": 1228,
+      "sha256": "c91b6a1d21918ecbc101c6a44caea1f399f0e228a2a39dd8b58590ee7e9caba1",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/EVIDENCE_MAP.md",
+      "bytes": 2408,
+      "sha256": "d712a1bdc6d1a0121701b453efdaf56138a0df564f217b3dbd38ee64f3a73476",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/README.md",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/README.md",
+      "bytes": 2296,
+      "sha256": "8ee48ef12227b6b92391035f0e4a046db2ac97da731a63eca74a7816350c36e0",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/RELEASE_CHECKLIST.md",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/RELEASE_CHECKLIST.md",
+      "bytes": 1679,
+      "sha256": "fa3f03d2058e845c00f5e4c3b9dbf3252ae545029894143bde5217127b12d97e",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/REVIEW_CHANGES.md",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/REVIEW_CHANGES.md",
+      "bytes": 1747,
+      "sha256": "1fcb7ae5137945b7a27392c62fe5afb55bf2c468e47eb78e4bbad3497d39dfec",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/group9_Midterm_IDL.pdf",
+      "bytes": 77191,
+      "sha256": "a09cbdfd39e352846dd00b60346147a7d0e400ffc4cdd0d228e0e633e6ff2888",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/group9_Midterm_IDL.tex",
+      "bytes": 19222,
+      "sha256": "d7ea990ac054d037df3a32a7d19a818d97be6d4433539310993ea64b89dd7467",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/representation-score-check.json",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/representation-score-check.json",
+      "bytes": 1764,
+      "sha256": "1da026158120d0d423e18129b4ecf6f49a77177c774944aa6787dd6a85892a83",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/source-records.json",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/source-records.json",
+      "bytes": 4909,
+      "sha256": "ffc90764b923afc929bde7d44fa4aab1307065df2218539c7e7c8f47469c0d36",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-round3-2026-10-23/verification.json",
+      "current": "reports/archive/midterm/midterm-round3-2026-10-23/verification.json",
+      "bytes": 3974,
+      "sha256": "497df12bdc6214e89f4b5de0d93c8400b783e13c179379bd8d7b1b51c7ce1bc6",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/.gitattributes",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/README.md",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/README.md",
+      "bytes": 1582,
+      "sha256": "3631f6cade069faf2436c629c3491e684cf5ade44e2bc0e86c542c127a5565dc",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/RELEASE_CHECKLIST.md",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/RELEASE_CHECKLIST.md",
+      "bytes": 1860,
+      "sha256": "521e5936a466049d207630ec4248f4b80e0db3c86f8e1ff045b13ad21f650e2c",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.pdf",
+      "bytes": 76911,
+      "sha256": "c8e958669bd808f0e6bbcfdc3b0f07cdf4694052c4285e490888c2a0fecbd3ab",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.tex",
+      "bytes": 19220,
+      "sha256": "d59fdf27a8edd7ce23ebf8e7255b8fb9b8d978fd83aa632a07431061c4207cd0",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-faculty-context-2026-10-23/verification.json",
+      "current": "reports/archive/midterm/midterm-faculty-context-2026-10-23/verification.json",
+      "bytes": 1643,
+      "sha256": "16e7ed607b78518478cbeec33262f6fd38524ffd90ad02e6b59f7d3b489a8635",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/.gitattributes",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/CHANGES.md",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/CHANGES.md",
+      "bytes": 1181,
+      "sha256": "7d200aaae86d8ccfa701ef613a402cc10d8a34a15ba2d7b75b2af5ec132c4e11",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/EVIDENCE_MAP.md",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/EVIDENCE_MAP.md",
+      "bytes": 1054,
+      "sha256": "867ec3233b57ea12c24845a7eebfe9311101eeb678d1ee399972e7dc9f981b47",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/README.md",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/README.md",
+      "bytes": 2135,
+      "sha256": "d61f6db68b508ad86edede12eb16892063b079a84c535f0dfc816a0fd7e96277",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/RELEASE_CHECKLIST.md",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/RELEASE_CHECKLIST.md",
+      "bytes": 1190,
+      "sha256": "fdb89ed255e65ca783d97e6e8ad01a4c25301f2a6bb3b0e3e2789d2ad949e7e9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/figures/baseline-curves.pdf",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/group9_Midterm_IDL.pdf",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/group9_Midterm_IDL.pdf",
+      "bytes": 77438,
+      "sha256": "fed98f1b53707dba48a413081293139be8981680710ea470987a2c305438876b",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/group9_Midterm_IDL.tex",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/group9_Midterm_IDL.tex",
+      "bytes": 19639,
+      "sha256": "540dc6ec05786a487ac4af804f784d604d65ad68a276bc963d555ff6f97797af",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/neurips_2019.sty",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/source-records.json",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/source-records.json",
+      "bytes": 570,
+      "sha256": "971cd4f66cdab2013b37309cb1d14a77d39d40f924c56f94033d18685556b6b3",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-maintext-2026-10-23/verification.json",
+      "current": "reports/archive/midterm/midterm-maintext-2026-10-23/verification.json",
+      "bytes": 3496,
+      "sha256": "1a89024c475e67e49e013a9b327ce573eecafd6b0ff6e4a086405e4f5e4a633a",
+      "archived": true
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/.gitattributes",
+      "current": "reports/midterm/.gitattributes",
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/CHANGES.md",
+      "current": "reports/midterm/CHANGES.md",
+      "bytes": 1941,
+      "sha256": "9b519e56ef6d5e6bcde1177707d5425c1f7218bfef0bc4f4c876d48ce873ad51",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/EVIDENCE_MAP.md",
+      "current": "reports/midterm/EVIDENCE_MAP.md",
+      "bytes": 1097,
+      "sha256": "0caabd230e7fe811a59e33dd068b7cf99804087cc0167d6fe139d4aa2d18221e",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/README.md",
+      "current": "reports/midterm/README.md",
+      "bytes": 1153,
+      "sha256": "32ea2c59d4d66da10394da96aed54824931b8777313a94a406e8804de5c23f64",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/RELEASE_CHECKLIST.md",
+      "current": "reports/midterm/RELEASE_CHECKLIST.md",
+      "bytes": 1186,
+      "sha256": "f0d8aa5bac53566bba24d7d32b63a184bbe8f1121d8e2fcd3815558a8c28bf7d",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/figures/baseline-curves.pdf",
+      "current": "reports/midterm/figures/baseline-curves.pdf",
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/group9_Midterm_IDL.pdf",
+      "current": "reports/midterm/group9_Midterm_IDL.pdf",
+      "bytes": 77569,
+      "sha256": "885e22ef7b3424ee9dc5a4344af1d87bb0846b3569ba510ecf1c50fa73e43fba",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/group9_Midterm_IDL.tex",
+      "current": "reports/midterm/group9_Midterm_IDL.tex",
+      "bytes": 19487,
+      "sha256": "fa06d945fbc12c77dbf68c35fbb3c8246d728355b025b460a4d73b75394e0668",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/neurips_2019.sty",
+      "current": "reports/midterm/neurips_2019.sty",
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/source-records.json",
+      "current": "reports/midterm/source-records.json",
+      "bytes": 939,
+      "sha256": "db24f83180491ece82adfc0499522208dc359aa5bd03568dd8f4cf653e1efd94",
+      "archived": false
+    },
+    {
+      "original": "reports/midterm-report-style-2026-10-23/verification.json",
+      "current": "reports/midterm/verification.json",
+      "bytes": 3903,
+      "sha256": "d6ab7d55d8afab412479e7b0a0f1bd6742180d00feacedeb8449cdb8e73c3a25",
+      "archived": false
+    }
+  ]
+}
