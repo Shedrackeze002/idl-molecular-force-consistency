@@ -5,7 +5,7 @@
   "reference_start_page": 6,
   "reference_pages": 1,
   "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
-  "prose_paragraphs": 27,
+  "prose_paragraphs": 28,
   "prose_sentences": 126,
   "max_sentence_words": 32,
   "language_flags": [],
@@ -21,8 +21,8 @@
   "compile_warnings": [],
   "immutable_research_snapshot_link_present": true,
   "working_draft_footer_removed": true,
-  "pdf_sha256": "0f08b06bd45be61cd46de6d4b1021b59bd0f3ade0ff11c7939fbb56ee87013c4",
-  "pdf_bytes": 80510,
+  "pdf_sha256": "e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc",
+  "pdf_bytes": 80588,
   "abstract": {
     "paragraphs": 1,
     "sentences": 6,
@@ -49,7 +49,7 @@
   "two_bounded_plan_and_final_reviews_pass": false,
   "all_six_pages_visually_inspected": true,
   "tables_loss_figure_and_bibliography_unchanged": false,
-  "review_scope": "Two manuscript replacements: MACE exposure non-causality qualification and recovery-caption grammar. Supporting hardware pointers verified against launch-source pins and captured helper hashes. No numerical, abstract, model or method change.",
+  "review_scope": "Limitations paragraph formatting and one wording change, preserving the saved manuscript edits. Scientific values, abstract, methods, tables, figure and references unchanged; only page 5 changed visually.",
   "release_checks_pending": [
     "Four contribution confirmations",
     "Live Canvas instructions and exact due time/timezone",
@@ -59,11 +59,11 @@
   "files": {
     "group9_Midterm_IDL.tex": {
       "bytes": 21114,
-      "sha256": "c7994a2f1d590da97eee36012f7bf9d4d5d160f78c824886d92a662fbf092e18"
+      "sha256": "8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab"
     },
     "group9_Midterm_IDL.pdf": {
-      "bytes": 80510,
-      "sha256": "0f08b06bd45be61cd46de6d4b1021b59bd0f3ade0ff11c7939fbb56ee87013c4"
+      "bytes": 80588,
+      "sha256": "e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc"
     },
     "neurips_2019.sty": {
       "bytes": 11040,
@@ -78,16 +78,16 @@
       "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
     },
     "README.md": {
-      "bytes": 4871,
-      "sha256": "67f83d4f286c76f869ec2a91c7fc7837624d78326e02ed0dabc7816ef16883b0"
+      "bytes": 5172,
+      "sha256": "468a497e2fc74dcd775bf47b39658ace3ede302ba4e7584d8ae0effa8ab03807"
     },
     "CHANGES.md": {
-      "bytes": 10112,
-      "sha256": "a691a27fd42bf2bc2090b71444e8ef02fa1e15ef02c9f78a4d1e5c1eab8e8528"
+      "bytes": 10560,
+      "sha256": "64be9394efb2a4c1a7deb49a7ad4fef3da49335ff593c93c4887ad0d0a31ede0"
     },
     "RELEASE_CHECKLIST.md": {
       "bytes": 1342,
-      "sha256": "671989cc0406cfd394731a2fc8bc575483b293b3c03f804a20726de2b02bf287"
+      "sha256": "3f7e421d5aefc515936d2dde9dc1d21ff3d3596e9b9a78c0829abd685330ba61"
     },
     "EVIDENCE_MAP.md": {
       "bytes": 1368,
@@ -123,7 +123,7 @@
     "archive_files_byte_preserved": true
   },
   "source_verification": {
-    "source_sha256": "c7994a2f1d590da97eee36012f7bf9d4d5d160f78c824886d92a662fbf092e18",
+    "source_sha256": "8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab",
     "built_in_compile": "success",
     "body_sentences": 126,
     "max_sentence_words": 32,
@@ -149,8 +149,8 @@
   },
   "page_limit_met": true,
   "previous_export": {
-    "pdf_sha256": "cddf779881b7a36d69fa19992d91624100403f2d83d3f5d9b47ea983db81da7c",
-    "archive": "reports/archive/midterm/before-provenance-context-2026-10-24",
+    "pdf_sha256": "0f08b06bd45be61cd46de6d4b1021b59bd0f3ade0ff11c7939fbb56ee87013c4",
+    "archive": "reports/archive/midterm/before-limitations-heading-2026-10-24",
     "pages": 6,
     "main_text_pages": 5
   },
@@ -199,7 +199,9 @@
     "hardware_evidence_json_fields_verified": true,
     "available_logical_cpus_not_concurrent_threads": true,
     "training_exposure_noncausal_context_explicit": true,
-    "recovery_caption_force_geometry_rule_explicit": true
+    "recovery_caption_force_geometry_rule_explicit": true,
+    "standalone_limitations_heading": true,
+    "pages1_to4_and6_pixel_identical": true
   },
   "research_snapshot_scope": "Research code/evidence, not the later report revision",
   "solver_constants_verified_against_github_snapshot": true,
