@@ -77,7 +77,7 @@
     }
   ],
   "reference_label_measure": "maximum absolute Cartesian force component, not MAE",
-  "hardware_limit": "Saved provenance identifies arm64 macOS and 18 logical CPUs; chip model not established by the inspected run records.",
+  "hardware_limit": "Launch-source pins embedded in the specified score records identify arm64 macOS and 18 available logical CPUs. Training provenance alone records CPU backend/device and software versions; its arm field names the experimental arm. CPU model and actual concurrent thread usage are not established.",
   "source_paths": {
     "controlled": "reports/evidence/2026-10-18/controlled/completion-audit.json",
     "reference_controls": "reports/evidence/2026-10-18/paired-trace/raw/*energy-0/{result,relaxation}.json",
@@ -171,5 +171,47 @@
       "same_best_checkpoint_sha256": "155bad1a8b3debcc33cc88be3adb807f05fe793cb999b3cdb96b21fad79d33c1",
       "new_fit_performed": false
     }
-  ]
+  ],
+  "hardware_evidence": {
+    "records": [
+      {
+        "path": "reports/evidence/2026-10-18/baseline/C/score.json",
+        "sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+        "json_path": "source_pin.runtime_cpu",
+        "recorded": {
+          "logical_cpus": 18,
+          "machine": "arm64",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "processor": "arm",
+          "thread_environment": {
+            "MKL_NUM_THREADS": null,
+            "OMP_NUM_THREADS": null,
+            "OPENBLAS_NUM_THREADS": null,
+            "XLA_FLAGS": null
+          }
+        }
+      },
+      {
+        "path": "reports/evidence/2026-10-18/controlled/energy-1/score.json",
+        "sha256": "04090d0ab69759963e8f1d4def8167960c072582af69a77edea3c6a5f98f5d94",
+        "json_path": "source_pin.runtime_cpu",
+        "recorded": {
+          "logical_cpus": 18,
+          "machine": "arm64",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "processor": "arm",
+          "thread_environment": {
+            "MKL_NUM_THREADS": null,
+            "OMP_NUM_THREADS": null,
+            "OPENBLAS_NUM_THREADS": null,
+            "XLA_FLAGS": null
+          }
+        }
+      }
+    ],
+    "capture": "scripts/e3x_phase_common.py source_pin(): platform.platform(), platform.machine(), platform.processor(), os.cpu_count().",
+    "baseline_launch_check": "scripts/launch_e3x_candidates.py checks the captured source pin before and after training. Its helper hash matches the launch-source pin embedded in each listed score record.",
+    "controlled_launch_check": "scripts/launch_e3x_comparison.py checks source_pin() against each slot launch record before execution.",
+    "scope": "Available host logical CPUs, not a measurement of threads used simultaneously. The worker provenance field arm is the experiment label, distinct from source_pin.runtime_cpu.machine."
+  }
 }

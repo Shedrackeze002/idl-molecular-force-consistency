@@ -79,14 +79,14 @@ MACE Run A, final & 5.349 & Single seed & ---\\\bottomrule
 Only strength 0.1 meets the declared rule against direct prediction; BEST reports the minimum validation force error among 401 noisy checkpoint checks, which is optimistic. Over updates 150,000--200,000, the last 50,000 updates, baseline errors vary by 2.2--3.1~meV/\AA\ standard deviation across correlated checks. Nine subsequent fits finish 0.1--7.4~meV/\AA\ above BEST. The matching gap, 0.162~meV/\AA, is below this variation; matching does not establish equivalence. A secondary, post-hoc comparison with the energy baseline also passes for $\lambda=1$: gap 0.210~meV/\AA\ (0.605\% of the smaller mean), with seed spans 0.611 and 1.921~meV/\AA. This does not change the declared direct comparison; $\lambda=1$ recovery remains untested.
 
 \subsection{MACE Reference Result}
-MACE Run A completed 2,048 epochs on the same 4,891 training and 974 validation records as E3x. Independent scoring confirms a stronger prediction reference (Table~\ref{tab:prediction}); MACE recovery remains unmeasured. Each MACE epoch uses 978 five-record updates, dropping the partial batch: 10,014,720 exposures, versus E3x's 800,000 per fit (12.52 times as many). Architecture, sampling, optimization and hardware differ, preventing a controlled efficiency comparison.
+MACE Run A completed 2,048 epochs on the same 4,891 training and 974 validation records as E3x. Independent scoring confirms a stronger prediction reference (Table~\ref{tab:prediction}); MACE recovery remains unmeasured. Each MACE epoch uses 978 five-record updates, dropping the partial batch: 10,014,720 exposures, versus E3x's 800,000 per fit (12.52 times as many). Training exposure provides context; these experiments do not isolate its contribution to the accuracy gap. Architecture, sampling, optimization and hardware differ, preventing a controlled efficiency comparison.
 
 \subsection{Structural Recovery}
 Adaptive force-following relaxation was applied to five E3x checkpoints on ten shared branch starts from five validation connections (Table~\ref{tab:recovery}).
 
 \begin{table}[H]
 \centering\small
-\caption{All five E3x checkpoints recover 0/10. Wrong stops meet the force but not geometry rule. The 23 direct/consistency wrong stops are disconnected; both energy wrong stops stay connected. Post-hoc controls start at the six target minima.}\label{tab:recovery}
+\caption{All five E3x checkpoints recover 0/10. Wrong stops meet the force rule but not the geometry rule. The 23 direct/consistency wrong stops are disconnected; both energy wrong stops stay connected. Post-hoc controls start at the six target minima.}\label{tab:recovery}
 \begin{tabular}{lrrr}\toprule
 Checkpoint & Wrong stop & No convergence & Reference-start recovery\\\midrule
 Energy C, seed 0 & 2 & 8 & 4/6\\

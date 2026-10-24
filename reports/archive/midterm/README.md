@@ -19,3 +19,5 @@ The [superseded 24 October export](exports-2026-10-24/README.md) preserves the p
 The [edition before the abstract clarity revision](abstract-before-clarity-2026-10-24/README.md) preserves the source and PDF that immediately preceded it.
 
 The [edition before hypothesis and synthesis clarification](before-rubric-strengthening-2026-10-24/README.md) preserves its exact source and PDF.
+
+The [edition before the exposure-context and caption clarification](before-provenance-context-2026-10-24/README.md) preserves its exact source and PDF.
