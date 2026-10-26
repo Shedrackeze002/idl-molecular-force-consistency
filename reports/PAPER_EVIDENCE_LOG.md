@@ -396,3 +396,14 @@ The worker provenance files record CPU backend/device, software and experimental
 ### MIDTERM-LIMITATIONS-2026-10-24-001 — separate Limitations heading
 
 Saved the revised manuscript with Limitations as a separate paragraph heading and "Failed and incomplete trials are recorded." Preserved all substantive source edits; only trailing whitespace was trimmed. Abstract, scientific values, methods, tables, figure and bibliography unchanged. Built-in compilation and saved export checks pass: five main pages plus references, no warnings, page 5 visually checked; pages 1–4 and 6 are pixel-identical to the preceding visually checked export. PDF SHA-256 e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc; source SHA-256 8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab. Previous matching published source/PDF are preserved under reports/archive/midterm/before-limitations-heading-2026-10-24. The delivery PDF remains linked to the canonical export. No new experiment or submission.
+
+
+### POST-MIDTERM-READINESS-2026-10-26-001 — setup complete; loader/parity plan reviewed
+
+P04–P06 are complete as operational preparation. The isolated branch preserves scientific source snapshot3fa5969; publication uses report descendant83bd55b with unchanged scientific source/configuration/manifests/tests/dependencies. Thirteen evaluator/bridge/source files, six historical scorer bindings and all11packet members are authenticated. Retained Python/package metadata and eight installed source hashes match the accepted scoring environment. Synthetic/regression baseline:140passed,1expected archive skip,19subtests;44ASE/NumPydeprecation warnings. No real checkpoint was loaded.
+
+The exact handover and evaluator contract are verified on GitHub at83bd55b. The coordinator states that GitHub presence confirms Idris receipt and explicitly confirms Olufunke integration. Private implementation and private payload access remain unverified. Idris keeps loader/reproduction authorship; no duplicate implementation is claimed.
+
+The MACE loader/parity specification and implementation plan have independent scientific and engineering plan approval. They fix974validation records, literal connection IDs including18_2, absolute1e-10energy/force tolerances, one model,974force+974energyaccessors,1800s shared cap and bounded outputs. Plan approval is not implementation or launch readiness. See docs/research/MACE_LOADER_PARITY_SPEC_2026-10-26.md and reports/evidence/2026-10-26/mace-loader-parity-plan-acceptance.json. Main test remains closed. No training, trained inference, recovery, remote allocation or outgoing teammate message.
+
+The action tracker now checks P01–P06; P07 remains Idris's implementation handoff. P27 is partial: current public deliverable weights checked, but live final deadlines and rubric unconfirmed. Updated source-readiness, handover and metadata-verification receipts remain under reports/evidence/2026-10-26.
