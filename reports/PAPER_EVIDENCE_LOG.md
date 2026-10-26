@@ -407,3 +407,8 @@ The exact handover and evaluator contract are verified on GitHub at83bd55b. The 
 The MACE loader/parity specification and implementation plan have independent scientific and engineering plan approval. They fix974validation records, literal connection IDs including18_2, absolute1e-10energy/force tolerances, one model,974force+974energyaccessors,1800s shared cap and bounded outputs. Plan approval is not implementation or launch readiness. See docs/research/MACE_LOADER_PARITY_SPEC_2026-10-26.md and reports/evidence/2026-10-26/mace-loader-parity-plan-acceptance.json. Main test remains closed. No training, trained inference, recovery, remote allocation or outgoing teammate message.
 
 The action tracker now checks P01–P06; P07 remains Idris's implementation handoff. P27 is partial: current public deliverable weights checked, but live final deadlines and rubric unconfirmed. Updated source-readiness, handover and metadata-verification receipts remain under reports/evidence/2026-10-26.
+
+
+### REPRESENTATION-CLOSEOUT-PLAN-2026-10-26-001 — saved-output closeout proposed
+
+Coordinator approves representation-study closeout while MACE owner work continues. Saved a bounded specification and implementation plan. Scope: authenticate six completed fits, cached BEST/LAST predictions and fixed histories; independently reduce validation metrics; compare BEST/LAST/late20; report paired seeds, scoped timing and descriptive limits. No new training, model restoration/inference, recovery or test payload. Independent scientific plan review approves; engineering plan review pending. All historical sources and outputs remain unchanged.
