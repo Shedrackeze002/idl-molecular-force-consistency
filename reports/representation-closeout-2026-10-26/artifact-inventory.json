@@ -22,8 +22,8 @@
       "sha256": "3ac60bf7c4cf7d824ab1f03f32f21a46a18d38d93074054f26d0af150962cc38"
     },
     "reports/representation-closeout-2026-10-26/README.md": {
-      "bytes": 1777,
-      "sha256": "43445bc960bdc39160d342666c043caa930d27cc527c217b5698203b590cee88"
+      "bytes": 1978,
+      "sha256": "43b72429c0d2b6531ca3808b139d54ebeac29a7c3d1f2a6dd481e06c966a603a"
     },
     "reports/representation-closeout-2026-10-26/acceptance.json": {
       "bytes": 1138,
@@ -34,12 +34,12 @@
       "sha256": "bf75030af541a4cf281899f19668bfe411192fe85916fce4d1c5051e622d4a9e"
     },
     "reports/representation-closeout-2026-10-26/connection_deltas.csv": {
-      "bytes": 1776,
-      "sha256": "d6d16ec8349cb188096e3eb2ed1ff3606f182b82c70234c18cf8a221ea949d74"
+      "bytes": 1735,
+      "sha256": "db4aa6370efc7f6202e7eb28592370176d08fa5e39215d44fb1ecc81a12ce8c3"
     },
     "reports/representation-closeout-2026-10-26/endpoint_metrics.csv": {
-      "bytes": 1609,
-      "sha256": "348e810f69b44b5d614f50b1bc4f5ef24a943721249199536ca461f492dbbe15"
+      "bytes": 1596,
+      "sha256": "65f93efbfc2292611044b1444ed0f2428c671bb7718826e461e5da8d4ff98a23"
     },
     "reports/representation-closeout-2026-10-26/figures/paired_seed_differences.pdf": {
       "bytes": 20330,
@@ -70,20 +70,20 @@
       "sha256": "94326b2871e3fb3b75df86bbea30018f5277048c375238ada97de08f9449a610"
     },
     "reports/representation-closeout-2026-10-26/paired_seed_deltas.csv": {
-      "bytes": 524,
-      "sha256": "fd180bd8d57e02d3c1b289231f9961ef4b4efd3cc7c58e5bb18dc2088c153900"
+      "bytes": 511,
+      "sha256": "915d83fe4ed6b935860a69c6023f189122129b7651e9211130418dc400019d24"
     },
     "reports/representation-closeout-2026-10-26/run_metrics.csv": {
-      "bytes": 834,
-      "sha256": "78070c7b82982159e8d76269bdbcb126f4fb9b30ac6d59a32d7559675fcbe79e"
+      "bytes": 827,
+      "sha256": "c24baaca1ef36978ab916d12a9d946be1529eb42eb980d24c86188fb284270a6"
     },
     "reports/representation-closeout-2026-10-26/validation_trajectories.csv": {
-      "bytes": 80152,
-      "sha256": "b947c8233b8e653baa23f6c8dd302e2d78ce54612736296f33be4a55be5f7705"
+      "bytes": 77745,
+      "sha256": "f7a1daf5b2bcd27a0f5c8408deba44091da25be5b39d65794284e4f341df9209"
     },
     "reports/representation-closeout-2026-10-26/verification.json": {
-      "bytes": 1993,
-      "sha256": "453274ad937e6907c08152372f71400021f0c4e982e5e269a3d07f55c779c0ab"
+      "bytes": 3420,
+      "sha256": "dcdee178517c5ddac9afdbb8470379cf2f0b1fd529de7173fe293bcc1e2c4aaa"
     },
     "scripts/close_representation_study.py": {
       "bytes": 26044,

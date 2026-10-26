@@ -24,3 +24,5 @@ MPLCONFIGDIR=/path/to/writable-cache python scripts/plot_representation_closeout
 The figure directory must also be new. Run tests from the repository root with PYTHONPATH=.:src:scripts. The new test_representation_closeout.py provides independent arithmetic/refusal checks; original representation analysis/protocol tests provide synthetic regressions. The latter may import model frameworks for synthetic fixtures, while the production closeout auditor does not.
 
 Preserve the report's fixed-recipe, two-seed, validation-selection and timing limitations. Reproduction of saved arithmetic does not establish model portability, inference speed or recovery.
+
+CSV publication exports normalize line endings to LF. This changes file bytes without changing any parsed field or numeric value. The verification record preserves original-audit and exported hashes.
