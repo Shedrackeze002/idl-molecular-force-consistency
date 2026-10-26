@@ -213,6 +213,7 @@ def verify_recipe(name, config, provenance, summary, manifest):
     require(config['model'] == model and config['seed'] == int(seed_text), 'Architecture/seed differs: ' + name)
     for key, expected in {'arm': 'energy', 'backend': 'cpu', 'batch_size': 4, 'learning_rate': .003,
                           'max_updates': 200000, 'validation_interval': 500, 'expected_split_hash': SPLIT,
+                          'mode': 'integration', 'consistency_strength': 0., 'expected_learning_subset_hash': None,
                           'loss_weights': {'energy': .014584365670390719, 'force': 1.9854156343296092}}.items():
         require(config[key] == expected, 'Recipe differs: ' + name + '/' + key)
     computation = {key: value for key, value in config.items()
@@ -232,6 +233,8 @@ def verify_score_identity(score, config, provenance, scoring_source_sha256):
     require(score['seed'] == config['seed'] and score['model'] == config['model']
             and score['parameter_count'] == provenance['parameter_count']
             and score['source_fingerprint'] == provenance['code_fingerprint']
+            and score['training_revision'] == provenance['revision']
+            and score['backend'] == config['backend'] == provenance['backend']
             and score['analysis_source_sha256'] == scoring_source_sha256, 'Cached scoring recipe identity differs')
 
 

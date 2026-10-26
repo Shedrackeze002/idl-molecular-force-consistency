@@ -412,3 +412,8 @@ The action tracker now checks P01–P06; P07 remains Idris's implementation hand
 ### REPRESENTATION-CLOSEOUT-PLAN-2026-10-26-001 — saved-output closeout proposed
 
 Coordinator approves representation-study closeout while MACE owner work continues. Saved a bounded specification and implementation plan. Scope: authenticate six completed fits, cached BEST/LAST predictions and fixed histories; independently reduce validation metrics; compare BEST/LAST/late20; report paired seeds, scoped timing and descriptive limits. No new training, model restoration/inference, recovery or test payload. Independent scientific plan review approves; engineering plan review pending. All historical sources and outputs remain unchanged.
+
+
+### REPRESENTATION-CLOSEOUT-IMPLEMENTATION-2026-10-26-001 — saved-data audit ready
+
+Both independent plan reviews approve. New independent NumPy/msgpack auditor, plotting source and tests are committed at5a809b5. Final33focused/regressiontests pass; the fresh-process import guard excludes model frameworks from the auditor. Input inventory binds92files, sixfits, twelveprediction files, checkpoints/reload proofs and validation-only arrays. Initial missing-module/identity-helper REDs and a wrong-working-directory test invocation are retained. No model payload restored or new learned calculation. Saved-data audit remains pending; no interpretation accepted.

@@ -13,7 +13,7 @@ import pytest
 from close_representation_study import (
     BoundInputs, checkpoint_metadata, history_summary, paired_summaries,
     reduce_predictions, timing_summary, write_artifacts,
-    verify_score_identity,
+    verify_score_identity, verify_recipe, canonical, SPLIT,
 )
 
 
@@ -99,15 +99,35 @@ def test_timing_never_turns_missing_or_bad_values_into_zero():
 
 
 @pytest.mark.parametrize('field,value', [('seed',1),('parameter_count',1),
-    ('source_fingerprint','different'),('model',{'max_degree':0}),('analysis_source_sha256','different')])
+    ('source_fingerprint','different'),('model',{'max_degree':0}),('analysis_source_sha256','different'),
+    ('backend','cuda'),('training_revision','different')])
 def test_score_identity_cannot_override_the_admitted_recipe(field,value):
-    config={'seed':0,'model':{'max_degree':1}}
-    provenance={'parameter_count':43521,'code_fingerprint':'source'}
+    config={'seed':0,'model':{'max_degree':1},'backend':'cpu'}
+    provenance={'parameter_count':43521,'code_fingerprint':'source','revision':'original','backend':'cpu'}
     score={'seed':0,'model':config['model'],'parameter_count':43521,
-           'source_fingerprint':'source','analysis_source_sha256':'scorer'}
+           'source_fingerprint':'source','analysis_source_sha256':'scorer','backend':'cpu','training_revision':'original'}
     verify_score_identity(score,config,provenance,'scorer')
     score[field]=value
     with pytest.raises(ValueError): verify_score_identity(score,config,provenance,'scorer')
+
+
+@pytest.mark.parametrize('field,value', [('mode','diagnostic'),('consistency_strength',1.),
+                                        ('expected_learning_subset_hash','other')])
+def test_self_consistent_config_cannot_change_fixed_recipe(field,value):
+    config={'model':{'features':64,'max_degree':1,'iterations':2,'radial_basis':8,
+                     'cutoff_A':5.,'energy_readout_init':'zero'},
+        'seed':0,'arm':'energy','backend':'cpu','batch_size':4,'learning_rate':.003,
+        'max_updates':200000,'validation_interval':500,'expected_split_hash':SPLIT,
+        'loss_weights':{'energy':.014584365670390719,'force':1.9854156343296092},
+        'mode':'integration','consistency_strength':0.,'expected_learning_subset_hash':None}
+    config[field]=value
+    computation={k:v for k,v in config.items() if k not in ('data_directory','run_directory','resume_checkpoint','max_updates','wall_seconds')}
+    manifest={'identity':'dataset','normalization':{}}
+    provenance={'config_computation_hash':canonical(computation),'dataset_identity':'dataset',
+        'normalization':{},'split_hash':SPLIT,'parameter_count':43521}
+    summary={'provenance':provenance,'status':'passed','stop_reason':'max_updates','updates':200000,
+        'checkpoint_new_process_verified':True,'best_checkpoint_new_process_verified':True}
+    with pytest.raises(ValueError):verify_recipe('E64-0',config,provenance,summary,manifest)
 
 
 def test_bound_inputs_detect_corruption_and_never_open_unlisted_paths(tmp_path):
