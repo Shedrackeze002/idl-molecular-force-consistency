@@ -426,3 +426,8 @@ The fixed saved-data closeout passed at analysis source570fb27. Rehashed92inputs
 E64 mean BEST/LAST/late20 forceMAE34.892873/38.565299/39.018736meV/Å; SP41.357760/48.084489/46.009924; S6439.542219/45.913195/43.266563. PrimarySPminusE64 gaps6.464886/9.519190/6.991188; secondaryS64gaps4.649346/7.347896/4.247827. Both seeds have positive aggregate gaps. Connection13/S64seed1/LAST is the endpoint exception,-2.390963689meV/Å. Original fixed-recipe, two-seed, reused-validation and observational timing limits remain. No causal symmetry, recovery, portability or generalization claim.
 
 Report: reports/REPRESENTATION_STUDY_CLOSEOUT_2026-10-26.md; machine tables, figures, inventory, acceptance and verification under reports/representation-closeout-2026-10-26. Initial failed implementation tests and reporting invocations are retained privately; no new fits were used to repair analysis. P31 is added without renumbering existing tasks; seven of31items complete. Publication package preparation is separate from local acceptance.
+
+
+### POST-MIDTERM-REPORT-PREPARATION-2026-10-26-001 — merge verified; P28 started
+
+Coordinator reports PR13 merged. GitHub confirms merge47b727b4efa4be91ada585be343e1ddb509b7116 into post-midterm-mace-readiness; complete tree4c61862f1cde79be6bbb8811afc7f1c6f79b01dd equals reviewed head8842091. PR12/10/9/8 remain open in the existing stack. No further merge is authorized or performed. Started P28 with docs/research/FINAL_REPORT_CONTENT_MAP_2026-10-26.md, mapping accepted evidence to draft sections and explicit pending results. P28/P27/P29 remain incomplete; tracker7/31. No new model execution, numerical result or publication.
