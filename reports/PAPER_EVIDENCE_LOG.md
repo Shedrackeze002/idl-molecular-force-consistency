@@ -417,3 +417,12 @@ Coordinator approves representation-study closeout while MACE owner work continu
 ### REPRESENTATION-CLOSEOUT-IMPLEMENTATION-2026-10-26-001 — saved-data audit ready
 
 Both independent plan reviews approve. New independent NumPy/msgpack auditor, plotting source and tests are committed at5a809b5. Final33focused/regressiontests pass; the fresh-process import guard excludes model frameworks from the auditor. Input inventory binds92files, sixfits, twelveprediction files, checkpoints/reload proofs and validation-only arrays. Initial missing-module/identity-helper REDs and a wrong-working-directory test invocation are retained. No model payload restored or new learned calculation. Saved-data audit remains pending; no interpretation accepted.
+
+
+### REPRESENTATION-CLOSEOUT-RESULT-2026-10-26-001 — independent saved-result reviews accept
+
+The fixed saved-data closeout passed at analysis source570fb27. Rehashed92inputs before/after, authenticated sixfit recipes and12checkpoint/reload bindings, checked2406scheduled events, and independently reduced12cached endpoints/736344force components. Largest scalar discrepancy1.3877787807814457e-17; history discrepancy6.938893903907228e-18. Both independent scientific/engineering saved-result reviewers reconstructed the reductions without author model code and APPROVE. Final38focused/regressiontests pass. No learned model restored/queried; no new fit, recovery or test payload.
+
+E64 mean BEST/LAST/late20 forceMAE34.892873/38.565299/39.018736meV/Å; SP41.357760/48.084489/46.009924; S6439.542219/45.913195/43.266563. PrimarySPminusE64 gaps6.464886/9.519190/6.991188; secondaryS64gaps4.649346/7.347896/4.247827. Both seeds have positive aggregate gaps. Connection13/S64seed1/LAST is the endpoint exception,-2.390963689meV/Å. Original fixed-recipe, two-seed, reused-validation and observational timing limits remain. No causal symmetry, recovery, portability or generalization claim.
+
+Report: reports/REPRESENTATION_STUDY_CLOSEOUT_2026-10-26.md; machine tables, figures, inventory, acceptance and verification under reports/representation-closeout-2026-10-26. Initial failed implementation tests and reporting invocations are retained privately; no new fits were used to repair analysis. P31 is added without renumbering existing tasks; seven of31items complete. Publication package preparation is separate from local acceptance.

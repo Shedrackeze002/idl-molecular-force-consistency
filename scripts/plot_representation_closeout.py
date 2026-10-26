@@ -37,13 +37,14 @@ def plot_all(result, output):
                              marker=marker, color=COLORS[family], s=48,
                              label=f'seed {seed}' if index == 0 else None, zorder=3)
             axis.plot([index-.19, index+.19], [values.mean()]*2, color='black', lw=1.6)
-        axis.set_xticks(range(3), ['E64\n43,521 params', 'SP\n43,473 params', 'S64\n25,473 params'])
+        axis.set_xticks(range(3), ['E64', 'SP', 'S64'])
         axis.set_title(LABELS[metric]);axis.grid(axis='y', alpha=.2)
     axes[0].set_ylabel('Equal-connection validation force MAE (meV/Å)')
     axes[0].legend(frameon=False)
     figure.suptitle('Fixed E64-selected recipe; two seeds per family', y=1.01, fontsize=12)
     figure.text(.5, -.02, 'Dots/squares show individual seeds; black marks show arithmetic means, not confidence intervals.',
                 ha='center', fontsize=9)
+    figure.text(.5, -.07, 'Parameter counts: E64 43,521; SP 43,473; S64 25,473.', ha='center', fontsize=9)
     figure.tight_layout()
     save(figure, output, 'validation_summaries')
 

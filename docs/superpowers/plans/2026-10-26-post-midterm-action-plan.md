@@ -1,6 +1,6 @@
 # Post-midterm action plan and progress checklist
 
-Created: 26 October 2026. Status: active working tracker. Next task: **P07** (Idris's loader workstream). **P27** remains partially checked and pending live course requirements.
+Created: 26 October 2026. Status: active working tracker. P01–P06 and P31 are complete. Next team task: **P07** (Idris's loader workstream); report/reproducibility preparation can continue in parallel. **P27** remains pending live course requirements.
 
 **Goal:** Complete an evidence-backed comparison of force consistency, molecular shape recovery and computational cost, then deliver the final course artifacts.
 
@@ -93,6 +93,10 @@ Leads: all members for their report sections and contribution evidence; Shedrack
 - [ ] **P29 — Verify the reproducibility release and contributions.** Done when source/configuration/artifact identities, environment instructions and a clean-checkout reproduction check are recorded. Publish bounded results with verified access, preserve each author's commits, and reconcile the contribution ledger without inventing completion credit.
 - [ ] **P30 — Finish the presentation and submission checks.** Done when the presentation follows confirmed instructions, report/video artifacts receive team review, and submission receipts are retained. Record peer-review questions and required responses when that stage opens. Artifact preparation and confirmed submission remain separate facts.
 
+## 8. Independent representation closeout
+
+- [x] **P31 — Close out the six completed representation fits.** Completed 26 October. The saved-data audit authenticates 92 files, twelve endpoints and 2,406 history observations; both independent saved-result reviews accept the bounded interpretation. All inputs remain unchanged, 38 focused/regression tests pass, and reproducible tables, three PNG/PDF figures and editable source accompany the [report](../../../reports/REPRESENTATION_STUDY_CLOSEOUT_2026-10-26.md). See [acceptance](../../../reports/representation-closeout-2026-10-26/acceptance.json). No trained inference, fitting, recovery or held-out test payload was used. Publication status is recorded separately in the activity/evidence log.
+
 ## Activity log
 
 Append a row after each completed item, material blocker or scope decision. Keep evidence paths with the task as well, so a checked box remains understandable on its own.
@@ -105,3 +109,4 @@ Append a row after each completed item, material blocker or scope decision. Keep
 | 26 October 2026 | P05 | Complete under coordinator's receipt convention | GitHub handover confirmed; Olufunke integration confirmed. Idris private work and private packet access remain unverified. |
 | 26 October 2026 | P06 | Complete | Detailed specification and implementation plan accepted by both technical reviews. Next P07 retains Idris's implementation ownership. |
 | 26 October 2026 | P27 | Partial; live course checks pending | Public deliverables checked; rubric inaccessible and Canvas host policy prevents browser read. No deadline confirmation. |
+| 26 October 2026 | P31 | Accepted local closeout; publication prepared | Both result reviews accept. SP mean BEST/LAST/late20 gaps6.465/9.519/6.991meV/Å; fixed-recipe validation limits retained. |

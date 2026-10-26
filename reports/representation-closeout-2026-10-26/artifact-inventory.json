@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-26",
+  "files": {
+    "docs/research/REPRESENTATION_CLOSEOUT_SPEC_2026-10-26.md": {
+      "bytes": 7810,
+      "sha256": "88da95d47e63fe2fcdb4e3d1a5799141c12ff11ec10a466957bca220c839ce12"
+    },
+    "docs/superpowers/plans/2026-10-26-post-midterm-action-plan.md": {
+      "bytes": 17234,
+      "sha256": "0f8478004ae97e32fc4e300a7317038a1f928278d2bfcfce9ca44f87e17752c1"
+    },
+    "docs/superpowers/plans/2026-10-26-representation-closeout.md": {
+      "bytes": 7088,
+      "sha256": "93532af12494f121a64d9e80f0bb55f9e43c9ea2e121d1b406b2c4e26b934d2c"
+    },
+    "reports/PAPER_EVIDENCE_LOG.md": {
+      "bytes": 82244,
+      "sha256": "47597d5d05de8fb44e9644fa90414a05f1b4ccecdc02320aecf68481d864081a"
+    },
+    "reports/REPRESENTATION_STUDY_CLOSEOUT_2026-10-26.md": {
+      "bytes": 8722,
+      "sha256": "3ac60bf7c4cf7d824ab1f03f32f21a46a18d38d93074054f26d0af150962cc38"
+    },
+    "reports/representation-closeout-2026-10-26/README.md": {
+      "bytes": 1777,
+      "sha256": "43445bc960bdc39160d342666c043caa930d27cc527c217b5698203b590cee88"
+    },
+    "reports/representation-closeout-2026-10-26/acceptance.json": {
+      "bytes": 1138,
+      "sha256": "076b138cc5781fb2b212b9e817013e7c7489bd6cbb820bbced56daac9390b436"
+    },
+    "reports/representation-closeout-2026-10-26/analysis.json": {
+      "bytes": 365124,
+      "sha256": "bf75030af541a4cf281899f19668bfe411192fe85916fce4d1c5051e622d4a9e"
+    },
+    "reports/representation-closeout-2026-10-26/connection_deltas.csv": {
+      "bytes": 1776,
+      "sha256": "d6d16ec8349cb188096e3eb2ed1ff3606f182b82c70234c18cf8a221ea949d74"
+    },
+    "reports/representation-closeout-2026-10-26/endpoint_metrics.csv": {
+      "bytes": 1609,
+      "sha256": "348e810f69b44b5d614f50b1bc4f5ef24a943721249199536ca461f492dbbe15"
+    },
+    "reports/representation-closeout-2026-10-26/figures/paired_seed_differences.pdf": {
+      "bytes": 20330,
+      "sha256": "ffc6772f81abee1281a352ce2486f7c0fd52a164b59ac11f0acd13f0aea27615"
+    },
+    "reports/representation-closeout-2026-10-26/figures/paired_seed_differences.png": {
+      "bytes": 80455,
+      "sha256": "8aa2e5bf7ba3eeef0582e89fa2a80b3d92bddaa886d87d6fe268de1aabd65f8a"
+    },
+    "reports/representation-closeout-2026-10-26/figures/validation_histories.pdf": {
+      "bytes": 41695,
+      "sha256": "efc00894bef97b0157cbc9aefa346ca1634af36bee9a4819b7b22002827744eb"
+    },
+    "reports/representation-closeout-2026-10-26/figures/validation_histories.png": {
+      "bytes": 824545,
+      "sha256": "c4bcac8a89de1eb25dc1ac147ded1d40e75c3f326213b4b7e8a4498ff6692854"
+    },
+    "reports/representation-closeout-2026-10-26/figures/validation_summaries.pdf": {
+      "bytes": 22521,
+      "sha256": "b1156a24f91881e298967079c634c274ec7a4d7ea599f57098bb4d3eb7c7ab9e"
+    },
+    "reports/representation-closeout-2026-10-26/figures/validation_summaries.png": {
+      "bytes": 109001,
+      "sha256": "5b42e22bea758cb90db89fd2ca44261b9fde731aaac2611a3257db1eb1c1bbf8"
+    },
+    "reports/representation-closeout-2026-10-26/input-inventory.json": {
+      "bytes": 29164,
+      "sha256": "94326b2871e3fb3b75df86bbea30018f5277048c375238ada97de08f9449a610"
+    },
+    "reports/representation-closeout-2026-10-26/paired_seed_deltas.csv": {
+      "bytes": 524,
+      "sha256": "fd180bd8d57e02d3c1b289231f9961ef4b4efd3cc7c58e5bb18dc2088c153900"
+    },
+    "reports/representation-closeout-2026-10-26/run_metrics.csv": {
+      "bytes": 834,
+      "sha256": "78070c7b82982159e8d76269bdbcb126f4fb9b30ac6d59a32d7559675fcbe79e"
+    },
+    "reports/representation-closeout-2026-10-26/validation_trajectories.csv": {
+      "bytes": 80152,
+      "sha256": "b947c8233b8e653baa23f6c8dd302e2d78ce54612736296f33be4a55be5f7705"
+    },
+    "reports/representation-closeout-2026-10-26/verification.json": {
+      "bytes": 1993,
+      "sha256": "453274ad937e6907c08152372f71400021f0c4e982e5e269a3d07f55c779c0ab"
+    },
+    "scripts/close_representation_study.py": {
+      "bytes": 26044,
+      "sha256": "82151264642cd91fc705f02b05d56221fb07b2727bf293c58a73e2289fec80f5"
+    },
+    "scripts/plot_representation_closeout.py": {
+      "bytes": 5319,
+      "sha256": "b7d4f89d37491dbdaab279f2b1ad01306c6810b1076fefb2cc8af25f8cde65d3"
+    },
+    "tests/test_representation_closeout.py": {
+      "bytes": 9251,
+      "sha256": "b35606b4dfcaf345d84853cb4bc6845f13be998247afad7121b8867356070308"
+    }
+  },
+  "self_excluded": true
+}
