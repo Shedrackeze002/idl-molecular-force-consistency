@@ -2,7 +2,9 @@
 
 **28 October access update:** [Download the verified MACE packet](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/mace-idris-handoff-2026-10-18-v2.tar.gz) and follow the [detailed handover](IDRIS_MACE_HANDOVER_2026-10-18.md). The [release](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28) includes checksums, current instructions and dataset attribution. Confirm download and verification; public availability alone does not establish receipt.
 
-The [accepted 26 October specification](../research/MACE_LOADER_PARITY_SPEC_2026-10-26.md) governs the current attempt. Use the existing accepted macOS arm64/Python 3.12.13 environment; a second environment, another platform or dependency setup requires a separately reviewed amendment. Implementation reviews and bounded launch authorization precede real inference.
+**Windows next step:** follow the [Windows quickstart](WINDOWS_MACE_QUICKSTART_2026-10-28.md), beginning with steps 1–3. Return the packet verification and Windows/WSL details, then retain the proposed setup outputs or exact failure. A Mac is not an onboarding prerequisite. Idris keeps loader and independent reproduction ownership; Olufunke keeps integration.
+
+The original Mac scoring remains reference evidence. The accepted numerical specification is unchanged; real WSL model loading and prediction comparison require a reviewed, bounded platform amendment after setup evidence.
 
 ## Historical 15–18 October assignment context
 
