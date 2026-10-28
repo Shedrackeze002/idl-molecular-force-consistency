@@ -2,6 +2,8 @@
 
 28 October 2026. Start here if you use Windows. A Mac is not required for onboarding or loader development.
 
+For the complete assignment, milestones, implementation contracts and delivery criteria, read the [full task brief](IDRIS_MACE_TASK_BRIEF_2026-10-28.md). This quickstart is its setup companion.
+
 **First deliverable:** complete steps 1–3 and send the packet verification output plus your Windows/WSL details. Then work through the proposed setup in step 4, retaining either its outputs or the exact failure. No training or trained-model inference is part of this guide.
 
 ## 1. Check Windows and WSL in PowerShell
@@ -96,6 +98,7 @@ for path in source tools .venv-mace-wsl; do
   fi
 done
 GIT_LFS_SKIP_SMUDGE=1 git clone --single-branch --branch post-midterm-mace-readiness --filter=blob:none 'https://github.com/Shedrackeze002/idl-molecular-force-consistency.git' source
+git -C source switch -c idris-mace-loader adf1b13819015cbfb1f2fbb79a79df132e7a4545
 git -C source rev-parse HEAD > source-commit.txt
 printf '%s  %s\n' '005d1e58ff6f3087993c1747ecd4b51164bb5e8c0614f9f4b23feca01ebcbdfa' source/configs/mace/wsl2-cpu-2026-10-28/requirements.in | sha256sum -c -
 curl -LsSf https://astral.sh/uv/0.11.16/install.sh -o uv-install.sh
@@ -136,6 +139,6 @@ Send the generated lock, source commit, build/install/check logs and all `mac-re
 
 ## 5. Continue the assigned work
 
-After setup review, Idris implements the loader and meaningful synthetic refusal/identity tests in his own branch. Olufunke owns evaluator integration. No repeat training is required.
+Continue through milestones I02–I08 in the [full task brief](IDRIS_MACE_TASK_BRIEF_2026-10-28.md), including test-tool installation, implementation, platform admission, bounded validation, independent audit, report and integration handoff. Olufunke owns integration. No repeat training is required.
 
 The original Mac scoring remains reference evidence. The accepted 26 October numerical specification remains unchanged. Actual WSL model loading and prediction comparison need a reviewed, bounded platform amendment before execution; its tolerances are not changed by this guide.
