@@ -1,0 +1,70 @@
+{
+  "status": "WHEEL_ONLY_RESOLUTION_FAILED",
+  "exit_code": 1,
+  "elapsed_seconds": 55.907,
+  "target": {
+    "os": "WSL2 Linux",
+    "architecture": "x86_64",
+    "wheel_platform": "manylinux_2_28",
+    "minimum_glibc": "2.28",
+    "python": "3.12.13",
+    "torch": "2.14.1+cpu"
+  },
+  "original_pin_count": 44,
+  "original_lock_sha256": "b3ce5142897b88d3db5d11b80b5f7983ad424a2714ebe9012b278373b803f876",
+  "cpu_wheel_url": "https://download-r2.pytorch.org/whl/cpu/torch-2.14.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=5a6363570c753812540a05eb82380e329469cbe668643e88111414c12627711f",
+  "original_vs_proposed_core_versions": {
+    "torch": {
+      "original": "2.14.1",
+      "proposed": "2.14.1+cpu",
+      "difference": "official CPU build; not original Mac identity"
+    }
+  },
+  "requirements_input_sha256": "005d1e58ff6f3087993c1747ecd4b51164bb5e8c0614f9f4b23feca01ebcbdfa",
+  "requirements_lock_sha256": null,
+  "gpu_dependencies": null,
+  "resolver_version": "uv 0.11.16",
+  "package_installation_performed": false,
+  "python_download_performed": false,
+  "source_build_performed": false,
+  "wsl_runtime_tested": false,
+  "model_import_or_inference": false,
+  "build_policy": "--only-binary :all: forbids source builds; mutually exclusive --no-build omitted",
+  "attempt": 2,
+  "failure_reason": "python-hostlist==2.3.0 has no usable wheel; source builds disabled",
+  "proposed_followup": "Idris generates the WSL lock using the documented, untested hostlist-only source-build recipe",
+  "hostlist_source": {
+    "version": "2.3.0",
+    "url": "https://files.pythonhosted.org/packages/90/cc/bb6395c3f2b6bb739b1d3fc0e71f94e6a1c2e256df496237cbfd13cd74a6/python_hostlist-2.3.0.tar.gz",
+    "sha256": "e1a0b18e525a5fca573cb9862799f11b3f2bd3ba7aec70c4ecd8b95341bb71ea",
+    "metadata_version": "2.1",
+    "setup_py_sha256": "5cf0cfd702b909732c435f91735f073ed22c00e348dba2631bf17a2c04f3ccb1",
+    "inspection": "No install_requires or ext_modules declared in inspected setup.py; not executed"
+  },
+  "setuptools_bootstrap": {
+    "url": "https://files.pythonhosted.org/packages/95/9c/c510029fc6ef33a6275cd2c5d3cecd6613dfd6aa401d57c54f1c18852ccf/setuptools-84.0.0-py3-none-any.whl",
+    "sha256": "51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670",
+    "filename": "setuptools-84.0.0-py3-none-any.whl",
+    "version": "84.0.0"
+  },
+  "local_guarded_attempts": [
+    {
+      "attempt": 1,
+      "outcome": "CLI rejected mutually exclusive no-build and only-binary options; no package resolution"
+    },
+    {
+      "attempt": 2,
+      "outcome": "Wheel-only resolution rejected source-only python-hostlist; no build or install"
+    }
+  ],
+  "lock_published": false,
+  "limits": [
+    "No WSL or Windows runtime test",
+    "No local dependency installation or source build",
+    "No model import or inference",
+    "Original Mac numerical specification unchanged"
+  ],
+  "gpu_dependency_check_completed": false,
+  "dependency_closure_established": false,
+  "proposed_build_policy": "--only-binary :all: --no-binary python-hostlist on compile and sync; package-specific source exception"
+}
