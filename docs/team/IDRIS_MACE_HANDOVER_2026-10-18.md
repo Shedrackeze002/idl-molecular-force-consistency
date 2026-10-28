@@ -7,6 +7,8 @@ runner and reporter. No repeat training or additional seeds are needed.
 
 ## Access and first actions
 
+**Windows users: start with the [Windows quickstart](WINDOWS_MACE_QUICKSTART_2026-10-28.md).** Its first milestone is packet verification plus Windows/WSL details. The proposed CPU setup and its known source-only dependency are documented there. A Mac is not required to begin onboarding or loader development.
+
 The packet is now available through the [GitHub release](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28). Download [the original v2 archive](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/mace-idris-handoff-2026-10-18-v2.tar.gz), [checksums](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/SHA256SUMS), [current instructions](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/DOWNLOAD_README.md) and [dataset attribution](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/ATTRIBUTION.md).
 
 The archive is 15,504,217 bytes and contains the primary model, validation inputs, memberships, saved predictions, environment requirements and verification scripts. It contains no training or test partition. Its accepted bytes and digest are unchanged.
@@ -107,11 +109,11 @@ established; its relaxation recovery is still unmeasured.
 
 ## Check the accepted environment
 
-The accepted scorer ran on **macOS arm64, Python 3.12.13**, with its full identity in `ACCEPTED_IDENTITY.json`. The bounded 26 October attempt requires that existing scoring environment and authenticated package/source identities. It includes no dependency installation.
+The accepted scorer ran on **macOS arm64, Python 3.12.13**, with its full identity in `ACCEPTED_IDENTITY.json`. The accepted 26 October numerical specification retains that scoring environment; it does not describe an executed attempt. Team onboarding now follows the Windows quickstart. That setup work is separate from numerical launch permission.
 
 Run the packet's metadata-only `verify_environment.py` with the accepted environment's Python. Save its JSON output with the loader's separate admission receipt.
 
-If the environment is unavailable or another platform is needed, report the blocker and prepare a separately reviewed setup/platform amendment. The archive's older environment-build commands do not override the current attempt's scope. The original lock-resolution platform remains unestablished.
+Use the proposed Windows/WSL setup recipe to collect platform and installation evidence. A reviewed, bounded platform amendment is still needed before real WSL model loading and prediction comparison. The archive's older environment-build commands do not override the current attempt's scope. The original lock-resolution platform remains unestablished.
 
 `verify_environment.py` uses distribution metadata without importing Torch
 or MACE. It checks Python, seven package versions and eight source files.

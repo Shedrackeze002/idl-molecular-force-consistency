@@ -435,3 +435,14 @@ The coordinator authorizes public distribution of the accepted v2 packet through
 [Release and packet](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28). The handover remains on the working branch; main is not updated. Older private-transfer wording is historical. The accepted 26 October specification governs implementation and bounded execution; older environment-rebuild directions do not override it.
 
 The earlier convention that GitHub presence confirmed receipt is insufficient for verified access. Documentation visibility, actual download, checksum verification, installed environment, model admission and prediction parity are separate facts. Idris's actual receipt remains unconfirmed. Idris retains implementation/reproduction ownership and Olufunke retains integration ownership. No trained model was deserialized or queried, no training/test partition was opened, and no scientific run or outgoing teammate message was performed for publication.
+
+
+### WINDOWS-MACE-ONBOARDING-2026-10-28: concrete setup work, no numerical execution
+
+The coordinator confirms that teammates use Windows and only the coordinator uses macOS. Published a Windows/WSL2 quickstart with packet verification, platform facts and a proposed CPU setup recipe. Its first deliverable is explicit: packet verifier output and Windows/WSL details; later setup produces a generated lock and comparison logs or a retained failure. Idris retains implementation/reproduction ownership; Olufunke retains integration.
+
+All seven core package base versions are published. The official cp312 x86_64 Linux CPU wheel is Torch2.14.1+cpu, distinct from original Mac2.14.1. A bounded wheel-only target resolution failed because python-hostlist2.3.0 has no usable wheel. No Linux lock is published. The proposed recipe retains the original44base-version pins, explicitly selects CPU Torch and pins the hostlist source archive. Its inspected setup.py declares no runtime install dependencies or extension modules; no setup code was executed. A pinned setuptools84bootstrap and hostlist-only source-build exception are documented for Idris to test in WSL.
+
+The readiness record preserves the CLI-option rejection and wheel-only failure. No local dependency installation, Python download, source build, model import/inference or training/test partition access occurred. WSL installation and package/runtime success remain untested. The accepted26OctMac-only numerical specification remains unchanged; original Mac scoring remains historical reference. A WSL numerical attempt requires a reviewed, bounded amendment. Mac ownership is not required for onboarding, coding or synthetic preparation. Main and the original packet/release asset bytes remain outside this update.
+
+See docs/team/WINDOWS_MACE_QUICKSTART_2026-10-28.md, configs/mace/wsl2-cpu-2026-10-28/ and reports/evidence/2026-10-28/wsl2-cpu-package-readiness.json.
