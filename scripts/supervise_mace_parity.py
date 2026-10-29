@@ -21,10 +21,46 @@ def _tree_bytes(root: Path) -> int:
     return sum(path.stat().st_size for path in root.rglob("*") if path.is_file())
 
 
+def _group_alive(process: subprocess.Popen) -> bool:
+    if os.name == "nt":
+        return process.poll() is None
+    try:
+        os.killpg(process.pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+
+
+def _terminate_owned_group(process: subprocess.Popen) -> None:
+    """Terminate the entire owned group, even if its leader already exited."""
+    if os.name == "nt":
+        if process.poll() is None:
+            process.send_signal(signal.CTRL_BREAK_EVENT)
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
+        return
+    if _group_alive(process):
+        os.killpg(process.pid, signal.SIGTERM)
+    grace = time.monotonic() + 5
+    while _group_alive(process) and time.monotonic() < grace:
+        time.sleep(0.05)
+    if _group_alive(process):
+        os.killpg(process.pid, signal.SIGKILL)
+    deadline = time.monotonic() + max(1, CLEANUP_SECONDS - 5)
+    while _group_alive(process) and time.monotonic() < deadline:
+        time.sleep(0.05)
+    if process.poll() is None:
+        process.wait(timeout=max(0.1, deadline - time.monotonic()))
+
+
 def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               command: list[str] | None = None,
               launch_receipt: Path | None = None,
               wsl_admission_receipt: Path | None = None) -> dict:
+    started = time.monotonic()
     output = Path(output)
     if command is None:
         if launch_receipt is None or wsl_admission_receipt is None:
@@ -47,38 +83,31 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
                "output_limit_bytes": OUTPUT_BYTES, "log_limit_bytes": LOG_BYTES,
                "started_unix": time.time()}
     (output / "supervisor-status.json").write_text(json.dumps(receipt, indent=2) + "\n")
-    started = time.monotonic()
     creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
     start_new_session = os.name != "nt"
+    process = None
+    reason = "TIMEOUT" if time.monotonic() - started > timeout else None
     with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
-        process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
-                                   creationflags=creationflags, start_new_session=start_new_session)
-        reason = None
-        while process.poll() is None:
-            elapsed = time.monotonic() - started
-            if elapsed > timeout:
-                reason = "TIMEOUT"
-            elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
-                reason = "LOG_OVERFLOW"
-            elif _tree_bytes(output) > OUTPUT_BYTES:
-                reason = "OUTPUT_OVERFLOW"
-            if reason:
-                if os.name == "nt":
-                    process.send_signal(signal.CTRL_BREAK_EVENT)
-                else:
-                    os.killpg(process.pid, signal.SIGTERM)
-                try:
-                    process.wait(timeout=min(5, CLEANUP_SECONDS))
-                except subprocess.TimeoutExpired:
-                    if os.name == "nt":
-                        process.kill()
-                    else:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    process.wait(timeout=max(1, CLEANUP_SECONDS - 5))
-                break
-            time.sleep(0.05)
+        if reason is None:
+            process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
+                                       creationflags=creationflags, start_new_session=start_new_session)
+            while process.poll() is None:
+                elapsed = time.monotonic() - started
+                if elapsed > timeout:
+                    reason = "TIMEOUT"
+                elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+                    reason = "LOG_OVERFLOW"
+                elif _tree_bytes(output) > OUTPUT_BYTES:
+                    reason = "OUTPUT_OVERFLOW"
+                if reason:
+                    _terminate_owned_group(process)
+                    break
+                time.sleep(0.05)
+            if reason is None and _group_alive(process):
+                reason = "CHILD_PROCESS_LEAK"
+                _terminate_owned_group(process)
     elapsed = time.monotonic() - started
-    exit_code = process.returncode
+    exit_code = None if process is None else process.returncode
     if reason:
         status = reason
     elif elapsed > timeout:
@@ -91,10 +120,25 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
         status = "OUTPUT_OVERFLOW"
     else:
         status = "WORKER_COMPLETED"
+    status_path = output / "supervisor-status.json"
     receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
-                   output_bytes=_tree_bytes(output), stdout_bytes=stdout_path.stat().st_size,
-                   stderr_bytes=stderr_path.stat().st_size)
-    (output / "supervisor-status.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+                   stdout_bytes=stdout_path.stat().st_size, stderr_bytes=stderr_path.stat().st_size)
+    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    final_elapsed = time.monotonic() - started
+    final_bytes = _tree_bytes(output)
+    if final_elapsed > timeout:
+        receipt["status"] = "TIMEOUT"
+    elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+        receipt["status"] = "LOG_OVERFLOW"
+    elif final_bytes > OUTPUT_BYTES:
+        receipt["status"] = "OUTPUT_OVERFLOW"
+    receipt["elapsed_seconds"] = final_elapsed
+    receipt["output_bytes"] = final_bytes
+    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    receipt["output_bytes"] = _tree_bytes(output)
+    if receipt["output_bytes"] > OUTPUT_BYTES:
+        receipt["status"] = "OUTPUT_OVERFLOW"
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     return receipt
 
 

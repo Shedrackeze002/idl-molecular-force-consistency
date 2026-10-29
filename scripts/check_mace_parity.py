@@ -115,12 +115,18 @@ def compare_predictions(actual: dict[str, Any], expected: dict[str, Any]) -> dic
     expected_ids = _ids(expected["record_ids"], "expected")
     if set(actual_ids) != set(expected_ids):
         raise InputValidationError("actual and expected record ID sets differ")
-    index = {record_id: i for i, record_id in enumerate(actual_ids)}
-    take = [index[record_id] for record_id in expected_ids]
-    actual_energy = np.asarray(actual["energy"])[take]
-    actual_forces = np.asarray(actual["forces"])[take]
+    actual_energy_raw = np.asarray(actual["energy"])
+    actual_forces_raw = np.asarray(actual["forces"])
     expected_energy = np.asarray(expected["energy"])
     expected_forces = np.asarray(expected["forces"])
+    if actual_energy_raw.shape != (len(actual_ids),) or actual_forces_raw.shape != (len(actual_ids), EXPECTED_ATOMS, 3):
+        raise InputValidationError("actual prediction arrays have invalid raw shapes")
+    if expected_energy.shape != (len(expected_ids),) or expected_forces.shape != (len(expected_ids), EXPECTED_ATOMS, 3):
+        raise InputValidationError("expected prediction arrays have invalid raw shapes")
+    index = {record_id: i for i, record_id in enumerate(actual_ids)}
+    take = [index[record_id] for record_id in expected_ids]
+    actual_energy = actual_energy_raw[take]
+    actual_forces = actual_forces_raw[take]
     if actual_energy.dtype != np.float64 or actual_forces.dtype != np.float64:
         raise InputValidationError("actual predictions must be float64")
     if actual_energy.shape != expected_energy.shape or actual_forces.shape != expected_forces.shape:
@@ -147,6 +153,17 @@ def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
     os.replace(temporary, path)
 
 
+def _atomic_npz(path: Path, **arrays: Any) -> None:
+    temporary = path.with_name(path.name + ".tmp.npz")
+    try:
+        np.savez(temporary, **arrays)
+        with temporary.open("rb") as stream:
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
     from mace_loader import load_admitted_arm, verify_packet
 
@@ -154,35 +171,51 @@ def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
     attempt = Path(attempt_root)
     packet = verify_packet(Path(packet_root))
     inputs = validate_inputs(Path(packet_root))
-    arm, admission = load_admitted_arm(Path(packet_root), attempt)
+    arm, admission = load_admitted_arm(Path(packet_root), attempt,
+                                       expected_species=tuple(inputs["species"]))
     energies: list[float] = []
     forces: list[np.ndarray] = []
     completed: list[str] = []
+    force_requests = 0
+    energy_requests = 0
+    persisted_records = 0
     status: dict[str, Any]
     try:
         for record_id in inputs["record_ids"]:
             frame = inputs["frames"][record_id]
+            force_requests += 1
             predicted_force, _ = arm["forces"](frame["positions"], frame["species"], record_id)
+            energy_requests += 1
             predicted_energy, _ = arm["energy"](frame["positions"], frame["species"], record_id)
             forces.append(np.asarray(predicted_force, dtype=np.float64))
             energies.append(float(predicted_energy))
             completed.append(record_id)
-            np.savez(attempt / "predictions-partial.npz", record_ids=np.array(completed),
-                     energy=np.array(energies, dtype=np.float64), forces=np.array(forces, dtype=np.float64))
+            _atomic_npz(attempt / "predictions-partial.npz", record_ids=np.array(completed),
+                        energy=np.array(energies, dtype=np.float64), forces=np.array(forces, dtype=np.float64))
+            persisted_records = len(completed)
         actual = {"record_ids": completed, "energy": np.array(energies, dtype=np.float64),
                   "forces": np.array(forces, dtype=np.float64)}
         expected = {"record_ids": inputs["record_ids"], "energy": inputs["expected_energy"],
                     "forces": inputs["expected_forces"]}
         comparison = compare_predictions(actual, expected)
-        np.savez(attempt / "predictions.npz", **actual)
-        status = {**comparison, "force_requests": len(completed), "energy_requests": len(completed),
+        snapshot = Path(admission["model_snapshot"]["snapshot_path"])
+        from mace_loader import _sha256, MODEL_BYTES, MODEL_SHA256
+        final_snapshot = {"path": str(snapshot), "bytes": snapshot.stat().st_size,
+                          "sha256": _sha256(snapshot)}
+        if final_snapshot["bytes"] != MODEL_BYTES or final_snapshot["sha256"] != MODEL_SHA256:
+            raise RuntimeError("constructor-bound model snapshot changed during prediction")
+        _atomic_npz(attempt / "predictions.npz", **actual)
+        status = {**comparison, "force_requests": force_requests, "energy_requests": energy_requests,
                   "construction_count": 1, "elapsed_seconds": time.monotonic() - started,
-                  "packet": packet, "admission_receipt_status": admission["status"]}
+                  "packet": packet, "admission_receipt_status": admission["status"],
+                  "admission_receipt_sha256": _sha256(attempt / "admission-receipt.json"),
+                  "final_model_snapshot": final_snapshot, "persisted_records": persisted_records}
     except Exception as exc:
         status = {"status": "INCOMPLETE", "error_type": type(exc).__name__, "error": str(exc),
                   "completed_records": len(completed), "record_ids": completed,
-                  "force_requests": len(completed) + (1 if len(forces) > len(energies) else 0),
-                  "energy_requests": len(energies), "elapsed_seconds": time.monotonic() - started}
+                  "persisted_records": persisted_records,
+                  "force_requests": force_requests, "energy_requests": energy_requests,
+                  "construction_count": 1, "elapsed_seconds": time.monotonic() - started}
     _atomic_json(attempt / "parity-status.json", status)
     return status
 

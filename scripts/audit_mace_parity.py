@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
-from check_mace_parity import TOLERANCE, compare_predictions, validate_inputs
+from check_mace_parity import EXPECTED_ATOMS, TOLERANCE, validate_inputs
 
 REFERENCE_SCORES = {
     "pooled_force_mae": 0.00525983286381519,
@@ -22,20 +22,71 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _independent_parity(actual: dict, expected: dict) -> dict:
+    actual_ids = [str(value) for value in np.asarray(actual["record_ids"]).tolist()]
+    expected_ids = [str(value) for value in np.asarray(expected["record_ids"]).tolist()]
+    if (not actual_ids or len(set(actual_ids)) != len(actual_ids)
+            or set(actual_ids) != set(expected_ids)):
+        raise ValueError("saved record IDs differ from validated inputs")
+    ae, af = np.asarray(actual["energy"]), np.asarray(actual["forces"])
+    ee, ef = np.asarray(expected["energy"]), np.asarray(expected["forces"])
+    if ae.shape != (len(actual_ids),) or af.shape != (len(actual_ids), EXPECTED_ATOMS, 3):
+        raise ValueError("saved prediction arrays have invalid raw shapes")
+    if ee.shape != (len(expected_ids),) or ef.shape != (len(expected_ids), EXPECTED_ATOMS, 3):
+        raise ValueError("validated expected arrays have invalid raw shapes")
+    if ae.dtype != np.float64 or af.dtype != np.float64 or not np.isfinite(ae).all() or not np.isfinite(af).all():
+        raise ValueError("saved predictions must be finite float64")
+    take = [{key: i for i, key in enumerate(actual_ids)}[key] for key in expected_ids]
+    energy_diff = np.abs(ae[take] - ee)
+    force_diff = np.abs(af[take] - ef)
+    max_energy = float(np.max(energy_diff, initial=0.0))
+    max_force = float(np.max(force_diff, initial=0.0))
+    return {"status": "PARITY_PASS" if max_energy <= TOLERANCE and max_force <= TOLERANCE else "PARITY_FAIL",
+            "record_count": len(expected_ids), "force_component_count": int(force_diff.size),
+            "max_abs_energy_eV": max_energy, "max_abs_force_eV_per_angstrom": max_force,
+            "rtol": 0.0, "atol": TOLERANCE}
+
+
 def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     packet_root, attempt_root = Path(packet_root), Path(attempt_root)
     status = json.loads((attempt_root / "parity-status.json").read_text(encoding="utf-8"))
     if status.get("status") not in {"PARITY_PASS", "PARITY_FAIL"}:
         raise ValueError("partial or operational worker result cannot be audited as parity")
+    supervisor = json.loads((attempt_root / "supervisor-status.json").read_text(encoding="utf-8"))
+    if supervisor.get("status") != "WORKER_COMPLETED" or supervisor.get("exit_code") != 0:
+        raise ValueError("operational supervisor result is not a successful bounded attempt")
+    if float(supervisor.get("elapsed_seconds", float("inf"))) > float(supervisor.get("timeout_seconds", 1800)):
+        raise ValueError("supervisor elapsed time exceeds the reviewed bound")
+    from mace_loader import verify_packet
+    packet = verify_packet(packet_root)
     inputs = validate_inputs(packet_root)
+    expected_count = len(inputs["record_ids"])
+    if (status.get("construction_count") != 1 or status.get("force_requests") != expected_count
+            or status.get("energy_requests") != expected_count):
+        raise ValueError("construction/accessor counts differ from the admitted contract")
+    recorded_packet = status.get("packet", {})
+    if (recorded_packet.get("manifest_sha256") != packet["manifest_sha256"]
+            or recorded_packet.get("model_sha256") != packet["model_sha256"]):
+        raise ValueError("worker packet identity differs from independently authenticated packet")
+    admission_path = attempt_root / "admission-receipt.json"
+    if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
+        raise ValueError("worker admission receipt identity is missing or mismatched")
+    snapshot = status.get("final_model_snapshot", {})
+    snapshot_path = Path(snapshot.get("path", ""))
+    if (not snapshot_path.is_file() or snapshot.get("sha256") != _sha256(snapshot_path)
+            or snapshot.get("bytes") != snapshot_path.stat().st_size
+            or snapshot.get("sha256") != packet["model_sha256"]):
+        raise ValueError("final constructor-bound snapshot identity is invalid")
     with np.load(attempt_root / "predictions.npz", allow_pickle=False) as saved:
         if set(saved.files) != {"record_ids", "energy", "forces"}:
             raise ValueError("saved output fields differ from contract")
         actual = {key: saved[key].copy() for key in saved.files}
     expected = {"record_ids": inputs["record_ids"], "energy": inputs["expected_energy"],
                 "forces": inputs["expected_forces"]}
-    parity = compare_predictions(actual, expected)
-    if parity["status"] != status["status"] or parity["record_count"] != status.get("record_count"):
+    parity = _independent_parity(actual, expected)
+    numerical_claims = ["status", "record_count", "force_component_count",
+                        "max_abs_energy_eV", "max_abs_force_eV_per_angstrom"]
+    if any(parity[key] != status.get(key) for key in numerical_claims):
         raise ValueError("worker parity claims do not match independently recomputed outputs")
 
     frame_ids = actual["record_ids"].astype(str).tolist()

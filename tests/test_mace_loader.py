@@ -35,6 +35,7 @@ def packet(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "MANIFEST_SHA256", sha(manifest))
     monkeypatch.setattr(module, "MODEL_SHA256", sha(model))
     monkeypatch.setattr(module, "MODEL_BYTES", model.stat().st_size)
+    monkeypatch.setattr(module, "_live_admission_check", lambda admission: {"synthetic": True})
     return root
 
 
@@ -42,8 +43,10 @@ def attempt(tmp_path):
     root = tmp_path / "attempt"
     root.mkdir()
     admission = root / "wsl-admission.json"
-    admission.write_text(json.dumps({"status": "APPROVED"}), encoding="utf-8")
-    launch = {"status": "APPROVED", "species": ["H", "H"],
+    admission.write_text(json.dumps({"status": "APPROVED", "identities": {
+        "implementation_commit": "synthetic", "implementation_files": {}}}), encoding="utf-8")
+    launch = {"status": "APPROVED", "species": ["H"] * 21,
+              "implementation_commit": "synthetic",
               "wsl_admission_receipt": admission.name,
               "wsl_admission_sha256": sha(admission)}
     (root / "launch-receipt.json").write_text(json.dumps(launch), encoding="utf-8")
@@ -56,7 +59,8 @@ def test_rejects_tampered_manifest_before_constructor(tmp_path, monkeypatch):
     (root / "MANIFEST.json").write_text("{}", encoding="utf-8")
     calls = []
     with pytest.raises(module.AdmissionError, match="manifest SHA"):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path))
+        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
     assert calls == []
 
 
@@ -66,7 +70,8 @@ def test_rejects_symlink_or_wrong_model_before_constructor(tmp_path, monkeypatch
     (root / module.MODEL_RELATIVE).write_bytes(b"tampered")
     calls = []
     with pytest.raises(module.AdmissionError):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path))
+        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
     assert calls == []
 
 
@@ -81,7 +86,8 @@ def test_environment_refusal_precedes_constructor(tmp_path, monkeypatch):
     (target / "launch-receipt.json").write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="not approved"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path))
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
     assert calls == []
 
 
@@ -91,11 +97,35 @@ def test_constructs_from_verified_snapshot_path(tmp_path, monkeypatch):
     target = attempt(tmp_path)
     calls = []
     arm, receipt = module._load_admitted_arm(
-        root, target, constructor=lambda path: calls.append(path) or FakeCalculator())
+        root, target, constructor=lambda path: calls.append(path) or FakeCalculator(),
+        expected_species=("H",) * 21)
     assert calls == [(target / "private/final_epoch.model").resolve()]
     assert sha(calls[0]) == module.MODEL_SHA256
     assert receipt["constructor"]["default_dtype"] == "float64"
     assert arm["checkpoint_identity_verified"] is False
+
+
+@pytest.mark.parametrize("species", [["Xx"] * 21, ["H"] * 20,
+                                     ["H"] * 20 + ["C"]])
+def test_invalid_or_reordered_species_refused_before_constructor(tmp_path, monkeypatch, species):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path)
+    launch_path = target / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["species"] = species
+    launch_path.write_text(json.dumps(launch))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="species|element"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+def test_incomplete_live_identity_receipt_refused():
+    import mace_loader as module
+    with pytest.raises(module.AdmissionError, match="complete live identity"):
+        module._live_admission_check({"status": "APPROVED"})
 
 
 def test_verified_packet_identity_when_available():

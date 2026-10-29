@@ -8,6 +8,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -37,6 +38,7 @@ def main() -> int:
     parser.add_argument("--onboarding-root", type=Path, required=True)
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--refresh-package-check", action="store_true")
     args = parser.parse_args()
 
     root = args.onboarding_root.resolve()
@@ -46,6 +48,16 @@ def main() -> int:
     manifest = packet / "MANIFEST.json"
     model = packet / "model/final_epoch.model"
     env_python = root / ".venv-mace-wsl/bin/python"
+    if args.refresh_package_check:
+        check_command = [str(root / "tools/uv"), "pip", "check", "--python", str(env_python)]
+        completed = subprocess.run(check_command, cwd=root, text=True, capture_output=True, check=False)
+        (root / "package-check-after-tests.command.txt").write_text(
+            " ".join(check_command) + "\n", encoding="utf-8")
+        (root / "package-check-after-tests.stdout.txt").write_text(completed.stdout, encoding="utf-8")
+        (root / "package-check-after-tests.stderr.txt").write_text(completed.stderr, encoding="utf-8")
+        (root / "package-check-after-tests.exit.txt").write_text(str(completed.returncode) + "\n", encoding="utf-8")
+        if completed.returncode:
+            raise SystemExit(completed.returncode)
 
     probe = r'''
 import hashlib, importlib.metadata, json, pathlib, platform
@@ -65,7 +77,13 @@ for name, item in accepted['source_files'].items():
 versions = {name: importlib.metadata.version(name) for name in [
     'torch', 'pytest', 'iniconfig', 'pluggy', 'pygments'
 ]}
-print(json.dumps({'python': platform.python_version(), 'platform': platform.platform(), 'sources': rows, 'versions': versions}))
+all_versions = {}
+for dist in importlib.metadata.distributions():
+    name = dist.metadata.get('Name')
+    if name:
+        all_versions[name.lower().replace('_', '-')] = dist.version
+print(json.dumps({'python': platform.python_version(), 'platform': platform.platform(),
+                  'sources': rows, 'versions': versions, 'all_versions': all_versions}))
 '''
     runtime = json.loads(command(str(env_python), "-c", probe, str(packet / "ACCEPTED_IDENTITY.json")))
     for item in runtime["sources"]:
@@ -111,6 +129,10 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         "package-install.txt",
         "package-check.txt",
         "package-check-after-tests.txt",
+        "package-check-after-tests.command.txt",
+        "package-check-after-tests.stdout.txt",
+        "package-check-after-tests.stderr.txt",
+        "package-check-after-tests.exit.txt",
         "packet-verification.txt",
         "mac-reference-comparison.json",
         "mac-reference-comparison-stderr.txt",
@@ -120,6 +142,16 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
     ]:
         path = root / name
         records[name] = file_receipt(path)
+
+    evidence_dir = args.output.parent
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    published_names = [
+        "requirements-tests.lock", "environment-after-tests.txt",
+        "package-check-after-tests.command.txt", "package-check-after-tests.stdout.txt",
+        "package-check-after-tests.stderr.txt", "package-check-after-tests.exit.txt",
+    ]
+    for name in published_names:
+        shutil.copyfile(root / name, evidence_dir / name)
 
     proposal = {
         "schema": 1,
@@ -135,6 +167,7 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             "primary_final_ema_model": file_receipt(model),
             "runtime_lock": file_receipt(root / "wsl-requirements.lock"),
             "test_lock": file_receipt(root / "requirements-tests.lock"),
+            "published_test_lock": file_receipt(evidence_dir / "requirements-tests.lock"),
             "implementation_commit": commit,
             "implementation_files": {name: file_receipt(repo / name) for name in implementation_files},
         },
@@ -163,6 +196,7 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             },
         },
         "installed_packages": packages,
+        "installed_package_versions": runtime["all_versions"],
         "authenticated_source_comparison": runtime["sources"],
         "source_comparison_summary": {
             "count": len(runtime["sources"]),
@@ -185,8 +219,10 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             "failure_policy": "Preserve partial outputs, timeout, and errors; no retry, fallback, or substitution.",
         },
         "receipts": records,
+        "published_followup_evidence": {
+            name: file_receipt(evidence_dir / name) for name in published_names
+        },
     }
-    args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(proposal, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": proposal["status"], "output": str(args.output), "sha256": sha256(args.output)}))
     return 0

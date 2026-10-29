@@ -41,6 +41,45 @@ def test_duplicate_missing_dtype_shape_and_nonfinite_refused():
     bad["record_ids"] = ["a", "a"]
     with pytest.raises(InputValidationError):
         compare_predictions(bad, bundle())
+
+
+def test_raw_surplus_rows_refused_before_id_join():
+    actual = bundle(("a", "b"))
+    actual["record_ids"] = ["a"]
+    with pytest.raises(InputValidationError, match="raw shapes"):
+        compare_predictions(actual, {"record_ids": ["a"], "energy": np.zeros(1, dtype=np.float64),
+                                     "forces": np.zeros((1, 21, 3), dtype=np.float64)})
+
+
+def test_atomic_npz_preserves_previous_file_on_write_failure(tmp_path, monkeypatch):
+    import check_mace_parity as module
+    path = tmp_path / "partial.npz"
+    module._atomic_npz(path, record_ids=np.array(["a"]), energy=np.zeros(1),
+                       forces=np.zeros((1, 21, 3)))
+    original = path.read_bytes()
+    monkeypatch.setattr(module.np, "savez", lambda *args, **kwargs: (_ for _ in ()).throw(OSError("disk")))
+    with pytest.raises(OSError):
+        module._atomic_npz(path, record_ids=np.array(["a", "b"]), energy=np.zeros(2),
+                           forces=np.zeros((2, 21, 3)))
+    assert path.read_bytes() == original
+
+
+def test_failed_accessor_attempts_are_counted(tmp_path, monkeypatch):
+    import check_mace_parity as module
+    import mace_loader
+    attempt = tmp_path / "attempt"
+    attempt.mkdir()
+    inputs = {"record_ids": ["a"], "frames": {"a": {"positions": np.zeros((21, 3)),
+              "species": ("H",) * 21}}, "species": ("H",) * 21,
+              "expected_energy": np.zeros(1), "expected_forces": np.zeros((1, 21, 3))}
+    monkeypatch.setattr(module, "validate_inputs", lambda root: inputs)
+    monkeypatch.setattr(mace_loader, "verify_packet", lambda root: {"manifest_sha256": "m", "model_sha256": "s"})
+    arm = {"forces": lambda *args: (np.zeros((21, 3)), {}),
+           "energy": lambda *args: (_ for _ in ()).throw(RuntimeError("energy failed"))}
+    monkeypatch.setattr(mace_loader, "load_admitted_arm", lambda *args, **kwargs: (arm, {"status": "ADMITTED"}))
+    result = module.run_parity(tmp_path, attempt)
+    assert result["status"] == "INCOMPLETE"
+    assert result["force_requests"] == 1 and result["energy_requests"] == 1
     bad = bundle()
     bad["energy"] = bad["energy"].astype(np.float32)
     with pytest.raises(InputValidationError):

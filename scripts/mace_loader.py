@@ -6,8 +6,10 @@ dependencies are imported only after packet, launch and platform admission.
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import os
+import platform
 import shutil
 from pathlib import Path
 from typing import Any, Callable
@@ -93,7 +95,62 @@ def verify_packet(packet_root: Path) -> dict[str, Any]:
             "model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES}
 
 
-def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
+def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
+    """Compare the running interpreter, packages and raw sources to approval."""
+    approved_platform = admission.get("platform")
+    sources = admission.get("authenticated_source_comparison")
+    packages = admission.get("installed_packages")
+    approved_versions = admission.get("installed_package_versions")
+    if (not isinstance(approved_platform, dict) or not isinstance(sources, list)
+            or not isinstance(packages, list) or not isinstance(approved_versions, dict)):
+        raise AdmissionError("approved WSL receipt lacks complete live identity fields")
+    actual_platform = {
+        "python": platform.python_version(), "platform": platform.platform(),
+        "architecture": platform.machine(), "glibc": platform.libc_ver()[1],
+    }
+    for key, actual in actual_platform.items():
+        if approved_platform.get(key) != actual:
+            raise AdmissionError(f"live platform differs from approved {key}")
+    checked_packages: dict[str, str] = {}
+    for declaration in packages:
+        if not isinstance(declaration, str) or not declaration.strip():
+            raise AdmissionError("approved package inventory is malformed")
+        if "==" in declaration:
+            name, expected = declaration.split("==", 1)
+        elif " @ " in declaration:
+            name, expected = declaration.split(" @ ", 1)[0], None
+        else:
+            raise AdmissionError(f"unsupported approved package declaration: {declaration}")
+        try:
+            actual = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError as exc:
+            raise AdmissionError(f"approved package is not installed: {name}") from exc
+        if expected is not None and actual != expected:
+            raise AdmissionError(f"live package differs from approval: {name}")
+        checked_packages[name] = actual
+        normalized = name.lower().replace("_", "-")
+        if approved_versions.get(normalized) != actual:
+            raise AdmissionError(f"live package version differs from approval: {name}")
+    proposed_torch = admission.get("original_vs_proposed", {}).get("torch", {}).get("proposed")
+    if proposed_torch is not None and checked_packages.get("torch") != proposed_torch:
+        raise AdmissionError("live Torch version differs from approval")
+    checked_sources = []
+    for item in sources:
+        if not isinstance(item, dict) or not isinstance(item.get("distribution"), str):
+            raise AdmissionError("approved source inventory is malformed")
+        expected = item.get("actual_sha256")
+        relative = item.get("relative_path")
+        if not isinstance(expected, str) or len(expected) != 64 or not isinstance(relative, str):
+            raise AdmissionError("approved source identity is malformed")
+        dist = importlib.metadata.distribution(item["distribution"])
+        path = Path(dist.locate_file(relative)).resolve()
+        if not path.is_file() or path.is_symlink() or _sha256(path) != expected:
+            raise AdmissionError(f"live source differs from approval: {item.get('name', relative)}")
+        checked_sources.append({"name": item.get("name"), "path": str(path), "sha256": expected})
+    return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
+
+
+def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     launch_path = _regular_file(attempt_root, Path("launch-receipt.json"))
     try:
         launch = json.loads(launch_path.read_text(encoding="utf-8"))
@@ -111,7 +168,21 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
     admission = json.loads(admission_path.read_text(encoding="utf-8"))
     if admission.get("status") not in APPROVED_STATUSES:
         raise AdmissionError("WSL platform admission is not approved")
-    return launch, admission
+    identities = admission.get("identities", {})
+    implementation_commit = identities.get("implementation_commit")
+    if (not isinstance(implementation_commit, str)
+            or launch.get("implementation_commit") != implementation_commit):
+        raise AdmissionError("launch does not pin the approved implementation commit")
+    implementation_files = identities.get("implementation_files")
+    if not isinstance(implementation_files, dict):
+        raise AdmissionError("approved implementation file identities are missing")
+    repo_root = Path(__file__).resolve().parent.parent
+    for relative, receipt in implementation_files.items():
+        path = repo_root / relative
+        if (not isinstance(receipt, dict) or not path.is_file()
+                or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
+            raise AdmissionError(f"execution source differs from approval: {relative}")
+    return launch, admission, _live_admission_check(admission)
 
 
 def _construct_calculator(snapshot: Path):
@@ -125,12 +196,17 @@ def _construct_calculator(snapshot: Path):
 
 
 def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
-                       constructor: Callable[[Path], Any]) -> tuple[dict, dict]:
+                       constructor: Callable[[Path], Any],
+                       expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
     packet = verify_packet(packet_root)
-    launch, admission = _approved_launch(Path(attempt_root))
+    launch, admission, live = _approved_launch(Path(attempt_root))
     species = launch.get("species")
-    if not isinstance(species, list) or not species or not all(isinstance(x, str) for x in species):
-        raise AdmissionError("launch receipt must contain the admitted species order")
+    from ase.data import atomic_numbers
+    if (not isinstance(species, list) or len(species) != 21
+            or any(not isinstance(x, str) or x not in atomic_numbers for x in species)):
+        raise AdmissionError("launch receipt must contain exactly 21 real element symbols")
+    if expected_species is None or tuple(species) != tuple(expected_species):
+        raise AdmissionError("launch species order differs from validated input frames")
     snapshot = Path(attempt_root) / "private" / "final_epoch.model"
     snapshot.parent.mkdir(parents=True, exist_ok=False)
     source = _regular_file(Path(packet_root), MODEL_RELATIVE)
@@ -155,13 +231,16 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                "constructor": {"device": "cpu", "torch_threads": 1,
                                "default_dtype": "float64", "enable_cueq": False,
                                "enable_oeq": False, "compile_mode": None},
-               "launch_receipt": launch, "wsl_admission": admission}
+               "launch_receipt": launch, "wsl_admission": admission,
+               "live_identity_comparison": live}
     (Path(attempt_root) / "admission-receipt.json").write_text(
         json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return arm, receipt
 
 
-def load_admitted_arm(packet_root: Path, attempt_root: Path) -> tuple[dict, dict]:
+def load_admitted_arm(packet_root: Path, attempt_root: Path,
+                      *, expected_species: tuple[str, ...]) -> tuple[dict, dict]:
     """Production entry point; no constructor injection is accepted."""
     return _load_admitted_arm(Path(packet_root), Path(attempt_root),
-                              constructor=_construct_calculator)
+                              constructor=_construct_calculator,
+                              expected_species=expected_species)
