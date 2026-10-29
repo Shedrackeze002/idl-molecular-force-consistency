@@ -32,27 +32,32 @@
       "bytes": 1491,
       "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
     },
-    "implementation_commit": "e839e273c01481460ad78e6d422d29e978e0de2b",
+    "published_test_lock": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/requirements-tests.lock",
+      "bytes": 1491,
+      "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
+    },
+    "implementation_commit": "524fca5393ad19b2842b7ea74a062d54f08a5ecb",
     "implementation_files": {
       "scripts/mace_loader.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/mace_loader.py",
-        "bytes": 8108,
-        "sha256": "a0a459522a5443ed132fee3c7cf76cdf39e8087f6654a06523b7ce46f71b5fc7"
+        "bytes": 13010,
+        "sha256": "e934e4332c977b193ab92ac251ca122126eb382e283a2a46469313e3011cbacd"
       },
       "scripts/check_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/check_mace_parity.py",
-        "bytes": 10503,
-        "sha256": "65fa4eae6e267a5c7f9ce6446b798b8023bf6c717a6f7b19928b9a05ec0f4340"
+        "bytes": 12305,
+        "sha256": "369b4a6910da17ba3cb87de2ab4ef5ff75c8e7a4d454829d3063aa516987b966"
       },
       "scripts/supervise_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/supervise_mace_parity.py",
-        "bytes": 5189,
-        "sha256": "638ed0e0b14de5c1b567dbe4d35e60b67561727b613b043cd05072db040c40bb"
+        "bytes": 6964,
+        "sha256": "bb9b7bb3a8914f6db0ac6f046ba0b272bbc3aef10b5fd03708dd7fbaffb3e82e"
       },
       "scripts/audit_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/audit_mace_parity.py",
-        "bytes": 4259,
-        "sha256": "e8e243282ff6461baebfa5a67557c568f74a0bd0700182a5fe8bd07f2d367f81"
+        "bytes": 7918,
+        "sha256": "48691534ea42a5c86c7275bdff54366f28c4b37f510a55de468f6bdcac076583"
       },
       "docs/run-mace-parity.md": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/docs/run-mace-parity.md",
@@ -61,23 +66,23 @@
       },
       "tests/test_mace_loader.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_loader.py",
-        "bytes": 4332,
-        "sha256": "132301243cb7836483847f25e3cbef6039a60e4118593e7c2ec3e1adc0bbba03"
+        "bytes": 5798,
+        "sha256": "18cb0539a878209a545e7b60c13106c5801e85c2c4bee9faa6704d3bd9c1aa82"
       },
       "tests/test_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity.py",
-        "bytes": 3078,
-        "sha256": "0fd6d8d73600309b11285a402d8697034adcecc58627e35bea381d664f911c33"
+        "bytes": 5140,
+        "sha256": "feb986279d147192ed97bddea132e9b499b6fd1990ac04e2b93fa5ccc0b7e7d2"
       },
       "tests/test_mace_parity_supervisor.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_supervisor.py",
-        "bytes": 1451,
-        "sha256": "07fc68d9aabda614cdb973ea811a696f69ec2da223f5d4743afcada4caa3cd09"
+        "bytes": 2933,
+        "sha256": "97548c48473e57ecb1924e45a90faeb6a291f7fa6517e43ad4b2febe3ffbaabd"
       },
       "tests/test_mace_parity_audit.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_audit.py",
-        "bytes": 1747,
-        "sha256": "ca4f14950f16bcdeee6c357f97052faa1955cad990b1ca82e0e17e387c2f00eb"
+        "bytes": 3522,
+        "sha256": "b3b48e8f253388c5357635075738901bcb1d0f9d963b8c5c05cb9d167370c867"
       }
     }
   },
@@ -162,6 +167,56 @@
     "typing-extensions==4.16.0",
     "wcwidth==0.9.2"
   ],
+  "installed_package_versions": {
+    "pillow": "12.3.0",
+    "ase": "3.29.0",
+    "typing-extensions": "4.16.0",
+    "networkx": "3.7",
+    "pluggy": "1.6.0",
+    "iniconfig": "2.3.0",
+    "numpy": "2.5.3",
+    "packaging": "26.3",
+    "e3nn": "0.4.4",
+    "lightning-utilities": "0.15.3",
+    "matscipy": "1.3.0",
+    "kiwisolver": "1.5.1",
+    "configargparse": "1.8.0",
+    "six": "1.17.0",
+    "fonttools": "4.66.1",
+    "pyyaml": "6.0.3",
+    "filelock": "4.0.12",
+    "fsspec": "2026.9.0",
+    "gitpython": "3.2.0",
+    "gitdb": "4.0.12",
+    "h5py": "3.16.0",
+    "contourpy": "1.4.0",
+    "torchmetrics": "1.9.0",
+    "python-dateutil": "2.9.0.post0",
+    "pyparsing": "3.3.3",
+    "mace-torch": "0.3.16",
+    "pandas": "3.0.6",
+    "orjson": "3.12.0",
+    "markupsafe": "3.0.4",
+    "wcwidth": "0.9.2",
+    "sympy": "1.14.0",
+    "opt-einsum-fx": "0.1.4",
+    "lmdb": "3.0.0",
+    "setuptools": "84.0.0",
+    "scipy": "1.18.1",
+    "jinja2": "3.1.6",
+    "tqdm": "4.70.1",
+    "torch-ema": "0.3",
+    "smmap": "5.0.3",
+    "pytest": "9.1.1",
+    "opt-einsum": "3.4.0",
+    "pygments": "2.21.0",
+    "cycler": "0.12.1",
+    "torch": "2.14.1+cpu",
+    "python-hostlist": "2.3.0",
+    "matplotlib": "3.11.2",
+    "mpmath": "1.3.0",
+    "prettytable": "3.18.0"
+  },
   "authenticated_source_comparison": [
     {
       "name": "mace.cli.run_train",
@@ -322,6 +377,26 @@
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
+    "package-check-after-tests.command.txt": {
+      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.command.txt",
+      "bytes": 144,
+      "sha256": "997e2dc1478dd1da6b751ea593d7cd74390d366133e9b27eec3bc4c9437934ac"
+    },
+    "package-check-after-tests.stdout.txt": {
+      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "package-check-after-tests.stderr.txt": {
+      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.stderr.txt",
+      "bytes": 118,
+      "sha256": "4a44bfb8552c49283dd5cc50dfd3a93a960ea493e471041a505e8e79fedc0073"
+    },
+    "package-check-after-tests.exit.txt": {
+      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
     "packet-verification.txt": {
       "path": "/home/asac/group9-mace-onboarding-2026-10-28/packet-verification.txt",
       "bytes": 44,
@@ -351,6 +426,38 @@
       "path": "/home/asac/group9-mace-onboarding-2026-10-28/source-commit.txt",
       "bytes": 41,
       "sha256": "2c25b2fd1154126a15dbe579e6e43e031f824495495dcc6eaca91205dfdd53a0"
+    }
+  },
+  "published_followup_evidence": {
+    "requirements-tests.lock": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/requirements-tests.lock",
+      "bytes": 1491,
+      "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
+    },
+    "environment-after-tests.txt": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/environment-after-tests.txt",
+      "bytes": 1156,
+      "sha256": "0c0fb4bfc2b6b404258b55bc63c1dcaa04cfb08271ec19cdb7e7b4958e40e65f"
+    },
+    "package-check-after-tests.command.txt": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/package-check-after-tests.command.txt",
+      "bytes": 144,
+      "sha256": "997e2dc1478dd1da6b751ea593d7cd74390d366133e9b27eec3bc4c9437934ac"
+    },
+    "package-check-after-tests.stdout.txt": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/package-check-after-tests.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "package-check-after-tests.stderr.txt": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/package-check-after-tests.stderr.txt",
+      "bytes": 118,
+      "sha256": "4a44bfb8552c49283dd5cc50dfd3a93a960ea493e471041a505e8e79fedc0073"
+    },
+    "package-check-after-tests.exit.txt": {
+      "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/reports/evidence/2026-10-28/package-check-after-tests.exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
     }
   }
 }
