@@ -152,6 +152,11 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
     ]
     for name in published_names:
         shutil.copyfile(root / name, evidence_dir / name)
+    review_suite_names = [
+        "review-regression-suite.command.txt", "review-regression-suite.stdout.txt",
+        "review-regression-suite.stderr.txt", "review-regression-suite.exit.txt",
+        "review-regression-suite.json",
+    ]
 
     proposal = {
         "schema": 1,
@@ -221,6 +226,9 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         "receipts": records,
         "published_followup_evidence": {
             name: file_receipt(evidence_dir / name) for name in published_names
+        },
+        "published_review_suite_evidence": {
+            name: file_receipt(evidence_dir / name) for name in review_suite_names
         },
     }
     args.output.write_text(json.dumps(proposal, indent=2) + "\n", encoding="utf-8")
