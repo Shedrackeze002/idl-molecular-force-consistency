@@ -20,8 +20,9 @@ def test_refuses_existing_output(tmp_path):
 
 
 def test_production_launch_requires_both_reviewed_receipts(tmp_path):
-    with pytest.raises(ValueError, match="requires reviewed"):
-        module.supervise(tmp_path, tmp_path / "attempt")
+    result = module.supervise(tmp_path, tmp_path / "attempt")
+    assert result["status"] == "SETUP_FAILED"
+    assert "requires reviewed" in result["error"]
 
 
 def test_records_child_failure(tmp_path):
@@ -58,6 +59,41 @@ def test_setup_and_launch_delay_counts_toward_timeout(tmp_path, monkeypatch):
         return original(*args, **kwargs)
     monkeypatch.setattr(module.subprocess, "Popen", delayed)
     result = module.supervise(tmp_path, tmp_path / "delayed", timeout=.05, command=command("pass"))
+    assert result["status"] == "TIMEOUT"
+
+
+def test_spawn_failure_is_persisted(tmp_path, monkeypatch):
+    def fail(*args, **kwargs):
+        raise OSError("synthetic spawn failure")
+    monkeypatch.setattr(module.subprocess, "Popen", fail)
+    output = tmp_path / "spawn"
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert result["status"] == "SPAWN_FAILED"
+    assert json.loads((output / "supervisor-status.json").read_text())["error_type"] == "OSError"
+
+
+def test_receipt_copy_failure_is_persisted(tmp_path):
+    launch = tmp_path / "launch.json"
+    launch.write_text(json.dumps({"wsl_admission_receipt": "missing.json"}))
+    output = tmp_path / "copy"
+    result = module.supervise(tmp_path, output, launch_receipt=launch,
+                              wsl_admission_receipt=tmp_path / "absent.json")
+    assert result["status"] == "SETUP_FAILED"
+    assert json.loads((output / "supervisor-status.json").read_text())["failure_stage"] == "setup"
+
+
+def test_last_status_write_delay_counts_toward_timeout(tmp_path, monkeypatch):
+    original = module.Path.write_text
+    calls = {"count": 0}
+    def delayed(self, *args, **kwargs):
+        if self.name == "supervisor-status.json":
+            calls["count"] += 1
+            if calls["count"] == 3:
+                time.sleep(.06)
+        return original(self, *args, **kwargs)
+    monkeypatch.setattr(module.Path, "write_text", delayed)
+    result = module.supervise(tmp_path, tmp_path / "last-write", timeout=.05,
+                              command=command("pass"))
     assert result["status"] == "TIMEOUT"
 
 

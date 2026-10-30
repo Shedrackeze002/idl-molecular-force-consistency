@@ -205,11 +205,13 @@ def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
         if final_snapshot["bytes"] != MODEL_BYTES or final_snapshot["sha256"] != MODEL_SHA256:
             raise RuntimeError("constructor-bound model snapshot changed during prediction")
         _atomic_npz(attempt / "predictions.npz", **actual)
+        prediction_sha256 = _sha256(attempt / "predictions.npz")
         status = {**comparison, "force_requests": force_requests, "energy_requests": energy_requests,
                   "construction_count": 1, "elapsed_seconds": time.monotonic() - started,
                   "packet": packet, "admission_receipt_status": admission["status"],
                   "admission_receipt_sha256": _sha256(attempt / "admission-receipt.json"),
-                  "final_model_snapshot": final_snapshot, "persisted_records": persisted_records}
+                  "final_model_snapshot": final_snapshot, "persisted_records": persisted_records,
+                  "prediction_file_sha256": prediction_sha256}
     except Exception as exc:
         status = {"status": "INCOMPLETE", "error_type": type(exc).__name__, "error": str(exc),
                   "completed_records": len(completed), "record_ids": completed,

@@ -24,11 +24,14 @@ def _tree_bytes(root: Path) -> int:
 def _group_alive(process: subprocess.Popen) -> bool:
     if os.name == "nt":
         return process.poll() is None
+    process.poll()  # reap an exited leader; descendants may still keep the group alive
     try:
         os.killpg(process.pid, 0)
         return True
     except ProcessLookupError:
         return False
+    except PermissionError:
+        return True
 
 
 def _terminate_owned_group(process: subprocess.Popen) -> None:
@@ -62,35 +65,49 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               wsl_admission_receipt: Path | None = None) -> dict:
     started = time.monotonic()
     output = Path(output)
-    if command is None:
-        if launch_receipt is None or wsl_admission_receipt is None:
-            raise ValueError("production launch requires reviewed launch and WSL admission receipts")
-        launch_source = Path(launch_receipt)
-        admission_source = Path(wsl_admission_receipt)
-        launch = json.loads(launch_source.read_text(encoding="utf-8"))
-        admission_name = launch.get("wsl_admission_receipt")
-        if not isinstance(admission_name, str) or Path(admission_name).name != admission_name:
-            raise ValueError("launch receipt must use a local WSL admission receipt filename")
+    if output.exists():
+        raise FileExistsError(output)
     output.mkdir(parents=True, exist_ok=False)
-    if command is None:
-        shutil.copyfile(launch_source, output / "launch-receipt.json")
-        shutil.copyfile(admission_source, output / admission_name)
-    stdout_path, stderr_path = output / "stdout.log", output / "stderr.log"
-    worker = command or [sys.executable, str(Path(__file__).with_name("check_mace_parity.py")),
-                         "--packet-root", str(Path(packet_root).resolve()),
-                         "--attempt-root", str(output.resolve())]
-    receipt = {"status": "RUNNING", "command": worker, "timeout_seconds": timeout,
+    process = None
+    stage = "setup"
+    worker = command
+    receipt = {"status": "RUNNING", "command": command, "timeout_seconds": timeout,
                "output_limit_bytes": OUTPUT_BYTES, "log_limit_bytes": LOG_BYTES,
                "started_unix": time.time()}
-    (output / "supervisor-status.json").write_text(json.dumps(receipt, indent=2) + "\n")
-    creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
-    start_new_session = os.name != "nt"
-    process = None
-    reason = "TIMEOUT" if time.monotonic() - started > timeout else None
-    with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
-        if reason is None:
+    status_path = output / "supervisor-status.json"
+    status_path.write_text(json.dumps(receipt, indent=2) + "\n")
+    if command is None:
+        if launch_receipt is None or wsl_admission_receipt is None:
+            receipt.update(status="SETUP_FAILED", failure_stage=stage, error_type="ValueError",
+                           error="production launch requires reviewed launch and WSL admission receipts")
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+            return receipt
+    stdout_path, stderr_path = output / "stdout.log", output / "stderr.log"
+    reason = None
+    try:
+        if command is None:
+            launch_source = Path(launch_receipt)
+            admission_source = Path(wsl_admission_receipt)
+            launch = json.loads(launch_source.read_text(encoding="utf-8"))
+            admission_name = launch.get("wsl_admission_receipt")
+            if not isinstance(admission_name, str) or Path(admission_name).name != admission_name:
+                raise ValueError("launch receipt must use a local WSL admission receipt filename")
+            shutil.copyfile(launch_source, output / "launch-receipt.json")
+            shutil.copyfile(admission_source, output / admission_name)
+        worker = command or [sys.executable, str(Path(__file__).with_name("check_mace_parity.py")),
+                             "--packet-root", str(Path(packet_root).resolve()),
+                             "--attempt-root", str(output.resolve())]
+        receipt["command"] = worker
+        if time.monotonic() - started > timeout:
+            reason = "TIMEOUT"
+        creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
+        start_new_session = os.name != "nt"
+        stage = "spawn"
+        with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+          if reason is None:
             process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
                                        creationflags=creationflags, start_new_session=start_new_session)
+            stage = "monitor"
             while process.poll() is None:
                 elapsed = time.monotonic() - started
                 if elapsed > timeout:
@@ -106,6 +123,19 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
             if reason is None and _group_alive(process):
                 reason = "CHILD_PROCESS_LEAK"
                 _terminate_owned_group(process)
+    except Exception as exc:
+        if process is not None:
+            try:
+                _terminate_owned_group(process)
+            except Exception:
+                pass
+        failure_status = {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED"}.get(stage, "SETUP_FAILED")
+        receipt.update(status=failure_status,
+                       failure_stage=stage, error_type=type(exc).__name__, error=str(exc),
+                       elapsed_seconds=time.monotonic() - started,
+                       exit_code=None if process is None else process.poll())
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        return receipt
     elapsed = time.monotonic() - started
     exit_code = None if process is None else process.returncode
     if reason:
@@ -120,9 +150,9 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
         status = "OUTPUT_OVERFLOW"
     else:
         status = "WORKER_COMPLETED"
-    status_path = output / "supervisor-status.json"
     receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
-                   stdout_bytes=stdout_path.stat().st_size, stderr_bytes=stderr_path.stat().st_size)
+                   stdout_bytes=stdout_path.stat().st_size if stdout_path.exists() else 0,
+                   stderr_bytes=stderr_path.stat().st_size if stderr_path.exists() else 0)
     status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     final_elapsed = time.monotonic() - started
     final_bytes = _tree_bytes(output)
@@ -138,6 +168,12 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
     receipt["output_bytes"] = _tree_bytes(output)
     if receipt["output_bytes"] > OUTPUT_BYTES:
         receipt["status"] = "OUTPUT_OVERFLOW"
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+    # The last successful persistence is part of the wall-clock contract.
+    persisted_elapsed = time.monotonic() - started
+    if persisted_elapsed > timeout and receipt["status"] != "TIMEOUT":
+        receipt["status"] = "TIMEOUT"
+        receipt["elapsed_seconds"] = persisted_elapsed
         status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
     return receipt
 

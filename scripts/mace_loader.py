@@ -11,6 +11,7 @@ import json
 import os
 import platform
 import shutil
+import subprocess
 from pathlib import Path
 from typing import Any, Callable
 
@@ -20,6 +21,14 @@ MODEL_BYTES = 23_397_415
 MODEL_RELATIVE = Path("model/final_epoch.model")
 MANIFEST_RELATIVE = Path("MANIFEST.json")
 APPROVED_STATUSES = {"APPROVED", "ACCEPTED"}
+CORE_PACKAGES = {"ase", "e3nn", "mace-torch", "numpy", "torch"}
+REQUIRED_IMPLEMENTATION_FILES = {
+    "scripts/mace_loader.py", "scripts/check_mace_parity.py",
+    "scripts/supervise_mace_parity.py", "scripts/audit_mace_parity.py",
+    "docs/run-mace-parity.md", "tests/test_mace_loader.py",
+    "tests/test_mace_parity.py", "tests/test_mace_parity_supervisor.py",
+    "tests/test_mace_parity_audit.py",
+}
 
 
 class AdmissionError(RuntimeError):
@@ -104,6 +113,8 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     if (not isinstance(approved_platform, dict) or not isinstance(sources, list)
             or not isinstance(packages, list) or not isinstance(approved_versions, dict)):
         raise AdmissionError("approved WSL receipt lacks complete live identity fields")
+    if len(sources) != 8 or not packages or not approved_versions:
+        raise AdmissionError("approved WSL receipt has an incomplete identity inventory")
     actual_platform = {
         "python": platform.python_version(), "platform": platform.platform(),
         "architecture": platform.machine(), "glibc": platform.libc_ver()[1],
@@ -131,6 +142,10 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
         normalized = name.lower().replace("_", "-")
         if approved_versions.get(normalized) != actual:
             raise AdmissionError(f"live package version differs from approval: {name}")
+    if not CORE_PACKAGES.issubset({name.lower().replace("_", "-") for name in checked_packages}):
+        raise AdmissionError("approved package inventory omits a mandatory core package")
+    if not CORE_PACKAGES.issubset(approved_versions):
+        raise AdmissionError("approved version inventory omits a mandatory core package")
     proposed_torch = admission.get("original_vs_proposed", {}).get("torch", {}).get("proposed")
     if proposed_torch is not None and checked_packages.get("torch") != proposed_torch:
         raise AdmissionError("live Torch version differs from approval")
@@ -170,13 +185,23 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
         raise AdmissionError("WSL platform admission is not approved")
     identities = admission.get("identities", {})
     implementation_commit = identities.get("implementation_commit")
-    if (not isinstance(implementation_commit, str)
+    if (not isinstance(implementation_commit, str) or len(implementation_commit) != 40
+            or any(character not in "0123456789abcdef" for character in implementation_commit.lower())
             or launch.get("implementation_commit") != implementation_commit):
         raise AdmissionError("launch does not pin the approved implementation commit")
     implementation_files = identities.get("implementation_files")
-    if not isinstance(implementation_files, dict):
+    if (not isinstance(implementation_files, dict)
+            or set(implementation_files) != REQUIRED_IMPLEMENTATION_FILES):
         raise AdmissionError("approved implementation file identities are missing")
     repo_root = Path(__file__).resolve().parent.parent
+    try:
+        live_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=repo_root, check=True,
+            text=True, capture_output=True, timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise AdmissionError("cannot verify the live implementation revision") from exc
+    if live_commit != implementation_commit:
+        raise AdmissionError("live implementation revision differs from approval")
     for relative, receipt in implementation_files.items():
         path = repo_root / relative
         if (not isinstance(receipt, dict) or not path.is_file()
@@ -203,7 +228,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
     species = launch.get("species")
     from ase.data import atomic_numbers
     if (not isinstance(species, list) or len(species) != 21
-            or any(not isinstance(x, str) or x not in atomic_numbers for x in species)):
+            or any(not isinstance(x, str) or atomic_numbers.get(x, 0) <= 0 for x in species)):
         raise AdmissionError("launch receipt must contain exactly 21 real element symbols")
     if expected_species is None or tuple(species) != tuple(expected_species):
         raise AdmissionError("launch species order differs from validated input frames")

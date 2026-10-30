@@ -22,6 +22,49 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -> dict:
+    admission_path = attempt_root / "admission-receipt.json"
+    if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
+        raise ValueError("worker admission receipt identity is missing or mismatched")
+    admission = json.loads(admission_path.read_text(encoding="utf-8"))
+    if admission.get("status") != "ADMITTED":
+        raise ValueError("saved model admission is not ADMITTED")
+    launch_path = attempt_root / "launch-receipt.json"
+    if not launch_path.is_file():
+        raise ValueError("approved launch receipt is missing")
+    launch = json.loads(launch_path.read_text(encoding="utf-8"))
+    if launch.get("status") not in {"APPROVED", "ACCEPTED"} or admission.get("launch_receipt") != launch:
+        raise ValueError("saved launch approval is invalid or not bound to admission")
+    admission_name = launch.get("wsl_admission_receipt")
+    if not isinstance(admission_name, str) or Path(admission_name).name != admission_name:
+        raise ValueError("launch does not name a local WSL admission receipt")
+    wsl_path = attempt_root / admission_name
+    if (not wsl_path.is_file() or launch.get("wsl_admission_sha256") != _sha256(wsl_path)):
+        raise ValueError("launch is not bound to the saved WSL admission receipt")
+    wsl = json.loads(wsl_path.read_text(encoding="utf-8"))
+    if wsl.get("status") not in {"APPROVED", "ACCEPTED"} or admission.get("wsl_admission") != wsl:
+        raise ValueError("saved WSL admission is invalid or not bound to model admission")
+    identities = wsl.get("identities", {})
+    commit = identities.get("implementation_commit")
+    files = identities.get("implementation_files")
+    from mace_loader import REQUIRED_IMPLEMENTATION_FILES
+    if (not isinstance(commit, str) or len(commit) != 40 or launch.get("implementation_commit") != commit
+            or not isinstance(files, dict) or set(files) != REQUIRED_IMPLEMENTATION_FILES):
+        raise ValueError("reviewed implementation identity is incomplete")
+    live = admission.get("live_identity_comparison", {})
+    if (not isinstance(live.get("platform"), dict) or not live.get("packages")
+            or len(live.get("sources", [])) != 8):
+        raise ValueError("recorded runtime/source comparison is incomplete")
+    snapshot = admission.get("model_snapshot", {})
+    expected_snapshot = (attempt_root / "private" / "final_epoch.model").resolve()
+    if Path(snapshot.get("snapshot_path", "")).resolve() != expected_snapshot:
+        raise ValueError("admission is not bound to the private constructor snapshot")
+    if (snapshot.get("sha256") != packet["model_sha256"]
+            or admission.get("post_construction_sha256") != packet["model_sha256"]):
+        raise ValueError("constructor snapshot identity differs from authenticated packet")
+    return admission
+
+
 def _independent_parity(actual: dict, expected: dict) -> dict:
     actual_ids = [str(value) for value in np.asarray(actual["record_ids"]).tolist()]
     expected_ids = [str(value) for value in np.asarray(expected["record_ids"]).tolist()]
@@ -44,6 +87,8 @@ def _independent_parity(actual: dict, expected: dict) -> dict:
     return {"status": "PARITY_PASS" if max_energy <= TOLERANCE and max_force <= TOLERANCE else "PARITY_FAIL",
             "record_count": len(expected_ids), "force_component_count": int(force_diff.size),
             "max_abs_energy_eV": max_energy, "max_abs_force_eV_per_angstrom": max_force,
+            "per_record_max_energy_eV": energy_diff.tolist(),
+            "per_record_max_force_eV_per_angstrom": force_diff.reshape(len(expected_ids), -1).max(axis=1).tolist(),
             "rtol": 0.0, "atol": TOLERANCE}
 
 
@@ -68,12 +113,11 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     if (recorded_packet.get("manifest_sha256") != packet["manifest_sha256"]
             or recorded_packet.get("model_sha256") != packet["model_sha256"]):
         raise ValueError("worker packet identity differs from independently authenticated packet")
-    admission_path = attempt_root / "admission-receipt.json"
-    if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
-        raise ValueError("worker admission receipt identity is missing or mismatched")
+    _validated_admission_chain(attempt_root, status, packet)
     snapshot = status.get("final_model_snapshot", {})
     snapshot_path = Path(snapshot.get("path", ""))
-    if (not snapshot_path.is_file() or snapshot.get("sha256") != _sha256(snapshot_path)
+    if (snapshot_path.resolve() != (attempt_root / "private" / "final_epoch.model").resolve()
+            or not snapshot_path.is_file() or snapshot.get("sha256") != _sha256(snapshot_path)
             or snapshot.get("bytes") != snapshot_path.stat().st_size
             or snapshot.get("sha256") != packet["model_sha256"]):
         raise ValueError("final constructor-bound snapshot identity is invalid")
@@ -81,11 +125,15 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
         if set(saved.files) != {"record_ids", "energy", "forces"}:
             raise ValueError("saved output fields differ from contract")
         actual = {key: saved[key].copy() for key in saved.files}
+    prediction_sha256 = _sha256(attempt_root / "predictions.npz")
+    if status.get("prediction_file_sha256") != prediction_sha256:
+        raise ValueError("saved prediction bytes differ from the worker receipt")
     expected = {"record_ids": inputs["record_ids"], "energy": inputs["expected_energy"],
                 "forces": inputs["expected_forces"]}
     parity = _independent_parity(actual, expected)
     numerical_claims = ["status", "record_count", "force_component_count",
-                        "max_abs_energy_eV", "max_abs_force_eV_per_angstrom"]
+                        "max_abs_energy_eV", "max_abs_force_eV_per_angstrom",
+                        "per_record_max_energy_eV", "per_record_max_force_eV_per_angstrom"]
     if any(parity[key] != status.get(key) for key in numerical_claims):
         raise ValueError("worker parity claims do not match independently recomputed outputs")
 
@@ -113,7 +161,7 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     }
     differences = {key: abs(scores[key] - REFERENCE_SCORES[key]) for key in scores}
     result = {"status": "AUDIT_COMPLETE", "parity": parity,
-              "prediction_file_sha256": _sha256(attempt_root / "predictions.npz"),
+              "prediction_file_sha256": prediction_sha256,
               "scores": scores, "score_reference": REFERENCE_SCORES,
               "score_abs_differences": differences,
               "score_status": "SCORE_REPRODUCED" if all(value <= TOLERANCE for value in differences.values())
