@@ -31,8 +31,8 @@ git switch -c olufunke-stage2-report origin/stage2-movement-cap
 If you already have uncommitted work or that branch name exists, keep your work and use your
 existing branch.
 
-Ask Shedrack for **`stage2-olufunke-handoff-2026-11-02.tar.gz`**, about 0.98 MB (981,315 bytes), SHA-256
-`d859d7930353b863d05deac41853c013d740986e982808d53741990b7acc2198`. It holds
+Ask Shedrack for **`stage2-olufunke-handoff-2026-11-02.tar.gz`**, about 0.98 MB (981,686 bytes), SHA-256
+`90caeb69b54aa8cfeea416585aa21f911afc19ee479514298cc8c9d0897b9008`. It holds
 the spec, the plan, the decision log, and a read-only subset of the accepted historical
 results (50 original-start rows and 30 reference-start relaxations). It contains no
 checkpoint, no model, no test partition. Verify the digest, extract into a new folder, then:
