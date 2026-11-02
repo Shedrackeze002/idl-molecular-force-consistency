@@ -1,0 +1,123 @@
+{
+ "format_version": 1,
+ "note": "Reviewed artifact. Regenerating this file needs a new review; its SHA-256 goes into the launch record.",
+ "targets": {
+  "restore_fork": {
+   "frozen_file": "evaluation/e3x_adapter.py",
+   "frozen_sha256": "853db9a7792b235e8f1f37de14e779aae4da7c088e08b1e8d8e80702850d9980",
+   "derived_file": "stage2_capped/restore_fork.py",
+   "allowed_categories": [
+    "module_header",
+    "pin_policy",
+    "data_directory"
+   ],
+   "hunks": [
+    {
+     "id": "restore_fork-01",
+     "categories": [
+      "module_header"
+     ],
+     "purpose": "Names the fork, pins the frozen source SHA-256 and states what differs.",
+     "frozen_first_line": 1,
+     "frozen_line_count": 1,
+     "removed": [
+      "\"\"\"Authenticated E3x BEST supplier for the existing force-only evaluator.\"\"\""
+     ],
+     "added": [
+      "\"\"\"NAMED FORK of evaluation/e3x_adapter.py for the Stage 2 movement-cap study.",
+      "",
+      "Frozen source: evaluation/e3x_adapter.py, SHA-256",
+      "853db9a7792b235e8f1f37de14e779aae4da7c088e08b1e8d8e80702850d9980.",
+      "This file differs from it only in the hunks listed in allowlist_restore.json:",
+      "the current-runtime source-pin comparison is an injected pin policy (so Python,",
+      "platform and template drift is recorded, not fatal), and the data directory is a",
+      "required argument bound to the launch record's dataset pin (the path saved in the",
+      "run configuration no longer exists). Every other check, including the comparisons",
+      "of saved files with saved files, is unchanged.",
+      "",
+      "This is new restore code. Stage 0 and the 974-prediction replay are the only",
+      "evidence that it restores the same models as the frozen file.",
+      "Authenticated E3x BEST supplier for the existing force-only evaluator.\"\"\""
+     ]
+    },
+    {
+     "id": "restore_fork-02",
+     "categories": [
+      "pin_policy"
+     ],
+     "purpose": "e3x_checkpoint_arm takes data_directory and pin_policy as required keyword arguments.",
+     "frozen_first_line": 15,
+     "frozen_line_count": 1,
+     "removed": [
+      "def e3x_checkpoint_arm(run_directory,launch_record,score_directory,*,acceptance):"
+     ],
+     "added": [
+      "def e3x_checkpoint_arm(run_directory,launch_record,score_directory,*,acceptance,data_directory,pin_policy):"
+     ]
+    },
+    {
+     "id": "restore_fork-03",
+     "categories": [
+      "pin_policy"
+     ],
+     "purpose": "The current-runtime source-pin comparison is the injected pin policy (records Python, platform and template drift; refuses any code, helper, lockfile or dependency difference).",
+     "frozen_first_line": 23,
+     "frozen_line_count": 1,
+     "removed": [
+      "    require_equal_pin(source_pin(),launch_record['source_pin'])"
+     ],
+     "added": [
+      "    pin_policy(source_pin(),launch_record['source_pin'])"
+     ]
+    },
+    {
+     "id": "restore_fork-04",
+     "categories": [
+      "data_directory"
+     ],
+     "purpose": "e3x_checkpoint_arm passes data_directory on to _restore.",
+     "frozen_first_line": 36,
+     "frozen_line_count": 1,
+     "removed": [
+      "    with cpu_context():return _restore(run,launch_record,score,acceptance)"
+     ],
+     "added": [
+      "    with cpu_context():return _restore(run,launch_record,score,acceptance,data_directory)"
+     ]
+    },
+    {
+     "id": "restore_fork-05",
+     "categories": [
+      "data_directory"
+     ],
+     "purpose": "_restore takes data_directory.",
+     "frozen_first_line": 39,
+     "frozen_line_count": 1,
+     "removed": [
+      "def _restore(run,launch,score,acceptance):"
+     ],
+     "added": [
+      "def _restore(run,launch,score,acceptance,data_directory):"
+     ]
+    },
+    {
+     "id": "restore_fork-06",
+     "categories": [
+      "data_directory"
+     ],
+     "purpose": "The dataset pin and the training bundle are read from data_directory (bound to the launch record's dataset_pin), not from the path saved in the run configuration.",
+     "frozen_first_line": 60,
+     "frozen_line_count": 2,
+     "removed": [
+      "    require_equal_pin(dataset_pin(cfg.data_directory),launch['dataset_pin'])",
+      "    bundle=load_training_bundle(cfg.data_directory,expected_split_hash=cfg.expected_split_hash)"
+     ],
+     "added": [
+      "    require_equal_pin(dataset_pin(data_directory),launch['dataset_pin'])",
+      "    bundle=load_training_bundle(data_directory,expected_split_hash=cfg.expected_split_hash)"
+     ]
+    }
+   ]
+  }
+ }
+}
