@@ -3,8 +3,9 @@
 Frozen source: evaluation/e3x_adapter.py, SHA-256
 853db9a7792b235e8f1f37de14e779aae4da7c088e08b1e8d8e80702850d9980.
 This file differs from it only in the hunks listed in allowlist_restore.json:
-the current-runtime source-pin comparison is an injected pin policy (so Python,
-platform and template drift is recorded, not fatal), and the data directory is a
+the current-runtime source-pin comparison is an injected PinPolicy (so Python,
+platform and template drift is recorded, not fatal; any other kind of callable is refused,
+and the policy must have run and reported no problem), and the data directory is a
 required argument bound to the launch record's dataset pin (the path saved in the
 run configuration no longer exists). Every other check, including the comparisons
 of saved files with saved files, is unchanged.
@@ -23,6 +24,7 @@ from benchmark_e3x_budget import cpu_context
 from evaluation.adapter import (callable_arm,_validated_positions,
                                 ArmConfigurationError,_require_finite_values)
 from force_consistency.models.energy import make_batch
+from stage2_capped.admission import PinPolicy
 
 
 def e3x_checkpoint_arm(run_directory,launch_record,score_directory,*,acceptance,data_directory,pin_policy):
@@ -33,7 +35,10 @@ def e3x_checkpoint_arm(run_directory,launch_record,score_directory,*,acceptance,
     Forces are physical predictor outputs without projection or rescaling.
     """
     assert_imports();run=Path(run_directory);score_dir=Path(score_directory)
+    if not isinstance(pin_policy,PinPolicy):raise TypeError('pin_policy must be a stage2_capped.admission.PinPolicy')
+    reports_before=len(pin_policy.reports)
     pin_policy(source_pin(),launch_record['source_pin'])
+    if len(pin_policy.reports)!=reports_before+1 or pin_policy.reports[-1]['problems']:raise ValueError('Source/dependency/helper pin mismatch')
     score=read_json(score_dir/'score.json');checkpoint=run/'best.msgpack'
     if (digest(checkpoint.read_bytes())!=acceptance['checkpoint_sha256']
             or digest((score_dir/'score.json').read_bytes())!=acceptance['score_sha256']
