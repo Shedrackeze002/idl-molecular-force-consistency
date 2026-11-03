@@ -29,7 +29,8 @@ def saved():
 
 def self_sets(saved):
     original, reference = saved
-    return copy.deepcopy(original), {k: copy.deepcopy(v["relaxation"]) for k, v in reference.items()}
+    return copy.deepcopy(original), {k: {"relaxation": copy.deepcopy(v["relaxation"]),
+                                         "category": v["result"]["category"]} for k, v in reference.items()}
 
 
 # ---- first_difference ----------------------------------------------------
@@ -119,19 +120,35 @@ def relaxation(**changes):
     return base
 
 
+def saved_item(category="nonconverged", **changes):
+    relax = relaxation(**changes)
+    return {"relaxation": relax, "result": {"category": category, "stop_reason": relax["failure_reason"]}}
+
+
 def test_reference_comparison_covers_every_saved_field_and_ignores_extra_new_fields():
-    assert s0.compare_reference(relaxation(), relaxation())["problems"] == []
-    assert s0.compare_reference(relaxation(), {**relaxation(), "cap_record": {"x": 1}})["problems"] == []
+    assert s0.compare_reference(saved_item(), relaxation(), "nonconverged")["problems"] == []
+    assert s0.compare_reference(saved_item(), {**relaxation(), "cap_record": {"x": 1}}, "nonconverged")["problems"] == []
     for key, value in [("steps", [{"accepted_step_size": 0.2, "trial_count": 2}]),
                        ("force_history", {"evaluation_count": 7, "force_maximums": [1.0, 0.5000000000000001],
                                           "maximum_seen_eV_per_A": 1.0}),
                        ("history", {"evaluation_count": 8, "force_maximums": [1.0, 0.5], "maximum_seen_eV_per_A": 1.0}),
                        ("step_count", 4), ("final_positions", [[0.0, 1.0, 2.0000000000000004]]),
                        ("failure_reason", None), ("refusal_details", [{"x": 1}])]:
-        assert s0.compare_reference(relaxation(), relaxation(**{key: value}))["problems"], key
+        assert s0.compare_reference(saved_item(), relaxation(**{key: value}), "nonconverged")["problems"], key
     missing = relaxation()
     del missing["steps"]
-    assert s0.compare_reference(relaxation(), missing)["problems"]
+    assert s0.compare_reference(saved_item(), missing, "nonconverged")["problems"]
+
+
+def test_reference_comparison_checks_the_saved_category_and_stop_reason():
+    # Only the category differs: every other saved field is identical, yet the run is a mismatch.
+    problems = s0.compare_reference(saved_item("unmatched_converged"), relaxation(), "nonconverged")["problems"]
+    assert len(problems) == 1 and problems[0].startswith("category:")
+    # Only the saved stop reason differs from the new run's failure reason.
+    item = saved_item()
+    item["result"]["stop_reason"] = None
+    problems = s0.compare_reference(item, relaxation(), "nonconverged")["problems"]
+    assert len(problems) == 1 and problems[0].startswith("stop_reason:")
 
 
 # ---- Loader refusals on fabricated trees ----------------------------------
@@ -176,20 +193,33 @@ def test_the_reference_loader_refuses_a_missing_or_extra_relaxation(tmp_path):
         directory = base / f"{index:02d}-{model_id}"
         directory.mkdir(parents=True)
         (directory / "result.json").write_text(json.dumps(
-            {"task": {"kind": "reference_control", "model_id": model_id, "reference_id": ref}}))
+            {"task": {"kind": "reference_control", "model_id": model_id, "reference_id": ref},
+             "category": "nonconverged", "stop_reason": "budget_exhausted"}))
         (directory / "relaxation.json").write_text(json.dumps(relaxation()))
     assert len(s0.load_saved_reference(tmp_path)) == 30
+    # A saved result without its category, or without its stop reason, is refused, not defaulted.
+    path = base / "03-energy-0" / "result.json"
+    good = path.read_text()
+    for missing in ("category", "stop_reason"):
+        data = json.loads(good)
+        del data[missing]
+        path.write_text(json.dumps(data))
+        with pytest.raises(s0.SavedResultError, match="category or stop reason"):
+            s0.load_saved_reference(tmp_path)
+    path.write_text(good)
     (base / "00-energy-0" / "result.json").write_text(json.dumps(
         {"task": {"kind": "replay", "model_id": "energy-0", "branch_key": "aspirin/18/plus"}}))
     with pytest.raises(s0.SavedResultError, match="differ from the 30 expected"):
         s0.load_saved_reference(tmp_path)
     # a duplicate (same model and reference in a second directory) is its own refusal
     (base / "00-energy-0" / "result.json").write_text(json.dumps(
-        {"task": {"kind": "reference_control", "model_id": "energy-0", "reference_id": s0.OWN_IDS[0]}}))
+        {"task": {"kind": "reference_control", "model_id": "energy-0", "reference_id": s0.OWN_IDS[0]},
+         "category": "nonconverged", "stop_reason": "budget_exhausted"}))
     twin = base / "99-energy-0"
     twin.mkdir()
     (twin / "result.json").write_text(json.dumps(
-        {"task": {"kind": "reference_control", "model_id": "energy-0", "reference_id": s0.OWN_IDS[0]}}))
+        {"task": {"kind": "reference_control", "model_id": "energy-0", "reference_id": s0.OWN_IDS[0]},
+         "category": "nonconverged", "stop_reason": "budget_exhausted"}))
     (twin / "relaxation.json").write_text(json.dumps(relaxation()))
     with pytest.raises(s0.SavedResultError, match="duplicate saved reference relaxation"):
         s0.load_saved_reference(tmp_path)
@@ -242,7 +272,7 @@ def test_any_perturbed_original_field_of_the_real_results_fails(saved, what):
 def test_any_perturbed_reference_field_of_the_real_results_fails(saved, what):
     new_original, new_reference = self_sets(saved)
     key = sorted(new_reference)[11]
-    target = new_reference[key]
+    target = new_reference[key]["relaxation"]
     if what == "steps":
         target["steps"][0]["trial_count"] += 1
     elif what == "force_maximums":
@@ -257,6 +287,37 @@ def test_any_perturbed_reference_field_of_the_real_results_fails(saved, what):
         target[what] = "changed"
     mismatches = s0.compare_all(saved[0], saved[1], new_original, new_reference)
     assert list(mismatches) == [s0.reference_task_id(*key)]
+
+
+@needs_real_files
+def test_a_changed_reference_category_alone_fails_on_the_real_results(saved):
+    new_original, new_reference = self_sets(saved)
+    key = sorted(new_reference)[11]
+    other = "unmatched_converged" if new_reference[key]["category"] != "unmatched_converged" else "nonconverged"
+    new_reference[key]["category"] = other                 # the relaxation itself is untouched
+    mismatches = s0.compare_all(saved[0], saved[1], new_original, new_reference)
+    assert list(mismatches) == [s0.reference_task_id(*key)]
+    problems = mismatches[s0.reference_task_id(*key)]
+    assert len(problems) == 1 and problems[0].startswith("category:")
+
+
+@needs_real_files
+def test_the_real_saved_reference_results_carry_a_category_and_stop_reason_for_all_30(saved):
+    assert all(item["result"]["category"] and "stop_reason" in item["result"] for item in saved[1].values())
+
+
+@needs_real_files
+def test_load_saved_is_bound_to_the_file_hashes_the_launch_record_names():
+    hashes = s0.saved_file_hashes()
+    original, reference = s0.load_saved(expected_hashes=hashes)
+    assert len(original) == 50 and len(reference) == 30
+    key = sorted(hashes)[3]
+    for wrong in ({**hashes, key: "0" * 64}, {k: v for k, v in hashes.items() if k != key},
+                  {**hashes, "reports/an/extra/result.json": "1" * 64}):
+        with pytest.raises(s0.SavedResultError, match="differ from the launch record"):
+            s0.load_saved(expected_hashes=wrong)
+    with pytest.raises(TypeError):
+        s0.load_saved()                                   # the expected hashes are required
 
 
 @needs_real_files

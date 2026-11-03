@@ -189,6 +189,8 @@ def row_problems(row):
         problems.append("recovered must equal outcome_category == matched_reference")
     if row["converged"] != (row["stop_reason"] is None):
         problems.append("converged must equal stop_reason is None")
+    if row["converged"] != (row["outcome_category"] != "nonconverged"):
+        problems.append("converged must equal outcome_category != nonconverged")
     if row["budget_exhausted"] != (row["stop_reason"] == "budget_exhausted"):
         problems.append("budget_exhausted must equal stop_reason == budget_exhausted")
     n = row["trial_count"]

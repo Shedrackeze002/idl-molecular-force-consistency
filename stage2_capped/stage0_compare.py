@@ -14,10 +14,11 @@ Saved inputs, all read-only:
 Comparison is bit-exact, with no tolerance. Original rows are compared on the
 spec's list: category, stop reason, step count, force-evaluation count, flags and
 bitwise final positions. Reference relaxations are compared on every field the
-saved file holds (a superset of the spec's list, which names steps and
-force_maximums). Alignment-derived numbers (rmsd_A) depend on a numerical
-decomposition, so they are reported as informational differences, never as
-mismatches.
+saved relaxation.json holds (a superset of the spec's list, which names steps and
+force_maximums) and on the category and stop reason the saved result.json records,
+so the spec's category check covers all 80 runs. Alignment-derived numbers (rmsd_A)
+depend on a numerical decomposition, so they are reported as informational
+differences, never as mismatches.
 """
 import hashlib
 import json
@@ -120,6 +121,8 @@ def load_saved_reference(root=None):
         key = (task["model_id"], task["reference_id"])
         if key in saved:
             raise SavedResultError(f"duplicate saved reference relaxation for {key}")
+        if "category" not in result or "stop_reason" not in result:
+            raise SavedResultError(f"saved result for {key} lacks its category or stop reason")
         saved[key] = {"relaxation": _read(directory / "relaxation.json"),
                       "result": result, "directory": directory.name}
     expected = {(m, r) for m in MODEL_ORDER for r in OWN_IDS}
@@ -211,10 +214,12 @@ def compare_original(saved_row, new_row):
     return {"problems": problems, "informational": informational}
 
 
-def compare_reference(saved_relaxation, new_result):
-    """Problems between a saved relaxation.json and a new relaxation result. Every
-    field the saved file holds must be bit-identical (steps and force_maximums
-    included); fields only the new result has (the cap record) are ignored."""
+def compare_reference(saved_item, new_result, new_category):
+    """Problems between a saved reference run and a new one. Every field the saved
+    relaxation.json holds must be bit-identical (steps and force_maximums included);
+    fields only the new result has (the cap record) are ignored. The category and the
+    stop reason the saved result.json records must also be identical."""
+    saved_relaxation, saved_result = saved_item["relaxation"], saved_item["result"]
     problems = []
     for key in saved_relaxation:
         if key not in new_result:
@@ -223,12 +228,17 @@ def compare_reference(saved_relaxation, new_result):
         found = first_difference(saved_relaxation[key], new_result[key], f"/{key}")
         if found is not None:
             problems.append(f"{key} differs at {found}")
+    if first_difference(saved_result["category"], new_category) is not None:
+        problems.append(f"category: saved {saved_result['category']!r}, new {new_category!r}")
+    if first_difference(saved_result["stop_reason"], new_result.get("failure_reason")) is not None:
+        problems.append(f"stop_reason: saved {saved_result['stop_reason']!r}, new {new_result.get('failure_reason')!r}")
     return {"problems": problems, "informational": {}}
 
 
 def compare_all(saved_original, saved_reference, new_original, new_reference):
     """Compare complete sets. Returns {task_id: problems} for every task that differs
-    (empty dict means all 80 match), and raises if a set is incomplete."""
+    (empty dict means all 80 match), and raises if a set is incomplete. A new reference
+    item is {"relaxation": result dict, "category": outcome category}."""
     if set(new_original) != set(saved_original) or set(new_reference) != set(saved_reference):
         raise SavedResultError("the new results do not cover the same 80 tasks")
     mismatches = {}
@@ -237,7 +247,17 @@ def compare_all(saved_original, saved_reference, new_original, new_reference):
         if outcome["problems"]:
             mismatches[original_task_id(*key)] = outcome["problems"]
     for key, saved in saved_reference.items():
-        outcome = compare_reference(saved["relaxation"], new_reference[key])
+        outcome = compare_reference(saved, new_reference[key]["relaxation"], new_reference[key]["category"])
         if outcome["problems"]:
             mismatches[reference_task_id(*key)] = outcome["problems"]
     return mismatches
+
+
+def load_saved(root=None, *, expected_hashes):
+    """The saved Stage 0 results, refused unless the SHA-256 of every file is the one the
+    launch record names. Returns (original rows, reference items)."""
+    actual = saved_file_hashes(root)
+    if actual != expected_hashes:
+        different = sorted(k for k in set(actual) | set(expected_hashes) if actual.get(k) != expected_hashes.get(k))
+        raise SavedResultError(f"saved result files differ from the launch record: {different[:3]}")
+    return load_saved_original(root), load_saved_reference(root)

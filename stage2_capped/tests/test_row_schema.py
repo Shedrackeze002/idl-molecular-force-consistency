@@ -134,6 +134,22 @@ def test_invalid_rows_are_refused(change):
         rs.make_row(**sample_row(**change))
 
 
+def test_converged_follows_the_outcome_category_in_both_directions():
+    """Only 'nonconverged' is an unconverged outcome (outcomes.classify_outcome); every other category is
+    a converged run. Each row below agrees with its stop reason, so only the category invariant can fail."""
+    converged_but_nonconverged = sample_row(stop_reason=None, converged=True, budget_exhausted=False)
+    problems = rs.row_problems(converged_but_nonconverged)
+    assert problems == ["converged must equal outcome_category != nonconverged"]
+    unconverged_but_matched = sample_row(outcome_category="matched_reference", recovered=True)
+    assert rs.row_problems(unconverged_but_matched) == ["converged must equal outcome_category != nonconverged"]
+    for category in ("matched_reference", "unmatched_converged", "ambiguous", "unresolved"):
+        row = sample_row(outcome_category=category, recovered=category == "matched_reference",
+                         stop_reason=None, converged=True, budget_exhausted=False)
+        assert rs.row_problems(row) == [], category
+    assert rs.row_problems(sample_row()) == []                    # nonconverged, budget exhausted
+    assert rs.row_problems(sample_row(stop_reason="no_progress", budget_exhausted=False)) == []
+
+
 def test_control_rows_need_the_control_only_fields_and_no_capped_trials():
     assert rs.row_problems(control_row()) == []
     assert rs.row_problems(sample_row(cap_label="cinf", movement_cap_A=None))

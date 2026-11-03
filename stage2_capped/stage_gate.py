@@ -39,6 +39,19 @@ class StageLedger:
         self.a0_replay_passed = False
         self.events = []
 
+    @classmethod
+    def from_snapshot(cls, snapshot):
+        """The ledger a supervising parent had when it took `snapshot()`; a worker rebuilds it
+        so the same start rules hold inside the worker process."""
+        if set(snapshot["state"]) != set(STAGE_ORDER) or \
+                not set(snapshot["state"].values()) <= {PENDING, RUNNING, COMPLETE, FAILED}:
+            raise ValueError("not a ledger snapshot")
+        ledger = cls()
+        ledger.state = dict(snapshot["state"])
+        ledger.a0_replay_passed = bool(snapshot["a0_replay_passed"])
+        ledger.events = [tuple(e) for e in snapshot["events"]]
+        return ledger
+
     def blockers(self, stage):
         """Why `stage` cannot start now (empty list means it can)."""
         if stage not in PREREQUISITES:
@@ -85,6 +98,7 @@ class Stage0Controller:
         self.compared = 0
         self.mismatches = []
         self.mismatch_problems = None
+        self.rerun_authorized = False
         self.rerun_done = False
         self.halted = False
         self.verdict = None
@@ -104,11 +118,23 @@ class Stage0Controller:
         self.compared += 1
         return None
 
-    def record_frozen_rerun(self, task_id, matches_saved):
-        """The one pre-authorized re-run of the mismatching task with the frozen relax.
-        Always leaves Stage 0 stopped."""
+    def authorize_rerun(self, task_id):
+        """Spend the single pre-authorized frozen re-run, before any model is queried.
+        Refuses unless Stage 0 halted on a mismatch, the task is the first mismatching task,
+        and no re-run was authorized before. A re-run that then crashes stays spent."""
         if not self.halted or not self.mismatches:
             raise Stage0Halted("no mismatch to re-run")
+        if self.rerun_authorized:
+            raise Stage0Halted("the single pre-authorized re-run has been used")
+        if task_id != self.mismatches[0]:
+            raise Stage0Halted("the re-run covers only the first mismatching task")
+        self.rerun_authorized = True
+
+    def record_frozen_rerun(self, task_id, matches_saved):
+        """Record the outcome of the authorized re-run of the mismatching task with the
+        frozen relax. Always leaves Stage 0 stopped."""
+        if not self.rerun_authorized:
+            raise Stage0Halted("the re-run was not authorized; call authorize_rerun first")
         if self.rerun_done:
             raise Stage0Halted("the single pre-authorized re-run has been used")
         if task_id != self.mismatches[0]:

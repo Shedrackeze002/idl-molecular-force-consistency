@@ -144,6 +144,7 @@ def test_the_first_mismatch_halts_and_asks_for_the_single_frozen_rerun():
 def test_the_rerun_outcome_decides_drift_or_code_error_and_both_stop(matches, expected):
     controller = Stage0Controller()
     controller.observe("t0", ["differs"])
+    controller.authorize_rerun("t0")
     verdict = controller.record_frozen_rerun("t0", matches)
     assert verdict["verdict"] == expected and not verdict["proceed"]
     assert controller.finish()["verdict"] == expected
@@ -152,13 +153,39 @@ def test_the_rerun_outcome_decides_drift_or_code_error_and_both_stop(matches, ex
 def test_only_one_rerun_and_only_of_the_first_mismatching_task():
     controller = Stage0Controller()
     with pytest.raises(Stage0Halted, match="no mismatch"):
-        controller.record_frozen_rerun("t0", True)
+        controller.authorize_rerun("t0")
     controller.observe("t0", ["differs"])
     with pytest.raises(Stage0Halted, match="first mismatching task"):
-        controller.record_frozen_rerun("t5", True)
+        controller.authorize_rerun("t5")
+    controller.authorize_rerun("t0")
     controller.record_frozen_rerun("t0", False)
     with pytest.raises(Stage0Halted, match="has been used"):
+        controller.authorize_rerun("t0")
+    with pytest.raises(Stage0Halted, match="has been used"):
         controller.record_frozen_rerun("t0", False)
+
+
+def test_a_result_cannot_be_recorded_without_authorization():
+    controller = Stage0Controller()
+    controller.observe("t0", ["differs"])
+    with pytest.raises(Stage0Halted, match="not authorized"):
+        controller.record_frozen_rerun("t0", True)
+    assert controller.rerun_done is False
+
+
+def test_an_authorized_rerun_that_crashes_stays_spent():
+    controller = Stage0Controller()
+    controller.observe("t0", ["differs"])
+    controller.authorize_rerun("t0")                 # the model call then fails; nothing is recorded
+    with pytest.raises(Stage0Halted, match="has been used"):
+        controller.authorize_rerun("t0")
+
+
+def test_authorization_needs_a_halted_stage():
+    controller = Stage0Controller()
+    controller.observe("t0", [])
+    with pytest.raises(Stage0Halted, match="no mismatch"):
+        controller.authorize_rerun("t0")
 
 
 def test_no_tolerance_a_single_bit_problem_is_a_mismatch():
@@ -181,3 +208,24 @@ def test_stage_two_still_needs_the_replay_flag_if_the_ledger_is_set_up_by_hand()
     assert any("replay has not passed" in reason for reason in ledger.blockers("2"))
     ledger.a0_replay_passed = True
     assert ledger.blockers("2") == []
+
+
+def test_a_worker_rebuilds_the_parents_ledger_and_the_same_start_rules_hold():
+    parent = StageLedger()
+    parent.start("A0")
+    parent.finish("A0", True, replay_passed=True)
+    snapshot = parent.snapshot()
+    worker = StageLedger.from_snapshot(snapshot)
+    assert worker.snapshot() == snapshot and worker.a0_replay_passed
+    worker.start("0")                                              # allowed: A0 is complete
+    with pytest.raises(StageOrderError):
+        StageLedger.from_snapshot(snapshot).start("1")             # Stage 1 needs Stage 0
+    with pytest.raises(StageOrderError):
+        StageLedger().start("0")                                   # a fresh ledger knows nothing of A0
+
+
+@pytest.mark.parametrize("bad", [{"state": {"A0": "pending"}, "a0_replay_passed": False, "events": []},
+                                 {"state": {s: "bogus" for s in STAGE_ORDER}, "a0_replay_passed": False, "events": []}])
+def test_a_malformed_ledger_snapshot_is_refused(bad):
+    with pytest.raises(ValueError, match="not a ledger snapshot"):
+        StageLedger.from_snapshot(bad)

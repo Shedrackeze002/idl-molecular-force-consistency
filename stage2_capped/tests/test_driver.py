@@ -42,7 +42,7 @@ def make_inputs(land, manifest, classification, procedure=None):
 def make_context(tmp_path, land, manifest, classification, stiffness=4.0, name="launch", **kwargs):
     inputs = make_inputs(land, manifest, classification)
     species = next(iter(inputs.starts.values()))["species"]
-    root = launch_io.fresh_root(tmp_path / name)
+    root = launch_io.fresh_root(tmp_path / name, f"L-{name}")
     provider = lambda model_id: callable_arm(fx.harmonic(TARGET, stiffness), species, model_id)  # noqa: E731
     return driver.Context(root, f"L-{name}", inputs, provider, **kwargs)
 
@@ -63,6 +63,17 @@ def world(synthetic_landscape, frozen_synthetic_manifest, synthetic_endpoint_cla
     return synthetic_landscape, frozen_synthetic_manifest, synthetic_endpoint_classification
 
 
+# SHA-256 of the accepted recovery LAUNCH_RECORDS.json (anchored here, not read from the file under test).
+LAUNCH_RECORDS_SHA256 = "62b0bc3b4a70481f55931837db9d882148878ec31a8af9c22456f71b9a4c08e5"
+
+
+def run_test_stage(stage, context, **kwargs):
+    """run_stage with the test-only flags a synthetic stage needs: no ledger, an explicit task list."""
+    kwargs.setdefault("allow_custom_tasks", kwargs.get("tasks") is not None)
+    kwargs.setdefault("allow_unledgered", kwargs.get("ledger") is None)
+    return driver.run_stage(stage, context, **kwargs)
+
+
 def frozen_saved(context, tasks):
     """The 'saved' results: what the frozen evaluator and frozen relax produce for the tasks."""
     from evaluation.relax import relax
@@ -78,7 +89,11 @@ def frozen_saved(context, tasks):
         else:
             own = i.refs[task["key"]]
             supplier = _arm_force_supplier(arm, own.species, own.record_id + "/reference-control")
-            reference[(task["model_id"], task["key"])] = {"relaxation": relax(own.positions, supplier, i.procedure, arm=arm)}
+            relaxed = relax(own.positions, supplier, i.procedure, arm=arm)
+            reference[(task["model_id"], task["key"])] = {
+                "relaxation": relaxed,
+                "result": {"category": driver.classify_reference(context, task, relaxed)["category"],
+                           "stop_reason": relaxed["failure_reason"]}}
     return original, reference
 
 
@@ -292,8 +307,9 @@ def test_a_capped_run_records_its_cap_and_never_moves_an_atom_further_than_it(wo
 def test_a_control_stage_completes_and_summarizes_binding(world, tmp_path):
     context = make_context(tmp_path, *world)
     tasks = make_tasks(context, "0b", ["consistency-1-0", "consistency-1-1"], [None])
-    summary = driver.run_stage("0b", context, tasks=tasks)
-    assert summary["runs"] == len(tasks) and summary["complete"] and summary["control"]["runs"] == len(tasks)
+    summary = run_test_stage("0b", context, tasks=tasks)
+    assert summary["runs"] == len(tasks) and summary["custom_tasks"] and not summary["complete"] \
+        and summary["control"]["runs"] == len(tasks)
     assert summary["control"]["runs_where_c1p00_would_bind"] >= 0
     assert (context.root / "rows" / "stage0b" / "STAGE_COMPLETE.json").exists()
     assert not (context.root / "rows" / "stage0b" / "INCOMPLETE.json").exists()
@@ -304,10 +320,10 @@ def test_a_control_stage_completes_and_summarizes_binding(world, tmp_path):
 def test_a_capped_stage_runs_against_the_control_index_and_passes_the_prefix_gate(world, tmp_path):
     context = make_context(tmp_path, *world, stiffness=0.5)
     models = ["consistency-1-0"]
-    driver.run_stage("0b", context, tasks=make_tasks(context, "0b", models, [None]))
-    index = driver.ControlIndex.from_roots([context.root])
+    run_test_stage("0b", context, tasks=make_tasks(context, "0b", models, [None]))
+    index = driver.ControlIndex.from_roots([context.root], allow_custom=True)
     capped_tasks = make_tasks(context, "2", models, [0.05, 0.25])
-    summary = driver.run_stage("2", context, tasks=capped_tasks, control_index=index)
+    summary = run_test_stage("2", context, tasks=capped_tasks, control_index=index)
     assert summary["runs"] == len(capped_tasks)
     labels = {p.parent.name for p in (context.root / "rows" / "stage2").glob("*/*/*.json")}
     assert labels == {"c0p05", "c0p25"}
@@ -316,38 +332,38 @@ def test_a_capped_stage_runs_against_the_control_index_and_passes_the_prefix_gat
 def test_the_prefix_gate_stops_a_run_whose_control_trace_disagrees(world, tmp_path):
     context = make_context(tmp_path, *world, stiffness=0.5)
     models = ["consistency-1-0"]
-    driver.run_stage("0b", context, tasks=make_tasks(context, "0b", models, [None]))
-    index = driver.ControlIndex.from_roots([context.root])
+    run_test_stage("0b", context, tasks=make_tasks(context, "0b", models, [None]))
+    index = driver.ControlIndex.from_roots([context.root], allow_custom=True)
     capped = make_tasks(context, "2", models, [0.05])
     key = (models[0], capped[0]["kind"], driver.start_id_of(capped[0]))
     forged = copy.deepcopy(index.records[key])
     forged[0]["positions"] = forged[0]["positions"] + 1e-9
     index.records[key] = forged
     with pytest.raises(driver.PrefixGateFailure):
-        driver.run_stage("2", context, tasks=capped, control_index=index)
+        run_test_stage("2", context, tasks=capped, control_index=index)
     assert (context.root / "rows" / "stage2" / "INCOMPLETE.json").exists()
 
 
 def test_a_missing_control_is_a_hard_stop(world, tmp_path):
     context = make_context(tmp_path, *world)
     with pytest.raises(driver.MissingControl):
-        driver.run_stage("2", context, tasks=make_tasks(context, "2", ["consistency-1-0"], [0.05]),
+        run_test_stage("2", context, tasks=make_tasks(context, "2", ["consistency-1-0"], [0.05]),
                          control_index=driver.ControlIndex())
 
 
 def test_capped_stages_and_stage_zero_refuse_to_start_without_their_inputs(world, tmp_path):
     context = make_context(tmp_path, *world)
     with pytest.raises(driver.DriverError, match="control index"):
-        driver.run_stage("1", context)
+        run_test_stage("1", context)
     with pytest.raises(driver.DriverError, match="saved results"):
-        driver.run_stage("0", context)
+        run_test_stage("0", context)
     assert not (context.root / "rows").exists()
 
 
 def test_the_ledger_gates_a_stage_before_anything_is_written(world, tmp_path):
     context = make_context(tmp_path, *world)
     with pytest.raises(StageOrderError):
-        driver.run_stage("0b", context, ledger=StageLedger(), tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
+        run_test_stage("0b", context, ledger=StageLedger(), tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
     assert not (context.root / "rows").exists()
 
 
@@ -356,14 +372,14 @@ def test_the_ledger_records_completion_and_failure(world, tmp_path):
     ledger.start("A0"), ledger.finish("A0", True, replay_passed=True)
     ledger.start("0"), ledger.finish("0", True)
     context = make_context(tmp_path, *world)
-    driver.run_stage("0b", context, ledger=ledger, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
+    run_test_stage("0b", context, ledger=ledger, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
     assert ledger.state["0b"] == "complete"
     failing = make_context(tmp_path, *world, name="second", storage_limit=10)
     ledger2 = StageLedger()
     ledger2.start("A0"), ledger2.finish("A0", True, replay_passed=True)
     ledger2.start("0"), ledger2.finish("0", True)
     with pytest.raises(launch_io.StorageExceeded):
-        driver.run_stage("0b", failing, ledger=ledger2, tasks=make_tasks(failing, "0b", ["consistency-1-0"], [None]))
+        run_test_stage("0b", failing, ledger=ledger2, tasks=make_tasks(failing, "0b", ["consistency-1-0"], [None]))
     assert ledger2.state["0b"] == "failed"
 
 
@@ -371,7 +387,7 @@ def test_the_attempt_ceiling_stops_a_stage_and_keeps_the_rows(world, tmp_path, m
     monkeypatch.setitem(driver.STAGE_SPECS, "0b", {**driver.STAGE_SPECS["0b"], "attempt_ceiling": 5})
     context = make_context(tmp_path, *world)
     with pytest.raises(driver.AttemptCeilingExceeded):
-        driver.run_stage("0b", context, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
+        run_test_stage("0b", context, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
     stage = context.root / "rows" / "stage0b"
     rows = [row_schema.loads_row(p.read_text()) for p in stage.glob("*/cinf/*.json")]
     marker = json.loads((stage / "INCOMPLETE.json").read_text())
@@ -384,16 +400,17 @@ def test_the_attempt_ceiling_stops_a_stage_and_keeps_the_rows(world, tmp_path, m
 def test_a_passed_deadline_stops_before_any_run(world, tmp_path):
     context = make_context(tmp_path, *world)
     with pytest.raises(driver.DeadlineReached):
-        driver.run_stage("0b", context, deadline=time.perf_counter() - 1,
+        run_test_stage("0b", context, deadline=time.perf_counter() - 1,
                          tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
     assert not list((context.root / "rows" / "stage0b").glob("*/*/*.json"))
     assert (context.root / "rows" / "stage0b" / "INCOMPLETE.json").exists()
 
 
 def test_the_storage_guard_stops_a_stage_after_the_runs_that_fit(world, tmp_path):
-    context = make_context(tmp_path, *world, storage_limit=driver.RUN_RESERVE_BYTES + 100)
+    atoms = np.asarray(next(iter(make_inputs(*world).starts.values()))["positions"]).shape[-2]
+    context = make_context(tmp_path, *world, storage_limit=driver.run_reserve_bytes(atoms) + 100)
     with pytest.raises(launch_io.StorageExceeded):
-        driver.run_stage("0b", context, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
+        run_test_stage("0b", context, tasks=make_tasks(context, "0b", ["consistency-1-0"], [None]))
     stage = context.root / "rows" / "stage0b"
     assert len(list(stage.glob("*/cinf/*.json"))) == 1 and (stage / "INCOMPLETE.json").exists()
 
@@ -402,14 +419,14 @@ def test_a_killed_launch_is_never_resumed_a_new_launch_gets_a_new_root(world, tm
     first = make_context(tmp_path, *world, name="one")
     tasks = make_tasks(first, "0b", ["consistency-1-0"], [None])
     with pytest.raises(driver.DeadlineReached):
-        driver.run_stage("0b", first, deadline=time.perf_counter() - 1, tasks=tasks)
+        run_test_stage("0b", first, deadline=time.perf_counter() - 1, tasks=tasks)
     before = sorted(p.name for p in first.root.rglob("*") if p.is_file())
     with pytest.raises(FileExistsError):                       # the root and its marker are spent
-        launch_io.fresh_root(first.root)
+        launch_io.fresh_root(first.root, "L-first")
     with pytest.raises(FileExistsError):
-        driver.run_stage("0b", first, tasks=tasks)
+        run_test_stage("0b", first, tasks=tasks)
     second = make_context(tmp_path, *world, name="two")
-    driver.run_stage("0b", second, tasks=make_tasks(second, "0b", ["consistency-1-0"], [None]))
+    run_test_stage("0b", second, tasks=make_tasks(second, "0b", ["consistency-1-0"], [None]))
     assert sorted(p.name for p in first.root.rglob("*") if p.is_file()) == before
 
 
@@ -424,7 +441,7 @@ def stage0_setup(world, tmp_path, models=("direct-0", "energy-0")):
 
 def test_stage_zero_passes_when_every_run_reproduces_the_saved_result(world, tmp_path):
     context, tasks, saved, controller = stage0_setup(world, tmp_path)
-    summary = driver.run_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+    summary = run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
     assert summary["runs"] == len(tasks) and controller.finish()["proceed"] is True
 
 
@@ -435,7 +452,7 @@ def test_stage_zero_stops_at_the_first_mismatch_and_writes_the_evidence(world, t
     saved[0][key] = {**saved[0][key], "step_count": saved[0][key]["step_count"] + 1}
     position = tasks.index(target)
     with pytest.raises(driver.Stage0Stop) as stop:
-        driver.run_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
     assert stop.value.verdict["verdict"] == "frozen re-run required" and stop.value.task_id == driver.task_id(target)
     stage = context.root / "rows" / "stage0"
     assert len(list(stage.glob("*/cinf/*.json"))) == position + 1    # fail fast: nothing after the mismatch
@@ -453,11 +470,73 @@ def test_the_single_frozen_rerun_decides_runtime_drift_when_frozen_also_differs(
     perturbed["relaxation"]["step_count"] += 1
     saved[1][key] = perturbed
     with pytest.raises(driver.Stage0Stop):
-        driver.run_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
     verdict = driver.run_frozen_rerun(context, target, saved, controller)
     assert verdict["verdict"] == "stop: runtime drift" and not verdict["proceed"]
     with pytest.raises(Stage0Halted):
         driver.run_frozen_rerun(context, target, saved, controller)       # only one re-run
+
+
+@pytest.mark.parametrize("case", ["no mismatch", "second re-run", "wrong task"])
+def test_a_refused_frozen_rerun_makes_zero_force_calls(world, tmp_path, case):
+    """F02: the one-re-run guard runs before the model is queried."""
+    context, tasks, saved, controller = stage0_setup(world, tmp_path)
+    target = next(t for t in tasks if t["kind"] == "reference")
+    other = next(t for t in tasks if t["kind"] == "original")
+    key = (target["model_id"], target["key"])
+    if case != "no mismatch":
+        saved[1][key] = copy.deepcopy(saved[1][key])
+        saved[1][key]["relaxation"]["step_count"] += 1
+        with pytest.raises(driver.Stage0Stop):
+            run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+        if case == "second re-run":
+            driver.run_frozen_rerun(context, target, saved, controller)
+    calls = []
+    real_arm = context.arm
+    context.arm = lambda model_id: calls.append(model_id) or real_arm(model_id)
+    task = other if case == "wrong task" else target
+    with pytest.raises(Stage0Halted):
+        driver.run_frozen_rerun(context, task, saved, controller)
+    assert calls == []                                              # the model was never asked for
+
+
+@pytest.mark.parametrize("field", ["category", "stop_reason"])
+def test_stage_zero_stops_when_only_a_saved_reference_category_or_stop_reason_differs(world, tmp_path, field):
+    """F01: the saved relaxation is identical, only result.json's category or stop reason is changed."""
+    context, tasks, saved, controller = stage0_setup(world, tmp_path)
+    target = next(t for t in tasks if t["kind"] == "reference")
+    key = (target["model_id"], target["key"])
+    saved[1][key] = copy.deepcopy(saved[1][key])
+    saved[1][key]["result"][field] = "changed"
+    with pytest.raises(driver.Stage0Stop) as stop:
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+    assert stop.value.task_id == driver.task_id(target)
+    assert [p.split(":")[0] for p in stop.value.problems] == [field]
+    # The frozen re-run classifies with the same helper, so it also differs: runtime drift, not a code error.
+    verdict = driver.run_frozen_rerun(context, target, saved, controller)
+    assert verdict["verdict"] == "stop: runtime drift" and not verdict["proceed"]
+
+
+def test_the_reference_category_is_the_shared_helpers_output(world, tmp_path, monkeypatch):
+    """The stage run and the frozen re-run both classify through driver.classify_reference."""
+    context, tasks, saved, controller = stage0_setup(world, tmp_path)
+    target = next(t for t in tasks if t["kind"] == "reference")
+    key = (target["model_id"], target["key"])
+    saved[1][key] = copy.deepcopy(saved[1][key])
+    saved[1][key]["result"]["category"] = "changed"                  # forces a mismatch at the target
+    seen = []
+    real = driver.classify_reference
+
+    def spy(context_, task, result):
+        seen.append(driver.task_id(task))
+        return real(context_, task, result)
+
+    monkeypatch.setattr(driver, "classify_reference", spy)
+    with pytest.raises(driver.Stage0Stop):
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+    assert seen == [driver.task_id(target)]
+    driver.run_frozen_rerun(context, target, saved, controller)
+    assert seen == [driver.task_id(target)] * 2
 
 
 @pytest.mark.parametrize("kind", ["original", "reference"])
@@ -475,7 +554,7 @@ def test_a_code_error_is_told_apart_from_runtime_drift(world, tmp_path, monkeypa
     monkeypatch.setattr(driver if kind == "reference" else pass_copy, "relax_capped", broken)
     target = next(t for t in tasks if t["kind"] == kind)
     with pytest.raises(driver.Stage0Stop) as stop:
-        driver.run_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
     assert stop.value.task_id == driver.task_id(target)
     verdict = driver.run_frozen_rerun(context, target, saved, controller)
     assert verdict["verdict"] == "stop: code error" and not verdict["proceed"]
@@ -485,7 +564,7 @@ def test_an_incomplete_stage_zero_is_not_a_pass(world, tmp_path):
     context, tasks, saved, _ = stage0_setup(world, tmp_path)
     controller = Stage0Controller(expected_runs=len(tasks) + 1)
     with pytest.raises(driver.Stage0Stop) as stop:
-        driver.run_stage("0", context, tasks=tasks, saved=saved, controller=controller)
+        run_test_stage("0", context, tasks=tasks, saved=saved, controller=controller)
     assert stop.value.verdict["verdict"] == "stop: incomplete comparison"
 
 
@@ -493,7 +572,7 @@ def test_an_incomplete_stage_zero_is_not_a_pass(world, tmp_path):
 
 @pytest.fixture(scope="module")
 def study():
-    return driver.load_study_inputs()
+    return driver.load_study_inputs(LAUNCH_RECORDS_SHA256)
 
 
 @needs_real_files
@@ -511,13 +590,13 @@ def test_changed_frozen_inputs_or_evaluation_sources_are_refused(tmp_path, monke
     real = driver._evaluation_pin
     monkeypatch.setattr(driver, "_evaluation_pin", lambda root: {**real(root), "evaluation/runner.py": "0" * 64})
     with pytest.raises(admission.AdmissionError, match="evaluation sources"):
-        driver.load_study_inputs()
+        driver.load_study_inputs(LAUNCH_RECORDS_SHA256)
 
 
 @needs_real_files
 def test_real_starts_prevalidate_and_run_with_a_zero_force_arm(study, tmp_path):
     species = next(iter(study.starts.values()))["species"]
-    root = launch_io.fresh_root(tmp_path / "real")
+    root = launch_io.fresh_root(tmp_path / "real", "L-real")
     provider = lambda model_id: callable_arm(lambda p: np.zeros_like(p), species, model_id)  # noqa: E731
     context = driver.Context(root, "L-real", study, provider)
     plans, bound = context.plans("direct-0")
@@ -545,7 +624,7 @@ def test_a_changed_frozen_input_is_refused(monkeypatch):
 
     monkeypatch.setattr(admission, "relocate", redirect)
     with pytest.raises(admission.AdmissionError, match="frozen input changed"):
-        driver.load_study_inputs()
+        driver.load_study_inputs(LAUNCH_RECORDS_SHA256)
 
 
 @needs_real_files
@@ -559,7 +638,7 @@ def test_a_changed_start_binding_is_refused(monkeypatch):
 
     monkeypatch.setattr(controls, "validation_inputs", altered)
     with pytest.raises(admission.AdmissionError, match="start"):
-        driver.load_study_inputs()
+        driver.load_study_inputs(LAUNCH_RECORDS_SHA256)
 
 
 @needs_real_files
@@ -609,7 +688,7 @@ def test_a_control_run_from_far_away_reports_that_c1p00_would_bind(world, tmp_pa
     land, manifest, classification = world
     inputs = make_inputs(land, manifest, classification)
     species = next(iter(inputs.starts.values()))["species"]
-    root = launch_io.fresh_root(tmp_path / "far")
+    root = launch_io.fresh_root(tmp_path / "far", "L-far")
     provider = lambda model_id: callable_arm(fx.harmonic(TARGET + 30.0, 4.0), species, model_id)  # noqa: E731
     context = driver.Context(root, "L-far", inputs, provider)
     out = driver.execute_task(context, make_tasks(context, "0b", ["consistency-1-0"], [None])[0])

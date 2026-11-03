@@ -18,6 +18,9 @@ What a run does:
 - Each run's attempt count is added to the stage's attempt ceiling, the output root is
   checked against the storage ceiling before every run, and a stop of any kind leaves
   the rows in place with an INCOMPLETE marker.
+- A stage runs under a StageLedger and the fixed schedule; explicit task lists and a
+  missing ledger exist for tests only and are refused unless a test flag is set. A finished
+  stage writes STAGE_MANIFEST.json and then STAGE_COMPLETE.json.
 """
 import hashlib
 import json
@@ -31,16 +34,29 @@ import numpy as np
 from stage2_capped import admission, launch_io, prefix_gate, row_schema, stage0_compare
 from stage2_capped.pass_copy import second_pass
 from stage2_capped.relax_capped import relax_capped
+from stage2_capped.stage_gate import StageOrderError
 from stage2_capped.stage0_compare import (OWN_IDS, compare_original, compare_reference,
                                           minimum_number, original_task_id, reference_task_id)
 
+WORKTREE = Path(__file__).resolve().parents[1]
+SAVED_FILE_COUNT = 110       # 50 saved original rows, and relaxation.json and result.json for each of 30 references
 CAPS = (0.05, 0.10, 0.25, 1.0)
 MAX_FORCE_EVALUATIONS = 1500
 GRAPH_CUTOFF_A = 5.0
 A0_WALL_SECONDS = 300.0
 STORAGE_LIMIT_BYTES = 2 ** 30
-# Space reserved before each run: one binary trace record per attempt at the budget, plus the row.
-RUN_RESERVE_BYTES = MAX_FORCE_EVALUATIONS * 600 + 65536
+ROW_RESERVE_BYTES = 65536
+# The six procedure values of the accepted relaxation (configs/aspirin-shape-recovery.json).
+FROZEN_PROCEDURE = {"max_force_evaluations": 1500, "initial_step_size": 0.2, "backtracking_factor": 0.5,
+                    "min_backtracking_floor": 1e-08, "convergence_tolerance_eV_per_A": 0.01,
+                    "max_backtracking_attempts_per_step": 40}
+assert MAX_FORCE_EVALUATIONS == FROZEN_PROCEDURE["max_force_evaluations"]
+
+
+def run_reserve_bytes(n_atoms):
+    """Space reserved before each run: one binary trace record per force attempt at the budget
+    (the trace dtype's own size), plus the row."""
+    return MAX_FORCE_EVALUATIONS * row_schema.trace_dtype(n_atoms).itemsize + ROW_RESERVE_BYTES
 
 STAGE_SPECS = {
     "0": {"models": admission.PRIMARY_IDS, "caps": (None,), "runs": 80,
@@ -108,15 +124,25 @@ def _evaluation_pin(root):
     return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}
 
 
-def load_study_inputs(group9=None, worktree=None):
+def load_study_inputs(expected_launch_records_sha256, group9=None, worktree=None):
     """Read the accepted recovery inputs (relocated), bind every one to its recorded
-    hash and to the accepted evaluation sources, and build the starts. Reads the
-    validation members and the minima of the archive only; the test partition is never
+    hash and to the accepted evaluation sources, and build the starts. The launch records
+    file must have the SHA-256 the launch record names; its evaluation block must equal the
+    shape-recovery config, and its relaxation block the six frozen procedure values. Reads
+    the validation members and the minima of the archive only; the test partition is never
     opened (validation_inputs records test_branch_members_read: 0)."""
     from evaluation.validation_controls import validation_inputs
     group9 = admission.group9_root(group9)
-    worktree = Path(worktree or Path(__file__).resolve().parents[1])
-    record = json.loads((group9 / admission.RECOVERY_RECORDS).read_text())
+    worktree = Path(worktree or WORKTREE)
+    record_bytes = (group9 / admission.RECOVERY_RECORDS).read_bytes()
+    if hashlib.sha256(record_bytes).hexdigest() != expected_launch_records_sha256:
+        raise admission.AdmissionError("the recovery launch records differ from the SHA-256 the launch record names")
+    record = json.loads(record_bytes)
+    config = json.loads((worktree / "configs" / "aspirin-shape-recovery.json").read_text())
+    if record["evaluation"] != config:
+        raise admission.AdmissionError("the recovery launch records' evaluation block differs from the config")
+    if record["evaluation"]["relaxation"] != FROZEN_PROCEDURE:
+        raise admission.AdmissionError("the relaxation procedure differs from the six frozen values")
     for path, expected in record["inputs"].items():
         file = admission.relocate(path, group9)
         if hashlib.sha256(file.read_bytes()).hexdigest() != expected:
@@ -170,7 +196,7 @@ def start_id_of(task):
 
 def prevalidate(starts, arm, procedure, classification, refs, policy, manifest):
     """The checks run_model_pass and the frozen first pass make before any force
-    evaluation: split binding and approved policy, partitions, procedure, reference
+    evaluation: arm ready, split binding and approved policy, partitions, procedure, reference
     resolution, start/arm compatibility, and batch size 1. Returns (plans, bound)."""
     from evaluation.adapter import _validated_positions
     from evaluation.relax import _check_start, _validate_procedure
@@ -178,6 +204,8 @@ def prevalidate(starts, arm, procedure, classification, refs, policy, manifest):
                                    _bind_split_manifest, _connection_partition,
                                    _manifest_synthetic_declaration, _own_reference,
                                    _policy_mismatch_field, _validate_connection_partitions)
+    if arm["status"] != "ready":
+        raise ValueError(f"arm {arm.get('arm_id')!r} is not ready ({arm['status']!r}): {arm.get('refusal_reason')}")
     bound = _bind_split_manifest(manifest, synthetic_declaration=_manifest_synthetic_declaration(manifest))
     if bound != "fixture":
         if not isinstance(policy, PreparationPolicy):
@@ -290,14 +318,22 @@ def make_result_row(*, context, task, category, stop_reason, converged, budget_e
 # ---- One run -------------------------------------------------------------
 
 class Context:
-    """Everything a stage needs besides the stage itself."""
+    """Everything a stage needs besides the stage itself. The root must have been made by
+    launch_io.fresh_root for this launch id, must lie outside the worktree, and must have the
+    free space the storage ceiling asks for."""
 
-    def __init__(self, root, launch_id, inputs, arm_provider, *, storage_limit=STORAGE_LIMIT_BYTES,
-                 relaxer_hash=None):
+    def __init__(self, root, launch_id, inputs, arm_provider, *, storage_limit=STORAGE_LIMIT_BYTES):
         self.root, self.launch_id, self.inputs = Path(root), launch_id, inputs
+        launch_io.require_launch_root(self.root, launch_id)
+        resolved, worktree = self.root.resolve(), WORKTREE.resolve()
+        if resolved == worktree or worktree in resolved.parents:
+            raise DriverError(f"the output root {resolved} lies inside the worktree")
+        launch_io.require_free(self.root, storage_limit)
         self.arm_provider = arm_provider
         self.guard = launch_io.StorageGuard(self.root, storage_limit)
-        self.relaxer_sha256 = relaxer_hash or relaxer_sha256()
+        self.relaxer_sha256 = relaxer_sha256()
+        self.reserve_bytes = run_reserve_bytes(max(np.asarray(e["positions"]).shape[-2]
+                                                   for e in inputs.starts.values()))
         self._arms, self._plans = {}, {}
 
     def arm(self, model_id):
@@ -331,10 +367,23 @@ def run_original(context, task):
     return row, records, elapsed
 
 
+def classify_reference(context, task, result):
+    """The outcome category of one reference relaxation, as the paired-trace harness scores
+    it. Shared by run_reference and the frozen re-run, so both classify the same way."""
+    from evaluation.outcomes import classify_outcome
+    inputs = context.inputs
+    own = inputs.refs[task["key"]]
+    final = replace(own, record_id=own.record_id + "/trace-final", positions=result["final_positions"],
+                    forces=np.zeros_like(own.forces))
+    return classify_outcome(final, own, inputs.refs, inputs.policy,
+                            budget_exhausted=result["budget_exhausted"], converged=result["converged"],
+                            forces_finite=result["forces_finite"], stop_reason=result["failure_reason"],
+                            seen_minimum=True)
+
+
 def run_reference(context, task):
     """One reference start, as the paired-trace harness runs it. Returns (relaxation
     result, classification outcome, attempt records, elapsed seconds)."""
-    from evaluation.outcomes import classify_outcome
     from evaluation.runner import _arm_force_supplier
     inputs = context.inputs
     own = inputs.refs[task["key"]]
@@ -344,18 +393,13 @@ def run_reference(context, task):
     supplier = _arm_force_supplier(arm, own.species, own.record_id + "/reference-control")
     result = relax_capped(own.positions, supplier, inputs.procedure, arm=arm,
                           movement_cap_A=task["cap"], recorder=records.append)
-    final = replace(own, record_id=own.record_id + "/trace-final", positions=result["final_positions"],
-                    forces=np.zeros_like(own.forces))
-    outcome = classify_outcome(final, own, inputs.refs, inputs.policy,
-                               budget_exhausted=result["budget_exhausted"], converged=result["converged"],
-                               forces_finite=result["forces_finite"], stop_reason=result["failure_reason"],
-                               seen_minimum=True)
+    outcome = classify_reference(context, task, result)
     return result, outcome, records, time.perf_counter() - started
 
 
 def execute_task(context, task):
     """Run one task, write its trace and row, return what the comparators need."""
-    context.guard.check(next_bytes=RUN_RESERVE_BYTES)
+    context.guard.check(next_bytes=context.reserve_bytes)
     paths = launch_io.output_paths(context.root, task["stage"], task["model_id"],
                                    row_schema.cap_label(task["cap"]), task["kind"], start_id_of(task))
     common = dict(context=context, task=task)
@@ -377,13 +421,21 @@ def execute_task(context, task):
                        connection=None, branch=None, own_minimum=minimum_number(task["key"]),
                        cap_record=result["cap_record"], final_positions=result["final_positions"])
         compared = result
+    category = outcome["category"]
     n_atoms = np.asarray(records[0]["positions"]).shape[0]
     paths["trace"].parent.mkdir(parents=True, exist_ok=True)
-    trace_sha = row_schema.write_trace(paths["trace"], row_schema.trace_from_records(records, n_atoms))
-    row = make_result_row(**common, records=records, elapsed=elapsed, trace_file=paths["relative_trace"],
-                          trace_sha256=trace_sha, **outcome)
+    try:
+        trace = row_schema.trace_from_records(records, n_atoms)
+    except (ValueError, OverflowError) as error:
+        raise DriverError(f"{task_id(task)}: the attempt records do not form a valid trace: {error}") from error
+    trace_sha = row_schema.write_trace(paths["trace"], trace)
+    try:
+        row = make_result_row(**common, records=records, elapsed=elapsed, trace_file=paths["relative_trace"],
+                              trace_sha256=trace_sha, **outcome)
+    except (ValueError, OverflowError) as error:
+        raise DriverError(f"{task_id(task)}: the result row is invalid: {error}") from error
     launch_io.write_row(paths["row"], row)
-    return {"row": row, "records": records, "compared": compared, "paths": paths}
+    return {"row": row, "records": records, "compared": compared, "category": category, "paths": paths}
 
 
 # ---- Control index and the prefix-equality gate --------------------------
@@ -395,15 +447,40 @@ class ControlIndex:
         self.records = {}
 
     @classmethod
-    def from_roots(cls, roots, stages=CONTROL_STAGES):
+    def from_roots(cls, roots, stages=CONTROL_STAGES, *, allow_custom=False):
+        """Read the control traces of every stage folder present under the roots. A folder is
+        refused unless it holds STAGE_COMPLETE.json (a full run of the fixed schedule, unless
+        allow_custom for tests) and no INCOMPLETE.json; its cinf rows must be as many as the stage's
+        runs, every row must carry the current relaxer's SHA-256, every trace must match its row
+        (hash and length), and no start may appear twice."""
         index = cls()
         for root in roots:
+            root = Path(root)
             for stage in stages:
-                for path in sorted((Path(root) / "rows" / f"stage{stage}").glob("*/cinf/*.json")):
+                directory = root / "rows" / f"stage{stage}"
+                if not directory.is_dir():
+                    continue
+                if (directory / "INCOMPLETE.json").exists():
+                    raise MissingControl(f"{directory} is marked INCOMPLETE")
+                marker = directory / "STAGE_COMPLETE.json"
+                if not marker.is_file():
+                    raise MissingControl(f"{directory} has no STAGE_COMPLETE.json")
+                summary = json.loads(marker.read_text())
+                if not summary.get("complete"):
+                    if not (allow_custom and summary.get("custom_tasks")):
+                        raise MissingControl(f"{directory} is not a complete run of the fixed schedule")
+                paths = sorted(directory.glob("*/cinf/*.json"))
+                if len(paths) != summary["runs"]:
+                    raise MissingControl(f"{directory}: {len(paths)} control rows, the stage recorded {summary['runs']}")
+                for path in paths:
                     row = row_schema.loads_row(path.read_text())
-                    trace = row_schema.read_trace(Path(root) / row["trace_file"], row["trace_sha256"])
-                    index.records[(row["checkpoint_id"], row["start_kind"], row["start_id"])] = \
-                        row_schema.records_from_trace(trace)
+                    if row["relaxer_sha256"] != relaxer_sha256():
+                        raise MissingControl(f"{path}: the row was made by a different relaxer")
+                    trace = row_schema.verify_trace_link(row, root)
+                    key = (row["checkpoint_id"], row["start_kind"], row["start_id"])
+                    if key in index.records:
+                        raise MissingControl(f"two control rows for {key}")
+                    index.records[key] = row_schema.records_from_trace(trace)
         return index
 
     def get(self, task):
@@ -434,31 +511,97 @@ def control_summary(traces):
             "c1p00_duplicates_control": prefix_gate.duplicates_control(list(traces.values()), 1.0)}
 
 
+def _json_bytes(payload):
+    return (json.dumps(payload, indent=1, allow_nan=False, sort_keys=True) + "\n").encode("utf-8")
+
+
 def _write_json(path, payload):
-    launch_io.atomic_write_bytes(path, (json.dumps(payload, indent=1, allow_nan=False) + "\n").encode("utf-8"))
+    launch_io.atomic_write_bytes(path, _json_bytes(payload))
+
+
+def _count(values):
+    counts = {}
+    for value in values:
+        key = "none" if value is None else str(value)
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def stage_manifest(stage, context, tasks, rows, *, custom, controller, match_lines, saved_hashes, control):
+    """What a finished stage records about itself: the run counts, each model's arm id and
+    checkpoint identity, the relaxer's SHA-256, outcome and stop-reason counts, refused trials, and for
+    Stage 0 the verdict, the compared count, the saved-file hashes and one match line per task."""
+    arms = {}
+    for model_id in dict.fromkeys(t["model_id"] for t in tasks):
+        arm = context.arm(model_id)
+        arms[model_id] = {"arm_id": arm["arm_id"], "checkpoint_identity": arm.get("checkpoint_identity")}
+    manifest = {"stage": stage, "launch_id": context.launch_id, "custom_tasks": custom,
+                "runs": len(rows), "relaxer_sha256": context.relaxer_sha256, "arms": arms,
+                "outcome_categories": _count(r["outcome_category"] for r in rows),
+                "stop_reasons": _count(r["stop_reason"] for r in rows),
+                "refused_trial_count": sum(r["refused_trial_count"] for r in rows)}
+    if control is not None:
+        manifest["control"] = control
+    if stage == "0":
+        manifest["stage0"] = {"verdict": controller.verdict, "compared": controller.compared,
+                              "matches": match_lines, "saved_file_hashes": saved_hashes}
+    return manifest
 
 
 def run_stage(stage, context, *, ledger=None, saved=None, controller=None, control_index=None,
-              deadline=None, tasks=None):
+              deadline=None, tasks=None, saved_hashes=None, allow_unledgered=False,
+              allow_custom_tasks=False):
     """Run one stage to completion or to its first stop.
 
-    ledger: a StageLedger (start and finish are recorded). saved: (saved original rows,
-    saved reference relaxations) for Stage 0. controller: the Stage0Controller.
-    control_index: required for capped stages. deadline: a time.perf_counter() value.
-    tasks: an explicit task list (tests only); otherwise the fixed schedule."""
+    ledger: the StageLedger (start and finish are recorded); required unless allow_unledgered
+    (tests). saved: (saved original rows, saved reference items) for Stage 0. controller: the
+    Stage0Controller, which must expect all 80 runs. saved_hashes: the saved-file hashes the
+    launch record names, kept in the Stage 0 manifest. control_index: required for capped stages.
+    deadline: a time.perf_counter() value. tasks: an explicit task list; tests only, and refused
+    unless allow_custom_tasks. A custom run writes complete: false in STAGE_COMPLETE.json.
+
+    Every refusal that needs no force call, including building every model's arm and plans, is
+    raised before the ledger starts the stage."""
     spec = STAGE_SPECS[stage]
-    if ledger is not None:
-        ledger.start(stage)
-    if stage == "0" and (saved is None or controller is None):
-        raise DriverError("Stage 0 needs the saved results and a Stage0Controller")
+    if ledger is None and not allow_unledgered:
+        raise DriverError("a stage runs under a StageLedger (allow_unledgered is for tests only)")
+    if tasks is not None and not allow_custom_tasks:
+        raise DriverError("an explicit task list is for tests only; a launch runs the fixed schedule")
+    custom = tasks is not None
+    if stage == "0":
+        if saved is None or controller is None:
+            raise DriverError("Stage 0 needs the saved results and a Stage0Controller")
+        if not custom and controller.expected_runs != spec["runs"]:
+            raise DriverError(f"Stage 0 compares {spec['runs']} runs; the controller expects {controller.expected_runs}")
+        if not custom and (not isinstance(saved_hashes, dict) or len(saved_hashes) != SAVED_FILE_COUNT
+                           or not all(isinstance(v, str) and len(v) == 64 for v in saved_hashes.values())):
+            raise DriverError(f"Stage 0 needs the SHA-256 of all {SAVED_FILE_COUNT} saved files (saved_hashes), "
+                              "the ones the launch record names")
     if stage in ("1", "2") and control_index is None:
         raise DriverError("capped stages need the control index")
-    custom = tasks is not None
+    if ledger is not None and ledger.blockers(stage):
+        raise StageOrderError("; ".join(ledger.blockers(stage)))      # before any arm is built
     tasks = tasks if custom else build_schedule(stage, sorted(context.inputs.starts),
                                                 context.inputs.reference_ids)
+    if stage == "0":
+        for kind, table in (("original", saved[0]), ("reference", saved[1])):
+            missing = [task_id(t) for t in tasks if t["kind"] == kind and (t["model_id"], t["key"]) not in table]
+            if missing:
+                raise DriverError(f"{len(missing)} scheduled Stage 0 tasks have no saved {kind} result, "
+                                  f"first {missing[0]}")
+    for model_id in dict.fromkeys(t["model_id"] for t in tasks):
+        context.plans(model_id)                       # every arm built and checked before any force call
+        try:
+            json.dumps(context.arm(model_id).get("checkpoint_identity"), allow_nan=False)
+        except (TypeError, ValueError) as error:      # the stage manifest must be writable
+            raise DriverError(f"{model_id}: the checkpoint identity is not plain JSON: {error}") from error
     stage_directory = context.root / "rows" / f"stage{stage}"
-    stage_directory.mkdir(parents=True, exist_ok=False)  # a spent stage directory is never reused
-    completed, attempts, current, control_traces = [], 0, None, {}
+    if stage_directory.exists():
+        raise FileExistsError(f"{stage_directory} exists; a spent stage directory is never reused")
+    if ledger is not None:
+        ledger.start(stage)
+    stage_directory.mkdir(parents=True, exist_ok=False)
+    completed, rows, match_lines, attempts, current, control_traces = [], [], [], 0, None, {}
     try:
         for task in tasks:
             current = task_id(task)
@@ -469,7 +612,6 @@ def run_stage(stage, context, *, ledger=None, saved=None, controller=None, contr
             if attempts > spec["attempt_ceiling"]:
                 raise AttemptCeilingExceeded(f"{attempts} attempts exceed the stage ceiling "
                                              f"{spec['attempt_ceiling']}")
-            completed.append(current)
             if stage in CONTROL_STAGES:
                 control_traces[current] = executed["records"]
             if stage == "0":
@@ -477,24 +619,35 @@ def run_stage(stage, context, *, ledger=None, saved=None, controller=None, contr
                     problems = compare_original(saved[0][(task["model_id"], task["key"])],
                                                 executed["compared"])["problems"]
                 else:
-                    problems = compare_reference(saved[1][(task["model_id"], task["key"])]["relaxation"],
-                                                 executed["compared"])["problems"]
+                    problems = compare_reference(saved[1][(task["model_id"], task["key"])],
+                                                 executed["compared"], executed["category"])["problems"]
                 verdict = controller.observe(current, problems)
                 if verdict is not None:
                     _write_json(stage_directory / "STAGE0_MISMATCH.json",
                                 {"task": current, "problems": problems, "verdict": verdict,
                                  "compared_before": controller.compared})
                     raise Stage0Stop(verdict, current, problems)
+                match_lines.append({"task": current, "matched": True})
             if stage in ("1", "2"):
                 check_against_control(task, executed["records"], control_index)
+            completed.append(current)                 # only a run that passed every gate is completed
+            rows.append(executed["row"])
         if stage == "0":
             verdict = controller.finish()
             if not verdict["proceed"]:
                 raise Stage0Stop(verdict)
+        if not custom and len(completed) != spec["runs"]:
+            raise DriverError(f"stage {stage} completed {len(completed)} runs, expected {spec['runs']}")
+        control = control_summary(control_traces) if stage in CONTROL_STAGES else None
+        manifest = _json_bytes(stage_manifest(stage, context, tasks, rows, custom=custom, controller=controller,
+                                              match_lines=match_lines, saved_hashes=saved_hashes,
+                                              control=control))
+        launch_io.atomic_write_bytes(stage_directory / "STAGE_MANIFEST.json", manifest)
         summary = {"stage": stage, "runs": len(completed), "force_evaluations": attempts,
-                   "attempt_ceiling": spec["attempt_ceiling"], "complete": True}
-        if stage in CONTROL_STAGES:
-            summary["control"] = control_summary(control_traces)
+                   "attempt_ceiling": spec["attempt_ceiling"], "complete": not custom, "custom_tasks": custom,
+                   "manifest_sha256": hashlib.sha256(manifest).hexdigest()}
+        if control is not None:
+            summary["control"] = control
         _write_json(stage_directory / "STAGE_COMPLETE.json", summary)
         if ledger is not None:
             ledger.finish(stage, True)
@@ -509,9 +662,9 @@ def run_stage(stage, context, *, ledger=None, saved=None, controller=None, contr
 def run_frozen_rerun(context, task, saved, controller):
     """The single pre-authorized re-run of the first mismatching Stage 0 task with the
     frozen relax in the same runtime. Returns the controller's verdict."""
-    from evaluation.outcomes import classify_outcome
     from evaluation.relax import relax
     from evaluation.runner import _arm_force_supplier, evaluate_starts
+    controller.authorize_rerun(task_id(task))       # spend the one re-run before any force call
     inputs = context.inputs
     arm = context.arm(task["model_id"])
     if task["kind"] == "original":
@@ -525,5 +678,6 @@ def run_frozen_rerun(context, task, saved, controller):
         own = inputs.refs[task["key"]]
         supplier = _arm_force_supplier(arm, own.species, own.record_id + "/reference-control")
         relaxed = relax(own.positions, supplier, inputs.procedure, arm=arm)
-        problems = compare_reference(saved[1][(task["model_id"], task["key"])]["relaxation"], relaxed)["problems"]
+        problems = compare_reference(saved[1][(task["model_id"], task["key"])], relaxed,
+                                     classify_reference(context, task, relaxed)["category"])["problems"]
     return controller.record_frozen_rerun(task_id(task), not problems)
