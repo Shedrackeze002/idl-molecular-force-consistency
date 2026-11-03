@@ -20,8 +20,9 @@ results.
 
 ## Access and first actions
 
-The code is on `stage2-movement-cap`, at commit **`5ea6f61443f252b719a708e0c3a021db8b0a2b34`**
-(this handover is the commit after it). It depends on no open PR. From an existing clean clone:
+The code is on `stage2-movement-cap`. Check out the branch tip and record the commit hash you
+used in your PR; this document pins no hash, because the branch keeps moving. It depends on no
+open PR. From an existing clean clone:
 
 ```bash
 git fetch origin stage2-movement-cap
@@ -62,6 +63,10 @@ that `stage2_capped/rules.py` produces (`rules.analyze(rows)`). It never loads a
 never relaxes anything and never opens the test partition. You choose the API; one shape that
 fits is `render_report(rows) -> {section name: markdown}` plus a writer that refuses to
 overwrite. Output must be byte-identical on a second run.
+
+Row rule to respect: `converged` must equal `outcome_category != "nonconverged"`. The row
+schema enforces it at `stage2_capped/row_schema.py:192`, so any fixture rows `report.py` or
+its tests build must satisfy it.
 
 ### Must print, beside every label
 
