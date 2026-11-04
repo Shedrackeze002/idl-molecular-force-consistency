@@ -1,10 +1,12 @@
-..............s..........s..................................................s................................................ [ 67%]
-............................................................             [100%]
+..................s..........s................................ [ 31%]
+.........................s..................................... [ 63%]
+.......................................................................  [100%]
 =============================== warnings summary ===============================
+tests/test_mace_parity_audit.py: 1 warning
 tests/test_mace_reference_adapter.py: 44 warnings
   /home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
   As an alternative, you can create a new view using np.reshape (with copy=False if needed).
     a.shape = (-1,) + shape
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-182 passed, 3 skipped, 44 warnings, 19 subtests passed in 18.80s
+193 passed, 3 skipped, 45 warnings, 19 subtests passed in 20.51s
