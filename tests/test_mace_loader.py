@@ -16,6 +16,21 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def canonical_admission(module):
+    packages = {name: "1" for name in module.CORE_PACKAGES}
+    sources = []
+    for name, (distribution, relative_path) in module.REQUIRED_SOURCES.items():
+        sources.append({"name": name, "distribution": distribution,
+                        "relative_path": relative_path,
+                        "actual_sha256": "a" * 64, "original_sha256": "a" * 64,
+                        "matches_original": True})
+    return {"platform": {"python": "3.12.13", "platform": "Linux-test",
+                         "architecture": "x86_64", "glibc": "2.35"},
+            "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
+            "installed_package_versions": packages,
+            "authenticated_source_comparison": sources}
+
+
 def packet(tmp_path, monkeypatch):
     import mace_loader as module
     root = tmp_path / "packet"
@@ -165,12 +180,33 @@ def test_incomplete_implementation_identity_refused_before_constructor(tmp_path,
 ])
 def test_empty_live_identity_inventories_refused(field, value):
     import mace_loader as module
-    receipt = {"platform": {}, "installed_packages": ["ase==1"],
+    receipt = {"platform": {"python": "3", "platform": "Linux",
+                            "architecture": "x86_64", "glibc": "2"},
+               "installed_packages": ["ase==1"],
                "authenticated_source_comparison": [{}] * 8,
                "installed_package_versions": {"ase": "1"}}
     receipt[field] = value
-    with pytest.raises(module.AdmissionError, match="identity|inventory"):
+    with pytest.raises(module.AdmissionError, match="identity|inventor"):
         module._live_admission_check(receipt)
+
+
+@pytest.mark.parametrize("damage", ["duplicate-source", "substitute-source",
+                                     "omitted-pin", "inconsistent-packages"])
+def test_canonical_admission_inventory_refuses_substitution_or_contradiction(damage):
+    import mace_loader as module
+    receipt = canonical_admission(module)
+    if damage == "duplicate-source":
+        receipt["authenticated_source_comparison"][-1] = dict(
+            receipt["authenticated_source_comparison"][0])
+    elif damage == "substitute-source":
+        receipt["authenticated_source_comparison"][0]["name"] = "unrelated.module"
+    elif damage == "omitted-pin":
+        receipt["installed_packages"] = receipt["installed_packages"][:-1]
+    else:
+        name = next(iter(module.CORE_PACKAGES))
+        receipt["installed_package_versions"][name] = "2"
+    with pytest.raises(module.AdmissionError, match="source|package|inventory"):
+        module._approved_identity_inventory(receipt)
 
 
 def test_verified_packet_identity_when_available():

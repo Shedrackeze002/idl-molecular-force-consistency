@@ -21,7 +21,17 @@ MODEL_BYTES = 23_397_415
 MODEL_RELATIVE = Path("model/final_epoch.model")
 MANIFEST_RELATIVE = Path("MANIFEST.json")
 APPROVED_STATUSES = {"APPROVED", "ACCEPTED"}
-CORE_PACKAGES = {"ase", "e3nn", "mace-torch", "numpy", "torch"}
+CORE_PACKAGES = {"ase", "e3nn", "mace-torch", "numpy", "torch", "torch-ema", "torchmetrics"}
+REQUIRED_SOURCES = {
+    "mace.cli.run_train": ("mace-torch", "mace/cli/run_train.py"),
+    "mace.tools": ("mace-torch", "mace/tools/__init__.py"),
+    "mace.tools.arg_parser": ("mace-torch", "mace/tools/arg_parser.py"),
+    "mace.tools.checkpoint": ("mace-torch", "mace/tools/checkpoint.py"),
+    "mace.tools.train": ("mace-torch", "mace/tools/train.py"),
+    "mace.tools.utils": ("mace-torch", "mace/tools/utils.py"),
+    "torch_ema.ema": ("torch-ema", "torch_ema/ema.py"),
+    "mace.calculators.mace": ("mace-torch", "mace/calculators/mace.py"),
+}
 REQUIRED_IMPLEMENTATION_FILES = {
     "scripts/mace_loader.py", "scripts/check_mace_parity.py",
     "scripts/supervise_mace_parity.py", "scripts/audit_mace_parity.py",
@@ -104,64 +114,96 @@ def verify_packet(packet_root: Path) -> dict[str, Any]:
             "model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES}
 
 
-def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
-    """Compare the running interpreter, packages and raw sources to approval."""
+def _hex_digest(value: Any) -> bool:
+    return (isinstance(value, str) and len(value) == 64
+            and all(character in "0123456789abcdef" for character in value.lower()))
+
+
+def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
+    """Validate the complete recorded approval without consulting this host."""
     approved_platform = admission.get("platform")
     sources = admission.get("authenticated_source_comparison")
-    packages = admission.get("installed_packages")
-    approved_versions = admission.get("installed_package_versions")
+    declarations = admission.get("installed_packages")
+    versions = admission.get("installed_package_versions")
     if (not isinstance(approved_platform, dict) or not isinstance(sources, list)
-            or not isinstance(packages, list) or not isinstance(approved_versions, dict)):
+            or not isinstance(declarations, list) or not isinstance(versions, dict)):
         raise AdmissionError("approved WSL receipt lacks complete live identity fields")
-    if len(sources) != 8 or not packages or not approved_versions:
-        raise AdmissionError("approved WSL receipt has an incomplete identity inventory")
+    required_platform = {key: approved_platform.get(key)
+                         for key in ("python", "platform", "architecture", "glibc")}
+    if any(not isinstance(value, str) or not value for value in required_platform.values()):
+        raise AdmissionError("approved interpreter/platform binding is incomplete")
+
+    packages: dict[str, str] = {}
+    for declaration in declarations:
+        if not isinstance(declaration, str) or not declaration.strip():
+            raise AdmissionError("approved package inventory is malformed")
+        if "==" in declaration:
+            raw_name, declared_version = declaration.split("==", 1)
+        elif " @ " in declaration:
+            raw_name, declared_version = declaration.split(" @ ", 1)[0], None
+        else:
+            raise AdmissionError(f"unsupported approved package declaration: {declaration}")
+        name = raw_name.strip().lower().replace("_", "-")
+        if not name or name in packages or not isinstance(versions.get(name), str):
+            raise AdmissionError("approved package inventories are incomplete or contradictory")
+        version = versions[name]
+        if declared_version is not None and declared_version != version:
+            raise AdmissionError(f"approved package inventories disagree: {name}")
+        packages[name] = version
+    if not CORE_PACKAGES.issubset(packages):
+        raise AdmissionError("approved package inventory omits a mandatory core package")
+
+    source_map: dict[str, dict[str, Any]] = {}
+    for item in sources:
+        if not isinstance(item, dict) or not isinstance(item.get("name"), str):
+            raise AdmissionError("approved source inventory is malformed")
+        name = item["name"]
+        if name in source_map or name not in REQUIRED_SOURCES:
+            raise AdmissionError("approved source inventory contains a duplicate or substituted source")
+        distribution, relative = REQUIRED_SOURCES[name]
+        if item.get("distribution") != distribution or item.get("relative_path") != relative:
+            raise AdmissionError(f"approved source identity is noncanonical: {name}")
+        if (not _hex_digest(item.get("actual_sha256"))
+                or item.get("original_sha256") != item.get("actual_sha256")
+                or item.get("matches_original") is not True):
+            raise AdmissionError(f"approved source digest is incomplete or contradictory: {name}")
+        source_map[name] = item
+    if set(source_map) != set(REQUIRED_SOURCES):
+        raise AdmissionError("approved source inventory is incomplete")
+    return {"platform": required_platform, "packages": packages, "sources": source_map}
+
+
+def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
+    """Compare the running interpreter, packages and raw sources to approval."""
+    inventory = _approved_identity_inventory(admission)
     actual_platform = {
         "python": platform.python_version(), "platform": platform.platform(),
         "architecture": platform.machine(), "glibc": platform.libc_ver()[1],
     }
     for key, actual in actual_platform.items():
-        if approved_platform.get(key) != actual:
+        if inventory["platform"].get(key) != actual:
             raise AdmissionError(f"live platform differs from approved {key}")
     checked_packages: dict[str, str] = {}
-    for declaration in packages:
-        if not isinstance(declaration, str) or not declaration.strip():
-            raise AdmissionError("approved package inventory is malformed")
-        if "==" in declaration:
-            name, expected = declaration.split("==", 1)
-        elif " @ " in declaration:
-            name, expected = declaration.split(" @ ", 1)[0], None
-        else:
-            raise AdmissionError(f"unsupported approved package declaration: {declaration}")
+    for name, expected in inventory["packages"].items():
         try:
             actual = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError as exc:
             raise AdmissionError(f"approved package is not installed: {name}") from exc
-        if expected is not None and actual != expected:
+        if actual != expected:
             raise AdmissionError(f"live package differs from approval: {name}")
         checked_packages[name] = actual
-        normalized = name.lower().replace("_", "-")
-        if approved_versions.get(normalized) != actual:
-            raise AdmissionError(f"live package version differs from approval: {name}")
-    if not CORE_PACKAGES.issubset({name.lower().replace("_", "-") for name in checked_packages}):
-        raise AdmissionError("approved package inventory omits a mandatory core package")
-    if not CORE_PACKAGES.issubset(approved_versions):
-        raise AdmissionError("approved version inventory omits a mandatory core package")
     proposed_torch = admission.get("original_vs_proposed", {}).get("torch", {}).get("proposed")
     if proposed_torch is not None and checked_packages.get("torch") != proposed_torch:
         raise AdmissionError("live Torch version differs from approval")
     checked_sources = []
-    for item in sources:
-        if not isinstance(item, dict) or not isinstance(item.get("distribution"), str):
-            raise AdmissionError("approved source inventory is malformed")
+    for name, item in inventory["sources"].items():
         expected = item.get("actual_sha256")
         relative = item.get("relative_path")
-        if not isinstance(expected, str) or len(expected) != 64 or not isinstance(relative, str):
-            raise AdmissionError("approved source identity is malformed")
         dist = importlib.metadata.distribution(item["distribution"])
         path = Path(dist.locate_file(relative)).resolve()
         if not path.is_file() or path.is_symlink() or _sha256(path) != expected:
-            raise AdmissionError(f"live source differs from approval: {item.get('name', relative)}")
-        checked_sources.append({"name": item.get("name"), "path": str(path), "sha256": expected})
+            raise AdmissionError(f"live source differs from approval: {name}")
+        checked_sources.append({"name": name, "path": str(path), "sha256": expected})
     return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
 
 

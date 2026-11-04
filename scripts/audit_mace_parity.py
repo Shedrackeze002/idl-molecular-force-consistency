@@ -47,19 +47,52 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     identities = wsl.get("identities", {})
     commit = identities.get("implementation_commit")
     files = identities.get("implementation_files")
-    from mace_loader import REQUIRED_IMPLEMENTATION_FILES
-    if (not isinstance(commit, str) or len(commit) != 40 or launch.get("implementation_commit") != commit
-            or not isinstance(files, dict) or set(files) != REQUIRED_IMPLEMENTATION_FILES):
+    from mace_loader import (REQUIRED_IMPLEMENTATION_FILES,
+                             _approved_identity_inventory, _hex_digest)
+    if (not isinstance(commit, str) or len(commit) != 40
+            or any(character not in "0123456789abcdef" for character in commit.lower())
+            or launch.get("implementation_commit") != commit
+            or not isinstance(files, dict) or set(files) != REQUIRED_IMPLEMENTATION_FILES
+            or any(not isinstance(receipt, dict)
+                   or not isinstance(receipt.get("bytes"), int) or receipt["bytes"] < 0
+                   or not _hex_digest(receipt.get("sha256")) for receipt in files.values())):
         raise ValueError("reviewed implementation identity is incomplete")
+    try:
+        approved = _approved_identity_inventory(wsl)
+    except RuntimeError as exc:
+        raise ValueError(f"saved WSL approval identity is invalid: {exc}") from exc
     live = admission.get("live_identity_comparison", {})
-    if (not isinstance(live.get("platform"), dict) or not live.get("packages")
-            or len(live.get("sources", [])) != 8):
-        raise ValueError("recorded runtime/source comparison is incomplete")
+    if live.get("platform") != approved["platform"] or live.get("packages") != approved["packages"]:
+        raise ValueError("recorded runtime/package comparison differs from approval")
+    recorded_sources = live.get("sources")
+    if not isinstance(recorded_sources, list) or len(recorded_sources) != len(approved["sources"]):
+        raise ValueError("recorded source comparison is incomplete")
+    by_name = {}
+    for item in recorded_sources:
+        if (not isinstance(item, dict) or item.get("name") in by_name
+                or not isinstance(item.get("path"), str) or not item["path"]):
+            raise ValueError("recorded source comparison is malformed")
+        by_name[item["name"]] = item
+    if set(by_name) != set(approved["sources"]):
+        raise ValueError("recorded source identities differ from approval")
+    for name, item in by_name.items():
+        if item.get("sha256") != approved["sources"][name]["actual_sha256"]:
+            raise ValueError("recorded source digest differs from approval")
+    constructor = admission.get("constructor")
+    expected_constructor = {"device": "cpu", "torch_threads": 1,
+                            "default_dtype": "float64", "enable_cueq": False,
+                            "enable_oeq": False, "compile_mode": None}
+    if constructor != expected_constructor:
+        raise ValueError("recorded constructor differs from the approved CPU recipe")
+    if admission.get("packet") != packet:
+        raise ValueError("model admission packet identity differs from authenticated packet")
     snapshot = admission.get("model_snapshot", {})
     expected_snapshot = (attempt_root / "private" / "final_epoch.model").resolve()
     if Path(snapshot.get("snapshot_path", "")).resolve() != expected_snapshot:
         raise ValueError("admission is not bound to the private constructor snapshot")
-    if (snapshot.get("sha256") != packet["model_sha256"]
+    if (snapshot.get("model_sha256") != packet["model_sha256"]
+            or snapshot.get("model_bytes") != packet.get("model_bytes")
+            or snapshot.get("epoch_index") != 2047
             or admission.get("post_construction_sha256") != packet["model_sha256"]):
         raise ValueError("constructor snapshot identity differs from authenticated packet")
     return admission
