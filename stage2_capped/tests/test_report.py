@@ -1,11 +1,10 @@
 """M5: the Stage 2 report generator, on synthetic tables and the accepted records.
 
-One test per printing rule the handover fixes, so a rule that is dropped is a
-failing test rather than a review finding. Nothing here loads a model, relaxes
-anything or opens the test partition.
+One test per printing rule the handover fixes and one per finding the M5 review raised,
+so a rule that is dropped is a failing test rather than a review finding. Nothing here
+loads a model, relaxes anything or opens the test partition.
 """
 import copy
-import json
 
 import pytest
 
@@ -19,6 +18,7 @@ CONS_CLEAN = merge(CONS_FAVORED, NOISE_BREAKER)
 DIRECT_CLEAN = merge(DIRECT_FAVORED, NOISE_BREAKER)
 NO_ENERGY = {"energy0": set()}
 LAMBDA1_REC = {"lam1_cons0": {"s01", "s03", "s05"}, "lam1_cons1": {"s01", "s03", "s05"}}
+ALL_NAMES = tb.PRIMARY + tb.LAMBDA1
 
 
 # ---- Helpers -------------------------------------------------------------
@@ -44,6 +44,17 @@ def cap_rows(text):
     return rows
 
 
+def row_of(rows, **match):
+    for row in rows:
+        if all(row[key] == value for key, value in match.items()):
+            return row
+    raise AssertionError(f"no row matching {match}")
+
+
+def find_rows(rows, **match):
+    return [row for row in rows if all(row[key] == value for key, value in match.items())]
+
+
 # ---- Rule 1: everything printed beside every label -----------------------
 
 def test_rule_1_every_cap_prints_the_evidence_beside_its_label():
@@ -52,11 +63,11 @@ def test_rule_1_every_cap_prints_the_evidence_beside_its_label():
     assert [row[0].split()[0] for row in rows] == list(CAPS)
     for row in rows:
         assert row[1] in LABELS
-        assert row[2] == "20 of 20"          # interpretable items out of 20
-        assert row[3] == "5" and row[4] == "6"  # connections and own minima
+        assert row[2] == "20 of 20"
+        assert row[3] == "5" and row[4] == "6"
         assert "1 of 10 at the cap" in row[5] and "pass" in row[5]
         assert "energy_s0 6/6" in row[6] and "consistency_s1 6/6" in row[6]
-        assert row[7] == "yes"               # in E
+        assert row[7] == "yes"
     assert "set E: c0p05, c0p10, c0p25, c1p00" in text
     assert "not evaluable: none" in text
     assert "interpretable items in the sweep: 20 over 5 connections and 6 own minima" in text
@@ -85,7 +96,6 @@ def test_rule_2_a_single_cap_reads_favors_at_the_cap_and_the_sweep_favours_is_nu
     assert "Sweep label: single-cap observation" in text
     assert "the favoured arm at the cap is consistency" in text
     assert "R-direction holds at the cap: yes" in text
-    # and the sweep's own `favors` really is null for this shape
     analysis = rules.analyze(build_rows(rec=CONS_CLEAN, per_cap=per_cap))
     assert analysis["primary"]["sweep_record"]["detail"]["favors"] is None
 
@@ -106,7 +116,7 @@ def test_rule_4_zero_contrast_prints_the_fixed_sentence_and_no_null_claim():
     text = section_of(report.PRIMARY, rec={})
     assert "at c0p05, neither arm recovered any interpretable original-start item (0 of 20)" in text
     assert "the arms do not differ" not in text
-    assert "uninformative (floor or gate)" in text  # the label, not a null
+    assert "uninformative (floor or gate)" in text
 
 
 # ---- Rule 5: placebo -----------------------------------------------------
@@ -134,26 +144,45 @@ def test_rule_7_attribution_prints_base_status_and_lambda1_inclusion():
 
 
 def test_rule_7_non_qualifying_flips_are_listed_with_the_failed_clause():
-    # No control run has an accepted step above 1 A, so the c1p00 flips fail that clause.
-    text = section_of(report.ATTRIBUTION, rec=CONS_CLEAN, control_max_disp=0.5)
+    # A control whose accepted-step history was not recorded cannot show a step above
+    # 1 A, so a c1p00 flip on it fails that clause even though the cap binds.
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    for row in rows:
+        if row["cap_label"] == "cinf":
+            row["max_accepted_displacement_A"] = None
+            row["would_bind_at_1p0"] = True
+    text = report.render_report(rows)[report.ATTRIBUTION]
     assert "Non-qualifying flips" in text
     assert "the c = infinity run has no accepted step above 1.0 A" in text
     assert "Status: not excluded" in text
 
 
 def test_rule_7_the_suffixed_status_is_never_printed_as_the_status():
-    text = section_of(report.ATTRIBUTION, rec={**CONS_CLEAN, **LAMBDA1_REC},
-                      names=tb.PRIMARY + tb.LAMBDA1)
+    text = section_of(report.ATTRIBUTION, rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
     lines = [line for line in text.splitlines() if line.startswith("Status:")]
     assert len(lines) == 1
     assert EXPLORATORY_LABEL not in lines[0]
 
 
+def test_lambda_one_attribution_carries_the_warning_and_the_primary_only_verdict():
+    # One primary qualifying run and two lambda = 1 runs: the status is supported only
+    # because the exploratory runs count, and the warning must say so beside it.
+    text = section_of(report.ATTRIBUTION,
+                      rec={"lam1_cons0": {"s01"}, "lam1_cons1": {"s01"}}, names=ALL_NAMES)
+    assert "Status: supported" in text
+    assert EXPLORATORY_LABEL in text
+    assert "primary runs alone support it: no" in text
+
+
+def test_attribution_warning_says_when_primary_runs_alone_suffice():
+    text = section_of(report.ATTRIBUTION, rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
+    assert "primary runs alone support it: yes" in text
+
+
 # ---- Rule 8: the lambda = 1 label in every table and caption -------------
 
 def test_rule_8_every_exploratory_table_and_caption_carries_the_exact_text():
-    text = section_of(report.EXPLORATORY, rec={**CONS_CLEAN, **LAMBDA1_REC},
-                      names=tb.PRIMARY + tb.LAMBDA1)
+    text = section_of(report.EXPLORATORY, rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
     assert text.startswith(f"Comparison label: {EXPLORATORY_LABEL}")
     captions = [line for line in text.splitlines() if line.startswith("Table:")]
     assert captions
@@ -163,22 +192,21 @@ def test_rule_8_every_exploratory_table_and_caption_carries_the_exact_text():
 
 def test_rule_8_the_exploratory_per_run_table_carries_the_label_too():
     text = section_of(report.PER_RUN_EXPLORATORY, rec={**CONS_CLEAN, **LAMBDA1_REC},
-                      names=tb.PRIMARY + tb.LAMBDA1)
+                      names=ALL_NAMES)
     captions = [line for line in text.splitlines() if line.startswith("Table:")]
     assert captions and all(EXPLORATORY_LABEL in c for c in captions)
 
 
 def test_rule_8_a_table_without_lambda_one_rows_says_so_instead_of_inventing_one():
-    text = section_of(report.EXPLORATORY, rec=CONS_CLEAN)
-    assert text.startswith("not labelled")
+    assert section_of(report.EXPLORATORY, rec=CONS_CLEAN).startswith("not labelled")
 
 
 # ---- Rule 9: wording ----------------------------------------------------
 
 def test_rule_9_the_document_never_says_effect_or_significant():
     for kwargs in ({"rec": CONS_CLEAN}, {"rec": DIRECT_CLEAN}, {"rec": {}},
-                   {"rec": CONS_CLEAN, "control_max_disp": 0.5},
-                   {"rec": {**CONS_CLEAN, **LAMBDA1_REC}, "names": tb.PRIMARY + tb.LAMBDA1}):
+                   {"rec": CONS_CLEAN, "per_cap": {"c0p05": {**CONS_CLEAN, **NO_ENERGY}}},
+                   {"rec": {**CONS_CLEAN, **LAMBDA1_REC}, "names": ALL_NAMES}):
         text = document(**kwargs)
         stripped = text.replace(rules.NOT_ATTRIBUTABLE, "")
         assert "effect" not in stripped.lower()
@@ -192,8 +220,7 @@ def test_rule_9_the_wording_guard_refuses_a_banned_word():
 
 
 def test_rule_9_the_unit_is_five_connections_and_the_caveat_says_so():
-    text = document(rec=CONS_CLEAN)
-    assert "five connections, not ten independent starts" in text
+    assert "five connections, not ten independent starts" in document(rec=CONS_CLEAN)
 
 
 # ---- Rule 10: per-run evidence ------------------------------------------
@@ -202,31 +229,193 @@ def test_rule_10_per_run_table_prints_travel_rejections_and_capped_fraction():
     text = section_of(report.PER_RUN_PRIMARY, rec=CONS_CLEAN)
     assert "accepted travel" in text and "attempted travel" in text
     assert "rejected trials" in text and "capped steps" in text
-    assert "30 of 70 (0.429)" in text      # the fraction of capped steps
-    assert "| 2 |" in text                 # the first capped attempt
+    assert "30 of 70 (0.429)" in text
+    assert "| 2 |" in text
 
 
-def test_rule_10_controls_print_the_step_fractions_and_the_binding_flag():
+def test_rule_10_controls_print_the_step_fractions():
     text = section_of(report.PER_RUN_PRIMARY, rec=CONS_CLEAN)
     control_line = next(line for line in text.splitlines()
                         if line.startswith("| cinf | energy0 "))
     assert "0.200" in control_line and "0.100" in control_line
-    assert "no" not in control_line.split("|")[-2]  # cinf rows carry no binding claim
 
 
-def test_rule_10_says_c1p00_duplicates_the_control_when_it_never_binds():
-    text = section_of(report.PER_RUN_PRIMARY, rec=CONS_CLEAN, control_max_disp=0.5,
-                      trials={(cap, name, start): 0
-                              for cap in CAPS for name in tb.PRIMARY for start in tb.START_IDS})
-    assert "No run binds at c = 1.00 A, so c1p00 duplicates the control." in text
+def unbound_c1p00(rows):
+    """Make c1p00 bind nowhere: no capped trials, and controls whose steps stay under 1 A.
+
+    An unbound run must equal its control, so each c1p00 row copies its control's outcome
+    fields before its capped counters are cleared.
+    """
+    control = {(row["arm"], row["seed"], row["consistency_lambda"], row["start_kind"],
+                row["start_id"]): row
+               for row in rows if row["cap_label"] == "cinf"}
+    for row in rows:
+        if row["cap_label"] == "cinf":
+            row["max_accepted_displacement_A"] = 0.5
+            row["would_bind_at_1p0"] = False
+        elif row["cap_label"] == "c1p00":
+            twin = control[(row["arm"], row["seed"], row["consistency_lambda"],
+                            row["start_kind"], row["start_id"])]
+            for field in ("outcome_category", "stop_reason", "converged", "budget_exhausted",
+                          "recovered", "step_count", "force_evaluation_count"):
+                row[field] = twin[field]
+            row.update(capped_trial_count=0, capped_fraction=0.0, first_capped_attempt=None)
+    return rows
+
+
+def test_rule_10_says_c1p00_duplicates_the_control_when_nothing_binds():
+    rows = unbound_c1p00(copy.deepcopy(build_rows(rec=CONS_CLEAN)))
+    text = report.render_report(rows)[report.REFERENCE_RUNS]
+    assert ("No original-start or reference-start run binds at c = 1.00 A, so c1p00 "
+            "duplicates the control.") in text
+
+
+# ---- The six review findings -------------------------------------------
+
+def test_unequal_run_lengths_pool_the_step_fractions():
+    # One 900-step accepted run entirely above both thresholds, nine 5-step runs below.
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    energy_controls = [row for row in rows
+                       if row["cap_label"] == "cinf" and row["start_kind"] == "original"
+                       and row["checkpoint_id"] == "energy0"]
+    long_run, short_runs = energy_controls[0], energy_controls[1:]
+    long_run.update(accepted_trial_count=900, step_count=900, trial_count=900,
+                    rejected_trial_count=0, refused_trial_count=0,
+                    accepted_step_fraction_gt_0p25=1.0, accepted_step_fraction_gt_1p0=1.0)
+    for row in short_runs:
+        row.update(accepted_step_fraction_gt_0p25=0.0, accepted_step_fraction_gt_1p0=0.0)
+    text = report.render_report(rows)[report.PER_RUN_PRIMARY]
+    line = next(l for l in text.splitlines() if l.startswith("| cinf | energy0 "))
+    cells = [cell.strip() for cell in line.strip("|").split("|")]
+    # 900 of 945 accepted steps above the threshold, not the 0.1 an equal mean gives.
+    assert cells[8] == "0.952" and cells[9] == "0.952"
+
+
+def test_a_zero_step_run_contributes_nothing_to_the_pool():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    for row in rows:
+        if row["cap_label"] == "cinf" and row["start_kind"] == "original":
+            row.update(accepted_trial_count=0, step_count=0, trial_count=2,
+                       rejected_trial_count=2, refused_trial_count=0,
+                       accepted_travel_A=0.0, attempted_travel_A=1.0)
+    text = report.render_report(rows)[report.PER_RUN_PRIMARY]
+    line = next(l for l in text.splitlines() if l.startswith("| cinf | energy0 "))
+    cells = [cell.strip() for cell in line.strip("|").split("|")]
+    assert cells[8] == "-" and cells[9] == "-"
+
+
+def test_reference_only_binding_is_not_read_as_a_duplicate_control():
+    # Original starts never reach a step above 1 A, so c1p00 cannot bind there; the
+    # reference relaxations are longer and do bind. The claim must follow both.
+    trials = {("c1p00", name, start): 0 for name in tb.PRIMARY for start in tb.START_IDS}
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN, control_max_disp=0.5, trials=trials))
+    for row in rows:
+        if row["cap_label"] == "cinf" and row["start_kind"] == "reference":
+            row.update(max_accepted_displacement_A=2.0, would_bind_at_1p0=True)
+    text = report.render_report(rows)[report.REFERENCE_RUNS]
+    assert "reference starts" in text
+    assert "duplicates the control" not in text
+    assert "| yes |" in text
+
+
+def test_all_section_9_limitations_are_carried():
+    text = section_of(report.LIMITATIONS, rec=CONS_CLEAN)
+    for limitation in report.CLAIM_LIMITS:
+        assert limitation in text
+    assert report.EXPLORATORY_QUALIFICATION not in text
+
+
+def test_the_exploratory_qualification_joins_the_limitations():
+    text = section_of(report.LIMITATIONS, rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
+    assert report.EXPLORATORY_QUALIFICATION in text
+
+
+def test_provenance_is_printed_as_given_and_never_inferred():
+    synthetic = report.render_report(build_rows(rec=CONS_CLEAN),
+                                     provenance="synthetic")[report.ROW_PROVENANCE]
+    measured = report.render_report(build_rows(rec=CONS_CLEAN),
+                                    provenance="measured")[report.ROW_PROVENANCE]
+    unstated = report.render_report(build_rows(rec=CONS_CLEAN))[report.ROW_PROVENANCE]
+    assert "synthetic rows" in synthetic
+    assert "measured rows" in measured
+    assert "not stated by the caller" in unstated
+    doc = report.render_document(report.render_report(build_rows(rec=CONS_CLEAN)))
+    assert "nothing here is a measured model result" not in doc
+
+
+# ---- Row-inventory refusals (P1) ---------------------------------------
+
+def test_a_second_capped_relaxer_identity_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    row_of(rows, cap_label="c0p05", checkpoint_id="direct0")["relaxer_sha256"] = "c" * 64
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "relaxer identities" in str(caught.value)
+
+
+def test_a_checkpoint_outside_the_approved_grid_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    extra = copy.deepcopy(row_of(rows, cap_label="c0p05", checkpoint_id="direct0"))
+    extra.update(seed=2, checkpoint_id="direct2")
+    rows.append(extra)
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "outside the approved grid" in str(caught.value)
+
+
+def test_a_split_checkpoint_identity_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    row_of(rows, cap_label="c0p05", checkpoint_id="energy0")["checkpoint_id"] = "energy0-alt"
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "split across ids" in str(caught.value)
+
+
+def test_contradictory_binding_metadata_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    control = row_of(rows, cap_label="cinf", checkpoint_id="cons0", start_kind="original")
+    control["would_bind_at_1p0"] = False          # but its displacement is 2.0 A
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "would_bind_at_1p0" in str(caught.value)
+
+
+def test_a_c1p00_run_that_claims_no_binding_against_its_control_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    row = row_of(rows, cap_label="c1p00", checkpoint_id="cons0", start_kind="original")
+    row.update(capped_trial_count=0, capped_fraction=0.0, first_capped_attempt=None)
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "records bound=False" in str(caught.value)
+
+
+def test_a_control_that_binds_only_on_a_rejected_trial_is_accepted():
+    # A cap can bind on a rejected trial, so would_bind_at_1p0 with no accepted step
+    # above 1 A is a legitimate combination and must not be refused.
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    for row in rows:
+        if row["cap_label"] == "cinf":
+            row["max_accepted_displacement_A"] = 0.5
+            row["would_bind_at_1p0"] = True
+    assert report.inventory_problems(rows) == []
+
+
+def test_a_capped_run_above_its_cap_is_refused():
+    rows = copy.deepcopy(build_rows(rec=CONS_CLEAN))
+    row_of(rows, cap_label="c0p05", checkpoint_id="cons0")["max_accepted_displacement_A"] = 0.2
+    with pytest.raises(report.ReportError) as caught:
+        report.render_report(rows)
+    assert "above its cap" in str(caught.value)
+
+
+def test_a_consistent_table_passes_the_inventory_checks():
+    assert report.inventory_problems(build_rows(rec=CONS_CLEAN)) == []
 
 
 # ---- Determinism, immutability, refusal ---------------------------------
 
 def test_two_renders_are_byte_identical():
-    first = document(rec=CONS_CLEAN)
-    second = document(rec=CONS_CLEAN)
-    assert first == second
+    assert document(rec=CONS_CLEAN) == document(rec=CONS_CLEAN)
 
 
 def test_the_writer_produces_identical_bytes_and_refuses_to_overwrite(tmp_path):
@@ -254,24 +443,22 @@ def test_an_incomplete_table_is_labelled_incomplete_not_reported_in_part():
     rows = [row for row in build_rows(rec=CONS_CLEAN)
             if not (row["cap_label"] == "c0p10" and row["checkpoint_id"] == "direct0")]
     rendered = report.render_report(rows)
-    assert list(rendered) == [report.STATUS]
+    assert set(rendered) == {report.ROW_PROVENANCE, report.STATUS}
     assert rendered[report.STATUS].startswith("incomplete, not labelled")
     assert "missing cells" in rendered[report.STATUS]
     assert "c0p10" in rendered[report.STATUS]
 
 
 def test_a_lambda_one_only_table_cannot_be_labelled():
-    rows = [row for row in build_rows(rec={**CONS_CLEAN, **LAMBDA1_REC},
-                                      names=tb.PRIMARY + tb.LAMBDA1)
+    rows = [row for row in build_rows(rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
             if row["consistency_lambda"] == 1.0]
     rendered = report.render_report(rows)
-    assert list(rendered) == [report.STATUS]
+    assert set(rendered) == {report.ROW_PROVENANCE, report.STATUS}
     assert rendered[report.STATUS].startswith("incomplete, not labelled")
 
 
 def test_an_incomplete_lambda_one_block_does_not_cost_the_primary_labels():
-    rows = [row for row in build_rows(rec={**CONS_CLEAN, **LAMBDA1_REC},
-                                      names=tb.PRIMARY + tb.LAMBDA1)
+    rows = [row for row in build_rows(rec={**CONS_CLEAN, **LAMBDA1_REC}, names=ALL_NAMES)
             if not (row["consistency_lambda"] == 1.0 and row["cap_label"] == "c0p10")]
     rendered = report.render_report(rows)
     assert rendered[report.PRIMARY].count("direction stated") >= 4
@@ -286,8 +473,8 @@ def test_the_historical_table_reproduces_fifty_rows_at_zero_of_ten():
         saved = stage0_compare.load_saved_original()
     except (FileNotFoundError, stage0_compare.SavedResultError) as error:
         pytest.skip(f"accepted records are absent: {error}")
-    text = report.render_report(build_rows(rec=CONS_CLEAN), saved_original=saved)[
-        report.HISTORICAL]
+    text = report.render_report(build_rows(rec=CONS_CLEAN),
+                                saved_original=saved)[report.HISTORICAL]
     assert len(saved) == 50
     rows = [line for line in text.splitlines() if line.startswith("| ") and "---" not in line][1:]
     assert len(rows) == 5
@@ -295,6 +482,7 @@ def test_the_historical_table_reproduces_fifty_rows_at_zero_of_ten():
         cells = [cell.strip() for cell in row.strip("|").split("|")]
         assert cells[1] == "0" and cells[2] == "10"
     assert "Total: 0 of 50" in text
+    assert "measured accepted records" in text
 
 
 def test_absent_accepted_records_are_reported_in_words(monkeypatch):
