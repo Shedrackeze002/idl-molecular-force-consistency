@@ -1,0 +1,1 @@
+/home/asac/group9-mace-onboarding-2026-10-28/tools/uv pip check --python /home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/bin/python

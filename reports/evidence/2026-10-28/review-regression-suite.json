@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "implementation_commit": "389af5dfa4d328379fc457944cdd4ee7d4ad7b23",
+  "command": "PYTHONPATH=.:src:scripts $HOME/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/bin/python -m pytest -q tests/test_mace_loader.py tests/test_mace_parity.py tests/test_mace_parity_supervisor.py tests/test_mace_parity_audit.py tests/test_mace_reference_adapter.py tests/test_shape_recovery_runner.py tests/test_shape_recovery_outcomes.py tests/test_shape_recovery_report.py -p no:cacheprovider",
+  "passed": 193,
+  "skipped": 3,
+  "warnings": 45,
+  "subtests_passed": 19,
+  "elapsed_seconds": 20.51,
+  "skip_scope": "Two unavailable private-packet checks and the existing unavailable-archive check.",
+  "warning_scope": "Existing ASE/NumPy deprecation warning in the adapter and its loader-to-auditor integration regression.",
+  "execution_boundary": "Synthetic fixtures and fake constructors only; no real checkpoint deserialization, model construction, or learned prediction."
+}
