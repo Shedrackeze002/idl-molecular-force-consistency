@@ -1,0 +1,75 @@
+{
+  "status": "ARITHMETIC_ARTIFACTS_AND_TWO_RESULT_REVIEWS_PASS",
+  "date": "2026-10-26",
+  "counts": {
+    "cached_force_components": 736344,
+    "cached_metric_max_abs_difference": 1.3877787807814457e-17,
+    "candidate_count": 6,
+    "endpoint_prediction_files": 12,
+    "historical_reload_proofs": 12,
+    "history_events": 2406,
+    "history_max_abs_difference": 6.938893903907228e-18,
+    "input_file_count": 92,
+    "inputs_unchanged": true,
+    "reduction_atol": 1e-14,
+    "reduction_rtol": 1e-12
+  },
+  "tests": "38 passed; focused audit plus existing representation synthetic/regression cases",
+  "figures": "Three PNG/PDF figure pairs visually inspected; initial label-overlap version retained privately",
+  "csv_checks": "6run rows,12paired rows,40connection rows,2406trajectory rows; run values reconcile with JSON",
+  "language_checks": "Report prose sentences at most35words; links resolve",
+  "runtime": {
+    "python": "3.12.16",
+    "packages": {
+      "numpy": "2.5.3",
+      "msgpack": "1.2.3",
+      "matplotlib": "3.11.2"
+    },
+    "scope": "current saved-array analysis environment; historical model-runtime admission is separate"
+  },
+  "audit_source": {
+    "analysis_sha256": "82151264642cd91fc705f02b05d56221fb07b2727bf293c58a73e2289fec80f5",
+    "commit": "570fb278efdd8fcc0a301142eb4d9a91fac1359c"
+  },
+  "plot_source_sha256": "b7d4f89d37491dbdaab279f2b1ad01306c6810b1076fefb2cc8af25f8cde65d3",
+  "limits": [
+    "Two seeds and five reused validation connections; descriptive comparison only",
+    "Recipe selected on E64, without scalar retuning; BEST selection is optimistic",
+    "Scalar energy-derived forces remain equivariant; no causal symmetry claim",
+    "Historical/current CPU timings are observational, not controlled efficiency or inference speed",
+    "No model payload restored, learned prediction, fitting, recovery or held-out test payload"
+  ],
+  "review_acceptance_sha256": "076b138cc5781fb2b212b9e817013e7c7489bd6cbb820bbced56daac9390b436",
+  "csv_export_normalization": {
+    "connection_deltas.csv": {
+      "raw_audit_sha256": "d6d16ec8349cb188096e3eb2ed1ff3606f182b82c70234c18cf8a221ea949d74",
+      "export_sha256": "db4aa6370efc7f6202e7eb28592370176d08fa5e39215d44fb1ecc81a12ce8c3",
+      "rows_unchanged": 40,
+      "line_endings": "LF"
+    },
+    "endpoint_metrics.csv": {
+      "raw_audit_sha256": "348e810f69b44b5d614f50b1bc4f5ef24a943721249199536ca461f492dbbe15",
+      "export_sha256": "65f93efbfc2292611044b1444ed0f2428c671bb7718826e461e5da8d4ff98a23",
+      "rows_unchanged": 12,
+      "line_endings": "LF"
+    },
+    "paired_seed_deltas.csv": {
+      "raw_audit_sha256": "fd180bd8d57e02d3c1b289231f9961ef4b4efd3cc7c58e5bb18dc2088c153900",
+      "export_sha256": "915d83fe4ed6b935860a69c6023f189122129b7651e9211130418dc400019d24",
+      "rows_unchanged": 12,
+      "line_endings": "LF"
+    },
+    "run_metrics.csv": {
+      "raw_audit_sha256": "78070c7b82982159e8d76269bdbcb126f4fb9b30ac6d59a32d7559675fcbe79e",
+      "export_sha256": "c24baaca1ef36978ab916d12a9d946be1529eb42eb980d24c86188fb284270a6",
+      "rows_unchanged": 6,
+      "line_endings": "LF"
+    },
+    "validation_trajectories.csv": {
+      "raw_audit_sha256": "b947c8233b8e653baa23f6c8dd302e2d78ce54612736296f33be4a55be5f7705",
+      "export_sha256": "f7a1daf5b2bcd27a0f5c8408deba44091da25be5b39d65794284e4f341df9209",
+      "rows_unchanged": 2406,
+      "line_endings": "LF"
+    }
+  }
+}
