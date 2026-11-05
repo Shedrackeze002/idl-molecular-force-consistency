@@ -1,0 +1,325 @@
+{
+ "format_version": 1,
+ "note": "Reviewed allow-list. Its SHA-256 goes into the launch record. Regenerating it needs a new review.",
+ "targets": {
+  "relax_capped": {
+   "frozen_file": "evaluation/relax.py",
+   "frozen_sha256": "b5321a21dd17dd0f23e7d89575af96263f115812826faf7e73ebd2cd372b4c4e",
+   "derived_file": "stage2_capped/relax_capped.py",
+   "allowed_categories": [
+    "module_header",
+    "parameter_validation",
+    "cap_computation",
+    "batch_refusal",
+    "recorder_hook"
+   ],
+   "hunks": [
+    {
+     "id": "relax_capped-00",
+     "categories": [
+      "module_header"
+     ],
+     "purpose": "Header comment: states that the file is a copy and where its differences are listed.",
+     "frozen_first_line": 1,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "# STAGE 2 COPY of evaluation/relax.py (frozen; see allowlist.json for its SHA-256).",
+      "# This file differs from the frozen file only by the hunks in",
+      "# stage2_capped/allowlist.json: a per-step movement cap (movement_cap_A), a batch",
+      "# size 1 refusal, and a read-only recorder hook. relax_capped(..., movement_cap_A=None)",
+      "# reproduces the frozen relax() bitwise. The frozen file is not modified."
+     ]
+    },
+    {
+     "id": "relax_capped-01",
+     "categories": [
+      "parameter_validation"
+     ],
+     "purpose": "Adds _validate_movement_cap: None or inf is the control; else a finite real >= 1e-6.",
+     "frozen_first_line": 120,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "# Smallest finite movement cap the study accepts, in angstrom.",
+      "_MIN_MOVEMENT_CAP_A = 1e-6",
+      "",
+      "",
+      "def _validate_movement_cap(movement_cap_A):",
+      "    \"\"\"None or +inf is the uncapped control (returns None); else a finite float.",
+      "",
+      "    A finite cap must be a real number of at least 1e-6 angstrom. Booleans,",
+      "    NaN, zero, negatives and non-numbers are refused.",
+      "    \"\"\"",
+      "    if movement_cap_A is None:",
+      "        return None",
+      "    if (isinstance(movement_cap_A, (bool, np.bool_)) or",
+      "            not isinstance(movement_cap_A, (int, float, np.integer, np.floating))):",
+      "        raise ValueError(\"movement_cap_A must be None or a real number\")",
+      "    value = float(movement_cap_A)",
+      "    if np.isnan(value) or value < _MIN_MOVEMENT_CAP_A:",
+      "        raise ValueError(\"movement_cap_A must be None, inf, or at least 1e-6\")",
+      "    return None if value == float(\"inf\") else value",
+      "",
+      ""
+     ]
+    },
+    {
+     "id": "relax_capped-02",
+     "categories": [
+      "cap_computation",
+      "parameter_validation"
+     ],
+     "purpose": "Adds f = max atom force norm and effective_scale = min(s, c/f); renames relax to relax_capped and adds the movement_cap_A and recorder keywords.",
+     "frozen_first_line": 145,
+     "frozen_line_count": 1,
+     "removed": [
+      "def relax(start, force_fn, procedure, *, arm=None):"
+     ],
+     "added": [
+      "def _atom_force_norm_max(force):",
+      "    \"\"\"f = the largest per-atom Euclidean force norm, in eV/angstrom.\"\"\"",
+      "    return float(np.max(np.linalg.norm(force, axis=-1)))",
+      "",
+      "",
+      "def effective_scale(scale, force_norm_max, movement_cap):",
+      "    \"\"\"The applied step scale s_eff = min(s, c / f); None means no cap.",
+      "",
+      "    c / f is in angstrom^2 per eV, the unit of s. The step is then",
+      "    s_eff * F, whose largest per-atom length is s_eff * f <= c.",
+      "    \"\"\"",
+      "    if movement_cap is None:",
+      "        return scale",
+      "    return min(scale, movement_cap / force_norm_max)",
+      "",
+      "",
+      "def relax_capped(start, force_fn, procedure, *, arm=None, movement_cap_A=None,",
+      "                 recorder=None):"
+     ]
+    },
+    {
+     "id": "relax_capped-03",
+     "categories": [
+      "parameter_validation"
+     ],
+     "purpose": "Validates movement_cap_A after the frozen procedure validation.",
+     "frozen_first_line": 190,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "    movement_cap = _validate_movement_cap(movement_cap_A)"
+     ]
+    },
+    {
+     "id": "relax_capped-04",
+     "categories": [
+      "batch_refusal"
+     ],
+     "purpose": "Refuses a batch size other than 1 (f is a batch-wide maximum).",
+     "frozen_first_line": 199,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "    if start_array.shape[0] != 1:",
+      "        raise ValueError(\"relax_capped needs batch size 1: the movement cap uses \"",
+      "                         \"the largest force norm over the whole batch\")"
+     ]
+    },
+    {
+     "id": "relax_capped-05",
+     "categories": [
+      "recorder_hook"
+     ],
+     "purpose": "Adds per-run cap bookkeeping and the read-only log_attempt recorder hook (reads loop state, changes none).",
+     "frozen_first_line": 212,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "    # Per-run cap bookkeeping and the read-only recorder hook. Neither feeds",
+      "    # back into the relaxation: log_attempt only reads loop state.",
+      "    cap_log = {\"trial_count\": 0, \"capped_trial_count\": 0,",
+      "               \"first_capped_attempt\": None, \"accepted_trial_count\": 0,",
+      "               \"rejected_trial_count\": 0, \"refused_trial_count\": 0,",
+      "               \"max_accepted_displacement_A\": None,",
+      "               \"max_trial_displacement_A\": None,",
+      "               \"accepted_travel_A\": 0.0, \"attempted_travel_A\": 0.0}",
+      "    step_index = 0",
+      "    trials = 0",
+      "    scale_applied = None",
+      "    step_force_norm = None",
+      "    step_displacement = None",
+      "    step_capped = False",
+      "",
+      "    def log_attempt(kind, attempt_positions, force, accepted=None):",
+      "        # One call per force attempt, so the number of calls equals the",
+      "        # force-evaluation count. Reads loop state; changes none of it.",
+      "        refused = None if force is not None else failure_reason",
+      "        force_max = None if force is None else float(np.max(np.abs(force)))",
+      "        if kind == \"trial\":",
+      "            cap_log[\"trial_count\"] += 1",
+      "            cap_log[\"attempted_travel_A\"] += step_displacement",
+      "            previous = cap_log[\"max_trial_displacement_A\"]",
+      "            if previous is None or step_displacement > previous:",
+      "                cap_log[\"max_trial_displacement_A\"] = step_displacement",
+      "            if step_capped:",
+      "                cap_log[\"capped_trial_count\"] += 1",
+      "                if cap_log[\"first_capped_attempt\"] is None:",
+      "                    cap_log[\"first_capped_attempt\"] = evals",
+      "            if refused is not None:",
+      "                cap_log[\"refused_trial_count\"] += 1",
+      "            elif accepted:",
+      "                cap_log[\"accepted_trial_count\"] += 1",
+      "                cap_log[\"accepted_travel_A\"] += step_displacement",
+      "                previous = cap_log[\"max_accepted_displacement_A\"]",
+      "                if previous is None or step_displacement > previous:",
+      "                    cap_log[\"max_accepted_displacement_A\"] = step_displacement",
+      "            else:",
+      "                cap_log[\"rejected_trial_count\"] += 1",
+      "        if recorder is not None:",
+      "            is_trial = kind == \"trial\"",
+      "            recorder({",
+      "                \"attempt_index\": evals,",
+      "                \"kind\": kind,",
+      "                \"step_index\": step_index if is_trial else 0,",
+      "                \"trial_in_step\": trials if is_trial else 0,",
+      "                \"scale_s\": scale if is_trial else None,",
+      "                \"scale_effective\": scale_applied if is_trial else None,",
+      "                \"force_norm_max_f\": step_force_norm if is_trial else None,",
+      "                \"capped\": step_capped if is_trial else False,",
+      "                \"max_displacement_A\": step_displacement if is_trial else None,",
+      "                \"accepted\": accepted if is_trial else None,",
+      "                \"refused\": refused,",
+      "                \"converged_here\": force_max is not None and force_max <= tol,",
+      "                \"max_force_component\": force_max,",
+      "                \"positions\": np.array(attempt_positions[0], dtype=np.float64),",
+      "            })"
+     ]
+    },
+    {
+     "id": "relax_capped-06",
+     "categories": [
+      "recorder_hook"
+     ],
+     "purpose": "Logs the initial force attempt.",
+     "frozen_first_line": 320,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "            log_attempt(\"initial\", positions, known_force)"
+     ]
+    },
+    {
+     "id": "relax_capped-07",
+     "categories": [
+      "recorder_hook"
+     ],
+     "purpose": "Records the index of the step being attempted.",
+     "frozen_first_line": 340,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "        step_index = len(steps)"
+     ]
+    },
+    {
+     "id": "relax_capped-08",
+     "categories": [
+      "cap_computation",
+      "recorder_hook"
+     ],
+     "purpose": "Applies s_eff to the candidate (the frozen no-step test above is untouched); records f, s_eff, the capped flag and the displacement.",
+     "frozen_first_line": 348,
+     "frozen_line_count": 1,
+     "removed": [
+      "            candidate = positions + scale * known_force"
+     ],
+     "added": [
+      "            step_force_norm = _atom_force_norm_max(known_force)",
+      "            scale_applied = effective_scale(scale, step_force_norm, movement_cap)",
+      "            step_capped = scale_applied < scale",
+      "            candidate = positions + scale_applied * known_force",
+      "            step_displacement = float(np.max(np.linalg.norm(candidate - positions,",
+      "                                                            axis=-1)))"
+     ]
+    },
+    {
+     "id": "relax_capped-09",
+     "categories": [
+      "recorder_hook"
+     ],
+     "purpose": "Logs a trial whose force was refused.",
+     "frozen_first_line": 352,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "                log_attempt(\"trial\", candidate, None, accepted=False)"
+     ]
+    },
+    {
+     "id": "relax_capped-10",
+     "categories": [
+      "cap_computation",
+      "recorder_hook"
+     ],
+     "purpose": "Converged-on-trial step records the applied scale s_eff; logs the attempt.",
+     "frozen_first_line": 361,
+     "frozen_line_count": 1,
+     "removed": [
+      "                steps.append({\"accepted_step_size\": scale, \"trial_count\": trials})"
+     ],
+     "added": [
+      "                steps.append({\"accepted_step_size\": scale_applied, \"trial_count\": trials})",
+      "                log_attempt(\"trial\", candidate, trial_force, accepted=True)"
+     ]
+    },
+    {
+     "id": "relax_capped-11",
+     "categories": [
+      "cap_computation",
+      "recorder_hook"
+     ],
+     "purpose": "Accepted step records the applied scale s_eff; logs the attempt. Growth (next lines, unchanged) still doubles s.",
+     "frozen_first_line": 371,
+     "frozen_line_count": 1,
+     "removed": [
+      "                steps.append({\"accepted_step_size\": scale, \"trial_count\": trials})"
+     ],
+     "added": [
+      "                steps.append({\"accepted_step_size\": scale_applied, \"trial_count\": trials})",
+      "                log_attempt(\"trial\", candidate, trial_force, accepted=True)"
+     ]
+    },
+    {
+     "id": "relax_capped-12",
+     "categories": [
+      "cap_computation",
+      "recorder_hook"
+     ],
+     "purpose": "Rejected step: logs the attempt; backtracking shrinks the applied scale, s <- max(factor*s_eff, floor) with the frozen floor lines unchanged.",
+     "frozen_first_line": 379,
+     "frozen_line_count": 1,
+     "removed": [
+      "            scale = scale * factor"
+     ],
+     "added": [
+      "            log_attempt(\"trial\", candidate, trial_force, accepted=False)",
+      "            scale = scale_applied * factor"
+     ]
+    },
+    {
+     "id": "relax_capped-13",
+     "categories": [
+      "recorder_hook"
+     ],
+     "purpose": "Adds the cap_record summary to the result (extra field; frozen fields are unchanged).",
+     "frozen_first_line": 417,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "    result[\"cap_record\"] = dict(cap_log, movement_cap_A=movement_cap)"
+     ]
+    }
+   ]
+  }
+ }
+}
