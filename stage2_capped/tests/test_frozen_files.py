@@ -5,36 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from stage2_capped import admission
+from stage2_capped import admission, launch_checks
 
 ROOT = Path(__file__).resolve().parents[2]
 
-FROZEN = {
-    "evaluation/adapter.py":
-        "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5",
-    "evaluation/e3x_adapter.py":
-        "853db9a7792b235e8f1f37de14e779aae4da7c088e08b1e8d8e80702850d9980",
-    "evaluation/outcomes.py":
-        "8f5f7caa15b5b3125dd394a86424925b1a65d7d35c25622200bbe4fafc167871",
-    "evaluation/relax.py":
-        "b5321a21dd17dd0f23e7d89575af96263f115812826faf7e73ebd2cd372b4c4e",
-    "evaluation/runner.py":
-        "28591f542e803bb5ac3a5935500a1a0ac21774b04040caf992d82e1b13100a90",
-    "evaluation/validation_controls.py":
-        "8df71e4c15acc04b9d6c10642aa3dbb14b52a600d3e966de9d43c76697d39af4",
-    "scripts/diagnose_validation_recovery.py":
-        "00f90d33279f21578d0bd7b5c58f31fbb953c0d4e4c311f59349ed3e3e026053",
-    "scripts/e3x_phase_common.py":
-        "a1d514b581f4375cbc6449523cddf1cd5f732e5a3f0644b2c4083bc86d3e23e7",
-    "scripts/recovery_trace.py":
-        "3fe0761f495e8be746e0afffc7d10fbb8f9b0fdd93c1ef4518cddf1cac3fb7b7",
-    "scripts/report_shape_recovery.py":
-        "96fc3ddb1f5ac44c300779c56b8e49b42b6e3401b78a22a54176500a5512272d",
-    "scripts/run_validation_recovery.py":
-        "9a16a6748752116c4a311ea93ef391557cbdcf0f34344e4e64b9a05aca159b76",
-    "scripts/trace_validation_recovery.py":
-        "7836c4fdf513b4456a3a5a83a123bb1b4d7688e4e4d5ab8f3fc1494914af72da",
-}
+FROZEN = launch_checks.FROZEN_FILES      # the dict moved to non-test code so a launch can check it at run time
 
 
 def sha256(path):

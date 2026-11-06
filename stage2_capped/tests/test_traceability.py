@@ -39,5 +39,5 @@ def test_the_matrix_lists_no_file_that_is_not_a_stage2_test_file():
 
 def test_the_plan_m6_items_are_listed_and_covered():
     assert [i["id"] for i in tr.PLAN_ITEMS] == ["M6-traceability", "M6-frozen-files", "M6-dry-run",
-                                                    "M4-review-fixes"]
+                                                    "M4-review-fixes", "M7-launch-worker"]
     assert all(i["tests"] for i in tr.PLAN_ITEMS)
