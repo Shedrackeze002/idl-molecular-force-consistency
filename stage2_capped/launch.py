@@ -299,10 +299,13 @@ def start_unit(command, unit, args, deps, record, hook_report, snapshot, *, work
         registry.write(args.record_sha256, unit, attempt, "started", launch_id=record["launch_id"],
                        output_root=record["output_root"], parent_pid=os.getpid(), model_free_check_opened=hook_report,
                        ledger_snapshot=snapshot)
-    finally:
+    except BaseException:
         # From the moment the registry holds the event a unit is spent unless its exit says otherwise, even if the write
         # raised after linking its file (R3-N01): that failure must exit 1, not report a refusal that spent nothing.
+        # `holds` answers True when its stat fails for any reason but a missing file (R3 finding 1).
         started["registered"] = registry.holds(args.record_sha256, unit, attempt, "started")
+        raise
+    started["registered"] = True                      # the write returned: the event is in the registry, no stat needed
     (root / "logs").mkdir(exist_ok=True)
     wall = record["ceilings"]["a0_wall_seconds"] if unit == "A0" else record["ceilings"]["stages"][unit]["wall_seconds"]
     build = deps.worker_command or production_worker_command

@@ -3,6 +3,7 @@ markers and the completion decision, the A0 verdict and evidence, the post-A0 gu
 import copy
 import json
 import os
+import pathlib
 import subprocess
 import sys
 
@@ -63,6 +64,32 @@ def test_registry_events_are_written_once_with_attempt_numbers(tmp_path):
     names = sorted(e["file"] for e in registry.entries())
     assert names == [f"{SHA_A}-A0-1-exited.json", f"{SHA_A}-A0-1-started.json"]
     assert registry.next_attempt(SHA_A, "A0") == 2 and registry.next_attempt(SHA_B, "A0") == 1
+
+
+def test_the_registry_names_its_event_files_and_says_whether_it_holds_one(tmp_path):
+    registry = Registry(tmp_path / "registry")
+    assert Registry.event_name(SHA_A, "A0", 1, "started") == f"{SHA_A}-A0-1-started.json"
+    assert registry.holds(SHA_A, "A0", 1, "started") is False          # the folder does not exist yet
+    registry.write(SHA_A, "A0", 1, "started", launch_id="x")
+    assert registry.holds(SHA_A, "A0", 1, "started") is True
+    assert registry.holds(SHA_A, "A0", 1, "exited") is False and registry.holds(SHA_A, "A0", 2, "started") is False
+    assert registry.holds(SHA_B, "A0", 1, "started") is False
+    assert [e["file"] for e in registry.entries()] == [Registry.event_name(SHA_A, "A0", 1, "started")]
+
+
+@pytest.mark.parametrize("error, answer", [
+    (FileNotFoundError(2, "gone"), False), (NotADirectoryError(20, "not a folder"), False),
+    (PermissionError(13, "denied"), False),                  # a folder this process may not search took no link from it
+    (OSError(5, "input/output error"), True), (OSError(116, "stale handle"), True)])
+def test_holds_answers_true_when_the_stat_fails_in_a_way_that_cannot_show_the_file_is_absent(tmp_path, monkeypatch, error, answer):
+    """Missing file, missing folder or a folder it may not search: not held. Any other stat failure (EIO, ESTALE): held,
+    because a spent unit reported as spent is safe and one reported as a refusal is not (R3 finding 1)."""
+    registry = Registry(tmp_path / "registry")
+
+    def stat(self, *arguments, **keywords):
+        raise error
+    monkeypatch.setattr(pathlib.Path, "stat", stat)
+    assert registry.holds(SHA_A, "A0", 1, "started") is answer
 
 
 def test_the_registry_refuses_unknown_units_and_events(tmp_path):

@@ -115,8 +115,18 @@ class Registry:
 
     def holds(self, record_sha256, unit, attempt, event):
         """Whether this event's file is in the registry. A write that linked its file and then raised still counts: the
-        event is there, and a `started` event with no `exited` event is spent."""
-        return (self.directory / self.event_name(record_sha256, unit, attempt, event)).exists()
+        event is there, and a `started` event with no `exited` event is spent. A file that is plainly not there answers
+        False, and so does a folder this process may not search (EACCES): it could not have linked a file into it, so
+        a write that failed with a permission error spent nothing. Any other failure of the stat (EIO, ESTALE) cannot show
+        the file is absent, so it answers True: a spent unit reported as spent is safe, a spent unit reported as a refusal
+        is not (R3 finding 1)."""
+        try:
+            (self.directory / self.event_name(record_sha256, unit, attempt, event)).stat()
+        except (FileNotFoundError, NotADirectoryError, PermissionError):
+            return False
+        except OSError:
+            return True
+        return True
 
     def spent_attempts(self, record_sha256, unit):
         """Attempts that passed the spent point: an `exited` event with spent true, or a `started`

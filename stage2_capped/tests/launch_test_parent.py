@@ -1,8 +1,10 @@
 """Test-only driver: the real parent (`launch.execute`) with a worker command that runs the fixture worker
 (plan v3 section 10, B7). The production command line does not expose `worker_command`; this module passes it
 through the library function. Run as a subprocess from a committed scratch tree with PYTHONPATH set to that tree."""
+import errno
 import json
 import os
+import pathlib
 import sys
 from pathlib import Path
 
@@ -57,13 +59,26 @@ def install_faults():
     the link would."""
     if SCENARIO.get("registry_raises_after_started_write"):
         original = launch_state.Registry.write
+        original_stat = pathlib.Path.stat
+        armed = {"stat_fails": False}
+
+        def stat(self, *arguments, **keywords):
+            if armed["stat_fails"] and self.name.endswith("-started.json"):
+                raise OSError(errno.EIO, "scenario: the stat of the started event failed")
+            return original_stat(self, *arguments, **keywords)
 
         def write(self, record_sha256, unit, attempt, event, **fields):
             result = original(self, record_sha256, unit, attempt, event, **fields)
             if event == "started":
+                armed["stat_fails"] = bool(SCENARIO.get("stat_fails_after_started_write"))
                 raise OSError("scenario: the registry write linked its file and then failed")
             return result
+        pathlib.Path.stat = stat
         launch_state.Registry.write = write
+    if SCENARIO.get("holds_must_not_be_asked"):
+        def holds(self, *arguments, **keywords):
+            raise AssertionError("scenario: the success path asked the registry whether it holds the event")
+        launch_state.Registry.holds = holds
     if SCENARIO.get("supervise_raises"):
         def supervise(*arguments, **keywords):
             raise OSError("scenario: the worker could not be started")

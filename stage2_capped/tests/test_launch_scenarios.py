@@ -785,6 +785,26 @@ def test_a_registry_write_that_links_its_file_and_then_raises_is_a_spent_unit_no
     assert again.returncode == 2 and "unit A0 is already spent under this record" in again.stdout
 
 
+def test_a_failing_stat_after_a_failed_started_write_still_exits_1_because_the_unit_may_be_spent(h):
+    """R3 finding 1. The write linked its file and raised, and the stat that asks whether the registry holds the event
+    fails too (EIO). The stat cannot show the file is absent, so the unit counts as spent: exit 1 with the traceback, no
+    `refused:` line, no worker, and the next command says the unit is spent."""
+    done = h.run(*h.a0_arguments(), scenario={"registry_raises_after_started_write": True, "stat_fails_after_started_write": True})
+    assert (h.registry / f"{h.sha_a}-A0-1-started.json").exists(), "the scenario did not leave the event in the registry"
+    assert done.returncode == 1 and "refused:" not in done.stdout and "Traceback" in done.stderr
+    assert "scenario: the registry write linked its file and then failed" in done.stderr
+    assert not list(h.root_a.glob("WORKER_PID-*")) and not (h.fixture_dir / "provider-order.txt").exists()   # no worker ran
+    again = h.run(*h.a0_arguments())
+    assert again.returncode == 2 and "unit A0 is already spent under this record" in again.stdout
+
+
+def test_a_started_write_that_returns_marks_the_unit_started_without_asking_the_registry(h):
+    """The success path does not stat the file: with `Registry.holds` forbidden the unit still runs to completion."""
+    done = h.run(*h.a0_arguments(), scenario={"holds_must_not_be_asked": True})
+    assert done.returncode == 0, done.stdout + done.stderr
+    assert exited(h, h.sha_a, "A0", 1)["outcome"] == "complete"
+
+
 def test_a_worker_that_cannot_be_run_is_a_refusal_that_spends_nothing_and_a_restart_works(h):
     """The `started` event is written, then the supervisor cannot start the worker at all: no spent point was reached, so
     the exit is 2, the registry says `refused_before_start` and the same record starts again."""
