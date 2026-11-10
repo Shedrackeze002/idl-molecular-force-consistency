@@ -209,6 +209,75 @@ def test_canonical_admission_inventory_refuses_substitution_or_contradiction(dam
         module._approved_identity_inventory(receipt)
 
 
+def test_rejects_version_map_only_noncore_pin_before_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    real_live_check = module._live_admission_check
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path)
+    approved = json.loads((target / "wsl-admission.json").read_text())
+    approved.update(canonical_admission(module))
+    installed = tmp_path / "installed"
+    for item in approved["authenticated_source_comparison"]:
+        path = installed / item["relative_path"]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"synthetic-installed-source")
+        item.update(actual_sha256=sha(path), original_sha256=sha(path))
+    approved["installed_package_versions"]["extra-package"] = "2"
+    admission_path = target / "wsl-admission.json"
+    admission_path.write_text(json.dumps(approved))
+    launch = json.loads((target / "launch-receipt.json").read_text())
+    launch["wsl_admission_sha256"] = sha(admission_path)
+    (target / "launch-receipt.json").write_text(json.dumps(launch))
+    monkeypatch.setattr(module, "_live_admission_check", real_live_check)
+    for name, value in (("python_version", "3.12.13"), ("platform", "Linux-test"),
+                        ("machine", "x86_64")):
+        monkeypatch.setattr(module.platform, name, lambda value=value: value)
+    monkeypatch.setattr(module.platform, "libc_ver", lambda: ("glibc", "2.35"))
+    monkeypatch.setattr(module.importlib.metadata, "version", lambda name: "1")
+    class InstalledDistribution:
+        def locate_file(self, relative):
+            return installed / relative
+    monkeypatch.setattr(module.importlib.metadata, "distribution", lambda name: InstalledDistribution())
+    calls = []
+    with pytest.raises(module.AdmissionError, match="package|inventor"):
+        module._load_admitted_arm(
+            root, target, constructor=lambda path: calls.append(path) or FakeCalculator(),
+            expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("key,value", [
+    ("extra-package", "1"), ("Torch_EMA", "1"), (7, "1"),
+    ("", "1"), ("not a package", "1"), ("extra-package", ""),
+    ("extra-package", None),
+])
+def test_version_map_rejects_unlisted_duplicate_or_malformed_pins(key, value):
+    import mace_loader as module
+    receipt = canonical_admission(module)
+    receipt["installed_package_versions"][key] = value
+    with pytest.raises(module.AdmissionError, match="package|inventor"):
+        module._approved_identity_inventory(receipt)
+
+
+def test_complete_package_inventory_normalizes_both_sides():
+    import mace_loader as module
+    receipt = canonical_admission(module)
+    receipt["installed_packages"].append("Example_Pkg==2")
+    receipt["installed_package_versions"]["EXAMPLE-PKG"] = "2"
+    result = module._approved_identity_inventory(receipt)
+    assert result["packages"] == {**{name: "1" for name in module.CORE_PACKAGES},
+                                  "example-pkg": "2"}
+
+
+def test_declared_noncore_pin_requires_matching_map_version():
+    import mace_loader as module
+    receipt = canonical_admission(module)
+    receipt["installed_packages"].append("extra-package==2")
+    receipt["installed_package_versions"]["extra-package"] = "1"
+    with pytest.raises(module.AdmissionError, match="package|inventor"):
+        module._approved_identity_inventory(receipt)
+
+
 def test_verified_packet_identity_when_available():
     import mace_loader as module
     packet_root = os.environ.get("MACE_PACKET_ROOT")

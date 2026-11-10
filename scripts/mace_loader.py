@@ -10,6 +10,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -133,6 +134,20 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
     if any(not isinstance(value, str) or not value for value in required_platform.values()):
         raise AdmissionError("approved interpreter/platform binding is incomplete")
 
+    def package_name(raw: Any) -> str:
+        if (not isinstance(raw, str)
+                or re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", raw.strip()) is None):
+            raise AdmissionError("approved package inventory has a malformed name")
+        return re.sub(r"[-_.]+", "-", raw.strip().lower())
+
+    normalized_versions: dict[str, str] = {}
+    for raw_name, version in versions.items():
+        name = package_name(raw_name)
+        if (name in normalized_versions or not isinstance(version, str)
+                or not version.strip() or version != version.strip()):
+            raise AdmissionError("approved package version inventory is malformed or duplicated")
+        normalized_versions[name] = version
+
     packages: dict[str, str] = {}
     for declaration in declarations:
         if not isinstance(declaration, str) or not declaration.strip():
@@ -143,13 +158,15 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
             raw_name, declared_version = declaration.split(" @ ", 1)[0], None
         else:
             raise AdmissionError(f"unsupported approved package declaration: {declaration}")
-        name = raw_name.strip().lower().replace("_", "-")
-        if not name or name in packages or not isinstance(versions.get(name), str):
+        name = package_name(raw_name)
+        if name in packages or name not in normalized_versions:
             raise AdmissionError("approved package inventories are incomplete or contradictory")
-        version = versions[name]
+        version = normalized_versions[name]
         if declared_version is not None and declared_version != version:
             raise AdmissionError(f"approved package inventories disagree: {name}")
         packages[name] = version
+    if set(packages) != set(normalized_versions):
+        raise AdmissionError("approved package inventories have different membership")
     if not CORE_PACKAGES.issubset(packages):
         raise AdmissionError("approved package inventory omits a mandatory core package")
 

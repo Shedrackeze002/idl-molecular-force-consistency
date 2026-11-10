@@ -97,6 +97,31 @@ def test_audit_recomputes_predictions_and_scores_without_model_import(tmp_path, 
     assert result["score_status"] == "SCORE_NOT_REPRODUCED"
 
 
+def test_saved_audit_refuses_version_map_only_noncore_pin(tmp_path, monkeypatch):
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    wsl_path = attempt / "wsl.json"
+    wsl = json.loads(wsl_path.read_text())
+    wsl["installed_package_versions"]["extra-package"] = "2"
+    wsl_path.write_text(json.dumps(wsl))
+    launch_path = attempt / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["wsl_admission_sha256"] = digest(wsl_path)
+    launch_path.write_text(json.dumps(launch))
+    admission_path = attempt / "admission-receipt.json"
+    admission = json.loads(admission_path.read_text())
+    admission.update(wsl_admission=wsl, launch_receipt=launch)
+    admission_path.write_text(json.dumps(admission))
+    status_path = attempt / "parity-status.json"
+    status = json.loads(status_path.read_text())
+    status["admission_receipt_sha256"] = digest(admission_path)
+    status_path.write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="package|inventor"):
+        module.audit_saved_parity(tmp_path, attempt)
+
+
 def test_partial_worker_result_is_refused(tmp_path):
     attempt = tmp_path / "partial"
     write_attempt(attempt, "INCOMPLETE")
