@@ -7,12 +7,15 @@ from __future__ import annotations
 
 import hashlib
 import importlib.metadata
+import importlib.machinery
+import importlib.util
 import json
 import os
 import platform
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Callable
 
@@ -39,6 +42,18 @@ REQUIRED_IMPLEMENTATION_FILES = {
     "docs/run-mace-parity.md", "tests/test_mace_loader.py",
     "tests/test_mace_parity.py", "tests/test_mace_parity_supervisor.py",
     "tests/test_mace_parity_audit.py",
+}
+
+
+# Unchanged dependencies in accepted source snapshot
+# 3fa5969e5a0c2fdeaebc76a05bace20799715203.
+FROZEN_SOURCE_FILES = {
+    "evaluation/__init__.py": {
+        "bytes": 220, "sha256": "919da2d40e815006ac70cd1e8862b78db10ac72ed0a32ee8dba375b813ccf18e"},
+    "evaluation/adapter.py": {
+        "bytes": 14497, "sha256": "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5"},
+    "scripts/mace_reference_adapter.py": {
+        "bytes": 4694, "sha256": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759"},
 }
 
 
@@ -269,6 +284,66 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
     return launch, admission, _live_admission_check(admission)
 
 
+
+def _authenticated_bridge() -> tuple[Callable, dict[str, Any]]:
+    """Execute only authenticated frozen source in the fresh parity worker.
+
+    Ordinary imports can read stale bytecode despite correct source hashes.
+    Compile the verified byte buffers explicitly; never read their .pyc files.
+    Preloaded modules have unknown execution history and are refused.
+    """
+    root = Path(__file__).resolve().parent.parent
+    modules = (("evaluation", "evaluation/__init__.py"),
+               ("evaluation.adapter", "evaluation/adapter.py"),
+               ("mace_reference_adapter", "scripts/mace_reference_adapter.py"))
+    source_bytes = {}
+    inserted = []
+    try:
+        for relative, expected in FROZEN_SOURCE_FILES.items():
+            path = root / relative
+            if any(part.is_symlink() for part in (path, *path.parents) if part != root):
+                raise AdmissionError(f"frozen source uses a symlink: {relative}")
+            if not path.is_file():
+                raise AdmissionError(f"frozen source is missing or nonregular: {relative}")
+            data = path.read_bytes()
+            if len(data) != expected["bytes"] or hashlib.sha256(data).hexdigest() != expected["sha256"]:
+                raise AdmissionError(f"frozen source differs from accepted baseline: {relative}")
+            source_bytes[relative] = data
+        if any(name in sys.modules for name, _ in modules):
+            raise AdmissionError("frozen modules preloaded; use a fresh parity worker")
+        for name, relative in modules:
+            path = root / relative
+            spec = importlib.util.find_spec(name)
+            if (spec is None or not isinstance(spec.loader, importlib.machinery.SourceFileLoader)
+                    or not isinstance(spec.origin, str) or Path(spec.origin).resolve() != path):
+                raise AdmissionError(f"frozen module import origin differs: {name}")
+            module = importlib.util.module_from_spec(spec)
+            sys.modules[name] = module
+            inserted.append(name)
+            exec(compile(source_bytes[relative], str(path), "exec", dont_inherit=True), module.__dict__)
+            if (Path(module.__file__).resolve() != path
+                    or module.__spec__ is None or module.__spec__.origin != spec.origin):
+                raise AdmissionError(f"frozen module execution origin differs: {name}")
+            if "." in name:
+                parent, child = name.rsplit(".", 1)
+                setattr(sys.modules[parent], child, module)
+        for relative, data in source_bytes.items():
+            if (root / relative).read_bytes() != data:
+                raise AdmissionError(f"frozen source changed during import: {relative}")
+        bridge = sys.modules["mace_reference_adapter"].calculator_arm
+        return bridge, {name: dict(value) for name, value in FROZEN_SOURCE_FILES.items()}
+    except BaseException as exc:
+        for name in reversed(inserted):
+            if "." in name:
+                parent, child = name.rsplit(".", 1)
+                if parent in sys.modules:
+                    vars(sys.modules[parent]).pop(child, None)
+            sys.modules.pop(name, None)
+        if isinstance(exc, AdmissionError) or not isinstance(exc, Exception):
+            raise
+        raise AdmissionError(f"frozen source authentication failed: {exc}") from exc
+
+
 def _construct_calculator(snapshot: Path):
     import torch
     from mace.calculators import MACECalculator
@@ -284,6 +359,8 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                        expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
     packet = verify_packet(packet_root)
     launch, admission, live = _approved_launch(Path(attempt_root))
+    calculator_arm, frozen_sources = _authenticated_bridge()
+    live = {**live, "frozen_source_files": frozen_sources}
     species = launch.get("species")
     from ase.data import atomic_numbers
     if (not isinstance(species, list) or len(species) != 21
@@ -305,7 +382,6 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
     after = _sha256(snapshot)
     if after != before:
         raise AdmissionError("model snapshot changed during construction")
-    from mace_reference_adapter import calculator_arm
     identity = {"model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES,
                 "snapshot_path": str(snapshot.resolve()), "epoch_index": 2047}
     arm = calculator_arm(calculator, species, arm_id="mace-runA-final-ema",

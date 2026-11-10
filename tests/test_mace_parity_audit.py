@@ -44,6 +44,7 @@ def write_attempt(root, status="PARITY_PASS"):
     packet = {"status": "PACKET_VERIFIED", "manifest_sha256": "manifest",
               "model_sha256": digest(snapshot), "model_bytes": snapshot.stat().st_size}
     from mace_loader import REQUIRED_IMPLEMENTATION_FILES
+    from test_mace_loader import accepted_frozen_inventory
     platform, packages, sources = approval_identity()
     wsl = {"status": "APPROVED", "identities": {
         "implementation_commit": "a" * 40,
@@ -62,6 +63,7 @@ def write_attempt(root, status="PARITY_PASS"):
     admission.write_text(json.dumps({"status": "ADMITTED", "launch_receipt": launch,
         "wsl_admission": wsl, "packet": packet,
         "live_identity_comparison": {"platform": platform, "packages": packages,
+            "frozen_source_files": accepted_frozen_inventory(),
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
                          "sha256": item["actual_sha256"]} for item in sources]},
         "constructor": {"device": "cpu", "torch_threads": 1,
@@ -232,6 +234,8 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     from ase.calculators.calculator import Calculator, all_changes
     import check_mace_parity as worker
     import mace_loader as loader
+    from test_mace_loader import isolate_frozen_imports
+    isolate_frozen_imports(monkeypatch)
 
     class ZeroCalculator(Calculator):
         implemented_properties = ["energy", "forces"]
@@ -286,3 +290,30 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
     audited = module.audit_saved_parity(packet_root, attempt)
     assert audited["parity"]["status"] == "PARITY_PASS"
+
+
+@pytest.mark.parametrize("damage", ["missing", "changed", "extra", "substituted"])
+def test_saved_audit_requires_exact_frozen_sources(tmp_path, monkeypatch, damage):
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    receipt_path = attempt / "admission-receipt.json"
+    receipt = json.loads(receipt_path.read_text())
+    live = receipt["live_identity_comparison"]
+    if damage == "missing":
+        del live["frozen_source_files"]
+    elif damage == "changed":
+        live["frozen_source_files"]["evaluation/adapter.py"]["sha256"] = "0" * 64
+    elif damage == "extra":
+        live["frozen_source_files"]["extra.py"] = {"bytes": 0, "sha256": "0" * 64}
+    else:
+        live["frozen_source_files"]["other.py"] = live["frozen_source_files"].pop("evaluation/adapter.py")
+    receipt_path.write_text(json.dumps(receipt))
+    status_path = attempt / "parity-status.json"
+    status = json.loads(status_path.read_text())
+    status["admission_receipt_sha256"] = digest(receipt_path)
+    status_path.write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="frozen"):
+        module.audit_saved_parity(tmp_path, attempt)
+    assert not (attempt / "independent-audit.json").exists()

@@ -1,6 +1,10 @@
 import hashlib
 import json
 import os
+import importlib
+import py_compile
+import shutil
+import sys
 import subprocess
 from pathlib import Path
 
@@ -31,8 +35,40 @@ def canonical_admission(module):
             "authenticated_source_comparison": sources}
 
 
+
+def isolate_frozen_imports(monkeypatch):
+    """Restore collected modules after a test's fresh-worker simulation."""
+    for name in ("evaluation", "evaluation.adapter", "mace_reference_adapter"):
+        monkeypatch.setitem(sys.modules, name, None)
+        monkeypatch.delitem(sys.modules, name)
+
+
+def accepted_frozen_inventory():
+    return {
+        "evaluation/__init__.py": {"bytes": 220, "sha256": "919da2d40e815006ac70cd1e8862b78db10ac72ed0a32ee8dba375b813ccf18e"},
+        "evaluation/adapter.py": {"bytes": 14497, "sha256": "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5"},
+        "scripts/mace_reference_adapter.py": {"bytes": 4694, "sha256": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759"},
+    }
+
+
+def scratch_execution_tree(tmp_path, monkeypatch):
+    import mace_loader as module
+    original = Path(module.__file__).resolve().parent.parent
+    scratch = tmp_path / "execution"
+    for name in module.REQUIRED_IMPLEMENTATION_FILES | set(accepted_frozen_inventory()):
+        target = scratch / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(original / name, target)
+    # Read-only Git identity lookup remains the original worktree's HEAD.
+    (scratch / ".git").write_bytes((original / ".git").read_bytes())
+    monkeypatch.setattr(module, "__file__", str(scratch / "scripts/mace_loader.py"))
+    monkeypatch.syspath_prepend(str(scratch))
+    monkeypatch.syspath_prepend(str(scratch / "scripts"))
+    return scratch
+
 def packet(tmp_path, monkeypatch):
     import mace_loader as module
+    isolate_frozen_imports(monkeypatch)
     root = tmp_path / "packet"
     members = []
     for index in range(10):
@@ -287,3 +323,145 @@ def test_verified_packet_identity_when_available():
     assert result["status"] == "PACKET_VERIFIED"
     assert result["member_count"] == 11
     assert result["model_sha256"] == module.MODEL_SHA256
+
+
+@pytest.mark.parametrize("relative", list(accepted_frozen_inventory()))
+def test_changed_frozen_source_refused_before_constructor(tmp_path, monkeypatch, relative):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch = scratch_execution_tree(tmp_path, monkeypatch)
+    path = scratch / relative
+    data = path.read_bytes()
+    # Equal-size valid Python edit: source identity, not only length, matters.
+    path.write_bytes(data.replace(b"a", b"b", 1))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="frozen"):
+        module._load_admitted_arm(root, attempt(tmp_path),
+            constructor=lambda path: calls.append(path) or FakeCalculator(),
+            expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("damage", ["missing", "symlink-file", "symlink-parent"])
+def test_nonregular_frozen_source_refused_before_constructor(tmp_path, monkeypatch, damage):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch = scratch_execution_tree(tmp_path, monkeypatch)
+    path = scratch / "evaluation/adapter.py"
+    if damage == "symlink-parent":
+        directory = scratch / "evaluation"
+        directory.rename(scratch / "other-evaluation")
+        directory.symlink_to(scratch / "other-evaluation", target_is_directory=True)
+    else:
+        data = path.read_bytes()
+        path.unlink()
+        if damage == "symlink-file":
+            other = scratch / "other.py"
+            other.write_bytes(data)
+            path.symlink_to(other)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="frozen"):
+        module._load_admitted_arm(root, attempt(tmp_path),
+            constructor=lambda path: calls.append(path) or FakeCalculator(),
+            expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("name", ["evaluation", "evaluation.adapter", "mace_reference_adapter"])
+def test_preloaded_frozen_module_refused_before_constructor(tmp_path, monkeypatch, name):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch_execution_tree(tmp_path, monkeypatch)
+    # Real standard imports have correct origins but unverified execution history.
+    importlib.import_module(name)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="preloaded|fresh"):
+        module._load_admitted_arm(root, attempt(tmp_path),
+            constructor=lambda path: calls.append(path) or FakeCalculator(),
+            expected_species=("H",) * 21)
+    assert calls == []
+
+
+def poison_bridge_cache(scratch):
+    path = scratch / "scripts/mace_reference_adapter.py"
+    original, stamp = path.read_bytes(), path.stat()
+    poisoned = original.replace(b"checkpoint_identity_verified=False)",
+                                b"checkpoint_identity_verified=True )")
+    assert poisoned != original and len(poisoned) == len(original)
+    path.write_bytes(poisoned)
+    os.utime(path, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+    py_compile.compile(str(path), doraise=True)
+    path.write_bytes(original)
+    os.utime(path, ns=(stamp.st_atime_ns, stamp.st_mtime_ns))
+    # Prove that the normal source loader would read different cached code.
+    loader = importlib.machinery.SourceFileLoader("mace_reference_adapter", str(path))
+    assert loader.get_code("mace_reference_adapter") != compile(
+        original, str(path), "exec", dont_inherit=True)
+
+
+@pytest.mark.parametrize("preloaded", [False, True])
+def test_poisoned_bytecode_never_supplies_admitted_bridge(tmp_path, monkeypatch, preloaded):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch = scratch_execution_tree(tmp_path, monkeypatch)
+    poison_bridge_cache(scratch)
+    if preloaded:
+        importlib.import_module("mace_reference_adapter")
+    calls = []
+    def construct(path):
+        calls.append(path)
+        return FakeCalculator()
+    if preloaded:
+        with pytest.raises(module.AdmissionError, match="preloaded|fresh"):
+            module._load_admitted_arm(root, attempt(tmp_path), constructor=construct,
+                                      expected_species=("H",) * 21)
+        assert calls == []
+    else:
+        arm, receipt = module._load_admitted_arm(
+            root, attempt(tmp_path), constructor=construct, expected_species=("H",) * 21)
+        assert len(calls) == 1
+        assert arm["checkpoint_identity_verified"] is False
+        assert receipt["live_identity_comparison"]["frozen_source_files"] == accepted_frozen_inventory()
+
+
+def test_clean_frozen_bridge_bound_before_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch_execution_tree(tmp_path, monkeypatch)
+    calls = []
+    def construct(path):
+        # A later fresh import would observe this substituted module instead.
+        from types import ModuleType
+        replacement = ModuleType("mace_reference_adapter")
+        replacement.calculator_arm = lambda *args, **kwargs: {"substituted": True}
+        monkeypatch.setitem(sys.modules, "mace_reference_adapter", replacement)
+        calls.append(path)
+        return FakeCalculator()
+    arm, receipt = module._load_admitted_arm(
+        root, attempt(tmp_path), constructor=construct, expected_species=("H",) * 21)
+    assert len(calls) == 1
+    assert arm["checkpoint_identity_verified"] is False
+    assert receipt["live_identity_comparison"]["frozen_source_files"] == accepted_frozen_inventory()
+
+
+def test_shadow_bridge_refused_without_execution_and_imports_rolled_back(tmp_path, monkeypatch):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    scratch_execution_tree(tmp_path, monkeypatch)
+    shadow = tmp_path / "shadow"
+    shadow.mkdir()
+    marker = tmp_path / "shadow-executed"
+    (shadow / "mace_reference_adapter.py").write_text(
+        "from pathlib import Path\n"
+        f"Path({str(marker)!r}).write_text('executed')\n"
+        "def calculator_arm(*args, **kwargs): return {'untrusted': True}\n")
+    monkeypatch.syspath_prepend(str(shadow))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="frozen|origin"):
+        module._load_admitted_arm(root, attempt(tmp_path),
+            constructor=lambda path: calls.append(path) or FakeCalculator(),
+            expected_species=("H",) * 21)
+    assert calls == []
+    assert not marker.exists()
+    assert all(name not in sys.modules for name in (
+        "evaluation", "evaluation.adapter", "mace_reference_adapter"))

@@ -47,7 +47,7 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     identities = wsl.get("identities", {})
     commit = identities.get("implementation_commit")
     files = identities.get("implementation_files")
-    from mace_loader import (REQUIRED_IMPLEMENTATION_FILES,
+    from mace_loader import (FROZEN_SOURCE_FILES, REQUIRED_IMPLEMENTATION_FILES,
                              _approved_identity_inventory, _hex_digest)
     if (not isinstance(commit, str) or len(commit) != 40
             or any(character not in "0123456789abcdef" for character in commit.lower())
@@ -64,6 +64,8 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     live = admission.get("live_identity_comparison", {})
     if live.get("platform") != approved["platform"] or live.get("packages") != approved["packages"]:
         raise ValueError("recorded runtime/package comparison differs from approval")
+    if live.get("frozen_source_files") != FROZEN_SOURCE_FILES:
+        raise ValueError("recorded frozen sources differ from the accepted baseline")
     recorded_sources = live.get("sources")
     if not isinstance(recorded_sources, list) or len(recorded_sources) != len(approved["sources"]):
         raise ValueError("recorded source comparison is incomplete")

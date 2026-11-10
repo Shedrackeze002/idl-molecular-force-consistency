@@ -44,3 +44,20 @@ directory bound and 16 MiB per-log bound. Timeout, overflow, partial output,
 identity refusal and numerical disagreement are retained and never retried or
 relabeled as success. The independent audit reads saved arrays only; it does
 not import or load MACE/Torch.
+
+
+## Frozen bridge identity
+
+Before model construction, the loader authenticates `evaluation/__init__.py`,
+`evaluation/adapter.py` and `scripts/mace_reference_adapter.py` against source
+snapshot `3fa5969e5a0c2fdeaebc76a05bace20799715203`. Their bytes remain unchanged.
+The worker requires a fresh interpreter with none of those modules preloaded.
+It checks standard import origins, then compiles the authenticated source bytes
+instead of reading bytecode caches. The verified bridge callable is retained
+through construction. Failed imports remove the modules inserted by this check.
+
+The admission receipt records the exact frozen file inventory. The saved audit
+requires that inventory, including its paths, sizes and hashes; older receipts
+without it do not establish this source authentication. These checks assume a
+controlled Python runtime, without hostile import hooks or concurrent code
+mutation. They do not establish numerical parity or complete launch approval.
