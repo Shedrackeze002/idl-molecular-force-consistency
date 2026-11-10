@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -48,7 +49,8 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     commit = identities.get("implementation_commit")
     files = identities.get("implementation_files")
     from mace_loader import (FROZEN_SOURCE_FILES, REQUIRED_IMPLEMENTATION_FILES,
-                             _approved_identity_inventory, _hex_digest)
+                             _approved_identity_inventory, _hex_digest,
+                             _validate_launch_binding, _validate_supervisor_binding)
     if (not isinstance(commit, str) or len(commit) != 40
             or any(character not in "0123456789abcdef" for character in commit.lower())
             or launch.get("implementation_commit") != commit
@@ -80,6 +82,14 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     for name, item in by_name.items():
         if item.get("sha256") != approved["sources"][name]["actual_sha256"]:
             raise ValueError("recorded source digest differs from approval")
+    try:
+        execution = _validate_launch_binding(launch, attempt_root)
+        if live.get("launch_identity") != execution:
+            raise ValueError("recorded launch identity differs from approval")
+        supervisor = json.loads((attempt_root / "supervisor-status.json").read_text())
+        _validate_supervisor_binding(supervisor, execution, _sha256(launch_path), running=False)
+    except RuntimeError as exc:
+        raise ValueError(f"saved launch binding is invalid: {exc}") from exc
     constructor = admission.get("constructor")
     expected_constructor = {"device": "cpu", "torch_threads": 1,
                             "default_dtype": "float64", "enable_cueq": False,
@@ -135,8 +145,10 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     supervisor = json.loads((attempt_root / "supervisor-status.json").read_text(encoding="utf-8"))
     if supervisor.get("status") != "WORKER_COMPLETED" or supervisor.get("exit_code") != 0:
         raise ValueError("operational supervisor result is not a successful bounded attempt")
-    if float(supervisor.get("elapsed_seconds", float("inf"))) > float(supervisor.get("timeout_seconds", 1800)):
-        raise ValueError("supervisor elapsed time exceeds the reviewed bound")
+    elapsed = supervisor.get("elapsed_seconds")
+    if (type(elapsed) not in (int, float) or not math.isfinite(elapsed) or elapsed < 0
+            or elapsed > 1800):
+        raise ValueError("supervisor elapsed time is invalid or exceeds the reviewed bound")
     from mace_loader import verify_packet
     packet = verify_packet(packet_root)
     inputs = validate_inputs(packet_root)

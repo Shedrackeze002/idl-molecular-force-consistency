@@ -1,5 +1,7 @@
 import json
 import hashlib
+import subprocess
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -44,7 +46,7 @@ def write_attempt(root, status="PARITY_PASS"):
     packet = {"status": "PACKET_VERIFIED", "manifest_sha256": "manifest",
               "model_sha256": digest(snapshot), "model_bytes": snapshot.stat().st_size}
     from mace_loader import REQUIRED_IMPLEMENTATION_FILES
-    from test_mace_loader import accepted_frozen_inventory
+    from test_mace_loader import accepted_frozen_inventory, write_launch_contract
     platform, packages, sources = approval_identity()
     wsl = {"status": "APPROVED", "identities": {
         "implementation_commit": "a" * 40,
@@ -56,14 +58,14 @@ def write_attempt(root, status="PARITY_PASS"):
         "authenticated_source_comparison": sources}
     wsl_path = root / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
-    launch = {"status": "APPROVED", "implementation_commit": "a" * 40,
+    launch = {"status": "APPROVED", "species": ["H"] * 21, "implementation_commit": "a" * 40,
               "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": digest(wsl_path)}
-    (root / "launch-receipt.json").write_text(json.dumps(launch))
+    execution = write_launch_contract(root, root.parent, launch)
     admission = root / "admission-receipt.json"
     admission.write_text(json.dumps({"status": "ADMITTED", "launch_receipt": launch,
         "wsl_admission": wsl, "packet": packet,
         "live_identity_comparison": {"platform": platform, "packages": packages,
-            "frozen_source_files": accepted_frozen_inventory(),
+            "frozen_source_files": accepted_frozen_inventory(), "launch_identity": execution,
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
                          "sha256": item["actual_sha256"]} for item in sources]},
         "constructor": {"device": "cpu", "torch_threads": 1,
@@ -83,9 +85,11 @@ def write_attempt(root, status="PARITY_PASS"):
               "final_model_snapshot": {"path": str(snapshot), "bytes": snapshot.stat().st_size,
                                        "sha256": digest(snapshot)}}
     (root / "parity-status.json").write_text(json.dumps(parity))
-    (root / "supervisor-status.json").write_text(json.dumps(
-        {"status": "WORKER_COMPLETED", "exit_code": 0, "elapsed_seconds": 1,
-         "timeout_seconds": 1800}))
+    supervisor = json.loads((root / "supervisor-status.json").read_text())
+    supervisor.update(status="WORKER_COMPLETED", exit_code=0, elapsed_seconds=1,
+                      stdout_bytes=0, stderr_bytes=0,
+                      output_bytes=sum(p.stat().st_size for p in root.rglob("*") if p.is_file()))
+    (root / "supervisor-status.json").write_text(json.dumps(supervisor))
     return packet
 
 
@@ -234,7 +238,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     from ase.calculators.calculator import Calculator, all_changes
     import check_mace_parity as worker
     import mace_loader as loader
-    from test_mace_loader import isolate_frozen_imports
+    from test_mace_loader import isolate_frozen_imports, write_launch_contract, bind_worker_argv
     isolate_frozen_imports(monkeypatch)
 
     class ZeroCalculator(Calculator):
@@ -255,10 +259,12 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     attempt = tmp_path / "integrated-attempt"
     attempt.mkdir()
     platform, packages, sources = approval_identity()
-    implementation_files = {name: {"bytes": 1, "sha256": "b" * 64}
+    repo = Path(loader.__file__).resolve().parent.parent
+    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+    implementation_files = {name: {"bytes": (repo / name).stat().st_size, "sha256": digest(repo / name)}
                             for name in loader.REQUIRED_IMPLEMENTATION_FILES}
     wsl = {"status": "APPROVED", "identities": {
-        "implementation_commit": "a" * 40, "implementation_files": implementation_files},
+        "implementation_commit": commit, "implementation_files": implementation_files},
         "platform": platform,
         "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
         "installed_package_versions": packages,
@@ -266,9 +272,10 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     wsl_path = attempt / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
     launch = {"status": "APPROVED", "species": ["H"] * 21,
-              "implementation_commit": "a" * 40, "wsl_admission_receipt": "wsl.json",
+              "implementation_commit": commit, "wsl_admission_receipt": "wsl.json",
               "wsl_admission_sha256": digest(wsl_path)}
-    (attempt / "launch-receipt.json").write_text(json.dumps(launch))
+    write_launch_contract(attempt, packet_root, launch)
+    bind_worker_argv(monkeypatch, launch)
     live = {"platform": platform, "packages": packages,
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
                          "sha256": item["actual_sha256"]} for item in sources]}
@@ -276,7 +283,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(loader, "MODEL_SHA256", digest(model))
     monkeypatch.setattr(loader, "MODEL_BYTES", model.stat().st_size)
     monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
-    monkeypatch.setattr(loader, "_approved_launch", lambda root: (launch, wsl, live))
+    monkeypatch.setattr(loader, "_live_admission_check", lambda approval: live)
     monkeypatch.setattr(loader, "_construct_calculator", lambda snapshot: ZeroCalculator())
     monkeypatch.setattr(worker, "validate_inputs", lambda root: fixture_inputs())
     result = worker.run_parity(packet_root, attempt)
@@ -284,9 +291,11 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     receipt = json.loads((attempt / "admission-receipt.json").read_text())
     assert receipt["model_snapshot"]["model_sha256"] == digest(model)
 
-    (attempt / "supervisor-status.json").write_text(json.dumps(
-        {"status": "WORKER_COMPLETED", "exit_code": 0, "elapsed_seconds": 1,
-         "timeout_seconds": 1800}))
+    supervisor = json.loads((attempt / "supervisor-status.json").read_text())
+    supervisor.update(status="WORKER_COMPLETED", exit_code=0, elapsed_seconds=1,
+                      stdout_bytes=0, stderr_bytes=0,
+                      output_bytes=sum(p.stat().st_size for p in attempt.rglob("*") if p.is_file()))
+    (attempt / "supervisor-status.json").write_text(json.dumps(supervisor))
     monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
     audited = module.audit_saved_parity(packet_root, attempt)
     assert audited["parity"]["status"] == "PARITY_PASS"
@@ -317,3 +326,46 @@ def test_saved_audit_requires_exact_frozen_sources(tmp_path, monkeypatch, damage
     with pytest.raises(ValueError, match="frozen"):
         module.audit_saved_parity(tmp_path, attempt)
     assert not (attempt / "independent-audit.json").exists()
+
+
+@pytest.mark.parametrize("damage", ["command", "resources", "missing-flag", "synthetic", "fresh", "launch-hash", "negative-time", "nan-time", "live-identity", "review-semantic", "size-output", "size-stdout", "size-stderr", "size-bool"])
+def test_saved_audit_requires_bound_launch(tmp_path, monkeypatch, damage):
+    target = tmp_path / "attempt"; packet = write_attempt(target)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    sp = target / "supervisor-status.json"; supervisor = json.loads(sp.read_text())
+    if damage == "command": supervisor["command"][1] = "/other/check_mace_parity.py"
+    elif damage == "resources": supervisor["timeout_seconds"] = 3600
+    elif damage == "missing-flag": del supervisor["synthetic_command"]
+    elif damage == "synthetic": supervisor["synthetic_command"] = True
+    elif damage == "fresh": supervisor["fresh_output"] = False
+    elif damage == "launch-hash": supervisor["launch_receipt_sha256"] = "0" * 64
+    elif damage == "negative-time": supervisor["elapsed_seconds"] = -1
+    elif damage == "nan-time": supervisor["elapsed_seconds"] = float("nan")
+    elif damage == "size-output": supervisor["output_bytes"] = 268435457
+    elif damage == "size-stdout": supervisor["stdout_bytes"] = 16777217
+    elif damage == "size-stderr": supervisor["stderr_bytes"] = -1
+    elif damage == "size-bool": supervisor["output_bytes"] = True
+    else:
+        ap=target / "admission-receipt.json"; admission=json.loads(ap.read_text())
+        if damage == "live-identity": admission["live_identity_comparison"]["launch_identity"]["python_sha256"] = "0" * 64
+        else:
+            lp=target / "launch-receipt.json"; launch=json.loads(lp.read_text()); ref=launch["reviews"][0]
+            rp=target / ref["path"]; review=json.loads(rp.read_text()); review["unresolved_findings"]=1
+            rp.write_text(json.dumps(review)); ref["sha256"]=digest(rp); lp.write_text(json.dumps(launch))
+            supervisor["launch_receipt_sha256"]=digest(lp); admission["launch_receipt"]=launch
+        ap.write_text(json.dumps(admission)); pp=target / "parity-status.json"; parity=json.loads(pp.read_text()); parity["admission_receipt_sha256"]=digest(ap); pp.write_text(json.dumps(parity))
+    sp.write_text(json.dumps(supervisor))
+    with pytest.raises(ValueError, match="launch|supervisor|elapsed|review"):
+        module.audit_saved_parity(tmp_path, target)
+
+
+def test_saved_launch_audit_does_not_use_current_interpreter_or_worker(tmp_path, monkeypatch):
+    import mace_loader as loader
+    target=tmp_path / "attempt"; packet=write_attempt(target)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
+    monkeypatch.setattr(loader.sys, "executable", "/unavailable/auditing-host/python")
+    monkeypatch.setattr(loader, "__file__", "/unavailable/auditing-host/scripts/mace_loader.py")
+    result=module.audit_saved_parity(tmp_path,target)
+    assert result["parity"]["status"] == "PARITY_PASS"

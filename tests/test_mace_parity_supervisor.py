@@ -108,3 +108,58 @@ def test_term_ignoring_child_is_killed_after_leader_exits(tmp_path):
     child_pid = int(pidfile.read_text())
     with pytest.raises(ProcessLookupError):
         os.kill(child_pid, 0)
+
+
+@pytest.mark.parametrize("damage", ["command", "executable", "resources", "review", "actual-resource-type", "parity-status.json.tmp", "predictions.npz.tmp.npz", "predictions-partial.npz.tmp.npz"])
+def test_production_binding_refuses_before_spawn(tmp_path, monkeypatch, damage):
+    from test_mace_loader import write_launch_contract, sha
+    approvals=tmp_path / "approvals"; approvals.mkdir()
+    output=tmp_path / "output"
+    admission=approvals / "wsl.json"; admission.write_text('{}')
+    launch={"status":"APPROVED", "species":["H"]*21, "implementation_commit":"a"*40,
+            "wsl_admission_receipt":"wsl.json", "wsl_admission_sha256":sha(admission)}
+    write_launch_contract(approvals,tmp_path,launch,output=output)
+    if damage == "command": launch["command"][1]="/different/check_mace_parity.py"
+    elif damage == "executable": launch["python_executable"]="/not/the/interpreter"
+    elif damage == "resources": launch["resources"]["timeout_seconds"]=3600
+    elif damage == "review": launch["reviews"][0]["sha256"]="0"*64
+    elif damage != "actual-resource-type":
+        ref=launch["reviews"][0]; (approvals / ref["path"]).rename(approvals / damage); ref["path"]=damage
+    lp=approvals / "launch-receipt.json"; lp.write_text(json.dumps(launch))
+    calls=[]
+    def forbidden(*args,**kwargs):
+        calls.append(args)
+        raise OSError("spawn must not occur")
+    monkeypatch.setattr(module.subprocess,"Popen",forbidden)
+    result=module.supervise(tmp_path,output,timeout=1800.0 if damage == "actual-resource-type" else 1800,launch_receipt=lp,wsl_admission_receipt=admission)
+    assert result["status"] == "SETUP_FAILED"
+    assert calls == []
+
+
+
+def test_valid_production_launch_records_actual_binding(tmp_path, monkeypatch):
+    from test_mace_loader import write_launch_contract, sha
+    approvals = tmp_path / "approvals"; approvals.mkdir()
+    output = tmp_path / "output"
+    admission = approvals / "wsl.json"; admission.write_text('{}')
+    launch = {"status": "APPROVED", "species": ["H"] * 21, "implementation_commit": "a" * 40,
+              "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": sha(admission)}
+    write_launch_contract(approvals, tmp_path, launch, output=output)
+    class CompletedProcess:
+        returncode = 0
+        def poll(self): return 0
+    def spawn(argv, **kwargs):
+        running = json.loads((output / "supervisor-status.json").read_text())
+        assert running["status"] == "RUNNING"
+        assert running["command"] == argv == launch["command"]
+        assert running["launch_receipt_sha256"] == sha(approvals / "launch-receipt.json")
+        assert running["fresh_output"] is True
+        assert running["synthetic_command"] is False
+        return CompletedProcess()
+    monkeypatch.setattr(module.subprocess, "Popen", spawn)
+    monkeypatch.setattr(module, "_group_alive", lambda process: False)
+    result = module.supervise(tmp_path, output,
+        launch_receipt=approvals / "launch-receipt.json", wsl_admission_receipt=admission)
+    assert result["status"] == "WORKER_COMPLETED"
+    assert result["command"] == launch["command"]
+    assert all((output / ref["path"]).is_file() for ref in [launch["plan"], *launch["reviews"]])

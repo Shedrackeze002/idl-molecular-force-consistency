@@ -73,7 +73,9 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
     worker = command
     receipt = {"status": "RUNNING", "command": command, "timeout_seconds": timeout,
                "output_limit_bytes": OUTPUT_BYTES, "log_limit_bytes": LOG_BYTES,
-               "started_unix": time.time()}
+               "cleanup_seconds": CLEANUP_SECONDS, "started_unix": time.time(),
+               "packet_root": str(Path(packet_root).resolve()), "attempt_root": str(output.resolve()),
+               "fresh_output": True, "synthetic_command": command is not None}
     status_path = output / "supervisor-status.json"
     status_path.write_text(json.dumps(receipt, indent=2) + "\n")
     if command is None:
@@ -92,12 +94,27 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
             admission_name = launch.get("wsl_admission_receipt")
             if not isinstance(admission_name, str) or Path(admission_name).name != admission_name:
                 raise ValueError("launch receipt must use a local WSL admission receipt filename")
-            shutil.copyfile(launch_source, output / "launch-receipt.json")
-            shutil.copyfile(admission_source, output / admission_name)
-        worker = command or [sys.executable, str(Path(__file__).with_name("check_mace_parity.py")),
+            from mace_loader import (_launch_approval_refs, _regular_file, _sha256,
+                                     _validate_launch_binding, _validate_live_invocation)
+            refs = _launch_approval_refs(launch)
+            shutil.copyfile(_regular_file(launch_source.parent, Path(launch_source.name)),
+                            output / "launch-receipt.json")
+            for ref in refs:
+                source = admission_source if ref["path"] == admission_name else launch_source.parent / ref["path"]
+                shutil.copyfile(_regular_file(source.parent, Path(source.name)), output / ref["path"])
+            execution = _validate_launch_binding(launch, output)
+            _validate_live_invocation(execution, Path(packet_root), output, worker=False)
+            actual_resources = {"timeout_seconds": timeout, "cleanup_seconds": CLEANUP_SECONDS,
+                                "output_limit_bytes": OUTPUT_BYTES, "log_limit_bytes": LOG_BYTES}
+            if (actual_resources != execution["resources"]
+                    or any(type(value) is not int for value in actual_resources.values())):
+                raise ValueError("launch resources differ from actual supervisor settings")
+            receipt["launch_receipt_sha256"] = _sha256(output / "launch-receipt.json")
+        worker = command or [sys.executable, str(Path(__file__).resolve().with_name("check_mace_parity.py")),
                              "--packet-root", str(Path(packet_root).resolve()),
                              "--attempt-root", str(output.resolve())]
         receipt["command"] = worker
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
         if time.monotonic() - started > timeout:
             reason = "TIMEOUT"
         creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0

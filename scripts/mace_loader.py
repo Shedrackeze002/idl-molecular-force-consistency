@@ -57,6 +57,19 @@ FROZEN_SOURCE_FILES = {
 }
 
 
+LAUNCH_RESOURCES = {"timeout_seconds": 1800, "cleanup_seconds": 10,
+                    "output_limit_bytes": 256 * 1024 * 1024,
+                    "log_limit_bytes": 16 * 1024 * 1024}
+EXECUTION_FIELDS = ("implementation_commit", "python_executable", "python_sha256",
+                    "command", "packet_root", "attempt_root", "resources",
+                    "wsl_admission_sha256", "species")
+_RESERVED_APPROVAL_NAMES = {"launch-receipt.json", "supervisor-status.json", "stdout.log",
+                            "stderr.log", "admission-receipt.json", "parity-status.json",
+                            "independent-audit.json", "predictions.npz", "predictions-partial.npz",
+                            "private", "parity-status.json.tmp", "predictions.npz.tmp.npz",
+                            "predictions-partial.npz.tmp.npz"}
+
+
 class AdmissionError(RuntimeError):
     """A stable refusal raised before any real model construction."""
 
@@ -239,7 +252,130 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
 
 
-def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+
+def _launch_approval_refs(launch: dict[str, Any]) -> list[dict[str, str]]:
+    """Only distinct local approval files may be copied into the fresh attempt."""
+    plan, reviews = launch.get("plan"), launch.get("reviews")
+    if not isinstance(plan, dict) or not isinstance(reviews, list) or len(reviews) != 2:
+        raise AdmissionError("launch requires a plan and two implementation reviews")
+    refs = [{"path": launch.get("wsl_admission_receipt"),
+             "sha256": launch.get("wsl_admission_sha256")}, plan, *reviews]
+    seen = set()
+    for ref in refs:
+        if (not isinstance(ref, dict) or set(ref) != {"path", "sha256"}
+                or not isinstance(ref["path"], str) or not ref["path"]
+                or Path(ref["path"]).name != ref["path"] or ref["path"] in {".", ".."}
+                or ref["path"] in seen or ref["path"] in _RESERVED_APPROVAL_NAMES
+                or not _hex_digest(ref["sha256"])):
+            raise AdmissionError("launch approval references are malformed, reserved or duplicated")
+        seen.add(ref["path"])
+    return refs
+
+
+def _validate_launch_binding(launch: dict[str, Any], attempt_root: Path) -> dict[str, Any]:
+    """Validate retained execution/approval facts without consulting this host."""
+    try:
+        if (type(launch.get("launch_schema")) is not int or launch["launch_schema"] != 1
+                or launch.get("status") not in APPROVED_STATUSES):
+            raise AdmissionError("launch schema or approval is incomplete")
+        execution = {key: launch[key] for key in EXECUTION_FIELDS}
+        if re.fullmatch(r"[0-9a-f]{40}", execution["implementation_commit"]) is None:
+            raise AdmissionError("launch implementation identity is malformed")
+        for key in ("python_executable", "packet_root", "attempt_root"):
+            value = execution[key]
+            if (not isinstance(value, str) or not Path(value).is_absolute()
+                    or str(Path(value)) != value or ".." in Path(value).parts):
+                raise AdmissionError(f"launch {key} must be a canonical absolute path")
+        if not _hex_digest(execution["python_sha256"]):
+            raise AdmissionError("launch executable digest is missing")
+        command = execution["command"]
+        if (not isinstance(command, list) or len(command) != 6
+                or not all(isinstance(value, str) for value in command)
+                or not Path(command[1]).is_absolute() or str(Path(command[1])) != command[1]
+                or ".." in Path(command[1]).parts or Path(command[1]).name != "check_mace_parity.py"
+                or command != [execution["python_executable"], command[1], "--packet-root",
+                               execution["packet_root"], "--attempt-root", execution["attempt_root"]]):
+            raise AdmissionError("launch command differs from the bounded worker contract")
+        resources = execution["resources"]
+        if (not isinstance(resources, dict) or resources != LAUNCH_RESOURCES
+                or any(type(value) is not int for value in resources.values())):
+            raise AdmissionError("launch resources differ from the fixed bounds")
+        species = execution["species"]
+        if not isinstance(species, list) or len(species) != 21 or not all(isinstance(x, str) for x in species):
+            raise AdmissionError("launch species identity is malformed")
+        refs = _launch_approval_refs(launch)
+        documents = {}
+        for ref in refs:
+            path = _regular_file(attempt_root, Path(ref["path"]))
+            if _sha256(path) != ref["sha256"]:
+                raise AdmissionError(f"launch approval file digest differs: {ref['path']}")
+            documents[ref["path"]] = json.loads(path.read_text(encoding="utf-8"))
+        plan = documents[launch["plan"]["path"]]
+        if plan != execution:
+            changed = [key for key in EXECUTION_FIELDS if not isinstance(plan, dict) or plan.get(key) != execution[key]]
+            raise AdmissionError(f"launch plan differs from execution identity: {changed}")
+        reviewers = set()
+        for ref in launch["reviews"]:
+            review = documents[ref["path"]]
+            reviewer = review.get("reviewer_id") if isinstance(review, dict) else None
+            if (not isinstance(reviewer, str) or not reviewer.strip() or reviewer != reviewer.strip()
+                    or reviewer in reviewers or review.get("status") not in APPROVED_STATUSES
+                    or review.get("implementation_commit") != execution["implementation_commit"]
+                    or review.get("plan_sha256") != launch["plan"]["sha256"]
+                    or type(review.get("unresolved_findings")) is not int or review["unresolved_findings"] != 0):
+                raise AdmissionError("launch implementation review is unresolved, duplicated or not bound")
+            reviewers.add(reviewer)
+        return execution
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        raise AdmissionError(f"launch binding is malformed: {exc}") from exc
+
+
+def _validate_live_invocation(execution: dict[str, Any], packet_root: Path,
+                              attempt_root: Path, *, worker: bool) -> None:
+    expected = [sys.executable, str(Path(__file__).resolve().with_name("check_mace_parity.py")),
+                "--packet-root", str(packet_root.resolve()), "--attempt-root", str(attempt_root.resolve())]
+    if (execution["command"] != expected or execution["python_executable"] != sys.executable
+            or execution["python_sha256"] != _sha256(Path(sys.executable))):
+        raise AdmissionError("launch interpreter, command or roots differ from live invocation")
+    if worker and (getattr(sys, "orig_argv", None) != expected or sys.argv != expected[1:]):
+        raise AdmissionError("launch argv or interpreter options differ from the approved invocation")
+
+
+def _validate_supervisor_binding(supervisor: dict[str, Any], execution: dict[str, Any],
+                                 launch_sha256: str, *, running: bool) -> None:
+    if (supervisor.get("status") != ("RUNNING" if running else "WORKER_COMPLETED")
+            or supervisor.get("fresh_output") is not True
+            or supervisor.get("synthetic_command") is not False
+            or supervisor.get("launch_receipt_sha256") != launch_sha256
+            or any(supervisor.get(key) != execution[key] for key in ("command", "packet_root", "attempt_root"))
+            or any(type(supervisor.get(key)) is not int or supervisor[key] != value
+                   for key, value in LAUNCH_RESOURCES.items())):
+        raise AdmissionError("launch supervisor binding is missing or contradictory")
+    if not running:
+        for key, limit in (("output_bytes", LAUNCH_RESOURCES["output_limit_bytes"]),
+                           ("stdout_bytes", LAUNCH_RESOURCES["log_limit_bytes"]),
+                           ("stderr_bytes", LAUNCH_RESOURCES["log_limit_bytes"])):
+            value = supervisor.get(key)
+            if type(value) is not int or not 0 <= value <= limit:
+                raise AdmissionError(f"launch supervisor observed byte count is invalid: {key}")
+
+
+def _live_launch_context(launch: dict[str, Any], attempt_root: Path,
+                         packet_root: Path) -> dict[str, Any]:
+    execution = _validate_launch_binding(launch, attempt_root)
+    _validate_live_invocation(execution, packet_root, attempt_root, worker=True)
+    supervisor = json.loads(_regular_file(attempt_root, Path("supervisor-status.json")).read_text())
+    _validate_supervisor_binding(supervisor, execution,
+                                 _sha256(attempt_root / "launch-receipt.json"), running=True)
+    allowed = {ref["path"] for ref in _launch_approval_refs(launch)} | {
+        "launch-receipt.json", "supervisor-status.json", "stdout.log", "stderr.log"}
+    if any(path.name not in allowed or path.is_symlink() or not path.is_file()
+           for path in attempt_root.iterdir()):
+        raise AdmissionError("launch attempt contains prior results or unexpected members")
+    return execution
+
+
+def _approved_launch(attempt_root: Path, *, packet_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     launch_path = _regular_file(attempt_root, Path("launch-receipt.json"))
     try:
         launch = json.loads(launch_path.read_text(encoding="utf-8"))
@@ -281,7 +417,9 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
         if (not isinstance(receipt, dict) or not path.is_file()
                 or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
             raise AdmissionError(f"execution source differs from approval: {relative}")
-    return launch, admission, _live_admission_check(admission)
+    live = _live_admission_check(admission)
+    live["launch_identity"] = _live_launch_context(launch, attempt_root, packet_root)
+    return launch, admission, live
 
 
 
@@ -358,7 +496,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                        constructor: Callable[[Path], Any],
                        expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
     packet = verify_packet(packet_root)
-    launch, admission, live = _approved_launch(Path(attempt_root))
+    launch, admission, live = _approved_launch(Path(attempt_root), packet_root=Path(packet_root))
     calculator_arm, frozen_sources = _authenticated_bridge()
     live = {**live, "frozen_source_files": frozen_sources}
     species = launch.get("species")

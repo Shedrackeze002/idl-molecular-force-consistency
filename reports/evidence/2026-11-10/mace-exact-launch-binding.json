@@ -1,0 +1,93 @@
+{
+  "checks": [
+    "Complete launch schema, absolute interpreter path and executable digest, exact worker invocation and packet/output roots.",
+    "Full orig_argv including Python options plus worker argv match before construction.",
+    "Fixed supervisor resource values and fresh output; explicit production provenance.",
+    "Exact reviewed execution plan plus two distinct resolved review records with byte hashes.",
+    "Saved live/supervisor/approval agreement without substituting the auditing host interpreter.",
+    "Reserved final and temporary worker output names cannot overwrite approval records.",
+    "Saved observed byte counters must be nonnegative integers within the recorded limits; production supervisor settings use the same strict integer types."
+  ],
+  "commands": {
+    "focused": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:scripts python -m pytest -q tests/test_mace_loader.py tests/test_mace_parity.py tests/test_mace_parity_supervisor.py tests/test_mace_parity_audit.py tests/test_mace_reference_adapter.py tests/test_shape_recovery_runner.py tests/test_shape_recovery_outcomes.py tests/test_shape_recovery_report.py -p no:cacheprovider",
+    "project": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:scripts python -m pytest -q -p no:cacheprovider"
+  },
+  "date": "2026-11-10",
+  "implementation_base": "aa8adfb543671d02084b8fb50052cc383ee70073",
+  "limits": [
+    "Synthetic packet bytes and calculator doubles only. No actual MACE checkpoint deserialization, inference or scientific run.",
+    "Local approval hashes and labels establish trusted-record consistency, not cryptographic proof of human authorization.",
+    "Historical minimal receipts do not satisfy this contract; no current PROPOSED admission or launch record was promoted.",
+    "Runtime/platform admission, exact-commit implementation acceptance and explicit bounded launch authorization remain separate gates.",
+    "Numerical parity and molecular recovery remain unestablished by these tests.",
+    "Frozen movement-cap source and approved launch records remain unchanged."
+  ],
+  "resources": {
+    "cleanup_seconds": 10,
+    "log_limit_bytes": 16777216,
+    "output_limit_bytes": 268435456,
+    "timeout_seconds": 1800
+  },
+  "schema": 1,
+  "scope": "Exact launch, supervisor and saved-admission identity consistency; no numerical model result",
+  "status": "SYNTHETIC_REGRESSION_PASSED",
+  "unchanged_frozen_sources": {
+    "baseline": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+    "unchanged": {
+      "evaluation/__init__.py": {
+        "bytes": 220,
+        "sha256": "919da2d40e815006ac70cd1e8862b78db10ac72ed0a32ee8dba375b813ccf18e"
+      },
+      "evaluation/adapter.py": {
+        "bytes": 14497,
+        "sha256": "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5"
+      },
+      "scripts/mace_reference_adapter.py": {
+        "bytes": 4694,
+        "sha256": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759"
+      }
+    }
+  },
+  "verification": {
+    "default_project_suite": {
+      "exit_code": 0,
+      "passed": 493,
+      "seconds": 266.95,
+      "skipped": 12
+    },
+    "final_review": {
+      "findings": [
+        "Approval filenames overlapped worker temporary output names.",
+        "Saved observed byte counts were not checked against resource limits.",
+        "Numerically equal float supervisor settings passed pre-spawn checks but failed worker checks."
+      ],
+      "independently_passed": 123,
+      "resolution": "All findings corrected in one test-first pass; eleven new counterexamples failed before correction and passed after it. Expanded regression suite passed. No second independent review is claimed.",
+      "skipped": 1,
+      "verdict": "REQUIRED_CHANGES",
+      "warnings": 1
+    },
+    "first_full_regression": {
+      "failed": 1,
+      "failure": "Legacy integration fixture replaced _approved_launch with an obsolete one-argument lambda. Removed the bypass and exercised the actual launch checks with synthetic installed metadata.",
+      "passed": 258,
+      "skipped": 3
+    },
+    "focused_regression": {
+      "exit_code": 0,
+      "passed": 285,
+      "seconds": 8.78,
+      "skipped": 3,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "pre_final_review_regression": {
+      "exit_code": 0,
+      "passed": 273,
+      "skipped": 3,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "red_counterexamples": 37
+  }
+}

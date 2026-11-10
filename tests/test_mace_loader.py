@@ -91,7 +91,49 @@ def packet(tmp_path, monkeypatch):
     return root
 
 
-def attempt(tmp_path):
+
+RESOURCE_FIXTURE = {"timeout_seconds": 1800, "cleanup_seconds": 10,
+                    "output_limit_bytes": 268435456, "log_limit_bytes": 16777216}
+EXECUTION_FIXTURE_FIELDS = ("implementation_commit", "python_executable", "python_sha256",
+                            "command", "packet_root", "attempt_root", "resources",
+                            "wsl_admission_sha256", "species")
+
+
+def write_launch_contract(root, packet_root, launch, *, output=None):
+    """Construct independent synthetic trusted approval records, never a real approval."""
+    import mace_loader as module
+    output = (output or root).resolve()
+    launch.update(launch_schema=1, python_executable=sys.executable,
+                  python_sha256=sha(Path(sys.executable)),
+                  packet_root=str(packet_root.resolve()), attempt_root=str(output),
+                  resources=dict(RESOURCE_FIXTURE))
+    launch["command"] = [sys.executable,
+        str(Path(module.__file__).resolve().with_name("check_mace_parity.py")),
+        "--packet-root", launch["packet_root"], "--attempt-root", launch["attempt_root"]]
+    execution = {key: launch[key] for key in EXECUTION_FIXTURE_FIELDS}
+    (root / "launch-plan.json").write_text(json.dumps(execution))
+    launch["plan"] = {"path": "launch-plan.json", "sha256": sha(root / "launch-plan.json")}
+    launch["reviews"] = []
+    for index in (1, 2):
+        name = f"implementation-review-{index}.json"
+        (root / name).write_text(json.dumps({"status": "APPROVED", "reviewer_id": f"reviewer-{index}",
+            "implementation_commit": launch["implementation_commit"],
+            "plan_sha256": launch["plan"]["sha256"], "unresolved_findings": 0}))
+        launch["reviews"].append({"path": name, "sha256": sha(root / name)})
+    (root / "launch-receipt.json").write_text(json.dumps(launch))
+    running = {"status": "RUNNING", "synthetic_command": False, "fresh_output": True,
+               "command": launch["command"], "packet_root": launch["packet_root"],
+               "attempt_root": launch["attempt_root"],
+               "launch_receipt_sha256": sha(root / "launch-receipt.json"), **RESOURCE_FIXTURE}
+    (root / "supervisor-status.json").write_text(json.dumps(running))
+    return execution
+
+
+def bind_worker_argv(monkeypatch, launch):
+    monkeypatch.setattr(sys, "argv", launch["command"][1:])
+    monkeypatch.setattr(sys, "orig_argv", list(launch["command"]))
+
+def attempt(tmp_path, monkeypatch):
     import mace_loader as module
     root = tmp_path / "attempt"
     root.mkdir()
@@ -107,7 +149,8 @@ def attempt(tmp_path):
               "implementation_commit": commit,
               "wsl_admission_receipt": admission.name,
               "wsl_admission_sha256": sha(admission)}
-    (root / "launch-receipt.json").write_text(json.dumps(launch), encoding="utf-8")
+    write_launch_contract(root, tmp_path / "packet", launch)
+    bind_worker_argv(monkeypatch, launch)
     return root
 
 
@@ -117,7 +160,7 @@ def test_rejects_tampered_manifest_before_constructor(tmp_path, monkeypatch):
     (root / "MANIFEST.json").write_text("{}", encoding="utf-8")
     calls = []
     with pytest.raises(module.AdmissionError, match="manifest SHA"):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch), constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -128,7 +171,7 @@ def test_rejects_symlink_or_wrong_model_before_constructor(tmp_path, monkeypatch
     (root / module.MODEL_RELATIVE).write_bytes(b"tampered")
     calls = []
     with pytest.raises(module.AdmissionError):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch), constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -136,7 +179,7 @@ def test_rejects_symlink_or_wrong_model_before_constructor(tmp_path, monkeypatch
 def test_environment_refusal_precedes_constructor(tmp_path, monkeypatch):
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
-    target = attempt(tmp_path)
+    target = attempt(tmp_path, monkeypatch)
     receipt = target / "wsl-admission.json"
     receipt.write_text(json.dumps({"status": "PROPOSED"}), encoding="utf-8")
     launch = json.loads((target / "launch-receipt.json").read_text())
@@ -152,7 +195,7 @@ def test_environment_refusal_precedes_constructor(tmp_path, monkeypatch):
 def test_constructs_from_verified_snapshot_path(tmp_path, monkeypatch):
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
-    target = attempt(tmp_path)
+    target = attempt(tmp_path, monkeypatch)
     calls = []
     arm, receipt = module._load_admitted_arm(
         root, target, constructor=lambda path: calls.append(path) or FakeCalculator(),
@@ -168,7 +211,7 @@ def test_constructs_from_verified_snapshot_path(tmp_path, monkeypatch):
 def test_invalid_or_reordered_species_refused_before_constructor(tmp_path, monkeypatch, species):
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
-    target = attempt(tmp_path)
+    target = attempt(tmp_path, monkeypatch)
     launch_path = target / "launch-receipt.json"
     launch = json.loads(launch_path.read_text())
     launch["species"] = species
@@ -190,7 +233,7 @@ def test_incomplete_live_identity_receipt_refused():
 def test_incomplete_implementation_identity_refused_before_constructor(tmp_path, monkeypatch, damage):
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
-    target = attempt(tmp_path)
+    target = attempt(tmp_path, monkeypatch)
     admission_path = target / "wsl-admission.json"
     admission = json.loads(admission_path.read_text())
     if damage == "commit":
@@ -249,7 +292,7 @@ def test_rejects_version_map_only_noncore_pin_before_constructor(tmp_path, monke
     import mace_loader as module
     real_live_check = module._live_admission_check
     root = packet(tmp_path, monkeypatch)
-    target = attempt(tmp_path)
+    target = attempt(tmp_path, monkeypatch)
     approved = json.loads((target / "wsl-admission.json").read_text())
     approved.update(canonical_admission(module))
     installed = tmp_path / "installed"
@@ -336,7 +379,7 @@ def test_changed_frozen_source_refused_before_constructor(tmp_path, monkeypatch,
     path.write_bytes(data.replace(b"a", b"b", 1))
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen"):
-        module._load_admitted_arm(root, attempt(tmp_path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch),
             constructor=lambda path: calls.append(path) or FakeCalculator(),
             expected_species=("H",) * 21)
     assert calls == []
@@ -361,7 +404,7 @@ def test_nonregular_frozen_source_refused_before_constructor(tmp_path, monkeypat
             path.symlink_to(other)
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen"):
-        module._load_admitted_arm(root, attempt(tmp_path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch),
             constructor=lambda path: calls.append(path) or FakeCalculator(),
             expected_species=("H",) * 21)
     assert calls == []
@@ -376,7 +419,7 @@ def test_preloaded_frozen_module_refused_before_constructor(tmp_path, monkeypatc
     importlib.import_module(name)
     calls = []
     with pytest.raises(module.AdmissionError, match="preloaded|fresh"):
-        module._load_admitted_arm(root, attempt(tmp_path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch),
             constructor=lambda path: calls.append(path) or FakeCalculator(),
             expected_species=("H",) * 21)
     assert calls == []
@@ -413,12 +456,12 @@ def test_poisoned_bytecode_never_supplies_admitted_bridge(tmp_path, monkeypatch,
         return FakeCalculator()
     if preloaded:
         with pytest.raises(module.AdmissionError, match="preloaded|fresh"):
-            module._load_admitted_arm(root, attempt(tmp_path), constructor=construct,
+            module._load_admitted_arm(root, attempt(tmp_path, monkeypatch), constructor=construct,
                                       expected_species=("H",) * 21)
         assert calls == []
     else:
         arm, receipt = module._load_admitted_arm(
-            root, attempt(tmp_path), constructor=construct, expected_species=("H",) * 21)
+            root, attempt(tmp_path, monkeypatch), constructor=construct, expected_species=("H",) * 21)
         assert len(calls) == 1
         assert arm["checkpoint_identity_verified"] is False
         assert receipt["live_identity_comparison"]["frozen_source_files"] == accepted_frozen_inventory()
@@ -438,7 +481,7 @@ def test_clean_frozen_bridge_bound_before_constructor(tmp_path, monkeypatch):
         calls.append(path)
         return FakeCalculator()
     arm, receipt = module._load_admitted_arm(
-        root, attempt(tmp_path), constructor=construct, expected_species=("H",) * 21)
+        root, attempt(tmp_path, monkeypatch), constructor=construct, expected_species=("H",) * 21)
     assert len(calls) == 1
     assert arm["checkpoint_identity_verified"] is False
     assert receipt["live_identity_comparison"]["frozen_source_files"] == accepted_frozen_inventory()
@@ -458,10 +501,142 @@ def test_shadow_bridge_refused_without_execution_and_imports_rolled_back(tmp_pat
     monkeypatch.syspath_prepend(str(shadow))
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen|origin"):
-        module._load_admitted_arm(root, attempt(tmp_path),
+        module._load_admitted_arm(root, attempt(tmp_path, monkeypatch),
             constructor=lambda path: calls.append(path) or FakeCalculator(),
             expected_species=("H",) * 21)
     assert calls == []
     assert not marker.exists()
     assert all(name not in sys.modules for name in (
         "evaluation", "evaluation.adapter", "mace_reference_adapter"))
+
+
+@pytest.mark.parametrize("damage", ["missing-command", "executable", "executable-sha", "command", "output", "packet", "resources", "plan-hash", "review-hash", "duplicate-review", "review-pending", "review-findings", "review-plan", "plan-command", "reserved-path", "prior-output", "supervisor-command", "supervisor-resources", "supervisor-synthetic", "supervisor-missing-flag", "argv", "orig-argv-flag", "orig-argv-X"])
+def test_launch_binding_refuses_before_constructor(tmp_path, monkeypatch, damage):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, monkeypatch)
+    lp = target / "launch-receipt.json"
+    launch = json.loads(lp.read_text())
+    if damage == "missing-command": del launch["command"]
+    elif damage == "executable": launch["python_executable"] = "/not/the/interpreter"
+    elif damage == "executable-sha": launch["python_sha256"] = "0" * 64
+    elif damage == "command": launch["command"][1] = "/different/check_mace_parity.py"
+    elif damage == "output": launch["attempt_root"] = "/other/attempt"
+    elif damage == "packet": launch["packet_root"] = "/other/packet"
+    elif damage == "resources": launch["resources"]["timeout_seconds"] = 3600
+    elif damage == "plan-hash": launch["plan"]["sha256"] = "0" * 64
+    elif damage == "review-hash": launch["reviews"][0]["sha256"] = "0" * 64
+    elif damage == "duplicate-review": launch["reviews"][1] = launch["reviews"][0]
+    elif damage == "reserved-path": launch["reviews"][0]["path"] = "stdout.log"
+    elif damage.startswith("review-"):
+        ref = launch["reviews"][0]; path = target / ref["path"]
+        review = json.loads(path.read_text())
+        key, value = {"review-pending": ("status", "PROPOSED"), "review-findings": ("unresolved_findings", 1), "review-plan": ("plan_sha256", "0" * 64)}[damage]
+        review[key] = value; path.write_text(json.dumps(review)); ref["sha256"] = sha(path)
+    elif damage == "plan-command":
+        path = target / launch["plan"]["path"]; plan = json.loads(path.read_text())
+        plan["command"][1] = "/different/check_mace_parity.py"; path.write_text(json.dumps(plan)); launch["plan"]["sha256"] = sha(path)
+    elif damage == "prior-output": (target / "predictions.npz").write_bytes(b"stale")
+    elif damage == "argv": monkeypatch.setattr(sys, "argv", ["different.py"])
+    elif damage in {"orig-argv-flag", "orig-argv-X"}:
+        flags = ["-O"] if damage == "orig-argv-flag" else ["-X", "dev"]
+        monkeypatch.setattr(sys, "orig_argv", [sys.executable, *flags, *launch["command"][1:]])
+    lp.write_text(json.dumps(launch))
+    sp = target / "supervisor-status.json"; supervisor = json.loads(sp.read_text())
+    supervisor["launch_receipt_sha256"] = sha(lp)
+    if damage == "supervisor-command": supervisor["command"] = ["different"]
+    elif damage == "supervisor-resources": supervisor["log_limit_bytes"] = 1
+    elif damage == "supervisor-synthetic": supervisor["synthetic_command"] = True
+    elif damage == "supervisor-missing-flag": del supervisor["synthetic_command"]
+    sp.write_text(json.dumps(supervisor))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="launch|review|plan|supervis|invocation|attempt"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
+    assert calls == []
+
+
+def test_approved_venv_symlink_identity_is_preserved(tmp_path, monkeypatch):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    alias = tmp_path / "venv/bin/python"; alias.parent.mkdir(parents=True)
+    alias.symlink_to(sys.executable)
+    monkeypatch.setattr(sys, "executable", str(alias))
+    target = attempt(tmp_path, monkeypatch)
+    calls = []
+    arm, receipt = module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
+    assert len(calls) == 1
+    assert receipt["live_identity_comparison"]["launch_identity"]["python_executable"] == str(alias)
+
+
+def refresh_execution_approvals(root, launch):
+    """Keep nested synthetic approvals coherent so live checks must catch mismatch."""
+    execution = {key: launch[key] for key in EXECUTION_FIXTURE_FIELDS}
+    plan_path = root / launch["plan"]["path"]
+    plan_path.write_text(json.dumps(execution))
+    launch["plan"]["sha256"] = sha(plan_path)
+    for ref in launch["reviews"]:
+        path = root / ref["path"]
+        review = json.loads(path.read_text())
+        review["plan_sha256"] = launch["plan"]["sha256"]
+        path.write_text(json.dumps(review))
+        ref["sha256"] = sha(path)
+    lp = root / "launch-receipt.json"
+    lp.write_text(json.dumps(launch))
+    sp = root / "supervisor-status.json"
+    supervisor = json.loads(sp.read_text())
+    supervisor.update(command=launch["command"], packet_root=launch["packet_root"],
+                      attempt_root=launch["attempt_root"], launch_receipt_sha256=sha(lp))
+    sp.write_text(json.dumps(supervisor))
+
+
+@pytest.mark.parametrize("damage", ["executable", "executable-sha", "packet", "attempt", "worker"])
+def test_coherent_approvals_cannot_replace_live_launch_context(tmp_path, monkeypatch, damage):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, monkeypatch)
+    launch = json.loads((target / "launch-receipt.json").read_text())
+    if damage == "executable":
+        launch["python_executable"] = launch["command"][0] = "/different/python"
+    elif damage == "executable-sha": launch["python_sha256"] = "0" * 64
+    elif damage == "packet": launch["packet_root"] = launch["command"][3] = "/different/packet"
+    elif damage == "attempt": launch["attempt_root"] = launch["command"][5] = "/different/output"
+    else: launch["command"][1] = "/different/check_mace_parity.py"
+    refresh_execution_approvals(target, launch)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="live invocation"):
+        module._load_admitted_arm(root, target,
+            constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("field", ["launch_schema", "python_executable", "python_sha256", "packet_root", "attempt_root", "resources", "plan", "reviews"])
+def test_incomplete_launch_contract_cannot_construct(tmp_path, monkeypatch, field):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, monkeypatch)
+    path = target / "launch-receipt.json"; launch = json.loads(path.read_text())
+    del launch[field]; path.write_text(json.dumps(launch))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="launch"):
+        module._load_admitted_arm(root, target,
+            constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
+    assert calls == []
+
+
+
+@pytest.mark.parametrize("name", ["parity-status.json.tmp", "predictions.npz.tmp.npz", "predictions-partial.npz.tmp.npz"])
+def test_worker_temporary_names_cannot_overwrite_approved_reviews(tmp_path, monkeypatch, name):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, monkeypatch)
+    lp = target / "launch-receipt.json"; launch = json.loads(lp.read_text())
+    ref = launch["reviews"][0]; (target / ref["path"]).rename(target / name); ref["path"] = name
+    lp.write_text(json.dumps(launch))
+    sp = target / "supervisor-status.json"; supervisor = json.loads(sp.read_text())
+    supervisor["launch_receipt_sha256"] = sha(lp); sp.write_text(json.dumps(supervisor))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="reserved|launch"):
+        module._load_admitted_arm(root, target,
+            constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
+    assert calls == []
+    assert (target / name).is_file()
