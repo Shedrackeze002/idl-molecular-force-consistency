@@ -60,7 +60,10 @@ def scratch_execution_tree(tmp_path, monkeypatch):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(original / name, target)
     # Read-only Git identity lookup remains the original worktree's HEAD.
-    (scratch / ".git").write_bytes((original / ".git").read_bytes())
+    git_dir = subprocess.check_output(
+        ["git", "-C", str(original), "rev-parse", "--absolute-git-dir"], text=True,
+    ).strip()
+    (scratch / ".git").write_text(f"gitdir: {git_dir}\n", encoding="utf-8")
     monkeypatch.setattr(module, "__file__", str(scratch / "scripts/mace_loader.py"))
     monkeypatch.syspath_prepend(str(scratch))
     monkeypatch.syspath_prepend(str(scratch / "scripts"))

@@ -23,7 +23,9 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -> dict:
+def _validated_admission_chain(
+    attempt_root: Path, status: dict, packet: dict, species: tuple[str, ...]
+) -> dict:
     admission_path = attempt_root / "admission-receipt.json"
     if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
         raise ValueError("worker admission receipt identity is missing or mismatched")
@@ -90,6 +92,10 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
         _validate_supervisor_binding(supervisor, execution, _sha256(launch_path), running=False)
     except RuntimeError as exc:
         raise ValueError(f"saved launch binding is invalid: {exc}") from exc
+    if execution["attempt_root"] != str(attempt_root.resolve()):
+        raise ValueError("approved attempt root differs from the audited directory")
+    if tuple(execution["species"]) != species:
+        raise ValueError("approved species order differs from the validated inputs")
     constructor = admission.get("constructor")
     expected_constructor = {"device": "cpu", "torch_threads": 1,
                             "default_dtype": "float64", "enable_cueq": False,
@@ -160,7 +166,7 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     if (recorded_packet.get("manifest_sha256") != packet["manifest_sha256"]
             or recorded_packet.get("model_sha256") != packet["model_sha256"]):
         raise ValueError("worker packet identity differs from independently authenticated packet")
-    _validated_admission_chain(attempt_root, status, packet)
+    _validated_admission_chain(attempt_root, status, packet, tuple(inputs["species"]))
     snapshot = status.get("final_model_snapshot", {})
     snapshot_path = Path(snapshot.get("path", ""))
     if (snapshot_path.resolve() != (attempt_root / "private" / "final_epoch.model").resolve()

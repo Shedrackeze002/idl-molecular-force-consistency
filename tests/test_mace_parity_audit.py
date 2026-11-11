@@ -369,3 +369,47 @@ def test_saved_launch_audit_does_not_use_current_interpreter_or_worker(tmp_path,
     monkeypatch.setattr(loader, "__file__", "/unavailable/auditing-host/scripts/mace_loader.py")
     result=module.audit_saved_parity(tmp_path,target)
     assert result["parity"]["status"] == "PARITY_PASS"
+
+
+@pytest.mark.parametrize("field", ["attempt_root", "species"])
+def test_saved_audit_refuses_approval_that_contradicts_evidence(tmp_path, monkeypatch, field):
+    from mace_loader import EXECUTION_FIELDS
+    from test_mace_loader import refresh_execution_approvals
+
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    inputs = fixture_inputs()
+    inputs["species"] = ("C", "O", *("H",) * 19)
+    launch_path = attempt / "launch-receipt.json"
+    admission_path = attempt / "admission-receipt.json"
+    status_path = attempt / "parity-status.json"
+    launch = json.loads(launch_path.read_text())
+    admission = json.loads(admission_path.read_text())
+    status = json.loads(status_path.read_text())
+
+    def save_approval():
+        refresh_execution_approvals(attempt, launch)
+        admission["launch_receipt"] = launch
+        admission["live_identity_comparison"]["launch_identity"] = {
+            key: launch[key] for key in EXECUTION_FIELDS
+        }
+        admission_path.write_text(json.dumps(admission))
+        status["admission_receipt_sha256"] = digest(admission_path)
+        status_path.write_text(json.dumps(status))
+
+    monkeypatch.setattr(module, "validate_inputs", lambda root: inputs)
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    launch["species"] = list(inputs["species"])
+    save_approval()
+    assert module.audit_saved_parity(tmp_path, attempt)["parity"]["status"] == "PARITY_PASS"
+
+    if field == "attempt_root":
+        launch["attempt_root"] = str(tmp_path / "different-attempt")
+        launch["command"][-1] = launch["attempt_root"]
+        refusal = "approved attempt root differs"
+    else:
+        launch["species"][:2] = reversed(launch["species"][:2])
+        refusal = "approved species order differs"
+    save_approval()
+    with pytest.raises(ValueError, match=refusal):
+        module.audit_saved_parity(tmp_path, attempt)

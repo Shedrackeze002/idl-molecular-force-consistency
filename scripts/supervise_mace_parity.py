@@ -10,6 +10,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from typing import Callable
 
 WALL_SECONDS = 1800
 CLEANUP_SECONDS = 10
@@ -62,7 +63,10 @@ def _terminate_owned_group(process: subprocess.Popen) -> None:
 def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               command: list[str] | None = None,
               launch_receipt: Path | None = None,
-              wsl_admission_receipt: Path | None = None) -> dict:
+              wsl_admission_receipt: Path | None = None,
+              interrupted_signal: Callable[[], int | None] | None = None) -> dict:
+    if interrupted_signal is None:
+        interrupted_signal = lambda: None
     started = time.monotonic()
     output = Path(output)
     if output.exists():
@@ -115,7 +119,9 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
                              "--attempt-root", str(output.resolve())]
         receipt["command"] = worker
         status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-        if time.monotonic() - started > timeout:
+        if interrupted_signal() is not None:
+            reason = "INTERRUPTED"
+        elif time.monotonic() - started > timeout:
             reason = "TIMEOUT"
         creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
         start_new_session = os.name != "nt"
@@ -127,72 +133,100 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
             stage = "monitor"
             while process.poll() is None:
                 elapsed = time.monotonic() - started
-                if elapsed > timeout:
+                if interrupted_signal() is not None:
+                    reason = "INTERRUPTED"
+                elif elapsed > timeout:
                     reason = "TIMEOUT"
                 elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
                     reason = "LOG_OVERFLOW"
                 elif _tree_bytes(output) > OUTPUT_BYTES:
                     reason = "OUTPUT_OVERFLOW"
                 if reason:
-                    _terminate_owned_group(process)
                     break
                 time.sleep(0.05)
-            if reason is None and _group_alive(process):
-                reason = "CHILD_PROCESS_LEAK"
+            if reason is None:
+                if interrupted_signal() is not None:
+                    reason = "INTERRUPTED"
+                elif _group_alive(process):
+                    reason = "CHILD_PROCESS_LEAK"
+            if reason is not None:
+                stage = "cleanup"
                 _terminate_owned_group(process)
-    except Exception as exc:
-        if process is not None:
+        stage = "finalize"
+        elapsed = time.monotonic() - started
+        exit_code = None if process is None else process.returncode
+        if reason:
+            status = reason
+        elif elapsed > timeout:
+            status = "TIMEOUT"
+        elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+            status = "LOG_OVERFLOW"
+        elif exit_code != 0:
+            status = "WORKER_FAILED"
+        elif _tree_bytes(output) > OUTPUT_BYTES:
+            status = "OUTPUT_OVERFLOW"
+        else:
+            status = "WORKER_COMPLETED"
+        receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
+                       stdout_bytes=stdout_path.stat().st_size if stdout_path.exists() else 0,
+                       stderr_bytes=stderr_path.stat().st_size if stderr_path.exists() else 0)
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        final_elapsed = time.monotonic() - started
+        final_bytes = _tree_bytes(output)
+        if receipt["status"] != "INTERRUPTED":
+            if final_elapsed > timeout:
+                receipt["status"] = "TIMEOUT"
+            elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+                receipt["status"] = "LOG_OVERFLOW"
+            elif final_bytes > OUTPUT_BYTES:
+                receipt["status"] = "OUTPUT_OVERFLOW"
+        receipt["elapsed_seconds"] = final_elapsed
+        receipt["output_bytes"] = final_bytes
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        receipt["output_bytes"] = _tree_bytes(output)
+        if receipt["output_bytes"] > OUTPUT_BYTES and receipt["status"] != "INTERRUPTED":
+            receipt["status"] = "OUTPUT_OVERFLOW"
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        # The last successful persistence is part of the wall-clock contract.
+        persisted_elapsed = time.monotonic() - started
+        if persisted_elapsed > timeout and receipt["status"] not in {"TIMEOUT", "INTERRUPTED"}:
+            receipt["status"] = "TIMEOUT"
+            receipt["elapsed_seconds"] = persisted_elapsed
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        signal_number = interrupted_signal()
+        if signal_number is not None:
+            receipt["interrupt_signal"] = signal_number
+            if receipt["status"] == "WORKER_COMPLETED":
+                receipt["status"] = "INTERRUPTED"
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        return receipt
+
+    except (Exception, KeyboardInterrupt) as exc:
+        cleanup_failed = stage == "cleanup"
+        if process is not None and stage not in {"cleanup", "finalize"}:
             try:
                 _terminate_owned_group(process)
-            except Exception:
-                pass
-        failure_status = {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED"}.get(stage, "SETUP_FAILED")
+            except (Exception, KeyboardInterrupt) as cleanup_error:
+                cleanup_failed = True
+                receipt["cleanup_error"] = str(cleanup_error)
+        signal_number = interrupted_signal()
+        if isinstance(exc, KeyboardInterrupt) and signal_number is None:
+            signal_number = int(signal.SIGINT)
+        if signal_number is not None:
+            receipt["interrupt_signal"] = signal_number
+        if cleanup_failed:
+            failure_status = "CLEANUP_FAILED"
+        elif signal_number is not None:
+            failure_status = "INTERRUPTED"
+        else:
+            failure_status = {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED",
+                              "finalize": "FINALIZE_FAILED"}.get(stage, "SETUP_FAILED")
         receipt.update(status=failure_status,
                        failure_stage=stage, error_type=type(exc).__name__, error=str(exc),
                        elapsed_seconds=time.monotonic() - started,
                        exit_code=None if process is None else process.poll())
         status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
         return receipt
-    elapsed = time.monotonic() - started
-    exit_code = None if process is None else process.returncode
-    if reason:
-        status = reason
-    elif elapsed > timeout:
-        status = "TIMEOUT"
-    elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
-        status = "LOG_OVERFLOW"
-    elif exit_code != 0:
-        status = "WORKER_FAILED"
-    elif _tree_bytes(output) > OUTPUT_BYTES:
-        status = "OUTPUT_OVERFLOW"
-    else:
-        status = "WORKER_COMPLETED"
-    receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
-                   stdout_bytes=stdout_path.stat().st_size if stdout_path.exists() else 0,
-                   stderr_bytes=stderr_path.stat().st_size if stderr_path.exists() else 0)
-    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    final_elapsed = time.monotonic() - started
-    final_bytes = _tree_bytes(output)
-    if final_elapsed > timeout:
-        receipt["status"] = "TIMEOUT"
-    elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
-        receipt["status"] = "LOG_OVERFLOW"
-    elif final_bytes > OUTPUT_BYTES:
-        receipt["status"] = "OUTPUT_OVERFLOW"
-    receipt["elapsed_seconds"] = final_elapsed
-    receipt["output_bytes"] = final_bytes
-    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    receipt["output_bytes"] = _tree_bytes(output)
-    if receipt["output_bytes"] > OUTPUT_BYTES:
-        receipt["status"] = "OUTPUT_OVERFLOW"
-        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    # The last successful persistence is part of the wall-clock contract.
-    persisted_elapsed = time.monotonic() - started
-    if persisted_elapsed > timeout and receipt["status"] != "TIMEOUT":
-        receipt["status"] = "TIMEOUT"
-        receipt["elapsed_seconds"] = persisted_elapsed
-        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    return receipt
 
 
 def main() -> int:
@@ -202,9 +236,24 @@ def main() -> int:
     parser.add_argument("--launch-receipt", type=Path, required=True)
     parser.add_argument("--wsl-admission-receipt", type=Path, required=True)
     args = parser.parse_args()
-    result = supervise(args.packet_root, args.output,
-                       launch_receipt=args.launch_receipt,
-                       wsl_admission_receipt=args.wsl_admission_receipt)
+    signal_number = None
+
+    def latch_interrupt(signum, _frame):
+        nonlocal signal_number
+        if signal_number is None:
+            signal_number = signum
+
+    handlers = {signum: signal.getsignal(signum) for signum in (signal.SIGINT, signal.SIGTERM)}
+    try:
+        for signum in handlers:
+            signal.signal(signum, latch_interrupt)
+        result = supervise(args.packet_root, args.output,
+                           launch_receipt=args.launch_receipt,
+                           wsl_admission_receipt=args.wsl_admission_receipt,
+                           interrupted_signal=lambda: signal_number)
+    finally:
+        for signum, handler in handlers.items():
+            signal.signal(signum, handler)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "WORKER_COMPLETED" else 2
 

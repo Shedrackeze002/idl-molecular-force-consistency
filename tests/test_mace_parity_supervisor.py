@@ -1,5 +1,7 @@
 import json
 import os
+import signal
+import subprocess
 import sys
 import time
 
@@ -163,3 +165,93 @@ def test_valid_production_launch_records_actual_binding(tmp_path, monkeypatch):
     assert result["status"] == "WORKER_COMPLETED"
     assert result["command"] == launch["command"]
     assert all((output / ref["path"]).is_file() for ref in [launch["plan"], *launch["reviews"]])
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX process-group regression")
+@pytest.mark.parametrize("signal_number", [signal.SIGINT, signal.SIGTERM])
+def test_cli_interrupt_terminates_owned_worker(tmp_path, signal_number):
+    pid_path = tmp_path / "worker.pid"
+    worker = command(
+        f"import os,time; from pathlib import Path; "
+        f"Path({str(pid_path)!r}).write_text(str(os.getpid())); time.sleep(30)"
+    )
+    output = tmp_path / "attempt"
+    bootstrap = (
+        "from functools import partial; import supervise_mace_parity as m; "
+        f"m.supervise = partial(m.supervise, command={worker!r}); "
+        "raise SystemExit(m.main())"
+    )
+    supervisor = subprocess.Popen(
+        command(bootstrap) + [
+            "--packet-root", str(tmp_path), "--output", str(output),
+            "--launch-receipt", "unused", "--wsl-admission-receipt", "unused",
+        ],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    worker_pid = None
+    try:
+        deadline = time.monotonic() + 5
+        while not pid_path.exists() or not pid_path.read_text():
+            if supervisor.poll() is not None or time.monotonic() > deadline:
+                pytest.fail("synthetic worker did not report its PID")
+            time.sleep(0.01)
+        worker_pid = int(pid_path.read_text())
+        supervisor.send_signal(signal_number)
+        assert supervisor.wait(timeout=5) == 2
+        status = json.loads((output / "supervisor-status.json").read_text())
+        assert status["status"] == "INTERRUPTED"
+        assert status["interrupt_signal"] == signal_number
+        with pytest.raises(ProcessLookupError):
+            os.kill(worker_pid, 0)
+        worker_pid = None
+    finally:
+        if worker_pid is not None:
+            try:
+                os.killpg(worker_pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        if supervisor.poll() is None:
+            supervisor.kill()
+        supervisor.wait(timeout=5)
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX signal regression")
+@pytest.mark.parametrize("cli", [True, False], ids=["cli", "library"])
+def test_interrupt_during_final_status_write(tmp_path, monkeypatch, cli):
+    output = tmp_path / "attempt"
+    original_supervise = module.supervise
+    monkeypatch.setattr(
+        module, "supervise",
+        lambda *args, **kwargs: original_supervise(*args, command=command("pass"), **kwargs),
+    )
+    monkeypatch.setattr(sys, "argv", [
+        "supervise_mace_parity.py", "--packet-root", str(tmp_path), "--output", str(output),
+        "--launch-receipt", "unused", "--wsl-admission-receipt", "unused",
+    ])
+    original_write = module.Path.write_text
+    saw_final_write = False
+
+    def interrupt_final_write(path, data, *args, **kwargs):
+        nonlocal saw_final_write
+        if path.name == "supervisor-status.json" and not saw_final_write:
+            receipt = json.loads(data)
+            if receipt["status"] == "WORKER_COMPLETED" and "output_bytes" in receipt:
+                saw_final_write = True
+                if cli:
+                    signal.raise_signal(signal.SIGINT)
+                else:
+                    raise KeyboardInterrupt
+        return original_write(path, data, *args, **kwargs)
+
+    monkeypatch.setattr(module.Path, "write_text", interrupt_final_write)
+    try:
+        if cli:
+            assert module.main() == 2
+        else:
+            assert module.supervise(tmp_path, output)["status"] == "INTERRUPTED"
+    except KeyboardInterrupt:
+        pytest.fail("supervisor lost terminal evidence when interrupted")
+    assert saw_final_write
+    status = json.loads((output / "supervisor-status.json").read_text())
+    assert status["status"] == "INTERRUPTED"
+    assert status["interrupt_signal"] == signal.SIGINT
