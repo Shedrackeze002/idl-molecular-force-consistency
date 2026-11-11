@@ -508,3 +508,17 @@ The 0.05 Å cap completed and passed the saved audit. It recovered 0/10 original
 The 0.10 Å cap completed and passed the saved audit. It recovered 0/10 original starts and matched 6/6 known-minimum controls. The cap bound on 8/10 original starts and the largest verified trial was 0.1 Å. The ten original outcomes included 9 nonconverged and 1 converged without a reference match. The unit used 11,047 force requests in 875.29 seconds. The [paired result](evidence/2026-11-11/mace-movement-cap-c0p10.json) includes all sixteen rows, their trace identities and the uncapped categories.
 
 The 0.25 Å cap completed and passed the saved audit. It recovered 0/10 original starts and matched 6/6 known-minimum controls. The cap bound on 4/10 original starts and the largest verified trial was 0.25 Å. The ten original outcomes included 9 nonconverged and 1 converged without a reference match. The unit used 10,986 force requests in 848.27 seconds. The [paired result](evidence/2026-11-11/mace-movement-cap-c0p25.json) includes all sixteen rows, their trace identities and the uncapped categories.
+
+The 1.00 Å cap completed and passed the saved audit. It recovered 0/10 original starts and matched 6/6 known-minimum controls. The cap bound on 4/10 original starts and the largest verified trial was 1 Å. The ten original outcomes included 9 nonconverged and 1 converged without a reference match. The unit used 13,553 force requests in 1051.51 seconds. The [paired result](evidence/2026-11-11/mace-movement-cap-c1p00.json) includes all sixteen rows, their trace identities and the uncapped categories.
+
+All four caps completed the paired exploratory MACE comparison. The audited table uses the same ten original starts and six known-minimum controls at every setting.
+
+| Setting | Original recovery | Known-minimum match | Nonconverged originals | Converged without a match | Original starts with cap binding | Total force requests |
+|---|---:|---:|---:|---:|---:|---:|
+| Uncapped | 0/10 | 6/6 | 8 | 2 | — | 12,061 |
+| 0.05 Å | 0/10 | 6/6 | 8 | 2 | 8/10 | 13,428 |
+| 0.10 Å | 0/10 | 6/6 | 9 | 1 | 8/10 | 11,047 |
+| 0.25 Å | 0/10 | 6/6 | 9 | 1 | 4/10 | 10,986 |
+| 1.00 Å | 0/10 | 6/6 | 9 | 1 | 4/10 | 13,553 |
+
+None of the four caps improved original-start recovery over the uncapped run in this five-connection validation comparison. The paired rows retain changes in stopping and force use. The historical uncapped records support endpoint and count comparisons only.
