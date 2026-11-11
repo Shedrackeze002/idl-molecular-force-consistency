@@ -1,0 +1,227 @@
+{
+  "checkpoint_sha256": "fbd128215c0d74f5d9e5d3ccde778763221f987535dcc8ce4f4f8471a5b35407",
+  "engineering_verification": {
+    "focused_suite": {
+      "passed": 131,
+      "skipped": 1
+    },
+    "prelaunch_failures": [
+      "Read-only saved audit API and dedicated control summary were absent before implementation.",
+      "A synthetic SIGTERM probe exposed a missing termination receipt and detached-worker cleanup before the repair.",
+      "The original supervisor checked completion bounds before terminal publication. A delayed-write regression now requires refusal."
+    ],
+    "saved_parity_audit_preserved": true,
+    "saved_parity_replay": "PARITY_PASS_AND_SCORE_REPRODUCED"
+  },
+  "independent_audit_sha256": "51654b8cadf0c3ff1e133d8df5ba88867da895767051ab65ee80e826195d9f34",
+  "independent_launch_reviews": 2,
+  "interpretation": "MACE satisfied the force rule at all six known reference minima. The uncapped procedure did not recover a target from any of the ten original starts. This contrast motivates the movement-cap comparison and does not identify the cause of failure.",
+  "launch_record_sha256": "7bacb618c3bde93f4ef4f29c79b310d9896c3c9a8317f846bf9a17a25b152625",
+  "model_checkpoint_epoch_index": 2047,
+  "original_starts": [
+    {
+      "branch": "aspirin/13/minus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/13/plus",
+      "category": "unmatched_converged",
+      "force_requests": 8,
+      "rmsd_A": null,
+      "stop_reason": null
+    },
+    {
+      "branch": "aspirin/18/minus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/18/plus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/18_2/minus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/18_2/plus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/66/minus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/66/plus",
+      "category": "unmatched_converged",
+      "force_requests": 47,
+      "rmsd_A": null,
+      "stop_reason": null
+    },
+    {
+      "branch": "aspirin/78/minus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    },
+    {
+      "branch": "aspirin/78/plus",
+      "category": "nonconverged",
+      "force_requests": 1500,
+      "rmsd_A": null,
+      "stop_reason": "budget_exhausted"
+    }
+  ],
+  "parity_evidence": "mace-local-parity.json",
+  "protocol": {
+    "connections": [
+      "13",
+      "18",
+      "18_2",
+      "66",
+      "78"
+    ],
+    "device": "macOS arm64 CPU",
+    "dtype": "float64",
+    "geometry_only_control_force_requests": 0,
+    "geometry_rmsd_threshold_A": 0.05,
+    "max_force_component_threshold_eV_per_A": 0.01,
+    "original_start_rule": "first_stored_frame",
+    "original_start_success": "Force convergence and geometry match to the branch's classified target minimum.",
+    "original_starts_with_training_seen_targets": 10,
+    "per_start_force_request_limit": 1500,
+    "reference_start_success": "Force convergence and geometry match to the same starting minimum.",
+    "reference_starts_are_training_seen": true,
+    "resources": {
+      "force_requests": 24000,
+      "log_bytes": 16777216,
+      "output_bytes": 268435456,
+      "wall_seconds": 3600
+    },
+    "test_path_members_read": 0,
+    "torch_threads": 1
+  },
+  "publication": {
+    "output_bytes": 23593403,
+    "publication_elapsed_seconds": 983.784626624998,
+    "terminal_sha256": "1d5af503b9cc52f39b7d1f439970fab4e7671acd0163d14a767b20fdd746826a"
+  },
+  "record": "MACE-HISTORICAL-RECOVERY-2026-11-11-004",
+  "reference_starts": [
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0007224048846281583,
+      "minimum": "1",
+      "own_match": true,
+      "stop_reason": null
+    },
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0016889167896889934,
+      "minimum": "3",
+      "own_match": true,
+      "stop_reason": null
+    },
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0011496103043206751,
+      "minimum": "6",
+      "own_match": true,
+      "stop_reason": null
+    },
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0011852652653133178,
+      "minimum": "7",
+      "own_match": true,
+      "stop_reason": null
+    },
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0026475841545476747,
+      "minimum": "8",
+      "own_match": true,
+      "stop_reason": null
+    },
+    {
+      "accepted_steps": 0,
+      "force_requests": 1,
+      "max_force_component_eV_per_A": 0.0006990733915337687,
+      "minimum": "9",
+      "own_match": true,
+      "stop_reason": null
+    }
+  ],
+  "result": {
+    "exceeds_no_relaxation": false,
+    "force_requests": 12061,
+    "no_relaxation_matches": 0,
+    "original_outcome_counts": {
+      "nonconverged": 8,
+      "unmatched_converged": 2
+    },
+    "original_recovered": 0,
+    "original_start_count": 10,
+    "recovered_by_connection": {
+      "13": 0,
+      "18": 0,
+      "18_2": 0,
+      "66": 0,
+      "78": 0
+    },
+    "reference_own_matches": 6,
+    "reference_start_count": 6
+  },
+  "retained_artifact_sha256": {
+    "final_epoch.model": "fbd128215c0d74f5d9e5d3ccde778763221f987535dcc8ce4f4f8471a5b35407",
+    "input-binding.json": "5afcf9288b348bec293be584c143b5dc1e23a521ddf2eae92a9ff7898048df67",
+    "no-relaxation.json": "72ad3f87f5dc3a02a1767bcc39269dddb3322948cab99d6dbce83e1af2daea2c",
+    "original-00.json": "d398d9c114d893057a829ceab2ba00121f714160f85809f77db4d546bd8d78fb",
+    "original-01.json": "336d34ecd2db43df3e6a383ed27327f1c2099326c3fe7fa749daee69bfa1a19f",
+    "original-02.json": "b106710c39cbefa457e8c881317576604f439db86a14f0e9ec7840cca0b73143",
+    "original-03.json": "1a3b2ba2e4584d3b1821c2c8bbf706c4d8efce3ea369bff4e2a07f1070f13831",
+    "original-04.json": "d2dd723876aac6d8e4034cb709ef40284d6539dd3862f50bcbf9554b3341c266",
+    "original-05.json": "72d829f81c8d3c90ecbd28b4f61b59ae941af6cc0aee10bf7fbbc38f8b44b931",
+    "original-06.json": "59aee2137462d301b71b38a6fe7457fa94b7b4529d1cd214d43aec96bfa5649b",
+    "original-07.json": "a04dcf99ab52145001f0c256778cd00530f78bf0a62d6e93ec4a6926ae975812",
+    "original-08.json": "c0ed7bf32f0ef6ae1b10694d5f7c999ddf5937ee2f2fa5dfd72e84edc6685f56",
+    "original-09.json": "df7fa371c54443f16756d8019a0d14daa7501799adad3effa1876d029d3f081f",
+    "reference-00.json": "cd62cce38d290a801de1ccdfbe7ddc014dce023caa096e4fe15bb5e9d6113578",
+    "reference-01.json": "4c1bc686c50a12527a77bc572ea669a72e01a1fd4b0f1275f5a9011b252c916b",
+    "reference-02.json": "2bfab73f5188d29be9238c2f111a9d912adb56f3becc5b03cfb87263a898c5c7",
+    "reference-03.json": "55166410f761893d319e69c31e2c1ead48e3209b01088ebae228b467859420b2",
+    "reference-04.json": "6bc2acbb9302f9b02be7b1230bcd3ddd6e6fdc19f43f88ea2946499e277bed26",
+    "reference-05.json": "b5b37acb00fa4845e5fcceaf2af86d7f5aa6cd12bc66b78ca207c3b997131bdb",
+    "result.json": "0f48d760ab168ffb6cb8e661b15b93393c9fcfbd1a5d16b7257410b9e009849f",
+    "started.json": "0bbf02ab28d1b9d32cdc912eb50dad4b5cd8b64c63ff3fd902692eaa95b2ac1b",
+    "terminal.json": "1d5af503b9cc52f39b7d1f439970fab4e7671acd0163d14a767b20fdd746826a",
+    "worker.log": "4c20d5f03b235c2257a1017b059620dffa0c3e26e4d9fe390b8dcf75dcd8bb35"
+  },
+  "scope": "Post-hoc aspirin validation with an external MACE reference under the historical uncapped solver.",
+  "source_commit": "0e1c5374bf50fa3399e4e1e6d9ee9be7d56c5cbb",
+  "status": "COMPLETE_AUDITED",
+  "supervisor_exit_code": 0
+}
