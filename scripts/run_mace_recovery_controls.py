@@ -156,7 +156,7 @@ def worker(record, path, digest):
     cap = record.get("movement_cap_A")
     capped = "movement_cap_A" in record
     if capped:
-        from mace_movement_cap import SOURCE_PINS, prepare_cap, verify_trace, verify_unbound
+        from mace_movement_cap import SOURCE_PINS, prepare_cap, trace_writer, verify_trace, verify_unbound
         from evaluation.adapter import _validated_positions
         from evaluation.relax import _check_start, _validate_procedure
         from evaluation.runner import (_bind_split_manifest, _connection_partition,
@@ -208,11 +208,12 @@ def worker(record, path, digest):
     for index, (key, start) in enumerate(sorted(starts.items())):
         started = time.monotonic()
         if capped:
-            trace = []
-            result = capped_pass([plans[key]], arm, procedure, refs, policy, seen, bound,
-                                 movement_cap_A=cap, recorder_for=lambda _: trace.append)[key]
+            trace_path = output / f"original-trace-{index:02d}.jsonl"
+            with trace_writer(trace_path) as (trace, append):
+                result = capped_pass([plans[key]], arm, procedure, refs, policy, seen, bound,
+                                     movement_cap_A=cap, recorder_for=lambda _: append)[key]
             final = result["_audit_record"]["final_positions"]
-            diag = verify_trace(trace, result["force_evaluation_count"], cap, final)
+            diag = verify_trace(trace, result["force_evaluation_count"], cap, start["positions"], final)
             if diag["capped_trial_count"] != result["cap_record"]["capped_trial_count"]:
                 raise ValueError("Original-start cap-binding count differs from its trace")
             if diag["capped_trial_count"] == 0:
@@ -222,7 +223,7 @@ def worker(record, path, digest):
                                historical["_audit_record"]["final_positions"])
             result["movement_diagnostics"] = diag
             result["relaxer_sha256"] = SOURCE_PINS["capped_relaxer"][1]
-            persist(output / f"original-trace-{index:02d}.json", safe_json({"attempts": trace}))
+            result["trace_sha256"] = _sha256(trace_path)
         else:
             result = evaluate_starts({key: start}, arm, procedure, classification, refs, policy,
                                      split_manifest=manifest, seen_minimum=seen,
@@ -236,9 +237,10 @@ def worker(record, path, digest):
         ref = refs[key]
         supplier = _arm_force_supplier(arm, ref.species, key + "/reference-control")
         if capped:
-            trace = []
-            result = capped_relax(ref.positions, supplier, procedure, arm=arm,
-                                  movement_cap_A=cap, recorder=trace.append)
+            trace_path = output / f"reference-trace-{index:02d}.jsonl"
+            with trace_writer(trace_path) as (trace, append):
+                result = capped_relax(ref.positions, supplier, procedure, arm=arm,
+                                      movement_cap_A=cap, recorder=append)
         else:
             result = relax(ref.positions, supplier, procedure, arm=arm)
         score = score_reference_control(result, ref, policy)
@@ -246,7 +248,7 @@ def worker(record, path, digest):
                      step_count=result["step_count"], elapsed_seconds=time.monotonic() - started)
         if capped:
             final = result["final_positions"]
-            diag = verify_trace(trace, result["force_evaluation_count"], cap, final)
+            diag = verify_trace(trace, result["force_evaluation_count"], cap, ref.positions, final)
             if diag["capped_trial_count"] != result["cap_record"]["capped_trial_count"]:
                 raise ValueError("Reference-start cap-binding count differs from its trace")
             if diag["capped_trial_count"] == 0:
@@ -257,7 +259,7 @@ def worker(record, path, digest):
             score["movement_diagnostics"] = diag
             score["movement_cap_A"] = cap
             score["relaxer_sha256"] = SOURCE_PINS["capped_relaxer"][1]
-            persist(output / f"reference-trace-{index:02d}.json", safe_json({"attempts": trace}))
+            score["trace_sha256"] = _sha256(trace_path)
         references[key] = score
         persist(output / f"reference-{index:02d}.json",
                 safe_json({"score": score, "relaxation": result}))

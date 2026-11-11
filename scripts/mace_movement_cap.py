@@ -1,5 +1,6 @@
 """Bind the reviewed Stage 2 solver and audit one MACE cap unit."""
 
+from contextlib import contextmanager
 import hashlib
 import json
 from pathlib import Path
@@ -68,13 +69,29 @@ def prepare_cap(record):
     return root, *load_solver(record)
 
 
-def verify_trace(attempts, count, cap, final):
+@contextmanager
+def trace_writer(path):
+    """Keep completed force attempts even when a start stops mid-run."""
+    attempts = []
+    with path.open("x", encoding="utf-8") as stream:
+        def append(row):
+            value = {**row, "positions": row["positions"].tolist()}
+            stream.write(json.dumps(value, allow_nan=False, separators=(",", ":")) + "\n")
+            stream.flush()
+            attempts.append(row)
+
+        yield attempts, append
+
+
+def verify_trace(attempts, count, cap, start, final):
     """Check each trial against the latest accepted positions."""
     if not attempts or len(attempts) != count or attempts[0]["kind"] != "initial":
         raise ValueError("Capped trace length or initial row differs")
     from scipy.sparse.csgraph import connected_components
 
     accepted = np.asarray(attempts[0]["positions"])
+    if not np.array_equal(accepted, start):
+        raise ValueError("Capped trace initial coordinates differ from the authenticated start")
     first_disconnected = None
     trial_moves, accepted_moves = [], []
     capped_trials = 0
@@ -84,6 +101,11 @@ def verify_trace(attempts, count, cap, final):
                 or not np.isfinite(positions).all()):
             raise ValueError("Invalid capped attempt identity or positions")
         if i > 1:
+            scale, effective, norm = (row[key] for key in ("scale_s", "scale_effective", "force_norm_max_f"))
+            if (not all(np.isfinite(x) and x > 0 for x in (scale, effective, norm))
+                    or effective != min(scale, cap / norm)
+                    or row["capped"] is not (effective < scale)):
+                raise ValueError("Capped trial binding flag or scale differs")
             move = float(np.linalg.norm(positions - accepted, axis=-1).max())
             if (row["kind"] != "trial" or move > cap * (1 + 1e-12)
                     or not np.isclose(move, row["max_displacement_A"], rtol=0, atol=1e-12)):
