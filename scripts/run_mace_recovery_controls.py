@@ -153,6 +153,33 @@ def worker(record, path, digest):
     from run_validation_recovery import safe_json
     from trace_validation_recovery import score_reference_control
 
+    cap = record.get("movement_cap_A")
+    capped = "movement_cap_A" in record
+    if capped:
+        from mace_movement_cap import SOURCE_PINS, prepare_cap, verify_trace, verify_unbound
+        from evaluation.adapter import _validated_positions
+        from evaluation.relax import _check_start, _validate_procedure
+        from evaluation.runner import (_bind_split_manifest, _connection_partition,
+                                       _own_reference, _validate_connection_partitions)
+
+        uncapped, capped_relax, capped_pass = prepare_cap(record)
+        bound = _bind_split_manifest(manifest, synthetic_declaration=None)
+        _validate_connection_partitions(starts, manifest)
+        _validate_procedure(procedure)
+        plans = {}
+        for key, entry in starts.items():
+            if _connection_partition(key, manifest) != "validation":
+                raise ValueError("Only validation starts can enter the capped branch pass")
+            pool_key, own = _own_reference(key, classification, refs)
+            positions = _validated_positions(entry["positions"], own.species, entry["species"],
+                                             "mace-runA-final-ema")
+            if positions.ndim != 2:
+                raise ValueError("Capped starts must be single structures")
+            _check_start(positions[None])
+            plans[key] = (key, entry, "validation", pool_key, own)
+        for key in REFERENCE_IDS:
+            _check_start(refs[key].positions[None])
+
     geometry = geometry_controls(starts, refs, classification, policy)
     persist(output / "no-relaxation.json", safe_json(geometry))
     persist(output / "input-binding.json", {"validation": binding, "seen_minimum": seen})
@@ -180,9 +207,26 @@ def worker(record, path, digest):
     branches, references = {}, {}
     for index, (key, start) in enumerate(sorted(starts.items())):
         started = time.monotonic()
-        result = evaluate_starts({key: start}, arm, procedure, classification, refs, policy,
-                                 split_manifest=manifest, seen_minimum=seen,
-                                 authorise_test_partition=False)["branches"][key]
+        if capped:
+            trace = []
+            result = capped_pass([plans[key]], arm, procedure, refs, policy, seen, bound,
+                                 movement_cap_A=cap, recorder_for=lambda _: trace.append)[key]
+            final = result["_audit_record"]["final_positions"]
+            diag = verify_trace(trace, result["force_evaluation_count"], cap, final)
+            if diag["capped_trial_count"] != result["cap_record"]["capped_trial_count"]:
+                raise ValueError("Original-start cap-binding count differs from its trace")
+            if diag["capped_trial_count"] == 0:
+                historical = read_json(uncapped / f"original-{index:02d}.json")
+                verify_unbound(result, historical, ("branch_key", "category", "stop_reason",
+                               "step_count", "force_evaluation_count"), final,
+                               historical["_audit_record"]["final_positions"])
+            result["movement_diagnostics"] = diag
+            result["relaxer_sha256"] = SOURCE_PINS["capped_relaxer"][1]
+            persist(output / f"original-trace-{index:02d}.json", safe_json({"attempts": trace}))
+        else:
+            result = evaluate_starts({key: start}, arm, procedure, classification, refs, policy,
+                                     split_manifest=manifest, seen_minimum=seen,
+                                     authorise_test_partition=False)["branches"][key]
         result["elapsed_seconds"] = time.monotonic() - started
         result["_audit_record"]["arm"]["checkpoint_identity"] = identity
         branches[key] = result
@@ -191,10 +235,29 @@ def worker(record, path, digest):
         started = time.monotonic()
         ref = refs[key]
         supplier = _arm_force_supplier(arm, ref.species, key + "/reference-control")
-        result = relax(ref.positions, supplier, procedure, arm=arm)
+        if capped:
+            trace = []
+            result = capped_relax(ref.positions, supplier, procedure, arm=arm,
+                                  movement_cap_A=cap, recorder=trace.append)
+        else:
+            result = relax(ref.positions, supplier, procedure, arm=arm)
         score = score_reference_control(result, ref, policy)
         score.update(reference_id=key, force_evaluation_count=result["force_evaluation_count"],
                      step_count=result["step_count"], elapsed_seconds=time.monotonic() - started)
+        if capped:
+            final = result["final_positions"]
+            diag = verify_trace(trace, result["force_evaluation_count"], cap, final)
+            if diag["capped_trial_count"] != result["cap_record"]["capped_trial_count"]:
+                raise ValueError("Reference-start cap-binding count differs from its trace")
+            if diag["capped_trial_count"] == 0:
+                historical = read_json(uncapped / f"reference-{index:02d}.json")
+                verify_unbound(score, historical["score"], ("reference_id", "stop_reason",
+                               "operational_force_converged_own_match", "step_count",
+                               "force_evaluation_count"), final, historical["relaxation"]["final_positions"])
+            score["movement_diagnostics"] = diag
+            score["movement_cap_A"] = cap
+            score["relaxer_sha256"] = SOURCE_PINS["capped_relaxer"][1]
+            persist(output / f"reference-trace-{index:02d}.json", safe_json({"attempts": trace}))
         references[key] = score
         persist(output / f"reference-{index:02d}.json",
                 safe_json({"score": score, "relaxation": result}))
@@ -202,6 +265,8 @@ def worker(record, path, digest):
     if summary["force_requests"] != requests or _sha256(snapshot) != MODEL_SHA256:
         raise ValueError("Recovery request count or checkpoint identity differs")
     verify_record(path, digest)
+    if capped:
+        summary["movement_cap_A"] = cap
     persist(output / "result.json", {**summary, "model": identity, "record_sha256": digest})
 
 
@@ -304,6 +369,9 @@ def main():
     record = verify_record(args.record, args.sha256)
     if args.mode == "preflight":
         preflight(record)
+        if "movement_cap_A" in record:
+            from mace_movement_cap import prepare_cap
+            prepare_cap(record)
         print("Historical input and saved MACE parity checks passed.")
     elif args.mode == "worker":
         worker(record, args.record, args.sha256)
