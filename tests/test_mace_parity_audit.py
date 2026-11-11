@@ -191,6 +191,18 @@ def test_refused_admission_is_not_accepted_by_hash_only(tmp_path, monkeypatch):
         module.audit_saved_parity(tmp_path, attempt)
 
 
+def test_saved_audit_read_only_preserves_retained_attempt(tmp_path, monkeypatch):
+    attempt = tmp_path / "retained"
+    packet = write_attempt(attempt)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    audit_path = attempt / "independent-audit.json"
+    audit_path.write_text("retained evidence")
+    result = module.audit_saved_parity(tmp_path, attempt, persist=False)
+    assert result["status"] == "AUDIT_COMPLETE"
+    assert audit_path.read_text() == "retained evidence"
+
+
 def test_prediction_bytes_are_bound_to_worker_receipt(tmp_path, monkeypatch):
     attempt = tmp_path / "changed"
     packet = write_attempt(attempt)

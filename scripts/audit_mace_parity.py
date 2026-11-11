@@ -199,7 +199,7 @@ def _independent_parity(actual: dict, expected: dict) -> dict:
             "rtol": 0.0, "atol": TOLERANCE}
 
 
-def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
+def audit_saved_parity(packet_root: Path, attempt_root: Path, *, persist: bool = True) -> dict:
     packet_root, attempt_root = Path(packet_root), Path(attempt_root).resolve()
     sizes = _attempt_file_sizes(attempt_root)
     status = json.loads((attempt_root / "parity-status.json").read_text(encoding="utf-8"))
@@ -278,8 +278,9 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
               "score_abs_differences": differences,
               "score_status": "SCORE_REPRODUCED" if all(value <= TOLERANCE for value in differences.values())
                               else "SCORE_NOT_REPRODUCED"}
-    (attempt_root / "independent-audit.json").write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if persist:
+        (attempt_root / "independent-audit.json").write_text(
+            json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result
 
 
