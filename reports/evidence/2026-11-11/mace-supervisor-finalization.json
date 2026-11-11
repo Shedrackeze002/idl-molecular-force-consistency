@@ -1,0 +1,40 @@
+{
+  "after_repair": {
+    "checkout_layouts": [
+      "standard clone",
+      "linked worktree"
+    ],
+    "direct_cleanup_interruption": "owned synthetic worker reaped, TIMEOUT and first signal retained",
+    "late_interrupt": "canonical INTERRUPTED",
+    "saved_audit_control": "PARITY_PASS using a synthetic worker and retained inputs fixture",
+    "staging_deadline_and_replace_failure": "canonical RUNNING, saved audit refused",
+    "staging_overlap": "over-limit staging refused before and after staging",
+    "tests_per_checkout": {
+      "passed": 301,
+      "skipped": 1,
+      "subtests_passed": 19,
+      "warnings": 45
+    }
+  },
+  "before_repair": [
+    {
+      "finding": "Late staging deadline plus failed receipt persistence could leave saved completion accepted by the auditor",
+      "observed": "synthetic saved audit accepted"
+    },
+    {
+      "finding": "SIGINT during direct supervisor cleanup could leave the worker alive",
+      "observed": "owned synthetic worker alive on return"
+    },
+    {
+      "finding": "First atomic implementation missed SIGINT delivered during the final clock sample",
+      "observed": "one failing regression before moving the last signal check"
+    }
+  ],
+  "launch_authorization": "PENDING",
+  "numerical_parity": "PENDING",
+  "previous_commit": "72e0fb319e2b77d8ebc28c76c1929020215099f9",
+  "real_model_constructed": false,
+  "review": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/23#pullrequestreview-5856647446",
+  "status": "SYNTHETIC_SUPERVISOR_REPAIRS_VERIFIED",
+  "target_wsl_runtime": "CAPTURE_PENDING"
+}

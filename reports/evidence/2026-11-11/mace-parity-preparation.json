@@ -1,0 +1,61 @@
+{
+  "after_repair": {
+    "interrupt_regressions_passed": 4,
+    "linked_worktree": {
+      "passed": 293,
+      "skipped": 1,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "standard_clone": {
+      "passed": 293,
+      "skipped": 1,
+      "subtests_passed": 19,
+      "warnings": 45
+    }
+  },
+  "before_repair": [
+    {
+      "finding": "Coherent saved receipts could contradict the approved output directory or input species order",
+      "observed": "2 synthetic cases incorrectly passed audit"
+    },
+    {
+      "finding": "Frozen-source fixtures assumed a Git worktree pointer file",
+      "observed": "13 failures in a normal clone in the published review"
+    },
+    {
+      "finding": "Interrupted supervisor could leave the synthetic worker running",
+      "observed": "2 live signal cases and 1 final-write case failed before correction"
+    },
+    {
+      "finding": "Direct library interrupt during final persistence escaped the first correction",
+      "observed": "1 targeted synthetic failure before correction"
+    }
+  ],
+  "launch_authorization": "PENDING",
+  "packet": {
+    "archive_sha256": "ff92c74b83d3103a2542f1564d93be3b153f5342faef2675f9845d9d99958119",
+    "connection_counts": {
+      "13": 165,
+      "18": 217,
+      "18_2": 227,
+      "66": 199,
+      "78": 166
+    },
+    "force_components": 61362,
+    "inventoried_files": 11,
+    "manifest_sha256": "3a872e1886c37b0e069e4ecaaa426bbab6a4a771db7c805f21741ee67e22717c",
+    "max_absolute_reference_score_delta": 6.938893903907228e-18,
+    "validation_records": 974
+  },
+  "prediction_parity": "PENDING",
+  "real_model_constructed": false,
+  "review": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/23#pullrequestreview-5851191383",
+  "reviewed_base": "c234d960ed38a4f421c33d467ce768d7def01a60",
+  "runtime": {
+    "live_target_capture": "PENDING",
+    "status": "PROPOSED",
+    "target": "WSL2 x86_64 CPU"
+  },
+  "status": "SYNTHETIC_REPAIRS_VERIFIED_AND_TARGET_CAPTURE_PENDING"
+}

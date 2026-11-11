@@ -1,0 +1,67 @@
+{
+  "behavior": [
+    "Authenticate all three frozen files before model construction.",
+    "Refuse missing, altered, symlinked or preloaded frozen modules.",
+    "Check standard source origins and execute authenticated source bytes, bypassing bytecode caches.",
+    "Retain the authenticated bridge callable through construction.",
+    "Require the exact frozen file inventory in saved admission audits."
+  ],
+  "date": "2026-11-10",
+  "final_technical_review": "APPROVE; independently reran 60 loader/auditor tests with 1 skip and 1 existing ASE warning",
+  "frozen_sources": {
+    "baseline": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+    "unchanged": {
+      "evaluation/__init__.py": {
+        "bytes": 220,
+        "sha256": "919da2d40e815006ac70cd1e8862b78db10ac72ed0a32ee8dba375b813ccf18e"
+      },
+      "evaluation/adapter.py": {
+        "bytes": 14497,
+        "sha256": "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5"
+      },
+      "scripts/mace_reference_adapter.py": {
+        "bytes": 4694,
+        "sha256": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759"
+      }
+    }
+  },
+  "implementation_base": "bbae30b6a8b868a135cab8e97b1a3bb2253c75f2",
+  "limitations": [
+    "Synthetic packet bytes and calculator doubles only; no real MACE checkpoint was loaded or queried.",
+    "The controlled-runtime contract excludes hostile import hooks and concurrent code mutation.",
+    "Old receipts without frozen_source_files do not establish this authentication.",
+    "Exact launch executable, command, output and resource/review binding remains a separate pending defect.",
+    "This repair does not establish platform admission, prediction parity or recovery success.",
+    "No frozen movement-cap source or approved launch record was changed."
+  ],
+  "schema": 1,
+  "scope": "Frozen MACE bridge source authentication; no real numerical model result",
+  "status": "SYNTHETIC_REGRESSION_PASSED",
+  "tests": {
+    "baseline": {
+      "passed": 204,
+      "skipped": 3,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "counterexamples_before_fix": {
+      "details": "16 initial cases plus one shadow-import and rollback case",
+      "failed": 17
+    },
+    "default_project_suite": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:scripts python -m pytest -q -p no:cacheprovider",
+      "exit_code": 0,
+      "passed": 493,
+      "seconds": 226.27,
+      "skipped": 12
+    },
+    "focused_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:scripts python -m pytest -q tests/test_mace_loader.py tests/test_mace_parity.py tests/test_mace_parity_supervisor.py tests/test_mace_parity_audit.py tests/test_mace_reference_adapter.py tests/test_shape_recovery_runner.py tests/test_shape_recovery_outcomes.py tests/test_shape_recovery_report.py -p no:cacheprovider",
+    "focused_regression": {
+      "exit_code": 0,
+      "passed": 221,
+      "skipped": 3,
+      "subtests_passed": 19,
+      "warnings": 45
+    }
+  }
+}

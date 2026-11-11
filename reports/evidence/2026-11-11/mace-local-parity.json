@@ -1,0 +1,123 @@
+{
+  "record": "MACE-LOCAL-PARITY-2026-11-11-003",
+  "implementation_commit": "a38ea2a23dd5b07c78de5c3e8779ee0d47e81201",
+  "engineering": {
+    "reproduced": [
+      "The approved Mac identity was refused because glibc is absent.",
+      "Case aliases could collide with other approval records or with an output filename.",
+      "The saved audit accepted a redirected snapshot, an oversized log and an unexpected file.",
+      "A late or interrupted canonical receipt replacement could still yield successful completion."
+    ],
+    "targeted_before_repair": {"failed": 8, "passed": 3},
+    "first_after_repair": {
+      "failed": 1,
+      "passed": 161,
+      "skipped": 1,
+      "finding": "A prediction-tampering test needed refreshed size counters to reach its intended independent comparison."
+    },
+    "final_suite_per_layout": {
+      "checkout_layouts": ["linked worktree", "standard clone"],
+      "passed": 318,
+      "skipped": 1,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "runtime_proposal_correction": "The preflight found that the nine implementation identities and three frozen identities needed separate maps. The revised plan was prepared before any model construction."
+  },
+  "protocol": {
+    "checkpoint_epoch_index": 2047,
+    "packet_archive_sha256": "ff92c74b83d3103a2542f1564d93be3b153f5342faef2675f9845d9d99958119",
+    "validation_records": 974,
+    "validation_force_components": 61362,
+    "expected_connection_counts": {"13": 165, "18": 217, "18_2": 227, "66": 199, "78": 166},
+    "device": "cpu",
+    "dtype": "float64",
+    "torch_threads": 1,
+    "absolute_tolerance": 1e-10,
+    "relative_tolerance": 0.0,
+    "supervisor_timeout_seconds": 1800,
+    "cleanup_seconds": 10,
+    "max_output_bytes": 268435456,
+    "max_log_bytes": 16777216
+  },
+  "runtime": {
+    "reference_python": "3.12.13",
+    "local_python": "3.12.16",
+    "reference_macos": "27.0.1",
+    "local_macos": "27.2.1",
+    "architecture": "arm64",
+    "torch": "2.14.1",
+    "verified_locked_packages": 44,
+    "additional_installed_pip": "26.2.1",
+    "verified_installed_source_hashes": 8,
+    "verified_implementation_and_frozen_source_hashes": 12
+  },
+  "attempt_01": {
+    "status": "WORKER_FAILED",
+    "stage": "launch argument admission before calculator construction",
+    "worker_exit_code": 1,
+    "supervisor_elapsed_seconds": 0.4056896250003774,
+    "error": "AdmissionError: launch argv or interpreter options differ from the approved invocation",
+    "observed_cause": "The Mac framework launcher preserved sys.executable and the script arguments but substituted the Python.app binary in sys.orig_argv[0].",
+    "model_constructions": 0,
+    "validation_predictions": 0,
+    "supervisor_receipt_sha256": "e5146559703db64e8a4c791cf605d75ecb682a818d9ef88ce21bb6f009757339",
+    "worker_error_log_sha256": "998fcffd6b5302d687584fcccc301c4deae50b981418fe00981424455b9b7015",
+    "wrapper_observation": "The shell rejected the reserved variable used for exit-code capture. The supervisor and worker receipts persisted."
+  },
+  "framework_argument_repair": {
+    "targeted_before_repair": {"failed": 5},
+    "final_suite_per_layout": {
+      "checkout_layouts": ["linked worktree", "standard clone"],
+      "passed": 323,
+      "skipped": 1,
+      "subtests_passed": 19,
+      "warnings": 45
+    },
+    "model_free_actual_launcher": {
+      "reviewed_arguments": "ACCEPTED",
+      "extra_interpreter_option": "REFUSED"
+    }
+  },
+  "attempt_02": {
+    "implementation_commit": "2cd760ada70ec40c31dedb57db09287d57ac61f4",
+    "execution_plan_sha256": "ad7e74b888f4ef057b51b4c42b44e63c1d59f5c7d7631c28871bb4fe74600a17",
+    "runtime_receipt_sha256": "6a8ac5f98bdb2d8c2660ebaaa9b4d347e7d0d1c48bd1223d5b0c36d8ea09656e",
+    "framework_binary_sha256": "83288f5a3bc42765d39817173a140948fc1bfc5c3f1ef1a68f3cd0db0e78b72e",
+    "independent_implementation_and_launch_reviews": 2,
+    "supervisor_status": "WORKER_COMPLETED",
+    "worker_exit_code": 0,
+    "publication_elapsed_seconds": 92.29175558300267,
+    "retained_execution_bytes": 24941811,
+    "model_constructions": 1,
+    "force_requests": 974,
+    "energy_requests": 974,
+    "persisted_validation_records": 974,
+    "force_component_count": 61362,
+    "independent_audit_status": "AUDIT_COMPLETE",
+    "parity_status": "PARITY_PASS",
+    "score_status": "SCORE_REPRODUCED",
+    "max_abs_prediction_delta": {"energy_eV": 0.0, "force_eV_per_angstrom": 0.0},
+    "scores": {
+      "equal_connection_force_mae_eV_per_angstrom": 0.005348956868537277,
+      "pooled_force_mae_eV_per_angstrom": 0.005259832863815193,
+      "force_component_rmse_eV_per_angstrom": 0.026410389761531948,
+      "residual_energy_mae_eV": 0.007461842182598907
+    },
+    "score_absolute_deltas": {
+      "equal_connection_force_mae_eV_per_angstrom": 0.0,
+      "pooled_force_mae_eV_per_angstrom": 2.6020852139652106e-18,
+      "force_component_rmse_eV_per_angstrom": 3.469446951953614e-18,
+      "residual_energy_mae_eV": 6.938893903907228e-18
+    },
+    "retained_artifact_sha256": {
+      "admission_receipt": "16139810d2763335c8d8a18a2bfcaccf23d0bd87907c46a74c64015c4ac97477",
+      "predictions": "4443147681d9bd505c186e9862978c40488e1f2d53c0dbc12f8c79ba1f7442d6",
+      "independent_audit": "87c7a1795a2a8f1cd1ac0424a87b9cae4a4620d4a1a5d8f91e3425ca89da9b7c",
+      "supervisor_receipt": "e606bdf34340037d7e5b078a9741777a59b4e17e7407e592ea7f8e2050c80571",
+      "supervisor_observation": "bca0fb551fc1dbad2983e9d486e2e81709cd460fa3ae2491cb1b73b162c6a02a"
+    }
+  },
+  "scope": "Authenticated final Run A checkpoint, single Mac CPU runtime and original validation partition only. This experiment did not run training, relaxation or test-set scoring.",
+  "status": "PARITY_PASS_AND_SCORE_REPRODUCED"
+}
