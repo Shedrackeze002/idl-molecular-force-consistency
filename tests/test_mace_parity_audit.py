@@ -217,7 +217,7 @@ def test_per_record_claims_are_recomputed(tmp_path, monkeypatch):
         module.audit_saved_parity(tmp_path, attempt)
 
 
-@pytest.mark.parametrize("damage", ["platform", "packages", "sources", "constructor",
+@pytest.mark.parametrize("damage", ["platform", "packages", "sources", "framework", "constructor",
                                      "packet", "implementation"])
 def test_incomplete_or_contradictory_admission_evidence_is_refused(tmp_path, monkeypatch, damage):
     attempt = tmp_path / damage
@@ -230,6 +230,9 @@ def test_incomplete_or_contradictory_admission_evidence_is_refused(tmp_path, mon
         admission["live_identity_comparison"]["packages"].pop("torch")
     elif damage == "sources":
         admission["live_identity_comparison"]["sources"][0]["sha256"] = "d" * 64
+    elif damage == "framework":
+        admission["live_identity_comparison"]["framework_argv0"] = {
+            "path": "/unapproved/Python.app/Contents/MacOS/Python", "sha256": "d" * 64}
     elif damage == "constructor":
         admission["constructor"]["device"] = "cuda"
     elif damage == "packet":

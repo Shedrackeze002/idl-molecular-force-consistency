@@ -94,6 +94,11 @@ The exact six command elements are `python_executable`, the absolute path to
 `scripts/check_mace_parity.py`, `--packet-root`, `packet_root`, `--attempt-root`,
 and `attempt_root`. The worker checks both `sys.argv` and `sys.orig_argv`, so
 unapproved interpreter flags cannot disappear from the comparison.
+An approved macOS arm64 runtime receipt may pin a `framework_argv0` with
+the canonical absolute `path` and `sha256` of its Python.app executable.
+That path is used only for the first element of `sys.orig_argv`. The worker
+checks the binary and the exact argument tail, and the saved audit checks
+the retained framework identity against the receipt.
 
 ```json
 {"timeout_seconds": 1800, "cleanup_seconds": 10,

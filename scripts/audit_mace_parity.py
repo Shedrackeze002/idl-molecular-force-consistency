@@ -69,6 +69,8 @@ def _validated_admission_chain(
     live = admission.get("live_identity_comparison", {})
     if live.get("platform") != approved["platform"] or live.get("packages") != approved["packages"]:
         raise ValueError("recorded runtime/package comparison differs from approval")
+    if live.get("framework_argv0") != approved["framework_argv0"]:
+        raise ValueError("recorded framework argument comparison differs from approval")
     if live.get("frozen_source_files") != FROZEN_SOURCE_FILES:
         raise ValueError("recorded frozen sources differ from the accepted baseline")
     recorded_sources = live.get("sources")

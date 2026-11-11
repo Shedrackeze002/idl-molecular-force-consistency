@@ -169,6 +169,14 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
     glibc = required_platform["glibc"]
     if not isinstance(glibc, str) or (glibc == "") != macos_arm64:
         raise AdmissionError("approved interpreter/platform binding is incomplete")
+    framework = admission.get("framework_argv0")
+    if "framework_argv0" in admission:
+        path = framework.get("path") if isinstance(framework, dict) else None
+        if (not macos_arm64 or not isinstance(path, str) or set(framework) != {"path", "sha256"}
+                or not Path(path).is_absolute() or str(Path(path)) != path or ".." in Path(path).parts
+                or Path(path).parts[-4:] != ("Python.app", "Contents", "MacOS", "Python")
+                or not _hex_digest(framework["sha256"])):
+            raise AdmissionError("approved framework executable identity is malformed")
 
     def package_name(raw: Any) -> str:
         if (not isinstance(raw, str)
@@ -223,7 +231,8 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
         source_map[name] = item
     if set(source_map) != set(REQUIRED_SOURCES):
         raise AdmissionError("approved source inventory is incomplete")
-    return {"platform": required_platform, "packages": packages, "sources": source_map}
+    return {"platform": required_platform, "packages": packages, "sources": source_map,
+            "framework_argv0": framework}
 
 
 def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
@@ -236,6 +245,11 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     for key, actual in actual_platform.items():
         if inventory["platform"].get(key) != actual:
             raise AdmissionError(f"live platform differs from approved {key}")
+    framework = inventory["framework_argv0"]
+    if framework is not None:
+        path = Path(framework["path"])
+        if path.resolve() != path or not path.is_file() or _sha256(path) != framework["sha256"]:
+            raise AdmissionError("live framework executable differs from approval")
     checked_packages: dict[str, str] = {}
     for name, expected in inventory["packages"].items():
         try:
@@ -257,7 +271,10 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
         if not path.is_file() or path.is_symlink() or _sha256(path) != expected:
             raise AdmissionError(f"live source differs from approval: {name}")
         checked_sources.append({"name": name, "path": str(path), "sha256": expected})
-    return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
+    live = {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
+    if framework is not None:
+        live["framework_argv0"] = framework
+    return live
 
 
 
@@ -339,14 +356,17 @@ def _validate_launch_binding(launch: dict[str, Any], attempt_root: Path) -> dict
 
 
 def _validate_live_invocation(execution: dict[str, Any], packet_root: Path,
-                              attempt_root: Path, *, worker: bool) -> None:
+                              attempt_root: Path, *, worker: bool,
+                              framework_argv0: dict[str, str] | None = None) -> None:
     expected = [sys.executable, str(Path(__file__).resolve().with_name("check_mace_parity.py")),
                 "--packet-root", str(packet_root.resolve()), "--attempt-root", str(attempt_root.resolve())]
     if (execution["command"] != expected or execution["python_executable"] != sys.executable
             or execution["python_sha256"] != _sha256(Path(sys.executable))):
         raise AdmissionError("launch interpreter, command or roots differ from live invocation")
-    if worker and (getattr(sys, "orig_argv", None) != expected or sys.argv != expected[1:]):
-        raise AdmissionError("launch argv or interpreter options differ from the approved invocation")
+    if worker:
+        argv0 = framework_argv0["path"] if framework_argv0 is not None else expected[0]
+        if getattr(sys, "orig_argv", None) != [argv0, *expected[1:]] or sys.argv != expected[1:]:
+            raise AdmissionError("launch argv or interpreter options differ from the approved invocation")
 
 
 def _validate_supervisor_binding(supervisor: dict[str, Any], execution: dict[str, Any],
@@ -369,9 +389,10 @@ def _validate_supervisor_binding(supervisor: dict[str, Any], execution: dict[str
 
 
 def _live_launch_context(launch: dict[str, Any], attempt_root: Path,
-                         packet_root: Path) -> dict[str, Any]:
+                         packet_root: Path, *, framework_argv0: dict[str, str] | None = None) -> dict[str, Any]:
     execution = _validate_launch_binding(launch, attempt_root)
-    _validate_live_invocation(execution, packet_root, attempt_root, worker=True)
+    _validate_live_invocation(execution, packet_root, attempt_root, worker=True,
+                              framework_argv0=framework_argv0)
     supervisor = json.loads(_regular_file(attempt_root, Path("supervisor-status.json")).read_text())
     _validate_supervisor_binding(supervisor, execution,
                                  _sha256(attempt_root / "launch-receipt.json"), running=True)
@@ -426,7 +447,8 @@ def _approved_launch(attempt_root: Path, *, packet_root: Path) -> tuple[dict[str
                 or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
             raise AdmissionError(f"execution source differs from approval: {relative}")
     live = _live_admission_check(admission)
-    live["launch_identity"] = _live_launch_context(launch, attempt_root, packet_root)
+    live["launch_identity"] = _live_launch_context(
+        launch, attempt_root, packet_root, framework_argv0=live.get("framework_argv0"))
     return launch, admission, live
 
 

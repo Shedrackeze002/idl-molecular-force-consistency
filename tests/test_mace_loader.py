@@ -688,3 +688,56 @@ def test_live_macos_platform_requires_exact_approval(monkeypatch):
     monkeypatch.setattr(module.platform, "libc_ver", lambda: ("", ""))
     with pytest.raises(module.AdmissionError, match="live platform differs"):
         module._live_admission_check(receipt)
+
+
+@pytest.mark.parametrize("damage", [None, "argv0", "flag"])
+def test_worker_accepts_only_the_reviewed_framework_argument(tmp_path, monkeypatch, damage):
+    import mace_loader as module
+
+    framework = tmp_path / "Python.app/Contents/MacOS/Python"
+    framework.parent.mkdir(parents=True)
+    framework.write_bytes(b"framework")
+    receipt = canonical_admission(module)
+    receipt["platform"].update(platform="macOS-27.2.1-arm64-arm-64bit",
+                               architecture="arm64", glibc="")
+    receipt["framework_argv0"] = {"path": str(framework), "sha256": sha(framework)}
+    approved = module._approved_identity_inventory(receipt)["framework_argv0"]
+    packet_root, attempt_root = tmp_path / "packet", tmp_path / "attempt"
+    command = [sys.executable, str(Path(module.__file__).resolve().with_name("check_mace_parity.py")),
+               "--packet-root", str(packet_root.resolve()), "--attempt-root", str(attempt_root.resolve())]
+    execution = {"command": command, "python_executable": sys.executable,
+                 "python_sha256": sha(Path(sys.executable))}
+    observed = [str(framework), *command[1:]]
+    if damage == "argv0":
+        observed[0] = str(tmp_path / "unapproved")
+    elif damage == "flag":
+        observed.insert(1, "-B")
+    monkeypatch.setattr(sys, "argv", command[1:])
+    monkeypatch.setattr(sys, "orig_argv", observed)
+    if damage is None:
+        module._validate_live_invocation(execution, packet_root, attempt_root, worker=True,
+                                         framework_argv0=approved)
+    else:
+        with pytest.raises(module.AdmissionError, match="argv or interpreter options"):
+            module._validate_live_invocation(execution, packet_root, attempt_root, worker=True,
+                                             framework_argv0=approved)
+
+
+def test_framework_pin_refuses_linux_or_changed_live_bytes(tmp_path, monkeypatch):
+    import mace_loader as module
+
+    framework = tmp_path / "Python.app/Contents/MacOS/Python"
+    framework.parent.mkdir(parents=True)
+    framework.write_bytes(b"changed framework")
+    receipt = canonical_admission(module)
+    receipt["framework_argv0"] = {"path": str(framework), "sha256": "a" * 64}
+    with pytest.raises(module.AdmissionError, match="framework"):
+        module._approved_identity_inventory(receipt)
+    receipt["platform"].update(platform="macOS-27.2.1-arm64-arm-64bit",
+                               architecture="arm64", glibc="")
+    monkeypatch.setattr(module.platform, "python_version", lambda: receipt["platform"]["python"])
+    monkeypatch.setattr(module.platform, "platform", lambda: receipt["platform"]["platform"])
+    monkeypatch.setattr(module.platform, "machine", lambda: "arm64")
+    monkeypatch.setattr(module.platform, "libc_ver", lambda: ("", ""))
+    with pytest.raises(module.AdmissionError, match="framework executable differs"):
+        module._live_admission_check(receipt)
