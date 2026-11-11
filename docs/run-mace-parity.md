@@ -6,9 +6,11 @@ relax molecules, access training/test partitions, or authorize model loading.
 ## Before numerical execution
 
 1. Verify the released v2 packet and retain its original bytes.
-2. Complete the WSL runtime and separate test lock.
-3. Obtain an approved WSL admission receipt enumerating every allowed platform,
-   package and source-file difference.
+2. Capture the target runtime with the exact interpreter and run the scoped tests.
+3. Obtain an approved runtime admission receipt enumerating each allowed
+   platform, package and source-file difference. The historical
+   `--wsl-admission-receipt` flag and receipt keys also carry macOS admission.
+   An approved macOS arm64 identity records an empty glibc value.
 4. Obtain two resolved reviews of the exact implementation commit.
 5. Obtain Shedrack's explicit authorization for one launch receipt. The receipt
    must pin the approved admission receipt hash and the 21-symbol species order.
@@ -25,10 +27,12 @@ PYTHONPATH=.:src:scripts python -m pytest -q \
 Only after the gates above, use a fresh absolute output path:
 
 ```bash
+(set -o noclobber
 PYTHONPATH=.:src:scripts "$python_bin" scripts/supervise_mace_parity.py \
   --packet-root "$packet_root" --output "$attempt_root" \
   --launch-receipt "$launch_receipt" \
-  --wsl-admission-receipt "$wsl_admission_receipt"
+  --wsl-admission-receipt "$runtime_admission_receipt" \
+  > "$attempt_root.supervisor-observation.json")
 PYTHONPATH=.:src:scripts "$python_bin" scripts/audit_mace_parity.py \
   --packet-root "$packet_root" --attempt-root "$attempt_root"
 ```
@@ -45,11 +49,12 @@ identity refusal and numerical disagreement are retained and never retried or
 relabeled as success. The independent audit reads saved arrays only; it does
 not import or load MACE/Torch.
 
-The supervisor keeps the canonical receipt incomplete during finalization.
-It counts both receipt files against the directory bound while staging and
-checks the deadline and interruption immediately before atomic publication.
-The successful receipt records the final tree size and the elapsed time
-sampled before staging.
+The supervisor counts both receipt files against the directory bound while
+staging. After replacing the canonical receipt, it checks the actual elapsed
+time and interruption and returns an observation bound to the receipt's hash.
+Keep that JSON beside the attempt. The audit requires it and independently
+checks the exact saved file inventory and log and tree sizes. The separate
+audit output and the external observation are post-run evidence.
 
 
 ## Frozen bridge identity

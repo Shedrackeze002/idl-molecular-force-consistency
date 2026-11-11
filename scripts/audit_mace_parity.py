@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import math
+import stat
 from pathlib import Path
 
 import numpy as np
@@ -24,7 +25,7 @@ def _sha256(path: Path) -> str:
 
 
 def _validated_admission_chain(
-    attempt_root: Path, status: dict, packet: dict, species: tuple[str, ...]
+    attempt_root: Path, status: dict, packet: dict, species: tuple[str, ...], supervisor: dict
 ) -> dict:
     admission_path = attempt_root / "admission-receipt.json"
     if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
@@ -88,7 +89,6 @@ def _validated_admission_chain(
         execution = _validate_launch_binding(launch, attempt_root)
         if live.get("launch_identity") != execution:
             raise ValueError("recorded launch identity differs from approval")
-        supervisor = json.loads((attempt_root / "supervisor-status.json").read_text())
         _validate_supervisor_binding(supervisor, execution, _sha256(launch_path), running=False)
     except RuntimeError as exc:
         raise ValueError(f"saved launch binding is invalid: {exc}") from exc
@@ -105,8 +105,8 @@ def _validated_admission_chain(
     if admission.get("packet") != packet:
         raise ValueError("model admission packet identity differs from authenticated packet")
     snapshot = admission.get("model_snapshot", {})
-    expected_snapshot = (attempt_root / "private" / "final_epoch.model").resolve()
-    if Path(snapshot.get("snapshot_path", "")).resolve() != expected_snapshot:
+    expected_snapshot = attempt_root / "private" / "final_epoch.model"
+    if snapshot.get("snapshot_path") != str(expected_snapshot):
         raise ValueError("admission is not bound to the private constructor snapshot")
     if (snapshot.get("model_sha256") != packet["model_sha256"]
             or snapshot.get("model_bytes") != packet.get("model_bytes")
@@ -114,6 +114,60 @@ def _validated_admission_chain(
             or admission.get("post_construction_sha256") != packet["model_sha256"]):
         raise ValueError("constructor snapshot identity differs from authenticated packet")
     return admission
+
+
+def _attempt_file_sizes(root: Path) -> dict[str, int]:
+    files = {}
+    for path in root.iterdir():
+        entry = path.lstat()
+        if path.name == "private" and stat.S_ISDIR(entry.st_mode):
+            for member in path.iterdir():
+                leaf = member.lstat()
+                if not stat.S_ISREG(leaf.st_mode):
+                    raise ValueError(f"private snapshot contains a symlink or nonregular member: {member.name}")
+                files[f"private/{member.name}"] = leaf.st_size
+        elif stat.S_ISREG(entry.st_mode):
+            files[path.name] = entry.st_size
+        else:
+            raise ValueError(f"attempt contains a symlink or nonregular member: {path.name}")
+    return files
+
+
+def _verify_retained_execution(root: Path, sizes: dict[str, int], supervisor: dict,
+                               supervisor_bytes: bytes, launch: dict) -> None:
+    from mace_loader import LAUNCH_RESOURCES, _launch_approval_refs
+    expected = {ref["path"] for ref in _launch_approval_refs(launch)} | {
+        "launch-receipt.json", "supervisor-status.json", "stdout.log", "stderr.log",
+        "admission-receipt.json", "parity-status.json", "predictions.npz",
+        "predictions-partial.npz", "private/final_epoch.model",
+    }
+    execution_names = sizes.keys() - {"independent-audit.json"}
+    if execution_names != expected:
+        raise ValueError("saved attempt file inventory differs from the authorized outputs")
+    for name, counter in (("stdout.log", "stdout_bytes"), ("stderr.log", "stderr_bytes")):
+        if sizes[name] != supervisor[counter] or sizes[name] > LAUNCH_RESOURCES["log_limit_bytes"]:
+            raise ValueError(f"actual {name} size differs from the saved count or exceeds the log limit")
+    total = sum(sizes[name] for name in execution_names)
+    if total != supervisor["output_bytes"] or total > LAUNCH_RESOURCES["output_limit_bytes"]:
+        raise ValueError("actual output tree size differs from the saved count or exceeds the limit")
+
+    observation = root.with_name(root.name + ".supervisor-observation.json")
+    if (observation.is_symlink() or not observation.is_file()
+            or observation.stat().st_size > LAUNCH_RESOURCES["log_limit_bytes"]):
+        raise ValueError("missing or invalid supervisor publication observation")
+    observed = json.loads(observation.read_bytes())
+    if not isinstance(observed, dict):
+        raise ValueError("invalid supervisor publication observation")
+    publication = observed.pop("publication", None)
+    if (observed != supervisor or not isinstance(publication, dict)
+            or set(publication) != {"receipt_sha256", "elapsed_seconds"}
+            or publication["receipt_sha256"] != hashlib.sha256(supervisor_bytes).hexdigest()
+            or "interrupt_signal" in supervisor):
+        raise ValueError("supervisor publication observation differs from the saved receipt")
+    elapsed = publication["elapsed_seconds"]
+    if (type(elapsed) not in (int, float) or not math.isfinite(elapsed)
+            or not supervisor["elapsed_seconds"] <= elapsed <= LAUNCH_RESOURCES["timeout_seconds"]):
+        raise ValueError("supervisor publication time exceeds the reviewed bound or contradicts the receipt")
 
 
 def _independent_parity(actual: dict, expected: dict) -> dict:
@@ -144,11 +198,13 @@ def _independent_parity(actual: dict, expected: dict) -> dict:
 
 
 def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
-    packet_root, attempt_root = Path(packet_root), Path(attempt_root)
+    packet_root, attempt_root = Path(packet_root), Path(attempt_root).resolve()
+    sizes = _attempt_file_sizes(attempt_root)
     status = json.loads((attempt_root / "parity-status.json").read_text(encoding="utf-8"))
     if status.get("status") not in {"PARITY_PASS", "PARITY_FAIL"}:
         raise ValueError("partial or operational worker result cannot be audited as parity")
-    supervisor = json.loads((attempt_root / "supervisor-status.json").read_text(encoding="utf-8"))
+    supervisor_bytes = (attempt_root / "supervisor-status.json").read_bytes()
+    supervisor = json.loads(supervisor_bytes)
     if supervisor.get("status") != "WORKER_COMPLETED" or supervisor.get("exit_code") != 0:
         raise ValueError("operational supervisor result is not a successful bounded attempt")
     elapsed = supervisor.get("elapsed_seconds")
@@ -166,10 +222,11 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     if (recorded_packet.get("manifest_sha256") != packet["manifest_sha256"]
             or recorded_packet.get("model_sha256") != packet["model_sha256"]):
         raise ValueError("worker packet identity differs from independently authenticated packet")
-    _validated_admission_chain(attempt_root, status, packet, tuple(inputs["species"]))
+    admission = _validated_admission_chain(attempt_root, status, packet, tuple(inputs["species"]), supervisor)
+    _verify_retained_execution(attempt_root, sizes, supervisor, supervisor_bytes, admission["launch_receipt"])
     snapshot = status.get("final_model_snapshot", {})
     snapshot_path = Path(snapshot.get("path", ""))
-    if (snapshot_path.resolve() != (attempt_root / "private" / "final_epoch.model").resolve()
+    if (snapshot.get("path") != str(attempt_root / "private" / "final_epoch.model")
             or not snapshot_path.is_file() or snapshot.get("sha256") != _sha256(snapshot_path)
             or snapshot.get("bytes") != snapshot_path.stat().st_size
             or snapshot.get("sha256") != packet["model_sha256"]):

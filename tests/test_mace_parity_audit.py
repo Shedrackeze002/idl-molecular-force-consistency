@@ -35,6 +35,29 @@ def approval_identity():
     return platform, packages, sources
 
 
+def write_supervisor_evidence(root, supervisor):
+    """Build coherent saved evidence for the synthetic worker fixture."""
+    for name in ("stdout.log", "stderr.log"):
+        (root / name).touch()
+    partial = root / "predictions-partial.npz"
+    if not partial.exists():
+        partial.write_bytes((root / "predictions.npz").read_bytes())
+    status_path = root / "supervisor-status.json"
+    other_bytes = sum(p.stat().st_size for p in root.rglob("*")
+                      if p.is_file() and p not in {status_path, root / "independent-audit.json"})
+    supervisor.update(status="WORKER_COMPLETED", exit_code=0, elapsed_seconds=1,
+                      stdout_bytes=0, stderr_bytes=0, output_bytes=other_bytes)
+    text = json.dumps(supervisor)
+    while supervisor["output_bytes"] != other_bytes + len(text.encode()):
+        supervisor["output_bytes"] = other_bytes + len(text.encode())
+        text = json.dumps(supervisor)
+    status_path.write_text(text)
+    observation = {**supervisor, "publication": {
+        "receipt_sha256": digest(status_path), "elapsed_seconds": 1,
+    }}
+    root.with_name(root.name + ".supervisor-observation.json").write_text(json.dumps(observation))
+
+
 def write_attempt(root, status="PARITY_PASS"):
     root.mkdir()
     np.savez(root / "predictions.npz", record_ids=np.array(["a"]),
@@ -86,10 +109,7 @@ def write_attempt(root, status="PARITY_PASS"):
                                        "sha256": digest(snapshot)}}
     (root / "parity-status.json").write_text(json.dumps(parity))
     supervisor = json.loads((root / "supervisor-status.json").read_text())
-    supervisor.update(status="WORKER_COMPLETED", exit_code=0, elapsed_seconds=1,
-                      stdout_bytes=0, stderr_bytes=0,
-                      output_bytes=sum(p.stat().st_size for p in root.rglob("*") if p.is_file()))
-    (root / "supervisor-status.json").write_text(json.dumps(supervisor))
+    write_supervisor_evidence(root, supervisor)
     return packet
 
 
@@ -189,6 +209,8 @@ def test_per_record_claims_are_recomputed(tmp_path, monkeypatch):
     parity = json.loads((attempt / "parity-status.json").read_text())
     parity["per_record_max_force_eV_per_angstrom"] = [5e-11]
     (attempt / "parity-status.json").write_text(json.dumps(parity))
+    saved_supervisor = json.loads((attempt / "supervisor-status.json").read_text())
+    write_supervisor_evidence(attempt, saved_supervisor)
     monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
     monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
     with pytest.raises(ValueError, match="claims"):
@@ -292,10 +314,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     assert receipt["model_snapshot"]["model_sha256"] == digest(model)
 
     supervisor = json.loads((attempt / "supervisor-status.json").read_text())
-    supervisor.update(status="WORKER_COMPLETED", exit_code=0, elapsed_seconds=1,
-                      stdout_bytes=0, stderr_bytes=0,
-                      output_bytes=sum(p.stat().st_size for p in attempt.rglob("*") if p.is_file()))
-    (attempt / "supervisor-status.json").write_text(json.dumps(supervisor))
+    write_supervisor_evidence(attempt, supervisor)
     monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
     audited = module.audit_saved_parity(packet_root, attempt)
     assert audited["parity"]["status"] == "PARITY_PASS"
@@ -396,6 +415,8 @@ def test_saved_audit_refuses_approval_that_contradicts_evidence(tmp_path, monkey
         admission_path.write_text(json.dumps(admission))
         status["admission_receipt_sha256"] = digest(admission_path)
         status_path.write_text(json.dumps(status))
+        saved_supervisor = json.loads((attempt / "supervisor-status.json").read_text())
+        write_supervisor_evidence(attempt, saved_supervisor)
 
     monkeypatch.setattr(module, "validate_inputs", lambda root: inputs)
     monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
@@ -412,4 +433,51 @@ def test_saved_audit_refuses_approval_that_contradicts_evidence(tmp_path, monkey
         refusal = "approved species order differs"
     save_approval()
     with pytest.raises(ValueError, match=refusal):
+        module.audit_saved_parity(tmp_path, attempt)
+
+
+@pytest.mark.parametrize("damage,reason", [
+    ("redirect-snapshot", "symlink|private"),
+    ("oversized-log", "log|stdout"),
+    ("extra", "inventory|unexpected"),
+])
+def test_saved_audit_checks_actual_attempt_files(tmp_path, monkeypatch, damage, reason):
+    import mace_loader as loader
+
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    if damage == "redirect-snapshot":
+        moved = (attempt / "private").rename(tmp_path / "redirected")
+        (attempt / "private").symlink_to(moved, target_is_directory=True)
+    elif damage == "oversized-log":
+        with (attempt / "stdout.log").open("wb") as stream:
+            stream.truncate(loader.LAUNCH_RESOURCES["log_limit_bytes"] + 1)
+    else:
+        (attempt / "unexpected.txt").touch()
+
+    monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    with pytest.raises(ValueError, match=reason):
+        module.audit_saved_parity(tmp_path, attempt)
+
+
+@pytest.mark.parametrize("damage", ["missing", "late", "digest"])
+def test_saved_audit_checks_publication_observation(tmp_path, monkeypatch, damage):
+    import mace_loader as loader
+
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    path = tmp_path / "attempt.supervisor-observation.json"
+    if damage == "missing":
+        path.unlink()
+    else:
+        observed = json.loads(path.read_text())
+        if damage == "late":
+            observed["publication"]["elapsed_seconds"] = 1801
+        else:
+            observed["publication"]["receipt_sha256"] = "0" * 64
+        path.write_text(json.dumps(observed))
+    monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    with pytest.raises(ValueError, match="supervisor publication"):
         module.audit_saved_parity(tmp_path, attempt)

@@ -643,3 +643,48 @@ def test_worker_temporary_names_cannot_overwrite_approved_reviews(tmp_path, monk
             constructor=lambda path: calls.append(path) or FakeCalculator(), expected_species=("H",) * 21)
     assert calls == []
     assert (target / name).is_file()
+
+
+@pytest.mark.parametrize("system,architecture,libc,accepted", [
+    ("macOS-27.2.1-arm64-arm-64bit", "arm64", "", True),
+    ("macOS-27.2.1-arm64-arm-64bit", "arm64", None, False),
+    ("Linux-test", "x86_64", "2.35", True),
+    ("Linux-test", "x86_64", "", False),
+])
+def test_approved_platform_libc_identity(system, architecture, libc, accepted):
+    import mace_loader as module
+
+    receipt = canonical_admission(module)
+    platform = receipt["platform"]
+    platform.update(platform=system, architecture=architecture, glibc=libc)
+    if accepted:
+        assert module._approved_identity_inventory(receipt)["platform"] == platform
+    else:
+        with pytest.raises(module.AdmissionError, match="platform binding"):
+            module._approved_identity_inventory(receipt)
+
+
+@pytest.mark.parametrize("name", ["STDOUT.LOG", "wsl.JSON"])
+def test_approval_refs_refuse_case_aliases(tmp_path, name):
+    import mace_loader as module
+
+    launch = {"status": "APPROVED", "species": ["H"] * 21, "implementation_commit": "a" * 40,
+              "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": "b" * 64}
+    write_launch_contract(tmp_path, tmp_path, launch)
+    launch["reviews"][0]["path"] = name
+    with pytest.raises(module.AdmissionError, match="reserved or duplicated"):
+        module._launch_approval_refs(launch)
+
+
+def test_live_macos_platform_requires_exact_approval(monkeypatch):
+    import mace_loader as module
+
+    receipt = canonical_admission(module)
+    receipt["platform"].update(platform="macOS-27.0.1-arm64-arm-64bit",
+                               architecture="arm64", glibc="")
+    monkeypatch.setattr(module.platform, "python_version", lambda: "3.12.13")
+    monkeypatch.setattr(module.platform, "machine", lambda: "arm64")
+    monkeypatch.setattr(module.platform, "platform", lambda: "macOS-27.2.1-arm64-arm-64bit")
+    monkeypatch.setattr(module.platform, "libc_ver", lambda: ("", ""))
+    with pytest.raises(module.AdmissionError, match="live platform differs"):
+        module._live_admission_check(receipt)

@@ -257,7 +257,7 @@ def test_interrupt_during_final_status_write(tmp_path, monkeypatch, cli):
     assert status["interrupt_signal"] == signal.SIGINT
 
 
-@pytest.mark.parametrize("fault", [None, "deadline", "replace"])
+@pytest.mark.parametrize("fault", [None, "deadline", "replace", "late-replacement", "signal-replacement"])
 def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch, fault):
     import mace_loader as loader
     from test_mace_parity_audit import module as auditor, fixture_inputs, write_attempt
@@ -265,6 +265,8 @@ def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch
     attempt = tmp_path / "attempt"
     packet = write_attempt(attempt)
     fixture = attempt.rename(tmp_path / "fixture")
+    observation = tmp_path / "attempt.supervisor-observation.json"
+    observation.unlink()
     status_path = attempt / "supervisor-status.json"
     elapsed = 0
     fail_persistence = False
@@ -272,7 +274,7 @@ def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch
     original_replace = module.Path.replace
 
     def complete_worker(*args, **kwargs):
-        for name in ("predictions.npz", "admission-receipt.json", "parity-status.json"):
+        for name in ("predictions.npz", "predictions-partial.npz", "admission-receipt.json", "parity-status.json"):
             shutil.copyfile(fixture / name, attempt / name)
         shutil.copytree(fixture / "private", attempt / "private")
         return SimpleNamespace(poll=lambda: 0, returncode=0)
@@ -289,11 +291,18 @@ def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch
         return original_write(path, data, *args, **kwargs)
 
     def simulate_replace(path, destination):
-        nonlocal fail_persistence
+        nonlocal elapsed, fail_persistence
         if fault == "replace" and destination == status_path:
             fail_persistence = True
             raise OSError("simulated persistence failure")
-        return original_replace(path, destination)
+        result = original_replace(path, destination)
+        if destination == status_path and fault in {"late-replacement", "signal-replacement"}:
+            fail_persistence = True
+            if fault == "late-replacement":
+                elapsed = 1801
+            else:
+                signal.raise_signal(signal.SIGINT)
+        return result
 
     monkeypatch.setattr(module.subprocess, "Popen", complete_worker)
     monkeypatch.setattr(module, "_group_alive", lambda process: False)
@@ -308,15 +317,18 @@ def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch
     }
     if fault is None:
         result = module.supervise(tmp_path, attempt, **launch)
-        assert result == json.loads(status_path.read_text())
+        assert {key: value for key, value in result.items() if key != "publication"} == json.loads(status_path.read_text())
         assert result["output_bytes"] == module._tree_bytes(attempt)
+        observation.write_text(json.dumps(result))
         assert auditor.audit_saved_parity(tmp_path, attempt)["parity"]["status"] == "PARITY_PASS"
     else:
         with pytest.raises(OSError, match="simulated persistence failure"):
             module.supervise(tmp_path, attempt, **launch)
-        with pytest.raises(ValueError, match="operational supervisor"):
+        published = fault in {"late-replacement", "signal-replacement"}
+        with pytest.raises(ValueError, match="publication observation" if published else "operational supervisor"):
             auditor.audit_saved_parity(tmp_path, attempt)
-        assert json.loads(status_path.read_text())["status"] == "RUNNING"
+        assert not observation.exists()
+        assert json.loads(status_path.read_text())["status"] == ("WORKER_COMPLETED" if published else "RUNNING")
 
 
 @pytest.mark.skipif(os.name == "nt", reason="POSIX process-group regression")
@@ -429,3 +441,32 @@ def test_signal_during_final_deadline_sample_refuses_completion(tmp_path, monkey
     assert result == json.loads((output / "supervisor-status.json").read_text())
     assert result["status"] == "INTERRUPTED"
     assert result["interrupt_signal"] == signal.SIGINT
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX signal regression")
+@pytest.mark.parametrize("fault,expected", [("late", "TIMEOUT"), ("signal", "INTERRUPTED")])
+def test_canonical_receipt_replacement_is_in_the_bound(tmp_path, monkeypatch, fault, expected):
+    monkeypatch.setattr(module.subprocess, "Popen",
+                        lambda *args, **kwargs: SimpleNamespace(poll=lambda: 0, returncode=0))
+    monkeypatch.setattr(module, "_group_alive", lambda process: False)
+    elapsed = 0
+    original_replace = module.Path.replace
+
+    def replace(path, destination):
+        nonlocal elapsed
+        candidate = json.loads(path.read_text())
+        result = original_replace(path, destination)
+        if destination.name == "supervisor-status.json" and candidate["status"] == "WORKER_COMPLETED":
+            if fault == "late":
+                elapsed = 1801
+            else:
+                signal.raise_signal(signal.SIGINT)
+        return result
+
+    monkeypatch.setattr(module, "time", SimpleNamespace(monotonic=lambda: elapsed, time=lambda: 0))
+    monkeypatch.setattr(module.Path, "replace", replace)
+    output = tmp_path / "attempt"
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert result == json.loads((output / "supervisor-status.json").read_text())
+    assert result["status"] == expected
+    assert "publication" not in result

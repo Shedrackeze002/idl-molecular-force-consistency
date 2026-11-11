@@ -160,7 +160,14 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
         raise AdmissionError("approved WSL receipt lacks complete live identity fields")
     required_platform = {key: approved_platform.get(key)
                          for key in ("python", "platform", "architecture", "glibc")}
-    if any(not isinstance(value, str) or not value for value in required_platform.values()):
+    platform_values = (required_platform["python"], required_platform["platform"],
+                       required_platform["architecture"])
+    if any(not isinstance(value, str) or not value for value in platform_values):
+        raise AdmissionError("approved interpreter/platform binding is incomplete")
+    macos_arm64 = (required_platform["platform"].startswith("macOS-")
+                   and required_platform["architecture"] == "arm64")
+    glibc = required_platform["glibc"]
+    if not isinstance(glibc, str) or (glibc == "") != macos_arm64:
         raise AdmissionError("approved interpreter/platform binding is incomplete")
 
     def package_name(raw: Any) -> str:
@@ -266,10 +273,10 @@ def _launch_approval_refs(launch: dict[str, Any]) -> list[dict[str, str]]:
         if (not isinstance(ref, dict) or set(ref) != {"path", "sha256"}
                 or not isinstance(ref["path"], str) or not ref["path"]
                 or Path(ref["path"]).name != ref["path"] or ref["path"] in {".", ".."}
-                or ref["path"] in seen or ref["path"] in _RESERVED_APPROVAL_NAMES
+                or ref["path"].casefold() in seen or ref["path"].casefold() in _RESERVED_APPROVAL_NAMES
                 or not _hex_digest(ref["sha256"])):
             raise AdmissionError("launch approval references are malformed, reserved or duplicated")
-        seen.add(ref["path"])
+        seen.add(ref["path"].casefold())
     return refs
 
 

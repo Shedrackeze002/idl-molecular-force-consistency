@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import threading
@@ -20,7 +22,16 @@ LOG_BYTES = 16 * 1024 * 1024
 
 
 def _tree_bytes(root: Path) -> int:
-    return sum(path.stat().st_size for path in root.rglob("*") if path.is_file())
+    total = 0
+    for path in root.rglob("*"):
+        try:
+            entry = path.lstat()
+        except FileNotFoundError:
+            # Worker temporary files can disappear during atomic replacement.
+            continue
+        if stat.S_ISREG(entry.st_mode):
+            total += entry.st_size
+    return total
 
 
 def _group_alive(process: subprocess.Popen) -> bool:
@@ -133,7 +144,18 @@ def _finalize(output: Path, status_path: Path, receipt: dict, started: float,
                     receipt["status"] = "INTERRUPTED"
             if receipt["status"] == "WORKER_COMPLETED":
                 staged.replace(status_path)
-                return receipt
+                observe_interrupt(True)
+                final_elapsed = time.monotonic() - started
+                signum = observe_interrupt(False)
+                if signum is not None:
+                    receipt.update(status="INTERRUPTED", interrupt_signal=signum)
+                elif final_elapsed > receipt["timeout_seconds"]:
+                    receipt["status"] = "TIMEOUT"
+                else:
+                    return {**receipt, "publication": {
+                        "receipt_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                        "elapsed_seconds": final_elapsed,
+                    }}
             receipt["elapsed_seconds"] = final_elapsed
 
     _write_terminal(status_path, receipt)
