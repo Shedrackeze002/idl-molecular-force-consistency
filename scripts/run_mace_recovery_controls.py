@@ -217,6 +217,25 @@ def output_size(directory):
 
 
 def supervise(record, digest, approval):
+    signals = []
+
+    def interrupt(signum, _frame):
+        if not signals:
+            signals.append(signum)
+
+    handlers = {sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)}
+    try:
+        for sig in handlers:
+            signal.signal(sig, interrupt)
+        return _supervise(record, digest, approval, signals)
+    finally:
+        for sig, handler in handlers.items():
+            signal.signal(sig, handler)
+
+
+def _supervise(record, digest, approval, signals):
+    from supervise_mace_parity import _group_alive, _terminate_owned_group
+
     if approval != {"status": "APPROVED", "record_sha256": digest,
                     "commit": record["commit"], "reviews": ["engineering", "scientific"]}:
         raise ValueError("Reviewed recovery launch approval differs")
@@ -228,11 +247,15 @@ def supervise(record, digest, approval):
     reason = "worker setup failure"
     code = None
     try:
+        if signals:
+            raise InterruptedError("Recovery interrupted before spawn")
         with (output / "worker.log").open("xb") as log:
             process = subprocess.Popen([*record["command"], "--sha256", digest], cwd=ROOT, stdout=log,
                                        stderr=subprocess.STDOUT, start_new_session=True)
             try:
                 while process.poll() is None:
+                    if signals:
+                        raise InterruptedError("Recovery interrupted")
                     if time.monotonic() - started >= RESOURCES["wall_seconds"]:
                         raise TimeoutError("Recovery wall limit reached")
                     if ((output / "worker.log").stat().st_size > RESOURCES["log_bytes"]
@@ -240,14 +263,12 @@ def supervise(record, digest, approval):
                         raise RuntimeError("Recovery output limit reached")
                     time.sleep(0.25)
                 code = process.returncode
+                if _group_alive(process):
+                    raise RuntimeError("Recovery worker left a running process group")
             finally:
-                if process.poll() is None:
-                    try:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    except ProcessLookupError:
-                        pass
-                    process.wait()
-        if (code != 0 or not (output / "result.json").is_file()
+                if _group_alive(process):
+                    _terminate_owned_group(process)
+        if (signals or code != 0 or not (output / "result.json").is_file()
                 or time.monotonic() - started >= RESOURCES["wall_seconds"]
                 or (output / "worker.log").stat().st_size > RESOURCES["log_bytes"]
                 or output_size(output) > RESOURCES["output_bytes"]):
@@ -259,7 +280,18 @@ def supervise(record, digest, approval):
     finally:
         persist(output / "terminal.json", {"complete": reason is None, "worker_exit_code": code,
                                           "elapsed_seconds": time.monotonic() - started,
-                                          "failure": reason})
+                                          "failure": reason,
+                                          "interrupt_signal": signals[0] if signals else None})
+    terminal_sha = _sha256(output / "terminal.json")
+    size = output_size(output)
+    elapsed = time.monotonic() - started
+    if signals or elapsed > RESOURCES["wall_seconds"] or size > RESOURCES["output_bytes"]:
+        refusal = {"elapsed_seconds": elapsed, "output_bytes": size,
+                   "interrupt_signal": signals[0] if signals else None}
+        persist(output / "publication-refused.json", refusal)
+        raise RuntimeError("Recovery terminal publication exceeded bounds or was interrupted")
+    return {"terminal_sha256": terminal_sha, "publication_elapsed_seconds": elapsed,
+            "output_bytes": size}
 
 
 def main():
@@ -276,7 +308,8 @@ def main():
     elif args.mode == "worker":
         worker(record, args.record, args.sha256)
     else:
-        supervise(record, args.sha256, read_json(args.approval))
+        observation = supervise(record, args.sha256, read_json(args.approval))
+        print(json.dumps(observation, sort_keys=True))
 
 
 if __name__ == "__main__":
