@@ -1,8 +1,11 @@
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
+import threading
+from types import SimpleNamespace
 import time
 
 import pytest
@@ -86,13 +89,10 @@ def test_receipt_copy_failure_is_persisted(tmp_path):
 
 def test_last_status_write_delay_counts_toward_timeout(tmp_path, monkeypatch):
     original = module.Path.write_text
-    calls = {"count": 0}
-    def delayed(self, *args, **kwargs):
-        if self.name == "supervisor-status.json":
-            calls["count"] += 1
-            if calls["count"] == 3:
-                time.sleep(.06)
-        return original(self, *args, **kwargs)
+    def delayed(self, data, *args, **kwargs):
+        if self.name == "supervisor-status.json.tmp" and json.loads(data)["status"] == "WORKER_COMPLETED":
+            time.sleep(.06)
+        return original(self, data, *args, **kwargs)
     monkeypatch.setattr(module.Path, "write_text", delayed)
     result = module.supervise(tmp_path, tmp_path / "last-write", timeout=.05,
                               command=command("pass"))
@@ -112,7 +112,7 @@ def test_term_ignoring_child_is_killed_after_leader_exits(tmp_path):
         os.kill(child_pid, 0)
 
 
-@pytest.mark.parametrize("damage", ["command", "executable", "resources", "review", "actual-resource-type", "parity-status.json.tmp", "predictions.npz.tmp.npz", "predictions-partial.npz.tmp.npz"])
+@pytest.mark.parametrize("damage", ["command", "executable", "resources", "review", "actual-resource-type", "supervisor-status.json.tmp", "parity-status.json.tmp", "predictions.npz.tmp.npz", "predictions-partial.npz.tmp.npz"])
 def test_production_binding_refuses_before_spawn(tmp_path, monkeypatch, damage):
     from test_mace_loader import write_launch_contract, sha
     approvals=tmp_path / "approvals"; approvals.mkdir()
@@ -233,7 +233,7 @@ def test_interrupt_during_final_status_write(tmp_path, monkeypatch, cli):
 
     def interrupt_final_write(path, data, *args, **kwargs):
         nonlocal saw_final_write
-        if path.name == "supervisor-status.json" and not saw_final_write:
+        if path.name == "supervisor-status.json.tmp" and not saw_final_write:
             receipt = json.loads(data)
             if receipt["status"] == "WORKER_COMPLETED" and "output_bytes" in receipt:
                 saw_final_write = True
@@ -255,3 +255,177 @@ def test_interrupt_during_final_status_write(tmp_path, monkeypatch, cli):
     status = json.loads((output / "supervisor-status.json").read_text())
     assert status["status"] == "INTERRUPTED"
     assert status["interrupt_signal"] == signal.SIGINT
+
+
+@pytest.mark.parametrize("fault", [None, "deadline", "replace"])
+def test_saved_audit_rejects_failed_completion_publication(tmp_path, monkeypatch, fault):
+    import mace_loader as loader
+    from test_mace_parity_audit import module as auditor, fixture_inputs, write_attempt
+
+    attempt = tmp_path / "attempt"
+    packet = write_attempt(attempt)
+    fixture = attempt.rename(tmp_path / "fixture")
+    status_path = attempt / "supervisor-status.json"
+    elapsed = 0
+    fail_persistence = False
+    original_write = module.Path.write_text
+    original_replace = module.Path.replace
+
+    def complete_worker(*args, **kwargs):
+        for name in ("predictions.npz", "admission-receipt.json", "parity-status.json"):
+            shutil.copyfile(fixture / name, attempt / name)
+        shutil.copytree(fixture / "private", attempt / "private")
+        return SimpleNamespace(poll=lambda: 0, returncode=0)
+
+    def simulate_write(path, data, *args, **kwargs):
+        nonlocal elapsed, fail_persistence
+        if path.parent == attempt and path.name.startswith(status_path.name):
+            if fail_persistence:
+                raise OSError("simulated persistence failure")
+            receipt = json.loads(data)
+            if fault == "deadline" and receipt["status"] == "WORKER_COMPLETED" and "output_bytes" in receipt:
+                elapsed = 1801
+                fail_persistence = True
+        return original_write(path, data, *args, **kwargs)
+
+    def simulate_replace(path, destination):
+        nonlocal fail_persistence
+        if fault == "replace" and destination == status_path:
+            fail_persistence = True
+            raise OSError("simulated persistence failure")
+        return original_replace(path, destination)
+
+    monkeypatch.setattr(module.subprocess, "Popen", complete_worker)
+    monkeypatch.setattr(module, "_group_alive", lambda process: False)
+    monkeypatch.setattr(module, "time", SimpleNamespace(monotonic=lambda: elapsed, time=lambda: 0))
+    monkeypatch.setattr(module.Path, "write_text", simulate_write)
+    monkeypatch.setattr(module.Path, "replace", simulate_replace)
+    monkeypatch.setattr(loader, "verify_packet", lambda path: packet)
+    monkeypatch.setattr(auditor, "validate_inputs", lambda path: fixture_inputs())
+    launch = {
+        "launch_receipt": fixture / "launch-receipt.json",
+        "wsl_admission_receipt": fixture / "wsl.json",
+    }
+    if fault is None:
+        result = module.supervise(tmp_path, attempt, **launch)
+        assert result == json.loads(status_path.read_text())
+        assert result["output_bytes"] == module._tree_bytes(attempt)
+        assert auditor.audit_saved_parity(tmp_path, attempt)["parity"]["status"] == "PARITY_PASS"
+    else:
+        with pytest.raises(OSError, match="simulated persistence failure"):
+            module.supervise(tmp_path, attempt, **launch)
+        with pytest.raises(ValueError, match="operational supervisor"):
+            auditor.audit_saved_parity(tmp_path, attempt)
+        assert json.loads(status_path.read_text())["status"] == "RUNNING"
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX process-group regression")
+def test_direct_call_finishes_cleanup_after_sigint(tmp_path, monkeypatch):
+    marker = tmp_path / "term-received"
+    worker = command(
+        "import signal,time; from pathlib import Path; "
+        f"signal.signal(signal.SIGTERM, lambda *_: Path({str(marker)!r}).touch()); "
+        "time.sleep(20)"
+    )
+    processes = []
+    original_popen = module.subprocess.Popen
+    done = threading.Event()
+
+    def remember_process(*args, **kwargs):
+        process = original_popen(*args, **kwargs)
+        processes.append(process)
+        return process
+
+    def interrupt_after_term():
+        while not marker.exists():
+            if done.wait(0.01):
+                return
+        if not done.is_set():
+            os.kill(os.getpid(), signal.SIGINT)
+
+    monkeypatch.setattr(module.subprocess, "Popen", remember_process)
+    original_handler = signal.getsignal(signal.SIGINT)
+    sender = threading.Thread(target=interrupt_after_term, daemon=True)
+    sender.start()
+    output = tmp_path / "attempt"
+    try:
+        result = module.supervise(tmp_path, output, timeout=0.5, command=worker)
+        assert len(processes) == 1 and marker.exists()
+        assert processes[0].poll() is not None
+        assert result["status"] == "TIMEOUT"
+        assert result["interrupt_signal"] == signal.SIGINT
+        assert result == json.loads((output / "supervisor-status.json").read_text())
+        assert signal.getsignal(signal.SIGINT) == original_handler
+    finally:
+        done.set()
+        sender.join(timeout=2)
+        for process in processes:
+            if process.poll() is None:
+                os.killpg(process.pid, signal.SIGKILL)
+            process.wait(timeout=2)
+
+
+@pytest.mark.parametrize("phase", ["before", "after"])
+def test_completion_staging_overlap_counts_toward_budget(tmp_path, monkeypatch, phase):
+    monkeypatch.setattr(module.subprocess, "Popen",
+                        lambda *args, **kwargs: SimpleNamespace(poll=lambda: 0, returncode=0))
+    monkeypatch.setattr(module, "_group_alive", lambda process: False)
+    monkeypatch.setattr(module, "time", SimpleNamespace(monotonic=lambda: 0, time=lambda: 0))
+    control = module.supervise(tmp_path, tmp_path / "control", command=command("pass"))
+    assert control["status"] == "WORKER_COMPLETED"
+    output = tmp_path / "bounded"
+    original_write = module.Path.write_text
+    staged_success = False
+
+    def measure_overlap(path, data, *args, **kwargs):
+        nonlocal staged_success
+        count = original_write(path, data, *args, **kwargs)
+        if path.parent == output and path.name == "supervisor-status.json.tmp":
+            receipt = json.loads(data)
+            if receipt["status"] == "WORKER_COMPLETED":
+                staged_success = True
+                actual = module._tree_bytes(output)
+                assert receipt["output_bytes"] < actual
+                monkeypatch.setattr(module, "OUTPUT_BYTES", actual - 1)
+        return count
+
+    monkeypatch.setattr(module.Path, "write_text", measure_overlap)
+    if phase == "before":
+        monkeypatch.setattr(module, "OUTPUT_BYTES", control["output_bytes"] + 1)
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert result == json.loads((output / "supervisor-status.json").read_text())
+    assert result["status"] == "OUTPUT_OVERFLOW"
+    assert staged_success == (phase == "after")
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX signal regression")
+def test_signal_during_final_deadline_sample_refuses_completion(tmp_path, monkeypatch):
+    monkeypatch.setattr(module.subprocess, "Popen",
+                        lambda *args, **kwargs: SimpleNamespace(poll=lambda: 0, returncode=0))
+    monkeypatch.setattr(module, "_group_alive", lambda process: False)
+    original_write = module.Path.write_text
+    staged_success = False
+    signal_sent = False
+
+    def track_staging(path, data, *args, **kwargs):
+        nonlocal staged_success
+        count = original_write(path, data, *args, **kwargs)
+        if path.name == "supervisor-status.json.tmp":
+            staged_success = json.loads(data)["status"] == "WORKER_COMPLETED"
+        return count
+
+    def signal_on_final_clock():
+        nonlocal signal_sent
+        if staged_success and not signal_sent:
+            signal_sent = True
+            signal.raise_signal(signal.SIGINT)
+        return 0
+
+    monkeypatch.setattr(module.Path, "write_text", track_staging)
+    monkeypatch.setattr(module, "time", SimpleNamespace(monotonic=signal_on_final_clock, time=lambda: 0))
+    output = tmp_path / "attempt"
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert signal_sent
+    assert result == json.loads((output / "supervisor-status.json").read_text())
+    assert result["status"] == "INTERRUPTED"
+    assert result["interrupt_signal"] == signal.SIGINT

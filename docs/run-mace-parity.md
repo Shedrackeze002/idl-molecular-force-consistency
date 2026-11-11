@@ -45,6 +45,12 @@ identity refusal and numerical disagreement are retained and never retried or
 relabeled as success. The independent audit reads saved arrays only; it does
 not import or load MACE/Torch.
 
+The supervisor keeps the canonical receipt incomplete during finalization.
+It counts both receipt files against the directory bound while staging and
+checks the deadline and interruption immediately before atomic publication.
+The successful receipt records the final tree size and the elapsed time
+sampled before staging.
+
 
 ## Frozen bridge identity
 
