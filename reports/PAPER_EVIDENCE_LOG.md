@@ -209,3 +209,11 @@ At every cap, the energy checkpoint recovered 0/10 from the original starts, so 
 ### E3X-STAGE2-EXPLORATORY-CONTROLS-2026-11-12
 
 The uncapped controls for the two consistency 1.0 checkpoints completed all 32 runs. Both checkpoints recovered 0/10 from the original starts. From known minima, seed 0 matched 0/6 and seed 1 matched 1/6. The [exploratory control record](evidence/2026-11-12/e3x-stage2-exploratory-controls.json) preserves the verified rows. This comparison is post hoc and is outside the primary force-error match.
+
+### E3X-STAGE2-CLOSEOUT-2026-11-12
+
+All four relaxation stages completed and the launch verifier reported no problems. The saved-row audit covers 560 outcomes across the uncapped and capped stages. The exploratory consistency 1.0 sweep recovered 0/80 from the original starts. From known minima, seed 0 matched 0/6 and seed 1 matched 1/6 at each cap, the same counts as their uncapped controls. This post-hoc comparison is outside the primary force-error match.
+
+For the five primary checkpoints, the uncapped control produced 25/50 stops at the wrong shape and 25/50 runs without convergence. At caps of 0.05, 0.10, 0.25 and 1.00 Å, respectively, wrong stops fell to 1, 1, 1 and 3 of 50, and runs without convergence rose to 49, 49, 49 and 47 of 50. Disconnected endpoints fell from 28/50 uncapped to 9, 4, 4 and 8 of 50. Recovery was 0/50 at every cap. These counts describe repeated runs on the same five validation connections.
+
+The declared comparison rules classified both sweeps as uninformative for comparing recovery because the energy baseline failed the adequacy rule at every cap. No new recovery was available for attribution. The [exploratory and combined result](evidence/2026-11-12/e3x-stage2-exploratory.json) includes the final rows, per-cap counts, travel and force-request summaries, and the rule outputs. The study used the validation split throughout.
