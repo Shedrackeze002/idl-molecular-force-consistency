@@ -205,3 +205,7 @@ Stage 0 reproduced all 80 historical uncapped outcomes and passed the launch ver
 The primary sweep completed 320 runs across four caps and five checkpoints on the aspirin validation split. The saved-row audit verified the grid, the displacement bounds, the trace links and the endpoint categories. Across the caps, 0/200 original-start runs and 20/120 reference-start runs met both the force and geometry criteria. The same reference-start pattern held at each cap: 4/6 for the energy checkpoint, 1/6 for direct seed 0, and 0/6 for direct seed 1 and both consistency 0.1 checkpoints.
 
 At every cap, the energy checkpoint recovered 0/10 from the original starts, so the study's declared adequacy rule failed. The primary comparison is uninformative for ranking direct and consistency-trained recovery. The caps reuse the same five connections. The [primary result](evidence/2026-11-12/e3x-stage2-primary.json) includes individual outcomes, trace digests and the rule output.
+
+### E3X-STAGE2-EXPLORATORY-CONTROLS-2026-11-12
+
+The uncapped controls for the two consistency 1.0 checkpoints completed all 32 runs. Both checkpoints recovered 0/10 from the original starts. From known minima, seed 0 matched 0/6 and seed 1 matched 1/6. The [exploratory control record](evidence/2026-11-12/e3x-stage2-exploratory-controls.json) preserves the verified rows. This comparison is post hoc and is outside the primary force-error match.
