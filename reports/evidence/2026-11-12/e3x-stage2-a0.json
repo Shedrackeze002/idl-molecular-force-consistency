@@ -1,0 +1,112 @@
+{
+  "audit_violations": 0,
+  "force_comparison": {
+    "atol_eV_per_A": 1e-10,
+    "rtol": 1e-10
+  },
+  "models": {
+    "consistency-0.1-0": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 8.926193117986259e-14,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "consistency-0.1-1": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 9.270362255620057e-14,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "consistency-1-0": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 1.1945999744966684e-13,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "consistency-1-1": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 1.0103029524088925e-13,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "direct-0": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 1.1657341758564144e-13,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "direct-1": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 1.1302070390684094e-13,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    },
+    "energy-0": {
+      "batch1": {
+        "bit_identical_records": 244,
+        "max_abs_difference": 9.303668946358812e-14,
+        "records": 974
+      },
+      "batch4": {
+        "bit_identical_records": 974,
+        "max_abs_difference": 0.0,
+        "records": 974
+      }
+    }
+  },
+  "record": "E3X-STAGE2-A0-2026-11-12",
+  "record_a_sha256": "31eb76f0c1ef1fbfa760b15a1346c8c4b44ee84fe09193ad445812ec2985dcbe",
+  "record_b_sha256": "111ce777ca3c953d2ace2da3f43ef8f5662599f0f6c46660d17fedf4b5e4e323",
+  "replayed_checkpoints": 7,
+  "runtime_guards_passed": [
+    "0",
+    "0b",
+    "1",
+    "2"
+  ],
+  "saved_artifact_sha256": {
+    "a0_result": "3a64d4f1942ab32ef7930bad9e4093034e4ba215d6e355d8c43023e0b2893dd5",
+    "terminal": "d32942e24849e72377a3e779af1f1af101e6b0d1dc740c2d4015c21ecde0a0d8",
+    "verification": "5f1f8676e7a989ffb24d1bb2bf10397ebf597475c2247a9e1814ff05c41a813f"
+  },
+  "scope": "Validation checkpoint replay and CPU runtime guards before Stage 0.",
+  "source_commit": "e709d0d4514f450300e1eb99155df04c455ee9ca",
+  "status": "REPLAY_PASS",
+  "validation_records_per_checkpoint": 974
+}

@@ -191,3 +191,9 @@ S64-1: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstro
 ### REPRESENTATION-CPU-OUTCOME-SP-1-ee65c6980ee7 — CPU fit outcome, 2026-10-21T09:34:58.681023+02:00
 
 SP-1: status completed. BEST/LAST/late20 equal-connection force MAE (eV/angstrom): 0.04166924613571395/0.043646744874561286/0.04574342503314263. Raw output/source/checkpoint identities retained; independent scientific result review pending. Fixed-recipe two-seed validation evidence only, with no test, recovery, causal symmetry or population-level superiority claim. Failures/incomplete work remain visible and are not replaced with hidden tuning/retries. See reports/evidence/2026-10-20/representation/SP-1/outcome.json.
+
+### E3X-STAGE2-A0-2026-11-12
+
+The approved aspirin validation study tests per-atom movement caps of 0.05, 0.10, 0.25 and 1.00 Å under the fixed 1,500-force-request budget. The historical uncapped replay is the control. The learned checkpoint replay and the four CPU guards must pass before the recovery stages begin.
+
+A0 passed for all seven E3x checkpoints on 974 validation records each. Batch-four forces matched the saved arrays exactly. The largest batch-one absolute difference was 1.19e-13 eV/Å, within the declared 1e-10 absolute and relative tolerances. All four runtime guards passed, and the launch verifier reported no problems. The [replay evidence](evidence/2026-11-12/e3x-stage2-a0.json) records artifact hashes and per-checkpoint results. Recovery outcomes follow from the separate relaxation stages.
