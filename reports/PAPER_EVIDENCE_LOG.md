@@ -217,3 +217,13 @@ All four relaxation stages completed and the launch verifier reported no problem
 For the five primary checkpoints, the uncapped control produced 25/50 stops at the wrong shape and 25/50 runs without convergence. At caps of 0.05, 0.10, 0.25 and 1.00 Å, respectively, wrong stops fell to 1, 1, 1 and 3 of 50, and runs without convergence rose to 49, 49, 49 and 47 of 50. Disconnected endpoints fell from 28/50 uncapped to 9, 4, 4 and 8 of 50. Recovery was 0/50 at every cap. These counts describe repeated runs on the same five validation connections.
 
 The declared comparison rules classified both sweeps as uninformative for comparing recovery because the energy baseline failed the adequacy rule at every cap. No new recovery was available for attribution. The [exploratory and combined result](evidence/2026-11-12/e3x-stage2-exploratory.json) includes the final rows, per-cap counts, travel and force-request summaries, and the rule outputs. The study used the validation split throughout.
+
+### ENERGY-DECREASE-RECOVERY-2026-11-12
+
+This follow-up tests whether adding a strict predicted-energy decrease to the original force-acceptance rule improves recovery. It uses the uncapped search, the E3x energy C seed 0 BEST checkpoint and the final MACE Run A EMA checkpoint. Both modes use the same ten original starts and six known-minimum starts on five aspirin validation connections. The force and geometry thresholds and the 1,500-force-request limit stay fixed. The energy condition applies even when the proposed force meets the stopping rule. Initial convergence still requires no move.
+
+All 32 historical replays matched the saved outcomes, step counts and force requests. Endpoint coordinates matched exactly for E3x and within 1.14e-14 Å for MACE. All 32 energy-decrease runs completed. Original-start recovery stayed at 0/10 for each model. Known-minimum matches stayed at 4/6 for E3x and 6/6 for MACE. All six MACE matches remained at the starting coordinates.
+
+Original-start wrong stops rose from two to three for E3x and fell from two to one for MACE. Disconnected endpoints fell from one to zero in each model. The revised rule rejected one uphill force-eligible proposal for E3x and eleven for MACE. No original-start or known-minimum match changed status. The run audit checked the accepted energy sequence, the force stop, the retained geometry and the paired endpoint classifications.
+
+The [paired result](evidence/2026-11-12/energy-decrease-recovery.json) records per-start outcomes, request counts, elapsed time and artifact digests. This comparison changes the search rule for two energy-derived checkpoints on reused validation connections. It does not rank force-training methods or establish test-set performance.
