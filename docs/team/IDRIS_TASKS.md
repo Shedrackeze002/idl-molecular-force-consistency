@@ -1,5 +1,7 @@
 # Muhammed Idris: reproduction and compute
 
+**Full task specification:** [MACE loader and reproduction, start to delivery](IDRIS_MACE_TASK_BRIEF_2026-10-28.md). Work through milestones I01–I08. The Windows quickstart is the setup companion, not the complete workstream.
+
 **28 October access update:** [Download the verified MACE packet](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/mace-idris-handoff-2026-10-18-v2.tar.gz) and follow the [detailed handover](IDRIS_MACE_HANDOVER_2026-10-18.md). The [release](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28) includes checksums, current instructions and dataset attribution. Confirm download and verification; public availability alone does not establish receipt.
 
 **Windows next step:** follow the [Windows quickstart](WINDOWS_MACE_QUICKSTART_2026-10-28.md), beginning with steps 1–3. Return the packet verification and Windows/WSL details, then retain the proposed setup outputs or exact failure. A Mac is not an onboarding prerequisite. Idris keeps loader and independent reproduction ownership; Olufunke keeps integration.

@@ -7,6 +7,8 @@ runner and reporter. No repeat training or additional seeds are needed.
 
 ## Access and first actions
 
+**Complete assignment:** use the [end-to-end task brief](IDRIS_MACE_TASK_BRIEF_2026-10-28.md) for milestones I01–I08, implementation contracts, acceptance checks and final delivery. The Windows quickstart below covers setup.
+
 **Windows users: start with the [Windows quickstart](WINDOWS_MACE_QUICKSTART_2026-10-28.md).** Its first milestone is packet verification plus Windows/WSL details. The proposed CPU setup and its known source-only dependency are documented there. A Mac is not required to begin onboarding or loader development.
 
 The packet is now available through the [GitHub release](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28). Download [the original v2 archive](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/mace-idris-handoff-2026-10-18-v2.tar.gz), [checksums](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/SHA256SUMS), [current instructions](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/DOWNLOAD_README.md) and [dataset attribution](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/download/mace-idris-packet-v2-2026-10-28/ATTRIBUTION.md).
@@ -15,11 +17,11 @@ The archive is 15,504,217 bytes and contains the primary model, validation input
 
 The [accepted 26 October specification](../research/MACE_LOADER_PARITY_SPEC_2026-10-26.md) and [implementation plan](../superpowers/plans/2026-10-26-mace-loader-parity.md) supersede earlier checkout, environment-rebuild and future-plan directions. Private-transfer references inside the immutable archive are historical.
 
-The shared source is pinned at `47b727b4efa4be91ada585be343e1ddb509b7116` on `post-midterm-mace-readiness`. From an existing clean clone, fetch it and create your own branch:
+The owner-development source is pinned at `adf1b13819015cbfb1f2fbb79a79df132e7a4545` on `post-midterm-mace-readiness`. The older release source predates the Windows configuration; the full task brief distinguishes each revision. From an existing clean clone, fetch it and create your own branch:
 
 ```bash
 git fetch origin refs/heads/post-midterm-mace-readiness:refs/remotes/origin/post-midterm-mace-readiness
-git switch -c idris-mace-loader 47b727b4efa4be91ada585be343e1ddb509b7116
+git switch -c idris-mace-loader adf1b13819015cbfb1f2fbb79a79df132e7a4545
 ```
 
 If you already have uncommitted work or that branch name exists, preserve your work and use your existing branch rather than resetting it.
