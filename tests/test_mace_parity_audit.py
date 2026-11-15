@@ -50,7 +50,8 @@ def write_attempt(root, status="PARITY_PASS"):
     platform, packages, sources = approval_identity()
     wsl = {"status": "APPROVED", "identities": {
         "implementation_commit": "a" * 40,
-        "implementation_files": {name: {"bytes": 1, "sha256": "b" * 64}
+        "implementation_files": {name: {"bytes": 1, "sha256": "b" * 64,
+                                                "git_blob": "f" * 40}
                                  for name in REQUIRED_IMPLEMENTATION_FILES},
         "frozen_dependencies": {name: {"bytes": 1, "sha256": "e" * 64,
             "baseline_commit": SOURCE_BASELINE, "git_blob": blob}
@@ -74,8 +75,10 @@ def write_attempt(root, status="PARITY_PASS"):
               "resource_limits": RESOURCE_LIMITS, "source_baseline": SOURCE_BASELINE,
               "implementation_reviews": [
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "review_id": "review-1", "reviewer": "reviewer-one",
                    "url": "https://example.test/review/1"},
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "review_id": "review-2", "reviewer": "reviewer-two",
                    "url": "https://example.test/review/2"}]}
     (root / "launch-receipt.json").write_text(json.dumps(launch))
     admission = root / "admission-receipt.json"
@@ -246,7 +249,8 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     attempt = tmp_path / "integrated-attempt"
     attempt.mkdir()
     platform, packages, sources = approval_identity()
-    implementation_files = {name: {"bytes": 1, "sha256": "b" * 64}
+    implementation_files = {name: {"bytes": 1, "sha256": "b" * 64,
+                                   "git_blob": "f" * 40}
                             for name in loader.REQUIRED_IMPLEMENTATION_FILES}
     wsl = {"status": "APPROVED", "identities": {
         "implementation_commit": "a" * 40, "implementation_files": implementation_files,
@@ -272,8 +276,10 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
               "source_baseline": loader.SOURCE_BASELINE,
               "implementation_reviews": [
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "review_id": "review-1", "reviewer": "reviewer-one",
                    "url": "https://example.test/review/1"},
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "review_id": "review-2", "reviewer": "reviewer-two",
                    "url": "https://example.test/review/2"}]}
     (attempt / "launch-receipt.json").write_text(json.dumps(launch))
     live = {"platform": platform, "packages": packages,

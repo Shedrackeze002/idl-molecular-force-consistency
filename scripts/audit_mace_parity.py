@@ -57,7 +57,10 @@ def _validated_admission_chain(packet_root: Path, attempt_root: Path,
             or not isinstance(files, dict) or set(files) != REQUIRED_IMPLEMENTATION_FILES
             or any(not isinstance(receipt, dict)
                    or not isinstance(receipt.get("bytes"), int) or receipt["bytes"] < 0
-                   or not _hex_digest(receipt.get("sha256")) for receipt in files.values())):
+                   or not _hex_digest(receipt.get("sha256"))
+                   or not isinstance(receipt.get("git_blob"), str)
+                   or len(receipt["git_blob"]) != 40
+                   for receipt in files.values())):
         raise ValueError("reviewed implementation identity is incomplete")
     frozen = identities.get("frozen_dependencies")
     if (not isinstance(frozen, dict) or set(frozen) != set(FROZEN_DEPENDENCY_BLOBS)

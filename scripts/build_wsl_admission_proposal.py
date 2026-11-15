@@ -25,12 +25,21 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def file_receipt(path: Path) -> dict:
-    return {"path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)}
+def file_receipt(path: Path, label: str) -> dict:
+    return {"path": label, "bytes": path.stat().st_size, "sha256": sha256(path)}
 
 
 def command(*args: str, cwd: Path | None = None) -> str:
     return subprocess.check_output(args, cwd=cwd, text=True).strip()
+
+
+def redact_host_paths(text: str, *, onboarding_root: Path, repo_root: Path) -> str:
+    """Replace machine-local roots while preserving reproducible relative labels."""
+    replacements = [(str(onboarding_root), "$ONBOARDING_ROOT"),
+                    (str(repo_root), "$REPO_ROOT")]
+    for original, label in replacements:
+        text = text.replace(original, label).replace(original.replace("\\", "/"), label)
+    return text
 
 
 def main() -> int:
@@ -87,6 +96,7 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
 '''
     runtime = json.loads(command(str(env_python), "-c", probe, str(packet / "ACCEPTED_IDENTITY.json")))
     for item in runtime["sources"]:
+        item["path"] = f"installed:{item['relative_path']}"
         item["matches_original"] = item["actual_sha256"] == item["original_sha256"]
         item["difference_explanation"] = (
             "No difference; raw installed source bytes match the authenticated Mac reference."
@@ -143,7 +153,7 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         "source-commit.txt",
     ]:
         path = root / name
-        records[name] = file_receipt(path)
+        records[name] = file_receipt(path, f"onboarding/{name}")
 
     evidence_dir = args.output.parent
     evidence_dir.mkdir(parents=True, exist_ok=True)
@@ -153,7 +163,15 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         "package-check-after-tests.stderr.txt", "package-check-after-tests.exit.txt",
     ]
     for name in published_names:
-        shutil.copyfile(root / name, evidence_dir / name)
+        destination = evidence_dir / name
+        shutil.copyfile(root / name, destination)
+        try:
+            redacted = redact_host_paths(destination.read_text(encoding="utf-8"),
+                                         onboarding_root=root, repo_root=repo)
+        except UnicodeDecodeError:
+            pass
+        else:
+            destination.write_text(redacted, encoding="utf-8")
     review_suite_names = [
         "review-regression-suite.command.txt", "review-regression-suite.stdout.txt",
         "review-regression-suite.stderr.txt", "review-regression-suite.exit.txt",
@@ -169,16 +187,24 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             "Do not construct the real MACE model or run predictions until independent admission, implementation reviews, and explicit bounded launch authorization are recorded.",
         ],
         "identities": {
-            "packet_archive": file_receipt(root / "mace-idris-handoff-2026-10-18-v2.tar.gz"),
-            "extracted_manifest": file_receipt(manifest),
-            "primary_final_ema_model": file_receipt(model),
-            "runtime_lock": file_receipt(root / "wsl-requirements.lock"),
-            "test_lock": file_receipt(root / "requirements-tests.lock"),
-            "published_test_lock": file_receipt(evidence_dir / "requirements-tests.lock"),
+            "packet_archive": file_receipt(root / "mace-idris-handoff-2026-10-18-v2.tar.gz",
+                                           "onboarding/mace-idris-handoff-2026-10-18-v2.tar.gz"),
+            "extracted_manifest": file_receipt(manifest, "packet/MANIFEST.json"),
+            "primary_final_ema_model": file_receipt(model, "packet/model/final_epoch.model"),
+            "runtime_lock": file_receipt(root / "wsl-requirements.lock",
+                                         "onboarding/wsl-requirements.lock"),
+            "test_lock": file_receipt(root / "requirements-tests.lock",
+                                      "onboarding/requirements-tests.lock"),
+            "published_test_lock": file_receipt(evidence_dir / "requirements-tests.lock",
+                                                "reports/evidence/2026-10-28/requirements-tests.lock"),
             "implementation_commit": commit,
-            "implementation_files": {name: file_receipt(repo / name) for name in implementation_files},
+            "implementation_files": {
+                name: {**file_receipt(repo / name, name),
+                       "git_blob": command("git", "rev-parse", f"{commit}:{name}", cwd=repo)}
+                for name in implementation_files
+            },
             "frozen_dependencies": {
-                name: {**file_receipt(repo / name), "baseline_commit": baseline_commit,
+                name: {**file_receipt(repo / name, name), "baseline_commit": baseline_commit,
                        "git_blob": command("git", "rev-parse", f"{baseline_commit}:{name}", cwd=repo)}
                 for name in frozen_dependencies
             },
@@ -232,10 +258,12 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         },
         "receipts": records,
         "published_followup_evidence": {
-            name: file_receipt(evidence_dir / name) for name in published_names
+            name: file_receipt(evidence_dir / name, f"reports/evidence/2026-10-28/{name}")
+            for name in published_names
         },
         "published_review_suite_evidence": {
-            name: file_receipt(evidence_dir / name) for name in review_suite_names
+            name: file_receipt(evidence_dir / name, f"reports/evidence/2026-10-28/{name}")
+            for name in review_suite_names
         },
     }
     args.output.write_text(json.dumps(proposal, indent=2) + "\n", encoding="utf-8")

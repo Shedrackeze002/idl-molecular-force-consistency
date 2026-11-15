@@ -61,10 +61,13 @@ def attempt(tmp_path, packet_root=None):
     root = tmp_path / "attempt"
     root.mkdir()
     repo = Path(module.__file__).resolve().parent.parent
-    files = {name: {"bytes": (repo / name).stat().st_size, "sha256": sha(repo / name)}
-             for name in module.REQUIRED_IMPLEMENTATION_FILES}
     commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo, check=True,
                             text=True, capture_output=True).stdout.strip()
+    files = {name: {"bytes": (repo / name).stat().st_size, "sha256": sha(repo / name),
+                    "git_blob": subprocess.run(
+                        ["git", "rev-parse", f"{commit}:{name}"], cwd=repo, check=True,
+                        text=True, capture_output=True).stdout.strip()}
+             for name in module.REQUIRED_IMPLEMENTATION_FILES}
     admission = root / "wsl-admission.json"
     frozen = {name: {"bytes": (repo / name).stat().st_size, "sha256": sha(repo / name),
                      "baseline_commit": module.SOURCE_BASELINE, "git_blob": blob}
@@ -87,8 +90,10 @@ def attempt(tmp_path, packet_root=None):
               "source_baseline": module.SOURCE_BASELINE,
               "implementation_reviews": [
                   {"status": "RESOLVED", "implementation_commit": commit,
+                   "review_id": "review-1", "reviewer": "reviewer-one",
                    "url": "https://example.test/review/1"},
                   {"status": "RESOLVED", "implementation_commit": commit,
+                   "review_id": "review-2", "reviewer": "reviewer-two",
                    "url": "https://example.test/review/2"}]}
     (root / "launch-receipt.json").write_text(json.dumps(launch), encoding="utf-8")
     return root
@@ -241,16 +246,61 @@ def test_frozen_dependency_drift_refused_before_constructor(tmp_path, monkeypatc
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
     target = attempt(tmp_path, root)
-    original = module._sha256
+    original = module._git_blob
 
-    def changed(path):
-        if Path(path).resolve() == Path(module.__file__).resolve().parent.parent.joinpath(relative).resolve():
-            return "0" * 64
-        return original(path)
+    def changed(repo, name, revision=None):
+        if name == relative and revision is None:
+            return "0" * 40
+        return original(repo, name, revision)
 
-    monkeypatch.setattr(module, "_sha256", changed)
+    monkeypatch.setattr(module, "_git_blob", changed)
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen bridge/evaluator"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+def test_implementation_drift_with_refreshed_receipt_is_refused_before_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    relative = sorted(module.REQUIRED_IMPLEMENTATION_FILES)[0]
+    admission_path = target / "wsl-admission.json"
+    admission = json.loads(admission_path.read_text())
+    admission["identities"]["implementation_files"][relative].update(
+        bytes=1, sha256="0" * 64)
+    admission_path.write_text(json.dumps(admission))
+    launch_path = target / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["wsl_admission_sha256"] = sha(admission_path)
+    launch_path.write_text(json.dumps(launch))
+    original = module._git_blob
+
+    def changed(repo, name, revision=None):
+        if name == relative and revision is None:
+            return "0" * 40
+        return original(repo, name, revision)
+
+    monkeypatch.setattr(module, "_git_blob", changed)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="execution source"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("duplicate", ["review_id", "reviewer", "url"])
+def test_duplicate_review_identity_is_refused_before_constructor(tmp_path, monkeypatch, duplicate):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    launch_path = target / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["implementation_reviews"][1][duplicate] = launch["implementation_reviews"][0][duplicate]
+    launch_path.write_text(json.dumps(launch))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="not distinct"):
         module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []

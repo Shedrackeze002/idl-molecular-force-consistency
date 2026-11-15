@@ -127,6 +127,21 @@ def _hex_digest(value: Any) -> bool:
             and all(character in "0123456789abcdef" for character in value.lower()))
 
 
+def _git_blob(repo_root: Path, relative: str, revision: str | None = None) -> str:
+    """Return a commit-tree or clean-filtered worktree blob identity."""
+    command = (["git", "rev-parse", f"{revision}:{relative}"] if revision else
+               ["git", "-c", "core.autocrlf=true", "hash-object",
+                f"--path={relative}", relative])
+    try:
+        value = subprocess.run(command, cwd=repo_root, check=True, text=True,
+                               capture_output=True, timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise AdmissionError(f"cannot authenticate Git object: {relative}") from exc
+    if len(value) != 40 or any(character not in "0123456789abcdef" for character in value.lower()):
+        raise AdmissionError(f"invalid Git object identity: {relative}")
+    return value
+
+
 def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
     """Validate the complete recorded approval without consulting this host."""
     approved_platform = admission.get("platform")
@@ -207,9 +222,15 @@ def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
     if (not isinstance(reviews, list) or len(reviews) < 2
             or any(not isinstance(review, dict) or review.get("status") != "RESOLVED"
                    or review.get("implementation_commit") != implementation_commit
+                   or not isinstance(review.get("review_id"), str) or not review["review_id"]
+                   or not isinstance(review.get("reviewer"), str) or not review["reviewer"]
                    or not isinstance(review.get("url"), str) or not review["url"]
                    for review in reviews)):
         raise AdmissionError("launch lacks two resolved reviews of the implementation commit")
+    if (len({review["review_id"] for review in reviews}) != len(reviews)
+            or len({review["reviewer"] for review in reviews}) != len(reviews)
+            or len({review["url"] for review in reviews}) != len(reviews)):
+        raise AdmissionError("launch implementation reviews are not distinct")
 
 
 def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
@@ -291,14 +312,20 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
         raise AdmissionError("live implementation revision differs from approval")
     for relative, receipt in implementation_files.items():
         path = repo_root / relative
+        expected_blob = _git_blob(repo_root, relative, implementation_commit)
+        live_blob = _git_blob(repo_root, relative)
         if (not isinstance(receipt, dict) or not path.is_file()
+                or receipt.get("git_blob") != expected_blob or live_blob != expected_blob
                 or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
             raise AdmissionError(f"execution source differs from approval: {relative}")
     for relative, expected_blob in FROZEN_DEPENDENCY_BLOBS.items():
         receipt = frozen_dependencies[relative]
         path = repo_root / relative
+        baseline_blob = _git_blob(repo_root, relative, SOURCE_BASELINE)
+        live_blob = _git_blob(repo_root, relative)
         if (not isinstance(receipt, dict) or receipt.get("baseline_commit") != SOURCE_BASELINE
-                or receipt.get("git_blob") != expected_blob
+                or expected_blob != baseline_blob or receipt.get("git_blob") != baseline_blob
+                or live_blob != baseline_blob
                 or not path.is_file() or path.stat().st_size != receipt.get("bytes")
                 or _sha256(path) != receipt.get("sha256")):
             raise AdmissionError(f"frozen bridge/evaluator differs from approval: {relative}")
