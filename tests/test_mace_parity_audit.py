@@ -1,5 +1,7 @@
 import json
 import hashlib
+import sys
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -43,20 +45,38 @@ def write_attempt(root, status="PARITY_PASS"):
     snapshot.write_bytes(b"model")
     packet = {"status": "PACKET_VERIFIED", "manifest_sha256": "manifest",
               "model_sha256": digest(snapshot), "model_bytes": snapshot.stat().st_size}
-    from mace_loader import REQUIRED_IMPLEMENTATION_FILES
+    from mace_loader import (FROZEN_DEPENDENCY_BLOBS, REQUIRED_IMPLEMENTATION_FILES,
+                             RESOURCE_LIMITS, SOURCE_BASELINE)
     platform, packages, sources = approval_identity()
     wsl = {"status": "APPROVED", "identities": {
         "implementation_commit": "a" * 40,
         "implementation_files": {name: {"bytes": 1, "sha256": "b" * 64}
-                                 for name in REQUIRED_IMPLEMENTATION_FILES}},
+                                 for name in REQUIRED_IMPLEMENTATION_FILES},
+        "frozen_dependencies": {name: {"bytes": 1, "sha256": "e" * 64,
+            "baseline_commit": SOURCE_BASELINE, "git_blob": blob}
+            for name, blob in FROZEN_DEPENDENCY_BLOBS.items()}},
         "platform": platform,
         "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
         "installed_package_versions": packages,
         "authenticated_source_comparison": sources}
     wsl_path = root / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
+    interpreter = str(Path(sys.executable).resolve())
+    packet_root = root.parent.resolve()
+    worker = str(Path(__file__).resolve().parent.parent.joinpath(
+        "scripts/check_mace_parity.py").resolve())
     launch = {"status": "APPROVED", "implementation_commit": "a" * 40,
-              "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": digest(wsl_path)}
+              "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": digest(wsl_path),
+              "python_executable": interpreter, "packet_root": str(packet_root),
+              "attempt_root": str(root.resolve()),
+              "command": [interpreter, worker, "--packet-root", str(packet_root),
+                          "--attempt-root", str(root.resolve())],
+              "resource_limits": RESOURCE_LIMITS, "source_baseline": SOURCE_BASELINE,
+              "implementation_reviews": [
+                  {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "url": "https://example.test/review/1"},
+                  {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "url": "https://example.test/review/2"}]}
     (root / "launch-receipt.json").write_text(json.dumps(launch))
     admission = root / "admission-receipt.json"
     admission.write_text(json.dumps({"status": "ADMITTED", "launch_receipt": launch,
@@ -229,16 +249,32 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     implementation_files = {name: {"bytes": 1, "sha256": "b" * 64}
                             for name in loader.REQUIRED_IMPLEMENTATION_FILES}
     wsl = {"status": "APPROVED", "identities": {
-        "implementation_commit": "a" * 40, "implementation_files": implementation_files},
+        "implementation_commit": "a" * 40, "implementation_files": implementation_files,
+        "frozen_dependencies": {name: {"bytes": 1, "sha256": "e" * 64,
+            "baseline_commit": loader.SOURCE_BASELINE, "git_blob": blob}
+            for name, blob in loader.FROZEN_DEPENDENCY_BLOBS.items()}},
         "platform": platform,
         "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
         "installed_package_versions": packages,
         "authenticated_source_comparison": sources}
     wsl_path = attempt / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
+    interpreter = str(Path(sys.executable).resolve())
+    worker_path = str(Path(loader.__file__).with_name("check_mace_parity.py").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": "a" * 40, "wsl_admission_receipt": "wsl.json",
-              "wsl_admission_sha256": digest(wsl_path)}
+              "wsl_admission_sha256": digest(wsl_path),
+              "python_executable": interpreter, "packet_root": str(packet_root.resolve()),
+              "attempt_root": str(attempt.resolve()),
+              "command": [interpreter, worker_path, "--packet-root", str(packet_root.resolve()),
+                          "--attempt-root", str(attempt.resolve())],
+              "resource_limits": loader.RESOURCE_LIMITS,
+              "source_baseline": loader.SOURCE_BASELINE,
+              "implementation_reviews": [
+                  {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "url": "https://example.test/review/1"},
+                  {"status": "RESOLVED", "implementation_commit": "a" * 40,
+                   "url": "https://example.test/review/2"}]}
     (attempt / "launch-receipt.json").write_text(json.dumps(launch))
     live = {"platform": platform, "packages": packages,
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
@@ -247,7 +283,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(loader, "MODEL_SHA256", digest(model))
     monkeypatch.setattr(loader, "MODEL_BYTES", model.stat().st_size)
     monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
-    monkeypatch.setattr(loader, "_approved_launch", lambda root: (launch, wsl, live))
+    monkeypatch.setattr(loader, "_approved_launch", lambda root, packet: (launch, wsl, live))
     monkeypatch.setattr(loader, "_construct_calculator", lambda snapshot: ZeroCalculator())
     monkeypatch.setattr(worker, "validate_inputs", lambda root: fixture_inputs())
     result = worker.run_parity(packet_root, attempt)

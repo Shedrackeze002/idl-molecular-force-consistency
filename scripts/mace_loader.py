@@ -12,6 +12,7 @@ import os
 import platform
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Callable
 
@@ -39,6 +40,13 @@ REQUIRED_IMPLEMENTATION_FILES = {
     "tests/test_mace_parity.py", "tests/test_mace_parity_supervisor.py",
     "tests/test_mace_parity_audit.py",
 }
+FROZEN_DEPENDENCY_BLOBS = {
+    "scripts/mace_reference_adapter.py": "f6f720e9767d43a2a3cb92e4dcf20b3dd1dcaf30",
+    "evaluation/adapter.py": "80b61b5ba280ca7eca1c627fb2e2ce132a970ba7",
+}
+SOURCE_BASELINE = "3fa5969e5a0c2fdeaebc76a05bace20799715203"
+RESOURCE_LIMITS = {"seconds": 1800, "attempt_bytes": 256 * 1024 * 1024,
+                   "per_log_bytes": 16 * 1024 * 1024, "cleanup_seconds": 10}
 
 
 class AdmissionError(RuntimeError):
@@ -150,6 +158,8 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
         if declared_version is not None and declared_version != version:
             raise AdmissionError(f"approved package inventories disagree: {name}")
         packages[name] = version
+    if set(packages) != set(versions):
+        raise AdmissionError("approved package declaration and version-map keys differ")
     if not CORE_PACKAGES.issubset(packages):
         raise AdmissionError("approved package inventory omits a mandatory core package")
 
@@ -171,6 +181,35 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
     if set(source_map) != set(REQUIRED_SOURCES):
         raise AdmissionError("approved source inventory is incomplete")
     return {"platform": required_platform, "packages": packages, "sources": source_map}
+
+
+def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
+                               packet_root: Path, implementation_commit: str,
+                               *, require_live_interpreter: bool) -> None:
+    """Require the reviewed attempt, command, resources and review bindings."""
+    attempt = Path(attempt_root).resolve()
+    packet = Path(packet_root).resolve()
+    interpreter = launch.get("python_executable")
+    expected_command = [interpreter, str(Path(__file__).with_name("check_mace_parity.py").resolve()),
+                        "--packet-root", str(packet), "--attempt-root", str(attempt)]
+    if (not isinstance(interpreter, str) or not Path(interpreter).is_absolute()
+            or launch.get("command") != expected_command
+            or launch.get("packet_root") != str(packet)
+            or launch.get("attempt_root") != str(attempt)):
+        raise AdmissionError("launch does not bind the exact interpreter, command and paths")
+    if require_live_interpreter and Path(interpreter).resolve() != Path(sys.executable).resolve():
+        raise AdmissionError("launch interpreter differs from the running worker")
+    if launch.get("resource_limits") != RESOURCE_LIMITS:
+        raise AdmissionError("launch resource limits differ from the bounded contract")
+    if launch.get("source_baseline") != SOURCE_BASELINE:
+        raise AdmissionError("launch source baseline differs from the accepted snapshot")
+    reviews = launch.get("implementation_reviews")
+    if (not isinstance(reviews, list) or len(reviews) < 2
+            or any(not isinstance(review, dict) or review.get("status") != "RESOLVED"
+                   or review.get("implementation_commit") != implementation_commit
+                   or not isinstance(review.get("url"), str) or not review["url"]
+                   for review in reviews)):
+        raise AdmissionError("launch lacks two resolved reviews of the implementation commit")
 
 
 def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
@@ -207,7 +246,7 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
 
 
-def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     launch_path = _regular_file(attempt_root, Path("launch-receipt.json"))
     try:
         launch = json.loads(launch_path.read_text(encoding="utf-8"))
@@ -235,6 +274,12 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
     if (not isinstance(implementation_files, dict)
             or set(implementation_files) != REQUIRED_IMPLEMENTATION_FILES):
         raise AdmissionError("approved implementation file identities are missing")
+    frozen_dependencies = identities.get("frozen_dependencies")
+    if (not isinstance(frozen_dependencies, dict)
+            or set(frozen_dependencies) != set(FROZEN_DEPENDENCY_BLOBS)):
+        raise AdmissionError("approved frozen bridge/evaluator identities are missing")
+    _validated_launch_identity(launch, attempt_root, packet_root, implementation_commit,
+                               require_live_interpreter=True)
     repo_root = Path(__file__).resolve().parent.parent
     try:
         live_commit = subprocess.run(
@@ -249,6 +294,14 @@ def _approved_launch(attempt_root: Path) -> tuple[dict[str, Any], dict[str, Any]
         if (not isinstance(receipt, dict) or not path.is_file()
                 or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
             raise AdmissionError(f"execution source differs from approval: {relative}")
+    for relative, expected_blob in FROZEN_DEPENDENCY_BLOBS.items():
+        receipt = frozen_dependencies[relative]
+        path = repo_root / relative
+        if (not isinstance(receipt, dict) or receipt.get("baseline_commit") != SOURCE_BASELINE
+                or receipt.get("git_blob") != expected_blob
+                or not path.is_file() or path.stat().st_size != receipt.get("bytes")
+                or _sha256(path) != receipt.get("sha256")):
+            raise AdmissionError(f"frozen bridge/evaluator differs from approval: {relative}")
     return launch, admission, _live_admission_check(admission)
 
 
@@ -266,7 +319,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                        constructor: Callable[[Path], Any],
                        expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
     packet = verify_packet(packet_root)
-    launch, admission, live = _approved_launch(Path(attempt_root))
+    launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
     species = launch.get("species")
     from ase.data import atomic_numbers
     if (not isinstance(species, list) or len(species) != 21

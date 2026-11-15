@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -55,7 +56,7 @@ def packet(tmp_path, monkeypatch):
     return root
 
 
-def attempt(tmp_path):
+def attempt(tmp_path, packet_root=None):
     import mace_loader as module
     root = tmp_path / "attempt"
     root.mkdir()
@@ -65,12 +66,30 @@ def attempt(tmp_path):
     commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo, check=True,
                             text=True, capture_output=True).stdout.strip()
     admission = root / "wsl-admission.json"
+    frozen = {name: {"bytes": (repo / name).stat().st_size, "sha256": sha(repo / name),
+                     "baseline_commit": module.SOURCE_BASELINE, "git_blob": blob}
+              for name, blob in module.FROZEN_DEPENDENCY_BLOBS.items()}
     admission.write_text(json.dumps({"status": "APPROVED", "identities": {
-        "implementation_commit": commit, "implementation_files": files}}), encoding="utf-8")
+        "implementation_commit": commit, "implementation_files": files,
+        "frozen_dependencies": frozen}}), encoding="utf-8")
+    packet_root = Path(packet_root or (tmp_path / "packet")).resolve()
+    interpreter = str(Path(sys.executable).resolve())
+    worker = str(Path(module.__file__).with_name("check_mace_parity.py").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": commit,
               "wsl_admission_receipt": admission.name,
-              "wsl_admission_sha256": sha(admission)}
+              "wsl_admission_sha256": sha(admission),
+              "python_executable": interpreter,
+              "packet_root": str(packet_root), "attempt_root": str(root.resolve()),
+              "command": [interpreter, worker, "--packet-root", str(packet_root),
+                          "--attempt-root", str(root.resolve())],
+              "resource_limits": module.RESOURCE_LIMITS,
+              "source_baseline": module.SOURCE_BASELINE,
+              "implementation_reviews": [
+                  {"status": "RESOLVED", "implementation_commit": commit,
+                   "url": "https://example.test/review/1"},
+                  {"status": "RESOLVED", "implementation_commit": commit,
+                   "url": "https://example.test/review/2"}]}
     (root / "launch-receipt.json").write_text(json.dumps(launch), encoding="utf-8")
     return root
 
@@ -186,7 +205,7 @@ def test_empty_live_identity_inventories_refused(field, value):
                "authenticated_source_comparison": [{}] * 8,
                "installed_package_versions": {"ase": "1"}}
     receipt[field] = value
-    with pytest.raises(module.AdmissionError, match="identity|inventor"):
+    with pytest.raises(module.AdmissionError, match="identity|inventor|version-map"):
         module._live_admission_check(receipt)
 
 
@@ -207,6 +226,56 @@ def test_canonical_admission_inventory_refuses_substitution_or_contradiction(dam
         receipt["installed_package_versions"][name] = "2"
     with pytest.raises(module.AdmissionError, match="source|package|inventory"):
         module._approved_identity_inventory(receipt)
+
+
+def test_noncore_version_pin_without_declaration_is_refused():
+    import mace_loader as module
+    receipt = canonical_admission(module)
+    receipt["installed_package_versions"]["approved-extra"] = "9"
+    with pytest.raises(module.AdmissionError, match="declaration.*version-map"):
+        module._approved_identity_inventory(receipt)
+
+
+@pytest.mark.parametrize("relative", ["scripts/mace_reference_adapter.py", "evaluation/adapter.py"])
+def test_frozen_dependency_drift_refused_before_constructor(tmp_path, monkeypatch, relative):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    original = module._sha256
+
+    def changed(path):
+        if Path(path).resolve() == Path(module.__file__).resolve().parent.parent.joinpath(relative).resolve():
+            return "0" * 64
+        return original(path)
+
+    monkeypatch.setattr(module, "_sha256", changed)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="frozen bridge/evaluator"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("field,value", [
+    ("python_executable", "/missing/python"),
+    ("command", ["wrong"]),
+    ("attempt_root", "/wrong/output"),
+    ("resource_limits", {"seconds": 1}),
+    ("implementation_reviews", []),
+])
+def test_incomplete_launch_binding_refused_before_constructor(tmp_path, monkeypatch, field, value):
+    import mace_loader as module
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    launch_path = target / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch[field] = value
+    launch_path.write_text(json.dumps(launch))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="launch"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
 
 
 def test_verified_packet_identity_when_available():

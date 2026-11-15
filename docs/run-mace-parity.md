@@ -11,7 +11,32 @@ relax molecules, access training/test partitions, or authorize model loading.
    package and source-file difference.
 4. Obtain two resolved reviews of the exact implementation commit.
 5. Obtain Shedrack's explicit authorization for one launch receipt. The receipt
-   must pin the approved admission receipt hash and the 21-symbol species order.
+   must pin the approved admission receipt hash, the 21-symbol species order,
+   all fields below, and exactly the implementation commit reviewed twice.
+
+The approved launch JSON is fail-closed. It records absolute `python_executable`,
+`packet_root` and fresh `attempt_root` paths; `command` is exactly the interpreter,
+`scripts/check_mace_parity.py`, `--packet-root`, and `--attempt-root` argv used by
+the supervisor. It also records `source_baseline` as
+`3fa5969e5a0c2fdeaebc76a05bace20799715203`, two or more resolved review objects
+with URLs and the same full implementation commit, and these exact limits:
+
+```json
+{
+  "resource_limits": {
+    "seconds": 1800,
+    "attempt_bytes": 268435456,
+    "per_log_bytes": 16777216,
+    "cleanup_seconds": 10
+  }
+}
+```
+
+The WSL approval separately binds complete, equal package declaration/version
+key sets, all eight canonical installed-source identities, and raw byte receipts
+for the unchanged shared bridge and evaluator. Those frozen receipts also name
+their accepted baseline commit and Git blob identities. Missing, substituted or
+contradictory launch/admission fields are refused before model construction.
 
 Synthetic tests do not require or load the checkpoint:
 

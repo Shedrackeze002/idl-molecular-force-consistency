@@ -113,6 +113,8 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
         "tests/test_mace_parity_supervisor.py",
         "tests/test_mace_parity_audit.py",
     ]
+    frozen_dependencies = ["scripts/mace_reference_adapter.py", "evaluation/adapter.py"]
+    baseline_commit = "3fa5969e5a0c2fdeaebc76a05bace20799715203"
     commit = command("git", "rev-parse", "HEAD", cwd=repo)
     cpu_model = "unknown"
     for line in Path("/proc/cpuinfo").read_text(encoding="utf-8").splitlines():
@@ -175,6 +177,11 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             "published_test_lock": file_receipt(evidence_dir / "requirements-tests.lock"),
             "implementation_commit": commit,
             "implementation_files": {name: file_receipt(repo / name) for name in implementation_files},
+            "frozen_dependencies": {
+                name: {**file_receipt(repo / name), "baseline_commit": baseline_commit,
+                       "git_blob": command("git", "rev-parse", f"{baseline_commit}:{name}", cwd=repo)}
+                for name in frozen_dependencies
+            },
         },
         "platform": {
             "python": runtime["python"],

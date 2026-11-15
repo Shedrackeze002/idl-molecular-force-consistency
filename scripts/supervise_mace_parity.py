@@ -89,14 +89,19 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
             launch_source = Path(launch_receipt)
             admission_source = Path(wsl_admission_receipt)
             launch = json.loads(launch_source.read_text(encoding="utf-8"))
+            admission = json.loads(admission_source.read_text(encoding="utf-8"))
             admission_name = launch.get("wsl_admission_receipt")
             if not isinstance(admission_name, str) or Path(admission_name).name != admission_name:
                 raise ValueError("launch receipt must use a local WSL admission receipt filename")
+            from mace_loader import _validated_launch_identity
+            implementation_commit = admission.get("identities", {}).get("implementation_commit")
+            if not isinstance(implementation_commit, str):
+                raise ValueError("WSL admission lacks an implementation commit")
+            _validated_launch_identity(launch, output, packet_root, implementation_commit,
+                                       require_live_interpreter=True)
             shutil.copyfile(launch_source, output / "launch-receipt.json")
             shutil.copyfile(admission_source, output / admission_name)
-        worker = command or [sys.executable, str(Path(__file__).with_name("check_mace_parity.py")),
-                             "--packet-root", str(Path(packet_root).resolve()),
-                             "--attempt-root", str(output.resolve())]
+        worker = command or launch["command"]
         receipt["command"] = worker
         if time.monotonic() - started > timeout:
             reason = "TIMEOUT"

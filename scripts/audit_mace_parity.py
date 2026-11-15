@@ -22,7 +22,8 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -> dict:
+def _validated_admission_chain(packet_root: Path, attempt_root: Path,
+                               status: dict, packet: dict) -> dict:
     admission_path = attempt_root / "admission-receipt.json"
     if not admission_path.is_file() or status.get("admission_receipt_sha256") != _sha256(admission_path):
         raise ValueError("worker admission receipt identity is missing or mismatched")
@@ -47,8 +48,9 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
     identities = wsl.get("identities", {})
     commit = identities.get("implementation_commit")
     files = identities.get("implementation_files")
-    from mace_loader import (REQUIRED_IMPLEMENTATION_FILES,
-                             _approved_identity_inventory, _hex_digest)
+    from mace_loader import (FROZEN_DEPENDENCY_BLOBS, REQUIRED_IMPLEMENTATION_FILES,
+                             SOURCE_BASELINE, _approved_identity_inventory, _hex_digest,
+                             _validated_launch_identity)
     if (not isinstance(commit, str) or len(commit) != 40
             or any(character not in "0123456789abcdef" for character in commit.lower())
             or launch.get("implementation_commit") != commit
@@ -57,6 +59,20 @@ def _validated_admission_chain(attempt_root: Path, status: dict, packet: dict) -
                    or not isinstance(receipt.get("bytes"), int) or receipt["bytes"] < 0
                    or not _hex_digest(receipt.get("sha256")) for receipt in files.values())):
         raise ValueError("reviewed implementation identity is incomplete")
+    frozen = identities.get("frozen_dependencies")
+    if (not isinstance(frozen, dict) or set(frozen) != set(FROZEN_DEPENDENCY_BLOBS)
+            or any(not isinstance(receipt, dict)
+                   or receipt.get("baseline_commit") != SOURCE_BASELINE
+                   or receipt.get("git_blob") != FROZEN_DEPENDENCY_BLOBS[name]
+                   or not isinstance(receipt.get("bytes"), int) or receipt["bytes"] < 0
+                   or not _hex_digest(receipt.get("sha256"))
+                   for name, receipt in frozen.items())):
+        raise ValueError("reviewed frozen bridge/evaluator identity is incomplete")
+    try:
+        _validated_launch_identity(launch, attempt_root, packet_root,
+                                   commit, require_live_interpreter=False)
+    except RuntimeError as exc:
+        raise ValueError(f"saved launch identity is invalid: {exc}") from exc
     try:
         approved = _approved_identity_inventory(wsl)
     except RuntimeError as exc:
@@ -146,7 +162,7 @@ def audit_saved_parity(packet_root: Path, attempt_root: Path) -> dict:
     if (recorded_packet.get("manifest_sha256") != packet["manifest_sha256"]
             or recorded_packet.get("model_sha256") != packet["model_sha256"]):
         raise ValueError("worker packet identity differs from independently authenticated packet")
-    _validated_admission_chain(attempt_root, status, packet)
+    _validated_admission_chain(packet_root, attempt_root, status, packet)
     snapshot = status.get("final_model_snapshot", {})
     snapshot_path = Path(snapshot.get("path", ""))
     if (snapshot_path.resolve() != (attempt_root / "private" / "final_epoch.model").resolve()

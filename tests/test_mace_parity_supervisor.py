@@ -82,6 +82,22 @@ def test_receipt_copy_failure_is_persisted(tmp_path):
     assert json.loads((output / "supervisor-status.json").read_text())["failure_stage"] == "setup"
 
 
+def test_production_launch_identity_is_checked_before_spawn(tmp_path, monkeypatch):
+    admission = tmp_path / "wsl.json"
+    admission.write_text(json.dumps({"identities": {"implementation_commit": "a" * 40}}))
+    launch = tmp_path / "launch.json"
+    launch.write_text(json.dumps({"wsl_admission_receipt": "wsl.json",
+                                  "python_executable": str(tmp_path / "wrong-python"),
+                                  "command": ["wrong"], "attempt_root": "/wrong"}))
+    monkeypatch.setattr(module.subprocess, "Popen",
+                        lambda *args, **kwargs: (_ for _ in ()).throw(
+                            AssertionError("spawn must not occur")))
+    result = module.supervise(tmp_path / "packet", tmp_path / "attempt",
+                              launch_receipt=launch, wsl_admission_receipt=admission)
+    assert result["status"] == "SETUP_FAILED"
+    assert "launch" in result["error"]
+
+
 def test_last_status_write_delay_counts_toward_timeout(tmp_path, monkeypatch):
     original = module.Path.write_text
     calls = {"count": 0}
