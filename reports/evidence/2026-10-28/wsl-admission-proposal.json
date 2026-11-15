@@ -37,12 +37,12 @@
       "bytes": 1491,
       "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
     },
-    "implementation_commit": "389af5dfa4d328379fc457944cdd4ee7d4ad7b23",
+    "implementation_commit": "005051f2f9f37fbf1a853fe369f22a09b02d7310",
     "implementation_files": {
       "scripts/mace_loader.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/mace_loader.py",
-        "bytes": 16751,
-        "sha256": "28221e2fdeb49c63463ab57be419912239246087dc8ea11232f7a5eb869fd263"
+        "bytes": 20252,
+        "sha256": "452c71191e24232b764a05f39ef44f32a25c637f6a5dfe96ea2207458e52d8d2"
       },
       "scripts/check_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/check_mace_parity.py",
@@ -51,23 +51,23 @@
       },
       "scripts/supervise_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/supervise_mace_parity.py",
-        "bytes": 8711,
-        "sha256": "2f92faf23f4145348bac5697ef1c2e559f173a195bc1210c27fcc96cc3f88f31"
+        "bytes": 9049,
+        "sha256": "d1332d08e7ab703746b4e2197989948591fbfce8f6cd9702c45b0f85db1cc2d8"
       },
       "scripts/audit_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/audit_mace_parity.py",
-        "bytes": 13272,
-        "sha256": "5c738a7ec4f5b2a968640210001ef207f0ecc2fe544a80c94520b68d3b16473d"
+        "bytes": 14324,
+        "sha256": "edd41a2ba494520cdb1d37438dc06a0e6107ba439def56c7b0eb74c2cd464918"
       },
       "docs/run-mace-parity.md": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/docs/run-mace-parity.md",
-        "bytes": 2098,
-        "sha256": "d4a3dbf07c6b982724306670048731631ff7198cc6270dd5cdb3ef835aef79ee"
+        "bytes": 3178,
+        "sha256": "9d4de5eabd95b52ba2f4fd432a954d5fee522aa5bf98feeb851915bbcca8861c"
       },
       "tests/test_mace_loader.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_loader.py",
-        "bytes": 9831,
-        "sha256": "6e5d5f3dfc13944daad37b9f492f15b6d95ca53af6f708fed929b165898871e4"
+        "bytes": 13143,
+        "sha256": "1660d26266389fa65cf952b61e6c1f40a289ea0e9bd4a9c68b0765fc89a95543"
       },
       "tests/test_mace_parity.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity.py",
@@ -76,13 +76,29 @@
       },
       "tests/test_mace_parity_supervisor.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_supervisor.py",
-        "bytes": 4531,
-        "sha256": "b6febb95b6d02a16f0e1d32460631fae03f93aec7c665ff77a5c105e6e882142"
+        "bytes": 5461,
+        "sha256": "659d1d7101eab99a557ac8900703523de4fa5027bae937209093b401c0f70c42"
       },
       "tests/test_mace_parity_audit.py": {
         "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_audit.py",
-        "bytes": 13733,
-        "sha256": "10b014d38a32cc14de1b8783806a86b77d474889bfc83516e8db489af22ad7aa"
+        "bytes": 16058,
+        "sha256": "678d58e7f6810e657859f9ca94bf200df82817f73e61655b575282ad73c657b6"
+      }
+    },
+    "frozen_dependencies": {
+      "scripts/mace_reference_adapter.py": {
+        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/mace_reference_adapter.py",
+        "bytes": 4792,
+        "sha256": "dd105e38b4d4cb66872eeab5671108f15bf92cdeffea578790f50b84c951cc98",
+        "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+        "git_blob": "f6f720e9767d43a2a3cb92e4dcf20b3dd1dcaf30"
+      },
+      "evaluation/adapter.py": {
+        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/evaluation/adapter.py",
+        "bytes": 14835,
+        "sha256": "82b0dfce289a90345429a1b7649d70bb6c867d8ffea9c3ef94ec75af26b432fc",
+        "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+        "git_blob": "80b61b5ba280ca7eca1c627fb2e2ce132a970ba7"
       }
     }
   },
@@ -468,8 +484,8 @@
     },
     "review-regression-suite.stdout.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stdout.txt",
-      "bytes": 852,
-      "sha256": "2b3c0b3c74e652151824b678eeb7ea54bc98e9832a3dc71b2e44d8d135855d57"
+      "bytes": 932,
+      "sha256": "c0f4c0bfff71fd49f6b0b2b1117b2ec4557c24e66b059892ae7f4b9437e91608"
     },
     "review-regression-suite.stderr.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stderr.txt",
@@ -484,7 +500,7 @@
     "review-regression-suite.json": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.json",
       "bytes": 986,
-      "sha256": "1ee7c1baa8178c4067277b308621f16e579854273b0cece6ccca4ed0300c0105"
+      "sha256": "2a1560fd355b1d45b8e19a124a2368455a5c5698a6cad6566bd3c51e2d67aa91"
     }
   }
 }
