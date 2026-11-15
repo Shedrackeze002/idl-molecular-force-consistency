@@ -8,93 +8,102 @@
   ],
   "identities": {
     "packet_archive": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mace-idris-handoff-2026-10-18-v2.tar.gz",
+      "path": "onboarding/mace-idris-handoff-2026-10-18-v2.tar.gz",
       "bytes": 15504217,
       "sha256": "ff92c74b83d3103a2542f1564d93be3b153f5342faef2675f9845d9d99958119"
     },
     "extracted_manifest": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mace-idris-handoff/MANIFEST.json",
+      "path": "packet/MANIFEST.json",
       "bytes": 1762,
       "sha256": "3a872e1886c37b0e069e4ecaaa426bbab6a4a771db7c805f21741ee67e22717c"
     },
     "primary_final_ema_model": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mace-idris-handoff/model/final_epoch.model",
+      "path": "packet/model/final_epoch.model",
       "bytes": 23397415,
       "sha256": "fbd128215c0d74f5d9e5d3ccde778763221f987535dcc8ce4f4f8471a5b35407"
     },
     "runtime_lock": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/wsl-requirements.lock",
+      "path": "onboarding/wsl-requirements.lock",
       "bytes": 98206,
       "sha256": "d35c75cf7002392b79b095a71cbb466d574c814867059b3de641f673c3056d73"
     },
     "test_lock": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/requirements-tests.lock",
+      "path": "onboarding/requirements-tests.lock",
       "bytes": 1491,
       "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
     },
     "published_test_lock": {
       "path": "reports/evidence/2026-10-28/requirements-tests.lock",
-      "bytes": 1491,
-      "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
+      "bytes": 1463,
+      "sha256": "fa7557bea6bbda59d5800d4ef3e854b5bc345094760ccaa1f421f61c7678e766"
     },
-    "implementation_commit": "005051f2f9f37fbf1a853fe369f22a09b02d7310",
+    "implementation_commit": "9b578b0831c1f554bf804693ec05f9c30e444c0e",
     "implementation_files": {
       "scripts/mace_loader.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/mace_loader.py",
-        "bytes": 20252,
-        "sha256": "452c71191e24232b764a05f39ef44f32a25c637f6a5dfe96ea2207458e52d8d2"
+        "path": "scripts/mace_loader.py",
+        "bytes": 22017,
+        "sha256": "b70a300ed0b64fc46adb96682452301181fb98406ddcd0e943ca926566888a82",
+        "git_blob": "adc9e54e2d8bbab69fa70eeb2bb21dae3bf555ad"
       },
       "scripts/check_mace_parity.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/check_mace_parity.py",
+        "path": "scripts/check_mace_parity.py",
         "bytes": 12433,
-        "sha256": "8dccb0da0c8ff89ab909c807be7d83d52f55904bf7407e2697e6ea8d93880782"
+        "sha256": "8dccb0da0c8ff89ab909c807be7d83d52f55904bf7407e2697e6ea8d93880782",
+        "git_blob": "05baba6befd7c97b132ed0d10cdc98e46bd5a435"
       },
       "scripts/supervise_mace_parity.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/supervise_mace_parity.py",
+        "path": "scripts/supervise_mace_parity.py",
         "bytes": 9049,
-        "sha256": "d1332d08e7ab703746b4e2197989948591fbfce8f6cd9702c45b0f85db1cc2d8"
+        "sha256": "d1332d08e7ab703746b4e2197989948591fbfce8f6cd9702c45b0f85db1cc2d8",
+        "git_blob": "ed409ae7dc4c2f9eafe9af7d439df6afc3338764"
       },
       "scripts/audit_mace_parity.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/audit_mace_parity.py",
-        "bytes": 14324,
-        "sha256": "edd41a2ba494520cdb1d37438dc06a0e6107ba439def56c7b0eb74c2cd464918"
+        "path": "scripts/audit_mace_parity.py",
+        "bytes": 14463,
+        "sha256": "88fce336e3db861e35a1146b3e99622badb9f92963babbcfda78b3edf5c2138c",
+        "git_blob": "32774db8dafb6e99c7032b6ed88c5e498a47ccb6"
       },
       "docs/run-mace-parity.md": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/docs/run-mace-parity.md",
-        "bytes": 3178,
-        "sha256": "9d4de5eabd95b52ba2f4fd432a954d5fee522aa5bf98feeb851915bbcca8861c"
+        "path": "docs/run-mace-parity.md",
+        "bytes": 3458,
+        "sha256": "523613a7bd60feed9e10aefef0787de66459be8bb99dc73b05932cd7240d04be",
+        "git_blob": "2d44d4787d42479ed2afcacf9f91fb9f6dc00a1f"
       },
       "tests/test_mace_loader.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_loader.py",
-        "bytes": 13143,
-        "sha256": "1660d26266389fa65cf952b61e6c1f40a289ea0e9bd4a9c68b0765fc89a95543"
+        "path": "tests/test_mace_loader.py",
+        "bytes": 15541,
+        "sha256": "133f5811684d9d9189f168af2827ae92035e09da50c891cb0aa8d2564bd5077e",
+        "git_blob": "bef17011d51739199b09a4984c18339fca8ddaab"
       },
       "tests/test_mace_parity.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity.py",
+        "path": "tests/test_mace_parity.py",
         "bytes": 5140,
-        "sha256": "feb986279d147192ed97bddea132e9b499b6fd1990ac04e2b93fa5ccc0b7e7d2"
+        "sha256": "feb986279d147192ed97bddea132e9b499b6fd1990ac04e2b93fa5ccc0b7e7d2",
+        "git_blob": "6c4c6304fcccff2dbf2f9fc1452559e630734ee8"
       },
       "tests/test_mace_parity_supervisor.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_supervisor.py",
+        "path": "tests/test_mace_parity_supervisor.py",
         "bytes": 5461,
-        "sha256": "659d1d7101eab99a557ac8900703523de4fa5027bae937209093b401c0f70c42"
+        "sha256": "659d1d7101eab99a557ac8900703523de4fa5027bae937209093b401c0f70c42",
+        "git_blob": "b2d3a871f3b43ec8e9175c6d68da4f963259cdc3"
       },
       "tests/test_mace_parity_audit.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/tests/test_mace_parity_audit.py",
-        "bytes": 16058,
-        "sha256": "678d58e7f6810e657859f9ca94bf200df82817f73e61655b575282ad73c657b6"
+        "path": "tests/test_mace_parity_audit.py",
+        "bytes": 16473,
+        "sha256": "f998a1a1280324c4a472d910cd3e967304c7819817cb883fdbf25d0ed2b8153c",
+        "git_blob": "9f57bdee094e39ce07c59c0366714d6e1eef8d37"
       }
     },
     "frozen_dependencies": {
       "scripts/mace_reference_adapter.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/scripts/mace_reference_adapter.py",
+        "path": "scripts/mace_reference_adapter.py",
         "bytes": 4792,
         "sha256": "dd105e38b4d4cb66872eeab5671108f15bf92cdeffea578790f50b84c951cc98",
         "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
         "git_blob": "f6f720e9767d43a2a3cb92e4dcf20b3dd1dcaf30"
       },
       "evaluation/adapter.py": {
-        "path": "/mnt/c/Users/Loaner 31/Downloads/Fall2026/IDLFall2026/Project/idl-molecular-force-consistency/evaluation/adapter.py",
+        "path": "evaluation/adapter.py",
         "bytes": 14835,
         "sha256": "82b0dfce289a90345429a1b7649d70bb6c867d8ffea9c3ef94ec75af26b432fc",
         "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
@@ -110,7 +119,7 @@
     "cpu_model": "12th Gen Intel(R) Core(TM) i7-1255U",
     "cpu_count": 12,
     "system_receipt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/wsl-system.txt",
+      "path": "onboarding/wsl-system.txt",
       "bytes": 152,
       "sha256": "130bcbb5d3fb7e062ee73fc1f61f4ee797fdfba9947d4499a2400a3a128887de"
     }
@@ -238,7 +247,7 @@
       "name": "mace.cli.run_train",
       "distribution": "mace-torch",
       "relative_path": "mace/cli/run_train.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/cli/run_train.py",
+      "path": "installed:mace/cli/run_train.py",
       "original_sha256": "4f219fce454279b54cb7a10af30e8e8508cb7b83b3ffa6981ed89dbe7dc8de8b",
       "actual_sha256": "4f219fce454279b54cb7a10af30e8e8508cb7b83b3ffa6981ed89dbe7dc8de8b",
       "matches_original": true,
@@ -248,7 +257,7 @@
       "name": "mace.tools",
       "distribution": "mace-torch",
       "relative_path": "mace/tools/__init__.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/tools/__init__.py",
+      "path": "installed:mace/tools/__init__.py",
       "original_sha256": "3e01c003cbf1b68624fe34c317312bca2e54357721ffb1ca63330b9b4e00d3d7",
       "actual_sha256": "3e01c003cbf1b68624fe34c317312bca2e54357721ffb1ca63330b9b4e00d3d7",
       "matches_original": true,
@@ -258,7 +267,7 @@
       "name": "mace.tools.arg_parser",
       "distribution": "mace-torch",
       "relative_path": "mace/tools/arg_parser.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/tools/arg_parser.py",
+      "path": "installed:mace/tools/arg_parser.py",
       "original_sha256": "9e583bbadc58492861655932c2dc71a069731eece3946ebc681e43f628149d86",
       "actual_sha256": "9e583bbadc58492861655932c2dc71a069731eece3946ebc681e43f628149d86",
       "matches_original": true,
@@ -268,7 +277,7 @@
       "name": "mace.tools.checkpoint",
       "distribution": "mace-torch",
       "relative_path": "mace/tools/checkpoint.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/tools/checkpoint.py",
+      "path": "installed:mace/tools/checkpoint.py",
       "original_sha256": "82641f53f222d2333f5bd023323d2b077b229d6fe2e6bac986d26c5fbb19dc00",
       "actual_sha256": "82641f53f222d2333f5bd023323d2b077b229d6fe2e6bac986d26c5fbb19dc00",
       "matches_original": true,
@@ -278,7 +287,7 @@
       "name": "mace.tools.train",
       "distribution": "mace-torch",
       "relative_path": "mace/tools/train.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/tools/train.py",
+      "path": "installed:mace/tools/train.py",
       "original_sha256": "ca700fa6685e75124ca725d83b2fa55303c0803c48a2ac0c4b543f8f63aa4dfc",
       "actual_sha256": "ca700fa6685e75124ca725d83b2fa55303c0803c48a2ac0c4b543f8f63aa4dfc",
       "matches_original": true,
@@ -288,7 +297,7 @@
       "name": "mace.tools.utils",
       "distribution": "mace-torch",
       "relative_path": "mace/tools/utils.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/tools/utils.py",
+      "path": "installed:mace/tools/utils.py",
       "original_sha256": "50d20a3a1fc45ff421fa945781e16243763473b79b413232f9721a75a63a3b0a",
       "actual_sha256": "50d20a3a1fc45ff421fa945781e16243763473b79b413232f9721a75a63a3b0a",
       "matches_original": true,
@@ -298,7 +307,7 @@
       "name": "torch_ema.ema",
       "distribution": "torch-ema",
       "relative_path": "torch_ema/ema.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/torch_ema/ema.py",
+      "path": "installed:torch_ema/ema.py",
       "original_sha256": "704475f89a37f5dc0681080aa8cba7d1a665bb886a9d3e1becddc21ffa9d6473",
       "actual_sha256": "704475f89a37f5dc0681080aa8cba7d1a665bb886a9d3e1becddc21ffa9d6473",
       "matches_original": true,
@@ -308,7 +317,7 @@
       "name": "mace.calculators.mace",
       "distribution": "mace-torch",
       "relative_path": "mace/calculators/mace.py",
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/.venv-mace-wsl/lib/python3.12/site-packages/mace/calculators/mace.py",
+      "path": "installed:mace/calculators/mace.py",
       "original_sha256": "97b17cef8d5880071068d1a05a97f1d432ffc57db00d23ba86c2c3049114a8ad",
       "actual_sha256": "97b17cef8d5880071068d1a05a97f1d432ffc57db00d23ba86c2c3049114a8ad",
       "matches_original": true,
@@ -359,87 +368,87 @@
   },
   "receipts": {
     "wsl-requirements.lock": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/wsl-requirements.lock",
+      "path": "onboarding/wsl-requirements.lock",
       "bytes": 98206,
       "sha256": "d35c75cf7002392b79b095a71cbb466d574c814867059b3de641f673c3056d73"
     },
     "requirements-tests.lock": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/requirements-tests.lock",
+      "path": "onboarding/requirements-tests.lock",
       "bytes": 1491,
       "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
     },
     "environment-after-tests.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/environment-after-tests.txt",
+      "path": "onboarding/environment-after-tests.txt",
       "bytes": 1156,
       "sha256": "0c0fb4bfc2b6b404258b55bc63c1dcaa04cfb08271ec19cdb7e7b4958e40e65f"
     },
     "lock-build.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/lock-build.txt",
+      "path": "onboarding/lock-build.txt",
       "bytes": 98284,
       "sha256": "9e7e70056c05bea7bfd9ec69105b6387c6dd1d4ae2b2e783f671b5c8b75f1fcb"
     },
     "package-install.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-install.txt",
+      "path": "onboarding/package-install.txt",
       "bytes": 2444,
       "sha256": "fc0a22e248166a0485afce04afadc01cd80ea2da0e72f45702ed5815b882b8a2"
     },
     "package-check.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check.txt",
+      "path": "onboarding/package-check.txt",
       "bytes": 117,
       "sha256": "396d97ad55f17c14f6f16147114c70c19045be9efbac4105d422336ffe64a6c1"
     },
     "package-check-after-tests.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.txt",
+      "path": "onboarding/package-check-after-tests.txt",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "package-check-after-tests.command.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.command.txt",
+      "path": "onboarding/package-check-after-tests.command.txt",
       "bytes": 144,
       "sha256": "997e2dc1478dd1da6b751ea593d7cd74390d366133e9b27eec3bc4c9437934ac"
     },
     "package-check-after-tests.stdout.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.stdout.txt",
+      "path": "onboarding/package-check-after-tests.stdout.txt",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "package-check-after-tests.stderr.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.stderr.txt",
+      "path": "onboarding/package-check-after-tests.stderr.txt",
       "bytes": 118,
       "sha256": "e32f22dd07c88d2377c3ec7e88a460ead2e4acbc8e1aa9a81b8c1a141db51cc4"
     },
     "package-check-after-tests.exit.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/package-check-after-tests.exit.txt",
+      "path": "onboarding/package-check-after-tests.exit.txt",
       "bytes": 2,
       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
     },
     "packet-verification.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/packet-verification.txt",
+      "path": "onboarding/packet-verification.txt",
       "bytes": 44,
       "sha256": "565acc714a14d59ff8d8d168279c0a7f66a6d327d748eb1809e201e915dcaafd"
     },
     "mac-reference-comparison.json": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mac-reference-comparison.json",
+      "path": "onboarding/mac-reference-comparison.json",
       "bytes": 468,
       "sha256": "680a336637e42b781e83bc491238db028e7037755ec12524fe57348862df3993"
     },
     "mac-reference-comparison-stderr.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mac-reference-comparison-stderr.txt",
+      "path": "onboarding/mac-reference-comparison-stderr.txt",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     "mac-reference-comparison-exit.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/mac-reference-comparison-exit.txt",
+      "path": "onboarding/mac-reference-comparison-exit.txt",
       "bytes": 2,
       "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
     },
     "wsl-system.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/wsl-system.txt",
+      "path": "onboarding/wsl-system.txt",
       "bytes": 152,
       "sha256": "130bcbb5d3fb7e062ee73fc1f61f4ee797fdfba9947d4499a2400a3a128887de"
     },
     "source-commit.txt": {
-      "path": "/home/asac/group9-mace-onboarding-2026-10-28/source-commit.txt",
+      "path": "onboarding/source-commit.txt",
       "bytes": 41,
       "sha256": "2c25b2fd1154126a15dbe579e6e43e031f824495495dcc6eaca91205dfdd53a0"
     }
@@ -447,8 +456,8 @@
   "published_followup_evidence": {
     "requirements-tests.lock": {
       "path": "reports/evidence/2026-10-28/requirements-tests.lock",
-      "bytes": 1491,
-      "sha256": "206abcc2b5f682d2c93f9f20dfe181dbcb6380d81f735aece261b1d6a869abdd"
+      "bytes": 1463,
+      "sha256": "fa7557bea6bbda59d5800d4ef3e854b5bc345094760ccaa1f421f61c7678e766"
     },
     "environment-after-tests.txt": {
       "path": "reports/evidence/2026-10-28/environment-after-tests.txt",
@@ -457,8 +466,8 @@
     },
     "package-check-after-tests.command.txt": {
       "path": "reports/evidence/2026-10-28/package-check-after-tests.command.txt",
-      "bytes": 144,
-      "sha256": "997e2dc1478dd1da6b751ea593d7cd74390d366133e9b27eec3bc4c9437934ac"
+      "bytes": 88,
+      "sha256": "dac239f323a4144842453e59a9bf82f3f80597b467342f49d23d9c56647ea258"
     },
     "package-check-after-tests.stdout.txt": {
       "path": "reports/evidence/2026-10-28/package-check-after-tests.stdout.txt",
@@ -479,13 +488,13 @@
   "published_review_suite_evidence": {
     "review-regression-suite.command.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.command.txt",
-      "bytes": 397,
-      "sha256": "3bcec087b8c1ec06008d391771dcb50726bbe408be798803493c45b993d75663"
+      "bytes": 369,
+      "sha256": "e3d97637076ae7d91066fb3afada0c90b3298918054dadf164a66b47311190e0"
     },
     "review-regression-suite.stdout.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stdout.txt",
-      "bytes": 932,
-      "sha256": "c0f4c0bfff71fd49f6b0b2b1117b2ec4557c24e66b059892ae7f4b9437e91608"
+      "bytes": 906,
+      "sha256": "2319f1fe130c78bde423186e3168905afd5d48ff0ebb4ae4c929a6d0e53deee9"
     },
     "review-regression-suite.stderr.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stderr.txt",
@@ -500,7 +509,7 @@
     "review-regression-suite.json": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.json",
       "bytes": 986,
-      "sha256": "2a1560fd355b1d45b8e19a124a2368455a5c5698a6cad6566bd3c51e2d67aa91"
+      "sha256": "98ebdee8e73ad8c32839992498d47fac76f8e5e0017ff2fd8eb7504c1890cef5"
     }
   }
 }
