@@ -501,7 +501,7 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
         assert not marker.exists()
 
 
-@pytest.mark.parametrize("shadow_name", ["mace_loader", "mace_reference_adapter"])
+@pytest.mark.parametrize("shadow_name", ["mace_loader", "mace_reference_adapter", "evaluation.adapter"])
 def test_bootstrap_project_modules_win_over_loose_site_modules(tmp_path, shadow_name):
     """Exercise real isolated interpreter startup in an otherwise empty venv."""
     venv = tmp_path / "venv"
@@ -515,9 +515,15 @@ def test_bootstrap_project_modules_win_over_loose_site_modules(tmp_path, shadow_
     bootstrap = scripts / "mace_bootstrap.py"
     shutil.copyfile(Path(__file__).resolve().parent.parent / "scripts/mace_bootstrap.py", bootstrap)
     marker = tmp_path / "shadow-executed"
-    (packages / f"{shadow_name}.py").write_text(
-        f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
+    loose = packages / f"{shadow_name}.py"
     reviewed = scripts / f"{shadow_name}.py"
+    if shadow_name == "evaluation.adapter":
+        (packages / "evaluation").mkdir()
+        loose = packages / "evaluation/__init__.py"
+        reviewed = scripts.parent / "evaluation/adapter.py"
+        reviewed.parent.mkdir()
+    loose.write_text(
+        f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
     reviewed.write_text("REVIEWED = True\n")
     probe = (f"import {shadow_name} as selected\nfrom pathlib import Path\n"
              f"assert Path(selected.__file__).resolve() == Path({str(reviewed)!r}).resolve()\n"

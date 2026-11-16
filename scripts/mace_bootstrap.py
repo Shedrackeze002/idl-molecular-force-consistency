@@ -19,11 +19,21 @@ class ReviewedProjectModules:
         if fullname == "evaluation":
             # The bridge needs only the pinned adapter. Do not execute an
             # unpinned initializer or expose other evaluation directory files.
-            spec = ModuleSpec(fullname, loader=None, is_package=True)
+            spec = ModuleSpec(fullname, loader=self, is_package=True)
             spec.submodule_search_locations = [self.entry]
             return spec
         path = self.files.get(fullname)
         return spec_from_file_location(fullname, path) if path is not None else None
+
+    def create_module(self, spec):
+        return None
+
+    def exec_module(self, module):
+        # The evaluation package is a sealed container for evaluation.adapter.
+        # A concrete loader also prevents a later installed package from winning
+        # over this entry, as it could with a namespace-package candidate.
+        if module.__name__ != "evaluation":
+            raise ImportError("unexpected project package")
 
 
 def main():
