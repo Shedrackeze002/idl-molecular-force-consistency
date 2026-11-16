@@ -1,6 +1,8 @@
 import hashlib
+import importlib.metadata
 import json
 import os
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -246,14 +248,14 @@ def test_frozen_dependency_drift_refused_before_constructor(tmp_path, monkeypatc
     import mace_loader as module
     root = packet(tmp_path, monkeypatch)
     target = attempt(tmp_path, root)
-    original = module._git_blob
+    target_path = Path(module.__file__).resolve().parent.parent.joinpath(relative).resolve()
+    original = Path.read_bytes
 
-    def changed(repo, name, revision=None):
-        if name == relative and revision is None:
-            return "0" * 40
-        return original(repo, name, revision)
+    def changed(self):
+        value = original(self)
+        return value + b"synthetic raw edit" if self.resolve() == target_path else value
 
-    monkeypatch.setattr(module, "_git_blob", changed)
+    monkeypatch.setattr(Path, "read_bytes", changed)
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen bridge/evaluator"):
         module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
@@ -275,16 +277,78 @@ def test_implementation_drift_with_refreshed_receipt_is_refused_before_construct
     launch = json.loads(launch_path.read_text())
     launch["wsl_admission_sha256"] = sha(admission_path)
     launch_path.write_text(json.dumps(launch))
-    original = module._git_blob
+    target_path = Path(module.__file__).resolve().parent.parent.joinpath(relative).resolve()
+    original = Path.read_bytes
 
-    def changed(repo, name, revision=None):
-        if name == relative and revision is None:
-            return "0" * 40
-        return original(repo, name, revision)
+    def changed(self):
+        value = original(self)
+        return value + b"synthetic raw edit" if self.resolve() == target_path else value
 
-    monkeypatch.setattr(module, "_git_blob", changed)
+    monkeypatch.setattr(Path, "read_bytes", changed)
     calls = []
     with pytest.raises(module.AdmissionError, match="execution source"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+def test_raw_commit_blob_bypasses_misleading_clean_filter(tmp_path):
+    import mace_loader as module
+    repo = tmp_path / "filter-repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "Synthetic"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "synthetic@example.test"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "filter.pin.clean", "sed s/edited/original/g"],
+                   cwd=repo, check=True)
+    (repo / ".gitattributes").write_text("guarded.py filter=pin\n")
+    guarded = repo / "guarded.py"
+    guarded.write_text("value = 'original'\n")
+    subprocess.run(["git", "add", "."], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-qm", "baseline"], cwd=repo, check=True)
+    revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=repo, check=True,
+                              text=True, capture_output=True).stdout.strip()
+    guarded.write_text("value = 'edited'\n")
+    filtered = subprocess.run(["git", "hash-object", "--path=guarded.py", "guarded.py"],
+                              cwd=repo, check=True, text=True, capture_output=True).stdout.strip()
+    assert filtered == module._git_blob_id(repo, "guarded.py", revision)
+    assert guarded.read_bytes() != module._git_blob_bytes(repo, "guarded.py", revision)
+
+
+def test_extra_live_distribution_refused_before_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    actual_check = module._live_admission_check
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    real_distributions = list(importlib.metadata.distributions())
+    versions = {}
+    for distribution in real_distributions:
+        name = distribution.metadata.get("Name")
+        if name:
+            versions[name.lower().replace("_", "-")] = distribution.version
+    approved = canonical_admission(module)
+    approved["platform"] = {"python": platform.python_version(), "platform": platform.platform(),
+                            "architecture": platform.machine(), "glibc": platform.libc_ver()[1]}
+    approved["installed_packages"] = [f"{name}=={version}" for name, version in versions.items()]
+    approved["installed_package_versions"] = versions
+    admission_path = target / "wsl-admission.json"
+    admission = json.loads(admission_path.read_text())
+    admission.update(approved)
+    admission_path.write_text(json.dumps(admission))
+    launch_path = target / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["wsl_admission_sha256"] = sha(admission_path)
+    launch_path.write_text(json.dumps(launch))
+
+    class ExtraDistribution:
+        metadata = {"Name": "synthetic-extra"}
+        version = "1.0"
+
+    monkeypatch.setattr(module, "_live_admission_check", actual_check)
+    monkeypatch.setattr(module.importlib.metadata, "distributions",
+                        lambda: [*real_distributions, ExtraDistribution()])
+    calls = []
+    with pytest.raises(module.AdmissionError, match="complete live package inventory"):
         module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []

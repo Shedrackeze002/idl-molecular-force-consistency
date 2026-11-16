@@ -127,14 +127,21 @@ def _hex_digest(value: Any) -> bool:
             and all(character in "0123456789abcdef" for character in value.lower()))
 
 
-def _git_blob(repo_root: Path, relative: str, revision: str | None = None) -> str:
-    """Return a commit-tree or clean-filtered worktree blob identity."""
-    command = (["git", "rev-parse", f"{revision}:{relative}"] if revision else
-               ["git", "-c", "core.autocrlf=true", "hash-object",
-                f"--path={relative}", relative])
+def _git_blob_bytes(repo_root: Path, relative: str, revision: str) -> bytes:
+    """Read immutable commit-tree bytes directly, bypassing all clean filters."""
     try:
-        value = subprocess.run(command, cwd=repo_root, check=True, text=True,
-                               capture_output=True, timeout=10).stdout.strip()
+        return subprocess.run(
+            ["git", "cat-file", "blob", f"{revision}:{relative}"], cwd=repo_root,
+            check=True, capture_output=True, timeout=10).stdout
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise AdmissionError(f"cannot authenticate Git object: {relative}") from exc
+
+
+def _git_blob_id(repo_root: Path, relative: str, revision: str) -> str:
+    try:
+        value = subprocess.run(
+            ["git", "rev-parse", f"{revision}:{relative}"], cwd=repo_root, check=True,
+            text=True, capture_output=True, timeout=10).stdout.strip()
     except (OSError, subprocess.SubprocessError) as exc:
         raise AdmissionError(f"cannot authenticate Git object: {relative}") from exc
     if len(value) != 40 or any(character not in "0123456789abcdef" for character in value.lower()):
@@ -243,6 +250,17 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     for key, actual in actual_platform.items():
         if inventory["platform"].get(key) != actual:
             raise AdmissionError(f"live platform differs from approved {key}")
+    live_inventory: dict[str, str] = {}
+    for distribution in importlib.metadata.distributions():
+        raw_name = distribution.metadata.get("Name")
+        if not isinstance(raw_name, str) or not raw_name.strip():
+            raise AdmissionError("live package distribution lacks a normalized name")
+        name = raw_name.strip().lower().replace("_", "-")
+        if name in live_inventory and live_inventory[name] != distribution.version:
+            raise AdmissionError(f"live package inventory has conflicting entries: {name}")
+        live_inventory[name] = distribution.version
+    if live_inventory != inventory["packages"]:
+        raise AdmissionError("complete live package inventory differs from approval")
     checked_packages: dict[str, str] = {}
     for name, expected in inventory["packages"].items():
         try:
@@ -312,22 +330,24 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
         raise AdmissionError("live implementation revision differs from approval")
     for relative, receipt in implementation_files.items():
         path = repo_root / relative
-        expected_blob = _git_blob(repo_root, relative, implementation_commit)
-        live_blob = _git_blob(repo_root, relative)
+        expected_bytes = _git_blob_bytes(repo_root, relative, implementation_commit)
+        expected_blob = _git_blob_id(repo_root, relative, implementation_commit)
         if (not isinstance(receipt, dict) or not path.is_file()
-                or receipt.get("git_blob") != expected_blob or live_blob != expected_blob
-                or path.stat().st_size != receipt.get("bytes") or _sha256(path) != receipt.get("sha256")):
+                or receipt.get("git_blob") != expected_blob
+                or path.read_bytes() != expected_bytes
+                or receipt.get("bytes") != len(expected_bytes)
+                or receipt.get("sha256") != hashlib.sha256(expected_bytes).hexdigest()):
             raise AdmissionError(f"execution source differs from approval: {relative}")
     for relative, expected_blob in FROZEN_DEPENDENCY_BLOBS.items():
         receipt = frozen_dependencies[relative]
         path = repo_root / relative
-        baseline_blob = _git_blob(repo_root, relative, SOURCE_BASELINE)
-        live_blob = _git_blob(repo_root, relative)
+        expected_bytes = _git_blob_bytes(repo_root, relative, SOURCE_BASELINE)
+        baseline_blob = _git_blob_id(repo_root, relative, SOURCE_BASELINE)
         if (not isinstance(receipt, dict) or receipt.get("baseline_commit") != SOURCE_BASELINE
                 or expected_blob != baseline_blob or receipt.get("git_blob") != baseline_blob
-                or live_blob != baseline_blob
-                or not path.is_file() or path.stat().st_size != receipt.get("bytes")
-                or _sha256(path) != receipt.get("sha256")):
+                or not path.is_file() or path.read_bytes() != expected_bytes
+                or receipt.get("bytes") != len(expected_bytes)
+                or receipt.get("sha256") != hashlib.sha256(expected_bytes).hexdigest()):
             raise AdmissionError(f"frozen bridge/evaluator differs from approval: {relative}")
     return launch, admission, _live_admission_check(admission)
 
