@@ -1,5 +1,6 @@
 import json
 import hashlib
+import importlib.metadata
 import sys
 from pathlib import Path
 
@@ -284,7 +285,10 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     (attempt / "launch-receipt.json").write_text(json.dumps(launch))
     live = {"platform": platform, "packages": packages,
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
-                         "sha256": item["actual_sha256"]} for item in sources]}
+                         "sha256": item["actual_sha256"]} for item in sources],
+            "distribution_roots": {
+                name: str(Path(importlib.metadata.distribution(name).locate_file("")).resolve())
+                for name in ("mace-torch", "torch")}}
 
     monkeypatch.setattr(loader, "MODEL_SHA256", digest(model))
     monkeypatch.setattr(loader, "MODEL_BYTES", model.stat().st_size)
