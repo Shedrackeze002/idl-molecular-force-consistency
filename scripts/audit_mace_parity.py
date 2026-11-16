@@ -6,6 +6,10 @@ import hashlib
 import json
 from pathlib import Path
 
+from mace_loader import validate_dependency_imports
+
+validate_dependency_imports(("numpy", "ase.io"))
+
 import numpy as np
 
 from check_mace_parity import EXPECTED_ATOMS, TOLERANCE, validate_inputs

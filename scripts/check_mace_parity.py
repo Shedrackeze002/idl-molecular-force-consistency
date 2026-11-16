@@ -8,6 +8,10 @@ import time
 from pathlib import Path
 from typing import Any
 
+from mace_loader import validate_dependency_imports
+
+validate_dependency_imports(("numpy", "ase.io"))
+
 import numpy as np
 from ase.io import read
 

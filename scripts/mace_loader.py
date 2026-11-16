@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import importlib.machinery
 import importlib.metadata
 import json
 import os
@@ -46,6 +47,7 @@ FROZEN_DEPENDENCY_BLOBS = {
     "evaluation/adapter.py": "80b61b5ba280ca7eca1c627fb2e2ce132a970ba7",
 }
 SOURCE_BASELINE = "3fa5969e5a0c2fdeaebc76a05bace20799715203"
+IMPORT_INITIALIZERS = ("mace/__init__.py", "mace/calculators/__init__.py")
 RESOURCE_LIMITS = {"seconds": 1800, "attempt_bytes": 256 * 1024 * 1024,
                    "per_log_bytes": 16 * 1024 * 1024, "cleanup_seconds": 10}
 
@@ -288,8 +290,46 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     for distribution in ("torch",):
         dist = importlib.metadata.distribution(distribution)
         distribution_roots[distribution] = str(Path(dist.locate_file("")).resolve())
+    initializers = admission.get("import_initializers")
+    if not isinstance(initializers, dict) or set(initializers) != set(IMPORT_INITIALIZERS):
+        raise AdmissionError("approved MACE import initializer hashes are missing")
+    dist = importlib.metadata.distribution("mace-torch")
+    for relative in IMPORT_INITIALIZERS:
+        path = Path(dist.locate_file(relative))
+        if not _hex_digest(initializers[relative]) or _sha256(path) != initializers[relative]:
+            raise AdmissionError(f"MACE import initializer differs from approval: {relative}")
     return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources,
             "distribution_roots": distribution_roots}
+
+
+def validate_dependency_imports(names: tuple[str, ...]) -> None:
+    """Resolve packages without executing their initializers, including children."""
+    distributions = {"mace": "mace-torch", "torch": "torch", "numpy": "numpy", "ase": "ase"}
+    for name in names:
+        top = name.split(".")[0]
+        dist = importlib.metadata.distribution(distributions[top])
+        base = Path(dist.locate_file("")).resolve()
+        search = None
+        for index, part in enumerate(name.split(".")):
+            fullname = ".".join(name.split(".")[:index + 1])
+            expected_dir = base.joinpath(*fullname.split("."))
+            expected_file = expected_dir / "__init__.py"
+            if not expected_file.is_file():
+                expected_file = expected_dir.with_suffix(".py")
+            loaded = sys.modules.get(fullname)
+            spec = (getattr(loaded, "__spec__", None) if loaded is not None else
+                    importlib.machinery.PathFinder.find_spec(fullname, search))
+            origin = getattr(loaded, "__file__", None) if loaded is not None else getattr(spec, "origin", None)
+            if not isinstance(origin, str) or Path(origin).resolve() != expected_file.resolve():
+                raise AdmissionError(f"module import origin differs from approval: {fullname}")
+            locations = (getattr(loaded, "__path__", None) if loaded is not None else
+                         getattr(spec, "submodule_search_locations", None))
+            if expected_file.name == "__init__.py":
+                if locations is None or [Path(p).resolve() for p in locations] != [expected_dir]:
+                    raise AdmissionError(f"module package search path differs from approval: {fullname}")
+                search = [str(expected_dir)]
+            else:
+                search = None
 
 
 def _validate_import_origins(live: dict[str, Any]) -> None:
@@ -317,6 +357,7 @@ def _validate_import_origins(live: dict[str, Any]) -> None:
             candidate.relative_to(approved_root)
         except ValueError as exc:
             raise AdmissionError(f"module import origin differs from approval: {module_name}") from exc
+    validate_dependency_imports(("mace.calculators.mace", "torch", "numpy", "ase.io"))
 
 
 def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -387,8 +428,16 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
 
 
 def _construct_calculator(snapshot: Path):
+    validate_dependency_imports(("mace.calculators.mace", "torch", "numpy", "ase.io"))
     import torch
-    from mace.calculators import MACECalculator
+    import mace
+    validate_dependency_imports(("mace.calculators.mace",))
+    import mace.calculators
+    validate_dependency_imports(("mace.calculators.mace",))
+    from mace.calculators.mace import MACECalculator
+    validate_dependency_imports(("mace.calculators.mace",))
+    if MACECalculator.__module__ != "mace.calculators.mace":
+        raise AdmissionError("constructor is not defined in the approved MACE module")
 
     torch.set_num_threads(1)
     return MACECalculator(model_paths=[str(snapshot)], device="cpu",

@@ -91,7 +91,9 @@ for dist in importlib.metadata.distributions():
     name = dist.metadata.get('Name')
     if name:
         all_versions[name.lower().replace('_', '-')] = dist.version
-print(json.dumps({'python': platform.python_version(), 'platform': platform.platform(),
+initializers = {name: hashlib.sha256(pathlib.Path(importlib.metadata.distribution('mace-torch').locate_file(name)).read_bytes()).hexdigest()
+                for name in ['mace/__init__.py', 'mace/calculators/__init__.py']}
+print(json.dumps({'import_initializers': initializers, 'python': platform.python_version(), 'platform': platform.platform(),
                   'sources': rows, 'versions': versions, 'all_versions': all_versions}))
 '''
     runtime = json.loads(command(str(env_python), "-c", probe, str(packet / "ACCEPTED_IDENTITY.json")))
@@ -234,6 +236,7 @@ print(json.dumps({'python': platform.python_version(), 'platform': platform.plat
             },
         },
         "installed_packages": packages,
+        "import_initializers": runtime['import_initializers'],
         "installed_package_versions": runtime["all_versions"],
         "authenticated_source_comparison": runtime["sources"],
         "source_comparison_summary": {

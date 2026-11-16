@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 import sys
+import types
 from pathlib import Path
 
 import pytest
@@ -386,6 +387,46 @@ def test_mace_line_endings_preserve_existing_lfs_mappings():
     assert "reports/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text" in attributes
     assert ("reports/execution/width-rate-replacement-2026-10-01/corrected-report/"
             "width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text") in attributes
+
+
+@pytest.mark.parametrize("package", ["mace", "mace.calculators"])
+def test_same_root_package_redirect_refused_before_constructor(tmp_path, monkeypatch, package):
+    import mace_loader as module
+    actual_validate = module._validate_import_origins
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    launch = json.loads((target / "launch-receipt.json").read_text())
+    admission = json.loads((target / "wsl-admission.json").read_text())
+    base = Path(importlib.metadata.distribution("mace-torch").locate_file("")).resolve()
+    fake = types.ModuleType(package)
+    fake.__file__ = str(base.joinpath(*package.split("."), "__init__.py"))
+    fake.__path__ = [str(tmp_path / "external")]
+    monkeypatch.setitem(sys.modules, package, fake)
+    live = {"distribution_roots": {"mace-torch": str(base), "torch": str(base)}}
+    monkeypatch.setattr(module, "_approved_launch", lambda *args: (launch, admission, live))
+    monkeypatch.setattr(module, "_validate_import_origins", actual_validate)
+    calls = []
+    with pytest.raises(module.AdmissionError, match="package search path"):
+        module._load_admitted_arm(root, target, constructor=lambda p: calls.append(p),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+@pytest.mark.parametrize("shadow", ["numpy.py", "ase/io/__init__.py"])
+def test_worker_refuses_shadow_before_dependency_executes(tmp_path, shadow):
+    marker = tmp_path / "executed"
+    path = tmp_path / shadow
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if shadow.startswith("ase/"):
+        (tmp_path / "ase/__init__.py").write_text("")
+    path.write_text(f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
+    worker = Path(__file__).resolve().parent.parent / "scripts/check_mace_parity.py"
+    env = dict(os.environ, PYTHONPATH=str(tmp_path))
+    result = subprocess.run([sys.executable, str(worker), "--help"], cwd=tmp_path,
+                            env=env, capture_output=True, text=True, timeout=30)
+    assert result.returncode != 0
+    assert "import origin differs" in result.stderr
+    assert not marker.exists()
 
 
 @pytest.mark.parametrize("duplicate", ["review_id", "reviewer", "url"])
