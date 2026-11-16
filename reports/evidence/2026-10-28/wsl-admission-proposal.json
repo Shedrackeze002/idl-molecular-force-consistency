@@ -37,13 +37,13 @@
       "bytes": 1463,
       "sha256": "fa7557bea6bbda59d5800d4ef3e854b5bc345094760ccaa1f421f61c7678e766"
     },
-    "implementation_commit": "9b578b0831c1f554bf804693ec05f9c30e444c0e",
+    "implementation_commit": "bfe1ca69893f747051b1677e51ede8ed18974b82",
     "implementation_files": {
       "scripts/mace_loader.py": {
         "path": "scripts/mace_loader.py",
-        "bytes": 22017,
-        "sha256": "b70a300ed0b64fc46adb96682452301181fb98406ddcd0e943ca926566888a82",
-        "git_blob": "adc9e54e2d8bbab69fa70eeb2bb21dae3bf555ad"
+        "bytes": 23162,
+        "sha256": "ec9f4ca52879564496df9d8f34e8128f4723fc8c0472a40c5c2e224db730ad66",
+        "git_blob": "96cc85e6ed1c892fea6e3a01ea4be48f7a4da4c5"
       },
       "scripts/check_mace_parity.py": {
         "path": "scripts/check_mace_parity.py",
@@ -71,9 +71,9 @@
       },
       "tests/test_mace_loader.py": {
         "path": "tests/test_mace_loader.py",
-        "bytes": 15541,
-        "sha256": "133f5811684d9d9189f168af2827ae92035e09da50c891cb0aa8d2564bd5077e",
-        "git_blob": "bef17011d51739199b09a4984c18339fca8ddaab"
+        "bytes": 18988,
+        "sha256": "64b8d0004a8081263644228a8b98013001e90efe57a4f3ee9966786d1bbec07d",
+        "git_blob": "07906832c8b55dd98783be05b680c9588c124dde"
       },
       "tests/test_mace_parity.py": {
         "path": "tests/test_mace_parity.py",
@@ -97,15 +97,15 @@
     "frozen_dependencies": {
       "scripts/mace_reference_adapter.py": {
         "path": "scripts/mace_reference_adapter.py",
-        "bytes": 4792,
-        "sha256": "dd105e38b4d4cb66872eeab5671108f15bf92cdeffea578790f50b84c951cc98",
+        "bytes": 4694,
+        "sha256": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759",
         "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
         "git_blob": "f6f720e9767d43a2a3cb92e4dcf20b3dd1dcaf30"
       },
       "evaluation/adapter.py": {
         "path": "evaluation/adapter.py",
-        "bytes": 14835,
-        "sha256": "82b0dfce289a90345429a1b7649d70bb6c867d8ffea9c3ef94ec75af26b432fc",
+        "bytes": 14497,
+        "sha256": "640a4afc31e971fa33876cb0b6a022416accd0a3c348a597bbebe62483ba65c5",
         "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
         "git_blob": "80b61b5ba280ca7eca1c627fb2e2ce132a970ba7"
       }
@@ -493,8 +493,8 @@
     },
     "review-regression-suite.stdout.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stdout.txt",
-      "bytes": 906,
-      "sha256": "2319f1fe130c78bde423186e3168905afd5d48ff0ebb4ae4c929a6d0e53deee9"
+      "bytes": 898,
+      "sha256": "46327818c5c232aeebc7b0138acc505c7a946e3055597f79c9a66018267c5743"
     },
     "review-regression-suite.stderr.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stderr.txt",
@@ -509,7 +509,7 @@
     "review-regression-suite.json": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.json",
       "bytes": 986,
-      "sha256": "98ebdee8e73ad8c32839992498d47fac76f8e5e0017ff2fd8eb7504c1890cef5"
+      "sha256": "66348ef27cd7076e51b9f5cabb071493cd1cc011f01e2e312f574059907522dd"
     }
   }
 }
