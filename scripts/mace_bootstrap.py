@@ -21,7 +21,9 @@ def main():
                 venv / f"lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
     if not (venv / "pyvenv.cfg").is_file() or not packages.is_dir():
         raise SystemExit("a dedicated virtual environment with site-packages is required")
-    sys.path.extend([str(packages), str(scripts), str(scripts.parent), str(scripts.parent / "src")])
+    # Project modules must win over loose files in site-packages. Dependency
+    # imports are separately checked against distribution origins before use.
+    sys.path.extend([str(scripts), str(scripts.parent), str(scripts.parent / "src"), str(packages)])
     target = scripts / entries[sys.argv[2]]
     sys.argv = [str(target), *sys.argv[3:]]
     runpy.run_path(str(target), run_name="__main__")

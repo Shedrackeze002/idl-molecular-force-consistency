@@ -3,6 +3,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import types
@@ -496,6 +497,36 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
         result = subprocess.run([sys.executable, "-I", "-S", str(bootstrap),
                                  "--entry", entry, "--help"], cwd=tmp_path,
                                 env=env, text=True, capture_output=True, timeout=30)
+        assert result.returncode == 0, result.stderr
+        assert not marker.exists()
+
+
+@pytest.mark.parametrize("shadow_name", ["mace_loader", "mace_reference_adapter"])
+def test_bootstrap_project_modules_win_over_loose_site_modules(tmp_path, shadow_name):
+    """Exercise real isolated interpreter startup in an otherwise empty venv."""
+    venv = tmp_path / "venv"
+    subprocess.run([sys.executable, "-m", "venv", "--without-pip", str(venv)],
+                   check=True, capture_output=True, timeout=60)
+    python = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    packages = (venv / "Lib/site-packages" if os.name == "nt" else
+                venv / f"lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
+    scripts = tmp_path / "project/scripts"
+    scripts.mkdir(parents=True)
+    bootstrap = scripts / "mace_bootstrap.py"
+    shutil.copyfile(Path(__file__).resolve().parent.parent / "scripts/mace_bootstrap.py", bootstrap)
+    marker = tmp_path / "shadow-executed"
+    (packages / f"{shadow_name}.py").write_text(
+        f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
+    reviewed = scripts / f"{shadow_name}.py"
+    reviewed.write_text("REVIEWED = True\n")
+    probe = (f"import {shadow_name} as selected\nfrom pathlib import Path\n"
+             f"assert Path(selected.__file__).resolve() == Path({str(reviewed)!r}).resolve()\n"
+             "assert selected.REVIEWED\n")
+    for name in ("supervise_mace_parity.py", "check_mace_parity.py", "audit_mace_parity.py"):
+        (scripts / name).write_text(probe)
+    for entry in ("supervisor", "worker", "audit"):
+        result = subprocess.run([str(python), "-I", "-S", str(bootstrap), "--entry", entry],
+                                cwd=tmp_path, text=True, capture_output=True, timeout=30)
         assert result.returncode == 0, result.stderr
         assert not marker.exists()
 
