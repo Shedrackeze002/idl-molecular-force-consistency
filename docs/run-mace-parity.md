@@ -37,10 +37,14 @@ The WSL approval separately binds complete, equal package declaration/version
 key sets, all eight canonical installed-source identities, and raw byte receipts
 for the unchanged shared bridge and evaluator. Those frozen receipts also name
 their accepted baseline commit and Git blob identities. Before construction,
-clean-filtered live worktree blobs are compared with immutable objects derived
+raw live worktree bytes are compared with immutable objects derived
 from the pinned implementation and baseline commit trees; refreshing a receipt's
 self-reported hashes cannot admit edited source. Missing, substituted or
 contradictory launch/admission fields are refused before model construction.
+
+The worker and auditor check NumPy and ASE origins before importing them.
+Admission pins both MACE package initializers and checks package search paths
+and the exact constructor module before construction.
 
 Synthetic tests do not require or load the checkpoint:
 
