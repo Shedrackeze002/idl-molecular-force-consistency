@@ -55,6 +55,7 @@ def packet(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "MODEL_SHA256", sha(model))
     monkeypatch.setattr(module, "MODEL_BYTES", model.stat().st_size)
     monkeypatch.setattr(module, "_live_admission_check", lambda admission: {"synthetic": True})
+    monkeypatch.setattr(module, "_validate_import_origins", lambda live: None)
     return root
 
 
@@ -352,6 +353,39 @@ def test_extra_live_distribution_refused_before_constructor(tmp_path, monkeypatc
         module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
+
+
+def test_shadow_mace_import_refused_before_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    actual_validate = module._validate_import_origins
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    launch = json.loads((target / "launch-receipt.json").read_text())
+    admission = json.loads((target / "wsl-admission.json").read_text())
+    live = {"distribution_roots": {
+        "mace-torch": str(Path(importlib.metadata.distribution("mace-torch").locate_file("")).resolve()),
+        "torch": str(Path(importlib.metadata.distribution("torch").locate_file("")).resolve()),
+    }}
+    shadow = tmp_path / "shadow"
+    (shadow / "mace").mkdir(parents=True)
+    (shadow / "mace/__init__.py").write_text("SHADOW = True\n")
+    monkeypatch.syspath_prepend(str(shadow))
+    monkeypatch.delitem(sys.modules, "mace", raising=False)
+    monkeypatch.setattr(module, "_validate_import_origins", actual_validate)
+    monkeypatch.setattr(module, "_approved_launch",
+                        lambda attempt_root, packet_root: (launch, admission, live))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="import origin differs"):
+        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+                                  expected_species=("H",) * 21)
+    assert calls == []
+
+
+def test_mace_line_endings_preserve_existing_lfs_mappings():
+    attributes = Path(__file__).resolve().parent.parent.joinpath(".gitattributes").read_text()
+    assert "reports/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text" in attributes
+    assert ("reports/execution/width-rate-replacement-2026-10-01/corrected-report/"
+            "width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text") in attributes
 
 
 @pytest.mark.parametrize("duplicate", ["review_id", "reviewer", "url"])

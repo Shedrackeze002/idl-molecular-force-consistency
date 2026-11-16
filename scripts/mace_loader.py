@@ -6,6 +6,7 @@ dependencies are imported only after packet, launch and platform admission.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import importlib.metadata
 import json
 import os
@@ -274,15 +275,48 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
     if proposed_torch is not None and checked_packages.get("torch") != proposed_torch:
         raise AdmissionError("live Torch version differs from approval")
     checked_sources = []
+    distribution_roots: dict[str, str] = {}
     for name, item in inventory["sources"].items():
         expected = item.get("actual_sha256")
         relative = item.get("relative_path")
         dist = importlib.metadata.distribution(item["distribution"])
+        distribution_roots[item["distribution"]] = str(Path(dist.locate_file("")).resolve())
         path = Path(dist.locate_file(relative)).resolve()
         if not path.is_file() or path.is_symlink() or _sha256(path) != expected:
             raise AdmissionError(f"live source differs from approval: {name}")
         checked_sources.append({"name": name, "path": str(path), "sha256": expected})
-    return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources}
+    for distribution in ("torch",):
+        dist = importlib.metadata.distribution(distribution)
+        distribution_roots[distribution] = str(Path(dist.locate_file("")).resolve())
+    return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources,
+            "distribution_roots": distribution_roots}
+
+
+def _validate_import_origins(live: dict[str, Any]) -> None:
+    """Refuse modules Python would import outside the approved distributions."""
+    roots = live.get("distribution_roots")
+    if not isinstance(roots, dict):
+        raise AdmissionError("live admission lacks approved import roots")
+    for module_name, distribution in (("mace", "mace-torch"), ("torch", "torch")):
+        raw_root = roots.get(distribution)
+        if not isinstance(raw_root, str) or not raw_root:
+            raise AdmissionError(f"live admission lacks import root: {distribution}")
+        approved_root = Path(raw_root).resolve()
+        loaded = sys.modules.get(module_name)
+        loaded_origin = getattr(loaded, "__file__", None) if loaded is not None else None
+        if loaded is not None:
+            if not isinstance(loaded_origin, str):
+                raise AdmissionError(f"loaded module has no verifiable origin: {module_name}")
+            candidate = Path(loaded_origin).resolve()
+        else:
+            spec = importlib.util.find_spec(module_name)
+            if spec is None or not isinstance(spec.origin, str):
+                raise AdmissionError(f"cannot resolve approved module import: {module_name}")
+            candidate = Path(spec.origin).resolve()
+        try:
+            candidate.relative_to(approved_root)
+        except ValueError as exc:
+            raise AdmissionError(f"module import origin differs from approval: {module_name}") from exc
 
 
 def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -384,6 +418,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
     before = _sha256(snapshot)
     if before != MODEL_SHA256 or snapshot.stat().st_size != MODEL_BYTES:
         raise AdmissionError("copied model snapshot failed identity check")
+    _validate_import_origins(live)
     calculator = constructor(snapshot.resolve())
     after = _sha256(snapshot)
     if after != before:
