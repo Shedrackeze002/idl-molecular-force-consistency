@@ -8,6 +8,9 @@ import time
 from pathlib import Path
 from typing import Any
 
+import sys
+if __name__ == "__main__" and (not sys.flags.isolated or not sys.flags.no_site):
+    raise SystemExit("use python -I -S scripts/mace_bootstrap.py --entry worker")
 from mace_loader import validate_dependency_imports
 
 validate_dependency_imports(("numpy", "ase.io"))

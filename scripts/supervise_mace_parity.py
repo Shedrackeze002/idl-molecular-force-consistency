@@ -184,6 +184,8 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
 
 
 def main() -> int:
+    if not sys.flags.isolated or not sys.flags.no_site:
+        raise SystemExit("use python -I -S scripts/mace_bootstrap.py --entry supervisor")
     parser = argparse.ArgumentParser()
     parser.add_argument("--packet-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)

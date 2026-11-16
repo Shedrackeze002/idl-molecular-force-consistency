@@ -115,6 +115,7 @@ print(json.dumps({'import_initializers': initializers, 'python': platform.python
             versions[key.lower()] = value
 
     implementation_files = [
+        "scripts/mace_bootstrap.py",
         "scripts/mace_loader.py",
         "scripts/check_mace_parity.py",
         "scripts/supervise_mace_parity.py",

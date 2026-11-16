@@ -24,6 +24,11 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def initializer_pins():
+    from mace_loader import IMPORT_INITIALIZERS
+    return {name: "a" * 64 for name in IMPORT_INITIALIZERS}
+
+
 def approval_identity():
     from mace_loader import CORE_PACKAGES, REQUIRED_SOURCES
     packages = {name: "1" for name in CORE_PACKAGES}
@@ -60,18 +65,19 @@ def write_attempt(root, status="PARITY_PASS"):
         "platform": platform,
         "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
         "installed_package_versions": packages,
-        "authenticated_source_comparison": sources}
+        "authenticated_source_comparison": sources,
+        "import_initializers": initializer_pins()}
     wsl_path = root / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
     interpreter = str(Path(sys.executable).resolve())
     packet_root = root.parent.resolve()
     worker = str(Path(__file__).resolve().parent.parent.joinpath(
-        "scripts/check_mace_parity.py").resolve())
+        "scripts/mace_bootstrap.py").resolve())
     launch = {"status": "APPROVED", "implementation_commit": "a" * 40,
               "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": digest(wsl_path),
               "python_executable": interpreter, "packet_root": str(packet_root),
               "attempt_root": str(root.resolve()),
-              "command": [interpreter, worker, "--packet-root", str(packet_root),
+              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--packet-root", str(packet_root),
                           "--attempt-root", str(root.resolve())],
               "resource_limits": RESOURCE_LIMITS, "source_baseline": SOURCE_BASELINE,
               "implementation_reviews": [
@@ -86,6 +92,7 @@ def write_attempt(root, status="PARITY_PASS"):
     admission.write_text(json.dumps({"status": "ADMITTED", "launch_receipt": launch,
         "wsl_admission": wsl, "packet": packet,
         "live_identity_comparison": {"platform": platform, "packages": packages,
+            "import_initializers": initializer_pins(),
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
                          "sha256": item["actual_sha256"]} for item in sources]},
         "constructor": {"device": "cpu", "torch_threads": 1,
@@ -125,6 +132,36 @@ def test_partial_worker_result_is_refused(tmp_path):
     attempt = tmp_path / "partial"
     write_attempt(attempt, "INCOMPLETE")
     with pytest.raises(ValueError, match="partial"):
+        module.audit_saved_parity(tmp_path, attempt)
+
+
+@pytest.mark.parametrize("damage", ["missing", "malformed", "altered"])
+def test_audit_refuses_missing_or_contradictory_initializer_pins(tmp_path, monkeypatch, damage):
+    attempt = tmp_path / "pins"
+    packet = write_attempt(attempt)
+    wsl_path = attempt / "wsl.json"
+    wsl = json.loads(wsl_path.read_text())
+    if damage == "missing":
+        wsl.pop("import_initializers")
+    else:
+        name = next(iter(wsl["import_initializers"]))
+        wsl["import_initializers"][name] = "not-a-hash" if damage == "malformed" else "f" * 64
+    wsl_path.write_text(json.dumps(wsl))
+    launch_path = attempt / "launch-receipt.json"
+    launch = json.loads(launch_path.read_text())
+    launch["wsl_admission_sha256"] = digest(wsl_path)
+    launch_path.write_text(json.dumps(launch))
+    admission_path = attempt / "admission-receipt.json"
+    admission = json.loads(admission_path.read_text())
+    admission.update(wsl_admission=wsl, launch_receipt=launch)
+    admission_path.write_text(json.dumps(admission))
+    status_path = attempt / "parity-status.json"
+    status = json.loads(status_path.read_text())
+    status["admission_receipt_sha256"] = digest(admission_path)
+    status_path.write_text(json.dumps(status))
+    monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
+    monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
+    with pytest.raises(ValueError, match="initializer"):
         module.audit_saved_parity(tmp_path, attempt)
 
 
@@ -261,17 +298,18 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
         "platform": platform,
         "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
         "installed_package_versions": packages,
-        "authenticated_source_comparison": sources}
+        "authenticated_source_comparison": sources,
+        "import_initializers": initializer_pins()}
     wsl_path = attempt / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
     interpreter = str(Path(sys.executable).resolve())
-    worker_path = str(Path(loader.__file__).with_name("check_mace_parity.py").resolve())
+    worker_path = str(Path(loader.__file__).with_name("mace_bootstrap.py").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": "a" * 40, "wsl_admission_receipt": "wsl.json",
               "wsl_admission_sha256": digest(wsl_path),
               "python_executable": interpreter, "packet_root": str(packet_root.resolve()),
               "attempt_root": str(attempt.resolve()),
-              "command": [interpreter, worker_path, "--packet-root", str(packet_root.resolve()),
+              "command": [interpreter, "-I", "-S", worker_path, "--entry", "worker", "--packet-root", str(packet_root.resolve()),
                           "--attempt-root", str(attempt.resolve())],
               "resource_limits": loader.RESOURCE_LIMITS,
               "source_baseline": loader.SOURCE_BASELINE,
@@ -284,6 +322,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
                    "url": "https://example.test/review/2"}]}
     (attempt / "launch-receipt.json").write_text(json.dumps(launch))
     live = {"platform": platform, "packages": packages,
+            "import_initializers": initializer_pins(),
             "sources": [{"name": item["name"], "path": f"/env/{item['relative_path']}",
                          "sha256": item["actual_sha256"]} for item in sources],
             "distribution_roots": {
@@ -295,6 +334,8 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
     monkeypatch.setattr(loader, "_approved_launch", lambda root, packet: (launch, wsl, live))
     monkeypatch.setattr(loader, "_construct_calculator", lambda snapshot: ZeroCalculator())
+    monkeypatch.setattr(sys, "meta_path", [loader.importlib.machinery.BuiltinImporter,
+                        loader.importlib.machinery.FrozenImporter, loader.importlib.machinery.PathFinder])
     monkeypatch.setattr(worker, "validate_inputs", lambda root: fixture_inputs())
     result = worker.run_parity(packet_root, attempt)
     assert result["status"] == "PARITY_PASS"

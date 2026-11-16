@@ -16,7 +16,7 @@ relax molecules, access training/test partitions, or authorize model loading.
 
 The approved launch JSON is fail-closed. It records absolute `python_executable`,
 `packet_root` and fresh `attempt_root` paths; `command` is exactly the interpreter,
-`scripts/check_mace_parity.py`, `--packet-root`, and `--attempt-root` argv used by
+`-I -S scripts/mace_bootstrap.py --entry worker`, `--packet-root`, and `--attempt-root` argv used by
 the supervisor. It also records `source_baseline` as
 `3fa5969e5a0c2fdeaebc76a05bace20799715203`, two or more resolved review objects
 with distinct review IDs, reviewer identities and URLs bound to the same full
@@ -58,11 +58,11 @@ PYTHONPATH=.:src:scripts python -m pytest -q \
 Only after the gates above, use a fresh absolute output path:
 
 ```bash
-PYTHONPATH=.:src:scripts "$python_bin" scripts/supervise_mace_parity.py \
+"$python_bin" -I -S scripts/mace_bootstrap.py --entry supervisor \
   --packet-root "$packet_root" --output "$attempt_root" \
   --launch-receipt "$launch_receipt" \
   --wsl-admission-receipt "$wsl_admission_receipt"
-PYTHONPATH=.:src:scripts "$python_bin" scripts/audit_mace_parity.py \
+"$python_bin" -I -S scripts/mace_bootstrap.py --entry audit \
   --packet-root "$packet_root" --attempt-root "$attempt_root"
 ```
 
@@ -71,6 +71,12 @@ construction, copies and hashes the primary final EMA model, constructs one
 CPU/float64 calculator, then makes exactly 974 force and 974 energy accessor
 requests. Acceptance is absolute-only (`rtol=0`, `atol=1e-10`) for energy and
 force components.
+
+Production uses a dedicated virtual environment and the isolated bootstrap for
+all three entry points. `-I -S` ignores PYTHONPATH, user sites, sitecustomize,
+usercustomize and executable .pth hooks. The bootstrap explicitly adds only the
+selected environment's site-packages before project paths. Synthetic pytest
+commands above exercise library interfaces and do not authorize a production run.
 
 The supervisor uses one fresh directory, a shared 1,800-second cap, 256 MiB
 directory bound and 16 MiB per-log bound. Timeout, overflow, partial output,

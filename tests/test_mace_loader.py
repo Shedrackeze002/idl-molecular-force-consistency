@@ -32,6 +32,7 @@ def canonical_admission(module):
                          "architecture": "x86_64", "glibc": "2.35"},
             "installed_packages": [f"{name}=={version}" for name, version in packages.items()],
             "installed_package_versions": packages,
+            "import_initializers": {name: "a" * 64 for name in module.IMPORT_INITIALIZERS},
             "authenticated_source_comparison": sources}
 
 
@@ -81,14 +82,14 @@ def attempt(tmp_path, packet_root=None):
         "frozen_dependencies": frozen}}), encoding="utf-8")
     packet_root = Path(packet_root or (tmp_path / "packet")).resolve()
     interpreter = str(Path(sys.executable).resolve())
-    worker = str(Path(module.__file__).with_name("check_mace_parity.py").resolve())
+    worker = str(Path(module.__file__).with_name("mace_bootstrap.py").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": commit,
               "wsl_admission_receipt": admission.name,
               "wsl_admission_sha256": sha(admission),
               "python_executable": interpreter,
               "packet_root": str(packet_root), "attempt_root": str(root.resolve()),
-              "command": [interpreter, worker, "--packet-root", str(packet_root),
+              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--packet-root", str(packet_root),
                           "--attempt-root", str(root.resolve())],
               "resource_limits": module.RESOURCE_LIMITS,
               "source_baseline": module.SOURCE_BASELINE,
@@ -359,6 +360,8 @@ def test_extra_live_distribution_refused_before_constructor(tmp_path, monkeypatc
 def test_shadow_mace_import_refused_before_constructor(tmp_path, monkeypatch):
     import mace_loader as module
     actual_validate = module._validate_import_origins
+    monkeypatch.setattr(sys, "meta_path", [module.importlib.machinery.BuiltinImporter,
+                        module.importlib.machinery.FrozenImporter, module.importlib.machinery.PathFinder])
     root = packet(tmp_path, monkeypatch)
     target = attempt(tmp_path, root)
     launch = json.loads((target / "launch-receipt.json").read_text())
@@ -393,6 +396,8 @@ def test_mace_line_endings_preserve_existing_lfs_mappings():
 def test_same_root_package_redirect_refused_before_constructor(tmp_path, monkeypatch, package):
     import mace_loader as module
     actual_validate = module._validate_import_origins
+    monkeypatch.setattr(sys, "meta_path", [module.importlib.machinery.BuiltinImporter,
+                        module.importlib.machinery.FrozenImporter, module.importlib.machinery.PathFinder])
     root = packet(tmp_path, monkeypatch)
     target = attempt(tmp_path, root)
     launch = json.loads((target / "launch-receipt.json").read_text())
@@ -425,7 +430,7 @@ def test_worker_refuses_shadow_before_dependency_executes(tmp_path, shadow):
     result = subprocess.run([sys.executable, str(worker), "--help"], cwd=tmp_path,
                             env=env, capture_output=True, text=True, timeout=30)
     assert result.returncode != 0
-    assert "import origin differs" in result.stderr
+    assert "mace_bootstrap.py" in result.stderr
     assert not marker.exists()
 
 
@@ -476,3 +481,63 @@ def test_verified_packet_identity_when_available():
     assert result["status"] == "PACKET_VERIFIED"
     assert result["member_count"] == 11
     assert result["model_sha256"] == module.MODEL_SHA256
+
+
+def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path):
+    marker = tmp_path / "executed"
+    payload = f"from pathlib import Path\nPath({str(marker)!r}).touch()\n"
+    (tmp_path / "sitecustomize.py").write_text(payload)
+    (tmp_path / "numpy.py").write_text(payload)
+    (tmp_path / "ase").mkdir()
+    (tmp_path / "ase/__init__.py").write_text(payload)
+    bootstrap = Path(__file__).resolve().parent.parent / "scripts/mace_bootstrap.py"
+    env = dict(os.environ, PYTHONPATH=str(tmp_path), PYTHONUSERBASE=str(tmp_path))
+    for entry in ("supervisor", "worker", "audit"):
+        result = subprocess.run([sys.executable, "-I", "-S", str(bootstrap),
+                                 "--entry", entry, "--help"], cwd=tmp_path,
+                                env=env, text=True, capture_output=True, timeout=30)
+        assert result.returncode == 0, result.stderr
+        assert not marker.exists()
+
+
+def test_custom_meta_finder_refused_without_resolving_constructor(tmp_path, monkeypatch):
+    import mace_loader as module
+    calls = []
+    class SpoofFinder:
+        def find_spec(self, *args):
+            calls.append(args)
+            raise AssertionError("custom finder must never run")
+    monkeypatch.setattr(sys, "meta_path", [SpoofFinder(), *sys.meta_path])
+    with pytest.raises(module.AdmissionError, match="unexpected Python import finder"):
+        module._construct_calculator(tmp_path / "unused.model")
+    assert calls == []
+
+
+def test_direct_loader_checks_ase_before_importing_data(tmp_path, monkeypatch):
+    import mace_loader as module
+    actual_validate = module._validate_import_origins
+    root = packet(tmp_path, monkeypatch)
+    target = attempt(tmp_path, root)
+    launch = json.loads((target / "launch-receipt.json").read_text())
+    admission = json.loads((target / "wsl-admission.json").read_text())
+    live = {"distribution_roots": {name: str(Path(importlib.metadata.distribution(name).locate_file("")).resolve())
+                                    for name in ("mace-torch", "torch")}}
+    shadow = tmp_path / "shadow"
+    (shadow / "ase").mkdir(parents=True)
+    marker = tmp_path / "executed"
+    (shadow / "ase/__init__.py").write_text(f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
+    (shadow / "ase/data.py").write_text("raise AssertionError('shadow data executed')\n")
+    for name in list(sys.modules):
+        if name == "ase" or name.startswith("ase."):
+            monkeypatch.delitem(sys.modules, name)
+    monkeypatch.syspath_prepend(str(shadow))
+    monkeypatch.setattr(sys, "meta_path", [module.importlib.machinery.BuiltinImporter,
+                        module.importlib.machinery.FrozenImporter, module.importlib.machinery.PathFinder])
+    monkeypatch.setattr(module, "_validate_import_origins", actual_validate)
+    monkeypatch.setattr(module, "_approved_launch", lambda *args: (launch, admission, live))
+    calls = []
+    with pytest.raises(module.AdmissionError, match="import origin differs"):
+        module._load_admitted_arm(root, target, constructor=lambda p: calls.append(p),
+                                  expected_species=("H",) * 21)
+    assert not marker.exists()
+    assert calls == []

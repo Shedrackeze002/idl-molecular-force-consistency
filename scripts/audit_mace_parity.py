@@ -6,6 +6,9 @@ import hashlib
 import json
 from pathlib import Path
 
+import sys
+if __name__ == "__main__" and (not sys.flags.isolated or not sys.flags.no_site):
+    raise SystemExit("use python -I -S scripts/mace_bootstrap.py --entry audit")
 from mace_loader import validate_dependency_imports
 
 validate_dependency_imports(("numpy", "ase.io"))
@@ -85,6 +88,8 @@ def _validated_admission_chain(packet_root: Path, attempt_root: Path,
     except RuntimeError as exc:
         raise ValueError(f"saved WSL approval identity is invalid: {exc}") from exc
     live = admission.get("live_identity_comparison", {})
+    if live.get("import_initializers") != approved["import_initializers"]:
+        raise ValueError("recorded MACE initializer pins differ from approval")
     if live.get("platform") != approved["platform"] or live.get("packages") != approved["packages"]:
         raise ValueError("recorded runtime/package comparison differs from approval")
     recorded_sources = live.get("sources")

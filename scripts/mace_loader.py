@@ -36,6 +36,7 @@ REQUIRED_SOURCES = {
     "mace.calculators.mace": ("mace-torch", "mace/calculators/mace.py"),
 }
 REQUIRED_IMPLEMENTATION_FILES = {
+    "scripts/mace_bootstrap.py",
     "scripts/mace_loader.py", "scripts/check_mace_parity.py",
     "scripts/supervise_mace_parity.py", "scripts/audit_mace_parity.py",
     "docs/run-mace-parity.md", "tests/test_mace_loader.py",
@@ -205,7 +206,12 @@ def _approved_identity_inventory(admission: dict[str, Any]) -> dict[str, Any]:
         source_map[name] = item
     if set(source_map) != set(REQUIRED_SOURCES):
         raise AdmissionError("approved source inventory is incomplete")
-    return {"platform": required_platform, "packages": packages, "sources": source_map}
+    initializers = admission.get("import_initializers")
+    if (not isinstance(initializers, dict) or set(initializers) != set(IMPORT_INITIALIZERS)
+            or any(not _hex_digest(value) for value in initializers.values())):
+        raise AdmissionError("approved MACE initializer pins are missing or malformed")
+    return {"platform": required_platform, "packages": packages, "sources": source_map,
+            "import_initializers": dict(initializers)}
 
 
 def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
@@ -215,7 +221,8 @@ def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
     attempt = Path(attempt_root).resolve()
     packet = Path(packet_root).resolve()
     interpreter = launch.get("python_executable")
-    expected_command = [interpreter, str(Path(__file__).with_name("check_mace_parity.py").resolve()),
+    expected_command = [interpreter, "-I", "-S",
+                        str(Path(__file__).with_name("mace_bootstrap.py").resolve()), "--entry", "worker",
                         "--packet-root", str(packet), "--attempt-root", str(attempt)]
     if (not isinstance(interpreter, str) or not Path(interpreter).is_absolute()
             or launch.get("command") != expected_command
@@ -299,7 +306,15 @@ def _live_admission_check(admission: dict[str, Any]) -> dict[str, Any]:
         if not _hex_digest(initializers[relative]) or _sha256(path) != initializers[relative]:
             raise AdmissionError(f"MACE import initializer differs from approval: {relative}")
     return {"platform": actual_platform, "packages": checked_packages, "sources": checked_sources,
-            "distribution_roots": distribution_roots}
+            "distribution_roots": distribution_roots,
+            "import_initializers": inventory["import_initializers"]}
+
+
+def _require_standard_finders():
+    allowed = (importlib.machinery.BuiltinImporter, importlib.machinery.FrozenImporter,
+               importlib.machinery.PathFinder)
+    if any(finder not in allowed for finder in sys.meta_path):
+        raise AdmissionError("unexpected Python import finder before construction")
 
 
 def validate_dependency_imports(names: tuple[str, ...]) -> None:
@@ -334,6 +349,7 @@ def validate_dependency_imports(names: tuple[str, ...]) -> None:
 
 def _validate_import_origins(live: dict[str, Any]) -> None:
     """Refuse modules Python would import outside the approved distributions."""
+    _require_standard_finders()
     roots = live.get("distribution_roots")
     if not isinstance(roots, dict):
         raise AdmissionError("live admission lacks approved import roots")
@@ -428,6 +444,7 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
 
 
 def _construct_calculator(snapshot: Path):
+    _require_standard_finders()
     validate_dependency_imports(("mace.calculators.mace", "torch", "numpy", "ase.io"))
     import torch
     import mace
@@ -450,6 +467,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                        expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
     packet = verify_packet(packet_root)
     launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
+    _validate_import_origins(live)
     species = launch.get("species")
     from ase.data import atomic_numbers
     if (not isinstance(species, list) or len(species) != 21
