@@ -531,6 +531,39 @@ def test_bootstrap_project_modules_win_over_loose_site_modules(tmp_path, shadow_
         assert not marker.exists()
 
 
+@pytest.mark.parametrize("dependency", ["e3nn", "numpy", "ase", "torch", "scipy"])
+def test_bootstrap_never_searches_project_directories_for_dependencies(tmp_path, dependency):
+    venv = tmp_path / "venv"
+    subprocess.run([sys.executable, "-m", "venv", "--without-pip", str(venv)],
+                   check=True, capture_output=True, timeout=60)
+    python = venv / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+    packages = (venv / "Lib/site-packages" if os.name == "nt" else
+                venv / f"lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
+    project = tmp_path / "project"
+    scripts = project / "scripts"
+    scripts.mkdir(parents=True)
+    bootstrap = scripts / "mace_bootstrap.py"
+    shutil.copyfile(Path(__file__).resolve().parent.parent / "scripts/mace_bootstrap.py", bootstrap)
+    marker = tmp_path / "project-shadow-executed"
+    payload = f"from pathlib import Path\nPath({str(marker)!r}).touch()\n"
+    for directory in (project, scripts, project / "src"):
+        directory.mkdir(exist_ok=True)
+        (directory / f"{dependency}.py").write_text(payload)
+    installed = packages / f"{dependency}.py"
+    installed.write_text("INSTALLED = True\n")
+    probe = (f"import {dependency} as selected\nfrom pathlib import Path\n"
+             f"assert Path(selected.__file__).resolve() == Path({str(installed)!r}).resolve()\n"
+             "assert selected.INSTALLED\n")
+    for name in ("supervise_mace_parity.py", "check_mace_parity.py", "audit_mace_parity.py"):
+        (scripts / name).write_text(probe)
+    for entry in ("supervisor", "worker", "audit"):
+        result = subprocess.run([str(python), "-I", "-S", str(bootstrap), "--entry", entry],
+                                cwd=project, env=dict(os.environ, PYTHONPATH=str(project)),
+                                text=True, capture_output=True, timeout=30)
+        assert result.returncode == 0, result.stderr
+        assert not marker.exists()
+
+
 def test_custom_meta_finder_refused_without_resolving_constructor(tmp_path, monkeypatch):
     import mace_loader as module
     calls = []

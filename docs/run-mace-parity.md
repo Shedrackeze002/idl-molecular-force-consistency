@@ -75,8 +75,10 @@ force components.
 Production uses a dedicated virtual environment and the isolated bootstrap for
 all three entry points. `-I -S` ignores PYTHONPATH, user sites, sitecustomize,
 usercustomize and executable .pth hooks. The bootstrap explicitly adds only the
-reviewed project paths before the selected environment's site-packages. Dependency
-origin checks still refuse project-local NumPy, ASE, Torch or MACE shadows. Synthetic pytest
+a restricted mapping for the exact loader, bridge, worker and evaluation adapter
+modules before the selected environment's site-packages. Project directories are
+never added as general import paths, so local e3nn or other dependency files
+cannot override installed packages. Dependency origin checks still apply. Synthetic pytest
 commands above exercise library interfaces and do not authorize a production run.
 
 The supervisor uses one fresh directory, a shared 1,800-second cap, 256 MiB

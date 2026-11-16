@@ -1,7 +1,29 @@
 """Isolated, site-hook-free entry point for production parity commands."""
 from pathlib import Path
+from importlib.machinery import ModuleSpec
+from importlib.util import spec_from_file_location
 import runpy
 import sys
+
+
+class ReviewedProjectModules:
+    """A path-entry finder exposing only named project files, never a directory."""
+
+    def __init__(self, scripts, entry):
+        self.entry = entry
+        self.files = {name: scripts / f"{name}.py" for name in (
+            "mace_loader", "mace_reference_adapter", "check_mace_parity")}
+        self.files["evaluation.adapter"] = scripts.parent / "evaluation/adapter.py"
+
+    def find_spec(self, fullname, target=None):
+        if fullname == "evaluation":
+            # The bridge needs only the pinned adapter. Do not execute an
+            # unpinned initializer or expose other evaluation directory files.
+            spec = ModuleSpec(fullname, loader=None, is_package=True)
+            spec.submodule_search_locations = [self.entry]
+            return spec
+        path = self.files.get(fullname)
+        return spec_from_file_location(fullname, path) if path is not None else None
 
 
 def main():
@@ -21,9 +43,12 @@ def main():
                 venv / f"lib/python{sys.version_info.major}.{sys.version_info.minor}/site-packages")
     if not (venv / "pyvenv.cfg").is_file() or not packages.is_dir():
         raise SystemExit("a dedicated virtual environment with site-packages is required")
-    # Project modules must win over loose files in site-packages. Dependency
-    # imports are separately checked against distribution origins before use.
-    sys.path.extend([str(scripts), str(scripts.parent), str(scripts.parent / "src"), str(packages)])
+    # PathFinder can resolve the exact project names above, but cannot search
+    # scripts/root/src for e3nn, scipy, numpy or any other dependency.
+    project_entry = str(scripts / ".reviewed-module-map")
+    finder = ReviewedProjectModules(scripts, project_entry)
+    sys.path_importer_cache[project_entry] = finder
+    sys.path.extend([project_entry, str(packages)])
     target = scripts / entries[sys.argv[2]]
     sys.argv = [str(target), *sys.argv[3:]]
     runpy.run_path(str(target), run_name="__main__")
