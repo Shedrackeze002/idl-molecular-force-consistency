@@ -37,13 +37,13 @@
       "bytes": 1463,
       "sha256": "fa7557bea6bbda59d5800d4ef3e854b5bc345094760ccaa1f421f61c7678e766"
     },
-    "implementation_commit": "bfe1ca69893f747051b1677e51ede8ed18974b82",
+    "implementation_commit": "0b1556762a7788551dfa92fed7cad8e9f1b66124",
     "implementation_files": {
       "scripts/mace_loader.py": {
         "path": "scripts/mace_loader.py",
-        "bytes": 23162,
-        "sha256": "ec9f4ca52879564496df9d8f34e8128f4723fc8c0472a40c5c2e224db730ad66",
-        "git_blob": "96cc85e6ed1c892fea6e3a01ea4be48f7a4da4c5"
+        "bytes": 25057,
+        "sha256": "3d5931f0ad405046e412fe2cdead75e171f8e56aaf1d842186c14bee11c295b0",
+        "git_blob": "fb4b58c4f66ffe06093385bf5a0de2894026a74c"
       },
       "scripts/check_mace_parity.py": {
         "path": "scripts/check_mace_parity.py",
@@ -71,9 +71,9 @@
       },
       "tests/test_mace_loader.py": {
         "path": "tests/test_mace_loader.py",
-        "bytes": 18988,
-        "sha256": "64b8d0004a8081263644228a8b98013001e90efe57a4f3ee9966786d1bbec07d",
-        "git_blob": "07906832c8b55dd98783be05b680c9588c124dde"
+        "bytes": 20889,
+        "sha256": "f7cbb149a78711aac7225c4f3617e7ebec1f75ba25d3638f125dd02a68c968e7",
+        "git_blob": "cc5de6a68933668952a54932060f9d99cc914012"
       },
       "tests/test_mace_parity.py": {
         "path": "tests/test_mace_parity.py",
@@ -89,9 +89,9 @@
       },
       "tests/test_mace_parity_audit.py": {
         "path": "tests/test_mace_parity_audit.py",
-        "bytes": 16473,
-        "sha256": "f998a1a1280324c4a472d910cd3e967304c7819817cb883fdbf25d0ed2b8153c",
-        "git_blob": "9f57bdee094e39ce07c59c0366714d6e1eef8d37"
+        "bytes": 16686,
+        "sha256": "a4c216bfb7877a0f955f5d86b2bf8cd0f7bd147f3171ffbabb8ed2aea00149f5",
+        "git_blob": "98f482cc88e5d50aad6b044b2cf269affa5f3cbb"
       }
     },
     "frozen_dependencies": {
@@ -493,8 +493,8 @@
     },
     "review-regression-suite.stdout.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stdout.txt",
-      "bytes": 898,
-      "sha256": "46327818c5c232aeebc7b0138acc505c7a946e3055597f79c9a66018267c5743"
+      "bytes": 908,
+      "sha256": "2709289e7efbc0d4761d084bcef548582e4cec294d6b63b0874003a383c1971a"
     },
     "review-regression-suite.stderr.txt": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.stderr.txt",
@@ -509,7 +509,7 @@
     "review-regression-suite.json": {
       "path": "reports/evidence/2026-10-28/review-regression-suite.json",
       "bytes": 986,
-      "sha256": "66348ef27cd7076e51b9f5cabb071493cd1cc011f01e2e312f574059907522dd"
+      "sha256": "306392299b7c44d9f1ff2ca8df38609fd695db046252461c845f7332d81f9fa3"
     }
   }
 }
