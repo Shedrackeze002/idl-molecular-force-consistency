@@ -1,0 +1,216 @@
+"""Provision a reviewed copy OUTSIDE the checkout; run with Python -I -S.
+
+The coordinator separately pins this file and the external policy SHA-256.
+No project imports occur here. Verified commit bytes are staged into a private
+execution checkout before any project entry point is started.
+"""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+import zlib
+
+IMPLEMENTATION_FILES = (
+    "scripts/mace_bootstrap.py", "scripts/mace_loader.py", "scripts/check_mace_parity.py",
+    "scripts/supervise_mace_parity.py", "scripts/audit_mace_parity.py",
+    "trust/mace_trusted_launcher.py", "tests/test_mace_trusted_launcher.py",
+    "docs/run-mace-parity.md", "tests/test_mace_loader.py", "tests/test_mace_parity.py",
+    "tests/test_mace_parity_supervisor.py", "tests/test_mace_parity_audit.py",
+)
+FROZEN_FILES = ("scripts/mace_reference_adapter.py", "evaluation/adapter.py")
+APPROVED = ("APPROVED", "ACCEPTED")
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def absolute(value):
+    if not isinstance(value, str) or not Path(value).is_absolute():
+        raise ValueError("policy paths must be absolute")
+    return Path(value).resolve()
+
+
+def outside(path, checkout):
+    if path == checkout or checkout in path.parents:
+        raise ValueError("trusted launcher, policy, receipts and execution root must be outside the mutable checkout")
+
+
+def git(checkout, *args):
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    env.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")
+    return subprocess.check_output(
+        ["git", "--no-replace-objects", "-c", "core.hooksPath=" + os.devnull,
+         "-C", str(checkout), *args], env=env, stderr=subprocess.PIPE, timeout=60)
+
+
+def pinned_bytes(path, sha256):
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("trusted input must be a regular non-symlink file")
+    raw = path.read_bytes()
+    if digest(raw) != sha256:
+        raise ValueError("external policy/receipt SHA-256 mismatch")
+    return raw
+
+
+def pinned_json(path, sha256):
+    return json.loads(pinned_bytes(path, sha256))
+
+
+def verify_sources(checkout, commit):
+    if git(checkout, "rev-parse", "HEAD").decode().strip() != commit:
+        raise ValueError("checkout HEAD differs from externally approved commit")
+    # Resolve a commit object, refusing tags, replacement objects and path labels.
+    if git(checkout, "cat-file", "-t", commit).strip() != b"commit":
+        raise ValueError("approval does not pin an immutable commit")
+    verified = {}
+    for name in (*IMPLEMENTATION_FILES, *FROZEN_FILES):
+        path = checkout / name
+        if path.is_symlink() or not path.is_file() or checkout not in path.resolve().parents:
+            raise ValueError("missing, symlinked or escaping source: " + name)
+        expected = git(checkout, "cat-file", "blob", commit + ":" + name)
+        if path.read_bytes() != expected:
+            raise ValueError("raw source differs before project startup: " + name)
+        verified[name] = expected
+    return verified
+
+
+def stage_git_objects(source, execution, commit, baseline):
+    """Copy only required raw Git objects; never run upload-pack or source hooks."""
+    git(execution, "-c", "init.templateDir=", "init", "--quiet")
+    objects = {}
+    def capture(kind, oid):
+        raw = git(source, "cat-file", kind, oid)
+        encoded = kind.encode() + b" " + str(len(raw)).encode() + b"\0" + raw
+        if hashlib.sha1(encoded).hexdigest() != oid:
+            raise ValueError("Git object content differs from immutable object ID")
+        objects[oid] = encoded
+    for revision, names in ((commit, (*IMPLEMENTATION_FILES, *FROZEN_FILES)),
+                            (baseline, FROZEN_FILES)):
+        capture("commit", revision)
+        tree = git(source, "rev-parse", revision + "^{tree}").decode().strip()
+        capture("tree", tree)
+        for name in names:
+            parts = Path(name).parts
+            for index in range(1, len(parts)):
+                relative = "/".join(parts[:index])
+                oid = git(source, "rev-parse", revision + ":" + relative).decode().strip()
+                capture("tree", oid)
+            oid = git(source, "rev-parse", revision + ":" + name).decode().strip()
+            capture("blob", oid)
+    for oid, raw in objects.items():
+        path = execution / ".git/objects" / oid[:2] / oid[2:]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(zlib.compress(raw))
+    (execution / ".git/HEAD").write_text(commit + "\n")
+
+
+def prepare(policy_path, policy_sha256, entry):
+    policy = pinned_json(policy_path, policy_sha256)
+    if policy.get("schema") != 1 or policy.get("status") not in APPROVED:
+        raise ValueError("external launch policy is not approved")
+    checkout = absolute(policy.get("checkout_root"))
+    execution = absolute(policy.get("execution_root"))
+    for path in (Path(__file__).resolve(), policy_path, execution):
+        outside(path, checkout)
+    if checkout == execution or execution in checkout.parents:
+        raise ValueError("execution root must not contain the checkout")
+    if digest(Path(__file__).read_bytes()) != policy.get("trusted_launcher_sha256"):
+        raise ValueError("external launcher differs from the coordinator-pinned bytes")
+    commit = policy.get("implementation_commit")
+    if (not isinstance(commit, str) or len(commit) != 40
+            or any(c not in "0123456789abcdef" for c in commit)):
+        raise ValueError("external policy requires a full commit SHA")
+    baseline = policy.get("baseline_commit")
+    if (not isinstance(baseline, str) or len(baseline) != 40
+            or any(c not in "0123456789abcdef" for c in baseline)):
+        raise ValueError("external policy requires a full baseline SHA")
+    if policy.get("python_executable") != sys.executable:
+        raise ValueError("interpreter differs from the external approval")
+    launch_path = absolute(policy.get("launch_receipt"))
+    admission_path = absolute(policy.get("wsl_admission_receipt"))
+    for path in (launch_path, admission_path):
+        outside(path, checkout)
+        if execution == path or execution in path.parents:
+            raise ValueError("reviewed receipts must be retained outside the execution root")
+    launch_raw = pinned_bytes(launch_path, policy.get("launch_sha256"))
+    admission_raw = pinned_bytes(admission_path, policy.get("wsl_admission_sha256"))
+    launch = json.loads(launch_raw)
+    admission = json.loads(admission_raw)
+    if (launch.get("status") not in APPROVED or admission.get("status") not in APPROVED
+            or launch.get("implementation_commit") != commit
+            or admission.get("identities", {}).get("implementation_commit") != commit
+            or launch.get("wsl_admission_sha256") != policy.get("wsl_admission_sha256")):
+        raise ValueError("external policy, launch and WSL approval disagree")
+    packet = absolute(launch.get("packet_root"))
+    attempt = absolute(launch.get("attempt_root"))
+    worker = [sys.executable, "-I", "-S", str(execution / "scripts/mace_bootstrap.py"),
+              "--entry", "worker", "--packet-root", str(packet), "--attempt-root", str(attempt)]
+    if launch.get("command") != worker:
+        raise ValueError("launch command is not bound to the trusted execution snapshot")
+    if entry == "supervisor":
+        if execution.exists() or attempt.exists():
+            raise ValueError("execution and attempt roots must both be fresh")
+        sources = verify_sources(checkout, commit)
+        # These files are loaded from captured verified bytes, not copied again
+        # from the mutable checkout. Rechecks cannot introduce a check/use race.
+        execution.mkdir(mode=0o700, parents=True, exist_ok=False)
+        stage_git_objects(checkout, execution, commit, baseline)
+        for name, raw in sources.items():
+            target = execution / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("xb") as stream:
+                stream.write(raw)
+            target.chmod(0o444)
+        verify_sources(execution, commit)
+        receipts = execution / ".trusted-receipts"
+        receipts.mkdir(mode=0o700)
+        for name, raw in (("launch.json", launch_raw), ("admission.json", admission_raw)):
+            path = receipts / name
+            path.write_bytes(raw)
+            path.chmod(0o444)
+    else:
+        verify_sources(execution, commit)
+    launch_path = execution / ".trusted-receipts/launch.json"
+    admission_path = execution / ".trusted-receipts/admission.json"
+    pinned_json(launch_path, policy.get("launch_sha256"))
+    pinned_json(admission_path, policy.get("wsl_admission_sha256"))
+    # The separately provisioned launcher itself must come from this commit.
+    if git(execution, "cat-file", "blob", commit + ":trust/mace_trusted_launcher.py") != Path(__file__).read_bytes():
+        raise ValueError("external launcher is not the reviewed commit version")
+    command = [sys.executable, "-I", "-S", str(execution / "scripts/mace_bootstrap.py"),
+               "--entry", entry, "--packet-root", str(packet)]
+    if entry == "supervisor":
+        command += ["--output", str(attempt), "--launch-receipt", str(launch_path),
+                    "--wsl-admission-receipt", str(admission_path)]
+    else:
+        command += ["--attempt-root", str(attempt)]
+    return command, execution
+
+
+def main():
+    if not sys.flags.isolated or not sys.flags.no_site:
+        raise SystemExit("trusted launcher requires Python -I -S")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--policy", type=Path, required=True)
+    parser.add_argument("--policy-sha256", required=True)
+    parser.add_argument("--entry", choices=("supervisor", "audit"), required=True)
+    args = parser.parse_args()
+    started = time.monotonic()
+    try:
+        command, execution = prepare(args.policy.resolve(), args.policy_sha256, args.entry)
+    except (ValueError, OSError, subprocess.SubprocessError) as exc:
+        print("TRUST_REFUSED: " + str(exc), file=sys.stderr)
+        return 2
+    # Do not inherit Python/Git environment knobs into verified project code.
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "GIT_"))}
+    env["MACE_TRUST_STARTED"] = str(started)
+    return subprocess.call(command, cwd=execution, env=env)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

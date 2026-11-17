@@ -36,6 +36,7 @@ REQUIRED_SOURCES = {
     "mace.calculators.mace": ("mace-torch", "mace/calculators/mace.py"),
 }
 REQUIRED_IMPLEMENTATION_FILES = {
+    "trust/mace_trusted_launcher.py", "tests/test_mace_trusted_launcher.py",
     "scripts/mace_bootstrap.py",
     "scripts/mace_loader.py", "scripts/check_mace_parity.py",
     "scripts/supervise_mace_parity.py", "scripts/audit_mace_parity.py",

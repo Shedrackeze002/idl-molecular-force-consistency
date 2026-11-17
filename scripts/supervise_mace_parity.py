@@ -63,7 +63,8 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               command: list[str] | None = None,
               launch_receipt: Path | None = None,
               wsl_admission_receipt: Path | None = None) -> dict:
-    started = time.monotonic()
+    started = (float(os.environ.get("MACE_TRUST_STARTED", time.monotonic()))
+               if command is None else time.monotonic())
     output = Path(output)
     if output.exists():
         raise FileExistsError(output)
