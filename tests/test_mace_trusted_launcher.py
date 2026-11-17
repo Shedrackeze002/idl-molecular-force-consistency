@@ -153,3 +153,21 @@ def test_startup_hook_does_not_execute_before_trust_gate(boundary, tmp_path, mon
     result = run(boundary, cwd=tmp_path)
     assert result.returncode == 2
     assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("relative", ["scripts/mace_bootstrap.py", "scripts/check_mace_parity.py"])
+def test_audit_rejects_tampered_execution_snapshot_before_startup(boundary, relative):
+    assert run(boundary).returncode == 0
+    boundary["marker"].unlink()
+    path = boundary["execution"] / relative
+    path.chmod(0o644)
+    path.write_text("from pathlib import Path\n" + f"Path({str(boundary['marker'])!r}).touch()\n")
+    result = run(boundary, entry="audit")
+    assert result.returncode == 2
+    assert not boundary["marker"].exists()
+
+
+def test_external_and_worker_source_inventory_cannot_drift():
+    import mace_loader
+    assert set(trusted.IMPLEMENTATION_FILES) == mace_loader.REQUIRED_IMPLEMENTATION_FILES
+    assert set(trusted.FROZEN_FILES) == set(mace_loader.FROZEN_DEPENDENCY_BLOBS)
