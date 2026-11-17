@@ -222,9 +222,13 @@ def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
     attempt = Path(attempt_root).resolve()
     packet = Path(packet_root).resolve()
     interpreter = launch.get("python_executable")
+    trusted_launcher = launch.get("trusted_launcher")
+    trusted_policy = launch.get("trusted_policy")
+    if (not isinstance(trusted_launcher, str) or not Path(trusted_launcher).is_absolute()
+            or not isinstance(trusted_policy, str) or not Path(trusted_policy).is_absolute()):
+        raise AdmissionError("launch does not pin external launcher and policy paths")
     expected_command = [interpreter, "-I", "-S",
-                        str(Path(__file__).with_name("mace_bootstrap.py").resolve()), "--entry", "worker",
-                        "--packet-root", str(packet), "--attempt-root", str(attempt)]
+                        trusted_launcher, "--entry", "worker", "--policy", trusted_policy]
     if (not isinstance(interpreter, str) or not Path(interpreter).is_absolute()
             or launch.get("command") != expected_command
             or launch.get("packet_root") != str(packet)

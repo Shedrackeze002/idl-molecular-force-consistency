@@ -41,8 +41,9 @@ def boundary(tmp_path):
     # Exercise bootstrap -> supervisor -> worker, with each entry observable.
     (root / "scripts/mace_bootstrap.py").write_text(
         "from pathlib import Path\nimport runpy\n"
-        f"Path({str(marker)!r}).write_text('bootstrap')\n"
-        "runpy.run_path(str(Path(__file__).with_name('supervise_mace_parity.py')),run_name='__main__')\n")
+        "def main():\n"
+        f"    Path({str(marker)!r}).write_text('bootstrap')\n"
+        "    runpy.run_path(str(Path(__file__).with_name('supervise_mace_parity.py')),run_name='__main__')\n")
     (root / "scripts/supervise_mace_parity.py").write_text(
         "from pathlib import Path\nimport runpy\n"
         "runpy.run_path(str(Path(__file__).with_name('check_mace_parity.py')),run_name='__main__')\n")
@@ -62,12 +63,13 @@ def boundary(tmp_path):
     admission.write_text(json.dumps({"status": "APPROVED", "identities": {
         "implementation_commit": commit}}))
     launch = control / "launch.json"
+    policy = control / "policy.json"
     launch.write_text(json.dumps({"status": "APPROVED", "implementation_commit": commit,
-        "command": [sys.executable, "-I", "-S", str(execution / "scripts/mace_bootstrap.py"),
-                    "--entry", "worker", "--packet-root", str(packet), "--attempt-root", str(attempt)],
+        "command": [sys.executable, "-I", "-S", str(launcher),
+                    "--entry", "worker", "--policy", str(policy)],
+        "trusted_launcher": str(launcher), "trusted_policy": str(policy),
         "packet_root": str(packet), "attempt_root": str(attempt),
         "wsl_admission_receipt": "admission.json", "wsl_admission_sha256": sha(admission)}))
-    policy = control / "policy.json"
     policy.write_text(json.dumps({"schema": 1, "status": "APPROVED",
         "checkout_root": str(root), "execution_root": str(execution),
         "implementation_commit": commit, "baseline_commit": commit, "python_executable": sys.executable,
@@ -171,3 +173,42 @@ def test_external_and_worker_source_inventory_cannot_drift():
     import mace_loader
     assert set(trusted.IMPLEMENTATION_FILES) == mace_loader.REQUIRED_IMPLEMENTATION_FILES
     assert set(trusted.FROZEN_FILES) == set(mace_loader.FROZEN_DEPENDENCY_BLOBS)
+
+
+@pytest.mark.parametrize("entry,filename", [("worker", "check_mace_parity.py"),
+    ("supervisor", "supervise_mace_parity.py"), ("audit", "audit_mace_parity.py")])
+def test_direct_bootstrap_refuses_before_tampered_entry_executes(tmp_path, entry, filename):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    bootstrap = scripts / "mace_bootstrap.py"
+    shutil.copyfile(SOURCE.parent.parent / "scripts/mace_bootstrap.py", bootstrap)
+    marker = tmp_path / "entry-executed"
+    (scripts / filename).write_text("from pathlib import Path\n" +
+                                    f"Path({str(marker)!r}).touch()\nraise SystemExit(17)\n")
+    result = subprocess.run([sys.executable, "-I", "-S", str(bootstrap),
+                             "--entry", entry, "--help"], cwd=tmp_path,
+                            text=True, capture_output=True, timeout=30)
+    assert result.returncode != 0
+    assert "Direct bootstrap invocation is refused" in result.stderr
+    assert not marker.exists()
+
+
+def test_worker_external_entry_rechecks_snapshot(boundary):
+    assert run(boundary).returncode == 0
+    boundary["marker"].unlink()
+    path = boundary["execution"] / "scripts/check_mace_parity.py"
+    path.chmod(0o644)
+    path.write_text("from pathlib import Path\n" + f"Path({str(boundary['marker'])!r}).touch()\n")
+    result = run(boundary, entry="worker")
+    assert result.returncode == 2
+    assert not boundary["marker"].exists()
+
+
+def test_verified_worker_uses_inherited_independent_policy_digest(boundary):
+    assert run(boundary).returncode == 0
+    boundary["marker"].unlink()
+    command = json.loads((boundary["control"] / "launch.json").read_text())["command"]
+    result = subprocess.run(command, env=dict(os.environ, MACE_TRUST_POLICY_SHA256=boundary["policy_hash"]),
+                            text=True, capture_output=True, timeout=90)
+    assert result.returncode == 0, result.stderr
+    assert boundary["marker"].read_text() == "worker"

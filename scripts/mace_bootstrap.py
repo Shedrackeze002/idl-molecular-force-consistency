@@ -65,4 +65,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Direct bootstrap invocation is refused; use the external trusted launcher")

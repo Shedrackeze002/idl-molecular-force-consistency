@@ -17,6 +17,16 @@ class FakeCalculator(Calculator):
     implemented_properties = ["energy", "forces"]
 
 
+def bootstrap_probe(python, bootstrap, entry, *args):
+    # Library-level probe only. Production dispatch belongs to the external
+    # launcher, which verifies source bytes before invoking this API.
+    dispatch = ("import importlib.util,sys; path=sys.argv.pop(1); "
+                "spec=importlib.util.spec_from_file_location('probe',path); "
+                "module=importlib.util.module_from_spec(spec); "
+                "spec.loader.exec_module(module); module.main()")
+    return [str(python), "-I", "-S", "-c", dispatch, str(bootstrap), "--entry", entry, *args]
+
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -83,15 +93,16 @@ def attempt(tmp_path, packet_root=None):
         "frozen_dependencies": frozen}}), encoding="utf-8")
     packet_root = Path(packet_root or (tmp_path / "packet")).resolve()
     interpreter = str(Path(sys.executable).resolve())
-    worker = str(Path(module.__file__).with_name("mace_bootstrap.py").resolve())
+    worker = str((tmp_path / "trusted-launcher.py").resolve())
+    policy = str((tmp_path / "policy.json").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": commit,
               "wsl_admission_receipt": admission.name,
               "wsl_admission_sha256": sha(admission),
               "python_executable": interpreter,
+              "trusted_launcher": worker, "trusted_policy": policy,
               "packet_root": str(packet_root), "attempt_root": str(root.resolve()),
-              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--packet-root", str(packet_root),
-                          "--attempt-root", str(root.resolve())],
+              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--policy", policy],
               "resource_limits": module.RESOURCE_LIMITS,
               "source_baseline": module.SOURCE_BASELINE,
               "implementation_reviews": [
@@ -494,8 +505,7 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
     bootstrap = Path(__file__).resolve().parent.parent / "scripts/mace_bootstrap.py"
     env = dict(os.environ, PYTHONPATH=str(tmp_path), PYTHONUSERBASE=str(tmp_path))
     for entry in ("supervisor", "worker", "audit"):
-        result = subprocess.run([sys.executable, "-I", "-S", str(bootstrap),
-                                 "--entry", entry, "--help"], cwd=tmp_path,
+        result = subprocess.run(bootstrap_probe(sys.executable, bootstrap, entry, "--help"), cwd=tmp_path,
                                 env=env, text=True, capture_output=True, timeout=30)
         assert result.returncode == 0, result.stderr
         assert not marker.exists()
@@ -531,7 +541,7 @@ def test_bootstrap_project_modules_win_over_loose_site_modules(tmp_path, shadow_
     for name in ("supervise_mace_parity.py", "check_mace_parity.py", "audit_mace_parity.py"):
         (scripts / name).write_text(probe)
     for entry in ("supervisor", "worker", "audit"):
-        result = subprocess.run([str(python), "-I", "-S", str(bootstrap), "--entry", entry],
+        result = subprocess.run(bootstrap_probe(python, bootstrap, entry),
                                 cwd=tmp_path, text=True, capture_output=True, timeout=30)
         assert result.returncode == 0, result.stderr
         assert not marker.exists()
@@ -563,7 +573,7 @@ def test_bootstrap_never_searches_project_directories_for_dependencies(tmp_path,
     for name in ("supervise_mace_parity.py", "check_mace_parity.py", "audit_mace_parity.py"):
         (scripts / name).write_text(probe)
     for entry in ("supervisor", "worker", "audit"):
-        result = subprocess.run([str(python), "-I", "-S", str(bootstrap), "--entry", entry],
+        result = subprocess.run(bootstrap_probe(python, bootstrap, entry),
                                 cwd=project, env=dict(os.environ, PYTHONPATH=str(project)),
                                 text=True, capture_output=True, timeout=30)
         assert result.returncode == 0, result.stderr

@@ -72,13 +72,14 @@ def write_attempt(root, status="PARITY_PASS"):
     interpreter = str(Path(sys.executable).resolve())
     packet_root = root.parent.resolve()
     worker = str(Path(__file__).resolve().parent.parent.joinpath(
-        "scripts/mace_bootstrap.py").resolve())
+        "external-trusted-launcher.py").resolve())
+    policy = str(root.parent.joinpath("policy.json").resolve())
     launch = {"status": "APPROVED", "implementation_commit": "a" * 40,
               "wsl_admission_receipt": "wsl.json", "wsl_admission_sha256": digest(wsl_path),
               "python_executable": interpreter, "packet_root": str(packet_root),
+              "trusted_launcher": worker, "trusted_policy": policy,
               "attempt_root": str(root.resolve()),
-              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--packet-root", str(packet_root),
-                          "--attempt-root", str(root.resolve())],
+              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--policy", policy],
               "resource_limits": RESOURCE_LIMITS, "source_baseline": SOURCE_BASELINE,
               "implementation_reviews": [
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
@@ -303,14 +304,15 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     wsl_path = attempt / "wsl.json"
     wsl_path.write_text(json.dumps(wsl))
     interpreter = str(Path(sys.executable).resolve())
-    worker_path = str(Path(loader.__file__).with_name("mace_bootstrap.py").resolve())
+    worker_path = str((tmp_path / "external-trusted-launcher.py").resolve())
+    policy = str((tmp_path / "policy.json").resolve())
     launch = {"status": "APPROVED", "species": ["H"] * 21,
               "implementation_commit": "a" * 40, "wsl_admission_receipt": "wsl.json",
               "wsl_admission_sha256": digest(wsl_path),
               "python_executable": interpreter, "packet_root": str(packet_root.resolve()),
+              "trusted_launcher": worker_path, "trusted_policy": policy,
               "attempt_root": str(attempt.resolve()),
-              "command": [interpreter, "-I", "-S", worker_path, "--entry", "worker", "--packet-root", str(packet_root.resolve()),
-                          "--attempt-root", str(attempt.resolve())],
+              "command": [interpreter, "-I", "-S", worker_path, "--entry", "worker", "--policy", policy],
               "resource_limits": loader.RESOURCE_LIMITS,
               "source_baseline": loader.SOURCE_BASELINE,
               "implementation_reviews": [

@@ -23,6 +23,12 @@ IMPLEMENTATION_FILES = (
 )
 FROZEN_FILES = ("scripts/mace_reference_adapter.py", "evaluation/adapter.py")
 APPROVED = ("APPROVED", "ACCEPTED")
+BOOTSTRAP_DISPATCH = (
+    "import importlib.util,sys; "
+    "path=sys.argv.pop(1); "
+    "spec=importlib.util.spec_from_file_location('verified_mace_bootstrap',path); "
+    "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); module.main()"
+)
 
 
 def digest(data):
@@ -148,8 +154,11 @@ def prepare(policy_path, policy_sha256, entry):
         raise ValueError("external policy, launch and WSL approval disagree")
     packet = absolute(launch.get("packet_root"))
     attempt = absolute(launch.get("attempt_root"))
-    worker = [sys.executable, "-I", "-S", str(execution / "scripts/mace_bootstrap.py"),
-              "--entry", "worker", "--packet-root", str(packet), "--attempt-root", str(attempt)]
+    worker = [sys.executable, "-I", "-S", str(Path(__file__).resolve()),
+              "--entry", "worker", "--policy", str(policy_path)]
+    if (launch.get("trusted_launcher") != str(Path(__file__).resolve())
+            or launch.get("trusted_policy") != str(policy_path)):
+        raise ValueError("launch does not bind the external launcher and policy")
     if launch.get("command") != worker:
         raise ValueError("launch command is not bound to the trusted execution snapshot")
     if entry == "supervisor":
@@ -182,7 +191,8 @@ def prepare(policy_path, policy_sha256, entry):
     # The separately provisioned launcher itself must come from this commit.
     if git(execution, "cat-file", "blob", commit + ":trust/mace_trusted_launcher.py") != Path(__file__).read_bytes():
         raise ValueError("external launcher is not the reviewed commit version")
-    command = [sys.executable, "-I", "-S", str(execution / "scripts/mace_bootstrap.py"),
+    command = [sys.executable, "-I", "-S", "-c", BOOTSTRAP_DISPATCH,
+               str(execution / "scripts/mace_bootstrap.py"),
                "--entry", entry, "--packet-root", str(packet)]
     if entry == "supervisor":
         command += ["--output", str(attempt), "--launch-receipt", str(launch_path),
@@ -197,18 +207,25 @@ def main():
         raise SystemExit("trusted launcher requires Python -I -S")
     parser = argparse.ArgumentParser()
     parser.add_argument("--policy", type=Path, required=True)
-    parser.add_argument("--policy-sha256", required=True)
-    parser.add_argument("--entry", choices=("supervisor", "audit"), required=True)
+    parser.add_argument("--policy-sha256")
+    parser.add_argument("--entry", choices=("supervisor", "worker", "audit"), required=True)
     args = parser.parse_args()
     started = time.monotonic()
     try:
-        command, execution = prepare(args.policy.resolve(), args.policy_sha256, args.entry)
+        # A verified supervisor passes the independently pinned digest to its
+        # worker. It is intentionally not embedded in the receipt that this
+        # policy itself hashes, which would create a circular digest binding.
+        policy_sha256 = args.policy_sha256 or os.environ.get("MACE_TRUST_POLICY_SHA256")
+        if not policy_sha256:
+            raise ValueError("an independently pinned external policy digest is required")
+        command, execution = prepare(args.policy.resolve(), policy_sha256, args.entry)
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
         print("TRUST_REFUSED: " + str(exc), file=sys.stderr)
         return 2
     # Do not inherit Python/Git environment knobs into verified project code.
     env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "GIT_"))}
     env["MACE_TRUST_STARTED"] = str(started)
+    env["MACE_TRUST_POLICY_SHA256"] = policy_sha256
     return subprocess.call(command, cwd=execution, env=env)
 
 
