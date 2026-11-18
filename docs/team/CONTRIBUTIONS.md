@@ -7,7 +7,7 @@ Created 3 October 2026. Proposed owners are drawn from the submitted proposal. G
 | Shedrack Eze | E3x training and integration | To confirm | To add | To add | To add | Training methods and ablations | Proposed |
 | Olufunke Abodunrin | Shape recovery and paired relaxations | To confirm | To add | To add | To add | Shape-recovery methods/results | Proposed |
 | Emmanuel Aaron | Physical metrics, cost and analysis | To confirm | To add | To add | To add | Consistency/cost/uncertainty | Proposed |
-| Muhammed Idris | MACE and compute reproducibility | To confirm | To add | To add | To add | Reference model and compute | Proposed |
+| Muhammed Idris | MACE and compute reproducibility | imhd866 | [Issue #17](https://github.com/Shedrackeze002/idl-molecular-force-consistency/issues/17), [PR #18](https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/18) | [Implementation dd2f363](https://github.com/Shedrackeze002/idl-molecular-force-consistency/commit/dd2f3637c440e7a38364bcd944091d6a8a9a534c), [evidence 4eaeb7b](https://github.com/Shedrackeze002/idl-molecular-force-consistency/commit/4eaeb7b96f330ebdfaf44c78d8baea13b998b140) | Loader, parity worker, bounded supervisor, independent auditor and external trust launcher; latest recorded WSL suite 253 passed / 3 expected skips | [Report draft](../../reports/IDRIS_MACE_REPRODUCTION_DRAFT.md), [handoff](IDRIS_MACE_INTEGRATION_HANDOFF.md), [delivery tracker](IDRIS_MACE_DELIVERY.md) | Implementation submitted; review/WSL admission pending; numerical reproduction not run; integration acceptance pending |
 
 Owners update their own entries through their PRs, adding rows as needed for separate deliverables. Record the actual author, change, verification command/result, evidence path, reviewer, limitations and integration status. Distinguish plans, synthetic fixture checks, verified measured results and incomplete/failed runs. Attribute collaborative work accurately. Record review and writing contributions alongside code, without assuming those alone satisfy the course policy.
 
@@ -32,3 +32,15 @@ Olufunke retains credit for the original evaluator in PR #4 and its fixes; this 
 Shedrack prepared the first substantive five-page report draft, original figures from accepted saved outputs, the numerical-claim source ledger and the MACE reproduction handover. Two independent reviews checked the content, artifact identities and rendered layout. Report writing began earlier than the previously planned 20 October window. This preparation does not credit pending writing or analyses to other members.
 
 All four members have [section review assignments](../../reports/midterm/TEAM_REVIEW.md). Each confirms actual authored contributions and commits substantive edits under their own identity. The draft retains Olufunke's evaluator attribution and labels Emmanuel/Idris's remaining work as assignments, not completed results. Team/content and live submission confirmation remain open.
+
+## 18 November 2026 — Idris delivery preparation
+
+Muhammed Idris (`imhd866`) prepared the separate [delivery draft PR #26](https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/26),
+with the report contribution, integration/runtime-fact handoff, I01–I08 tracker
+and captured analytic bridge check in authored commit
+[`6a09dd5`](https://github.com/Shedrackeze002/idl-molecular-force-consistency/commit/6a09dd518ef06a191382ec116b946ff811f1139f).
+The existing bridge's 11 analytic tests passed. Shared bridge and original model
+training/scoring remain credited to Shedrack; numerical reproduction has not run,
+and WSL admission, launch approval, saved-result reviews and Olufunke's actual
+integration acceptance remain pending. This is documented implementation/writing
+progress rather than completed numerical reproduction or course-policy acceptance.
