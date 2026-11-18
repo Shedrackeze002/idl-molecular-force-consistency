@@ -4,6 +4,11 @@
 integration deliverables independently of loader review. It does not authorize
 numerical execution or mark the full assignment complete.
 
+Separate delivery draft: [PR #26](https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/26),
+based on the loader branch so its changes can be reviewed independently.
+Initial authored delivery commit:
+[`6a09dd5`](https://github.com/Shedrackeze002/idl-molecular-force-consistency/commit/6a09dd518ef06a191382ec116b946ff811f1139f).
+
 ## What is deliverable now
 
 - [Report contribution](../../reports/IDRIS_MACE_REPRODUCTION_DRAFT.md): methods,
