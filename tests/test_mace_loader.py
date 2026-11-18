@@ -20,10 +20,14 @@ class FakeCalculator(Calculator):
 def bootstrap_probe(python, bootstrap, entry, *args):
     # Library-level probe only. Production dispatch belongs to the external
     # launcher, which verifies source bytes before invoking this API.
-    dispatch = ("import importlib.util,sys; path=sys.argv.pop(1); "
+    dispatch = ("import importlib.util,sys,runpy; path=sys.argv.pop(1); "
                 "spec=importlib.util.spec_from_file_location('probe',path); "
                 "module=importlib.util.module_from_spec(spec); "
-                "spec.loader.exec_module(module); module.main()")
+                "spec.loader.exec_module(module); module.configure_imports(); "
+                "from pathlib import Path; entry=sys.argv[2]; "
+                "target=Path(path).with_name({'worker':'check_mace_parity.py',"
+                "'supervisor':'supervise_mace_parity.py','audit':'audit_mace_parity.py'}[entry]); "
+                "sys.argv=[str(target),*sys.argv[3:]]; runpy.run_path(str(target),run_name='__main__')")
     return [str(python), "-I", "-S", "-c", dispatch, str(bootstrap), "--entry", entry, *args]
 
 

@@ -38,12 +38,8 @@ def boundary(tmp_path):
         path.write_text("# synthetic reviewed source\n")
     shutil.copyfile(SOURCE, root / "trust/mace_trusted_launcher.py")
     marker = tmp_path / "project-executed"
-    # Exercise bootstrap -> supervisor -> worker, with each entry observable.
-    (root / "scripts/mace_bootstrap.py").write_text(
-        "from pathlib import Path\nimport runpy\n"
-        "def main():\n"
-        f"    Path({str(marker)!r}).write_text('bootstrap')\n"
-        "    runpy.run_path(str(Path(__file__).with_name('supervise_mace_parity.py')),run_name='__main__')\n")
+    # Use the real configuration-only bootstrap and synthetic project entries.
+    shutil.copyfile(SOURCE.parent.parent / "scripts/mace_bootstrap.py", root / "scripts/mace_bootstrap.py")
     (root / "scripts/supervise_mace_parity.py").write_text(
         "from pathlib import Path\nimport runpy\n"
         "runpy.run_path(str(Path(__file__).with_name('check_mace_parity.py')),run_name='__main__')\n")
@@ -212,3 +208,26 @@ def test_verified_worker_uses_inherited_independent_policy_digest(boundary):
                             text=True, capture_output=True, timeout=90)
     assert result.returncode == 0, result.stderr
     assert boundary["marker"].read_text() == "worker"
+
+
+@pytest.mark.parametrize("entry,filename", [("worker", "check_mace_parity.py"),
+    ("supervisor", "supervise_mace_parity.py"), ("audit", "audit_mace_parity.py")])
+def test_import_and_call_main_refuses_tampered_entry(tmp_path, entry, filename):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    bootstrap = scripts / "mace_bootstrap.py"
+    shutil.copyfile(SOURCE.parent.parent / "scripts/mace_bootstrap.py", bootstrap)
+    marker = tmp_path / "entry-executed"
+    (scripts / filename).write_text("from pathlib import Path\n" +
+                                    f"Path({str(marker)!r}).touch()\n")
+    # Reproduce the removed BOOTSTRAP_DISPATCH import-and-call route verbatim.
+    dispatch = ("import importlib.util,sys; path=sys.argv.pop(1); "
+                "spec=importlib.util.spec_from_file_location('verified_mace_bootstrap',path); "
+                "module=importlib.util.module_from_spec(spec); "
+                "spec.loader.exec_module(module); module.main()")
+    result = subprocess.run([sys.executable, "-I", "-S", "-c", dispatch, str(bootstrap),
+                             "--entry", entry, "--help"], text=True, capture_output=True,
+                            env=dict(os.environ, MACE_TRUST_POLICY_SHA256="f" * 64), timeout=30)
+    assert result.returncode != 0
+    assert "Bootstrap dispatch API is refused" in result.stderr
+    assert not marker.exists()

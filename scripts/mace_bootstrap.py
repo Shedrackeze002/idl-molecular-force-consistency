@@ -1,8 +1,7 @@
-"""Isolated, site-hook-free entry point for production parity commands."""
+"""Import configuration only; project entry dispatch lives in the external trust root."""
 from pathlib import Path
 from importlib.machinery import ModuleSpec
 from importlib.util import spec_from_file_location
-import runpy
 import sys
 
 
@@ -36,16 +35,10 @@ class ReviewedProjectModules:
             raise ImportError("unexpected project package")
 
 
-def main():
+def configure_imports():
     if not sys.flags.isolated or not sys.flags.no_site:
         raise SystemExit("MACE commands require python -I -S scripts/mace_bootstrap.py")
-    if len(sys.argv) < 3 or sys.argv[1] != "--entry":
-        raise SystemExit("expected --entry supervisor|worker|audit")
     scripts = Path(__file__).resolve().parent
-    entries = {"supervisor": "supervise_mace_parity.py", "worker": "check_mace_parity.py",
-               "audit": "audit_mace_parity.py"}
-    if sys.argv[2] not in entries:
-        raise SystemExit("unknown parity entry point")
     # -S prevents sitecustomize, usercustomize and executable .pth files. Add the
     # selected venv's packages explicitly; never call site.main()/addsitedir().
     venv = Path(sys.executable).absolute().parent.parent
@@ -59,9 +52,10 @@ def main():
     finder = ReviewedProjectModules(scripts, project_entry)
     sys.path_importer_cache[project_entry] = finder
     sys.path.extend([project_entry, str(packages)])
-    target = scripts / entries[sys.argv[2]]
-    sys.argv = [str(target), *sys.argv[3:]]
-    runpy.run_path(str(target), run_name="__main__")
+
+
+def main():
+    raise SystemExit("Bootstrap dispatch API is refused; use the external trusted launcher")
 
 
 if __name__ == "__main__":

@@ -61,8 +61,12 @@ The supported production entry point is a coordinator-provisioned copy of
 `trust/mace_trusted_launcher.py` OUTSIDE the mutable checkout. Executing the
 working-tree bootstrap directly is not an authorized production launch.
 The bootstrap refuses direct script execution for every entry, including help.
-Only the verified external launcher loads its dispatch API after checking all
-project bytes. The supervisor also starts its worker through the external
+The bootstrap's importable `main()` refuses too; it has no project-entry
+dispatch API. It only configures the restricted import map. The separately
+provisioned external launcher alone selects an entry and executes its captured,
+verified source bytes after successful policy/source checks. No mutable-checkout
+function can authorize an entry through an environment variable or caller flag.
+The supervisor also starts its worker through the external
 launcher, which rechecks the retained snapshot before dispatch.
 
 An administrator/coordinator must first review the launcher at the approved Git

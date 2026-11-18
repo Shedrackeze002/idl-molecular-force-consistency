@@ -23,12 +23,6 @@ IMPLEMENTATION_FILES = (
 )
 FROZEN_FILES = ("scripts/mace_reference_adapter.py", "evaluation/adapter.py")
 APPROVED = ("APPROVED", "ACCEPTED")
-BOOTSTRAP_DISPATCH = (
-    "import importlib.util,sys; "
-    "path=sys.argv.pop(1); "
-    "spec=importlib.util.spec_from_file_location('verified_mace_bootstrap',path); "
-    "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); module.main()"
-)
 
 
 def digest(data):
@@ -175,7 +169,7 @@ def prepare(policy_path, policy_sha256, entry):
             with target.open("xb") as stream:
                 stream.write(raw)
             target.chmod(0o444)
-        verify_sources(execution, commit)
+        verified_execution = verify_sources(execution, commit)
         receipts = execution / ".trusted-receipts"
         receipts.mkdir(mode=0o700)
         for name, raw in (("launch.json", launch_raw), ("admission.json", admission_raw)):
@@ -183,7 +177,7 @@ def prepare(policy_path, policy_sha256, entry):
             path.write_bytes(raw)
             path.chmod(0o444)
     else:
-        verify_sources(execution, commit)
+        verified_execution = verify_sources(execution, commit)
     launch_path = execution / ".trusted-receipts/launch.json"
     admission_path = execution / ".trusted-receipts/admission.json"
     pinned_json(launch_path, policy.get("launch_sha256"))
@@ -191,15 +185,16 @@ def prepare(policy_path, policy_sha256, entry):
     # The separately provisioned launcher itself must come from this commit.
     if git(execution, "cat-file", "blob", commit + ":trust/mace_trusted_launcher.py") != Path(__file__).read_bytes():
         raise ValueError("external launcher is not the reviewed commit version")
-    command = [sys.executable, "-I", "-S", "-c", BOOTSTRAP_DISPATCH,
-               str(execution / "scripts/mace_bootstrap.py"),
-               "--entry", entry, "--packet-root", str(packet)]
+    entries = {"supervisor": "scripts/supervise_mace_parity.py",
+               "worker": "scripts/check_mace_parity.py", "audit": "scripts/audit_mace_parity.py"}
+    selected = entries[entry]
+    command = [str(execution / selected), "--packet-root", str(packet)]
     if entry == "supervisor":
         command += ["--output", str(attempt), "--launch-receipt", str(launch_path),
                     "--wsl-admission-receipt", str(admission_path)]
     else:
         command += ["--attempt-root", str(attempt)]
-    return command, execution
+    return command, execution, verified_execution, selected
 
 
 def main():
@@ -218,7 +213,7 @@ def main():
         policy_sha256 = args.policy_sha256 or os.environ.get("MACE_TRUST_POLICY_SHA256")
         if not policy_sha256:
             raise ValueError("an independently pinned external policy digest is required")
-        command, execution = prepare(args.policy.resolve(), policy_sha256, args.entry)
+        command, execution, verified, selected = prepare(args.policy.resolve(), policy_sha256, args.entry)
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
         print("TRUST_REFUSED: " + str(exc), file=sys.stderr)
         return 2
@@ -226,7 +221,20 @@ def main():
     env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "GIT_"))}
     env["MACE_TRUST_STARTED"] = str(started)
     env["MACE_TRUST_POLICY_SHA256"] = policy_sha256
-    return subprocess.call(command, cwd=execution, env=env)
+    os.environ.clear()
+    os.environ.update(env)
+    os.chdir(execution)
+    sys.dont_write_bytecode = True
+    # Dispatch exists only in this separately provisioned trust root. Execute
+    # the captured authenticated bytes, never re-read an entry or a pyc file.
+    bootstrap_path = str(execution / "scripts/mace_bootstrap.py")
+    namespace = {"__name__": "verified_mace_bootstrap", "__file__": bootstrap_path}
+    exec(compile(verified["scripts/mace_bootstrap.py"], bootstrap_path, "exec"), namespace)
+    namespace["configure_imports"]()
+    sys.argv = command
+    exec(compile(verified[selected], command[0], "exec"),
+         {"__name__": "__main__", "__file__": command[0]})
+    return 0
 
 
 if __name__ == "__main__":
