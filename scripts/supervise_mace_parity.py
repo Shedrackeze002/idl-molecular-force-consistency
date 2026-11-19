@@ -36,13 +36,17 @@ def _interruption_handlers():
             interrupted = True
             raise SupervisorInterrupted(signum)
 
+    def begin_cleanup():
+        nonlocal interrupted
+        interrupted = True
+
     signals = (signal.SIGINT, signal.SIGTERM)
     if os.name == "posix":
         signals += (signal.SIGHUP,)
     try:
         for signum in signals:
             previous[signum] = signal.signal(signum, interrupt)
-        yield
+        yield begin_cleanup
     finally:
         for signum, handler in previous.items():
             signal.signal(signum, handler)
@@ -111,15 +115,16 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               launch_receipt: Path | None = None,
               wsl_admission_receipt: Path | None = None,
               worker_spawn=None) -> dict:
-    with _interruption_handlers():
+    with _interruption_handlers() as begin_cleanup:
         return _supervise(packet_root, output, timeout=timeout, command=command,
                           launch_receipt=launch_receipt,
-                          wsl_admission_receipt=wsl_admission_receipt, worker_spawn=worker_spawn)
+                          wsl_admission_receipt=wsl_admission_receipt, worker_spawn=worker_spawn,
+                          begin_cleanup=begin_cleanup)
 
 
 def _supervise(packet_root: Path, output: Path, *, timeout: float,
                command: list[str] | None, launch_receipt: Path | None,
-               wsl_admission_receipt: Path | None, worker_spawn) -> dict:
+               wsl_admission_receipt: Path | None, worker_spawn, begin_cleanup) -> dict:
     started = (float(os.environ.get("MACE_TRUST_STARTED", time.monotonic()))
                if command is None else time.monotonic())
     output = Path(output)
@@ -186,11 +191,13 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
                 elif _tree_bytes(output) > OUTPUT_BYTES:
                     reason = "OUTPUT_OVERFLOW"
                 if reason:
+                    begin_cleanup()
                     _terminate_owned_group(process)
                     break
                 time.sleep(0.05)
             if reason is None and _group_alive(process):
                 reason = "CHILD_PROCESS_LEAK"
+                begin_cleanup()
                 _terminate_owned_group(process)
         elapsed = time.monotonic() - started
         exit_code = None if process is None else process.returncode
@@ -237,6 +244,7 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
         cleanup_error = None
         if process is not None:
             try:
+                begin_cleanup()
                 _terminate_owned_group(process)
             except BaseException as cleanup_exc:
                 cleanup_error = str(cleanup_exc)

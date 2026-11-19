@@ -1,5 +1,6 @@
 import json
 import os
+import signal
 import sys
 import time
 
@@ -84,6 +85,35 @@ def test_spawn_failure_is_persisted(tmp_path, monkeypatch):
     result = module.supervise(tmp_path, output, command=command("pass"))
     assert result["status"] == "SPAWN_FAILED"
     assert json.loads((output / "supervisor-status.json").read_text())["error_type"] == "OSError"
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX cleanup interruption regression")
+def test_first_terminal_signal_cannot_abort_exception_cleanup(tmp_path, monkeypatch):
+    cleanup = module._terminate_owned_group
+    children = []
+    previous = signal.getsignal(signal.SIGTERM)
+
+    def interrupted_cleanup(process):
+        children.append(process)
+        os.kill(os.getpid(), signal.SIGTERM)
+        cleanup(process)
+
+    monkeypatch.setattr(module, "_terminate_owned_group", interrupted_cleanup)
+    monkeypatch.setattr(module, "_tree_bytes", lambda *args: (_ for _ in ()).throw(
+        OSError("synthetic monitor failure")))
+    try:
+        result = module.supervise(tmp_path, tmp_path / "exception-cleanup",
+                                  command=command("import time; time.sleep(30)"))
+        assert result["status"] == "CLEANUP_FAILED"
+        assert result["error"] == "synthetic monitor failure"
+        assert "cleanup_error" not in result
+        assert result["exit_code"] is not None
+        assert children and all(child.poll() is not None for child in children)
+        assert signal.getsignal(signal.SIGTERM) == previous
+    finally:
+        for child in children:
+            if child.poll() is None:
+                cleanup(child)
 
 
 def test_receipt_copy_failure_is_persisted(tmp_path):
