@@ -6,7 +6,9 @@ import time
 
 import pytest
 
-import supervise_mace_parity as module
+from mace_test_runtime import supervisor_runtime
+
+module = supervisor_runtime()
 
 
 def command(code):

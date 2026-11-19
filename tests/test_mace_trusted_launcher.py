@@ -48,9 +48,11 @@ def boundary(tmp_path, request):
     for name in ("supervise_mace_parity.py", "mace_loader.py"):
         shutil.copyfile(SOURCE.parent.parent / "scripts" / name, root / "scripts" / name)
     variant = getattr(request, "param", {})
-    supervisor = root / "scripts/supervise_mace_parity.py"
+    runtime = root / "trust/mace_trusted_launcher.py"
     for before, after in variant.get("supervisor_edits", []):
-        supervisor.write_text(supervisor.read_text().replace(before, after))
+        # Runtime moved one lexical level into protected main(). Synthetic
+        # source edits remain pinned by the fixture's immutable Git commit.
+        runtime.write_text(runtime.read_text().replace(before, after.replace("\n", "\n    ")))
     worker_body = (
         "from pathlib import Path\nimport os,json,sys\n"
         f"attempt=Path({str(tmp_path / 'attempt')!r})\n"
@@ -76,7 +78,7 @@ def boundary(tmp_path, request):
     control = tmp_path / "external-trust"
     control.mkdir()
     launcher = control / "mace_trusted_launcher.py"
-    shutil.copyfile(SOURCE, launcher)
+    shutil.copyfile(runtime, launcher)
     execution = tmp_path / "verified-execution"
     packet = tmp_path / "packet"
     attempt = tmp_path / "attempt"
@@ -332,6 +334,96 @@ def test_isolated_import_and_call_main_refuses_before_synthetic_parity(tmp_path,
     assert result.returncode != 0
     assert "Direct checker main() is refused" in result.stderr
     assert not marker.exists()
+
+
+@pytest.mark.parametrize("entry", ["main", "supervise", "_supervise"])
+def test_forged_supervisor_callback_with_unapproved_receipts_never_runs(tmp_path, entry):
+    packet, attempt = tmp_path / "packet", tmp_path / "attempt"
+    launcher, policy = tmp_path / "launcher.py", tmp_path / "policy.json"
+    admission = tmp_path / "wsl.json"
+    admission.write_text(json.dumps({"status": "NOT_APPROVED", "identities": {"implementation_commit": "a"*40}}))
+    launch = tmp_path / "launch.json"
+    launch.write_text(json.dumps({"status": "NOT_APPROVED", "implementation_commit": "a"*40,
+        "python_executable": sys.executable, "trusted_launcher": str(launcher), "trusted_policy": str(policy),
+        "packet_root": str(packet), "attempt_root": str(attempt),
+        "command": [sys.executable,"-I","-S",str(launcher),"--entry","supervisor","--policy",str(policy)],
+        "wsl_admission_receipt": admission.name, "wsl_admission_sha256": "0"*64,
+        "source_baseline": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+        "resource_limits": {"seconds":1800,"attempt_bytes":268435456,"per_log_bytes":16777216,"cleanup_seconds":10},
+        "implementation_reviews": [{"status":"RESOLVED","implementation_commit":"a"*40,
+            "review_id":str(i),"reviewer":"fake-"+str(i),"url":"https://example.test/"+str(i)} for i in (1,2)]}))
+    marker = tmp_path / "forged-callback-ran"
+    probe = f'''
+import importlib.util,sys
+from pathlib import Path
+bootstrap,supervisor,entry=sys.argv[1:4]
+sys.argv=[supervisor,*sys.argv[4:]]
+spec=importlib.util.spec_from_file_location('bootstrap',bootstrap)
+bootstrap_module=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(bootstrap_module)
+bootstrap_module.configure_imports()
+spec=importlib.util.spec_from_file_location('supervisor',supervisor)
+module=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+class FakeProcess:
+    pid=2147483647
+    returncode=0
+    def poll(self): return 0
+    def wait(self,timeout=None): return 0
+def forged(*args,**kwargs):
+    Path({str(marker)!r}).touch()
+    return FakeProcess()
+module.__trusted_worker_spawn__=forged
+if entry=='main':
+    raise SystemExit(module.main())
+getattr(module,entry)(Path({str(packet)!r}),Path({str(attempt)!r}),worker_spawn=forged,
+    launch_receipt=Path({str(launch)!r}),wsl_admission_receipt=Path({str(admission)!r}))
+'''
+    result = subprocess.run([sys.executable,"-I","-S","-c",probe,
+        str(SOURCE.parent.parent/"scripts/mace_bootstrap.py"),
+        str(SOURCE.parent.parent/"scripts/supervise_mace_parity.py"),entry,
+        "--packet-root",str(packet),"--output",str(attempt),"--launch-receipt",str(launch),
+        "--wsl-admission-receipt",str(admission)], capture_output=True,text=True,timeout=30,
+        start_new_session=True)
+    assert result.returncode != 0
+    assert "refused" in result.stderr
+    assert not marker.exists()
+    assert not attempt.exists()
+
+
+def test_direct_internal_loader_refuses_injected_constructor_before_any_model_access(tmp_path):
+    marker = tmp_path / "constructor-invoked"
+    probe = f'''
+import importlib.util,sys,hashlib
+from pathlib import Path
+spec=importlib.util.spec_from_file_location('bootstrap',sys.argv[1])
+bootstrap=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(bootstrap)
+bootstrap.configure_imports()
+import mace_loader as loader
+root=Path({str(tmp_path)!r})
+packet=root/'packet'
+(packet/'model').mkdir(parents=True)
+fake=packet/'model/final_epoch.model'
+fake.write_bytes(b'synthetic non-model bytes')
+loader.MODEL_BYTES=fake.stat().st_size
+loader.MODEL_SHA256=hashlib.sha256(fake.read_bytes()).hexdigest()
+loader.verify_packet=lambda *args: {{'status':'PACKET_VERIFIED'}}
+loader._approved_launch=lambda *args: ({{'species':['H']*21}},{{'status':'APPROVED'}},{{}})
+loader._validate_import_origins=lambda *args: None
+loader.require_supervised_worker=lambda *args: None
+loader._worker_capability=lambda *args: None
+def constructor(*args):
+    Path({str(marker)!r}).touch()
+    raise RuntimeError('injected constructor invoked outside supervisor')
+loader._load_admitted_arm(packet,root/'attempt',constructor=constructor,expected_species=('H',)*21)
+'''
+    result = subprocess.run([sys.executable,"-I","-S","-c",probe,
+        str(SOURCE.parent.parent/"scripts/mace_bootstrap.py")],capture_output=True,text=True,timeout=30)
+    assert result.returncode != 0
+    assert "Direct project loading is refused" in result.stderr
+    assert not marker.exists()
+    assert not (tmp_path/"attempt").exists()
 
 
 @pytest.mark.parametrize("boundary", [{"real_worker": True}], indirect=True)

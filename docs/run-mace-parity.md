@@ -67,9 +67,13 @@ dispatch API. It only configures the restricted import map. The separately
 provisioned external launcher alone selects an entry and executes its captured,
 verified source bytes after successful policy/source checks. No mutable-checkout
 function can authorize an entry through an environment variable or caller flag.
-The verified supervisor receives a single-use in-memory worker handoff from
-the external launcher. After recording RUNNING status and opening both logs,
-it calls that handoff to fork a child in its own process group. The child
+The supervisor loop itself is private to the external launcher's main().
+Project supervisor CLI/main(), supervise() and _supervise() refuse direct entry,
+including under `-I -S` with forged callback globals. After policy and receipt
+authentication, the private loop captures its single-use worker factory in a
+lexical closure; no project module global or callback argument enables it.
+After recording RUNNING status and opening both logs, that factory forks a
+child in its own process group. The child
 rechecks the retained snapshot and receipts before executing worker bytes.
 The handoff cannot be supplied through CLI arguments or environment variables.
 `--entry worker` always refuses before any project code executes, even with an
@@ -85,13 +89,23 @@ After verification and the supervised fork, the protected launcher's private
 child driver loads captured checker bytes as a numerical library. That driver
 alone owns the real MACE constructor and the production arm provider, both
 local closures that are never installed in a project module. It calls the
-internal numerical routine with those explicit providers. The internal helpers
-also accept fake providers for library tests; they grant no launch authority
-and do not expose the production constructor. The private driver checks the
+internal numerical routine with those explicit providers. The production
+loader itself is also a local closure with a fixed real constructor; it has
+no constructor-injection argument. The old importable _load_admitted_arm()
+hook always refuses before packet/snapshot access or callback invocation.
+The private loader checks liveness before packet access and again immediately
+before constructing the calculator. The private driver checks the
 worker PID, live supervisor PID, owned session, approved paths and shared
 deadline before computation/construction and before each prediction record.
 Mutable module state is not used as authorization. Validation/comparison
 functions remain available to the saved-output auditor without model access.
+
+Fake constructors and process factories are confined to tests/mace_test_runtime.py.
+That test-only harness compiles the actual private runtime function ASTs into
+a disposable namespace and supplies fakes there; it does not duplicate the
+runtime implementation. Production never imports the harness and exposes no
+runtime factory for it. The numerical library can still be tested with fake
+arm providers without granting production launch authority.
 
 An administrator/coordinator must first review the launcher at the approved Git
 commit, export its bytes with `git --no-replace-objects cat-file blob
@@ -122,8 +136,9 @@ digest is supplied independently to the initial external invocation and captured
 by the private supervisor handoff; it is not put
 inside the receipt hashed by that same policy, avoiding circular digest bindings.
 The external launcher executes the verified bootstrap's configuration function
-to install the restricted import map, then dispatches captured supervisor or
-auditor bytes itself. The bootstrap never dispatches an entry. All
+to install the restricted import map, then runs its private supervisor loop or
+dispatches captured auditor bytes. The project supervisor never dispatches
+work. The bootstrap never dispatches an entry. All
 packet/attempt paths remain explicit approved absolute paths. The execution root
 and attempt root must be fresh; failed staging is retained and requires a new
 reviewed decision rather than a retry over the same directory.

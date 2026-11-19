@@ -1,4 +1,5 @@
 import json
+from mace_test_runtime import load_arm_with_fake_constructor
 import hashlib
 import importlib.metadata
 import sys
@@ -342,7 +343,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     # Explicit fake provider for the numerical library test; no public launch
     # gate is replaced and the protected real constructor is not reachable.
     result = worker._run_parity(packet_root, attempt, check_liveness=lambda *args: None,
-        load_arm=lambda packet_root, attempt_root, **kwargs: loader._load_admitted_arm(
+        load_arm=lambda packet_root, attempt_root, **kwargs: load_arm_with_fake_constructor(
             packet_root, attempt_root, constructor=lambda snapshot: ZeroCalculator(), **kwargs))
     assert result["status"] == "PARITY_PASS"
     receipt = json.loads((attempt / "admission-receipt.json").read_text())

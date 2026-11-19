@@ -14,3 +14,4 @@ tests/test_mace_loader.py text eol=lf
 tests/test_mace_parity.py text eol=lf
 tests/test_mace_parity_supervisor.py text eol=lf
 tests/test_mace_parity_audit.py text eol=lf
+tests/mace_test_runtime.py text eol=lf

@@ -43,6 +43,7 @@ REQUIRED_IMPLEMENTATION_FILES = {
     "docs/run-mace-parity.md", "tests/test_mace_loader.py",
     "tests/test_mace_parity.py", "tests/test_mace_parity_supervisor.py",
     "tests/test_mace_parity_audit.py",
+    "tests/mace_test_runtime.py",
 }
 FROZEN_DEPENDENCY_BLOBS = {
     "scripts/mace_reference_adapter.py": "f6f720e9767d43a2a3cb92e4dcf20b3dd1dcaf30",
@@ -458,53 +459,9 @@ def _construct_calculator(snapshot: Path):
     raise AdmissionError("Direct project construction is refused; use the external trusted launcher")
 
 
-def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
-                       constructor: Callable[[Path], Any],
-                       expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
-    """Internal loader with a provider from the protected driver or a fake test.
-
-    This helper does not expose the production constructor or authorize a run.
-    """
-    packet = verify_packet(packet_root)
-    launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
-    _validate_import_origins(live)
-    species = launch.get("species")
-    from ase.data import atomic_numbers
-    if (not isinstance(species, list) or len(species) != 21
-            or any(not isinstance(x, str) or atomic_numbers.get(x, 0) <= 0 for x in species)):
-        raise AdmissionError("launch receipt must contain exactly 21 real element symbols")
-    if expected_species is None or tuple(species) != tuple(expected_species):
-        raise AdmissionError("launch species order differs from validated input frames")
-    snapshot = Path(attempt_root) / "private" / "final_epoch.model"
-    snapshot.parent.mkdir(parents=True, exist_ok=False)
-    source = _regular_file(Path(packet_root), MODEL_RELATIVE)
-    with source.open("rb") as incoming, snapshot.open("xb") as outgoing:
-        shutil.copyfileobj(incoming, outgoing)
-        outgoing.flush()
-        os.fsync(outgoing.fileno())
-    before = _sha256(snapshot)
-    if before != MODEL_SHA256 or snapshot.stat().st_size != MODEL_BYTES:
-        raise AdmissionError("copied model snapshot failed identity check")
-    _validate_import_origins(live)
-    calculator = constructor(snapshot.resolve())
-    after = _sha256(snapshot)
-    if after != before:
-        raise AdmissionError("model snapshot changed during construction")
-    from mace_reference_adapter import calculator_arm
-    identity = {"model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES,
-                "snapshot_path": str(snapshot.resolve()), "epoch_index": 2047}
-    arm = calculator_arm(calculator, species, arm_id="mace-runA-final-ema",
-                         checkpoint_identity=identity)
-    receipt = {"status": "ADMITTED", "packet": packet,
-               "model_snapshot": identity, "post_construction_sha256": after,
-               "constructor": {"device": "cpu", "torch_threads": 1,
-                               "default_dtype": "float64", "enable_cueq": False,
-                               "enable_oeq": False, "compile_mode": None},
-               "launch_receipt": launch, "wsl_admission": admission,
-               "live_identity_comparison": live}
-    (Path(attempt_root) / "admission-receipt.json").write_text(
-        json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return arm, receipt
+def _load_admitted_arm(*args, **kwargs):
+    """Retired injection API: constructor fakes exist only in test code."""
+    raise AdmissionError("Direct project loading is refused; use the external trusted launcher")
 
 
 def load_admitted_arm(packet_root: Path, attempt_root: Path,

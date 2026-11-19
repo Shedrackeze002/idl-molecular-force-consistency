@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 from ase.calculators.calculator import Calculator
+from mace_test_runtime import load_arm_with_fake_constructor
 
 
 class FakeCalculator(Calculator):
@@ -126,7 +127,7 @@ def test_rejects_tampered_manifest_before_constructor(tmp_path, monkeypatch):
     (root / "MANIFEST.json").write_text("{}", encoding="utf-8")
     calls = []
     with pytest.raises(module.AdmissionError, match="manifest SHA"):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -137,7 +138,7 @@ def test_rejects_symlink_or_wrong_model_before_constructor(tmp_path, monkeypatch
     (root / module.MODEL_RELATIVE).write_bytes(b"tampered")
     calls = []
     with pytest.raises(module.AdmissionError):
-        module._load_admitted_arm(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, attempt(tmp_path), constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -153,7 +154,7 @@ def test_environment_refusal_precedes_constructor(tmp_path, monkeypatch):
     (target / "launch-receipt.json").write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="not approved"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -163,7 +164,7 @@ def test_constructs_from_verified_snapshot_path(tmp_path, monkeypatch):
     root = packet(tmp_path, monkeypatch)
     target = attempt(tmp_path)
     calls = []
-    arm, receipt = module._load_admitted_arm(
+    arm, receipt = load_arm_with_fake_constructor(
         root, target, constructor=lambda path: calls.append(path) or FakeCalculator(),
         expected_species=("H",) * 21)
     assert calls == [(target / "private/final_epoch.model").resolve()]
@@ -184,7 +185,7 @@ def test_invalid_or_reordered_species_refused_before_constructor(tmp_path, monke
     launch_path.write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="species|element"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -214,7 +215,7 @@ def test_incomplete_implementation_identity_refused_before_constructor(tmp_path,
     launch_path.write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="implementation|commit"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -277,7 +278,7 @@ def test_frozen_dependency_drift_refused_before_constructor(tmp_path, monkeypatc
     monkeypatch.setattr(Path, "read_bytes", changed)
     calls = []
     with pytest.raises(module.AdmissionError, match="frozen bridge/evaluator"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -306,7 +307,7 @@ def test_implementation_drift_with_refreshed_receipt_is_refused_before_construct
     monkeypatch.setattr(Path, "read_bytes", changed)
     calls = []
     with pytest.raises(module.AdmissionError, match="execution source"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -368,7 +369,7 @@ def test_extra_live_distribution_refused_before_constructor(tmp_path, monkeypatc
                         lambda: [*real_distributions, ExtraDistribution()])
     calls = []
     with pytest.raises(module.AdmissionError, match="complete live package inventory"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -396,7 +397,7 @@ def test_shadow_mace_import_refused_before_constructor(tmp_path, monkeypatch):
                         lambda attempt_root, packet_root: (launch, admission, live))
     calls = []
     with pytest.raises(module.AdmissionError, match="import origin differs"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -428,7 +429,7 @@ def test_same_root_package_redirect_refused_before_constructor(tmp_path, monkeyp
     monkeypatch.setattr(module, "_validate_import_origins", actual_validate)
     calls = []
     with pytest.raises(module.AdmissionError, match="package search path"):
-        module._load_admitted_arm(root, target, constructor=lambda p: calls.append(p),
+        load_arm_with_fake_constructor(root, target, constructor=lambda p: calls.append(p),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -461,7 +462,7 @@ def test_duplicate_review_identity_is_refused_before_constructor(tmp_path, monke
     launch_path.write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="not distinct"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -483,7 +484,7 @@ def test_incomplete_launch_binding_refused_before_constructor(tmp_path, monkeypa
     launch_path.write_text(json.dumps(launch))
     calls = []
     with pytest.raises(module.AdmissionError, match="launch"):
-        module._load_admitted_arm(root, target, constructor=lambda path: calls.append(path),
+        load_arm_with_fake_constructor(root, target, constructor=lambda path: calls.append(path),
                                   expected_species=("H",) * 21)
     assert calls == []
 
@@ -625,7 +626,7 @@ def test_direct_loader_checks_ase_before_importing_data(tmp_path, monkeypatch):
     monkeypatch.setattr(module, "_approved_launch", lambda *args: (launch, admission, live))
     calls = []
     with pytest.raises(module.AdmissionError, match="import origin differs"):
-        module._load_admitted_arm(root, target, constructor=lambda p: calls.append(p),
+        load_arm_with_fake_constructor(root, target, constructor=lambda p: calls.append(p),
                                   expected_species=("H",) * 21)
     assert not marker.exists()
     assert calls == []
