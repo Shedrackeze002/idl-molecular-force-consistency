@@ -511,7 +511,11 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
     for entry in ("supervisor", "worker", "audit"):
         result = subprocess.run(bootstrap_probe(sys.executable, bootstrap, entry, "--help"), cwd=tmp_path,
                                 env=env, text=True, capture_output=True, timeout=30)
-        assert result.returncode == 0, result.stderr
+        if entry == "worker":
+            assert result.returncode != 0
+            assert "in-memory capability" in result.stderr
+        else:
+            assert result.returncode == 0, result.stderr
         assert not marker.exists()
 
 

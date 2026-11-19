@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import json
 import os
 import shutil
@@ -15,6 +16,50 @@ WALL_SECONDS = 1800
 CLEANUP_SECONDS = 10
 OUTPUT_BYTES = 256 * 1024 * 1024
 LOG_BYTES = 16 * 1024 * 1024
+
+
+class SupervisorInterrupted(BaseException):
+    def __init__(self, signum):
+        self.signum = signum
+        super().__init__(signal.Signals(signum).name)
+
+
+@contextmanager
+def _interruption_handlers():
+    """Keep handlers installed through cleanup; repeated signals cannot orphan it."""
+    previous = {}
+    interrupted = False
+
+    def interrupt(signum, frame):
+        nonlocal interrupted
+        if not interrupted:
+            interrupted = True
+            raise SupervisorInterrupted(signum)
+
+    signals = (signal.SIGINT, signal.SIGTERM)
+    if os.name == "posix":
+        signals += (signal.SIGHUP,)
+    try:
+        for signum in signals:
+            previous[signum] = signal.signal(signum, interrupt)
+        yield
+    finally:
+        for signum, handler in previous.items():
+            signal.signal(signum, handler)
+
+
+@contextmanager
+def _defer_spawn_signals():
+    """Assign the child to cleanup state before delivering a pending signal."""
+    if os.name == "posix":
+        previous = signal.pthread_sigmask(signal.SIG_BLOCK,
+                                          {signal.SIGINT, signal.SIGTERM, signal.SIGHUP})
+        try:
+            yield
+        finally:
+            signal.pthread_sigmask(signal.SIG_SETMASK, previous)
+    else:
+        yield
 
 
 def _tree_bytes(root: Path) -> int:
@@ -57,6 +102,8 @@ def _terminate_owned_group(process: subprocess.Popen) -> None:
         time.sleep(0.05)
     if process.poll() is None:
         process.wait(timeout=max(0.1, deadline - time.monotonic()))
+    if _group_alive(process):
+        raise RuntimeError("owned worker group remains alive after cleanup deadline")
 
 
 def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
@@ -64,6 +111,15 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               launch_receipt: Path | None = None,
               wsl_admission_receipt: Path | None = None,
               worker_spawn=None) -> dict:
+    with _interruption_handlers():
+        return _supervise(packet_root, output, timeout=timeout, command=command,
+                          launch_receipt=launch_receipt,
+                          wsl_admission_receipt=wsl_admission_receipt, worker_spawn=worker_spawn)
+
+
+def _supervise(packet_root: Path, output: Path, *, timeout: float,
+               command: list[str] | None, launch_receipt: Path | None,
+               wsl_admission_receipt: Path | None, worker_spawn) -> dict:
     started = (float(os.environ.get("MACE_TRUST_STARTED", time.monotonic()))
                if command is None else time.monotonic())
     output = Path(output)
@@ -115,7 +171,8 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
           if reason is None:
             if command is None:
-                process = worker_spawn(stdout, stderr)
+                with _defer_spawn_signals():
+                    process = worker_spawn(stdout, stderr)
             else:
                 process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
                                            creationflags=creationflags, start_new_session=start_new_session)
@@ -135,59 +192,69 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
             if reason is None and _group_alive(process):
                 reason = "CHILD_PROCESS_LEAK"
                 _terminate_owned_group(process)
-    except Exception as exc:
+        elapsed = time.monotonic() - started
+        exit_code = None if process is None else process.returncode
+        if reason:
+            status = reason
+        elif elapsed > timeout:
+            status = "TIMEOUT"
+        elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+            status = "LOG_OVERFLOW"
+        elif exit_code != 0:
+            status = "WORKER_FAILED"
+        elif _tree_bytes(output) > OUTPUT_BYTES:
+            status = "OUTPUT_OVERFLOW"
+        else:
+            status = "WORKER_COMPLETED"
+        receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
+                       stdout_bytes=stdout_path.stat().st_size if stdout_path.exists() else 0,
+                       stderr_bytes=stderr_path.stat().st_size if stderr_path.exists() else 0)
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        final_elapsed = time.monotonic() - started
+        final_bytes = _tree_bytes(output)
+        if final_elapsed > timeout:
+            receipt["status"] = "TIMEOUT"
+        elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
+            receipt["status"] = "LOG_OVERFLOW"
+        elif final_bytes > OUTPUT_BYTES:
+            receipt["status"] = "OUTPUT_OVERFLOW"
+        receipt["elapsed_seconds"] = final_elapsed
+        receipt["output_bytes"] = final_bytes
+        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        receipt["output_bytes"] = _tree_bytes(output)
+        if receipt["output_bytes"] > OUTPUT_BYTES:
+            receipt["status"] = "OUTPUT_OVERFLOW"
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        # The last successful persistence is part of the wall-clock contract.
+        persisted_elapsed = time.monotonic() - started
+        if persisted_elapsed > timeout and receipt["status"] != "TIMEOUT":
+            receipt["status"] = "TIMEOUT"
+            receipt["elapsed_seconds"] = persisted_elapsed
+            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
+        return receipt
+    except BaseException as exc:
+        interrupted = isinstance(exc, (SupervisorInterrupted, KeyboardInterrupt, SystemExit))
+        cleanup_error = None
         if process is not None:
             try:
                 _terminate_owned_group(process)
-            except Exception:
-                pass
-        failure_status = {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED"}.get(stage, "SETUP_FAILED")
+            except BaseException as cleanup_exc:
+                cleanup_error = str(cleanup_exc)
+        failure_status = ("INTERRUPTED" if interrupted else
+                          {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED"}.get(stage, "SETUP_FAILED"))
+        if cleanup_error is not None:
+            failure_status = "CLEANUP_FAILED"
         receipt.update(status=failure_status,
                        failure_stage=stage, error_type=type(exc).__name__, error=str(exc),
                        elapsed_seconds=time.monotonic() - started,
                        exit_code=None if process is None else process.poll())
+        if interrupted:
+            receipt["interrupted"] = True
+            receipt["signal"] = getattr(exc, "signum", None)
+        if cleanup_error is not None:
+            receipt["cleanup_error"] = cleanup_error
         status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
         return receipt
-    elapsed = time.monotonic() - started
-    exit_code = None if process is None else process.returncode
-    if reason:
-        status = reason
-    elif elapsed > timeout:
-        status = "TIMEOUT"
-    elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
-        status = "LOG_OVERFLOW"
-    elif exit_code != 0:
-        status = "WORKER_FAILED"
-    elif _tree_bytes(output) > OUTPUT_BYTES:
-        status = "OUTPUT_OVERFLOW"
-    else:
-        status = "WORKER_COMPLETED"
-    receipt.update(status=status, exit_code=exit_code, elapsed_seconds=elapsed,
-                   stdout_bytes=stdout_path.stat().st_size if stdout_path.exists() else 0,
-                   stderr_bytes=stderr_path.stat().st_size if stderr_path.exists() else 0)
-    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    final_elapsed = time.monotonic() - started
-    final_bytes = _tree_bytes(output)
-    if final_elapsed > timeout:
-        receipt["status"] = "TIMEOUT"
-    elif stdout_path.stat().st_size > LOG_BYTES or stderr_path.stat().st_size > LOG_BYTES:
-        receipt["status"] = "LOG_OVERFLOW"
-    elif final_bytes > OUTPUT_BYTES:
-        receipt["status"] = "OUTPUT_OVERFLOW"
-    receipt["elapsed_seconds"] = final_elapsed
-    receipt["output_bytes"] = final_bytes
-    status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    receipt["output_bytes"] = _tree_bytes(output)
-    if receipt["output_bytes"] > OUTPUT_BYTES:
-        receipt["status"] = "OUTPUT_OVERFLOW"
-        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    # The last successful persistence is part of the wall-clock contract.
-    persisted_elapsed = time.monotonic() - started
-    if persisted_elapsed > timeout and receipt["status"] != "TIMEOUT":
-        receipt["status"] = "TIMEOUT"
-        receipt["elapsed_seconds"] = persisted_elapsed
-        status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-    return receipt
 
 
 def main() -> int:

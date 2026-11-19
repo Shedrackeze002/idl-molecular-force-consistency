@@ -58,6 +58,21 @@ class AdmissionError(RuntimeError):
     """A stable refusal raised before any real model construction."""
 
 
+_worker_capability = None
+
+
+def require_supervised_worker(packet_root=None, attempt_root=None) -> None:
+    """Require the process-bound closure installed by the trusted fork handoff.
+
+    Receipts, interpreter flags and environment values cannot install this
+    authority. The external launcher's private child path installs it only
+    after authenticating the retained implementation and approval bytes.
+    """
+    if _worker_capability is None:
+        raise AdmissionError("worker requires the verified supervisor's in-memory capability")
+    _worker_capability(packet_root, attempt_root)
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -450,6 +465,7 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
 
 def _construct_calculator(snapshot: Path):
     _require_standard_finders()
+    require_supervised_worker()
     validate_dependency_imports(("mace.calculators.mace", "torch", "numpy", "ase.io"))
     import torch
     import mace
@@ -515,6 +531,7 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
 def load_admitted_arm(packet_root: Path, attempt_root: Path,
                       *, expected_species: tuple[str, ...]) -> tuple[dict, dict]:
     """Production entry point; no constructor injection is accepted."""
+    require_supervised_worker(packet_root, attempt_root)
     return _load_admitted_arm(Path(packet_root), Path(attempt_root),
                               constructor=_construct_calculator,
                               expected_species=expected_species)

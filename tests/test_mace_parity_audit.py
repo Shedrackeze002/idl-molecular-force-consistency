@@ -175,11 +175,12 @@ def test_invented_success_flag_is_refused(tmp_path, monkeypatch):
         module.audit_saved_parity(tmp_path, attempt)
 
 
-def test_operationally_invalid_timeout_is_refused(tmp_path, monkeypatch):
+@pytest.mark.parametrize("status", ["TIMEOUT", "INTERRUPTED", "CLEANUP_FAILED"])
+def test_operationally_invalid_supervisor_status_is_refused(tmp_path, monkeypatch, status):
     attempt = tmp_path / "timeout"
     packet = write_attempt(attempt)
     (attempt / "supervisor-status.json").write_text(json.dumps(
-        {"status": "TIMEOUT", "exit_code": -9, "elapsed_seconds": 1801,
+        {"status": status, "exit_code": 0, "elapsed_seconds": 1,
          "timeout_seconds": 1800}))
     monkeypatch.setattr(module, "validate_inputs", lambda root: fixture_inputs())
     monkeypatch.setattr(__import__("mace_loader"), "verify_packet", lambda root: packet)
@@ -339,6 +340,8 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(sys, "meta_path", [loader.importlib.machinery.BuiltinImporter,
                         loader.importlib.machinery.FrozenImporter, loader.importlib.machinery.PathFinder])
     monkeypatch.setattr(worker, "validate_inputs", lambda root: fixture_inputs())
+    # This integration fixture substitutes a fake calculator, never a model.
+    monkeypatch.setattr(loader, "_worker_capability", lambda *args: None)
     result = worker.run_parity(packet_root, attempt)
     assert result["status"] == "PARITY_PASS"
     receipt = json.loads((attempt / "admission-receipt.json").read_text())

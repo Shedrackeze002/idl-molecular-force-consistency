@@ -67,6 +67,8 @@ def test_atomic_npz_preserves_previous_file_on_write_failure(tmp_path, monkeypat
 def test_failed_accessor_attempts_are_counted(tmp_path, monkeypatch):
     import check_mace_parity as module
     import mace_loader
+    # Explicitly scoped fake authority for this fake-constructor library test.
+    monkeypatch.setattr(mace_loader, "_worker_capability", lambda *args: None)
     attempt = tmp_path / "attempt"
     attempt.mkdir()
     inputs = {"record_ids": ["a"], "frames": {"a": {"positions": np.zeros((21, 3)),

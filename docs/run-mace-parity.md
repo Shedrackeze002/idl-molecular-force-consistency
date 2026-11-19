@@ -76,6 +76,16 @@ The handoff cannot be supplied through CLI arguments or environment variables.
 approved policy and a previously staged snapshot. Production requires the
 approved WSL/POSIX runtime; native Windows must use WSL for this step.
 
+The checker also refuses direct invocation under `-I -S`; those flags do not
+authorize computation. Only the trusted fork path installs a private capability
+in the child's verified loader and supplies it to the checker entry. It binds
+the worker PID, live supervisor PID, owned session, approved packet/attempt
+paths and shared deadline. Checker main(), run_parity(), the public loader and
+the real constructor require that capability before computation or model
+access. It is rechecked before each prediction record. Importing validation or
+saved-output comparison functions for the auditor does not grant this authority.
+Receipts, environment values and copied command lines cannot provide it.
+
 An administrator/coordinator must first review the launcher at the approved Git
 commit, export its bytes with `git --no-replace-objects cat-file blob
 <approved-commit>:trust/mace_trusted_launcher.py`, and compare its SHA-256 with
@@ -156,3 +166,12 @@ directory bound and 16 MiB per-log bound. Timeout, overflow, partial output,
 identity refusal and numerical disagreement are retained and never retried or
 relabeled as success. The independent audit reads saved arrays only; it does
 not import or load MACE/Torch.
+
+SIGTERM, Ctrl-C (SIGINT) and SIGHUP interrupt the supervised attempt. The
+supervisor terminates and reaps its entire owned worker group, escalates to
+SIGKILL for TERM-ignoring descendants within the cleanup bound, and retains
+INTERRUPTED status with the signal and exit code. Repeated terminal signals
+cannot interrupt cleanup. Signals are deferred across worker creation until
+the child is assigned to the supervisor's cleanup state; the forked worker
+restores ordinary signal behavior. Handlers are restored when supervision ends.
+An interrupted or cleanup-failed attempt cannot be audited as WORKER_COMPLETED.

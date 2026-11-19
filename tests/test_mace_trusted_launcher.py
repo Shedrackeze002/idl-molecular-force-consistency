@@ -5,8 +5,10 @@ import json
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
+import time
 
 import pytest
 
@@ -54,7 +56,19 @@ def boundary(tmp_path, request):
         "assert (attempt/'stdout.log').exists() and (attempt/'stderr.log').exists()\n"
         "assert os.getsid(0)==os.getpid() and os.getppid()!=os.getpid()\n"
         "assert sys.flags.isolated and sys.flags.no_site\n"
+        "from mace_loader import require_supervised_worker\n"
+        f"require_supervised_worker(Path({str(tmp_path / 'packet')!r}),attempt)\n"
         + variant.get("worker", f"Path({str(marker)!r}).write_text('worker')\n"))
+    if variant.get("real_worker"):
+        worker_source = (SOURCE.parent.parent / "scripts/check_mace_parity.py").read_text()
+        synthetic_parity = ("\ndef run_parity(packet_root,attempt_root):\n"
+                            "    from mace_loader import require_supervised_worker\n"
+                            "    require_supervised_worker(packet_root,attempt_root)\n"
+                            f"    Path({str(marker)!r}).write_text('worker')\n"
+                            "    return {'status':'PARITY_PASS'}\n")
+        worker_source = worker_source.replace('\nif __name__ == "__main__":\n    raise SystemExit(main())',
+                                               synthetic_parity + '\nif __name__ == "__main__":\n    raise SystemExit(main())')
+        (root / "scripts/check_mace_parity.py").write_text(worker_source)
     git(root, "add", ".")
     git(root, "commit", "-qm", "synthetic approved implementation")
     commit = git(root, "rev-parse", "HEAD")
@@ -281,6 +295,183 @@ def test_direct_entry_refusal_points_to_supported_external_launcher(filename, en
     assert "<external-trusted-launcher>" in result.stderr
     assert "--entry " + entry in result.stderr
     assert "mace_bootstrap.py --entry" not in result.stderr
+
+
+@pytest.mark.parametrize("flags", [[], ["-I", "-S"]])
+def test_checker_cli_requires_capability_before_dependency_imports(tmp_path, flags):
+    worker = SOURCE.parent.parent / "scripts/check_mace_parity.py"
+    result = subprocess.run([sys.executable, *flags, str(worker),
+        "--packet-root", str(tmp_path / "packet"), "--attempt-root", str(tmp_path / "attempt")],
+        capture_output=True, text=True, timeout=30)
+    assert result.returncode != 0
+    assert "in-memory capability" in result.stderr
+    assert "ModuleNotFoundError" not in result.stderr
+    assert not (tmp_path / "attempt").exists()
+
+
+def test_isolated_import_and_call_main_refuses_before_synthetic_parity(tmp_path):
+    marker = tmp_path / "unbounded-parity"
+    bootstrap = SOURCE.parent.parent / "scripts/mace_bootstrap.py"
+    probe = ("import importlib.util,sys; from pathlib import Path; "
+             "spec=importlib.util.spec_from_file_location('probe',sys.argv.pop(1)); "
+             "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); "
+             "module.configure_imports(); import check_mace_parity as worker; "
+             f"worker.run_parity=lambda *args: Path({str(marker)!r}).touch(); "
+             "worker.main()")
+    result = subprocess.run([sys.executable, "-I", "-S", "-c", probe, str(bootstrap),
+        "--packet-root", str(tmp_path), "--attempt-root", str(tmp_path / "attempt")],
+        text=True, capture_output=True, timeout=30,
+        env=dict(os.environ, MACE_TRUST_STARTED=str(time.monotonic()), MACE_TRUST_POLICY_SHA256="a" * 64))
+    assert result.returncode != 0
+    assert "in-memory capability" in result.stderr
+    assert not marker.exists()
+
+
+@pytest.mark.parametrize("boundary", [{"real_worker": True}], indirect=True)
+def test_real_checker_main_accepts_only_verified_child_capability(boundary):
+    result = run(boundary)
+    assert result.returncode == 0, result.stderr
+    assert boundary["marker"].read_text() == "worker"
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == "WORKER_COMPLETED"
+
+
+@pytest.mark.parametrize("boundary", [{"worker": "require_supervised_worker(attempt,attempt)\n"}], indirect=True)
+def test_child_capability_refuses_different_approved_paths(boundary):
+    result = run(boundary)
+    assert result.returncode == 2
+    assert not boundary["marker"].exists()
+    assert "does not authorize these paths" in (boundary["attempt"] / "stderr.log").read_text()
+
+
+@pytest.mark.parametrize("boundary", [{"worker":
+    "pid=os.fork()\n"
+    "if pid==0:\n"
+    "    try: require_supervised_worker()\n"
+    "    except ValueError: os._exit(0)\n"
+    "    os._exit(1)\n"
+    "assert os.waitstatus_to_exitcode(os.waitpid(pid,0)[1])==0\n"
+    "(attempt/'fork-capability-refused').touch()\n"}], indirect=True)
+def test_worker_capability_cannot_be_reused_by_another_process(boundary):
+    result = run(boundary)
+    assert result.returncode == 0, result.stderr
+    assert (boundary["attempt"] / "fork-capability-refused").exists()
+
+
+@pytest.mark.parametrize("entry", ["parity", "loader", "constructor"])
+def test_public_execution_apis_refuse_before_model_access(tmp_path, monkeypatch, entry):
+    import check_mace_parity as worker
+    import mace_loader as loader
+    monkeypatch.setattr(loader, "_worker_capability", None)
+    monkeypatch.setattr(loader, "verify_packet", lambda *args: pytest.fail("packet/model access before authority"))
+    with pytest.raises(loader.AdmissionError, match="in-memory capability"):
+        if entry == "parity":
+            worker.run_parity(tmp_path, tmp_path / "attempt")
+        elif entry == "loader":
+            loader.load_admitted_arm(tmp_path, tmp_path / "attempt", expected_species=("H",) * 21)
+        else:
+            # Pytest's own finders are unrelated to this production test.
+            monkeypatch.setattr(loader, "_require_standard_finders", lambda: None)
+            loader._construct_calculator(tmp_path / "unused.model")
+
+
+def wait_for_file(path, process, timeout=15):
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if path.exists():
+            return
+        assert process.poll() is None, process.communicate()
+        time.sleep(.02)
+    pytest.fail("synthetic worker did not reach startup barrier")
+
+
+@pytest.mark.parametrize("boundary", [{"worker":
+    "(attempt/'worker.pid').write_text(str(os.getpid()))\n"
+    "(attempt/'ready').touch()\nimport time; time.sleep(1.5)\n"
+    "(attempt/'escaped-completion').touch()\n"}], indirect=True)
+@pytest.mark.parametrize("signum", [signal.SIGTERM, signal.SIGINT, signal.SIGHUP])
+def test_parent_interruption_reaps_actual_handoff_worker(boundary, signum):
+    process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
+        "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],
+        "--entry", "supervisor"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        wait_for_file(boundary["attempt"] / "ready", process)
+        pid = int((boundary["attempt"] / "worker.pid").read_text())
+        os.kill(process.pid, signum)
+        stdout, stderr = process.communicate(timeout=15)
+        assert process.returncode == 2, (stdout, stderr)
+        status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+        assert status["status"] == "INTERRUPTED"
+        assert status["signal"] == signum
+        assert status["exit_code"] is not None
+        with pytest.raises(ProcessLookupError):
+            os.kill(pid, 0)
+        # Observe beyond the reviewer's delayed marker window.
+        time.sleep(1.6)
+        assert not (boundary["attempt"] / "escaped-completion").exists()
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            process.communicate(timeout=15)
+
+
+@pytest.mark.parametrize("boundary", [{"worker": "import time; time.sleep(30)\n",
+    "supervisor_edits": [("process = worker_spawn(stdout, stderr)",
+        "process = worker_spawn(stdout, stderr)\n"
+        "                    (output/'spawn-owned').write_text(str(process.pid))\n"
+        "                    time.sleep(.3)")]}], indirect=True)
+def test_interruption_during_spawn_waits_for_child_ownership(boundary):
+    process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
+        "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],
+        "--entry", "supervisor"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        barrier = boundary["attempt"] / "spawn-owned"
+        wait_for_file(barrier, process)
+        pid = int(barrier.read_text())
+        process.terminate()
+        stdout, stderr = process.communicate(timeout=15)
+        assert process.returncode == 2, (stdout, stderr)
+        status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+        assert status["status"] == "INTERRUPTED"
+        assert status["signal"] == signal.SIGTERM
+        with pytest.raises(ProcessLookupError):
+            os.kill(pid, 0)
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            process.communicate(timeout=15)
+
+
+@pytest.mark.parametrize("boundary", [{"worker":
+    "import subprocess,time\n"
+    "child_code=\"import signal,time; from pathlib import Path; signal.signal(signal.SIGTERM,signal.SIG_IGN); Path(\"+repr(str(attempt/'child-ready'))+\").touch(); time.sleep(30)\"\n"
+    "child=subprocess.Popen([sys.executable,'-c',child_code])\n"
+    "(attempt/'child.pid').write_text(str(child.pid))\n"
+    "(attempt/'worker.pid').write_text(str(os.getpid()))\n"
+    "while not (attempt/'child-ready').exists(): time.sleep(.01)\n"
+    "(attempt/'ready').touch()\ntime.sleep(30)\n"}], indirect=True)
+def test_repeated_parent_signals_still_kill_term_ignoring_descendant(boundary):
+    process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
+        "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],
+        "--entry", "supervisor"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        wait_for_file(boundary["attempt"] / "ready", process)
+        pids = [int((boundary["attempt"] / name).read_text()) for name in ("worker.pid", "child.pid")]
+        process.terminate()
+        time.sleep(.1)
+        os.kill(process.pid, signal.SIGINT)
+        stdout, stderr = process.communicate(timeout=15)
+        assert process.returncode == 2, (stdout, stderr)
+        status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+        assert status["status"] == "INTERRUPTED"
+        assert status["signal"] == signal.SIGTERM
+        for pid in pids:
+            with pytest.raises(ProcessLookupError):
+                os.kill(pid, 0)
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            process.communicate(timeout=15)
 
 
 @pytest.mark.parametrize("entry,filename", [("worker", "check_mace_parity.py"),

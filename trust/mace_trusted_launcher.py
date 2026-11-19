@@ -261,6 +261,13 @@ def main():
                 code = 2
                 try:
                     os.setsid()
+                    # The supervisor defers terminal signals across assignment
+                    # of this child to its cleanup state. Do not inherit its
+                    # blocked mask or Python interruption handlers.
+                    terminal_signals = {signal.SIGTERM, signal.SIGINT, signal.SIGHUP}
+                    for terminal_signal in terminal_signals:
+                        signal.signal(terminal_signal, signal.SIG_DFL)
+                    signal.pthread_sigmask(signal.SIG_UNBLOCK, terminal_signals)
                     os.dup2(stdout.fileno(), 1)
                     os.dup2(stderr.fileno(), 2)
                     os.write(ready_write, b"R")
@@ -270,7 +277,22 @@ def main():
                     command, execution, verified, _ = prepare(policy_path, policy_sha256, "audit")
                     selected = "scripts/check_mace_parity.py"
                     command[0] = str(execution / selected)
-                    dispatch(command, verified, selected)
+                    launch = json.loads((execution / ".trusted-receipts/launch.json").read_bytes())
+                    worker_pid = os.getpid()
+                    deadline = float(os.environ["MACE_TRUST_STARTED"]) + 1800
+
+                    def authorize(packet_root=None, attempt_root=None):
+                        if (os.getpid() != worker_pid or os.getppid() != owner
+                                or os.getsid(0) != worker_pid or time.monotonic() >= deadline):
+                            raise ValueError("supervised worker capability is no longer live")
+                        for supplied, approved in ((packet_root, launch["packet_root"]),
+                                                   (attempt_root, launch["attempt_root"])):
+                            if supplied is not None and str(Path(supplied).resolve()) != approved:
+                                raise ValueError("worker capability does not authorize these paths")
+
+                    import mace_loader
+                    mace_loader._worker_capability = authorize
+                    dispatch(command, verified, selected, __supervisor_capability__=authorize)
                     code = 0
                 except SystemExit as exc:
                     code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)

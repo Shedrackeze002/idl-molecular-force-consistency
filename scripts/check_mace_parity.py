@@ -9,10 +9,17 @@ from pathlib import Path
 from typing import Any
 
 import sys
-if __name__ == "__main__" and (not sys.flags.isolated or not sys.flags.no_site):
-    raise SystemExit("worker execution requires python -I -S <external-trusted-launcher> "
-                     "--entry supervisor --policy <approved-policy> "
-                     "--policy-sha256 <independently-pinned-digest>; see docs/run-mace-parity.md")
+if __name__ == "__main__":
+    # Refuse even under -I -S, before dependency imports or argument handling.
+    # Only the verified fork dispatch supplies this private process-bound
+    # capability; interpreter flags are isolation, never authorization.
+    _entry_capability = globals().get("__supervisor_capability__")
+    if not sys.flags.isolated or not sys.flags.no_site or not callable(_entry_capability):
+        raise SystemExit("worker requires the verified supervisor's in-memory capability; "
+                         "use python -I -S <external-trusted-launcher> --entry supervisor "
+                         "--policy <approved-policy> --policy-sha256 <independently-pinned-digest>; "
+                         "see docs/run-mace-parity.md")
+    _entry_capability()
 from mace_loader import validate_dependency_imports
 
 validate_dependency_imports(("numpy", "ase.io"))
@@ -174,8 +181,9 @@ def _atomic_npz(path: Path, **arrays: Any) -> None:
 
 
 def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
-    from mace_loader import load_admitted_arm, verify_packet
+    from mace_loader import load_admitted_arm, require_supervised_worker, verify_packet
 
+    require_supervised_worker(packet_root, attempt_root)
     started = time.monotonic()
     attempt = Path(attempt_root)
     packet = verify_packet(Path(packet_root))
@@ -191,6 +199,7 @@ def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
     status: dict[str, Any]
     try:
         for record_id in inputs["record_ids"]:
+            require_supervised_worker(packet_root, attempt_root)
             frame = inputs["frames"][record_id]
             force_requests += 1
             predicted_force, _ = arm["forces"](frame["positions"], frame["species"], record_id)
@@ -232,6 +241,8 @@ def run_parity(packet_root: Path, attempt_root: Path) -> dict[str, Any]:
 
 
 def main() -> int:
+    from mace_loader import require_supervised_worker
+    require_supervised_worker()
     parser = argparse.ArgumentParser()
     parser.add_argument("--packet-root", type=Path, required=True)
     parser.add_argument("--attempt-root", type=Path, required=True)
