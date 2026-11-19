@@ -37,7 +37,8 @@ class ReviewedProjectModules:
 
 def configure_imports():
     if not sys.flags.isolated or not sys.flags.no_site:
-        raise SystemExit("MACE commands require python -I -S scripts/mace_bootstrap.py")
+        raise SystemExit("MACE commands require the external trusted launcher with Python -I -S; "
+                         "see docs/run-mace-parity.md")
     scripts = Path(__file__).resolve().parent
     # -S prevents sitecustomize, usercustomize and executable .pth files. Add the
     # selected venv's packages explicitly; never call site.main()/addsitedir().

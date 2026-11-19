@@ -106,7 +106,7 @@ def attempt(tmp_path, packet_root=None):
               "python_executable": interpreter,
               "trusted_launcher": worker, "trusted_policy": policy,
               "packet_root": str(packet_root), "attempt_root": str(root.resolve()),
-              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--policy", policy],
+              "command": [interpreter, "-I", "-S", worker, "--entry", "supervisor", "--policy", policy],
               "resource_limits": module.RESOURCE_LIMITS,
               "source_baseline": module.SOURCE_BASELINE,
               "implementation_reviews": [
@@ -446,7 +446,7 @@ def test_worker_refuses_shadow_before_dependency_executes(tmp_path, shadow):
     result = subprocess.run([sys.executable, str(worker), "--help"], cwd=tmp_path,
                             env=env, capture_output=True, text=True, timeout=30)
     assert result.returncode != 0
-    assert "mace_bootstrap.py" in result.stderr
+    assert "external-trusted-launcher" in result.stderr
     assert not marker.exists()
 
 

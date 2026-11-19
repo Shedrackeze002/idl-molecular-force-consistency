@@ -31,6 +31,20 @@ def test_records_child_failure(tmp_path):
     assert result["exit_code"] == 7
 
 
+def test_production_worker_refuses_without_trusted_in_memory_handoff(tmp_path, monkeypatch):
+    import mace_loader
+    monkeypatch.setattr(mace_loader, "_validated_launch_identity", lambda *args, **kwargs: None)
+    launch = tmp_path / "launch.json"
+    launch.write_text(json.dumps({"wsl_admission_receipt": "wsl.json", "command": command("pass")}))
+    admission = tmp_path / "wsl.json"
+    admission.write_text(json.dumps({"identities": {"implementation_commit": "a" * 40}}))
+    monkeypatch.setattr(module.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("worker started"))
+    result = module.supervise(tmp_path, tmp_path / "attempt", launch_receipt=launch,
+                              wsl_admission_receipt=admission)
+    assert result["status"] == "SETUP_FAILED"
+    assert "supervisor handoff" in result["error"]
+
+
 def test_timeout_is_incomplete_and_preserved(tmp_path):
     result = module.supervise(tmp_path, tmp_path / "timeout", timeout=.05,
                               command=command("import time; time.sleep(5)"))

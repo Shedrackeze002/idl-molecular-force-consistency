@@ -62,7 +62,8 @@ def _terminate_owned_group(process: subprocess.Popen) -> None:
 def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
               command: list[str] | None = None,
               launch_receipt: Path | None = None,
-              wsl_admission_receipt: Path | None = None) -> dict:
+              wsl_admission_receipt: Path | None = None,
+              worker_spawn=None) -> dict:
     started = (float(os.environ.get("MACE_TRUST_STARTED", time.monotonic()))
                if command is None else time.monotonic())
     output = Path(output)
@@ -100,6 +101,8 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
                 raise ValueError("WSL admission lacks an implementation commit")
             _validated_launch_identity(launch, output, packet_root, implementation_commit,
                                        require_live_interpreter=True)
+            if not callable(worker_spawn):
+                raise ValueError("production worker requires the external launcher's supervisor handoff")
             shutil.copyfile(launch_source, output / "launch-receipt.json")
             shutil.copyfile(admission_source, output / admission_name)
         worker = command or launch["command"]
@@ -111,8 +114,11 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
         stage = "spawn"
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
           if reason is None:
-            process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
-                                       creationflags=creationflags, start_new_session=start_new_session)
+            if command is None:
+                process = worker_spawn(stdout, stderr)
+            else:
+                process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
+                                           creationflags=creationflags, start_new_session=start_new_session)
             stage = "monitor"
             while process.poll() is None:
                 elapsed = time.monotonic() - started
@@ -186,7 +192,9 @@ def supervise(packet_root: Path, output: Path, *, timeout: float = WALL_SECONDS,
 
 def main() -> int:
     if not sys.flags.isolated or not sys.flags.no_site:
-        raise SystemExit("use python -I -S scripts/mace_bootstrap.py --entry supervisor")
+        raise SystemExit("use python -I -S <external-trusted-launcher> --entry supervisor "
+                         "--policy <approved-policy> --policy-sha256 <independently-pinned-digest>; "
+                         "see docs/run-mace-parity.md")
     parser = argparse.ArgumentParser()
     parser.add_argument("--packet-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -195,7 +203,8 @@ def main() -> int:
     args = parser.parse_args()
     result = supervise(args.packet_root, args.output,
                        launch_receipt=args.launch_receipt,
-                       wsl_admission_receipt=args.wsl_admission_receipt)
+                       wsl_admission_receipt=args.wsl_admission_receipt,
+                       worker_spawn=globals().get("__trusted_worker_spawn__"))
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["status"] == "WORKER_COMPLETED" else 2
 

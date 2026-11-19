@@ -228,7 +228,7 @@ def _validated_launch_identity(launch: dict[str, Any], attempt_root: Path,
             or not isinstance(trusted_policy, str) or not Path(trusted_policy).is_absolute()):
         raise AdmissionError("launch does not pin external launcher and policy paths")
     expected_command = [interpreter, "-I", "-S",
-                        trusted_launcher, "--entry", "worker", "--policy", trusted_policy]
+                        trusted_launcher, "--entry", "supervisor", "--policy", trusted_policy]
     if (not isinstance(interpreter, str) or not Path(interpreter).is_absolute()
             or launch.get("command") != expected_command
             or launch.get("packet_root") != str(packet)

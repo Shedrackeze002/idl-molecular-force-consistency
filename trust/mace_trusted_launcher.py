@@ -9,9 +9,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import select
+import signal
 import subprocess
 import sys
 import time
+import traceback
 import zlib
 
 IMPLEMENTATION_FILES = (
@@ -110,6 +113,8 @@ def stage_git_objects(source, execution, commit, baseline):
 
 
 def prepare(policy_path, policy_sha256, entry):
+    if entry not in ("supervisor", "audit"):
+        raise ValueError("worker preparation is private to the bounded supervisor")
     policy = pinned_json(policy_path, policy_sha256)
     if policy.get("schema") != 1 or policy.get("status") not in APPROVED:
         raise ValueError("external launch policy is not approved")
@@ -148,12 +153,12 @@ def prepare(policy_path, policy_sha256, entry):
         raise ValueError("external policy, launch and WSL approval disagree")
     packet = absolute(launch.get("packet_root"))
     attempt = absolute(launch.get("attempt_root"))
-    worker = [sys.executable, "-I", "-S", str(Path(__file__).resolve()),
-              "--entry", "worker", "--policy", str(policy_path)]
+    supervisor = [sys.executable, "-I", "-S", str(Path(__file__).resolve()),
+                  "--entry", "supervisor", "--policy", str(policy_path)]
     if (launch.get("trusted_launcher") != str(Path(__file__).resolve())
             or launch.get("trusted_policy") != str(policy_path)):
         raise ValueError("launch does not bind the external launcher and policy")
-    if launch.get("command") != worker:
+    if launch.get("command") != supervisor:
         raise ValueError("launch command is not bound to the trusted execution snapshot")
     if entry == "supervisor":
         if execution.exists() or attempt.exists():
@@ -186,7 +191,7 @@ def prepare(policy_path, policy_sha256, entry):
     if git(execution, "cat-file", "blob", commit + ":trust/mace_trusted_launcher.py") != Path(__file__).read_bytes():
         raise ValueError("external launcher is not the reviewed commit version")
     entries = {"supervisor": "scripts/supervise_mace_parity.py",
-               "worker": "scripts/check_mace_parity.py", "audit": "scripts/audit_mace_parity.py"}
+               "audit": "scripts/audit_mace_parity.py"}
     selected = entries[entry]
     command = [str(execution / selected), "--packet-root", str(packet)]
     if entry == "supervisor":
@@ -197,18 +202,117 @@ def prepare(policy_path, policy_sha256, entry):
     return command, execution, verified_execution, selected
 
 
+class OwnedWorker:
+    """Popen-compatible wait interface for a worker forked by its supervisor."""
+
+    def __init__(self, pid):
+        self.pid = pid
+        self.returncode = None
+
+    def poll(self):
+        if self.returncode is None:
+            pid, status = os.waitpid(self.pid, os.WNOHANG)
+            if pid:
+                self.returncode = os.waitstatus_to_exitcode(status)
+        return self.returncode
+
+    def wait(self, timeout=None):
+        deadline = None if timeout is None else time.monotonic() + timeout
+        while self.poll() is None:
+            if deadline is not None and time.monotonic() >= deadline:
+                raise subprocess.TimeoutExpired("supervisor-owned worker", timeout)
+            time.sleep(0.01)
+        return self.returncode
+
+
 def main():
+    def dispatch(command, verified, selected, **runtime):
+        """Execute captured authenticated bytes; never read a project entry again."""
+        sys.argv = command
+        exec(compile(verified[selected], command[0], "exec"),
+             {"__name__": "__main__", "__file__": command[0], **runtime})
+
+    def supervisor_worker_spawn(policy_path, policy_sha256):
+        """Return a single-use in-memory handoff, never a worker CLI or env token.
+
+        Production is WSL/POSIX. The child inherits the already isolated interpreter
+        and verified import map. Only the verified supervisor receives this closure.
+        Its logs are open and status is RUNNING before it calls the closure.
+        """
+        owner = os.getpid()
+        used = False
+
+        def spawn(stdout, stderr):
+            nonlocal used
+            if used or os.getpid() != owner:
+                raise ValueError("worker handoff is single-use and supervisor-owned")
+            used = True
+            if os.name != "posix" or not hasattr(os, "fork"):
+                raise ValueError("production worker requires the approved WSL/POSIX runtime")
+            ready_read, ready_write = os.pipe()
+            try:
+                pid = os.fork()
+            except BaseException:
+                os.close(ready_read)
+                os.close(ready_write)
+                raise
+            if pid == 0:
+                os.close(ready_read)
+                code = 2
+                try:
+                    os.setsid()
+                    os.dup2(stdout.fileno(), 1)
+                    os.dup2(stderr.fileno(), 2)
+                    os.write(ready_write, b"R")
+                    os.close(ready_write)
+                    # Audit preparation authenticates the entire retained tree
+                    # without staging or exposing a public worker selection.
+                    command, execution, verified, _ = prepare(policy_path, policy_sha256, "audit")
+                    selected = "scripts/check_mace_parity.py"
+                    command[0] = str(execution / selected)
+                    dispatch(command, verified, selected)
+                    code = 0
+                except SystemExit as exc:
+                    code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)
+                except BaseException:
+                    traceback.print_exc()
+                finally:
+                    try:
+                        sys.stdout.flush()
+                        sys.stderr.flush()
+                    finally:
+                        os._exit(code)
+            os.close(ready_write)
+            process = OwnedWorker(pid)
+            try:
+                # Do not return until the owned process group exists. Startup and
+                # the repeated trust checks remain inside the shared wall clock.
+                readable, _, _ = select.select([ready_read], [], [], 5)
+                if not readable or os.read(ready_read, 1) != b"R":
+                    raise ValueError("worker did not establish its owned process group")
+            except BaseException:
+                try:
+                    os.kill(pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                process.wait(timeout=5)
+                raise
+            finally:
+                os.close(ready_read)
+            return process
+
+        return spawn
+
     if not sys.flags.isolated or not sys.flags.no_site:
         raise SystemExit("trusted launcher requires Python -I -S")
     parser = argparse.ArgumentParser()
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--policy-sha256")
-    parser.add_argument("--entry", choices=("supervisor", "worker", "audit"), required=True)
+    parser.add_argument("--entry", choices=("supervisor", "audit"), required=True)
     args = parser.parse_args()
     started = time.monotonic()
     try:
-        # A verified supervisor passes the independently pinned digest to its
-        # worker. It is intentionally not embedded in the receipt that this
+        # This independent digest cannot be embedded in the receipt that this
         # policy itself hashes, which would create a circular digest binding.
         policy_sha256 = args.policy_sha256 or os.environ.get("MACE_TRUST_POLICY_SHA256")
         if not policy_sha256:
@@ -231,9 +335,10 @@ def main():
     namespace = {"__name__": "verified_mace_bootstrap", "__file__": bootstrap_path}
     exec(compile(verified["scripts/mace_bootstrap.py"], bootstrap_path, "exec"), namespace)
     namespace["configure_imports"]()
-    sys.argv = command
-    exec(compile(verified[selected], command[0], "exec"),
-         {"__name__": "__main__", "__file__": command[0]})
+    runtime = {}
+    if args.entry == "supervisor":
+        runtime["__trusted_worker_spawn__"] = supervisor_worker_spawn(args.policy.resolve(), policy_sha256)
+    dispatch(command, verified, selected, **runtime)
     return 0
 
 

@@ -79,7 +79,7 @@ def write_attempt(root, status="PARITY_PASS"):
               "python_executable": interpreter, "packet_root": str(packet_root),
               "trusted_launcher": worker, "trusted_policy": policy,
               "attempt_root": str(root.resolve()),
-              "command": [interpreter, "-I", "-S", worker, "--entry", "worker", "--policy", policy],
+              "command": [interpreter, "-I", "-S", worker, "--entry", "supervisor", "--policy", policy],
               "resource_limits": RESOURCE_LIMITS, "source_baseline": SOURCE_BASELINE,
               "implementation_reviews": [
                   {"status": "RESOLVED", "implementation_commit": "a" * 40,
@@ -312,7 +312,7 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
               "python_executable": interpreter, "packet_root": str(packet_root.resolve()),
               "trusted_launcher": worker_path, "trusted_policy": policy,
               "attempt_root": str(attempt.resolve()),
-              "command": [interpreter, "-I", "-S", worker_path, "--entry", "worker", "--policy", policy],
+              "command": [interpreter, "-I", "-S", worker_path, "--entry", "supervisor", "--policy", policy],
               "resource_limits": loader.RESOURCE_LIMITS,
               "source_baseline": loader.SOURCE_BASELINE,
               "implementation_reviews": [

@@ -25,7 +25,7 @@ def git(root, *args):
 
 
 @pytest.fixture
-def boundary(tmp_path):
+def boundary(tmp_path, request):
     root = tmp_path / "mutable-checkout"
     root.mkdir()
     git(root, "init", "-q")
@@ -38,13 +38,23 @@ def boundary(tmp_path):
         path.write_text("# synthetic reviewed source\n")
     shutil.copyfile(SOURCE, root / "trust/mace_trusted_launcher.py")
     marker = tmp_path / "project-executed"
-    # Use the real configuration-only bootstrap and synthetic project entries.
+    # Use the real bootstrap, supervisor and launch validator. Only the worker
+    # is synthetic: the complete production handoff runs without any model.
     shutil.copyfile(SOURCE.parent.parent / "scripts/mace_bootstrap.py", root / "scripts/mace_bootstrap.py")
-    (root / "scripts/supervise_mace_parity.py").write_text(
-        "from pathlib import Path\nimport runpy\n"
-        "runpy.run_path(str(Path(__file__).with_name('check_mace_parity.py')),run_name='__main__')\n")
+    for name in ("supervise_mace_parity.py", "mace_loader.py"):
+        shutil.copyfile(SOURCE.parent.parent / "scripts" / name, root / "scripts" / name)
+    variant = getattr(request, "param", {})
+    supervisor = root / "scripts/supervise_mace_parity.py"
+    for before, after in variant.get("supervisor_edits", []):
+        supervisor.write_text(supervisor.read_text().replace(before, after))
     (root / "scripts/check_mace_parity.py").write_text(
-        "from pathlib import Path\n" + f"Path({str(marker)!r}).write_text('worker')\n")
+        "from pathlib import Path\nimport os,json,sys\n"
+        f"attempt=Path({str(tmp_path / 'attempt')!r})\n"
+        "assert json.loads((attempt/'supervisor-status.json').read_text())['status']=='RUNNING'\n"
+        "assert (attempt/'stdout.log').exists() and (attempt/'stderr.log').exists()\n"
+        "assert os.getsid(0)==os.getpid() and os.getppid()!=os.getpid()\n"
+        "assert sys.flags.isolated and sys.flags.no_site\n"
+        + variant.get("worker", f"Path({str(marker)!r}).write_text('worker')\n"))
     git(root, "add", ".")
     git(root, "commit", "-qm", "synthetic approved implementation")
     commit = git(root, "rev-parse", "HEAD")
@@ -62,7 +72,14 @@ def boundary(tmp_path):
     policy = control / "policy.json"
     launch.write_text(json.dumps({"status": "APPROVED", "implementation_commit": commit,
         "command": [sys.executable, "-I", "-S", str(launcher),
-                    "--entry", "worker", "--policy", str(policy)],
+                    "--entry", "supervisor", "--policy", str(policy)],
+        "python_executable": sys.executable,
+        "resource_limits": {"seconds": 1800, "attempt_bytes": 268435456,
+                            "per_log_bytes": 16777216, "cleanup_seconds": 10},
+        "source_baseline": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+        "implementation_reviews": [{"status": "RESOLVED", "implementation_commit": commit,
+            "review_id": str(i), "reviewer": "synthetic-" + str(i),
+            "url": "https://example.test/review/" + str(i)} for i in (1, 2)],
         "trusted_launcher": str(launcher), "trusted_policy": str(policy),
         "packet_root": str(packet), "attempt_root": str(attempt),
         "wsl_admission_receipt": "admission.json", "wsl_admission_sha256": sha(admission)}))
@@ -73,7 +90,8 @@ def boundary(tmp_path):
         "launch_receipt": str(launch), "launch_sha256": sha(launch),
         "wsl_admission_receipt": str(admission), "wsl_admission_sha256": sha(admission)}))
     return dict(root=root, control=control, launcher=launcher, policy=policy,
-                policy_hash=sha(policy), execution=execution, marker=marker, commit=commit)
+                policy_hash=sha(policy), execution=execution, marker=marker, commit=commit,
+                attempt=attempt)
 
 
 def run(case, entry="supervisor", cwd=None):
@@ -99,6 +117,12 @@ def test_verified_sources_execute_from_separate_snapshot(boundary):
     result = run(boundary)
     assert result.returncode == 0, result.stderr
     assert boundary["marker"].read_text() == "worker"
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == "WORKER_COMPLETED"
+    assert status["exit_code"] == 0
+    assert status["timeout_seconds"] == 1800
+    assert (boundary["attempt"] / "stdout.log").exists()
+    assert (boundary["attempt"] / "stderr.log").exists()
     snapshot = boundary["execution"]
     assert git(snapshot, "rev-parse", "HEAD") == boundary["commit"]
     assert (snapshot / "scripts/mace_bootstrap.py").read_bytes() == (
@@ -189,7 +213,7 @@ def test_direct_bootstrap_refuses_before_tampered_entry_executes(tmp_path, entry
     assert not marker.exists()
 
 
-def test_worker_external_entry_rechecks_snapshot(boundary):
+def test_direct_worker_refuses_even_with_staged_snapshot(boundary):
     assert run(boundary).returncode == 0
     boundary["marker"].unlink()
     path = boundary["execution"] / "scripts/check_mace_parity.py"
@@ -197,17 +221,66 @@ def test_worker_external_entry_rechecks_snapshot(boundary):
     path.write_text("from pathlib import Path\n" + f"Path({str(boundary['marker'])!r}).touch()\n")
     result = run(boundary, entry="worker")
     assert result.returncode == 2
+    assert "invalid choice: 'worker'" in result.stderr
     assert not boundary["marker"].exists()
 
 
-def test_verified_worker_uses_inherited_independent_policy_digest(boundary):
+def test_direct_worker_refuses_without_supervisor_status(boundary):
     assert run(boundary).returncode == 0
     boundary["marker"].unlink()
+    status = boundary["attempt"] / "supervisor-status.json"
+    status.unlink()
     command = json.loads((boundary["control"] / "launch.json").read_text())["command"]
+    command[command.index("--entry") + 1] = "worker"
     result = subprocess.run(command, env=dict(os.environ, MACE_TRUST_POLICY_SHA256=boundary["policy_hash"]),
                             text=True, capture_output=True, timeout=90)
-    assert result.returncode == 0, result.stderr
-    assert boundary["marker"].read_text() == "worker"
+    assert result.returncode == 2
+    assert "invalid choice: 'worker'" in result.stderr
+    assert not boundary["marker"].exists()
+    assert not status.exists()
+
+
+def test_direct_worker_refuses_before_any_snapshot_or_project_startup(boundary):
+    result = run(boundary, entry="worker")
+    assert result.returncode == 2
+    assert "invalid choice: 'worker'" in result.stderr
+    assert not boundary["execution"].exists()
+    assert not boundary["attempt"].exists()
+    assert not boundary["marker"].exists()
+
+
+def test_prepare_api_cannot_select_worker(boundary):
+    with pytest.raises(ValueError, match="private to the bounded supervisor"):
+        trusted.prepare(boundary["policy"], boundary["policy_hash"], "worker")
+    assert not boundary["execution"].exists()
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary,expected", [
+    ({"worker": "import time; time.sleep(30)\n",
+      "supervisor_edits": [("WALL_SECONDS = 1800", "WALL_SECONDS = 2")]}, "TIMEOUT"),
+    ({"worker": "print('x'*10000)\n",
+      "supervisor_edits": [("LOG_BYTES = 16 * 1024 * 1024", "LOG_BYTES = 100")]}, "LOG_OVERFLOW"),
+    ({"worker": "(attempt/'large-output').write_bytes(b'x'*10000)\n",
+      "supervisor_edits": [("OUTPUT_BYTES = 256 * 1024 * 1024", "OUTPUT_BYTES = 5000")]}, "OUTPUT_OVERFLOW"),
+], indirect=["boundary"])
+def test_real_supervisor_bounds_its_private_worker(boundary, expected):
+    result = run(boundary)
+    assert result.returncode == 2, result.stderr
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == expected
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("filename,entry", [("check_mace_parity.py", "supervisor"),
+    ("supervise_mace_parity.py", "supervisor"), ("audit_mace_parity.py", "audit")])
+def test_direct_entry_refusal_points_to_supported_external_launcher(filename, entry):
+    result = subprocess.run([sys.executable, str(SOURCE.parent.parent / "scripts" / filename), "--help"],
+                            text=True, capture_output=True, timeout=30)
+    assert result.returncode != 0
+    assert "<external-trusted-launcher>" in result.stderr
+    assert "--entry " + entry in result.stderr
+    assert "mace_bootstrap.py --entry" not in result.stderr
 
 
 @pytest.mark.parametrize("entry,filename", [("worker", "check_mace_parity.py"),

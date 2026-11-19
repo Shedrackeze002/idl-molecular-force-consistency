@@ -10,7 +10,9 @@ from typing import Any
 
 import sys
 if __name__ == "__main__" and (not sys.flags.isolated or not sys.flags.no_site):
-    raise SystemExit("use python -I -S scripts/mace_bootstrap.py --entry worker")
+    raise SystemExit("worker execution requires python -I -S <external-trusted-launcher> "
+                     "--entry supervisor --policy <approved-policy> "
+                     "--policy-sha256 <independently-pinned-digest>; see docs/run-mace-parity.md")
 from mace_loader import validate_dependency_imports
 
 validate_dependency_imports(("numpy", "ase.io"))

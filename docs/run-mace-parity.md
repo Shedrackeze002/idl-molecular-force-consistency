@@ -16,8 +16,9 @@ relax molecules, access training/test partitions, or authorize model loading.
 
 The approved launch JSON is fail-closed. It records absolute `python_executable`,
 `packet_root` and fresh `attempt_root` paths; `command` is exactly the interpreter,
-`-I -S <external-trusted-launcher> --entry worker --policy <external-policy>` argv used by
-the supervisor. It also records `source_baseline` as
+`-I -S <external-trusted-launcher> --entry supervisor --policy <external-policy>` argv
+for the approved supervised attempt (the independent policy digest is supplied
+separately). Worker execution has no public CLI. It also records `source_baseline` as
 `3fa5969e5a0c2fdeaebc76a05bace20799715203`, two or more resolved review objects
 with distinct review IDs, reviewer identities and URLs bound to the same full
 implementation commit, and these exact limits:
@@ -66,8 +67,14 @@ dispatch API. It only configures the restricted import map. The separately
 provisioned external launcher alone selects an entry and executes its captured,
 verified source bytes after successful policy/source checks. No mutable-checkout
 function can authorize an entry through an environment variable or caller flag.
-The supervisor also starts its worker through the external
-launcher, which rechecks the retained snapshot before dispatch.
+The verified supervisor receives a single-use in-memory worker handoff from
+the external launcher. After recording RUNNING status and opening both logs,
+it calls that handoff to fork a child in its own process group. The child
+rechecks the retained snapshot and receipts before executing worker bytes.
+The handoff cannot be supplied through CLI arguments or environment variables.
+`--entry worker` always refuses before any project code executes, even with an
+approved policy and a previously staged snapshot. Production requires the
+approved WSL/POSIX runtime; native Windows must use WSL for this step.
 
 An administrator/coordinator must first review the launcher at the approved Git
 commit, export its bytes with `git --no-replace-objects cat-file blob
@@ -91,12 +98,15 @@ The coordinator-owned policy uses schema 1, an APPROVED/ACCEPTED status, and:
 - `wsl_admission_receipt`, `wsl_admission_sha256`: external approved WSL JSON and digest.
 
 The approved launch pins `trusted_launcher` and `trusted_policy` absolute paths.
-Its worker `command` points to that external launcher and policy. The policy
-digest is supplied independently to the initial external invocation and inherited
-by the verified supervisor's child via `MACE_TRUST_POLICY_SHA256`; it is not put
+Its `command` pins the supervised attempt through that launcher and policy.
+This same command is retained in supervisor status; the worker is forked
+internally, never launched by replaying a worker command. The policy
+digest is supplied independently to the initial external invocation and captured
+by the private supervisor handoff; it is not put
 inside the receipt hashed by that same policy, avoiding circular digest bindings.
-Only the external launcher dispatches `<execution_root>/scripts/mace_bootstrap.py`.
-All
+The external launcher executes the verified bootstrap's configuration function
+to install the restricted import map, then dispatches captured supervisor or
+auditor bytes itself. The bootstrap never dispatches an entry. All
 packet/attempt paths remain explicit approved absolute paths. The execution root
 and attempt root must be fresh; failed staging is retained and requires a new
 reviewed decision rather than a retry over the same directory.
@@ -132,8 +142,8 @@ CPU/float64 calculator, then makes exactly 974 force and 974 energy accessor
 requests. Acceptance is absolute-only (`rtol=0`, `atol=1e-10`) for energy and
 force components.
 
-Production uses a dedicated virtual environment and the external launcher, then
-the verified isolated bootstrap for all entries. `-I -S` ignores PYTHONPATH, user sites, sitecustomize,
+Production uses a dedicated virtual environment and the external launcher with
+verified bootstrap import configuration. `-I -S` ignores PYTHONPATH, user sites, sitecustomize,
 usercustomize and executable .pth hooks. The bootstrap adds
 a restricted mapping for the exact loader, bridge, worker and evaluation adapter
 modules before the selected environment's site-packages. Project directories are
