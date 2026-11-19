@@ -58,19 +58,9 @@ class AdmissionError(RuntimeError):
     """A stable refusal raised before any real model construction."""
 
 
-_worker_capability = None
-
-
 def require_supervised_worker(packet_root=None, attempt_root=None) -> None:
-    """Require the process-bound closure installed by the trusted fork handoff.
-
-    Receipts, interpreter flags and environment values cannot install this
-    authority. The external launcher's private child path installs it only
-    after authenticating the retained implementation and approval bytes.
-    """
-    if _worker_capability is None:
-        raise AdmissionError("worker requires the verified supervisor's in-memory capability")
-    _worker_capability(packet_root, attempt_root)
+    """Compatibility refusal; module state can never authorize execution."""
+    raise AdmissionError("Direct project execution is refused; use the external trusted launcher")
 
 
 def _sha256(path: Path) -> str:
@@ -465,27 +455,16 @@ def _approved_launch(attempt_root: Path, packet_root: Path) -> tuple[dict[str, A
 
 def _construct_calculator(snapshot: Path):
     _require_standard_finders()
-    require_supervised_worker()
-    validate_dependency_imports(("mace.calculators.mace", "torch", "numpy", "ase.io"))
-    import torch
-    import mace
-    validate_dependency_imports(("mace.calculators.mace",))
-    import mace.calculators
-    validate_dependency_imports(("mace.calculators.mace",))
-    from mace.calculators.mace import MACECalculator
-    validate_dependency_imports(("mace.calculators.mace",))
-    if MACECalculator.__module__ != "mace.calculators.mace":
-        raise AdmissionError("constructor is not defined in the approved MACE module")
-
-    torch.set_num_threads(1)
-    return MACECalculator(model_paths=[str(snapshot)], device="cpu",
-                          default_dtype="float64", enable_cueq=False,
-                          enable_oeq=False, compile_mode=None)
+    raise AdmissionError("Direct project construction is refused; use the external trusted launcher")
 
 
 def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
                        constructor: Callable[[Path], Any],
                        expected_species: tuple[str, ...] | None = None) -> tuple[dict, dict]:
+    """Internal loader with a provider from the protected driver or a fake test.
+
+    This helper does not expose the production constructor or authorize a run.
+    """
     packet = verify_packet(packet_root)
     launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
     _validate_import_origins(live)
@@ -530,8 +509,5 @@ def _load_admitted_arm(packet_root: Path, attempt_root: Path, *,
 
 def load_admitted_arm(packet_root: Path, attempt_root: Path,
                       *, expected_species: tuple[str, ...]) -> tuple[dict, dict]:
-    """Production entry point; no constructor injection is accepted."""
-    require_supervised_worker(packet_root, attempt_root)
-    return _load_admitted_arm(Path(packet_root), Path(attempt_root),
-                              constructor=_construct_calculator,
-                              expected_species=expected_species)
+    """Public refusal; the protected driver owns the production constructor."""
+    raise AdmissionError("Direct project loading is refused; use the external trusted launcher")

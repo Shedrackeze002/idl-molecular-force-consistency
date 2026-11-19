@@ -26,6 +26,52 @@ def test_production_launch_requires_both_reviewed_receipts(tmp_path):
     assert "requires reviewed" in result["error"]
 
 
+@pytest.mark.parametrize("signum", module.TERMINATION_SIGNALS)
+def test_interruption_immediately_after_initial_running_write_is_terminal(tmp_path, monkeypatch, signum):
+    original = module.Path.write_text
+    interrupted = False
+
+    def interrupt_after_write(path, data, *args, **kwargs):
+        nonlocal interrupted
+        result = original(path, data, *args, **kwargs)
+        if path.name == "supervisor-status.json" and not interrupted:
+            interrupted = True
+            os.kill(os.getpid(), signum)
+        return result
+
+    monkeypatch.setattr(module.Path, "write_text", interrupt_after_write)
+    monkeypatch.setattr(module.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("worker started"))
+    output = tmp_path / "initial-interruption"
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert result["status"] == "INTERRUPTED"
+    assert result["signal"] == signum
+    assert result["failure_stage"] == "setup"
+    assert result["exit_code"] is None
+    assert json.loads((output / "supervisor-status.json").read_text()) == result
+    assert (output / "stdout.log").read_bytes() == b""
+    assert (output / "stderr.log").read_bytes() == b""
+
+
+def test_initial_status_write_error_is_terminal_and_never_spawns(tmp_path, monkeypatch):
+    original = module.Path.write_text
+    failed = False
+
+    def fail_initial_write(path, data, *args, **kwargs):
+        nonlocal failed
+        if path.name == "supervisor-status.json" and not failed:
+            failed = True
+            raise OSError("synthetic initial write failure")
+        return original(path, data, *args, **kwargs)
+
+    monkeypatch.setattr(module.Path, "write_text", fail_initial_write)
+    monkeypatch.setattr(module.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("worker started"))
+    output = tmp_path / "initial-failure"
+    result = module.supervise(tmp_path, output, command=command("pass"))
+    assert result["status"] == "SETUP_FAILED"
+    assert result["error"] == "synthetic initial write failure"
+    assert json.loads((output / "supervisor-status.json").read_text()) == result
+
+
 def test_records_child_failure(tmp_path):
     result = module.supervise(tmp_path, tmp_path / "attempt", command=command("raise SystemExit(7)"))
     assert result["status"] == "WORKER_FAILED"

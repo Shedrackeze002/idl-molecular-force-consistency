@@ -16,6 +16,9 @@ WALL_SECONDS = 1800
 CLEANUP_SECONDS = 10
 OUTPUT_BYTES = 256 * 1024 * 1024
 LOG_BYTES = 16 * 1024 * 1024
+TERMINATION_SIGNALS = (signal.SIGINT, signal.SIGTERM)
+if os.name == "posix":
+    TERMINATION_SIGNALS += (signal.SIGHUP, signal.SIGQUIT)
 
 
 class SupervisorInterrupted(BaseException):
@@ -40,11 +43,8 @@ def _interruption_handlers():
         nonlocal interrupted
         interrupted = True
 
-    signals = (signal.SIGINT, signal.SIGTERM)
-    if os.name == "posix":
-        signals += (signal.SIGHUP,)
     try:
-        for signum in signals:
+        for signum in TERMINATION_SIGNALS:
             previous[signum] = signal.signal(signum, interrupt)
         yield begin_cleanup
     finally:
@@ -56,8 +56,7 @@ def _interruption_handlers():
 def _defer_spawn_signals():
     """Assign the child to cleanup state before delivering a pending signal."""
     if os.name == "posix":
-        previous = signal.pthread_sigmask(signal.SIG_BLOCK,
-                                          {signal.SIGINT, signal.SIGTERM, signal.SIGHUP})
+        previous = signal.pthread_sigmask(signal.SIG_BLOCK, TERMINATION_SIGNALS)
         try:
             yield
         finally:
@@ -130,7 +129,7 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
     output = Path(output)
     if output.exists():
         raise FileExistsError(output)
-    output.mkdir(parents=True, exist_ok=False)
+    created = False
     process = None
     stage = "setup"
     worker = command
@@ -138,16 +137,19 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
                "output_limit_bytes": OUTPUT_BYTES, "log_limit_bytes": LOG_BYTES,
                "started_unix": time.time()}
     status_path = output / "supervisor-status.json"
-    status_path.write_text(json.dumps(receipt, indent=2) + "\n")
-    if command is None:
-        if launch_receipt is None or wsl_admission_receipt is None:
-            receipt.update(status="SETUP_FAILED", failure_stage=stage, error_type="ValueError",
-                           error="production launch requires reviewed launch and WSL admission receipts")
-            status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
-            return receipt
     stdout_path, stderr_path = output / "stdout.log", output / "stderr.log"
     reason = None
     try:
+        # Defer delivery just until ownership of the fresh directory is known.
+        # Never overwrite a pre-existing/racing attempt in an error handler.
+        with _defer_spawn_signals():
+            output.mkdir(parents=True, exist_ok=False)
+            created = True
+        stdout_path.touch(exist_ok=False)
+        stderr_path.touch(exist_ok=False)
+        status_path.write_text(json.dumps(receipt, indent=2) + "\n")
+        if command is None and (launch_receipt is None or wsl_admission_receipt is None):
+            raise ValueError("production launch requires reviewed launch and WSL admission receipts")
         if command is None:
             launch_source = Path(launch_receipt)
             admission_source = Path(wsl_admission_receipt)
@@ -240,6 +242,8 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
             status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
         return receipt
     except BaseException as exc:
+        if not created:
+            raise
         interrupted = isinstance(exc, (SupervisorInterrupted, KeyboardInterrupt, SystemExit))
         cleanup_error = None
         if process is not None:
@@ -261,6 +265,10 @@ def _supervise(packet_root: Path, output: Path, *, timeout: float,
             receipt["signal"] = getattr(exc, "signum", None)
         if cleanup_error is not None:
             receipt["cleanup_error"] = cleanup_error
+        # An interruption may precede one or both log creations. Preserve any
+        # existing worker output; create only missing empty files.
+        stdout_path.touch(exist_ok=True)
+        stderr_path.touch(exist_ok=True)
         status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
         return receipt
 

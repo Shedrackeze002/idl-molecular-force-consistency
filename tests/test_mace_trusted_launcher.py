@@ -1,5 +1,6 @@
 """Real subprocess trust-boundary tests; synthetic Git trees, no model inputs."""
 import hashlib
+import ast
 import importlib.util
 import json
 import os
@@ -9,6 +10,7 @@ import signal
 import subprocess
 import sys
 import time
+import textwrap
 
 import pytest
 
@@ -49,26 +51,25 @@ def boundary(tmp_path, request):
     supervisor = root / "scripts/supervise_mace_parity.py"
     for before, after in variant.get("supervisor_edits", []):
         supervisor.write_text(supervisor.read_text().replace(before, after))
-    (root / "scripts/check_mace_parity.py").write_text(
+    worker_body = (
         "from pathlib import Path\nimport os,json,sys\n"
         f"attempt=Path({str(tmp_path / 'attempt')!r})\n"
         "assert json.loads((attempt/'supervisor-status.json').read_text())['status']=='RUNNING'\n"
         "assert (attempt/'stdout.log').exists() and (attempt/'stderr.log').exists()\n"
         "assert os.getsid(0)==os.getpid() and os.getppid()!=os.getpid()\n"
         "assert sys.flags.isolated and sys.flags.no_site\n"
-        "from mace_loader import require_supervised_worker\n"
-        f"require_supervised_worker(Path({str(tmp_path / 'packet')!r}),attempt)\n"
-        + variant.get("worker", f"Path({str(marker)!r}).write_text('worker')\n"))
+        f"check_liveness(Path({str(tmp_path / 'packet')!r}),attempt)\n"
+        + variant.get("worker", f"Path({str(marker)!r}).write_text('worker')\n")
+        + "return {'status':'PARITY_PASS'}\n")
+    (root / "scripts/check_mace_parity.py").write_text(
+        "def _run_parity(packet_root,attempt_root,*,load_arm,check_liveness):\n" + textwrap.indent(worker_body, "    "))
     if variant.get("real_worker"):
         worker_source = (SOURCE.parent.parent / "scripts/check_mace_parity.py").read_text()
-        synthetic_parity = ("\ndef run_parity(packet_root,attempt_root):\n"
-                            "    from mace_loader import require_supervised_worker\n"
-                            "    require_supervised_worker(packet_root,attempt_root)\n"
-                            f"    Path({str(marker)!r}).write_text('worker')\n"
-                            "    return {'status':'PARITY_PASS'}\n")
-        worker_source = worker_source.replace('\nif __name__ == "__main__":\n    raise SystemExit(main())',
-                                               synthetic_parity + '\nif __name__ == "__main__":\n    raise SystemExit(main())')
-        (root / "scripts/check_mace_parity.py").write_text(worker_source)
+        tree = ast.parse(worker_source)
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef) and node.name == "_run_parity":
+                node.body = ast.parse(worker_body).body
+        (root / "scripts/check_mace_parity.py").write_text(ast.unparse(tree) + "\n")
     git(root, "add", ".")
     git(root, "commit", "-qm", "synthetic approved implementation")
     commit = git(root, "rev-parse", "HEAD")
@@ -304,31 +305,37 @@ def test_checker_cli_requires_capability_before_dependency_imports(tmp_path, fla
         "--packet-root", str(tmp_path / "packet"), "--attempt-root", str(tmp_path / "attempt")],
         capture_output=True, text=True, timeout=30)
     assert result.returncode != 0
-    assert "in-memory capability" in result.stderr
+    assert "Direct checker execution is refused" in result.stderr
     assert "ModuleNotFoundError" not in result.stderr
     assert not (tmp_path / "attempt").exists()
 
 
-def test_isolated_import_and_call_main_refuses_before_synthetic_parity(tmp_path):
+@pytest.mark.parametrize("forgery", ["none", "noop", "fake-object"])
+def test_isolated_import_and_call_main_refuses_before_synthetic_parity(tmp_path, forgery):
     marker = tmp_path / "unbounded-parity"
     bootstrap = SOURCE.parent.parent / "scripts/mace_bootstrap.py"
     probe = ("import importlib.util,sys; from pathlib import Path; "
              "spec=importlib.util.spec_from_file_location('probe',sys.argv.pop(1)); "
              "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); "
-             "module.configure_imports(); import check_mace_parity as worker; "
-             f"worker.run_parity=lambda *args: Path({str(marker)!r}).touch(); "
+             "module.configure_imports(); import mace_loader as loader; "
+             + ({"none": "", "noop": "loader._worker_capability=lambda *args: None; ",
+                 "fake-object": "loader._worker_capability=object(); "}[forgery]) +
+             "import check_mace_parity as worker; "
+             f"worker.run_parity=lambda *args: (Path({str(marker)!r}).touch(),{{'status':'PARITY_PASS'}})[1]; "
+             f"loader.load_admitted_arm=lambda *args,**kwargs: Path({str(marker)!r}).touch(); "
+             f"loader._construct_calculator=lambda *args: Path({str(marker)!r}).touch(); "
              "worker.main()")
     result = subprocess.run([sys.executable, "-I", "-S", "-c", probe, str(bootstrap),
         "--packet-root", str(tmp_path), "--attempt-root", str(tmp_path / "attempt")],
         text=True, capture_output=True, timeout=30,
         env=dict(os.environ, MACE_TRUST_STARTED=str(time.monotonic()), MACE_TRUST_POLICY_SHA256="a" * 64))
     assert result.returncode != 0
-    assert "in-memory capability" in result.stderr
+    assert "Direct checker main() is refused" in result.stderr
     assert not marker.exists()
 
 
 @pytest.mark.parametrize("boundary", [{"real_worker": True}], indirect=True)
-def test_real_checker_main_accepts_only_verified_child_capability(boundary):
+def test_verified_private_driver_runs_real_checker_library(boundary):
     result = run(boundary)
     assert result.returncode == 0, result.stderr
     assert boundary["marker"].read_text() == "worker"
@@ -336,8 +343,8 @@ def test_real_checker_main_accepts_only_verified_child_capability(boundary):
     assert status["status"] == "WORKER_COMPLETED"
 
 
-@pytest.mark.parametrize("boundary", [{"worker": "require_supervised_worker(attempt,attempt)\n"}], indirect=True)
-def test_child_capability_refuses_different_approved_paths(boundary):
+@pytest.mark.parametrize("boundary", [{"worker": "check_liveness(attempt,attempt)\n"}], indirect=True)
+def test_private_driver_refuses_different_approved_paths(boundary):
     result = run(boundary)
     assert result.returncode == 2
     assert not boundary["marker"].exists()
@@ -347,12 +354,12 @@ def test_child_capability_refuses_different_approved_paths(boundary):
 @pytest.mark.parametrize("boundary", [{"worker":
     "pid=os.fork()\n"
     "if pid==0:\n"
-    "    try: require_supervised_worker()\n"
+    "    try: check_liveness()\n"
     "    except ValueError: os._exit(0)\n"
     "    os._exit(1)\n"
     "assert os.waitstatus_to_exitcode(os.waitpid(pid,0)[1])==0\n"
     "(attempt/'fork-capability-refused').touch()\n"}], indirect=True)
-def test_worker_capability_cannot_be_reused_by_another_process(boundary):
+def test_private_driver_liveness_is_bound_to_its_child_process(boundary):
     result = run(boundary)
     assert result.returncode == 0, result.stderr
     assert (boundary["attempt"] / "fork-capability-refused").exists()
@@ -362,9 +369,10 @@ def test_worker_capability_cannot_be_reused_by_another_process(boundary):
 def test_public_execution_apis_refuse_before_model_access(tmp_path, monkeypatch, entry):
     import check_mace_parity as worker
     import mace_loader as loader
-    monkeypatch.setattr(loader, "_worker_capability", None)
+    monkeypatch.setattr(loader, "_worker_capability", lambda *args: None, raising=False)
+    monkeypatch.setattr(loader, "require_supervised_worker", lambda *args: None)
     monkeypatch.setattr(loader, "verify_packet", lambda *args: pytest.fail("packet/model access before authority"))
-    with pytest.raises(loader.AdmissionError, match="in-memory capability"):
+    with pytest.raises(RuntimeError, match="Direct project"):
         if entry == "parity":
             worker.run_parity(tmp_path, tmp_path / "attempt")
         elif entry == "loader":
@@ -373,6 +381,21 @@ def test_public_execution_apis_refuse_before_model_access(tmp_path, monkeypatch,
             # Pytest's own finders are unrelated to this production test.
             monkeypatch.setattr(loader, "_require_standard_finders", lambda: None)
             loader._construct_calculator(tmp_path / "unused.model")
+
+
+@pytest.mark.parametrize("boundary", [{"supervisor_edits": [
+    ('status_path.write_text(json.dumps(receipt, indent=2) + "\\n")',
+     'status_path.write_text(json.dumps(receipt, indent=2) + "\\n")\n'
+     '        os.kill(os.getpid(), signal.SIGTERM)')]}], indirect=True)
+def test_trusted_launch_interrupted_at_initial_receipt_never_starts_worker(boundary):
+    result = run(boundary)
+    assert result.returncode == 2, result.stderr
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == "INTERRUPTED"
+    assert status["failure_stage"] == "setup"
+    assert status["signal"] == signal.SIGTERM
+    assert status["exit_code"] is None
+    assert not boundary["marker"].exists()
 
 
 def wait_for_file(path, process, timeout=15):
@@ -389,7 +412,7 @@ def wait_for_file(path, process, timeout=15):
     "(attempt/'worker.pid').write_text(str(os.getpid()))\n"
     "(attempt/'ready').touch()\nimport time; time.sleep(1.5)\n"
     "(attempt/'escaped-completion').touch()\n"}], indirect=True)
-@pytest.mark.parametrize("signum", [signal.SIGTERM, signal.SIGINT, signal.SIGHUP])
+@pytest.mark.parametrize("signum", [signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT])
 def test_parent_interruption_reaps_actual_handoff_worker(boundary, signum):
     process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
         "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],

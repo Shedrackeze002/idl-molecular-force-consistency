@@ -67,8 +67,6 @@ def test_atomic_npz_preserves_previous_file_on_write_failure(tmp_path, monkeypat
 def test_failed_accessor_attempts_are_counted(tmp_path, monkeypatch):
     import check_mace_parity as module
     import mace_loader
-    # Explicitly scoped fake authority for this fake-constructor library test.
-    monkeypatch.setattr(mace_loader, "_worker_capability", lambda *args: None)
     attempt = tmp_path / "attempt"
     attempt.mkdir()
     inputs = {"record_ids": ["a"], "frames": {"a": {"positions": np.zeros((21, 3)),
@@ -78,8 +76,8 @@ def test_failed_accessor_attempts_are_counted(tmp_path, monkeypatch):
     monkeypatch.setattr(mace_loader, "verify_packet", lambda root: {"manifest_sha256": "m", "model_sha256": "s"})
     arm = {"forces": lambda *args: (np.zeros((21, 3)), {}),
            "energy": lambda *args: (_ for _ in ()).throw(RuntimeError("energy failed"))}
-    monkeypatch.setattr(mace_loader, "load_admitted_arm", lambda *args, **kwargs: (arm, {"status": "ADMITTED"}))
-    result = module.run_parity(tmp_path, attempt)
+    result = module._run_parity(tmp_path, attempt,
+        load_arm=lambda *args, **kwargs: (arm, {"status": "ADMITTED"}), check_liveness=lambda *args: None)
     assert result["status"] == "INCOMPLETE"
     assert result["force_requests"] == 1 and result["energy_requests"] == 1
     bad = bundle()

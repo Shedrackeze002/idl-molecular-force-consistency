@@ -226,11 +226,12 @@ class OwnedWorker:
 
 
 def main():
-    def dispatch(command, verified, selected, **runtime):
+    def dispatch(command, verified, selected, *, module_name="__main__", **runtime):
         """Execute captured authenticated bytes; never read a project entry again."""
         sys.argv = command
-        exec(compile(verified[selected], command[0], "exec"),
-             {"__name__": "__main__", "__file__": command[0], **runtime})
+        namespace = {"__name__": module_name, "__file__": command[0], **runtime}
+        exec(compile(verified[selected], command[0], "exec"), namespace)
+        return namespace
 
     def supervisor_worker_spawn(policy_path, policy_sha256):
         """Return a single-use in-memory handoff, never a worker CLI or env token.
@@ -264,7 +265,7 @@ def main():
                     # The supervisor defers terminal signals across assignment
                     # of this child to its cleanup state. Do not inherit its
                     # blocked mask or Python interruption handlers.
-                    terminal_signals = {signal.SIGTERM, signal.SIGINT, signal.SIGHUP}
+                    terminal_signals = {signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT}
                     for terminal_signal in terminal_signals:
                         signal.signal(terminal_signal, signal.SIG_DFL)
                     signal.pthread_sigmask(signal.SIG_UNBLOCK, terminal_signals)
@@ -281,19 +282,48 @@ def main():
                     worker_pid = os.getpid()
                     deadline = float(os.environ["MACE_TRUST_STARTED"]) + 1800
 
-                    def authorize(packet_root=None, attempt_root=None):
+                    def check_liveness(packet_root=None, attempt_root=None):
                         if (os.getpid() != worker_pid or os.getppid() != owner
                                 or os.getsid(0) != worker_pid or time.monotonic() >= deadline):
-                            raise ValueError("supervised worker capability is no longer live")
+                            raise ValueError("supervised worker is no longer live")
                         for supplied, approved in ((packet_root, launch["packet_root"]),
                                                    (attempt_root, launch["attempt_root"])):
                             if supplied is not None and str(Path(supplied).resolve()) != approved:
-                                raise ValueError("worker capability does not authorize these paths")
+                                raise ValueError("worker does not authorize these paths")
 
                     import mace_loader
-                    mace_loader._worker_capability = authorize
-                    dispatch(command, verified, selected, __supervisor_capability__=authorize)
-                    code = 0
+
+                    def construct(snapshot):
+                        # The real constructor is private to this authenticated
+                        # child. No project module/global exports this provider.
+                        check_liveness()
+                        mace_loader._require_standard_finders()
+                        validate = mace_loader.validate_dependency_imports
+                        validate(("mace.calculators.mace", "torch", "numpy", "ase.io"))
+                        import torch
+                        import mace
+                        validate(("mace.calculators.mace",))
+                        import mace.calculators
+                        validate(("mace.calculators.mace",))
+                        from mace.calculators.mace import MACECalculator
+                        validate(("mace.calculators.mace",))
+                        if MACECalculator.__module__ != "mace.calculators.mace":
+                            raise ValueError("constructor is not defined in the approved MACE module")
+                        torch.set_num_threads(1)
+                        return MACECalculator(model_paths=[str(snapshot)], device="cpu",
+                            default_dtype="float64", enable_cueq=False, enable_oeq=False, compile_mode=None)
+
+                    def load_arm(packet_root, attempt_root, *, expected_species):
+                        check_liveness(packet_root, attempt_root)
+                        return mace_loader._load_admitted_arm(packet_root, attempt_root,
+                            expected_species=expected_species, constructor=construct)
+
+                    check_liveness()
+                    worker = dispatch(command, verified, selected, module_name="verified_worker_library")
+                    result = worker["_run_parity"](Path(launch["packet_root"]), Path(launch["attempt_root"]),
+                                                  load_arm=load_arm, check_liveness=check_liveness)
+                    print(json.dumps(result, indent=2, sort_keys=True))
+                    code = 0 if result.get("status") in {"PARITY_PASS", "PARITY_FAIL"} else 2
                 except SystemExit as exc:
                     code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)
                 except BaseException:

@@ -513,7 +513,7 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
                                 env=env, text=True, capture_output=True, timeout=30)
         if entry == "worker":
             assert result.returncode != 0
-            assert "in-memory capability" in result.stderr
+            assert "Direct checker execution is refused" in result.stderr
         else:
             assert result.returncode == 0, result.stderr
         assert not marker.exists()

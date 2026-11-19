@@ -336,13 +336,14 @@ def test_actual_loader_receipt_flows_through_worker_and_auditor(tmp_path, monkey
     monkeypatch.setattr(loader, "MODEL_BYTES", model.stat().st_size)
     monkeypatch.setattr(loader, "verify_packet", lambda root: packet)
     monkeypatch.setattr(loader, "_approved_launch", lambda root, packet: (launch, wsl, live))
-    monkeypatch.setattr(loader, "_construct_calculator", lambda snapshot: ZeroCalculator())
     monkeypatch.setattr(sys, "meta_path", [loader.importlib.machinery.BuiltinImporter,
                         loader.importlib.machinery.FrozenImporter, loader.importlib.machinery.PathFinder])
     monkeypatch.setattr(worker, "validate_inputs", lambda root: fixture_inputs())
-    # This integration fixture substitutes a fake calculator, never a model.
-    monkeypatch.setattr(loader, "_worker_capability", lambda *args: None)
-    result = worker.run_parity(packet_root, attempt)
+    # Explicit fake provider for the numerical library test; no public launch
+    # gate is replaced and the protected real constructor is not reachable.
+    result = worker._run_parity(packet_root, attempt, check_liveness=lambda *args: None,
+        load_arm=lambda packet_root, attempt_root, **kwargs: loader._load_admitted_arm(
+            packet_root, attempt_root, constructor=lambda snapshot: ZeroCalculator(), **kwargs))
     assert result["status"] == "PARITY_PASS"
     receipt = json.loads((attempt / "admission-receipt.json").read_text())
     assert receipt["model_snapshot"]["model_sha256"] == digest(model)
