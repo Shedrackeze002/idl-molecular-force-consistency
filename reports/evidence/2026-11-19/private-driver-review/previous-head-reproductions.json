@@ -1,0 +1,16 @@
+{
+  "status": "EXPECTED_FAILURES_REPRODUCED",
+  "previous_commit": "83842ef97b112b5d88d5cde5ef4f033932462923",
+  "pytest_exit_code": 1,
+  "expected_failures": [
+    "forged module callback",
+    "SIGQUIT detached worker",
+    "interrupted initial RUNNING receipt"
+  ],
+  "passing_controls": [
+    "SIGTERM",
+    "SIGINT",
+    "SIGHUP"
+  ],
+  "execution_boundary": "Synthetic markers and disposable children only; no checkpoint/model execution."
+}
