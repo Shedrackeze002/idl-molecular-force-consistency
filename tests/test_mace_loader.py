@@ -512,9 +512,10 @@ def test_isolated_bootstrap_blocks_startup_hook_and_dependency_shadows(tmp_path)
     for entry in ("supervisor", "worker", "audit"):
         result = subprocess.run(bootstrap_probe(sys.executable, bootstrap, entry, "--help"), cwd=tmp_path,
                                 env=env, text=True, capture_output=True, timeout=30)
-        if entry == "worker":
+        if entry in ("worker", "supervisor"):
             assert result.returncode != 0
-            assert "Direct checker execution is refused" in result.stderr
+            refusal = "Direct checker execution" if entry == "worker" else "Direct supervisor main()"
+            assert refusal + " is refused" in result.stderr
         else:
             assert result.returncode == 0, result.stderr
         assert not marker.exists()
