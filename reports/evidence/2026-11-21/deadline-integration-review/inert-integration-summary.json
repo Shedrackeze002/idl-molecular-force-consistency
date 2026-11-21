@@ -1,0 +1,18 @@
+{
+  "status": "PARITY_PASS",
+  "supervisor_status": "WORKER_COMPLETED",
+  "calculator_kind": "inert analytic ASE test double; no learned model",
+  "observed_constructions": 1,
+  "observed_force_requests": 974,
+  "observed_energy_requests": 974,
+  "record_count": 974,
+  "record_order_matches": true,
+  "saved_energy_matches": true,
+  "saved_forces_match": true,
+  "energy_dtype": "float64",
+  "force_dtype": "float64",
+  "max_abs_energy_eV": 0.0,
+  "max_abs_force_eV_per_angstrom": 0.0,
+  "prediction_sha256_matches_receipt": true,
+  "model_bytes_are_inert": true
+}
