@@ -154,7 +154,19 @@ cannot change between the trust check and startup through a later source edit.
 All runtime modules in the execution copy are read-only; protect this private
 directory from other writers during the attempt.
 
-The trusted setup time is included in the supervisor's existing shared deadline.
+The shared deadline is armed before policy preparation using a POSIX interval
+timer in the protected launcher. It actively interrupts synchronous policy/source
+checks, Git subprocess waits, snapshot staging and import configuration, then
+remains active through supervision. The worker uses the same initial monotonic
+start time; setup does not receive a second budget. Entering bounded cleanup
+disarms the one-shot alarm so it cannot interrupt owned-group termination.
+
+A setup timeout emits terminal TIMEOUT JSON on stdout. Once the policy and
+receipts have authenticated a fresh attempt path, it also retains that status
+and empty logs there. Before that point it emits evidence without writing to
+unverified receipt paths. A racing/pre-existing directory is never overwritten.
+Git waits interrupted before a worker exists are killed and reaped; a timeout
+during the worker handoff also cleans its entire owned group.
 Audit uses the retained execution copy and rechecks its source bytes and receipts.
 The mutable checkout may have changed after execution without changing the
 recorded execution copy. No project import is needed to perform these checks.
@@ -201,3 +213,12 @@ Fresh-directory ownership, log creation and the initial RUNNING receipt write
 are inside the same interruption/status handling. An interruption immediately
 after that write records terminal INTERRUPTED status and retains empty logs
 without starting a worker. A recoverable initial write error records SETUP_FAILED.
+
+The inert integration regression exercises the protected external launcher,
+unchanged 974-record parity routine, private loader, actual admission/source and
+packet checks, model-byte copy/hash, shared adapter and saved predictions. Its
+only calculator is an analytical ASE test double in a synthetic Git snapshot;
+it reads plain non-model bytes and never imports Torch/MACE or deserializes a
+checkpoint. It verifies one construction, exact force/energy request counts,
+record order across permuted input storage, saved arrays and receipt hashes.
+This model-free test is not learned-prediction parity or launch authorization.

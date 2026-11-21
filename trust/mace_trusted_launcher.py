@@ -115,7 +115,7 @@ def stage_git_objects(source, execution, commit, baseline):
     (execution / ".git/HEAD").write_text(commit + "\n")
 
 
-def prepare(policy_path, policy_sha256, entry):
+def prepare(policy_path, policy_sha256, entry, *, setup_state=None):
     if entry not in ("supervisor", "audit"):
         raise ValueError("worker preparation is private to the bounded supervisor")
     policy = pinned_json(policy_path, policy_sha256)
@@ -166,6 +166,10 @@ def prepare(policy_path, policy_sha256, entry):
     if entry == "supervisor":
         if execution.exists() or attempt.exists():
             raise ValueError("execution and attempt roots must both be fresh")
+        if setup_state is not None:
+            # Only an authenticated, approved and fresh path may receive setup
+            # timeout evidence. Never trust a partially read policy for writes.
+            setup_state["attempt"] = attempt
         sources = verify_sources(checkout, commit)
         # These files are loaded from captured verified bytes, not copied again
         # from the mutable checkout. Rechecks cannot introduce a check/use race.
@@ -237,6 +241,52 @@ def main():
     if os.name == "posix":
         TERMINATION_SIGNALS += (signal.SIGHUP, signal.SIGQUIT)
 
+    class SetupTimedOut(BaseException):
+        pass
+
+    @contextmanager
+    def setup_deadline(deadline):
+        """Interrupt synchronous trusted setup, including Git subprocess waits."""
+        if os.name != "posix" or not hasattr(signal, "setitimer"):
+            raise ValueError("trusted setup requires the approved WSL/POSIX timer")
+        previous_handler = signal.getsignal(signal.SIGALRM)
+        began = time.monotonic()
+
+        def expired(signum, frame):
+            raise SetupTimedOut()
+
+        signal.signal(signal.SIGALRM, expired)
+        previous_timer = signal.setitimer(signal.ITIMER_REAL, max(.000001, deadline - began))
+        try:
+            yield
+        finally:
+            signal.setitimer(signal.ITIMER_REAL, 0)
+            signal.signal(signal.SIGALRM, previous_handler)
+            if previous_timer[0] or previous_timer[1]:
+                remaining = max(.000001, previous_timer[0] - (time.monotonic() - began))
+                signal.setitimer(signal.ITIMER_REAL, remaining, previous_timer[1])
+
+    def retain_setup_timeout(state, started):
+        receipt = {"status": "TIMEOUT", "failure_stage": "trusted_setup",
+                   "worker_started": state.get("worker_started", False), "exit_code": None,
+                   "timeout_seconds": WALL_SECONDS, "elapsed_seconds": time.monotonic() - started}
+        attempt = state.get("attempt")
+        if attempt is not None:
+            try:
+                if state.get("owned_attempt") != attempt:
+                    attempt.mkdir(mode=0o700, parents=True, exist_ok=False)
+            except OSError as exc:
+                receipt["evidence_error"] = str(exc)
+            else:
+                try:
+                    (attempt / "stdout.log").touch(exist_ok=True)
+                    (attempt / "stderr.log").touch(exist_ok=True)
+                    (attempt / "supervisor-status.json").write_text(json.dumps(receipt, indent=2) + "\n")
+                except OSError as exc:
+                    receipt["evidence_error"] = str(exc)
+        print(json.dumps(receipt, indent=2, sort_keys=True))
+        print("TRUST_TIMEOUT: shared deadline expired during trusted setup", file=sys.stderr)
+
 
     class SupervisorInterrupted(BaseException):
         def __init__(self, signum):
@@ -253,12 +303,16 @@ def main():
         def interrupt(signum, frame):
             nonlocal interrupted
             if not interrupted:
-                interrupted = True
+                begin_cleanup()
                 raise SupervisorInterrupted(signum)
 
         def begin_cleanup():
             nonlocal interrupted
             interrupted = True
+            if os.name == "posix":
+                # Cleanup has its own bounded grace. A second alarm must not
+                # cut short group termination after an earlier interruption.
+                signal.setitimer(signal.ITIMER_REAL, 0)
 
         try:
             for signum in TERMINATION_SIGNALS:
@@ -361,6 +415,7 @@ def main():
             with _defer_spawn_signals():
                 output.mkdir(parents=True, exist_ok=False)
                 created = True
+                setup_state["owned_attempt"] = output
             stdout_path.touch(exist_ok=False)
             stderr_path.touch(exist_ok=False)
             status_path.write_text(json.dumps(receipt, indent=2) + "\n")
@@ -458,8 +513,10 @@ def main():
                 status_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
             return receipt
         except BaseException as exc:
+            begin_cleanup()
             if not created:
                 raise
+            timed_out = isinstance(exc, SetupTimedOut)
             interrupted = isinstance(exc, (SupervisorInterrupted, KeyboardInterrupt, SystemExit))
             cleanup_error = None
             if process is not None:
@@ -468,7 +525,7 @@ def main():
                     _terminate_owned_group(process)
                 except BaseException as cleanup_exc:
                     cleanup_error = str(cleanup_exc)
-            failure_status = ("INTERRUPTED" if interrupted else
+            failure_status = ("TIMEOUT" if timed_out else "INTERRUPTED" if interrupted else
                               {"spawn": "SPAWN_FAILED", "monitor": "CLEANUP_FAILED"}.get(stage, "SETUP_FAILED"))
             if cleanup_error is not None:
                 failure_status = "CLEANUP_FAILED"
@@ -481,6 +538,8 @@ def main():
                 receipt["signal"] = getattr(exc, "signum", None)
             if cleanup_error is not None:
                 receipt["cleanup_error"] = cleanup_error
+            if timed_out:
+                receipt["worker_started"] = setup_state.get("worker_started", process is not None)
             # An interruption may precede one or both log creations. Preserve any
             # existing worker output; create only missing empty files.
             stdout_path.touch(exist_ok=True)
@@ -542,7 +601,7 @@ def main():
                     command[0] = str(execution / selected)
                     launch = json.loads((execution / ".trusted-receipts/launch.json").read_bytes())
                     worker_pid = os.getpid()
-                    deadline = float(os.environ["MACE_TRUST_STARTED"]) + 1800
+                    deadline = float(os.environ["MACE_TRUST_STARTED"]) + WALL_SECONDS
 
                     def check_liveness(packet_root=None, attempt_root=None):
                         if (os.getpid() != worker_pid or os.getppid() != owner
@@ -645,6 +704,7 @@ def main():
                     finally:
                         os._exit(code)
             os.close(ready_write)
+            setup_state["worker_started"] = True
             process = OwnedWorker(pid)
             try:
                 # Do not return until the owned process group exists. Startup and
@@ -653,10 +713,14 @@ def main():
                 if not readable or os.read(ready_read, 1) != b"R":
                     raise ValueError("worker did not establish its owned process group")
             except BaseException:
-                try:
-                    os.kill(pid, signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
+                # The deadline can expire before this factory returns its
+                # handle to the monitor. Kill the whole group here too.
+                for kill in (lambda: os.killpg(pid, signal.SIGKILL),
+                             lambda: os.kill(pid, signal.SIGKILL)):
+                    try:
+                        kill()
+                    except ProcessLookupError:
+                        pass
                 process.wait(timeout=5)
                 raise
             finally:
@@ -673,39 +737,45 @@ def main():
     parser.add_argument("--entry", choices=("supervisor", "audit"), required=True)
     args = parser.parse_args()
     started = time.monotonic()
+    setup_state = {}
     try:
         # This independent digest cannot be embedded in the receipt that this
         # policy itself hashes, which would create a circular digest binding.
-        policy_sha256 = args.policy_sha256 or os.environ.get("MACE_TRUST_POLICY_SHA256")
-        if not policy_sha256:
-            raise ValueError("an independently pinned external policy digest is required")
-        command, execution, verified, selected = prepare(args.policy.resolve(), policy_sha256, args.entry)
+        with setup_deadline(started + WALL_SECONDS):
+            policy_sha256 = args.policy_sha256 or os.environ.get("MACE_TRUST_POLICY_SHA256")
+            if not policy_sha256:
+                raise ValueError("an independently pinned external policy digest is required")
+            command, execution, verified, selected = prepare(args.policy.resolve(), policy_sha256, args.entry,
+                                                              setup_state=setup_state)
+            # Do not inherit Python/Git environment knobs into verified project code.
+            env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "GIT_"))}
+            env["MACE_TRUST_STARTED"] = str(started)
+            env["MACE_TRUST_POLICY_SHA256"] = policy_sha256
+            os.environ.clear()
+            os.environ.update(env)
+            os.chdir(execution)
+            sys.dont_write_bytecode = True
+            bootstrap_path = str(execution / "scripts/mace_bootstrap.py")
+            namespace = {"__name__": "verified_mace_bootstrap", "__file__": bootstrap_path}
+            exec(compile(verified["scripts/mace_bootstrap.py"], bootstrap_path, "exec"), namespace)
+            namespace["configure_imports"]()
+            if args.entry == "supervisor":
+                worker_spawn = supervisor_worker_spawn(args.policy.resolve(), policy_sha256)
+                fields = dict(zip(command[1::2], command[2::2]))
+                result = supervise(Path(fields["--packet-root"]), Path(fields["--output"]),
+                                   launch_receipt=Path(fields["--launch-receipt"]),
+                                   wsl_admission_receipt=Path(fields["--wsl-admission-receipt"]))
+            else:
+                dispatch(command, verified, selected)
+    except SetupTimedOut:
+        retain_setup_timeout(setup_state, started)
+        return 2
     except (ValueError, OSError, subprocess.SubprocessError) as exc:
         print("TRUST_REFUSED: " + str(exc), file=sys.stderr)
         return 2
-    # Do not inherit Python/Git environment knobs into verified project code.
-    env = {k: v for k, v in os.environ.items() if not k.startswith(("PYTHON", "GIT_"))}
-    env["MACE_TRUST_STARTED"] = str(started)
-    env["MACE_TRUST_POLICY_SHA256"] = policy_sha256
-    os.environ.clear()
-    os.environ.update(env)
-    os.chdir(execution)
-    sys.dont_write_bytecode = True
-    # Dispatch exists only in this separately provisioned trust root. Execute
-    # the captured authenticated bytes, never re-read an entry or a pyc file.
-    bootstrap_path = str(execution / "scripts/mace_bootstrap.py")
-    namespace = {"__name__": "verified_mace_bootstrap", "__file__": bootstrap_path}
-    exec(compile(verified["scripts/mace_bootstrap.py"], bootstrap_path, "exec"), namespace)
-    namespace["configure_imports"]()
     if args.entry == "supervisor":
-        worker_spawn = supervisor_worker_spawn(args.policy.resolve(), policy_sha256)
-        fields = dict(zip(command[1::2], command[2::2]))
-        result = supervise(Path(fields["--packet-root"]), Path(fields["--output"]),
-                           launch_receipt=Path(fields["--launch-receipt"]),
-                           wsl_admission_receipt=Path(fields["--wsl-admission-receipt"]))
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["status"] == "WORKER_COMPLETED" else 2
-    dispatch(command, verified, selected)
     return 0
 
 

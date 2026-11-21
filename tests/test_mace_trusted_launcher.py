@@ -53,6 +53,9 @@ def boundary(tmp_path, request):
         # Runtime moved one lexical level into protected main(). Synthetic
         # source edits remain pinned by the fixture's immutable Git commit.
         runtime.write_text(runtime.read_text().replace(before, after.replace("\n", "\n    ")))
+    for before, after in variant.get("launcher_edits", []):
+        assert before in runtime.read_text()
+        runtime.write_text(runtime.read_text().replace(before, after))
     worker_body = (
         "from pathlib import Path\nimport os,json,sys\n"
         f"attempt=Path({str(tmp_path / 'attempt')!r})\n"
@@ -72,6 +75,13 @@ def boundary(tmp_path, request):
             if isinstance(node, ast.FunctionDef) and node.name == "_run_parity":
                 node.body = ast.parse(worker_body).body
         (root / "scripts/check_mace_parity.py").write_text(ast.unparse(tree) + "\n")
+    integration = None
+    if variant.get("integration"):
+        from mace_test_runtime import inert_packet_sources
+        integration = inert_packet_sources(root,tmp_path/"packet",tmp_path/"attempt")
+        # Import immutable baseline objects, not a mutable working-tree bridge.
+        trusted.stage_git_objects(SOURCE.parents[1],root,git(SOURCE.parents[1],"rev-parse","HEAD"),
+                                  "3fa5969e5a0c2fdeaebc76a05bace20799715203")
     git(root, "add", ".")
     git(root, "commit", "-qm", "synthetic approved implementation")
     commit = git(root, "rev-parse", "HEAD")
@@ -83,8 +93,11 @@ def boundary(tmp_path, request):
     packet = tmp_path / "packet"
     attempt = tmp_path / "attempt"
     admission = control / "admission.json"
-    admission.write_text(json.dumps({"status": "APPROVED", "identities": {
-        "implementation_commit": commit}}))
+    admission_data={"status":"APPROVED","identities":{"implementation_commit":commit}}
+    if integration is not None:
+        from mace_test_runtime import inert_admission
+        admission_data=inert_admission(root,commit)
+    admission.write_text(json.dumps(admission_data))
     launch = control / "launch.json"
     policy = control / "policy.json"
     launch.write_text(json.dumps({"status": "APPROVED", "implementation_commit": commit,
@@ -98,23 +111,130 @@ def boundary(tmp_path, request):
             "review_id": str(i), "reviewer": "synthetic-" + str(i),
             "url": "https://example.test/review/" + str(i)} for i in (1, 2)],
         "trusted_launcher": str(launcher), "trusted_policy": str(policy),
+        "species": ["H"]*21,
         "packet_root": str(packet), "attempt_root": str(attempt),
         "wsl_admission_receipt": "admission.json", "wsl_admission_sha256": sha(admission)}))
     policy.write_text(json.dumps({"schema": 1, "status": "APPROVED",
         "checkout_root": str(root), "execution_root": str(execution),
-        "implementation_commit": commit, "baseline_commit": commit, "python_executable": sys.executable,
+        "implementation_commit": commit,
+        "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203" if integration is not None else commit,
+        "python_executable": sys.executable,
         "trusted_launcher_sha256": sha(launcher),
         "launch_receipt": str(launch), "launch_sha256": sha(launch),
         "wsl_admission_receipt": str(admission), "wsl_admission_sha256": sha(admission)}))
     return dict(root=root, control=control, launcher=launcher, policy=policy,
                 policy_hash=sha(policy), execution=execution, marker=marker, commit=commit,
-                attempt=attempt)
+                attempt=attempt, integration=integration)
 
 
 def run(case, entry="supervisor", cwd=None):
     return subprocess.run([sys.executable, "-I", "-S", str(case["launcher"]),
         "--policy", str(case["policy"]), "--policy-sha256", case["policy_hash"], "--entry", entry],
         cwd=cwd, text=True, capture_output=True, timeout=90)
+
+
+@pytest.mark.parametrize("boundary", [{"integration":True}], indirect=True)
+def test_protected_launcher_runs_actual_parity_through_private_loader(boundary):
+    import numpy as np
+    assert (boundary["root"]/"scripts/check_mace_parity.py").read_bytes()==(
+        SOURCE.parents[1]/"scripts/check_mace_parity.py").read_bytes()
+    result=run(boundary)
+    assert result.returncode==0, (result.stdout,result.stderr,
+        (boundary["attempt"]/"stderr.log").read_text() if (boundary["attempt"]/"stderr.log").exists() else "")
+    attempt=boundary["attempt"]
+    supervisor=json.loads((attempt/"supervisor-status.json").read_text())
+    parity=json.loads((attempt/"parity-status.json").read_text())
+    admission=json.loads((attempt/"admission-receipt.json").read_text())
+    assert supervisor["status"]=="WORKER_COMPLETED" and supervisor["exit_code"]==0
+    assert parity["status"]=="PARITY_PASS"
+    assert parity["construction_count"]==1
+    assert parity["record_count"]==parity["persisted_records"]==974
+    assert parity["force_requests"]==parity["energy_requests"]==974
+    assert parity["max_abs_energy_eV"]==parity["max_abs_force_eV_per_angstrom"]==0
+    events=[json.loads(line) for line in (attempt/"inert-events.jsonl").read_text().splitlines()]
+    assert len(events)==1949 and events[0]["kind"]=="construction"
+    assert {event["pid"] for event in events}=={events[0]["pid"]}
+    assert [event["kind"] for event in events[1:]]==["forces","energy"]*974
+    expected=boundary["integration"]
+    assert [event["index"] for event in events[1::2]]==expected["indices"]
+    assert [event["index"] for event in events[2::2]]==expected["indices"]
+    for filename in ("predictions.npz","predictions-partial.npz"):
+        with np.load(attempt/filename,allow_pickle=False) as saved:
+            assert saved["record_ids"].tolist()==expected["record_ids"]
+            np.testing.assert_array_equal(saved["energy"],expected["energy"])
+            np.testing.assert_array_equal(saved["forces"],expected["forces"])
+    assert parity["prediction_file_sha256"]==sha(attempt/"predictions.npz")
+    assert parity["admission_receipt_sha256"]==sha(attempt/"admission-receipt.json")
+    snapshot=attempt/"private/final_epoch.model"
+    assert snapshot.read_bytes()==b"INERT FIXTURE - NOT A SERIALIZED MODEL\n"
+    assert admission["model_snapshot"]["model_sha256"]==sha(snapshot)
+    assert admission["post_construction_sha256"]==sha(snapshot)
+    assert parity["final_model_snapshot"]["sha256"]==sha(snapshot)
+
+
+@pytest.mark.parametrize("boundary", [{"supervisor_edits":[
+    ("WALL_SECONDS = 1800","WALL_SECONDS = .2"),
+    ],"launcher_edits":[
+    ("sources = verify_sources(checkout, commit)","time.sleep(1.25)\n        sources = verify_sources(checkout, commit)")]}],indirect=True)
+def test_setup_delay_is_interrupted_at_shared_deadline_and_retained(boundary):
+    started=time.monotonic()
+    result=run(boundary)
+    elapsed=time.monotonic()-started
+    assert result.returncode==2
+    assert "TRUST_TIMEOUT" in result.stderr
+    assert elapsed<.85, (elapsed,result.stdout,result.stderr)
+    status=json.loads((boundary["attempt"]/"supervisor-status.json").read_text())
+    assert status["status"]=="TIMEOUT" and status["failure_stage"]=="trusted_setup"
+    assert status["worker_started"] is False and status["exit_code"] is None
+    assert status["elapsed_seconds"]<.7
+    assert (boundary["attempt"]/"stdout.log").read_bytes()==b""
+    assert not boundary["marker"].exists()
+    assert not boundary["execution"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"supervisor_edits":[("WALL_SECONDS = 1800","WALL_SECONDS = .2")],
+    "launcher_edits":[("policy = pinned_json(policy_path, policy_sha256)",
+        "time.sleep(1.25)\n    policy = pinned_json(policy_path, policy_sha256)")]}],indirect=True)
+def test_timeout_before_authentication_emits_evidence_without_unverified_writes(boundary):
+    started=time.monotonic()
+    result=run(boundary)
+    assert time.monotonic()-started<.85
+    assert result.returncode==2 and "TRUST_TIMEOUT" in result.stderr
+    status=json.loads(result.stdout)
+    assert status["status"]=="TIMEOUT" and status["worker_started"] is False
+    assert not boundary["attempt"].exists() and not boundary["execution"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"supervisor_edits":[("WALL_SECONDS = 1800","WALL_SECONDS = .2")],
+    "launcher_edits":[("def git(checkout, *args):",'''def git(checkout, *args):
+    if args == ("rev-parse", "HEAD"):
+        return subprocess.check_output([sys.executable,"-I","-S","-c",
+            "import os,sys,time;open(sys.argv[1],'w').write(str(os.getpid()));time.sleep(1.25)",
+            str(checkout/"setup-git.pid")])''')]}],indirect=True)
+def test_setup_deadline_interrupts_and_reaps_synchronous_git_wait(boundary):
+    started=time.monotonic()
+    result=run(boundary)
+    assert time.monotonic()-started<.85
+    assert result.returncode==2 and "TRUST_TIMEOUT" in result.stderr
+    status=json.loads((boundary["attempt"]/"supervisor-status.json").read_text())
+    assert status["status"]=="TIMEOUT" and status["worker_started"] is False
+    pid=int((boundary["root"]/"setup-git.pid").read_text())
+    with pytest.raises(ProcessLookupError): os.kill(pid,0)
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"supervisor_edits":[("WALL_SECONDS = 1800","WALL_SECONDS = 2")],
+    "launcher_edits":[('namespace["configure_imports"]()',
+        '(execution/"imports-entered").touch()\n            time.sleep(3.25)\n            namespace["configure_imports"]()')]}],indirect=True)
+def test_import_configuration_uses_the_same_initial_deadline(boundary):
+    started=time.monotonic()
+    result=run(boundary)
+    assert time.monotonic()-started<2.75
+    assert result.returncode==2 and "TRUST_TIMEOUT" in result.stderr
+    assert (boundary["execution"]/"imports-entered").exists()
+    status=json.loads((boundary["attempt"]/"supervisor-status.json").read_text())
+    assert status["status"]=="TIMEOUT" and status["worker_started"] is False
+    assert not boundary["marker"].exists()
 
 
 @pytest.mark.parametrize("relative", ["scripts/mace_bootstrap.py", "scripts/check_mace_parity.py",
