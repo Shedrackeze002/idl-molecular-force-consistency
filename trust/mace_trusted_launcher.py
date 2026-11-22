@@ -325,9 +325,13 @@ def main():
 
     @contextmanager
     def _defer_spawn_signals():
-        """Assign the child to cleanup state before delivering a pending signal."""
+        """Defer interruption only across resource acquisition and registration.
+
+        Readiness waits must stay outside this scope so the shared deadline can
+        interrupt them. Cleanup ownership outlives this mask and the handoff.
+        """
         if os.name == "posix":
-            previous = signal.pthread_sigmask(signal.SIG_BLOCK, TERMINATION_SIGNALS)
+            previous = signal.pthread_sigmask(signal.SIG_BLOCK, (*TERMINATION_SIGNALS, signal.SIGALRM))
             try:
                 yield
             finally:
@@ -364,6 +368,13 @@ def main():
                     process.kill()
                     process.wait(timeout=5)
             return
+        if not _group_alive(process) and process.poll() is None:
+            # A queued alarm can be delivered before the child calls setsid().
+            # Stop that owned PID as well; no process group exists to signal yet.
+            try:
+                os.kill(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
         if _group_alive(process):
             os.killpg(process.pid, signal.SIGTERM)
         grace = time.monotonic() + 5
@@ -449,8 +460,7 @@ def main():
             with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
               if reason is None:
                 if command is None:
-                    with _defer_spawn_signals():
-                        process = worker_spawn(stdout, stderr)
+                    process = worker_spawn(stdout, stderr)
                 else:
                     process = subprocess.Popen(worker, stdout=stdout, stderr=stderr,
                                                creationflags=creationflags, start_new_session=start_new_session)
@@ -516,6 +526,10 @@ def main():
             begin_cleanup()
             if not created:
                 raise
+            # The deadline can interrupt the factory or its return before the
+            # assignment above. Its parent-side registry owns the child already.
+            if process is None and command is None:
+                process = setup_state.get("worker")
             timed_out = isinstance(exc, SetupTimedOut)
             interrupted = isinstance(exc, (SupervisorInterrupted, KeyboardInterrupt, SystemExit))
             cleanup_error = None
@@ -564,6 +578,131 @@ def main():
         owner = os.getpid()
         used = False
 
+        def run_child(stdout, stderr, ready_read, ready_write):
+            os.close(ready_read)
+            code = 2
+            try:
+                os.setsid()
+                # Resource acquisition defers alarms and terminal signals.
+                # Reset the inherited handlers before unblocking in the child.
+                terminal_signals = {*TERMINATION_SIGNALS, signal.SIGALRM}
+                for terminal_signal in terminal_signals:
+                    signal.signal(terminal_signal, signal.SIG_DFL)
+                signal.pthread_sigmask(signal.SIG_UNBLOCK, terminal_signals)
+                os.dup2(stdout.fileno(), 1)
+                os.dup2(stderr.fileno(), 2)
+                os.write(ready_write, b"R")
+                os.close(ready_write)
+                # Audit preparation authenticates the entire retained tree
+                # without staging or exposing a public worker selection.
+                command, execution, verified, _ = prepare(policy_path, policy_sha256, "audit")
+                selected = "scripts/check_mace_parity.py"
+                command[0] = str(execution / selected)
+                launch = json.loads((execution / ".trusted-receipts/launch.json").read_bytes())
+                worker_pid = os.getpid()
+                deadline = float(os.environ["MACE_TRUST_STARTED"]) + WALL_SECONDS
+
+                def check_liveness(packet_root=None, attempt_root=None):
+                    if (os.getpid() != worker_pid or os.getppid() != owner
+                            or os.getsid(0) != worker_pid or time.monotonic() >= deadline):
+                        raise ValueError("supervised worker is no longer live")
+                    for supplied, approved in ((packet_root, launch["packet_root"]),
+                                               (attempt_root, launch["attempt_root"])):
+                        if supplied is not None and str(Path(supplied).resolve()) != approved:
+                            raise ValueError("worker does not authorize these paths")
+
+                import mace_loader
+
+                def construct(snapshot):
+                    # The real constructor is private to this authenticated
+                    # child. No project module/global exports this provider.
+                    check_liveness()
+                    mace_loader._require_standard_finders()
+                    validate = mace_loader.validate_dependency_imports
+                    validate(("mace.calculators.mace", "torch", "numpy", "ase.io"))
+                    import torch
+                    import mace
+                    validate(("mace.calculators.mace",))
+                    import mace.calculators
+                    validate(("mace.calculators.mace",))
+                    from mace.calculators.mace import MACECalculator
+                    validate(("mace.calculators.mace",))
+                    if MACECalculator.__module__ != "mace.calculators.mace":
+                        raise ValueError("constructor is not defined in the approved MACE module")
+                    torch.set_num_threads(1)
+                    return MACECalculator(model_paths=[str(snapshot)], device="cpu",
+                        default_dtype="float64", enable_cueq=False, enable_oeq=False, compile_mode=None)
+
+                def load_arm(packet_root, attempt_root, *, expected_species):
+                    check_liveness(packet_root, attempt_root)
+                    verify_packet = mace_loader.verify_packet
+                    _approved_launch = mace_loader._approved_launch
+                    _validate_import_origins = mace_loader._validate_import_origins
+                    _regular_file = mace_loader._regular_file
+                    MODEL_RELATIVE = mace_loader.MODEL_RELATIVE
+                    _sha256 = mace_loader._sha256
+                    MODEL_SHA256 = mace_loader.MODEL_SHA256
+                    MODEL_BYTES = mace_loader.MODEL_BYTES
+                    AdmissionError = mace_loader.AdmissionError
+                    packet = verify_packet(packet_root)
+                    launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
+                    _validate_import_origins(live)
+                    species = launch.get("species")
+                    from ase.data import atomic_numbers
+                    if (not isinstance(species, list) or len(species) != 21
+                            or any(not isinstance(x, str) or atomic_numbers.get(x, 0) <= 0 for x in species)):
+                        raise AdmissionError("launch receipt must contain exactly 21 real element symbols")
+                    if expected_species is None or tuple(species) != tuple(expected_species):
+                        raise AdmissionError("launch species order differs from validated input frames")
+                    snapshot = Path(attempt_root) / "private" / "final_epoch.model"
+                    snapshot.parent.mkdir(parents=True, exist_ok=False)
+                    source = _regular_file(Path(packet_root), MODEL_RELATIVE)
+                    with source.open("rb") as incoming, snapshot.open("xb") as outgoing:
+                        shutil.copyfileobj(incoming, outgoing)
+                        outgoing.flush()
+                        os.fsync(outgoing.fileno())
+                    before = _sha256(snapshot)
+                    if before != MODEL_SHA256 or snapshot.stat().st_size != MODEL_BYTES:
+                        raise AdmissionError("copied model snapshot failed identity check")
+                    _validate_import_origins(live)
+                    check_liveness(packet_root, attempt_root)
+                    calculator = construct(snapshot.resolve())
+                    after = _sha256(snapshot)
+                    if after != before:
+                        raise AdmissionError("model snapshot changed during construction")
+                    from mace_reference_adapter import calculator_arm
+                    identity = {"model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES,
+                                "snapshot_path": str(snapshot.resolve()), "epoch_index": 2047}
+                    arm = calculator_arm(calculator, species, arm_id="mace-runA-final-ema",
+                                         checkpoint_identity=identity)
+                    receipt = {"status": "ADMITTED", "packet": packet,
+                               "model_snapshot": identity, "post_construction_sha256": after,
+                               "constructor": {"device": "cpu", "torch_threads": 1,
+                                               "default_dtype": "float64", "enable_cueq": False,
+                                               "enable_oeq": False, "compile_mode": None},
+                               "launch_receipt": launch, "wsl_admission": admission,
+                               "live_identity_comparison": live}
+                    (Path(attempt_root) / "admission-receipt.json").write_text(
+                        json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+                    return arm, receipt
+
+                check_liveness()
+                worker = dispatch(command, verified, selected, module_name="verified_worker_library")
+                result = worker["_run_parity"](Path(launch["packet_root"]), Path(launch["attempt_root"]),
+                                              load_arm=load_arm, check_liveness=check_liveness)
+                print(json.dumps(result, indent=2, sort_keys=True))
+                code = 0 if result.get("status") in {"PARITY_PASS", "PARITY_FAIL"} else 2
+            except SystemExit as exc:
+                code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)
+            except BaseException:
+                traceback.print_exc()
+            finally:
+                try:
+                    sys.stdout.flush()
+                    sys.stderr.flush()
+                finally:
+                    os._exit(code)
+
         def spawn(stdout, stderr):
             nonlocal used
             if used or os.getpid() != owner:
@@ -571,161 +710,33 @@ def main():
             used = True
             if os.name != "posix" or not hasattr(os, "fork"):
                 raise ValueError("production worker requires the approved WSL/POSIX runtime")
-            ready_read, ready_write = os.pipe()
+            ready_read = ready_write = None
             try:
-                pid = os.fork()
-            except BaseException:
-                os.close(ready_read)
-                os.close(ready_write)
-                raise
-            if pid == 0:
-                os.close(ready_read)
-                code = 2
-                try:
-                    os.setsid()
-                    # The supervisor defers terminal signals across assignment
-                    # of this child to its cleanup state. Do not inherit its
-                    # blocked mask or Python interruption handlers.
-                    terminal_signals = {signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT}
-                    for terminal_signal in terminal_signals:
-                        signal.signal(terminal_signal, signal.SIG_DFL)
-                    signal.pthread_sigmask(signal.SIG_UNBLOCK, terminal_signals)
-                    os.dup2(stdout.fileno(), 1)
-                    os.dup2(stderr.fileno(), 2)
-                    os.write(ready_write, b"R")
+                # A pending deadline may be delivered as this scope exits. The
+                # supervisor's registry must already own the child at that point.
+                with _defer_spawn_signals():
+                    ready_read, ready_write = os.pipe()
+                    pid = os.fork()
+                    if pid == 0:
+                        run_child(stdout, stderr, ready_read, ready_write)
+                    process = OwnedWorker(pid)
+                    setup_state["worker"] = process
+                    setup_state["worker_started"] = True
+                with _defer_spawn_signals():
                     os.close(ready_write)
-                    # Audit preparation authenticates the entire retained tree
-                    # without staging or exposing a public worker selection.
-                    command, execution, verified, _ = prepare(policy_path, policy_sha256, "audit")
-                    selected = "scripts/check_mace_parity.py"
-                    command[0] = str(execution / selected)
-                    launch = json.loads((execution / ".trusted-receipts/launch.json").read_bytes())
-                    worker_pid = os.getpid()
-                    deadline = float(os.environ["MACE_TRUST_STARTED"]) + WALL_SECONDS
-
-                    def check_liveness(packet_root=None, attempt_root=None):
-                        if (os.getpid() != worker_pid or os.getppid() != owner
-                                or os.getsid(0) != worker_pid or time.monotonic() >= deadline):
-                            raise ValueError("supervised worker is no longer live")
-                        for supplied, approved in ((packet_root, launch["packet_root"]),
-                                                   (attempt_root, launch["attempt_root"])):
-                            if supplied is not None and str(Path(supplied).resolve()) != approved:
-                                raise ValueError("worker does not authorize these paths")
-
-                    import mace_loader
-
-                    def construct(snapshot):
-                        # The real constructor is private to this authenticated
-                        # child. No project module/global exports this provider.
-                        check_liveness()
-                        mace_loader._require_standard_finders()
-                        validate = mace_loader.validate_dependency_imports
-                        validate(("mace.calculators.mace", "torch", "numpy", "ase.io"))
-                        import torch
-                        import mace
-                        validate(("mace.calculators.mace",))
-                        import mace.calculators
-                        validate(("mace.calculators.mace",))
-                        from mace.calculators.mace import MACECalculator
-                        validate(("mace.calculators.mace",))
-                        if MACECalculator.__module__ != "mace.calculators.mace":
-                            raise ValueError("constructor is not defined in the approved MACE module")
-                        torch.set_num_threads(1)
-                        return MACECalculator(model_paths=[str(snapshot)], device="cpu",
-                            default_dtype="float64", enable_cueq=False, enable_oeq=False, compile_mode=None)
-
-                    def load_arm(packet_root, attempt_root, *, expected_species):
-                        check_liveness(packet_root, attempt_root)
-                        verify_packet = mace_loader.verify_packet
-                        _approved_launch = mace_loader._approved_launch
-                        _validate_import_origins = mace_loader._validate_import_origins
-                        _regular_file = mace_loader._regular_file
-                        MODEL_RELATIVE = mace_loader.MODEL_RELATIVE
-                        _sha256 = mace_loader._sha256
-                        MODEL_SHA256 = mace_loader.MODEL_SHA256
-                        MODEL_BYTES = mace_loader.MODEL_BYTES
-                        AdmissionError = mace_loader.AdmissionError
-                        packet = verify_packet(packet_root)
-                        launch, admission, live = _approved_launch(Path(attempt_root), Path(packet_root))
-                        _validate_import_origins(live)
-                        species = launch.get("species")
-                        from ase.data import atomic_numbers
-                        if (not isinstance(species, list) or len(species) != 21
-                                or any(not isinstance(x, str) or atomic_numbers.get(x, 0) <= 0 for x in species)):
-                            raise AdmissionError("launch receipt must contain exactly 21 real element symbols")
-                        if expected_species is None or tuple(species) != tuple(expected_species):
-                            raise AdmissionError("launch species order differs from validated input frames")
-                        snapshot = Path(attempt_root) / "private" / "final_epoch.model"
-                        snapshot.parent.mkdir(parents=True, exist_ok=False)
-                        source = _regular_file(Path(packet_root), MODEL_RELATIVE)
-                        with source.open("rb") as incoming, snapshot.open("xb") as outgoing:
-                            shutil.copyfileobj(incoming, outgoing)
-                            outgoing.flush()
-                            os.fsync(outgoing.fileno())
-                        before = _sha256(snapshot)
-                        if before != MODEL_SHA256 or snapshot.stat().st_size != MODEL_BYTES:
-                            raise AdmissionError("copied model snapshot failed identity check")
-                        _validate_import_origins(live)
-                        check_liveness(packet_root, attempt_root)
-                        calculator = construct(snapshot.resolve())
-                        after = _sha256(snapshot)
-                        if after != before:
-                            raise AdmissionError("model snapshot changed during construction")
-                        from mace_reference_adapter import calculator_arm
-                        identity = {"model_sha256": MODEL_SHA256, "model_bytes": MODEL_BYTES,
-                                    "snapshot_path": str(snapshot.resolve()), "epoch_index": 2047}
-                        arm = calculator_arm(calculator, species, arm_id="mace-runA-final-ema",
-                                             checkpoint_identity=identity)
-                        receipt = {"status": "ADMITTED", "packet": packet,
-                                   "model_snapshot": identity, "post_construction_sha256": after,
-                                   "constructor": {"device": "cpu", "torch_threads": 1,
-                                                   "default_dtype": "float64", "enable_cueq": False,
-                                                   "enable_oeq": False, "compile_mode": None},
-                                   "launch_receipt": launch, "wsl_admission": admission,
-                                   "live_identity_comparison": live}
-                        (Path(attempt_root) / "admission-receipt.json").write_text(
-                            json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-                        return arm, receipt
-
-                    check_liveness()
-                    worker = dispatch(command, verified, selected, module_name="verified_worker_library")
-                    result = worker["_run_parity"](Path(launch["packet_root"]), Path(launch["attempt_root"]),
-                                                  load_arm=load_arm, check_liveness=check_liveness)
-                    print(json.dumps(result, indent=2, sort_keys=True))
-                    code = 0 if result.get("status") in {"PARITY_PASS", "PARITY_FAIL"} else 2
-                except SystemExit as exc:
-                    code = exc.code if isinstance(exc.code, int) else (0 if exc.code is None else 2)
-                except BaseException:
-                    traceback.print_exc()
-                finally:
-                    try:
-                        sys.stdout.flush()
-                        sys.stderr.flush()
-                    finally:
-                        os._exit(code)
-            os.close(ready_write)
-            setup_state["worker_started"] = True
-            process = OwnedWorker(pid)
-            try:
-                # Do not return until the owned process group exists. Startup and
-                # the repeated trust checks remain inside the shared wall clock.
+                    ready_write = None
+                # Interruptible: neither the deadline nor terminal signals are
+                # deferred during readiness, or across the return to the caller.
                 readable, _, _ = select.select([ready_read], [], [], 5)
                 if not readable or os.read(ready_read, 1) != b"R":
                     raise ValueError("worker did not establish its owned process group")
-            except BaseException:
-                # The deadline can expire before this factory returns its
-                # handle to the monitor. Kill the whole group here too.
-                for kill in (lambda: os.killpg(pid, signal.SIGKILL),
-                             lambda: os.kill(pid, signal.SIGKILL)):
-                    try:
-                        kill()
-                    except ProcessLookupError:
-                        pass
-                process.wait(timeout=5)
-                raise
+                return process
             finally:
-                os.close(ready_read)
-            return process
+                # On any exception the supervisor uses the registered handle,
+                # even if this function never returned it to the local monitor.
+                for descriptor in (ready_read, ready_write):
+                    if descriptor is not None:
+                        os.close(descriptor)
 
         return spawn
 

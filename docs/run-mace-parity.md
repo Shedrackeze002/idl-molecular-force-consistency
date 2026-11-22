@@ -167,6 +167,14 @@ and empty logs there. Before that point it emits evidence without writing to
 unverified receipt paths. A racing/pre-existing directory is never overwritten.
 Git waits interrupted before a worker exists are killed and reaped; a timeout
 during the worker handoff also cleans its entire owned group.
+Alarm and terminal-signal delivery are deferred only while a fresh attempt
+directory is created and registered, or while a child is forked and registered.
+The supervisor retains the worker handle in its private ownership registry
+through readiness and return to the monitor, including exceptions before the
+caller's assignment. Readiness waits remain interruptible. Cleanup also stops
+and reaps a child interrupted before it establishes its process group. A queued
+alarm after successful mkdir retains TIMEOUT evidence in the owned directory;
+a failed mkdir never claims a directory created by another process.
 Audit uses the retained execution copy and rechecks its source bytes and receipts.
 The mutable checkout may have changed after execution without changing the
 recorded execution copy. No project import is needed to perform these checks.
@@ -206,8 +214,9 @@ supervisor terminates and reaps its entire owned worker group, escalates to
 SIGKILL for TERM-ignoring descendants within the cleanup bound, and retains
 INTERRUPTED status with the signal and exit code. Repeated terminal signals
 cannot interrupt cleanup. Signals are deferred across worker creation until
-the child is assigned to the supervisor's cleanup state; the forked worker
-restores ordinary signal behavior. Handlers are restored when supervision ends.
+the child is registered in the supervisor's cleanup state; the forked worker
+resets the inherited alarm and terminal handlers and unblocks those signals.
+Handlers are restored when supervision ends.
 An interrupted or cleanup-failed attempt cannot be audited as WORKER_COMPLETED.
 Fresh-directory ownership, log creation and the initial RUNNING receipt write
 are inside the same interruption/status handling. An interruption immediately

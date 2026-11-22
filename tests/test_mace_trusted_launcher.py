@@ -237,6 +237,111 @@ def test_import_configuration_uses_the_same_initial_deadline(boundary):
     assert not boundary["marker"].exists()
 
 
+_OWNERSHIP_SIGNALS = (signal.SIGALRM, signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT)
+
+
+@pytest.mark.parametrize("boundary", [
+    {"launcher_edits": [
+        ("pid = os.fork()", "pid = os.fork()\n"
+         "                    if pid:\n"
+         "                        (setup_state['attempt']/'ownership.pid').write_text(str(pid))\n"
+         "                        os.kill(os.getpid(), int(os.environ['OWNERSHIP_SIGNAL']))"),
+        ("os.setsid()", "time.sleep(1.25)\n                os.setsid()")],
+     "worker": "import time; time.sleep(30)\n"},
+    {"launcher_edits": [
+        ("                        os.close(descriptor)",
+         "                        os.close(descriptor)\n"
+         "                (setup_state['attempt']/'ownership.pid').write_text(str(process.pid))\n"
+         "                os.kill(os.getpid(), int(os.environ['OWNERSHIP_SIGNAL']))")],
+     "worker": "import time; time.sleep(30)\n"},
+], ids=["after-fork-before-registration", "return-before-caller-assignment"], indirect=True)
+@pytest.mark.parametrize("signum", _OWNERSHIP_SIGNALS)
+def test_interruption_at_worker_ownership_boundaries_reaps_child(boundary, monkeypatch, signum):
+    # Queue real signals, rather than raising directly: delivery must respect
+    # the production mask at the first boundary and the registry at the second.
+    monkeypatch.setenv("OWNERSHIP_SIGNAL", str(signum))
+    result = run(boundary)
+    assert result.returncode == 2, (result.stdout, result.stderr)
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == ("TIMEOUT" if signum == signal.SIGALRM else "INTERRUPTED")
+    assert status["failure_stage"] == "spawn"
+    assert status["exit_code"] is not None
+    if signum == signal.SIGALRM:
+        assert status["worker_started"] is True
+    else:
+        assert status["signal"] == signum
+    pid = int((boundary["attempt"] / "ownership.pid").read_text())
+    with pytest.raises(ProcessLookupError):
+        os.kill(pid, 0)
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"launcher_edits": [
+    ('os.write(ready_write, b"R")', 'time.sleep(1.25)\n                os.write(ready_write, b"R")'),
+    ("readable, _, _ = select.select([ready_read], [], [], 5)",
+     "(setup_state['attempt']/'ownership.pid').write_text(str(process.pid))\n"
+     "                signal.setitimer(signal.ITIMER_REAL, .15)\n"
+     "                readable, _, _ = select.select([ready_read], [], [], 5)")]}], indirect=True)
+def test_readiness_wait_remains_interruptible_by_deadline(boundary):
+    started = time.monotonic()
+    result = run(boundary)
+    assert time.monotonic() - started < 1.1, (result.stdout, result.stderr)
+    assert result.returncode == 2
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == "TIMEOUT" and status["worker_started"] is True
+    assert status["exit_code"] is not None
+    pid = int((boundary["attempt"] / "ownership.pid").read_text())
+    with pytest.raises(ProcessLookupError):
+        os.kill(pid, 0)
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"launcher_edits": [
+    ("output.mkdir(parents=True, exist_ok=False)",
+     "output.mkdir(parents=True, exist_ok=False)\n"
+     "                os.kill(os.getpid(), int(os.environ['OWNERSHIP_SIGNAL']))")]}], indirect=True)
+@pytest.mark.parametrize("signum", _OWNERSHIP_SIGNALS)
+def test_interruption_after_mkdir_retains_owned_attempt_evidence(boundary, monkeypatch, signum):
+    monkeypatch.setenv("OWNERSHIP_SIGNAL", str(signum))
+    result = run(boundary)
+    assert result.returncode == 2, (result.stdout, result.stderr)
+    status = json.loads((boundary["attempt"] / "supervisor-status.json").read_text())
+    assert status["status"] == ("TIMEOUT" if signum == signal.SIGALRM else "INTERRUPTED")
+    assert status["failure_stage"] == "setup" and status["exit_code"] is None
+    assert "evidence_error" not in status
+    if signum == signal.SIGALRM:
+        assert status["worker_started"] is False
+    assert (boundary["attempt"] / "stdout.log").read_bytes() == b""
+    assert (boundary["attempt"] / "stderr.log").read_bytes() == b""
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"launcher_edits": [
+    ("output.mkdir(parents=True, exist_ok=False)",
+     "output.mkdir(parents=True, exist_ok=False)\n"
+     "                (output/'independent-owner').write_text('leave untouched')\n"
+     "                os.kill(os.getpid(), signal.SIGALRM)\n"
+     "                output.mkdir(parents=True, exist_ok=False)")]}], indirect=True)
+def test_deadline_during_racing_mkdir_never_claims_independent_directory(boundary):
+    result = run(boundary)
+    assert result.returncode == 2 and "TRUST_TIMEOUT" in result.stderr
+    status = json.loads(result.stdout)
+    assert status["status"] == "TIMEOUT" and status["worker_started"] is False
+    assert "evidence_error" in status
+    assert {path.name for path in boundary["attempt"].iterdir()} == {"independent-owner"}
+    assert (boundary["attempt"] / "independent-owner").read_text() == "leave untouched"
+    assert not boundary["marker"].exists()
+
+
+@pytest.mark.parametrize("boundary", [{"worker":
+    "import signal\n"
+    "blocked=signal.pthread_sigmask(signal.SIG_BLOCK, [])\n"
+    "assert not blocked.intersection({signal.SIGALRM,signal.SIGTERM,signal.SIGINT,signal.SIGHUP,signal.SIGQUIT})\n"}], indirect=True)
+def test_worker_restores_alarm_and_terminal_signal_mask(boundary):
+    result = run(boundary)
+    assert result.returncode == 0, (result.stdout, result.stderr)
+
+
 @pytest.mark.parametrize("relative", ["scripts/mace_bootstrap.py", "scripts/check_mace_parity.py",
     "scripts/supervise_mace_parity.py", "scripts/mace_loader.py", "scripts/mace_reference_adapter.py"])
 def test_tampering_refused_before_any_project_code_starts(boundary, relative):
@@ -653,8 +758,8 @@ def test_parent_interruption_reaps_actual_handoff_worker(boundary, signum):
 @pytest.mark.parametrize("boundary", [{"worker": "import time; time.sleep(30)\n",
     "supervisor_edits": [("process = worker_spawn(stdout, stderr)",
         "process = worker_spawn(stdout, stderr)\n"
-        "                    (output/'spawn-owned').write_text(str(process.pid))\n"
-        "                    time.sleep(.3)")]}], indirect=True)
+        "                (output/'spawn-owned').write_text(str(process.pid))\n"
+        "                time.sleep(.3)")]}], indirect=True)
 def test_interruption_during_spawn_waits_for_child_ownership(boundary):
     process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
         "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],
