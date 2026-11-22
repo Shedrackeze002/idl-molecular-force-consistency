@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "status": "TEMPLATE_NOT_APPROVED",
+  "checkout_root": "/absolute/path/to/reviewed-checkout",
+  "execution_root": "/absolute/private/path/to/fresh-verified-execution",
+  "implementation_commit": "REPLACE_WITH_REVIEWED_40_HEX_HEAD",
+  "baseline_commit": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+  "python_executable": "/absolute/path/to/approved-venv/bin/python",
+  "trusted_launcher_sha256": "REPLACE_WITH_INDEPENDENTLY_REVIEWED_LAUNCHER_SHA256",
+  "launch_receipt": "/external/coordinator-owned/launch.json",
+  "launch_sha256": "REPLACE_WITH_APPROVED_LAUNCH_RECEIPT_SHA256",
+  "wsl_admission_receipt": "/external/coordinator-owned/admission.json",
+  "wsl_admission_sha256": "REPLACE_WITH_APPROVED_ADMISSION_RECEIPT_SHA256"
+}

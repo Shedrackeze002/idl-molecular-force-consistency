@@ -1,0 +1,30 @@
+{
+  "status": "EXPECTED_OVERRUN_REPRODUCED_AND_FIXED",
+  "runs": [
+    {
+      "revision": "3def93488965f7d7a55064175067bf5f313cdf3d",
+      "kind": "previous",
+      "budget_seconds": 0.2,
+      "injected_delay_seconds": 1.25,
+      "elapsed_wall_seconds": 1.9940785359940492,
+      "exit_code": 2,
+      "status": "TIMEOUT",
+      "failure_stage": null,
+      "worker_marker_exists": false,
+      "reported_elapsed_seconds": 1.8410175510216504
+    },
+    {
+      "revision": "f550073eae1bd1b880ff04f8daee587c5412840b",
+      "kind": "candidate",
+      "budget_seconds": 0.2,
+      "injected_delay_seconds": 1.25,
+      "elapsed_wall_seconds": 0.27489044301910326,
+      "exit_code": 2,
+      "status": "TIMEOUT",
+      "failure_stage": "trusted_setup",
+      "worker_marker_exists": false,
+      "reported_elapsed_seconds": 0.20020381698850542
+    }
+  ],
+  "execution_boundary": "Synthetic source fixtures only; no calculator or checkpoint/model execution."
+}

@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-26",
+  "status": "PASS_METADATA_ONLY",
+  "files_verified": 11,
+  "verifier_output": "PASS: 11 inventoried files; no model loaded",
+  "packet_path": "deliverables/idris-mace-2026-10-18/v2/mace-idris-handoff",
+  "manifest_sha256": "3a872e1886c37b0e069e4ecaaa426bbab6a4a771db7c805f21741ee67e22717c",
+  "verifier_sha256": "289156fe4c721aed2c825f57fce1ab0b484d01198b1d874206ee0fed6dd4dfdf",
+  "limits": "No model or scientific arrays loaded; runtime compatibility, inference parity and recovery remain unverified."
+}

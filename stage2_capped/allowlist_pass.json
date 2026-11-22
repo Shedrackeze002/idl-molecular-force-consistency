@@ -1,0 +1,107 @@
+{
+ "format_version": 1,
+ "note": "Reviewed artifact. Regenerating this file needs a new review; its SHA-256 goes into the launch record. Hunk line numbers are relative to the excerpt (runner.py lines 811 to 861).",
+ "targets": {
+  "pass_copy": {
+   "frozen_file": "evaluation/runner.py",
+   "frozen_sha256": "28591f542e803bb5ac3a5935500a1a0ac21774b04040caf992d82e1b13100a90",
+   "frozen_line_range": [
+    811,
+    861
+   ],
+   "frozen_excerpt_sha256": "5a2103db61160f65f9bc4d299b22ee8e1021c45cae4a0ae2846f8bd364675c9b",
+   "derived_file": "stage2_capped/pass_copy.py",
+   "allowed_categories": [
+    "module_header",
+    "cap_pass"
+   ],
+   "hunks": [
+    {
+     "id": "pass_copy-01",
+     "categories": [
+      "module_header"
+     ],
+     "purpose": "Docstring, imports and the function header around the copied loop (plans, arm, procedure, references, policy, seen_minimum, bound, movement_cap_A and recorder_for become parameters).",
+     "frozen_first_line": 1,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "\"\"\"Copied second pass of evaluation.runner.evaluate_starts for the capped relaxer.",
+      "",
+      "The loop body below is lines 811 to 861 of the frozen evaluation/runner.py, which",
+      "binds `relax` at module scope and has no injection point. Differences from the",
+      "frozen lines are limited to the hunks in allowlist_pass.json (the relax call",
+      "becomes relax_capped with the cap and a recorder, the row gains the run's",
+      "cap_record, and the function returns the rows); a diff gate checks this. Everything",
+      "that decides a row (force supplier, final record, classification, audit record) is",
+      "imported from the frozen modules, not copied.",
+      "",
+      "The first pass of evaluate_starts (partition, reference and compatibility checks) and",
+      "run_model_pass's prevalidation are not copied: driver.prevalidate repeats the same",
+      "checks before any force call.",
+      "\"\"\"",
+      "import time",
+      "",
+      "from evaluation.outcomes import classify_outcome",
+      "from evaluation.runner import _arm_force_supplier, _branch_audit_record, _final_record",
+      "from stage2_capped.relax_capped import relax_capped",
+      "",
+      "",
+      "def second_pass(plans, arm, procedure, references, policy, seen_minimum, bound, *,",
+      "                movement_cap_A, recorder_for):",
+      "    \"\"\"Relax and classify the admitted branches under a movement cap (None: control).",
+      "",
+      "    plans: (branch_key, start_entry, partition, pool_key, own_reference) tuples.",
+      "    recorder_for: branch_key -> the per-attempt recorder passed to relax_capped.\"\"\"",
+      "    branches = {}"
+     ]
+    },
+    {
+     "id": "pass_copy-02",
+     "categories": [
+      "cap_pass"
+     ],
+     "purpose": "The relax call becomes relax_capped with the movement cap and a per-branch recorder.",
+     "frozen_first_line": 9,
+     "frozen_line_count": 2,
+     "removed": [
+      "        relaxation = relax(start_entry[\"positions\"], force_fn, procedure,",
+      "                           arm=arm)"
+     ],
+     "added": [
+      "        recorder = recorder_for(branch_key)",
+      "        relaxation = relax_capped(start_entry[\"positions\"], force_fn, procedure,",
+      "                                  arm=arm, movement_cap_A=movement_cap_A,",
+      "                                  recorder=recorder)"
+     ]
+    },
+    {
+     "id": "pass_copy-03",
+     "categories": [
+      "cap_pass"
+     ],
+     "purpose": "Each row also carries the run's cap_record.",
+     "frozen_first_line": 51,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "            \"cap_record\": relaxation[\"cap_record\"],"
+     ]
+    },
+    {
+     "id": "pass_copy-04",
+     "categories": [
+      "module_header"
+     ],
+     "purpose": "The function returns the rows.",
+     "frozen_first_line": 52,
+     "frozen_line_count": 0,
+     "removed": [],
+     "added": [
+      "    return branches"
+     ]
+    }
+   ]
+  }
+ }
+}

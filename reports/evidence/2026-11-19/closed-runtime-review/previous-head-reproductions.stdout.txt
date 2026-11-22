@@ -1,0 +1,41 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+__ test_forged_supervisor_callback_with_unapproved_receipts_never_runs[main] ___
+
+tmp_path = PosixPath('$PYTEST_TMP/pytest-37/test_forged_supervisor_callbac0')
+entry = 'main'
+
+    @pytest.mark.parametrize('entry', ['main', 'supervise', '_supervise'])
+    def test_forged_supervisor_callback_with_unapproved_receipts_never_runs(tmp_path, entry):
+        packet, attempt = (tmp_path / 'packet', tmp_path / 'attempt')
+        launcher, policy = (tmp_path / 'launcher.py', tmp_path / 'policy.json')
+        admission = tmp_path / 'wsl.json'
+        admission.write_text(json.dumps({'status': 'NOT_APPROVED', 'identities': {'implementation_commit': 'a' * 40}}))
+        launch = tmp_path / 'launch.json'
+        launch.write_text(json.dumps({'status': 'NOT_APPROVED', 'implementation_commit': 'a' * 40, 'python_executable': sys.executable, 'trusted_launcher': str(launcher), 'trusted_policy': str(policy), 'packet_root': str(packet), 'attempt_root': str(attempt), 'command': [sys.executable, '-I', '-S', str(launcher), '--entry', 'supervisor', '--policy', str(policy)], 'wsl_admission_receipt': admission.name, 'wsl_admission_sha256': '0' * 64, 'source_baseline': '3fa5969e5a0c2fdeaebc76a05bace20799715203', 'resource_limits': {'seconds': 1800, 'attempt_bytes': 268435456, 'per_log_bytes': 16777216, 'cleanup_seconds': 10}, 'implementation_reviews': [{'status': 'RESOLVED', 'implementation_commit': 'a' * 40, 'review_id': str(i), 'reviewer': 'fake-' + str(i), 'url': 'https://example.test/' + str(i)} for i in (1, 2)]}))
+        marker = tmp_path / 'forged-callback-ran'
+        probe = f"\nimport importlib.util,sys\nfrom pathlib import Path\nbootstrap,supervisor,entry=sys.argv[1:4]\nsys.argv=[supervisor,*sys.argv[4:]]\nspec=importlib.util.spec_from_file_location('bootstrap',bootstrap)\nbootstrap_module=importlib.util.module_from_spec(spec)\nspec.loader.exec_module(bootstrap_module)\nbootstrap_module.configure_imports()\nspec=importlib.util.spec_from_file_location('supervisor',supervisor)\nmodule=importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\nclass FakeProcess:\n    pid=2147483647\n    returncode=0\n    def poll(self): return 0\n    def wait(self,timeout=None): return 0\ndef forged(*args,**kwargs):\n    Path({str(marker)!r}).touch()\n    return FakeProcess()\nmodule.__trusted_worker_spawn__=forged\nif entry=='main':\n    raise SystemExit(module.main())\ngetattr(module,entry)(Path({str(packet)!r}),Path({str(attempt)!r}),worker_spawn=forged,\n    launch_receipt=Path({str(launch)!r}),wsl_admission_receipt=Path({str(admission)!r}))\n"
+        result = subprocess.run([sys.executable, '-I', '-S', '-c', probe, str(SOURCE.parent.parent / 'scripts/mace_bootstrap.py'), str(SOURCE.parent.parent / 'scripts/supervise_mace_parity.py'), entry, '--packet-root', str(packet), '--output', str(attempt), '--launch-receipt', str(launch), '--wsl-admission-receipt', str(admission)], capture_output=True, text=True, timeout=30, start_new_session=True)
+>       assert result.returncode != 0
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['$ONBOARDING_ROOT/.venv-mace-wsl/bin/python', '-I', '-S', '-c', "\n... "status": "WORKER_COMPLETED",\n  "stderr_bytes": 0,\n  "stdout_bytes": 0,\n  "timeout_seconds": 1800\n}\n', stderr='').returncode
+
+tests/test_reported_boundaries.py:16: AssertionError
+_ test_direct_internal_loader_refuses_injected_constructor_before_any_model_access _
+
+tmp_path = PosixPath('$PYTEST_TMP/pytest-37/test_direct_internal_loader_re0')
+
+    def test_direct_internal_loader_refuses_injected_constructor_before_any_model_access(tmp_path):
+        marker = tmp_path / 'constructor-invoked'
+        probe = f"\nimport importlib.util,sys,hashlib\nfrom pathlib import Path\nspec=importlib.util.spec_from_file_location('bootstrap',sys.argv[1])\nbootstrap=importlib.util.module_from_spec(spec)\nspec.loader.exec_module(bootstrap)\nbootstrap.configure_imports()\nimport mace_loader as loader\nroot=Path({str(tmp_path)!r})\npacket=root/'packet'\n(packet/'model').mkdir(parents=True)\nfake=packet/'model/final_epoch.model'\nfake.write_bytes(b'synthetic non-model bytes')\nloader.MODEL_BYTES=fake.stat().st_size\nloader.MODEL_SHA256=hashlib.sha256(fake.read_bytes()).hexdigest()\nloader.verify_packet=lambda *args: {{'status':'PACKET_VERIFIED'}}\nloader._approved_launch=lambda *args: ({{'species':['H']*21}},{{'status':'APPROVED'}},{{}})\nloader._validate_import_origins=lambda *args: None\nloader.require_supervised_worker=lambda *args: None\nloader._worker_capability=lambda *args: None\ndef constructor(*args):\n    Path({str(marker)!r}).touch()\n    raise RuntimeError('injected constructor invoked outside supervisor')\nloader._load_admitted_arm(packet,root/'attempt',constructor=constructor,expected_species=('H',)*21)\n"
+        result = subprocess.run([sys.executable, '-I', '-S', '-c', probe, str(SOURCE.parent.parent / 'scripts/mace_bootstrap.py')], capture_output=True, text=True, timeout=30)
+        assert result.returncode != 0
+>       assert 'Direct project loading is refused' in result.stderr
+E       assert 'Direct project loading is refused' in 'Traceback (most recent call last):\n  File "<string>", line 24, in <module>\n  File "$PREVIOUS_SOURCE/s...^^^^^^^^^\n  File "<string>", line 23, in constructor\nRuntimeError: injected constructor invoked outside supervisor\n'
+E        +  where 'Traceback (most recent call last):\n  File "<string>", line 24, in <module>\n  File "$PREVIOUS_SOURCE/s...^^^^^^^^^\n  File "<string>", line 23, in constructor\nRuntimeError: injected constructor invoked outside supervisor\n' = CompletedProcess(args=['$ONBOARDING_ROOT/.venv-mace-wsl/bin/python', '-I', '-S', '-c', "\n...^^^^^^^^\n  File "<string>", line 23, in constructor\nRuntimeError: injected constructor invoked outside supervisor\n').stderr
+
+tests/test_reported_boundaries.py:26: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_reported_boundaries.py::test_forged_supervisor_callback_with_unapproved_receipts_never_runs[main]
+FAILED tests/test_reported_boundaries.py::test_direct_internal_loader_refuses_injected_constructor_before_any_model_access
+2 failed in 0.87s

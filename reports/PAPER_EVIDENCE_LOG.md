@@ -396,3 +396,62 @@ The worker provenance files record CPU backend/device, software and experimental
 ### MIDTERM-LIMITATIONS-2026-10-24-001 — separate Limitations heading
 
 Saved the revised manuscript with Limitations as a separate paragraph heading and "Failed and incomplete trials are recorded." Preserved all substantive source edits; only trailing whitespace was trimmed. Abstract, scientific values, methods, tables, figure and bibliography unchanged. Built-in compilation and saved export checks pass: five main pages plus references, no warnings, page 5 visually checked; pages 1–4 and 6 are pixel-identical to the preceding visually checked export. PDF SHA-256 e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc; source SHA-256 8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab. Previous matching published source/PDF are preserved under reports/archive/midterm/before-limitations-heading-2026-10-24. The delivery PDF remains linked to the canonical export. No new experiment or submission.
+
+
+### POST-MIDTERM-READINESS-2026-10-26-001 — setup complete; loader/parity plan reviewed
+
+P04–P06 are complete as operational preparation. The isolated branch preserves scientific source snapshot3fa5969; publication uses report descendant83bd55b with unchanged scientific source/configuration/manifests/tests/dependencies. Thirteen evaluator/bridge/source files, six historical scorer bindings and all11packet members are authenticated. Retained Python/package metadata and eight installed source hashes match the accepted scoring environment. Synthetic/regression baseline:140passed,1expected archive skip,19subtests;44ASE/NumPydeprecation warnings. No real checkpoint was loaded.
+
+The exact handover and evaluator contract are verified on GitHub at83bd55b. The coordinator states that GitHub presence confirms Idris receipt and explicitly confirms Olufunke integration. Private implementation and private payload access remain unverified. Idris keeps loader/reproduction authorship; no duplicate implementation is claimed.
+
+The MACE loader/parity specification and implementation plan have independent scientific and engineering plan approval. They fix974validation records, literal connection IDs including18_2, absolute1e-10energy/force tolerances, one model,974force+974energyaccessors,1800s shared cap and bounded outputs. Plan approval is not implementation or launch readiness. See docs/research/MACE_LOADER_PARITY_SPEC_2026-10-26.md and reports/evidence/2026-10-26/mace-loader-parity-plan-acceptance.json. Main test remains closed. No training, trained inference, recovery, remote allocation or outgoing teammate message.
+
+The action tracker now checks P01–P06; P07 remains Idris's implementation handoff. P27 is partial: current public deliverable weights checked, but live final deadlines and rubric unconfirmed. Updated source-readiness, handover and metadata-verification receipts remain under reports/evidence/2026-10-26.
+
+
+### REPRESENTATION-CLOSEOUT-PLAN-2026-10-26-001 — saved-output closeout proposed
+
+Coordinator approves representation-study closeout while MACE owner work continues. Saved a bounded specification and implementation plan. Scope: authenticate six completed fits, cached BEST/LAST predictions and fixed histories; independently reduce validation metrics; compare BEST/LAST/late20; report paired seeds, scoped timing and descriptive limits. No new training, model restoration/inference, recovery or test payload. Independent scientific plan review approves; engineering plan review pending. All historical sources and outputs remain unchanged.
+
+
+### REPRESENTATION-CLOSEOUT-IMPLEMENTATION-2026-10-26-001 — saved-data audit ready
+
+Both independent plan reviews approve. New independent NumPy/msgpack auditor, plotting source and tests are committed at5a809b5. Final33focused/regressiontests pass; the fresh-process import guard excludes model frameworks from the auditor. Input inventory binds92files, sixfits, twelveprediction files, checkpoints/reload proofs and validation-only arrays. Initial missing-module/identity-helper REDs and a wrong-working-directory test invocation are retained. No model payload restored or new learned calculation. Saved-data audit remains pending; no interpretation accepted.
+
+
+### REPRESENTATION-CLOSEOUT-RESULT-2026-10-26-001 — independent saved-result reviews accept
+
+The fixed saved-data closeout passed at analysis source570fb27. Rehashed92inputs before/after, authenticated sixfit recipes and12checkpoint/reload bindings, checked2406scheduled events, and independently reduced12cached endpoints/736344force components. Largest scalar discrepancy1.3877787807814457e-17; history discrepancy6.938893903907228e-18. Both independent scientific/engineering saved-result reviewers reconstructed the reductions without author model code and APPROVE. Final38focused/regressiontests pass. No learned model restored/queried; no new fit, recovery or test payload.
+
+E64 mean BEST/LAST/late20 forceMAE34.892873/38.565299/39.018736meV/Å; SP41.357760/48.084489/46.009924; S6439.542219/45.913195/43.266563. PrimarySPminusE64 gaps6.464886/9.519190/6.991188; secondaryS64gaps4.649346/7.347896/4.247827. Both seeds have positive aggregate gaps. Connection13/S64seed1/LAST is the endpoint exception,-2.390963689meV/Å. Original fixed-recipe, two-seed, reused-validation and observational timing limits remain. No causal symmetry, recovery, portability or generalization claim.
+
+Report: reports/REPRESENTATION_STUDY_CLOSEOUT_2026-10-26.md; machine tables, figures, inventory, acceptance and verification under reports/representation-closeout-2026-10-26. Initial failed implementation tests and reporting invocations are retained privately; no new fits were used to repair analysis. P31 is added without renumbering existing tasks; seven of31items complete. Publication package preparation is separate from local acceptance.
+
+
+### MACE-PACKET-PUBLICATION-2026-10-28: distribution, not scientific execution
+
+The coordinator authorizes public distribution of the accepted v2 packet through a GitHub Release. The original 15,504,217-byte archive remains SHA-256 `ff92c74b83d3103a2542f1564d93be3b153f5342faef2675f9845d9d99958119`. Twelve regular members comprise the manifest and eleven inventoried files; no training or test partition is included. Primary model and numerical input bytes are unchanged. Release companions provide current instructions, checksums and Landscape17 CC BY 4.0 attribution identifying the subset, formatting and residual-energy changes.
+
+[Release and packet](https://github.com/Shedrackeze002/idl-molecular-force-consistency/releases/tag/mace-idris-packet-v2-2026-10-28). The handover remains on the working branch; main is not updated. Older private-transfer wording is historical. The accepted 26 October specification governs implementation and bounded execution; older environment-rebuild directions do not override it.
+
+The earlier convention that GitHub presence confirmed receipt is insufficient for verified access. Documentation visibility, actual download, checksum verification, installed environment, model admission and prediction parity are separate facts. Idris's actual receipt remains unconfirmed. Idris retains implementation/reproduction ownership and Olufunke retains integration ownership. No trained model was deserialized or queried, no training/test partition was opened, and no scientific run or outgoing teammate message was performed for publication.
+
+
+### WINDOWS-MACE-ONBOARDING-2026-10-28: concrete setup work, no numerical execution
+
+The coordinator confirms that teammates use Windows and only the coordinator uses macOS. Published a Windows/WSL2 quickstart with packet verification, platform facts and a proposed CPU setup recipe. Its first deliverable is explicit: packet verifier output and Windows/WSL details; later setup produces a generated lock and comparison logs or a retained failure. Idris retains implementation/reproduction ownership; Olufunke retains integration.
+
+All seven core package base versions are published. The official cp312 x86_64 Linux CPU wheel is Torch2.14.1+cpu, distinct from original Mac2.14.1. A bounded wheel-only target resolution failed because python-hostlist2.3.0 has no usable wheel. No Linux lock is published. The proposed recipe retains the original44base-version pins, explicitly selects CPU Torch and pins the hostlist source archive. Its inspected setup.py declares no runtime install dependencies or extension modules; no setup code was executed. A pinned setuptools84bootstrap and hostlist-only source-build exception are documented for Idris to test in WSL.
+
+The readiness record preserves the CLI-option rejection and wheel-only failure. No local dependency installation, Python download, source build, model import/inference or training/test partition access occurred. WSL installation and package/runtime success remain untested. The accepted26OctMac-only numerical specification remains unchanged; original Mac scoring remains historical reference. A WSL numerical attempt requires a reviewed, bounded amendment. Mac ownership is not required for onboarding, coding or synthetic preparation. Main and the original packet/release asset bytes remain outside this update.
+
+See docs/team/WINDOWS_MACE_QUICKSTART_2026-10-28.md, configs/mace/wsl2-cpu-2026-10-28/ and reports/evidence/2026-10-28/wsl2-cpu-package-readiness.json.
+
+
+### IDRIS-END-TO-END-BRIEF-2026-10-28: complete task coverage, execution pending
+
+An end-to-end coverage audit found dispersed implementation instructions, conflicting development checkouts, missing pytest setup and unconsolidated final delivery criteria. Added a single owner task brief covering access, runtime/test locks, WSL admission proposal, implementation/testing, reviewed bounded execution, independent prediction/score audit, authored PR/report and Olufunke's integration acceptance. Development checkout now consistently starts atadf1b13819015cbfb1f2fbb79a79df132e7a4545; scientific baseline3fa5969 and release source47b727b retain their distinct meanings. Frozen source/evaluator/bridge/test bytes are unchanged across those baselines.
+
+The proposed WSL admission must enumerate approved platform/Torch/source/test-tool differences separately from the immutable Mac identity and refuse unapproved mismatches. The prospective saved-output score audit uses exact validation joins and component MAE/RMSE, equal-connection MAE and residual-energy MAE, with four absolute1e-10 bounds and zero relative tolerance. It is separate from unchanged prediction parity, adds no model calls and must be included in the reviewed WSL amendment before execution. No amendment or numerical run is approved by publishing these instructions.
+
+The brief's coverage is complete as an assignment specification; teammate installation, implementation, admission and reproduction remain unverified work. Failed/incomplete delivery remains distinct from successful admission. No runtime/test package was installed, no model imported/loaded/queried and no training/test payload accessed for this documentation audit. Main and the original release asset bytes are unchanged. See docs/team/IDRIS_MACE_TASK_BRIEF_2026-10-28.md.
