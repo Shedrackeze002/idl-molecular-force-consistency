@@ -1,0 +1,1 @@
+PYTHONPATH=.:src:scripts $ONBOARDING_ROOT/.venv-mace-wsl/bin/python -m pytest -q tests/test_mace_trusted_launcher.py -p no:cacheprovider --basetemp $TEST_ROOT/pytest -k 'ownership_boundaries or readiness_wait or after_mkdir or racing_mkdir or restores_alarm'
