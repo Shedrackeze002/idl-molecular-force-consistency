@@ -1,0 +1,1 @@
+PYTHONPATH=.:src:scripts $ONBOARDING_ROOT/.venv-mace-wsl/bin/python -m unittest discover -s tests -p test_mace_reference_adapter.py -v

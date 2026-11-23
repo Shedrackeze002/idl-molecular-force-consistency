@@ -1,0 +1,19 @@
+test_all_batched_energy_refused_before_calculator (test_mace_reference_adapter.CalculatorBridgeTests.test_all_batched_energy_refused_before_calculator) ... ok
+test_bad_force_returns_use_declared_refusals (test_mace_reference_adapter.CalculatorBridgeTests.test_bad_force_returns_use_declared_refusals) ... $ONBOARDING_ROOT/.venv-mace-wsl/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+  a.shape = (-1,) + shape
+ok
+test_batch_order_shape_dtype_and_fresh_structures (test_mace_reference_adapter.CalculatorBridgeTests.test_batch_order_shape_dtype_and_fresh_structures) ... ok
+test_energy_preserves_constant_gauge_and_is_scalar (test_mace_reference_adapter.CalculatorBridgeTests.test_energy_preserves_constant_gauge_and_is_scalar) ... ok
+test_frozen_relaxation_matches_plain_analytic_supplier (test_mace_reference_adapter.CalculatorBridgeTests.test_frozen_relaxation_matches_plain_analytic_supplier) ... ok
+test_internal_calculator_error_propagates_without_retry (test_mace_reference_adapter.CalculatorBridgeTests.test_internal_calculator_error_propagates_without_retry) ... ok
+test_invalid_constructor_contract_refused_without_calculation (test_mace_reference_adapter.CalculatorBridgeTests.test_invalid_constructor_contract_refused_without_calculation) ... ok
+test_invalid_whole_batch_and_species_refused_before_calculator (test_mace_reference_adapter.CalculatorBridgeTests.test_invalid_whole_batch_and_species_refused_before_calculator) ... ok
+test_nested_identity_cannot_be_mutated_by_caller_or_outputs (test_mace_reference_adapter.CalculatorBridgeTests.test_nested_identity_cannot_be_mutated_by_caller_or_outputs) ... ok
+test_nonfinite_and_nonscalar_energy_refused (test_mace_reference_adapter.CalculatorBridgeTests.test_nonfinite_and_nonscalar_energy_refused) ... ok
+test_shape_units_atom_order_and_no_energy_accessor (test_mace_reference_adapter.CalculatorBridgeTests.test_shape_units_atom_order_and_no_energy_accessor) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.263s
+
+OK

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "date": "2026-11-18",
+  "source_revision": "4eaeb7b96f330ebdfaf44c78d8baea13b998b140",
+  "command": "PYTHONPATH=.:src:scripts $ONBOARDING_ROOT/.venv-mace-wsl/bin/python -m unittest discover -s tests -p test_mace_reference_adapter.py -v",
+  "exit_code": 0,
+  "tests_run": 11,
+  "canonical_public_report_sha256": "85f70bb8865c23df86fa94303471f77bd76b03083fb184f6dbf513874b22c998",
+  "scope": "Existing shared ASE bridge; analytic calculators only; no checkpoint or learned inference.",
+  "acceptance": "Idris-side check only; Olufunke agreement/integration acceptance pending."
+}
