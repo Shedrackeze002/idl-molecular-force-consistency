@@ -1,0 +1,230 @@
+{
+  "conservative": {
+    "arm": {
+      "arm_id": "analytic-harmonic",
+      "kind": "energy_force_callable",
+      "provides_energy": true,
+      "species": [
+        "C",
+        "C",
+        "O",
+        "O",
+        "H",
+        "H",
+        "H",
+        "H"
+      ],
+      "status": "ready"
+    },
+    "claim_limit": "Sampled geometries and loops can expose local inconsistency; they do not prove global conservativity.",
+    "closed_loop_work": [
+      {
+        "absolute_work_eV": 0.0,
+        "atom_count": 8,
+        "closure_error_A": 0.0,
+        "force_call_count": 1,
+        "force_configuration_count": 5,
+        "loop_id": "translated-square",
+        "metric": "closed_loop_work",
+        "segment_count": 4,
+        "segment_work_eV": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "signed_work_eV": 0.0,
+        "status": "ok",
+        "units": {
+          "energy": "eV",
+          "force_disagreement": "eV/angstrom",
+          "force_disagreement_squared": "eV^2/angstrom^2",
+          "forces": "eV/angstrom",
+          "loop_work": "eV",
+          "positions": "angstrom",
+          "time": "second"
+        },
+        "vertex_count": 5
+      }
+    ],
+    "config": {
+      "finite_difference_step_A": 1e-05,
+      "loop_closure_tolerance_A": 1e-12
+    },
+    "energy_force_disagreement": [
+      {
+        "atom_count": 8,
+        "component_count": 24,
+        "energy_evaluation_count": 48,
+        "finite_difference_step_A": 1e-05,
+        "force_evaluation_count": 1,
+        "mae_eV_per_A": 9.997095743822608e-14,
+        "max_abs_eV_per_A": 1.0001721673091879e-13,
+        "metric": "energy_force_disagreement",
+        "mse_eV2_per_A2": 9.994193786262678e-27,
+        "record_id": "displaced",
+        "rmse_eV_per_A": 9.997096471607484e-14,
+        "status": "ok",
+        "units": {
+          "energy": "eV",
+          "force_disagreement": "eV/angstrom",
+          "force_disagreement_squared": "eV^2/angstrom^2",
+          "forces": "eV/angstrom",
+          "loop_work": "eV",
+          "positions": "angstrom",
+          "time": "second"
+        }
+      }
+    ],
+    "schema_version": "physical-consistency/v1",
+    "summary": {
+      "failed": 0,
+      "ok": 2,
+      "result_count": 2,
+      "unavailable": 0
+    },
+    "units": {
+      "energy": "eV",
+      "force_disagreement": "eV/angstrom",
+      "force_disagreement_squared": "eV^2/angstrom^2",
+      "forces": "eV/angstrom",
+      "loop_work": "eV",
+      "positions": "angstrom",
+      "time": "second"
+    }
+  },
+  "nonconservative": {
+    "arm": {
+      "arm_id": "rotational-force-only",
+      "kind": "callable",
+      "provides_energy": false,
+      "species": [
+        "C"
+      ],
+      "status": "ready"
+    },
+    "claim_limit": "Sampled geometries and loops can expose local inconsistency; they do not prove global conservativity.",
+    "closed_loop_work": [
+      {
+        "absolute_work_eV": 4.0,
+        "atom_count": 1,
+        "closure_error_A": 0.0,
+        "force_call_count": 1,
+        "force_configuration_count": 5,
+        "loop_id": "diamond",
+        "metric": "closed_loop_work",
+        "segment_count": 4,
+        "segment_work_eV": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "signed_work_eV": 4.0,
+        "status": "ok",
+        "units": {
+          "energy": "eV",
+          "force_disagreement": "eV/angstrom",
+          "force_disagreement_squared": "eV^2/angstrom^2",
+          "forces": "eV/angstrom",
+          "loop_work": "eV",
+          "positions": "angstrom",
+          "time": "second"
+        },
+        "vertex_count": 5
+      }
+    ],
+    "config": {
+      "finite_difference_step_A": 1e-05,
+      "loop_closure_tolerance_A": 1e-12
+    },
+    "energy_force_disagreement": [
+      {
+        "metric": "energy_force_disagreement",
+        "reason": "arm 'rotational-force-only' provides no energy; energy-gradient comparison was not fabricated",
+        "record_id": "diamond-start",
+        "status": "unavailable",
+        "units": {
+          "energy": "eV",
+          "force_disagreement": "eV/angstrom",
+          "force_disagreement_squared": "eV^2/angstrom^2",
+          "forces": "eV/angstrom",
+          "loop_work": "eV",
+          "positions": "angstrom",
+          "time": "second"
+        }
+      }
+    ],
+    "schema_version": "physical-consistency/v1",
+    "summary": {
+      "failed": 0,
+      "ok": 1,
+      "result_count": 2,
+      "unavailable": 1
+    },
+    "units": {
+      "energy": "eV",
+      "force_disagreement": "eV/angstrom",
+      "force_disagreement_squared": "eV^2/angstrom^2",
+      "forces": "eV/angstrom",
+      "loop_work": "eV",
+      "positions": "angstrom",
+      "time": "second"
+    }
+  },
+  "purpose": "analytic fixture validation; not a trained-model result",
+  "timing_smoke": {
+    "arm_id": "analytic-harmonic",
+    "atom_count": 8,
+    "claim_limit": "Compare arms only with identical hardware, precision, batch, warmup, synchronization, and software environment.",
+    "environment": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "python": "3.14.7"
+    },
+    "mean_seconds_per_call": 2.6354996953159572e-05,
+    "measured_calls": 20,
+    "median_seconds_per_call": 2.4749984731897712e-05,
+    "median_seconds_per_structure": 2.4749984731897712e-05,
+    "metric": "inference_timing",
+    "min_seconds_per_call": 2.370000584051013e-05,
+    "p95_seconds_per_call": 2.7499976567924023e-05,
+    "sample_seconds": [
+      2.7399975806474686e-05,
+      2.6699970476329327e-05,
+      2.540001878514886e-05,
+      2.5699962861835957e-05,
+      2.6800029445439577e-05,
+      2.7499976567924023e-05,
+      2.600002335384488e-05,
+      2.489995677024126e-05,
+      2.4200009647756815e-05,
+      2.4200009647756815e-05,
+      2.4100008886307478e-05,
+      2.4100008886307478e-05,
+      2.3900007363408804e-05,
+      2.659996971487999e-05,
+      2.4600012693554163e-05,
+      2.4100008886307478e-05,
+      4.869996337220073e-05,
+      2.4500011932104826e-05,
+      2.400000812485814e-05,
+      2.370000584051013e-05
+    ],
+    "schema_version": "physical-consistency/v1",
+    "status": "ok",
+    "structures_per_call": 1,
+    "synchronization": "block_until_ready when exposed",
+    "units": {
+      "energy": "eV",
+      "force_disagreement": "eV/angstrom",
+      "force_disagreement_squared": "eV^2/angstrom^2",
+      "forces": "eV/angstrom",
+      "loop_work": "eV",
+      "positions": "angstrom",
+      "time": "second"
+    },
+    "warmup_calls": 3,
+    "warmup_seconds": 0.00010850001126527786
+  }
+}
