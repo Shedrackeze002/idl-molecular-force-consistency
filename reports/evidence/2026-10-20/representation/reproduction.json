@@ -1,0 +1,18 @@
+{
+  "absolute_tolerance": 1e-10,
+  "full_saved_validation_events_match": true,
+  "historical_pins": {
+    "best.msgpack": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+    "config.json": "518b5ee984a7bd911119f8e639280a91e761256a2d482b471d3da7143e486db0",
+    "last.msgpack": "dd39add263810875c1b63eaa8a3fc8b21c7f874ced4311e41c31ab55dfc50c48",
+    "provenance.json": "7145f75169b41928472e41bc1c892290535a1f7333b3ea36a6fc4b2d3a7507e4",
+    "validation.json": "36ceb4d38b6fc1dbb2eac8e2d55a6da75fd3a2dec55ee5e13729c29d76dbbd65"
+  },
+  "segment": "<execution-evidence>/verification/e64-reproduction/segments/000001",
+  "status": "PASS",
+  "updates": [
+    0,
+    500,
+    1000
+  ]
+}

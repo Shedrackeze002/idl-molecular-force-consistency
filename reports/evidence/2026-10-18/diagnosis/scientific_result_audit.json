@@ -1,0 +1,755 @@
+{
+  "archive_members_opened": [],
+  "audit_elapsed_seconds": 2.353324667084962,
+  "checks": 12857,
+  "converged_interaction_component_counts": {
+    "consistency-0.1-0": [
+      20,
+      21,
+      21,
+      21,
+      21,
+      20
+    ],
+    "consistency-0.1-1": [
+      16,
+      20,
+      8,
+      11,
+      21,
+      17,
+      19,
+      18,
+      15
+    ],
+    "direct-0": [
+      20,
+      21,
+      21,
+      20
+    ],
+    "direct-1": [
+      20,
+      16,
+      20,
+      15
+    ],
+    "energy-0": [
+      1,
+      1
+    ]
+  },
+  "errors": [],
+  "installed_smooth_cutoff_source_sha256": "ea16cb100dac58edb8fb8aafe4898ed4997840ee8fb46fb56fd43f21d7afceec",
+  "maximum_reduction_numeric_difference": 0.0,
+  "minimum_endpoint_force_threshold_margin": 1.363392299105412e-06,
+  "models": {
+    "consistency-0.1-0": {
+      "endpoint_flag_discrepancies": 0,
+      "labels_above_rule": 0,
+      "maximum_start_parity_difference": 9.414691248821327e-14,
+      "own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "own_graph_compatible_count": 0,
+      "reference_error_RMS_component_range": [
+        0.021437112988981266,
+        0.03350362363798279
+      ],
+      "reference_label_max_component_range": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_component_range": [
+        0.05660065228494815,
+        0.14103291503204288
+      ],
+      "references_above_rule": 11,
+      "unique_own_reference_count": 6
+    },
+    "consistency-0.1-1": {
+      "endpoint_flag_discrepancies": 0,
+      "labels_above_rule": 0,
+      "maximum_start_parity_difference": 6.000755448098971e-14,
+      "own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "own_graph_compatible_count": 0,
+      "reference_error_RMS_component_range": [
+        0.013591538598723979,
+        0.01930286418539963
+      ],
+      "reference_label_max_component_range": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_component_range": [
+        0.0413525018885436,
+        0.08014654833688976
+      ],
+      "references_above_rule": 11,
+      "unique_own_reference_count": 6
+    },
+    "direct-0": {
+      "endpoint_flag_discrepancies": 0,
+      "labels_above_rule": 0,
+      "maximum_start_parity_difference": 5.029310301551959e-14,
+      "own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "own_graph_compatible_count": 2,
+      "reference_error_RMS_component_range": [
+        0.012829436344086583,
+        0.01824194764548162
+      ],
+      "reference_label_max_component_range": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_component_range": [
+        0.041425091286949975,
+        0.07089578326422166
+      ],
+      "references_above_rule": 11,
+      "unique_own_reference_count": 6
+    },
+    "direct-1": {
+      "endpoint_flag_discrepancies": 0,
+      "labels_above_rule": 0,
+      "maximum_start_parity_difference": 4.907185768843192e-14,
+      "own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "own_graph_compatible_count": 0,
+      "reference_error_RMS_component_range": [
+        0.011886724875845665,
+        0.016831124867157467
+      ],
+      "reference_label_max_component_range": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_component_range": [
+        0.030193624273498622,
+        0.05925994570838684
+      ],
+      "references_above_rule": 11,
+      "unique_own_reference_count": 6
+    },
+    "energy-0": {
+      "endpoint_flag_discrepancies": 0,
+      "labels_above_rule": 0,
+      "maximum_start_parity_difference": 4.574118861455645e-14,
+      "own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "own_graph_compatible_count": 9,
+      "reference_error_RMS_component_range": [
+        0.016579368634913053,
+        0.024592251651476233
+      ],
+      "reference_label_max_component_range": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_component_range": [
+        0.04327881993234728,
+        0.06672755490895133
+      ],
+      "references_above_rule": 11,
+      "unique_own_reference_count": 6
+    }
+  },
+  "molecular_force_rows": 155,
+  "new_model_queries": 0,
+  "new_relaxations": 0,
+  "opened_saved_prediction_arrays": [
+    "retained-research-output/reports/execution/e3x-score-repair-2026-10-16/rescore-results/C/best-validation.npz",
+    "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/direct-0-score/best-validation.npz",
+    "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0-score/best-validation.npz",
+    "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/direct-1-score/best-validation.npz",
+    "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-1-score/best-validation.npz"
+  ],
+  "output_count": 151,
+  "protected_historical_count": 317,
+  "reviewed_hashes": {
+    "reports/execution/e3x-recovery-diagnosis-2026-10-17/COMPLETED_OUTPUT_INVENTORY.json": "812059801bd6b6362c65a4776bbb67f2f8dca872270f67f9de0611f8f68ec8f4",
+    "reports/execution/e3x-recovery-diagnosis-2026-10-17/COMPLETION_AUDIT.json": "9ec691675797e7b5d6409e1e936d46e76d451282a34a3faa46bfef8cbed6d5f8",
+    "reports/execution/e3x-recovery-diagnosis-2026-10-17/CUTOFF_CONTEXT.json": "8cc244d4468eb867af9cfba32d8b1a4a2548a063bb4fa5fdbb871bd8e79a12f0",
+    "reports/execution/e3x-recovery-diagnosis-2026-10-17/LAUNCH_RECORDS.json": "7057669ba670b518b36842f1b5473df198ac94482a922c9550b77505c7c87151",
+    "reports/execution/e3x-recovery-diagnosis-2026-10-17/ROLE_SUMMARY.json": "a149de8e4368de7e37f809a66046656fa5d2a65fd2b4406259c09ae963edd71b",
+    "runs/aspirin-e3x-recovery-diagnosis-2026-10-17/SUMMARY.json": "6e09b20309e0e28fe203ed107bf72c0550ec58339ddfed8036450f7fe3e61080"
+  },
+  "roles": {
+    "consistency-0.1-0": {
+      "endpoint": {
+        "centroid_torque_norm_eV": {
+          "max": 55.83657994603735,
+          "median": 8.192600036839803e-16,
+          "min": 0.0
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 7.69801048256708,
+          "median": 0.0024316452129446507,
+          "min": 0.0
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 23.644161282188595,
+          "median": 0.0,
+          "min": 0.0
+        }
+      },
+      "endpoints_by_official_category": {
+        "nonconverged": {
+          "centroid_torque_norm_eV": {
+            "max": 55.83657994603735,
+            "median": 24.289289646045486,
+            "min": 6.341452901979002
+          },
+          "count": 4,
+          "max_force_component_eV_per_A": {
+            "max": 7.69801048256708,
+            "median": 3.478165096267487,
+            "min": 2.466489154499927
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 23.644161282188595,
+            "median": 9.956928964993471,
+            "min": 3.1397511789176145
+          }
+        },
+        "unmatched_converged": {
+          "centroid_torque_norm_eV": {
+            "max": 1.6385195581609048e-15,
+            "median": 0.0,
+            "min": 0.0
+          },
+          "count": 6,
+          "max_force_component_eV_per_A": {
+            "max": 0.004863205609285777,
+            "median": 0.0,
+            "min": 0.0
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 0.0,
+            "median": 0.0,
+            "min": 0.0
+          }
+        }
+      },
+      "reference": {
+        "centroid_torque_norm_eV": {
+          "max": 0.2874511215321947,
+          "median": 0.15090446959636733,
+          "min": 0.032571567978827584
+        },
+        "count": 11,
+        "max_force_component_eV_per_A": {
+          "max": 0.14103291503204288,
+          "median": 0.08412509082286468,
+          "min": 0.05660065228494815
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 0.2122308859201584,
+          "median": 0.09266326528335798,
+          "min": 0.05808280285783321
+        }
+      },
+      "start": {
+        "centroid_torque_norm_eV": {
+          "max": 8.536740838423396,
+          "median": 1.2799091443585522,
+          "min": 0.13525517087157213
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 10.069834422420504,
+          "median": 1.1745084969137227,
+          "min": 0.1300829384898199
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 8.13410188705878,
+          "median": 0.7384125855128283,
+          "min": 0.3369732172315202
+        }
+      }
+    },
+    "consistency-0.1-1": {
+      "endpoint": {
+        "centroid_torque_norm_eV": {
+          "max": 388.0176279367471,
+          "median": 0.035468786090838283,
+          "min": 0.0
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 385.9370753588782,
+          "median": 0.007774565522328652,
+          "min": 0.0
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 230.21280678675026,
+          "median": 0.006461571127286991,
+          "min": 0.0
+        }
+      },
+      "endpoints_by_official_category": {
+        "nonconverged": {
+          "centroid_torque_norm_eV": {
+            "max": 388.0176279367471,
+            "median": 388.0176279367471,
+            "min": 388.0176279367471
+          },
+          "count": 1,
+          "max_force_component_eV_per_A": {
+            "max": 385.9370753588782,
+            "median": 385.9370753588782,
+            "min": 385.9370753588782
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 230.21280678675026,
+            "median": 230.21280678675026,
+            "min": 230.21280678675026
+          }
+        },
+        "unmatched_converged": {
+          "centroid_torque_norm_eV": {
+            "max": 0.19229571744123417,
+            "median": 0.03213952114055128,
+            "min": 0.0
+          },
+          "count": 9,
+          "max_force_component_eV_per_A": {
+            "max": 0.009553128864708894,
+            "median": 0.007760207878699093,
+            "min": 0.0
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 0.014227397176617085,
+            "median": 0.005757558364593648,
+            "min": 0.0
+          }
+        }
+      },
+      "reference": {
+        "centroid_torque_norm_eV": {
+          "max": 0.34905414935017776,
+          "median": 0.2253568903846548,
+          "min": 0.07415050095567255
+        },
+        "count": 11,
+        "max_force_component_eV_per_A": {
+          "max": 0.08014654833688976,
+          "median": 0.04937316071227622,
+          "min": 0.0413525018885436
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 0.12803913986646737,
+          "median": 0.07761672149403101,
+          "min": 0.039808126781077674
+        }
+      },
+      "start": {
+        "centroid_torque_norm_eV": {
+          "max": 15.41103052524825,
+          "median": 0.5488946661690324,
+          "min": 0.1513693087384583
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 10.826175767121171,
+          "median": 1.1106984918737024,
+          "min": 0.1680234663819077
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 6.036985341605969,
+          "median": 0.281096696326534,
+          "min": 0.10087077128836042
+        }
+      }
+    },
+    "direct-0": {
+      "endpoint": {
+        "centroid_torque_norm_eV": {
+          "max": 952.3579174893296,
+          "median": 1.3799639129175612,
+          "min": 0.0
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 249.81086682042204,
+          "median": 0.12277424741834853,
+          "min": 0.0
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 292.81292012509994,
+          "median": 0.48720305071166303,
+          "min": 0.0
+        }
+      },
+      "endpoints_by_official_category": {
+        "nonconverged": {
+          "centroid_torque_norm_eV": {
+            "max": 952.3579174893296,
+            "median": 15.989158747519522,
+            "min": 0.49253734581564296
+          },
+          "count": 6,
+          "max_force_component_eV_per_A": {
+            "max": 249.81086682042204,
+            "median": 1.7828157293149922,
+            "min": 0.10187742466155172
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 292.81292012509994,
+            "median": 3.301955916317047,
+            "min": 0.40944904509279345
+          }
+        },
+        "unmatched_converged": {
+          "centroid_torque_norm_eV": {
+            "max": 0.5114907884282434,
+            "median": 9.85133562538035e-18,
+            "min": 0.0
+          },
+          "count": 4,
+          "max_force_component_eV_per_A": {
+            "max": 0.00873978963735697,
+            "median": 0.0014037903656525165,
+            "min": 0.0
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 0.008400517931067709,
+            "median": 0.0,
+            "min": 0.0
+          }
+        }
+      },
+      "reference": {
+        "centroid_torque_norm_eV": {
+          "max": 0.23602434996902388,
+          "median": 0.11999298998116749,
+          "min": 0.05269283418994933
+        },
+        "count": 11,
+        "max_force_component_eV_per_A": {
+          "max": 0.07089578326422166,
+          "median": 0.052652965724489215,
+          "min": 0.041425091286949975
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 0.15317908152506363,
+          "median": 0.07935396674527548,
+          "min": 0.03905543381377486
+        }
+      },
+      "start": {
+        "centroid_torque_norm_eV": {
+          "max": 7.46487344104332,
+          "median": 0.7942103150713469,
+          "min": 0.5386975275911581
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 8.055269510254597,
+          "median": 0.9946238543399406,
+          "min": 0.12535056532028435
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 3.4998146379568795,
+          "median": 0.5895542439316365,
+          "min": 0.1935079970435542
+        }
+      }
+    },
+    "direct-1": {
+      "endpoint": {
+        "centroid_torque_norm_eV": {
+          "max": 135.28612162910582,
+          "median": 2.144235321519923,
+          "min": 2.683828856159683e-09
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 11.975687528147985,
+          "median": 0.49637402976835276,
+          "min": 3.046331696533915e-10
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 37.90863710733201,
+          "median": 0.7943491952161383,
+          "min": 3.137544962156871e-10
+        }
+      },
+      "endpoints_by_official_category": {
+        "nonconverged": {
+          "centroid_torque_norm_eV": {
+            "max": 135.28612162910582,
+            "median": 34.125491968115966,
+            "min": 0.3634232066503954
+          },
+          "count": 6,
+          "max_force_component_eV_per_A": {
+            "max": 11.975687528147985,
+            "median": 6.240676048995606,
+            "min": 0.16069935125806636
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 37.90863710733201,
+            "median": 16.667030944006605,
+            "min": 0.3244572853009121
+          }
+        },
+        "unmatched_converged": {
+          "centroid_torque_norm_eV": {
+            "max": 0.16134920152522766,
+            "median": 0.028410457467183594,
+            "min": 2.683828856159683e-09
+          },
+          "count": 4,
+          "max_force_component_eV_per_A": {
+            "max": 0.009459820417450247,
+            "median": 0.004558643586853806,
+            "min": 3.046331696533915e-10
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 0.014613509585745608,
+            "median": 0.007686914116332086,
+            "min": 3.137544962156871e-10
+          }
+        }
+      },
+      "reference": {
+        "centroid_torque_norm_eV": {
+          "max": 0.28016510593323707,
+          "median": 0.17242109594321542,
+          "min": 0.09583344031166408
+        },
+        "count": 11,
+        "max_force_component_eV_per_A": {
+          "max": 0.05925994570838684,
+          "median": 0.04634708141519799,
+          "min": 0.030193624273498622
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 0.18445096724201568,
+          "median": 0.09345973327732558,
+          "min": 0.054369954021531226
+        }
+      },
+      "start": {
+        "centroid_torque_norm_eV": {
+          "max": 5.603500233663506,
+          "median": 0.8530467353196721,
+          "min": 0.2510305138570736
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 7.5139500994944965,
+          "median": 0.7536782477389872,
+          "min": 0.11947035343721017
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 1.8140086758446126,
+          "median": 0.4541367382466519,
+          "min": 0.035566467073449855
+        }
+      }
+    },
+    "energy-0": {
+      "endpoint": {
+        "centroid_torque_norm_eV": {
+          "max": 4.405361006476837e-15,
+          "median": 3.1953116777996085e-15,
+          "min": 1.0833400190720936e-15
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 0.11647329074550694,
+          "median": 0.029977327423559047,
+          "min": 0.009889548397607362
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 1.5645320906964348e-15,
+          "median": 9.5016121809222e-16,
+          "min": 6.574029810705878e-16
+        }
+      },
+      "endpoints_by_official_category": {
+        "nonconverged": {
+          "centroid_torque_norm_eV": {
+            "max": 4.405361006476837e-15,
+            "median": 2.8370809834996486e-15,
+            "min": 1.0833400190720936e-15
+          },
+          "count": 8,
+          "max_force_component_eV_per_A": {
+            "max": 0.11647329074550694,
+            "median": 0.055221195759645014,
+            "min": 0.020921851963317972
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 1.5645320906964348e-15,
+            "median": 9.5016121809222e-16,
+            "min": 6.574029810705878e-16
+          }
+        },
+        "unmatched_converged": {
+          "centroid_torque_norm_eV": {
+            "max": 4.025466194286018e-15,
+            "median": 3.5526385992014065e-15,
+            "min": 3.0798110041167953e-15
+          },
+          "count": 2,
+          "max_force_component_eV_per_A": {
+            "max": 0.009998636607700895,
+            "median": 0.009944092502654128,
+            "min": 0.009889548397607362
+          },
+          "net_force_norm_eV_per_A": {
+            "max": 1.1436038702828857e-15,
+            "median": 9.501665601320356e-16,
+            "min": 7.567292499811854e-16
+          }
+        }
+      },
+      "reference": {
+        "centroid_torque_norm_eV": {
+          "max": 5.786787909975501e-15,
+          "median": 2.3218073255903005e-15,
+          "min": 8.675351929922351e-16
+        },
+        "count": 11,
+        "max_force_component_eV_per_A": {
+          "max": 0.06672755490895133,
+          "median": 0.06035939510855459,
+          "min": 0.04327881993234728
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 1.1267746747192518e-15,
+          "median": 6.6862282965876e-16,
+          "min": 3.713442931002523e-16
+        }
+      },
+      "start": {
+        "centroid_torque_norm_eV": {
+          "max": 8.579661020019128e-15,
+          "median": 3.0952726547854565e-15,
+          "min": 1.7595407193687305e-15
+        },
+        "count": 10,
+        "max_force_component_eV_per_A": {
+          "max": 7.292353002021936,
+          "median": 0.9383372697287167,
+          "min": 0.10972222931236636
+        },
+        "net_force_norm_eV_per_A": {
+          "max": 2.0380985511143445e-15,
+          "median": 9.323251607214385e-16,
+          "min": 1.7388818282700985e-16
+        }
+      }
+    }
+  },
+  "static_model_sources": {
+    "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+    "src/force_consistency/models/direct.py": "722c5370650bb8bbf435f93ca8048f272fd3b7091f9fa69e032487f12e33ff6a"
+  },
+  "status": "independent_saved_data_audit_passed",
+  "supplier_calls": 40,
+  "timing_scope": "Audit body after imports; not complete reviewer cost.",
+  "zero_force_endpoints": [
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18/plus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 523.1708504552655,
+      "minimum_pair_distance_A": 5.209384851486441,
+      "model_cutoff_A": 5.0,
+      "model_id": "direct-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18_2/plus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 2081.5116953309293,
+      "minimum_pair_distance_A": 5.199613305474755,
+      "model_cutoff_A": 5.0,
+      "model_id": "direct-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18/minus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 1194.2885772412294,
+      "minimum_pair_distance_A": 5.1270995919502464,
+      "model_cutoff_A": 5.0,
+      "model_id": "consistency-0.1-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18_2/minus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 864.8742912084202,
+      "minimum_pair_distance_A": 8.935051800381961,
+      "model_cutoff_A": 5.0,
+      "model_id": "consistency-0.1-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18_2/plus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 1656.8382113297664,
+      "minimum_pair_distance_A": 5.303997780639578,
+      "model_cutoff_A": 5.0,
+      "model_id": "consistency-0.1-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/66/minus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 645.7865830308599,
+      "minimum_pair_distance_A": 5.013171094016625,
+      "model_cutoff_A": 5.0,
+      "model_id": "consistency-0.1-0",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    },
+    {
+      "all_predicted_forces_exact_zero": true,
+      "branch_key": "aspirin/18_2/minus",
+      "interaction_component_count": 21,
+      "interaction_pair_count": 0,
+      "isolated_atom_count": 21,
+      "maximum_pair_distance_A": 724.0141591926174,
+      "minimum_pair_distance_A": 6.81374803631491,
+      "model_cutoff_A": 5.0,
+      "model_id": "consistency-0.1-1",
+      "official_category": "unmatched_converged",
+      "recorded_converged": true
+    }
+  ]
+}

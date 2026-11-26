@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage[final,nonatbib]{neurips_2019}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype,float}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Can Consistent Forces Recover Molecular Shapes?},pdfauthor={Shedrack Eze; Olufunke Abodunrin; Emmanuel Aaron; Muhammed Idris}}
+\makeatletter
+\renewcommand{\@noticestring}{11-785 Introduction to Deep Learning, Fall 2026. Group 9 midterm report, 23 October 2026.}
+\makeatother
+\title{Can Consistent Forces Recover Molecular Shapes?}
+\author{Shedrack Eze (seze) \quad Olufunke Abodunrin (oabodunr)\\
+\textbf{Emmanuel Aaron (eaaron) \quad Muhammed Idris (midris)}\\
+Carnegie Mellon University \quad Group 9, Path 3}
+\newcommand{\funit}{\mathrm{meV}/\text{\AA}}
+\begin{document}
+\maketitle
+\begin{abstract}
+Predicting pushes and pulls on atoms can reduce simulation cost, but accurate predictions do not guarantee finding the correct stable shape. Aspirin experiments compared forces calculated from energy changes as atoms move, direct force predictions, and direct predictions trained to agree with energy-based forces. MACE, an established model, reached 5.349 meV/Å error after 2,048 training passes; meV/Å measures force, with lower error on examples outside training indicating better predictions. An agreement-trained model nearly matched direct force error, 38.024 versus 38.186 meV/Å, using 1.985 times the processor time for training and prediction checks. All five experimental models recovered zero of ten shapes seen in training; exploratory searches from stable shapes recovered four of six for energy-based prediction, versus at most one otherwise. The original searches cannot rank recovery success; force errors and excessive movements motivate smaller steps, while MACE's larger budget prevents fair efficiency comparisons.
+\end{abstract}
+\section{Introduction}
+Repeated calculations of molecular energies and forces are expensive, so learned approximations can reduce simulation cost. Energy assigns a value to an atomic arrangement, like energy stored in a stretched spring whose pull points toward lower energy. Energy slope describes how energy changes when an atom moves. The energy baseline calculates forces from negative energy slopes; direct models predict force arrows; consistency training encourages agreement between these forces. Direct prediction skips the slope calculation and can be cheaper, but its forces need not follow one energy. The objective compares correct-shape recovery, which requires the target shape and force stopping rule, at comparable force error, with computing cost measured separately.
+\section{Literature Review}
+Landscape17 supplies molecular shapes, reference forces and paths between stable arrangements~\cite{landscape}. It motivates checking final shapes beyond prediction errors, while Bigi et al. describe problems when direct forces do not follow one energy function~\cite{bigi}. Together, these studies motivate separating a force-based stop from structural success. E3x provides networks that obey three-dimensional symmetry rules~\cite{e3x}; MACE is an established energy-derived predictor~\cite{mace}. Physical constraints in training losses already exist~\cite{takamoto}; the question here is whether force--energy agreement improves recovery at comparable force error.
+
+\section{Data and Preprocessing}
+Each aspirin molecule has 21 atoms; Landscape17~\cite{landscape} reference energies and forces come from hybrid density-functional theory, an electron-physics calculation. These labels are calculated references rather than exact experimental truth. A transition state is a high-energy arrangement with two downhill branches toward stable arrangements, called minima. A connection group contains both branches' records, which stay in the same partition to avoid separating the two sides of one transition state. Training adjusts model parameters; validation chooses settings and checkpoints. The test partition remains reserved for later trained-model evaluation.
+
+Training contains 26 connections (4,891 records), validation five (974), and testing six (1,127). Training-only normalization puts energy and force errors on comparable scales, while shared minima mean that records are not independent examples of new destinations. Each branch targets the minimum it should reach; empirical classifications corrected 26 of 74 targets previously assigned from filename ordering. Earlier model-free software checks parsed test coordinates and labels but did not choose models or solver settings; no trained model has been scored on the test partition.
+\section{Methodology}
+\subsection{Model Architecture}
+The E3x models are graph neural networks: atoms are nodes, nearby pairs form links, and successive calculation stages, called layers, pass learned information along these links. Inputs are atom types and three-dimensional positions; outputs are one molecular energy and a force arrow for each atom. The three compared model types use 64 feature channels containing learned numbers and vectors, two message-passing rounds and eight radial functions describing pair distances. Links extend to 5~\AA, where an angstrom (\AA) is $10^{-10}$ metres; internal features carry scalar numbers and vectors with direction. Rotating a molecule rotates its predicted forces without changing its energy, properties called equivariance for forces and invariance for energy. The energy baseline has 43,521 parameters; models with separate energy and force outputs have 43,649.
+
+The energy baseline calculates $\widehat{\mathbf F}^{E}=-\nabla_{\mathbf R}\widehat E$. Here, $\widehat E$ is predicted energy, $\mathbf R$ contains atom positions, and the gradient gives energy slopes along position coordinates. Both the direct and consistency models also predict energy trained against reference labels, so they are not force-only models. Ordinary direct training has no agreement penalty, while consistency training adds one. In this architecture, an isolated atom has zero direct force because it receives no directional message and its vector readout has no bias.
+\subsection{Training and Evaluation}\label{sec:training}
+The loss combines normalized squared energy error, normalized squared force error and, where applicable, force--energy disagreement; training adjusts parameters to reduce this number:
+\begin{equation}
+\mathcal L=w_E\,\mathrm{mean}(e_E^2)+w_F\,\mathrm{mean}(e_F^2)
++\lambda\,\mathrm{mean}\!\left[\left((\widehat{\mathbf F}^{D}-\widehat{\mathbf F}^{E})/s_F\right)^2\right].
+\end{equation}
+Normalized energy and force errors $e_E$ and $e_F$ use training scales $s_E\approx0.21584$~eV per molecule and $s_F\approx0.126886$~eV/\AA; $D$ denotes direct prediction. Supervised weights $w_E\approx0.01458$ and $w_F\approx1.985$ are rounded; configurations retain exact values. Energy training omits the agreement term; direct training uses $\lambda=0$, while consistency training uses positive $\lambda$.
+
+Final E3x fits use Adam, an optimization method that updates parameters, with learning rate 0.003 and 64-bit floating-point arithmetic. Each update samples four records that can repeat, giving 800,000 sampled exposures across 200,000 updates. Two seeds specify random initialization and sampling, providing a limited repeatability check. Runs used arm64 macOS with 18 logical CPUs, Python 3.12.13, JAX/JAXlib 0.9.2 and E3x 1.0.2; the processor model was not recorded. Validation occurs every 500 updates, including zero, and BEST is the first saved model state, or checkpoint, with minimum validation force error.
+
+For each validation connection, force mean absolute error (MAE) averages absolute errors over records, atoms and coordinate components; the final score averages the five connections equally. A consistency model matches direct prediction when its two-seed mean-force-error gap is within 10\% of the smaller mean and within both seed spans. A seed span is maximum minus minimum. A millielectronvolt (meV) is one thousandth of an electronvolt; meV/\AA\ measures force as energy per distance.
+
+Recovery additionally requires maximum absolute predicted force component $\leq0.01$~eV/\AA\ and aligned structural RMSD $\leq0.05$~\AA. Root-mean-square deviation (RMSD) measures typical atom-position disagreement after rotation, translation and allowed atom-symmetry matching. Small predicted force is a stopping condition; it is not small prediction error. The force-fit adequacy criterion requires validation MAE $\leq50$~meV/\AA, approximately 20\% below zero-force prediction. The recovery adequacy criterion requires the selected energy baseline to recover at least one branch and exceed the measured unchanged-start count. This checks whether the procedure improves the starting structures.
+
+\subsection{Relaxation Procedure}
+Adaptive force-following relaxation proposes $\mathbf R_{\mathrm{trial}}=\mathbf R+\eta\widehat{\mathbf F}$, where scale $\eta$ starts at 0.2~\AA$^2$/eV. A trial meeting the force stopping condition is accepted immediately. Otherwise, acceptance requires $\sum_{i,\alpha}\widehat F^{\mathrm{trial}}_{i\alpha}\widehat F^{\mathrm{current}}_{i\alpha}\geq-10^{-12}$~(eV/\AA)$^2$, summed over atoms $i$ and coordinate components $\alpha$. The new force must not oppose the current force, apart from this numerical tolerance. Rejected trials halve the scale; accepted trials double it up to 1.0~\AA$^2$/eV. Each branch permits 1,500 force attempts without an energy-decrease test or per-atom movement cap; FIRE and BFGS optimizers were not compared.
+
+\section{Results and Discussion}
+\subsection{Baseline Development}
+Early E3x training on a 128-record subset plateaued, but MACE, which also derives forces from energy, fitted those records to 0.001515 of the zero-force squared error. Different settings prevent a controlled comparison, but the plateau did not establish an unavoidable data or energy-derived-force limit. After 1,000 updates, energy and direct validation force MAEs worsened from 62.504 to 70.468 and 66.222~meV/\AA, respectively; both selected update zero as BEST. Figure~\ref{fig:baseline} compares three 200,000-update energy baselines: A (width 32, learning rate 0.001), B (width 64, 0.003), and C (B with balanced loss weights). Width counts feature channels; A and B use equal normalized energy/force weights.
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=0.85\linewidth]{figures/baseline-curves.pdf}
+\caption{Seed-0 energy-baseline validation. C's triangle marks BEST at update 184,500; the dashed line marks the 50~meV/\AA\ force-fit adequacy criterion. All 974 validation records are used, with equal connection weighting.}\label{fig:baseline}
+\end{figure}
+
+C's force MAE, 34.587~meV/\AA, passes the 50~meV/\AA\ force-fit adequacy criterion, outperforming B (40.370) and A (42.108). Energy MAE rises from B's 28.178 to C's 126.990~meV per molecule. C's force-selected recipe was transferred without retuning despite this energy trade-off. Selecting C from three configurations on these same five validation connections adds another layer of selection optimism.
+\subsection{Predictive Accuracy and Computational Cost}
+Reusing C's seed-zero fit with nine new fits gave two seeds per E3x row (Table~\ref{tab:prediction}). Consistency strength 0.1 reduces normalized force--energy disagreement squared error to 0.49--0.61, versus 116--379 for direct training. Mean CPU fitting-plus-scoring times were 2,930 seconds for direct and 5,816 for consistency 0.1 (1.985 times). Scoring and fitting-stage overhead each add about five seconds per run beyond worker-only time; diagnostics and project overhead are excluded, and these are not inference timings. Direct training has lower energy MAE, 76.684 versus 128.725~meV per molecule; BEST selects checkpoints for force accuracy rather than energy accuracy. The models differ in force construction and parameter count; the cause of the energy-error difference was not isolated.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Validation at BEST for E3x; seed limits are observations, not confidence bounds. MACE final is a separate single-seed force reference. Force uses meV/\AA; energy uses meV per molecule.}\label{tab:prediction}
+\begin{tabular}{lrrr}\toprule
+Model & Mean force MAE & Seed min--max & Mean energy MAE\\\midrule
+Energy-derived & 34.893 & 34.587--35.198 & 128.725\\
+Direct & 38.186 & 37.291--39.082 & 76.684\\
+Consistency $\lambda=0.1$ & 38.024 & 36.773--39.275 & 87.006\\
+Consistency $\lambda=1$ & 34.683 & 33.723--35.643 & 112.341\\
+Consistency $\lambda=10$ & 39.725 & 39.060--40.390 & 161.662\\\midrule
+MACE Run A, final & 5.349 & Single seed & ---\\\bottomrule
+\end{tabular}
+\end{table}
+
+Only strength 0.1 meets the declared rule against direct prediction; BEST reports the minimum validation force error among 401 noisy checkpoint checks, which is optimistic. Over updates 150,000--200,000, the last 50,000 updates, baseline errors vary by 2.2--3.1~meV/\AA\ standard deviation across correlated checks. Nine subsequent fits finish 0.1--7.4~meV/\AA\ above BEST. The matching gap, 0.162~meV/\AA, is below this variation; matching does not establish equivalence. A secondary, post-hoc comparison with the energy baseline also passes for $\lambda=1$: gap 0.210~meV/\AA\ (0.605\% of the smaller mean), with seed spans 0.611 and 1.921~meV/\AA. This does not change the declared direct comparison; $\lambda=1$ recovery remains untested.
+
+\subsection{MACE Reference Result}
+MACE Run A completed 2,048 epochs on the same 4,891 training and 974 validation records as E3x. Independent scoring confirms a stronger prediction reference (Table~\ref{tab:prediction}); MACE recovery remains unmeasured. Each MACE epoch uses 978 five-record updates, dropping the partial batch: 10,014,720 exposures, versus E3x's 800,000 per fit (12.52 times as many). Architecture, sampling, optimization and hardware differ, preventing a controlled efficiency comparison.
+
+\subsection{Structural Recovery}
+Adaptive force-following relaxation was applied to five E3x checkpoints on ten shared branch starts from five validation connections (Table~\ref{tab:recovery}).
+
+\begin{table}[H]
+\centering\small
+\caption{All five E3x checkpoints recover 0/10. Wrong stops meet the force but not geometry rule. The 23 direct/consistency wrong stops are disconnected; both energy wrong stops stay connected. Post-hoc controls start at the six target minima.}\label{tab:recovery}
+\begin{tabular}{lrrr}\toprule
+Checkpoint & Wrong stop & No convergence & Reference-start recovery\\\midrule
+Energy C, seed 0 & 2 & 8 & 4/6\\
+Direct, seed 0 & 4 & 6 & 1/6\\
+Direct, seed 1 & 4 & 6 & 0/6\\
+Consistency 0.1, seed 0 & 6 & 4 & 0/6\\
+Consistency 0.1, seed 1 & 9 & 1 & 0/6\\\bottomrule
+\end{tabular}
+\end{table}
+
+All six distinct target minima appear in training. Unchanged starts and all five checkpoints recover 0/10, so the energy baseline fails the recovery adequacy criterion. Across 50 outcomes, 25 wrong stops and 25 nonconvergences reuse five connections rather than represent 50 independent paths. Post-hoc reference-start controls recover 4/6 for the energy checkpoint and at most 1/6 for direct/consistency; all four energy successes have connected interaction graphs. These controls favour the energy checkpoint under this procedure but do not isolate a consistency-penalty effect.
+
+
+
+
+\subsection{Endpoint Diagnostics}
+Every model exceeds the 10~meV/\AA\ stopping threshold at all 11 aspirin minima, including the six targets; maximum absolute reference-force components stay below 2.745~meV/\AA. Validation MAE and this maximum-component threshold measure different quantities. Evaluating five checkpoints at ten starts, ten endpoints and eleven minima gives 155 evaluations, reproducing all 50 stopping flags. Exact-reference failure does not rule out nearby acceptable shapes, as the connected reference-start successes show.
+
+All 23 force-converged direct/consistency endpoints have atom groups separated beyond the 5~\AA\ interaction range, with disconnected graphs instead of intact molecular shapes. Internal fragment forces can remain; seven endpoints isolate every atom, making the direct-force output exactly zero automatically. Meeting this rule does not establish a correct minimum. Together with the excessive accepted movements below, these endpoints motivate movement-cap tests; the evidence does not isolate model error from procedure effects.
+Four cases were fixed before replay: seed-0 direct, consistency-0.1 and energy on connection 18's positive branch, plus energy on connection 13's positive branch. These post-hoc replays reproduced saved endpoints; the cases were not sampled or representative. Direct and energy traces separated, with largest accepted atom movements of approximately 437~\AA\ and 268~\AA. Connected consistency and energy traces had maxima approximately 0.086~\AA\ and 0.0061~\AA, respectively. The separated energy trace never converged; both force-converged energy endpoints stayed connected.
+
+\subsection{Representation Study}
+Feedback from a faculty member, a professor of materials science, suggested comparing models with and without rotation symmetry; all models here retain force rotation symmetry. E64 uses width-64 scalar/vector features and reuses the two energy-baseline fits in Table~\ref{tab:prediction}; scalar S64 matches width and SP approximates parameter count. Their two-seed mean BEST force MAEs were 34.893, 39.542 and 41.358~meV/\AA, respectively, under E64-selected settings without scalar retuning. These preliminary findings establish neither feature causality nor better recovery.
+
+\section{Conclusion and Future Work}
+The 2,048-epoch MACE run achieves lower validation force error than every E3x model under a larger training budget. Force-error matching did not deliver E3x recovery under this procedure, and zero recovery cannot establish method equivalence. \textbf{Limitations.} E3x evidence covers aspirin, five validation connections and two seeds with shared minima; validation selects settings and BEST. Test generalization, the procedure's isolated contribution and real molecular break-up remain unestablished. Failed and incomplete trials remain recorded.
+
+\paragraph{Changes from the proposal.}
+Two seeds replace three; paracetamol awaits feasible aspirin recovery. Revised adequacy criteria keep small-subset failures on record; responsibilities changed, and the representation check extends the proposal. Faculty suggested interactions beyond 7~\AA; the current 5~\AA\ range does not establish missing long-range interactions as the failure cause.
+\paragraph{Planned Work.} First, check MACE predictions and apply unchanged ten-start/six-reference controls. Then test declared per-atom movement caps on the same starts and checkpoints; reused-validation analysis remains post-hoc. Compare prediction time and closed-loop work (summed force--displacement products around a loop) under identical hardware and matched-wall-time training budgets; smooth-energy work is zero apart from numerical integration error.
+\paragraph{Team contributions and reproducibility.}
+{\raggedright Shedrack completed data preparation, model/training integration and current MACE/E3x experiments. Olufunke authored the recovery evaluator. Emmanuel Aaron leads physical/cost analysis; Muhammed Idris leads MACE loading, prediction checks and independent reproduction. Research code and evidence snapshot: GitHub, \href{https://github.com/Shedrackeze002/idl-molecular-force-consistency/tree/3fa5969e5a0c2fdeaebc76a05bace20799715203}{\nolinkurl{github.com/Shedrackeze002/idl-molecular-force-consistency}}, commit 3fa5969.\par}
+\clearpage
+\begin{thebibliography}{5}\small
+\bibitem{landscape} V. C\u{a}rare et al. \href{https://doi.org/10.1038/s41524-025-01878-x}{Global properties of the energy landscape: a testing and training arena for machine learned potentials}. \emph{npj Computational Materials}, 12:9, 2026. doi:10.1038/s41524-025-01878-x.
+\bibitem{bigi} F. Bigi, M. F. Langer and M. Ceriotti. \href{https://proceedings.mlr.press/v267/bigi25a.html}{The dark side of the forces: assessing non-conservative force models for atomistic machine learning}. \emph{ICML}, PMLR 267:4384--4414, 2025.
+\bibitem{e3x} O. T. Unke and H. Maennel. \href{https://arxiv.org/abs/2401.07595}{E3x: E(3)-equivariant deep learning made easy}. arXiv:2401.07595, 2024.
+\bibitem{mace} I. Batatia et al. \href{https://arxiv.org/abs/2206.07697}{MACE: Higher order equivariant message passing neural networks for fast and accurate force fields}. \emph{NeurIPS}, 35:11423--11436, 2022.
+\bibitem{takamoto} M. Takamoto, V. Zaverkin and M. Niepert. \href{https://proceedings.mlr.press/v267/takamoto25a.html}{Physics-informed weakly supervised learning for interatomic potentials}. \emph{ICML}, PMLR 267:58282--58310, 2025.
+\end{thebibliography}
+\end{document}

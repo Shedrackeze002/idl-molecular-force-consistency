@@ -1,0 +1,27 @@
+{
+  "schema": 2,
+  "status": "CPU_PRIMARY_REVISED_PLAN_NOT_MEASURED_SCALAR_COST",
+  "date": "2026-10-20",
+  "supersedes": "Earlier same-day six-fit Colab scenario budget at commit10ef31b1dd0d413c836dfa46ddd64aa1b3faa61c; preserved in history",
+  "primary_platform": "local CPU, pinned Python3.12.13",
+  "historical_e64_trainer_elapsed_seconds": {
+    "seed0": 4874.939501292072,
+    "seed1": 4104.61344241607
+  },
+  "historical_energy1_external_stage_seconds": 4108.549603833002,
+  "scalar_timing_measured": false,
+  "scalar_full_fit_count_max": 4,
+  "scalar_full_fit_count_if_deduplicated": 2,
+  "updates_per_fit": 200000,
+  "e64_reuse": "conditional on1000-update fresh reproduction",
+  "cpu_availability": "Coordinator authorizes overnight local CPU execution",
+  "provisional_queue_hours": [
+    5,
+    7
+  ],
+  "queue_time_is_not_measured_upper_bound": true,
+  "paid_gpu_stage_planned": false,
+  "cu_use_planned": 0,
+  "gpu_only_contingency_requires_separate_measured_case": true,
+  "new_numerical_execution": false
+}

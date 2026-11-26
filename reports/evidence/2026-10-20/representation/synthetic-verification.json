@@ -1,0 +1,13 @@
+{
+  "final_focused": {
+    "log_sha256": "c2b8487e19f89a236f11c19df884052bb8f264acf3992e1db4a7b9d2624ce9b7",
+    "passed": 15
+  },
+  "frozen54sources_unchanged": true,
+  "prior_full_suite": {
+    "log_sha256": "bb74460a853817e546976e50b029825d315cd57be115911a76672da32aa2cc56",
+    "passed": 48
+  },
+  "scope": "synthetic physics/capacity/config/resume/analysis plus existing model and trainer regressions; mainarchive unavailable",
+  "status": "PASS"
+}

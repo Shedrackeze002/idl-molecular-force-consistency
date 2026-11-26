@@ -1,0 +1,233 @@
+{
+  "all88_frozen_inputs_unchanged": true,
+  "all_eight_diagnostics_completed": true,
+  "all_fit_files_match_completed_inventories": true,
+  "all_nine_completed_and_scored": true,
+  "audit_elapsed_seconds": 1.404411792056635,
+  "claims_pending": "Independent saved-result reviews; no recovery/globalconservativity/main-test claim",
+  "clean_revision": "01dfd9794744143f44ed9e56efa39d350cfc957d",
+  "matching_selected_lambda": 0.1,
+  "no_new_fit_or_inference": true,
+  "numerical_source_unchanged": true,
+  "observed_kigali": "2026-10-17T13:56:52.797567+02:00",
+  "observed_utc": "2026-10-17T11:56:52.797567+00:00",
+  "output_inventory_sha256": "f69fcb6322c8648e6f0a0d901a8d9083c96710b19a5df612753173e96bfc6ab1",
+  "rows": {
+    "consistency-0.1-0": {
+      "best_update": 125500,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.05363364184649063,
+        "normalized_residual_mse": 0.49002344909484974,
+        "pooled_residual_mae_eV_per_A": 0.04205139317416236
+      },
+      "diagnostic_sha256": "21a840e7e4564c715d92e0b9c85c0d20f9e59101f6f3ed8db6eb1423144f062e",
+      "elapsed_seconds": {
+        "diagnostic": 6.869918583077379,
+        "fit": 5387.797184041003,
+        "score": 5.057759499992244
+      },
+      "energy_mae_eV": 0.09221232777243987,
+      "equal_connection_force_mae_eV_per_A": 0.039275000995502254,
+      "pooled_force_mae_eV_per_A": 0.03941697598821921,
+      "score_sha256": "de9605d89fb6e8d36bce0c7f9f1d25c02e40eb4ecc2b0a3cd3c7882d506e9076"
+    },
+    "consistency-0.1-1": {
+      "best_update": 187000,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.05220796623903874,
+        "normalized_residual_mse": 0.6146867841458598,
+        "pooled_residual_mae_eV_per_A": 0.04315169222130903
+      },
+      "diagnostic_sha256": "b380c7fb51a2c283ede55685f1eccc1f83a11b2c31cf04e060259940a7a6608c",
+      "elapsed_seconds": {
+        "diagnostic": 8.335728000034578,
+        "fit": 6233.427179582999,
+        "score": 6.122837999952026
+      },
+      "energy_mae_eV": 0.08179940746050676,
+      "equal_connection_force_mae_eV_per_A": 0.03677337575510124,
+      "pooled_force_mae_eV_per_A": 0.036905024357350005,
+      "score_sha256": "8f510db945c779eb749fea2a16361ba97bcba6cbd35fa8ddbaef8e79356f25ba"
+    },
+    "consistency-1-0": {
+      "best_update": 183000,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.04001740841855556,
+        "normalized_residual_mse": 0.09183318096361591,
+        "pooled_residual_mae_eV_per_A": 0.023980706402861516
+      },
+      "diagnostic_sha256": "3c5066287255cb9f074be9c611d83d653960510a9e8b02a705e4c1527a1be955",
+      "elapsed_seconds": {
+        "diagnostic": 7.215280624921434,
+        "fit": 5420.942421582993,
+        "score": 5.382460667053238
+      },
+      "energy_mae_eV": 0.12816165204603874,
+      "equal_connection_force_mae_eV_per_A": 0.03564317076006131,
+      "pooled_force_mae_eV_per_A": 0.035637102999364186,
+      "score_sha256": "f6aaee9c6af2c2d1143778ab9ddb73031857540dc00ed6cf15f050b8fc05f5c6"
+    },
+    "consistency-1-1": {
+      "best_update": 196500,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.04078262994328725,
+        "normalized_residual_mse": 0.11182728011533954,
+        "pooled_residual_mae_eV_per_A": 0.025909054681625143
+      },
+      "diagnostic_sha256": "af517bc4552aab4cb5b1ec901bb42cc03b884e38e5a47be3577de9f41edca466",
+      "elapsed_seconds": {
+        "diagnostic": 7.946668750024401,
+        "fit": 5303.027339999913,
+        "score": 5.375875917030498
+      },
+      "energy_mae_eV": 0.09652071115920584,
+      "equal_connection_force_mae_eV_per_A": 0.03372260861515991,
+      "pooled_force_mae_eV_per_A": 0.033732914583685936,
+      "score_sha256": "848dff012d46ce129fb389014f58a479189e2efd3d477dd394a4de3b700ab35f"
+    },
+    "consistency-10-0": {
+      "best_update": 195000,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.04076530114871456,
+        "normalized_residual_mse": 0.085015276442239,
+        "pooled_residual_mae_eV_per_A": 0.009624720541693318
+      },
+      "diagnostic_sha256": "9f35be507beaee9f19106f5ad2e1487cd49af20be977c0462dac692d89f6c4d4",
+      "elapsed_seconds": {
+        "diagnostic": 6.778474833001383,
+        "fit": 5634.494249125011,
+        "score": 5.019945417065173
+      },
+      "energy_mae_eV": 0.17308153234028437,
+      "equal_connection_force_mae_eV_per_A": 0.04038998404728921,
+      "pooled_force_mae_eV_per_A": 0.04038605538729369,
+      "score_sha256": "b8a612b07514c9e4914ec16a575dd475a1345b6aa301753f7e4d054327703b73"
+    },
+    "consistency-10-1": {
+      "best_update": 194000,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.040014812560848746,
+        "normalized_residual_mse": 0.014381308299300802,
+        "pooled_residual_mae_eV_per_A": 0.00785833371854386
+      },
+      "diagnostic_sha256": "44380417a33d9294f858a12f35b0c60cc561f85a8426f4db34e277ac0e871e1f",
+      "elapsed_seconds": {
+        "diagnostic": 6.743883584043942,
+        "fit": 4816.284860791988,
+        "score": 4.91687537508551
+      },
+      "energy_mae_eV": 0.15024248198733064,
+      "equal_connection_force_mae_eV_per_A": 0.03906017046954951,
+      "pooled_force_mae_eV_per_A": 0.03905068709355045,
+      "score_sha256": "1c06530f9ede8ef2b0eeca3cd9bee72c55aec47e6d66beea6faa86574880a2cd"
+    },
+    "direct-0": {
+      "best_update": 174000,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 0.8870329729766023,
+        "normalized_residual_mse": 116.49396004029792,
+        "pooled_residual_mae_eV_per_A": 0.888341073332562
+      },
+      "diagnostic_sha256": "11864b69bb474302e4ffde3a1cae362a0aeb38650d002285da602c8d4cdf9f1c",
+      "elapsed_seconds": {
+        "diagnostic": 7.7896561661036685,
+        "fit": 3002.1372755829943,
+        "score": 5.836591999977827
+      },
+      "energy_mae_eV": 0.07329684876556337,
+      "equal_connection_force_mae_eV_per_A": 0.03729086455387475,
+      "pooled_force_mae_eV_per_A": 0.03725007861294361,
+      "score_sha256": "d8dc1d90d5ea0588d5ff9972ff353c12c9db4e2caa69f02eac911f0b326ce589"
+    },
+    "direct-1": {
+      "best_update": 189500,
+      "diagnostic": {
+        "equal_connection_energy_head_force_mae_eV_per_A": 1.607742865292995,
+        "normalized_residual_mse": 378.9708882749641,
+        "pooled_residual_mae_eV_per_A": 1.6304853953066463
+      },
+      "diagnostic_sha256": "ad1017bd3147aba5aa1209b46cee055a5c8f3c8720782d70ed6f422d06039667",
+      "elapsed_seconds": {
+        "diagnostic": 7.120922583038919,
+        "fit": 2846.5328850829974,
+        "score": 5.375373582937755
+      },
+      "energy_mae_eV": 0.08007151210790293,
+      "equal_connection_force_mae_eV_per_A": 0.039081765943128885,
+      "pooled_force_mae_eV_per_A": 0.039150750784252356,
+      "score_sha256": "acb326be3ecd118f2016219e4e8bc7f90c0c1308491f9cc6fe78bcf0886e5cc1"
+    },
+    "energy-1": {
+      "best_update": 197500,
+      "elapsed_seconds": {
+        "fit": 4108.549603833002,
+        "score": 5.979673709021881
+      },
+      "energy_mae_eV": 0.13045995931902654,
+      "equal_connection_force_mae_eV_per_A": 0.03519833788949358,
+      "pooled_force_mae_eV_per_A": 0.03515408286303086,
+      "score_sha256": "04090d0ab69759963e8f1d4def8167960c072582af69a77edea3c6a5f98f5d94"
+    }
+  },
+  "stage_hours_sum": 11.905850257476462,
+  "stage_seconds_sum": {
+    "diagnostic": 58.8005331242457,
+    "fit": 42753.1929996229,
+    "score": 49.06739416811615
+  },
+  "stage_timing_scope": "Sum of supervised fit/scoring/diagnostic elapsed receipts, not complete calendar/setup/debug/coordination cost",
+  "status": "COORDINATOR_COMPLETION_AUDIT_PASSED_RESULT_REVIEWS_PENDING",
+  "two_seed_arm_summaries": {
+    "consistency-0.1": {
+      "gap_to_direct": 0.00016212687320006636,
+      "matched": true,
+      "mean_energy_mae_eV": 0.08700586761647332,
+      "mean_force_mae_eV_per_A": 0.03802418837530175,
+      "seed_force_mae_eV_per_A": [
+        0.039275000995502254,
+        0.03677337575510124
+      ],
+      "seed_range_eV_per_A": 0.002501625240401012
+    },
+    "consistency-1": {
+      "gap_to_direct": 0.003503425560891206,
+      "matched": false,
+      "mean_energy_mae_eV": 0.1123411816026223,
+      "mean_force_mae_eV_per_A": 0.03468288968761061,
+      "seed_force_mae_eV_per_A": [
+        0.03564317076006131,
+        0.03372260861515991
+      ],
+      "seed_range_eV_per_A": 0.001920562144901397
+    },
+    "consistency-10": {
+      "gap_to_direct": 0.001538762009917545,
+      "matched": false,
+      "mean_energy_mae_eV": 0.16166200716380752,
+      "mean_force_mae_eV_per_A": 0.03972507725841936,
+      "seed_force_mae_eV_per_A": [
+        0.04038998404728921,
+        0.03906017046954951
+      ],
+      "seed_range_eV_per_A": 0.0013298135777397024
+    },
+    "direct": {
+      "mean_energy_mae_eV": 0.07668418043673315,
+      "mean_force_mae_eV_per_A": 0.038186315248501815,
+      "seed_force_mae_eV_per_A": [
+        0.03729086455387475,
+        0.039081765943128885
+      ],
+      "seed_range_eV_per_A": 0.0017909013892541334
+    },
+    "energy": {
+      "mean_energy_mae_eV": 0.12872504843659865,
+      "mean_force_mae_eV_per_A": 0.03489287309166883,
+      "seed_force_mae_eV_per_A": [
+        0.03458740829384409,
+        0.03519833788949358
+      ],
+      "seed_range_eV_per_A": 0.0006109295956494912
+    }
+  }
+}

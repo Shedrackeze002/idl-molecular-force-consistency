@@ -1,0 +1,1 @@
+$ONBOARDING_ROOT/tools/uv pip check --python $ONBOARDING_ROOT/.venv-mace-wsl/bin/python

@@ -1,0 +1,74 @@
+{
+  "baseline_late_population_statistics": {
+    "A": {
+      "checks": 101,
+      "population_std_meV_per_A": 2.2351438008174735,
+      "mean_meV_per_A": 46.19085907791403
+    },
+    "B": {
+      "checks": 101,
+      "population_std_meV_per_A": 2.9807281236227943,
+      "mean_meV_per_A": 45.25301007768144
+    },
+    "C": {
+      "checks": 101,
+      "population_std_meV_per_A": 3.0965652457064774,
+      "mean_meV_per_A": 39.88609571889417
+    }
+  },
+  "controlled_final_minus_best_meV_per_A": {
+    "consistency-0.1-0": 1.2424503869164216,
+    "consistency-0.1-1": 3.1051551521207172,
+    "consistency-1-0": 7.3997345399631005,
+    "consistency-1-1": 4.403651651273225,
+    "consistency-10-0": 3.3450883428119416,
+    "consistency-10-1": 2.4548075167407437,
+    "direct-0": 3.0852457508226405,
+    "direct-1": 0.08141029246024056,
+    "energy-1": 4.141314839598585
+  },
+  "matching_gap_meV_per_A": 0.16212687320006636,
+  "all_original_target_minima_seen": {
+    "energy-0": 10,
+    "direct-0": 10,
+    "direct-1": 10,
+    "consistency-0.1-0": 10,
+    "consistency-0.1-1": 10
+  },
+  "unique_own_reference_ids": [
+    "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+    "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+    "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+    "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+    "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+    "Landscape17/aspirin/Conformations/coordsmin_9.xyz"
+  ],
+  "sources": {
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-0/summary.json": "4efbd6f7cb5e841486dbfc854bc0d3da3d9091a69b61c00e320f54cdf3aa7291",
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-1/summary.json": "f12460df396cb436c6d6e312111e05597b635a03f5c0ae58ed3d603ac51b2bfb",
+    "reports/evidence/2026-10-18/controlled/consistency-1-0/summary.json": "97a55e9ed1adfe9c051f409d01a596b4c0c7c4e68ef762249914fda30aceb2c2",
+    "reports/evidence/2026-10-18/controlled/consistency-1-1/summary.json": "4e1382567d5fa3cc92a122838e18b1601c36ee004c7de7bc732ee8756ef3422b",
+    "reports/evidence/2026-10-18/controlled/consistency-10-0/summary.json": "9115e6a4bce0b89657789bdd77e9afe4a2c003be66224c1ff53ee575d9931e4c",
+    "reports/evidence/2026-10-18/controlled/consistency-10-1/summary.json": "4ad0075a24deb5af6df591ff9edb44aed22784be87ebbd2f51868b35a7d38b29",
+    "reports/evidence/2026-10-18/controlled/direct-0/summary.json": "bade756e350478c138f7b28c46a8025352c2342052f37fc76b0f7f821e75af47",
+    "reports/evidence/2026-10-18/controlled/direct-1/summary.json": "ba07e12b48883cb4e045a03057d5aadaa07c1d214e071c8423cd81e672e377ff",
+    "reports/evidence/2026-10-18/controlled/energy-1/summary.json": "a4ba2adcab9bf2ff3c10df8c4a38bfecbc40f67d58102e19c225cddd77e7edd3",
+    "reports/evidence/2026-10-18/recovery/raw/pass-energy-0/result.json": "5e4eb3a8db6ba63c84f97fb687215eeec9414bad51bb1afce0d0843a6f7863b8",
+    "reports/evidence/2026-10-18/recovery/raw/pass-direct-0/result.json": "d9ab1094d257342679967b47c5b6fa1f0ed276aba599e5820418ec9347d60042",
+    "reports/evidence/2026-10-18/recovery/raw/pass-direct-1/result.json": "afe50cf110a7dc0875dbe99438e826db14cfb12029c0391467520fb278d2d67d",
+    "reports/evidence/2026-10-18/recovery/raw/pass-consistency-0.1-0/result.json": "4253698f5e44c3126d7e10873bcb200ce9fca6fff66884df210d672c39d6e370",
+    "reports/evidence/2026-10-18/recovery/raw/pass-consistency-0.1-1/result.json": "ed473a423d16c1ed9bd456c30f8e2e296230b644eb5e6b925dcac0b9051ec3ce"
+  },
+  "variation_is_correlated_training_trajectory_not_measurement_uncertainty": true,
+  "new_model_or_archive_queries": false,
+  "definition": {
+    "late_window_updates": [
+      150000,
+      200000
+    ],
+    "inclusive": true,
+    "population_std_ddof": 0,
+    "baseline_plot_data_sha256": "e0f91444b0b931fc9fac98ff0f66bc0b66ba882cadd93403e7a52d9a78044b09",
+    "interpretation": "Correlated trajectory-level variation, not adjacent-check differences, sampling uncertainty or measurement noise."
+  }
+}

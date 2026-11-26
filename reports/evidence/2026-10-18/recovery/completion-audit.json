@@ -1,0 +1,189 @@
+{
+  "A2": {
+    "branch_denominator": 10,
+    "limitation": "Ten paired branches from five connections; A2 failure is weak evidence; no tuning/retry",
+    "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+    "no_relaxation_count": 0,
+    "recovered_branches": 0,
+    "status": "failed"
+  },
+  "audit_elapsed_seconds": 0.9508665000321344,
+  "claims_pending": "Two independent saved-result reviews. Finite endpoint/adapter parity alone is not recovery or conservativity proof.",
+  "completed_stage_count": 11,
+  "main_test_access": false,
+  "models": {
+    "consistency-0.1-0": {
+      "batch_single_replay_max_abs_diff": 4.264904401862779e-14,
+      "force_evaluation_count": 11375,
+      "mean_recovery_rate": 0.0,
+      "outcome_counts": {
+        "nonconverged": 4,
+        "unmatched_converged": 6
+      },
+      "pass_elapsed_seconds": 9.62343720800709
+    },
+    "consistency-0.1-1": {
+      "batch_single_replay_max_abs_diff": 4.4934542198227234e-14,
+      "force_evaluation_count": 8197,
+      "mean_recovery_rate": 0.0,
+      "outcome_counts": {
+        "nonconverged": 1,
+        "unmatched_converged": 9
+      },
+      "pass_elapsed_seconds": 7.283765417058021
+    },
+    "direct-0": {
+      "batch_single_replay_max_abs_diff": 5.00155472593633e-14,
+      "force_evaluation_count": 12226,
+      "mean_recovery_rate": 0.0,
+      "outcome_counts": {
+        "nonconverged": 6,
+        "unmatched_converged": 4
+      },
+      "pass_elapsed_seconds": 9.910147624905221
+    },
+    "direct-1": {
+      "batch_single_replay_max_abs_diff": 5.0117895944445934e-14,
+      "force_evaluation_count": 13321,
+      "mean_recovery_rate": 0.0,
+      "outcome_counts": {
+        "nonconverged": 6,
+        "unmatched_converged": 4
+      },
+      "pass_elapsed_seconds": 11.483290374977514
+    },
+    "energy-0": {
+      "batch_single_replay_max_abs_diff": 5.689893001203927e-14,
+      "force_evaluation_count": 13883,
+      "mean_recovery_rate": 0.0,
+      "outcome_counts": {
+        "nonconverged": 8,
+        "unmatched_converged": 2
+      },
+      "pass_elapsed_seconds": 21.686949792085215
+    }
+  },
+  "observed_utc": "2026-10-17T17:05:27.415531+00:00",
+  "output_inventory_sha256": "3caeb21178e7c399d50c03a5b82b1f3e91fcc737ba9ef46e06118a02db1d386d",
+  "protected_controlled_outputs_unchanged": 181,
+  "records_sha256": "62b0bc3b4a70481f55931837db9d882148878ec31a8af9c22456f71b9a4c08e5",
+  "source_and_input_pins_unchanged": true,
+  "status": "coordinator_audit_passed_result_reviews_pending",
+  "summary": {
+    "A2": {
+      "branch_denominator": 10,
+      "limitation": "Ten paired branches from five connections; A2 failure is weak evidence; no tuning/retry",
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "no_relaxation_count": 0,
+      "recovered_branches": 0,
+      "status": "failed"
+    },
+    "arms": {
+      "consistency-0.1": {
+        "mean_rate": 0.0,
+        "seed_range": 0.0,
+        "seed_rates": [
+          0.0,
+          0.0
+        ],
+        "status": "complete"
+      },
+      "direct": {
+        "mean_rate": 0.0,
+        "seed_range": 0.0,
+        "seed_rates": [
+          0.0,
+          0.0
+        ],
+        "status": "complete"
+      }
+    },
+    "independent_connection_count": 5,
+    "mean_paired_difference": 0.0,
+    "models": {
+      "consistency-0.1-0": {
+        "branch_denominator": 10,
+        "connection_rates": {
+          "13": 0.0,
+          "18": 0.0,
+          "18_2": 0.0,
+          "66": 0.0,
+          "78": 0.0
+        },
+        "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+        "rate": 0.0,
+        "recovered_branches": 0,
+        "status": "complete"
+      },
+      "consistency-0.1-1": {
+        "branch_denominator": 10,
+        "connection_rates": {
+          "13": 0.0,
+          "18": 0.0,
+          "18_2": 0.0,
+          "66": 0.0,
+          "78": 0.0
+        },
+        "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+        "rate": 0.0,
+        "recovered_branches": 0,
+        "status": "complete"
+      },
+      "direct-0": {
+        "branch_denominator": 10,
+        "connection_rates": {
+          "13": 0.0,
+          "18": 0.0,
+          "18_2": 0.0,
+          "66": 0.0,
+          "78": 0.0
+        },
+        "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+        "rate": 0.0,
+        "recovered_branches": 0,
+        "status": "complete"
+      },
+      "direct-1": {
+        "branch_denominator": 10,
+        "connection_rates": {
+          "13": 0.0,
+          "18": 0.0,
+          "18_2": 0.0,
+          "66": 0.0,
+          "78": 0.0
+        },
+        "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+        "rate": 0.0,
+        "recovered_branches": 0,
+        "status": "complete"
+      },
+      "energy-0": {
+        "branch_denominator": 10,
+        "connection_rates": {
+          "13": 0.0,
+          "18": 0.0,
+          "18_2": 0.0,
+          "66": 0.0,
+          "78": 0.0
+        },
+        "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+        "rate": 0.0,
+        "recovered_branches": 0,
+        "status": "complete"
+      }
+    },
+    "paired_connection_differences": {
+      "13": 0.0,
+      "18": 0.0,
+      "18_2": 0.0,
+      "66": 0.0,
+      "78": 0.0
+    },
+    "scientific_main_hypothesis_established": false,
+    "scope": "Paired validation operational recovery; direct fixed point is not automatically an energy minimum; no main-test claim",
+    "seeds_per_arm": 2,
+    "status": "complete_descriptive_A2_failed"
+  },
+  "summed_supervised_stage_seconds": 129.62546845816541,
+  "total_branch_force_attempts": 59002
+}

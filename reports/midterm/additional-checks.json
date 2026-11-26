@@ -1,0 +1,217 @@
+{
+  "scope": "Saved-artifact arithmetic and endpoint-connectivity checks for report clarification. Secondary energy/consistency-1 matching is post-hoc; the declared direct comparison is unchanged. No new model query or relaxation.",
+  "energy_vs_consistency1": {
+    "gap_meV_A": 0.2099834040582213,
+    "percentage_of_smaller_mean": 0.6054380299610138,
+    "energy_seed_span_meV_A": 0.6109295956494911,
+    "consistency1_seed_span_meV_A": 1.920562144901397,
+    "passes_same_arithmetic_rule_post_hoc": true,
+    "consistency1_recovery_evaluated": false
+  },
+  "fit_plus_score": {
+    "direct": {
+      "seed_fit_plus_score_seconds": [
+        3007.973867582972,
+        2851.908258665935
+      ],
+      "two_seed_mean_seconds": 2929.9410631244536
+    },
+    "consistency-0.1": {
+      "seed_fit_plus_score_seconds": [
+        5392.854943540995,
+        6239.550017582951
+      ],
+      "two_seed_mean_seconds": 5816.202480561973
+    },
+    "consistency-1": {
+      "seed_fit_plus_score_seconds": [
+        5426.324882250046,
+        5308.403215916944
+      ],
+      "two_seed_mean_seconds": 5367.364049083495
+    },
+    "consistency-10": {
+      "seed_fit_plus_score_seconds": [
+        5639.514194542076,
+        4821.201736167073
+      ],
+      "two_seed_mean_seconds": 5230.357965354575
+    }
+  },
+  "energy_reference_start_controls": [
+    {
+      "reference": "coordsmin_1",
+      "matched": true,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.009981306294122763
+    },
+    {
+      "reference": "coordsmin_3",
+      "matched": true,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.009370302280694465
+    },
+    {
+      "reference": "coordsmin_6",
+      "matched": true,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.00992503486546037
+    },
+    {
+      "reference": "coordsmin_7",
+      "matched": true,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.009993435950316903
+    },
+    {
+      "reference": "coordsmin_8",
+      "matched": false,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.009958027584615614
+    },
+    {
+      "reference": "coordsmin_9",
+      "matched": false,
+      "interaction_components": 1,
+      "maximum_force_eV_A": 0.017339490330924856
+    }
+  ],
+  "reference_label_measure": "maximum absolute Cartesian force component, not MAE",
+  "hardware_limit": "Launch-source pins embedded in the specified score records identify arm64 macOS and 18 available logical CPUs. Training provenance alone records CPU backend/device and software versions; its arm field names the experimental arm. CPU model and actual concurrent thread usage are not established.",
+  "source_paths": {
+    "controlled": "reports/evidence/2026-10-18/controlled/completion-audit.json",
+    "reference_controls": "reports/evidence/2026-10-18/paired-trace/raw/*energy-0/{result,relaxation}.json",
+    "selection": "reports/evidence/2026-10-18/baseline/corrected_a1.json"
+  },
+  "sources": {
+    "reports/evidence/2026-10-18/controlled/completion-audit.json": "409b3df2d4e8d29694383c5bb7639ce30edcb0cbace3fe9b456adb9d920c4707",
+    "reports/evidence/2026-10-18/baseline/C/score.json": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+    "reports/evidence/2026-10-18/controlled/energy-1/score.json": "04090d0ab69759963e8f1d4def8167960c072582af69a77edea3c6a5f98f5d94",
+    "reports/evidence/2026-10-18/baseline/corrected_a1.json": "794113f832df3bce4996c2b4b15107081198ea1c6a1efa7278659e29b60d2538",
+    "reports/evidence/2026-10-18/paired-trace/raw/04-energy-0/result.json": "5be32f541c02cdab39aaf674dfa10980dbd3c4a98396853c4f4e362d3840bf63",
+    "reports/evidence/2026-10-18/paired-trace/raw/04-energy-0/relaxation.json": "11b54c96116514b6d33cc1351ba1457c5faba9bd5bcf73f37fd7f5f7182b8116",
+    "reports/evidence/2026-10-18/paired-trace/raw/05-energy-0/result.json": "12db866d68ba217ad3b3c780eb2f45c06dc260e6efedaf7c13c673e68f7fe4c0",
+    "reports/evidence/2026-10-18/paired-trace/raw/05-energy-0/relaxation.json": "2e370d5ec8edccb957b9cb70f0307a742086aafd06eab0b74da3f39a10a82792",
+    "reports/evidence/2026-10-18/paired-trace/raw/06-energy-0/result.json": "b8f7c1f4e3409aa35489208d7b362ef5d72fb0e808dd7bb725ab22f85c912fec",
+    "reports/evidence/2026-10-18/paired-trace/raw/06-energy-0/relaxation.json": "2f4cebebab878895c4ef1688521fa854034f58158e5e30463d2f090603f05a4e",
+    "reports/evidence/2026-10-18/paired-trace/raw/07-energy-0/result.json": "e496fa0cbe66c654af46ad348fa6ca03fe6917460f2b249ee51c306d42a70cb8",
+    "reports/evidence/2026-10-18/paired-trace/raw/07-energy-0/relaxation.json": "1c58db8f5eac532afaddb80bb38b1403bf877f7910341cc54ab6381e88ea523f",
+    "reports/evidence/2026-10-18/paired-trace/raw/08-energy-0/result.json": "5d46225dc96c7ccf7e2a07949d6edeacc7a82cf40629568272a24fce5dd323ea",
+    "reports/evidence/2026-10-18/paired-trace/raw/08-energy-0/relaxation.json": "db64eea8b85d9100e537f1178966dac4f47a4bf0217d1608814a157b6d43ff05",
+    "reports/evidence/2026-10-18/paired-trace/raw/09-energy-0/result.json": "ad83a6a0b0cc548746f079fa094f9add8f4c9274af89aa5db59cb3faeeaa9391",
+    "reports/evidence/2026-10-18/paired-trace/raw/09-energy-0/relaxation.json": "d7cc01c787a4d1f7b38016325dd9953c040fdb937efc3c3760f96d9703cb0495",
+    "reports/evidence/2026-10-18/controlled/direct-0/summary.json": "bade756e350478c138f7b28c46a8025352c2342052f37fc76b0f7f821e75af47",
+    "reports/evidence/2026-10-18/controlled/direct-1/summary.json": "ba07e12b48883cb4e045a03057d5aadaa07c1d214e071c8423cd81e672e377ff",
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-0/summary.json": "4efbd6f7cb5e841486dbfc854bc0d3da3d9091a69b61c00e320f54cdf3aa7291",
+    "reports/evidence/2026-10-18/controlled/consistency-0.1-1/summary.json": "f12460df396cb436c6d6e312111e05597b635a03f5c0ae58ed3d603ac51b2bfb",
+    "reports/evidence/2026-10-20/representation/E64-0/score.json": "3642ee5cdfec131059252694879e638524cbbe9d6d21babf1853b3c4963c9971",
+    "reports/evidence/2026-10-20/representation/E64-1/score.json": "e19364831b69c5e94714f144f827453433cad48f8825ad29e2ae84978c4dcb11"
+  },
+  "connectivity_definition": "Number of connected components with an edge for an atom pair strictly closer than 5 angstroms; computed from saved final positions.",
+  "figure": {
+    "source_data": "reports/archive/midterm/midsemester-2026-10-18/figures/plot-data.json",
+    "source_data_sha256": "e0f91444b0b931fc9fac98ff0f66bc0b66ba882cadd93403e7a52d9a78044b09",
+    "changed": "Threshold legend text only; original curves, threshold value, selected updates and markers retained.",
+    "renderer": "Matplotlib 3.11.2",
+    "build_script": "reports/midterm/build_baseline_figure.py",
+    "old_figure_sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9",
+    "current_figure_sha256": "6c162f5142ebb578244a3e4354e94d2681957a4a3fb1940e33e9074fe5c01a22"
+  },
+  "timing_definition": "Mean supervised fitting-stage plus scoring-stage elapsed time, including their overhead, excluding separate diagnostics and unmeasured project overhead; not worker-only elapsed time or inference timing.",
+  "worker_and_supervised_timing": [
+    {
+      "arm": "direct",
+      "seed": 0,
+      "worker_elapsed_seconds": 2996.981212790939,
+      "supervised_fit_seconds": 3002.1372755829943,
+      "scoring_seconds": 5.836591999977827,
+      "surrounding_fit_stage_overhead_seconds": 5.156062792055309,
+      "supervised_fit_plus_score_seconds": 3007.973867582972
+    },
+    {
+      "arm": "direct",
+      "seed": 1,
+      "worker_elapsed_seconds": 2842.153061249992,
+      "supervised_fit_seconds": 2846.5328850829974,
+      "scoring_seconds": 5.375373582937755,
+      "surrounding_fit_stage_overhead_seconds": 4.379823833005503,
+      "supervised_fit_plus_score_seconds": 2851.908258665935
+    },
+    {
+      "arm": "consistency-0.1",
+      "seed": 0,
+      "worker_elapsed_seconds": 5383.110502874944,
+      "supervised_fit_seconds": 5387.797184041003,
+      "scoring_seconds": 5.057759499992244,
+      "surrounding_fit_stage_overhead_seconds": 4.686681166058406,
+      "supervised_fit_plus_score_seconds": 5392.854943540995
+    },
+    {
+      "arm": "consistency-0.1",
+      "seed": 1,
+      "worker_elapsed_seconds": 6228.238633124973,
+      "supervised_fit_seconds": 6233.427179582999,
+      "scoring_seconds": 6.122837999952026,
+      "surrounding_fit_stage_overhead_seconds": 5.188546458026394,
+      "supervised_fit_plus_score_seconds": 6239.550017582951
+    }
+  ],
+  "energy_baseline_fit_reuse": [
+    {
+      "seed": 0,
+      "representation_score": "reports/evidence/2026-10-20/representation/E64-0/score.json",
+      "original_score": "reports/evidence/2026-10-18/baseline/C/score.json",
+      "same_best_checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+      "new_fit_performed": false
+    },
+    {
+      "seed": 1,
+      "representation_score": "reports/evidence/2026-10-20/representation/E64-1/score.json",
+      "original_score": "reports/evidence/2026-10-18/controlled/energy-1/score.json",
+      "same_best_checkpoint_sha256": "155bad1a8b3debcc33cc88be3adb807f05fe793cb999b3cdb96b21fad79d33c1",
+      "new_fit_performed": false
+    }
+  ],
+  "hardware_evidence": {
+    "records": [
+      {
+        "path": "reports/evidence/2026-10-18/baseline/C/score.json",
+        "sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+        "json_path": "source_pin.runtime_cpu",
+        "recorded": {
+          "logical_cpus": 18,
+          "machine": "arm64",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "processor": "arm",
+          "thread_environment": {
+            "MKL_NUM_THREADS": null,
+            "OMP_NUM_THREADS": null,
+            "OPENBLAS_NUM_THREADS": null,
+            "XLA_FLAGS": null
+          }
+        }
+      },
+      {
+        "path": "reports/evidence/2026-10-18/controlled/energy-1/score.json",
+        "sha256": "04090d0ab69759963e8f1d4def8167960c072582af69a77edea3c6a5f98f5d94",
+        "json_path": "source_pin.runtime_cpu",
+        "recorded": {
+          "logical_cpus": 18,
+          "machine": "arm64",
+          "platform": "macOS-27.0.1-arm64-arm-64bit",
+          "processor": "arm",
+          "thread_environment": {
+            "MKL_NUM_THREADS": null,
+            "OMP_NUM_THREADS": null,
+            "OPENBLAS_NUM_THREADS": null,
+            "XLA_FLAGS": null
+          }
+        }
+      }
+    ],
+    "capture": "scripts/e3x_phase_common.py source_pin(): platform.platform(), platform.machine(), platform.processor(), os.cpu_count().",
+    "baseline_launch_check": "scripts/launch_e3x_candidates.py checks the captured source pin before and after training. Its helper hash matches the launch-source pin embedded in each listed score record.",
+    "controlled_launch_check": "scripts/launch_e3x_comparison.py checks source_pin() against each slot launch record before execution.",
+    "scope": "Available host logical CPUs, not a measurement of threads used simultaneously. The worker provenance field arm is the experiment label, distinct from source_pin.runtime_cpu.machine."
+  }
+}

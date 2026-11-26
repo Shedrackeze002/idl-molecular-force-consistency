@@ -1,0 +1,11 @@
+{
+  "absolute_tolerance": 1e-10,
+  "completed_fit_skip_no_op": true,
+  "model": "SP-0",
+  "parameters_optimizer_rng_full_control_history_match": true,
+  "restored_update": 1000,
+  "resumed_segment": "<execution-evidence>/verification/scalar-interrupted/segments/000002",
+  "status": "PASS",
+  "target": 2000,
+  "uninterrupted_segment": "<execution-evidence>/verification/scalar-uninterrupted/segments/000001"
+}

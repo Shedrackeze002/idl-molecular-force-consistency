@@ -1,0 +1,103 @@
+{
+  "scope": "Bounded scientific wording and disclosure correction; no model execution",
+  "source_files": {
+    "reports/midsemester-2026-10-18/main.tex": {
+      "bytes": 18580,
+      "sha256": "e5cd6944cdd42fc52f2f113ade8fe4c328af66b06363a6b592bea3fca36acb6f"
+    },
+    "reports/midsemester-2026-10-18/main.pdf": {
+      "bytes": 94456,
+      "sha256": "8273d1b0c8674f1dc950592deac80a133af33dc6e82d69afa91f109b92be4242"
+    },
+    "reports/midsemester-2026-10-18/EVIDENCE_MAP.md": {
+      "bytes": 5247,
+      "sha256": "449257686859d4b41188f1e98357a9cbdb3badf334ec0ab51765ca1002921031"
+    },
+    "reports/midsemester-2026-10-18/claim-sources.json": {
+      "bytes": 12204,
+      "sha256": "6514e5cf587f0a384e3298f94b5109e2ca337891bec5e695364889826121fc7d"
+    },
+    "reports/midsemester-2026-10-18/selection-sensitivity.json": {
+      "bytes": 3984,
+      "sha256": "63fe500fe9aec2577facc6939632d613a62d4b58111db1f37c0ca7170b0c8f3a"
+    },
+    "reports/midsemester-2026-10-18/figures/plot-data.json": {
+      "bytes": 203536,
+      "sha256": "e0f91444b0b931fc9fac98ff0f66bc0b66ba882cadd93403e7a52d9a78044b09"
+    },
+    "reports/midsemester-2026-10-18/figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    "reports/team-explainer-2026-10-21-novice/brief.json": {
+      "bytes": 139187,
+      "sha256": "4913769e71cbfca359595b428b17f3590d2f3d4867587fc03edd0065adb70251"
+    },
+    "reports/team-explainer-2026-10-21-novice/sources.json": {
+      "bytes": 28236,
+      "sha256": "87bb591d5ed89e7ad127a26242e6f3c40caea1b8145c9e0b291cb5aa21ae64ae"
+    },
+    "reports/e3x-first-engineering-fits.md": {
+      "bytes": 3200,
+      "sha256": "0817c1a20d04c01937135fb274aca2e5b78719b151f9b8b33c79bcabe509d1b0"
+    },
+    "reports/midterm-ste-2026-10-21/group9_Midterm_IDL.tex": {
+      "bytes": 18672,
+      "sha256": "da263639f5e115ea98f44c934b8dababb14d973783b67ac48b7d99e3c6d47428"
+    },
+    "reports/midterm-ste-2026-10-21/group9_Midterm_IDL.pdf": {
+      "bytes": 77077,
+      "sha256": "49920b1cf1d6c080da1fd451b9739f95766a5118c777f5301109fd1b58b3570b"
+    },
+    "docs/team/WRITING_GUIDE.md": {
+      "bytes": 1099,
+      "sha256": "2ec086f44552a7cbb898206b0dcde2e0e3bcec7de0889bf44a1f2e37aab969f0"
+    },
+    "reports/midterm-ste35-2026-10-21/group9_Midterm_IDL.tex": {
+      "bytes": 18984,
+      "sha256": "2ac260bf6c090d7dd4dd09affaee619ebcb80ae2d134f5cdd4422d5885dae3a8"
+    },
+    "reports/midterm-ste35-2026-10-21/group9_Midterm_IDL.pdf": {
+      "bytes": 77253,
+      "sha256": "1da46801ee70f1df40285e14d50cb3fb7bcd851b7c51094ff070f6ee6f3b04b4"
+    },
+    "reports/evidence/2026-10-20/representation/E64-0/score.json": {
+      "bytes": 3260,
+      "sha256": "3642ee5cdfec131059252694879e638524cbbe9d6d21babf1853b3c4963c9971",
+      "location": "Verified publication checkout; immutable research snapshot"
+    },
+    "reports/evidence/2026-10-20/representation/E64-1/score.json": {
+      "bytes": 3265,
+      "sha256": "e19364831b69c5e94714f144f827453433cad48f8825ad29e2ae84978c4dcb11",
+      "location": "Verified publication checkout; immutable research snapshot"
+    },
+    "reports/evidence/2026-10-20/representation/SP-0/score.json": {
+      "bytes": 3261,
+      "sha256": "7ca18b272f4a8dab9ddd93020a4c72a5fe564418147f7214b2c7b1985084995a",
+      "location": "Verified publication checkout; immutable research snapshot"
+    },
+    "reports/evidence/2026-10-20/representation/SP-1/score.json": {
+      "bytes": 3263,
+      "sha256": "444ba9d27e27e9f8d787b5b35ac6db471b7391d6bb118b7c16a1d37e64583a70",
+      "location": "Verified publication checkout; immutable research snapshot"
+    },
+    "reports/evidence/2026-10-20/representation/S64-0/score.json": {
+      "bytes": 3260,
+      "sha256": "1d90f8bf7acfed086e2ba0c2d77a8f1877c390bddad1b2759d9a06eac3cd5db0",
+      "location": "Verified publication checkout; immutable research snapshot"
+    },
+    "reports/evidence/2026-10-20/representation/S64-1/score.json": {
+      "bytes": 3265,
+      "sha256": "d58786b30abc73888a1926a6b444e419b91fa72cf36deab139f46bbfb165ea7e",
+      "location": "Verified publication checkout; immutable research snapshot"
+    }
+  },
+  "primary_links": [
+    "https://doi.org/10.1038/s41524-025-01878-x",
+    "https://proceedings.mlr.press/v267/bigi25a.html",
+    "https://arxiv.org/abs/2401.07595",
+    "https://arxiv.org/abs/2206.07697",
+    "https://proceedings.mlr.press/v267/takamoto25a.html"
+  ],
+  "research_snapshot": "66d082158100a0c81b9a7815f7ac2a65f155b7ee"
+}

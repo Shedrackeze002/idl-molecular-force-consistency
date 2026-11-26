@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-23T22:55:50.872956+00:00",
+  "reason": "Superseded saved export; the latest edited source had only been compiled in the editor preview.",
+  "archived_pdf": "reports/archive/midterm/exports-2026-10-24/group9_Midterm_IDL_before_latest_conclusion.pdf",
+  "sha256": "4c85c308c76ca7a8cdac3227321b600d78126254906c41cd30d3e52392651f36",
+  "original_paths": [
+    "Group9/reports/midterm/group9_Midterm_IDL.pdf",
+    "output/pdf/group9_Midterm_IDL.pdf"
+  ],
+  "canonical_source": "Group9/reports/midterm/group9_Midterm_IDL.tex",
+  "deleted_content": false,
+  "archived_source_sha256": "ab5f416d96899dea8bcaab10432e994c88625678f0ed74e5d621371aacab3274"
+}

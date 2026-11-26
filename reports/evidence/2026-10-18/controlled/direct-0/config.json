@@ -1,0 +1,29 @@
+{
+  "arm": "direct",
+  "backend": "cpu",
+  "batch_size": 4,
+  "consistency_strength": 0.0,
+  "data_directory": "retained-research-output/data/processed/aspirin",
+  "expected_learning_subset_hash": null,
+  "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "learning_rate": 0.003,
+  "loss_weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  },
+  "max_updates": 200000,
+  "mode": "integration",
+  "model": {
+    "cutoff_A": 5.0,
+    "energy_readout_init": "zero",
+    "features": 64,
+    "iterations": 2,
+    "max_degree": 1,
+    "radial_basis": 8
+  },
+  "resume_checkpoint": null,
+  "run_directory": "retained-research-output/runs/aspirin-e3x-controlled-2026-10-16/direct-0",
+  "seed": 0,
+  "validation_interval": 500,
+  "wall_seconds": 4245.543735292466
+}

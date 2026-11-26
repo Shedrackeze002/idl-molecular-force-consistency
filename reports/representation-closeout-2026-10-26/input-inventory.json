@@ -1,0 +1,485 @@
+{
+  "dataset": {
+    "manifest": "retained:data/processed/aspirin/manifest.json",
+    "validation": "retained:data/processed/aspirin/validation.npz"
+  },
+  "files": {
+    "repository:experiments/representation_study/analysis.py": {
+      "bytes": 9954,
+      "sha256": "07819e33106f95c8253ab7f2d04007219754de7199826dc6ff28bc0d3b53398d"
+    },
+    "repository:reports/evidence/2026-10-20/representation/E64-0/score.json": {
+      "bytes": 3260,
+      "sha256": "3642ee5cdfec131059252694879e638524cbbe9d6d21babf1853b3c4963c9971"
+    },
+    "repository:reports/evidence/2026-10-20/representation/E64-1/score.json": {
+      "bytes": 3265,
+      "sha256": "e19364831b69c5e94714f144f827453433cad48f8825ad29e2ae84978c4dcb11"
+    },
+    "repository:reports/evidence/2026-10-20/representation/S64-0/score.json": {
+      "bytes": 3260,
+      "sha256": "1d90f8bf7acfed086e2ba0c2d77a8f1877c390bddad1b2759d9a06eac3cd5db0"
+    },
+    "repository:reports/evidence/2026-10-20/representation/S64-1/score.json": {
+      "bytes": 3265,
+      "sha256": "d58786b30abc73888a1926a6b444e419b91fa72cf36deab139f46bbfb165ea7e"
+    },
+    "repository:reports/evidence/2026-10-20/representation/SP-0/score.json": {
+      "bytes": 3261,
+      "sha256": "7ca18b272f4a8dab9ddd93020a4c72a5fe564418147f7214b2c7b1985084995a"
+    },
+    "repository:reports/evidence/2026-10-20/representation/SP-1/score.json": {
+      "bytes": 3263,
+      "sha256": "444ba9d27e27e9f8d787b5b35ac6db471b7391d6bb118b7c16a1d37e64583a70"
+    },
+    "repository:reports/evidence/2026-10-20/representation/paired.json": {
+      "bytes": 1016,
+      "sha256": "3db4b5fd6c099d83d88b993c4c567dabf7e1fb8292b98363db48546acfe1f0cb"
+    },
+    "repository:reports/evidence/2026-10-20/representation/parameter-counts.json": {
+      "bytes": 4619,
+      "sha256": "75484893b6c4ca7a08fdc0a2623c4a13e3f16317e052907d396fc3f347e8421e"
+    },
+    "repository:reports/evidence/2026-10-20/representation/preflight.json": {
+      "bytes": 816,
+      "sha256": "17e9db42efda0756d19e0889bdd06459c0ebe19790011f7dce3c42e28a3fe43e"
+    },
+    "repository:reports/evidence/2026-10-20/representation/reproduction.json": {
+      "bytes": 700,
+      "sha256": "a56edf446f4483de5cb604abd5fc050bfbbcbafecb4884165189cd6f1123743c"
+    },
+    "repository:reports/evidence/2026-10-20/representation/resume.json": {
+      "bytes": 411,
+      "sha256": "5f42d5fe4ba56400286d5cf0eb4eb1347761539290e4e370574a1a63553f31ec"
+    },
+    "repository:reports/evidence/2026-10-20/representation/verification-complete.json": {
+      "bytes": 301,
+      "sha256": "c7e4e55309f35920cb9de2dc68e68f693343d40a801c4f2a674070a658367801"
+    },
+    "retained:data/processed/aspirin/manifest.json": {
+      "bytes": 3537370,
+      "sha256": "eee42a8c444658593ed52abae33ed0c32b4a850d6e24f709b100f44c21c93774"
+    },
+    "retained:data/processed/aspirin/validation.npz": {
+      "bytes": 942833,
+      "sha256": "fb2a8532e1880f42e3095eb7a00bb7661db582f2b60277ba2fb24f4aeacdc0e8"
+    },
+    "retained:reports/execution/representation-study-2026-10-20/launch.json": {
+      "bytes": 8815,
+      "sha256": "7925748b278fe6bd048966b3ec2ee6acd1d1063352a3e36b5c93640c5a6ff280"
+    },
+    "retained:reports/execution/representation-study-2026-10-20/parameter-counts.json": {
+      "bytes": 4619,
+      "sha256": "75484893b6c4ca7a08fdc0a2623c4a13e3f16317e052907d396fc3f347e8421e"
+    },
+    "retained:reports/execution/representation-study-2026-10-20/reproduction.json": {
+      "bytes": 790,
+      "sha256": "66519df8ac276559d8e38243d434eb7b0b90a3d98cfb5e152e9089553e99267d"
+    },
+    "retained:reports/execution/representation-study-2026-10-20/resume.json": {
+      "bytes": 591,
+      "sha256": "07c3149bc714cb43e7e6173222a387fb49299d4409e93ec54b1b3205cba7f243"
+    },
+    "retained:reports/execution/representation-study-2026-10-20/verification-complete.json": {
+      "bytes": 571,
+      "sha256": "7c1ee778c0307cb2edb14548ba903092f0e57b53ef0cdbc6a8b6211fef22e8dd"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/best-checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "83da31b080bde1dd4a33fbb22ae1fa3ca924ca3e32c986c0293d4a3b869b0ed3"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/best.msgpack": {
+      "bytes": 25630427,
+      "sha256": "155bad1a8b3debcc33cc88be3adb807f05fe793cb999b3cdb96b21fad79d33c1"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "7e07fb311101577a93cb95d9f4eb982704214715d6ce2df5e4646af9e7c246e1"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/config.json": {
+      "bytes": 899,
+      "sha256": "56b13737821a861c799a0295cb9e4e679f6d3c4efafca8697bf64b48ea629965"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/last.msgpack": {
+      "bytes": 25927523,
+      "sha256": "cf4209a343efb1865253afacd73290f687b117cf82b5be179a32f295c957d942"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/provenance.json": {
+      "bytes": 6614,
+      "sha256": "b6ac8614667fbb4d84bf454587cf4de69a09de024c02b518fd6b79d06e68280f"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/summary.json": {
+      "bytes": 144069,
+      "sha256": "a4ba2adcab9bf2ff3c10df8c4a38bfecbc40f67d58102e19c225cddd77e7edd3"
+    },
+    "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/validation.json": {
+      "bytes": 27283494,
+      "sha256": "f579e9e26a63f2d3821301731f59356653a2ff79efa990f317ed9bef30a8afb1"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/best-checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "23fc581413d9b6e1d45d352ba3dec3ab179655622cac5981e0d23db0e56ab0ad"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/best.msgpack": {
+      "bytes": 24085531,
+      "sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "050d86f9a0952c98be236b920acb2807c3c078569e3b9847344a90ea670b3c09"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/config.json": {
+      "bytes": 904,
+      "sha256": "518b5ee984a7bd911119f8e639280a91e761256a2d482b471d3da7143e486db0"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/last.msgpack": {
+      "bytes": 25927519,
+      "sha256": "dd39add263810875c1b63eaa8a3fc8b21c7f874ced4311e41c31ab55dfc50c48"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/provenance.json": {
+      "bytes": 6614,
+      "sha256": "7145f75169b41928472e41bc1c892290535a1f7333b3ea36a6fc4b2d3a7507e4"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/summary.json": {
+      "bytes": 144077,
+      "sha256": "5502f0cf9316140ce1a3afe96d9643dc3f91a4c245d6e1847dc7545d12fca436"
+    },
+    "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/validation.json": {
+      "bytes": 27283454,
+      "sha256": "36ceb4d38b6fc1dbb2eac8e2d55a6da75fd3a2dec55ee5e13729c29d76dbbd65"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/best-validation.npz": {
+      "bytes": 482008,
+      "sha256": "9617de91e878d181687bee099676a45942e7bc2442d7e088d8c1aa1e83abb252"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/last-validation.npz": {
+      "bytes": 482078,
+      "sha256": "7a58e2e74c0e2ef5aa80893c0ce4dc2f7b5a4858db0aaa0331b629f1a0eca6ed"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/score.json": {
+      "bytes": 3160,
+      "sha256": "a55a4896bdab7d36421b8ece65e60bd367fa0eb1f7050b5957798e4627adfe05"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "e1559d81fb8547ca84bb43fde3b5e4f5da39513cfef3794af528ec76845dd91c"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/best-checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "43ff2dccd450ed8bb9ccf44455cdfae9a03ce7d5af4c8f79c082f6b353e96c6b"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/best.msgpack": {
+      "bytes": 24525367,
+      "sha256": "d9be7dd4da63706eb7387e302fcc21b10ea7b74e68da195cc43dafa9ecc85aee"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "785d7c1e3f74e2855465e83fdac47069d4a86ba88f932ced04f695fbe5272b0f"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/config.json": {
+      "bytes": 905,
+      "sha256": "881795d6e8e916ce3c187c6d00e7c3195c7467324430ad78d4dc964d18097d9d"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/last.msgpack": {
+      "bytes": 25060136,
+      "sha256": "824dbebc41d5a3217e88a233ed0f31de5a8b958d051f6963dd32149df2a99172"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/provenance.json": {
+      "bytes": 6614,
+      "sha256": "49676260a3c4e56af200c01d2a43d83a8be84f2a037aa980e1253a75f0471f16"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/summary.json": {
+      "bytes": 144074,
+      "sha256": "6bb522d984cd6f1f628a91f3eb795da1dce7a8b9029c10723c44746c3561e8ab"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/validation.json": {
+      "bytes": 27282976,
+      "sha256": "965868b5874249f6401f222dd16f9648922f66d5d696eef63e45cf5781a1acff"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/best-validation.npz": {
+      "bytes": 481324,
+      "sha256": "20c9e0395d9bb7558d6db44dcd9268495908fc034f3d7dac3f81e5711e0964b1"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/last-validation.npz": {
+      "bytes": 481292,
+      "sha256": "b65f7af9d3a21faf593c481eea603550095b18b934e1565d16b5b68fe943401a"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/score.json": {
+      "bytes": 3165,
+      "sha256": "acbf94b9f44f2a8e629a5adf63a52002837c522f7f91cb31952452ed5cdcf7cb"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "6c490193bdc9c2d29b7a8681369071b693241a2c40857fa01dfafa19049c8c68"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/best-checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "9aa9d5c33fa17cbb687fcab985abbd102a86e6067cdd07dc4d24804cb50422a9"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/best.msgpack": {
+      "bytes": 23515246,
+      "sha256": "ebbb7faeecd2c3f6d177aafe309485ec66f69b9ac69a9e27f7a92d6132b5af90"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "db2eb628b7e150b3ade6afffc0b471a61a05bb3927a063bcdddff27bb4b800e3"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/config.json": {
+      "bytes": 905,
+      "sha256": "fc90b2de01c0f7b95e04a0796706912112a5e66d43f2fc17cced9d1f1ed695fa"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/last.msgpack": {
+      "bytes": 25060140,
+      "sha256": "7c1bf80abf54e3fefde16e5800985b6826454012a546a920a34c5de288251a61"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/provenance.json": {
+      "bytes": 6614,
+      "sha256": "b6e96ab5174f7093732982aac036234d7c75a3fbc7d1a0842793106b8db6e9f8"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/summary.json": {
+      "bytes": 144069,
+      "sha256": "6ec6ee912211e3d1f9c2636da2d07d50812cbd9ee0e286fabddf63e20dc477e3"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/validation.json": {
+      "bytes": 27283361,
+      "sha256": "1af118545c2b11ed7c88454c4bed2f775672617e4f9a08de317829afd4a5e7e1"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/best-validation.npz": {
+      "bytes": 481829,
+      "sha256": "ad8f40523d96179838df6a2d6022bd8360b01ce4276481da6020a9cade77576a"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/last-validation.npz": {
+      "bytes": 482099,
+      "sha256": "1ed5cee2d0768fd15b689298f5434e8bf9aefe9136433c59e6787804bc48330a"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/score.json": {
+      "bytes": 3162,
+      "sha256": "d1cb3c7508859656c8c8532f88f9c4ff33db7201273f32e24ce513df81a2f7aa"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "ef0170e5bb62c3117545783be87e363b3e974988c967789131bf5a472cfd0a9d"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/best-checkpoint-verification.json": {
+      "bytes": 164,
+      "sha256": "54b8bcbe9932e9004060af462b757de149d78d68ae11aad958d091914ef1fe74"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/best.msgpack": {
+      "bytes": 24557525,
+      "sha256": "20ee0f7bb20e3f98ed93bb314233910beb6f4b6d42b0c1b0c4d991b4928f43be"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "cecc0b8eda11b2d7996c6eed82ffddf90eab456b8320684195e83c306f13d43d"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/config.json": {
+      "bytes": 904,
+      "sha256": "7ab203718c1de7dd88a375fe1b26183cab01563e472c2a1b7062091b1078b33b"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/last.msgpack": {
+      "bytes": 25924160,
+      "sha256": "c935759ef8de5774d31263b294c2918dab4edfe5af1c6d8e33613cfceda4c8df"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/provenance.json": {
+      "bytes": 6614,
+      "sha256": "f0bce058036e1efcb5468cc8ca15841502029ba4b6f904d38c5e19195a72c7a2"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/summary.json": {
+      "bytes": 144073,
+      "sha256": "98cd7c0f83267f7160ad12977f5c030e7b401b7b70fd5a22a35c170eaef619c0"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/validation.json": {
+      "bytes": 27283015,
+      "sha256": "98e0038ab3d77eefe9d0a5649615688c945f0d97982f69ea3cbc6cd0a6b9dc97"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/best-validation.npz": {
+      "bytes": 481664,
+      "sha256": "7f4e2725e98eb50062f7a014f39497b6d7ac26538ba97d5697a7fa348ee010c2"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/last-validation.npz": {
+      "bytes": 481762,
+      "sha256": "e7975ed294bf07e5e3b9b12a5eec3a543e597ceb126dd4cfa5d6c87f58322104"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/score.json": {
+      "bytes": 3164,
+      "sha256": "8f4f24399b47c6b9b566e7f094b688b6aa5426d75f800066d6bb111f9304d920"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "09bf3ea7c2183760166d9e14f0d041da28190ee50dc9627da93284fe0f519db3"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/best-checkpoint-verification.json": {
+      "bytes": 163,
+      "sha256": "9251fd4c1392d150ee3a5831b427798aa7204c11ff4f1c7c253a676271579dd5"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/best.msgpack": {
+      "bytes": 24676365,
+      "sha256": "af3272b0211cd2289b658b77ac79f4a2b4a3e0290356926c5d4ba39c0b083a89"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/checkpoint-verification.json": {
+      "bytes": 164,
+      "sha256": "06d7161b4691d28a2329c157e2bb7e43d78e57ec87df5c0a568e5e86410e1877"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/config.json": {
+      "bytes": 904,
+      "sha256": "09a27a06a603fa8b6c4504af722c57932ff85951f01f014538c7ae5b495ad399"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/last.msgpack": {
+      "bytes": 25924164,
+      "sha256": "6dc067de11bc7f8005efc820dc5d82b53580874a7ba2eb67f6ad7f990c5c078e"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/provenance.json": {
+      "bytes": 6614,
+      "sha256": "8742fc60b90f6dffea85954710313d8c91fa75ccd33b7ab25abe27f5f0759bfc"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/summary.json": {
+      "bytes": 144078,
+      "sha256": "c293318645220ff8c8a370e2529b955a95d6e8252e655d45838f85a5f1fa5ee0"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/validation.json": {
+      "bytes": 27283038,
+      "sha256": "a443e8168e3e71a244aa9227148df601d6f378e09fb97d09600532a5a5ea1b52"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/best-validation.npz": {
+      "bytes": 477823,
+      "sha256": "cdbdc636b4a2b9b8d718a1ce5d969650d97316d5dd78a8bc2df84a323fc592d3"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/last-validation.npz": {
+      "bytes": 478046,
+      "sha256": "59d20fb6ae128400e42b745a83030763cf371b152a12eedefaeb719dcffc071a"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/score.json": {
+      "bytes": 3158,
+      "sha256": "16c1c039ad29b9311279a50f194f0c72734cde275044ed5413edad978f768404"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "823853e2253e719dc43ffa7dad3129169fc53501aad1686077371d085ea80050"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/best-validation.npz": {
+      "bytes": 479002,
+      "sha256": "9d9e4173301800334062e388f2d35d92eb8f57808f0f4f48f4bf7f9fea1ce963"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/last-validation.npz": {
+      "bytes": 479140,
+      "sha256": "e0b2b68453209fb603e0d04f1acdc7f2f2e997bf45a41f9805e01664c70e9d85"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/score.json": {
+      "bytes": 3163,
+      "sha256": "9589adad9130d9b1ea2adc04ea067241ade6cb45b366f14e946d1d948696237e"
+    },
+    "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/score.sha256": {
+      "bytes": 65,
+      "sha256": "18f57ce67358a36673af7f3cff4fa0970af99a0867a9274b584f37afc9e86615"
+    }
+  },
+  "launch": "retained:reports/execution/representation-study-2026-10-20/launch.json",
+  "path_mapping": "Historical absolute checkout root mapped explicitly to the coordinator retained artifact root; original bytes unchanged",
+  "runs": {
+    "E64-0": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/best-validation.npz",
+      "candidate": "E64-0",
+      "checkpoint-verification.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/E64-0/score.json",
+      "last.msgpack": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/score.json",
+      "run": "runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-0/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/summary.json",
+      "validation.json": "retained:runs/aspirin-e3x-v3-scientific-recovery-2026-10-15/C/validation.json"
+    },
+    "E64-1": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/best-validation.npz",
+      "candidate": "E64-1",
+      "checkpoint-verification.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/E64-1/score.json",
+      "last.msgpack": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/score.json",
+      "run": "runs/aspirin-e3x-controlled-2026-10-16/energy-1",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/references/E64-1/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/summary.json",
+      "validation.json": "retained:runs/aspirin-e3x-controlled-2026-10-16/energy-1/validation.json"
+    },
+    "S64-0": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/best-validation.npz",
+      "candidate": "S64-0",
+      "checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/S64-0/score.json",
+      "last.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/score.json",
+      "run": "runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/analysis/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/summary.json",
+      "validation.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-0/segments/000001/validation.json"
+    },
+    "S64-1": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/best-validation.npz",
+      "candidate": "S64-1",
+      "checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/S64-1/score.json",
+      "last.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/score.json",
+      "run": "runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/analysis/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/summary.json",
+      "validation.json": "retained:runs/aspirin-representation-cpu-2026-10-20/S64-1/segments/000001/validation.json"
+    },
+    "SP-0": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/best-validation.npz",
+      "candidate": "SP-0",
+      "checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/SP-0/score.json",
+      "last.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/score.json",
+      "run": "runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/analysis/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/summary.json",
+      "validation.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-0/segments/000001/validation.json"
+    },
+    "SP-1": {
+      "best-checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/best-checkpoint-verification.json",
+      "best.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/best.msgpack",
+      "best_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/best-validation.npz",
+      "candidate": "SP-1",
+      "checkpoint-verification.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/checkpoint-verification.json",
+      "config.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/config.json",
+      "export": "repository:reports/evidence/2026-10-20/representation/SP-1/score.json",
+      "last.msgpack": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/last.msgpack",
+      "last_predictions": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/last-validation.npz",
+      "provenance.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/provenance.json",
+      "raw_score": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/score.json",
+      "run": "runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001",
+      "score_hash": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/analysis/000001/score.sha256",
+      "summary.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/summary.json",
+      "validation.json": "retained:runs/aspirin-representation-cpu-2026-10-20/SP-1/segments/000001/validation.json"
+    }
+  },
+  "schema": 1,
+  "scope": "saved validation outputs only; opaque checkpoint envelopes/control; no model execution",
+  "scoring_source": "repository:experiments/representation_study/analysis.py"
+}

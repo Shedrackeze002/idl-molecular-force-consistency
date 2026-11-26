@@ -1,0 +1,101 @@
+{
+  "analysis_source_sha256": "07819e33106f95c8253ab7f2d04007219754de7199826dc6ff28bc0d3b53398d",
+  "backend": "cpu",
+  "checkpoint_sha256": {
+    "best": "155bad1a8b3debcc33cc88be3adb807f05fe793cb999b3cdb96b21fad79d33c1",
+    "last": "cf4209a343efb1865253afacd73290f687b117cf82b5be179a32f295c957d942"
+  },
+  "final_segment_elapsed_seconds": 4104.61344241607,
+  "history": {
+    "best_equal_connection_force_mae_eV_per_A": 0.03519833788949361,
+    "best_update": 197500,
+    "last_equal_connection_force_mae_eV_per_A": 0.039339652729092164,
+    "late20_equal_connection_force_mae_eV_per_A": 0.03902911947138732,
+    "late20_updates": [
+      190500,
+      191000,
+      191500,
+      192000,
+      192500,
+      193000,
+      193500,
+      194000,
+      194500,
+      195000,
+      195500,
+      196000,
+      196500,
+      197000,
+      197500,
+      198000,
+      198500,
+      199000,
+      199500,
+      200000
+    ]
+  },
+  "model": {
+    "cutoff_A": 5.0,
+    "energy_readout_init": "zero",
+    "features": 64,
+    "iterations": 2,
+    "max_degree": 1,
+    "radial_basis": 8
+  },
+  "no_test_or_recovery_claim": true,
+  "parameter_count": 43521,
+  "prediction_files": {
+    "best": "9d9e4173301800334062e388f2d35d92eb8f57808f0f4f48f4bf7f9fea1ce963",
+    "last": "e0b2b68453209fb603e0d04f1acdc7f2f2e997bf45a41f9805e01664c70e9d85"
+  },
+  "roles": {
+    "best": {
+      "connection_count": 5,
+      "energy_mae_eV": 0.13045995931902654,
+      "equal_connection_force_mae_eV_per_A": 0.03519833788949358,
+      "per_connection_force_mae_eV_per_A": {
+        "13": 0.039691268505225946,
+        "18": 0.036098570469533485,
+        "18_2": 0.03334916570252545,
+        "66": 0.036055191727798676,
+        "78": 0.030797493042384362
+      },
+      "pooled_component_force_rmse_eV_per_A": 0.056560105237883275,
+      "pooled_force_mae_eV_per_A": 0.03515408286303086,
+      "record_count": 974,
+      "zero_force_equal_connection_mae_eV_per_A": 0.06250438966560673
+    },
+    "last": {
+      "connection_count": 5,
+      "energy_mae_eV": 0.1050217795735863,
+      "equal_connection_force_mae_eV_per_A": 0.03933965272909216,
+      "per_connection_force_mae_eV_per_A": {
+        "13": 0.04812404708567798,
+        "18": 0.03953228304097301,
+        "18_2": 0.037925071082581974,
+        "66": 0.03940299310838947,
+        "78": 0.03171386932783835
+      },
+      "pooled_component_force_rmse_eV_per_A": 0.0640353348327992,
+      "pooled_force_mae_eV_per_A": 0.03925427336936837,
+      "record_count": 974,
+      "zero_force_equal_connection_mae_eV_per_A": 0.06250438966560673
+    }
+  },
+  "score_directory": "<retained-runs>/aspirin-representation-cpu-2026-10-20/references/E64-1/000001",
+  "seed": 1,
+  "segment_timing": [
+    {
+      "compilation_seconds": 1.4122538740048185,
+      "elapsed_seconds": 4104.61344241607,
+      "segment": "energy-1",
+      "steady_update_seconds_mean": 0.011496659513934865,
+      "timing_status": "recorded",
+      "validation_seconds_total": 391.2352458317764,
+      "warmup_execution_seconds": 0.02790904208086431
+    }
+  ],
+  "source_fingerprint": "a046011a0efdfab2835b00e42f446e691b453b1f30854f8accce26c6292f4da5",
+  "status": "independently_scored_validation_only",
+  "training_revision": "01dfd9794744143f44ed9e56efa39d350cfc957d"
+}

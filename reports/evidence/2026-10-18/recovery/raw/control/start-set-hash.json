@@ -1,0 +1,7 @@
+{
+  "artifact": "start-set-hash",
+  "branch_count": 10,
+  "schema": 1,
+  "start_record_id_map_sha256": "42036553c3d0656cd78179c6d73528108cae0283ddb63f47092f72e6b1350e05",
+  "start_set_payload_sha256": "caf1e185ad29266ddd211699c0774ba51ebace3a4a62270cbfc3425e1771d825"
+}

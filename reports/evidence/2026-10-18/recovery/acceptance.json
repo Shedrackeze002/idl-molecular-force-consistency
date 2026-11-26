@@ -1,0 +1,32 @@
+{
+  "A2": "failed",
+  "all_output_hashes_reverified": true,
+  "branches_per_model": 10,
+  "comparative_recovery_benefit_established": false,
+  "completion_audit_sha256": "6c86f9585b21bdf0e90ae32930e3fee149fa936ba4db19450e4ba21758b9f59f",
+  "cost_limitation": "Incomplete timed receipt lower bound; imports/admin/reporting/reviewer overhead not fully timed; no billing or deployment-cost claim.",
+  "independent_connection_count": 5,
+  "known_measured_study_lower_bound_seconds_including_scientific_review_bodies": 57145.89649745766,
+  "main_hypothesis_established": false,
+  "main_test_access": false,
+  "matched_seeds_per_arm": 2,
+  "model_recovery_counts": {
+    "consistency-0.1-0": 0,
+    "consistency-0.1-1": 0,
+    "direct-0": 0,
+    "direct-1": 0,
+    "energy-0": 0
+  },
+  "nearest_own_class_context_count": 5,
+  "no_relaxation_own_count": 0,
+  "observed_utc": "2026-10-17T17:10:19.592349+00:00",
+  "output_inventory_sha256": "3caeb21178e7c399d50c03a5b82b1f3e91fcc737ba9ef46e06118a02db1d386d",
+  "records_sha256": "62b0bc3b4a70481f55931837db9d882148878ec31a8af9c22456f71b9a4c08e5",
+  "retry_or_tuning_performed": false,
+  "review_geometry_audit_seconds": 1.8540591669734567,
+  "review_sha256": {
+    "retained-research-output/reports/execution/e3x-validation-recovery-2026-10-17/ENGINEERING_RESULT_REVIEW.md": "386edf345deb40d356309bc0e62aa0847b0e28148dad5b948aa958e052b0b6be",
+    "retained-research-output/reports/execution/e3x-validation-recovery-2026-10-17/SCIENTIFIC_RESULT_REVIEW.md": "4d3bb84e6fe8c4ac5bf37d6f4ace4b19c2c129cbab6d1d2322e1d8cbfaa09431"
+  },
+  "status": "ACCEPTED_DESCRIPTIVE_VALIDATION_A2_FAILED"
+}

@@ -1,0 +1,241 @@
+{
+  "status": "PASS_FIVE_MAIN_PAGES_CURRENT_EXPORT",
+  "pages": 6,
+  "main_text_pages": 5,
+  "reference_start_page": 6,
+  "reference_pages": 1,
+  "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
+  "prose_paragraphs": 28,
+  "prose_sentences": 126,
+  "max_sentence_words": 32,
+  "language_flags": [],
+  "sentence_and_paragraph_scope": "Descriptive prose and abstract, excluding headings. Sentences checked against the recorded word ceiling. The latest user-authored merged diagnostic/trace paragraph is retained with nine sentences; other descriptive paragraphs have at most six.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": false,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc",
+  "pdf_bytes": 80588,
+  "abstract": {
+    "paragraphs": 1,
+    "sentences": 6,
+    "sequence": [
+      "Introduction",
+      "Problem",
+      "Methodology",
+      "Results",
+      "Conclusion"
+    ],
+    "first_person_pronouns": 0,
+    "max_sentence_words": 29,
+    "nonexpert_terms_explained": true
+  },
+  "manuscript_first_person_pronouns": 0,
+  "main_sections": [
+    "Introduction",
+    "Literature Review",
+    "Data and Preprocessing",
+    "Methodology",
+    "Results and Discussion",
+    "Conclusion and Future Work"
+  ],
+  "two_bounded_plan_and_final_reviews_pass": false,
+  "all_six_pages_visually_inspected": true,
+  "tables_loss_figure_and_bibliography_unchanged": false,
+  "review_scope": "Limitations paragraph formatting and one wording change, preserving the saved manuscript edits. Scientific values, abstract, methods, tables, figure and references unchanged; only page 5 changed visually.",
+  "release_checks_pending": [
+    "Four contribution confirmations",
+    "Live Canvas instructions and exact due time/timezone",
+    "Exact-PDF team approval",
+    "Submission"
+  ],
+  "files": {
+    "group9_Midterm_IDL.tex": {
+      "bytes": 21114,
+      "sha256": "8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab"
+    },
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 80588,
+      "sha256": "e85546f59b230434a8201ebbe7b579e9ac43ca6a135c47707b9827910a6e1abc"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23075,
+      "sha256": "6c162f5142ebb578244a3e4354e94d2681957a4a3fb1940e33e9074fe5c01a22"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    },
+    "README.md": {
+      "bytes": 5172,
+      "sha256": "468a497e2fc74dcd775bf47b39658ace3ede302ba4e7584d8ae0effa8ab03807"
+    },
+    "CHANGES.md": {
+      "bytes": 10560,
+      "sha256": "64be9394efb2a4c1a7deb49a7ad4fef3da49335ff593c93c4887ad0d0a31ede0"
+    },
+    "RELEASE_CHECKLIST.md": {
+      "bytes": 1342,
+      "sha256": "3f7e421d5aefc515936d2dde9dc1d21ff3d3596e9b9a78c0829abd685330ba61"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 1368,
+      "sha256": "c9a617e0ccd1795ec825c0752a470f3a18bc011d25da21497de7aad9d4df3264"
+    },
+    "source-records.json": {
+      "bytes": 1159,
+      "sha256": "345fa620dd9de66ebf833cddaeac23d2c0f50deac29372a2e22fc13254299955"
+    },
+    "TEAM_REVIEW.md": {
+      "bytes": 1381,
+      "sha256": "4f6dc9b2f04c32c82478f6a18bca3976337b42c38822ce75e4b90c6ef125d83f"
+    },
+    "build_baseline_figure.py": {
+      "bytes": 1528,
+      "sha256": "b60284b7a267226591e5327942e2fdcef18bcc56cab78bf126c4e088896b994c"
+    },
+    "additional-checks.json": {
+      "bytes": 11104,
+      "sha256": "5f359ea984ec5e7dd77ab6c17541b10fa039a1e8a3dd948460d40daecf0491cc"
+    },
+    "public-access-check.json": {
+      "bytes": 2167,
+      "sha256": "215a5165a34213385f5ea31f03b4eb1959069383ff36615f144777d40afd991f"
+    }
+  },
+  "visual_inspection": "All six pages inspected: no overlap, clipping or missing characters. Figure 1 page 3; Tables 1 and 2 page 4; Endpoint Diagnostics starts page 5; references page 6. No layout warnings or table-interrupted split words.",
+  "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+  "canonical_directory": "reports/midterm",
+  "relocation": {
+    "pdf_and_tex_unchanged": true,
+    "archive_inventory": "reports/archive/midterm/relocations.json",
+    "archive_files_byte_preserved": true
+  },
+  "source_verification": {
+    "source_sha256": "8eb6c3bc213a67e1818a53b9312f29a4a26e4b0af93ec1cd486b6df08a8eb1ab",
+    "built_in_compile": "success",
+    "body_sentences": 126,
+    "max_sentence_words": 32,
+    "sentence_or_paragraph_flags": [],
+    "abstract_unchanged_from_pre_edit_source": false,
+    "numerical_tables_and_loss_unchanged": true,
+    "current_pdf_export": "complete; six total pages, five main-text pages",
+    "prior_preview_report": {
+      "pages": 6,
+      "main_text_pages": 5,
+      "reference_start_page": 6,
+      "basis": "Coordinator confirmed current editor preview on 23 October 2026",
+      "tool_visual_inspection": false
+    },
+    "current_export_page_count": {
+      "pages": 6,
+      "main_text_pages": 5,
+      "reference_start_page": 6,
+      "basis": "Measured from exported PDF"
+    },
+    "original_numerical_rows_and_loss_preserved": true,
+    "mace_reference_row_added": true
+  },
+  "page_limit_met": true,
+  "previous_export": {
+    "pdf_sha256": "0f08b06bd45be61cd46de6d4b1021b59bd0f3ade0ff11c7939fbb56ee87013c4",
+    "archive": "reports/archive/midterm/before-limitations-heading-2026-10-24",
+    "pages": 6,
+    "main_text_pages": 5
+  },
+  "historical_abstract_clause_check": {
+    "one_abstract_clause_changed": true,
+    "other_source_unchanged": true,
+    "pages2_to6_pixel_identical": true,
+    "abstract_max_sentence_words": 27
+  },
+  "current_checks": {
+    "tables_and_loss_preserved": true,
+    "bibliography_preserved": true,
+    "course_style_and_preamble_preserved": true,
+    "figure_asset_preserved": false,
+    "figure1_page": 3,
+    "table2_page": 4,
+    "overfull_boxes": 0,
+    "undefined_references": 0,
+    "all_pages_visual_pass": true,
+    "abstract_clarity_changed": false,
+    "energy_slope_definition_and_three_models_present": true,
+    "original_numerical_rows_and_loss_preserved": true,
+    "mace_reference_row_added": true,
+    "user_edited_introduction_preserved": false,
+    "mace_section_page": 4,
+    "mace_result_in_abstract_table_subsection_and_conclusion": true,
+    "figure_data_preserved": true,
+    "threshold_legend_public_name": true,
+    "introduction_definitions_preserved": true,
+    "original_numerical_rows_preserved": true,
+    "secondary_match_is_post_hoc": true,
+    "consistency1_recovery_unmeasured": true,
+    "reference_force_statistic_explicit": true,
+    "reference_start_control_connectivity_explicit": true,
+    "table2_pinned_within_structural_recovery": true,
+    "diagnostic_section_start_page": 5,
+    "energy_baseline_fits_explicitly_reused": true,
+    "supervised_vs_worker_time_explicit": true,
+    "latest_separate_planned_work_heading_retained": true,
+    "body_outside_abstract_unchanged": false,
+    "pages2_to6_pixel_identical": false,
+    "abstract_unchanged": true,
+    "hypothesis_explicit": true,
+    "paper_specific_literature_connections": true,
+    "agreement_vs_recovery_synthesis": true,
+    "hardware_evidence_json_fields_verified": true,
+    "available_logical_cpus_not_concurrent_threads": true,
+    "training_exposure_noncausal_context_explicit": true,
+    "recovery_caption_force_geometry_rule_explicit": true,
+    "standalone_limitations_heading": true,
+    "pages1_to4_and6_pixel_identical": true
+  },
+  "research_snapshot_scope": "Research code/evidence, not the later report revision",
+  "solver_constants_verified_against_github_snapshot": true,
+  "original_numerical_rows_loss_figure_and_bibliography_preserved": false,
+  "figure_data_preserved": true,
+  "repository_public_access": {
+    "status": "PASS_ANONYMOUS_HTTP_200",
+    "date": "2026-10-24",
+    "evidence": "public-access-check.json",
+    "research_snapshot": "3fa5969e5a0c2fdeaebc76a05bace20799715203",
+    "current_report_bytes_verified": true,
+    "report_commit": "df6c86b9a4bf31cf2a2a2c38be63195335d6c31f",
+    "main_readme_commit": "63250d8025483ca6172808da17ddaf7f4bbe532e",
+    "scope": "Historical access check for the prior report export; current export publication verified separately."
+  },
+  "user_edited_paragraph_retained": {
+    "scope": "Endpoint diagnostic and trace paragraph",
+    "sentences": 9
+  },
+  "default_branch_navigation": {
+    "status": "PASS",
+    "branch": "main",
+    "commit": "63250d8025483ca6172808da17ddaf7f4bbe532e",
+    "changed_paths": [
+      "README.md"
+    ],
+    "report_and_research_links_verified": true,
+    "report_branch_merged": false
+  },
+  "export_consolidation": {
+    "canonical_pdf": "reports/midterm/group9_Midterm_IDL.pdf",
+    "delivery_path": "output/pdf/group9_Midterm_IDL.pdf",
+    "delivery_is_relative_symbolic_link": true,
+    "old_export_preserved": true,
+    "editor_preview_is_separate": true
+  }
+}

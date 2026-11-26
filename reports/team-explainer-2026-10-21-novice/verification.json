@@ -1,0 +1,73 @@
+{
+  "status": "FINAL_ARTIFACT_AND_VISUAL_REVIEW_PASS",
+  "edition": "No-background whole-document rewrite",
+  "pdf_pages": 41,
+  "body_sentences": 849,
+  "descriptive_sentence_limit": 25,
+  "instruction_sentence_limit": 20,
+  "sentence_flags": 0,
+  "paragraph_max_sentences": 6,
+  "all_page_titles_and_footers_in_expected_positions": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": 0,
+  "six_key_numerical_tables_exactly_preserved": true,
+  "same_six_completed_representation_fits": true,
+  "point_of_use_checks": {
+    "atoms_and_molecules": "the tiny pieces of matter that join to form a molecule",
+    "molecular_shape": "the arrangement of those atoms in three dimensions",
+    "force_push_and_pull": "Forces are pushes and pulls",
+    "direct_prediction": "A direct-force model predicts the force arrows",
+    "energy_prediction_and_slope": "An energy-derived model predicts energy, then calculates forces",
+    "connection_group": "Our connection group means all the records",
+    "whole_connection_split": "Both branches stay together",
+    "loss_and_parameters": "Parameters are its adjustable numbers",
+    "predicted_force_vs_error": "Prediction error instead asks whether they agree",
+    "separate_gradients": "A parameter gradient asks how the loss changes",
+    "scalar_models_still_equivariant": "Even the scalar-only model therefore has equivariant forces",
+    "no_causal_feature_claim": "We cannot isolate those features alone as the cause",
+    "no_glossary_dependency": "The main text gives the meanings beside the ideas"
+  },
+  "source_file_identities": 66,
+  "review_scope": "Two independent plan reviews approved; whole-draft reviewer feedback applied; final numerical and editorial checks by coordinator. Not formal STE certification.",
+  "scientific_scope": "No new experiment or scientific result acceptance. Same validation-only evidence and limits as prior guide.",
+  "files": {
+    "meeting-brief.pdf": {
+      "bytes": 170937,
+      "sha256": "3826de308116e625f2587f409cb2815bd4c74eb027ffa7bfe9338929197ab7b7"
+    },
+    "brief.md": {
+      "bytes": 84572,
+      "sha256": "7b118a079d22fbfdf456339e2b4680c24ebb0b0e13c416b4c115b42a321bd75d"
+    },
+    "brief.json": {
+      "bytes": 139187,
+      "sha256": "4913769e71cbfca359595b428b17f3590d2f3d4867587fc03edd0065adb70251"
+    },
+    "SOURCES.md": {
+      "bytes": 20874,
+      "sha256": "bdcc947c441eee354184b161e4d677a17bb9898619b06a5224c9839588dac824"
+    },
+    "sources.json": {
+      "bytes": 28236,
+      "sha256": "87bb591d5ed89e7ad127a26242e6f3c40caea1b8145c9e0b291cb5aa21ae64ae"
+    },
+    "build.py": {
+      "bytes": 11381,
+      "sha256": "b7e77aadc88887bd2ea6372416db34192ed682dd5362dbfadcd2c2a8dd2a6e8b"
+    },
+    "README.md": {
+      "bytes": 2119,
+      "sha256": "60b3c959565409757efa9f447188462af320cff4fca024b9f7af0bf71646259e"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    }
+  },
+  "visual_review": {
+    "all_41_final_pages_inspected": true,
+    "full_size_opening_pages_inspected": true,
+    "clipping_overlaps_or_unreadable_tables_observed": false
+  },
+  "review_limit": "Two independent plan reviews completed. Whole-draft feedback was applied; final written review turns were interrupted. Final artifact checks were completed by the coordinator."
+}

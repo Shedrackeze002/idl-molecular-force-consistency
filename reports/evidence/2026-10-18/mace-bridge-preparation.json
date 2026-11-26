@@ -1,0 +1,67 @@
+{
+  "status": "ACCEPTED_SYNTHETIC_CALCULATOR_BRIDGE_ONLY",
+  "date": "2026-10-18",
+  "implementation_files": {
+    "scripts/mace_reference_adapter.py": "c0aa26e964150817b382b0b4e3f9da7ef6dec1eaa94b0c275ebfd109d37c9759",
+    "tests/test_mace_reference_adapter.py": "376dd4fff44b095bec11c721e8e1cd4cc9faecf8e531778009707c589347e479",
+    "docs/mace-evaluator-contract.md": "8705caec34ac7c57e8f909617af4bcb378942ec00640b4470ab24570dbf6e790",
+    "docs/team/IDRIS_TASKS.md": "61685072d7449409be2316c71d804ce3c4f24f96dd6913c90add36ee3998b9eb"
+  },
+  "independent_implementation_reviews": 2,
+  "synthetic_unittest": {
+    "existing_e3x_environment": {
+      "passed": 11
+    },
+    "existing_mace_environment": {
+      "passed": 11
+    },
+    "same_test_cases_in_both_environments": true
+  },
+  "regression_suites": [
+    {
+      "passed": 113,
+      "subtests_passed": 19,
+      "skipped": 0,
+      "warnings": 44,
+      "scope": "bridge, frozen relaxer, trace helper and driver"
+    },
+    {
+      "passed": 132,
+      "skipped": 1,
+      "scope": "runner, outcomes, reporter, E3x adapter"
+    }
+  ],
+  "frozen_source_files_unchanged": 54,
+  "failures_retained": [
+    "Missing bridge RED test before implementation",
+    "Dummy element X initially admitted by ASE; reproduced failing constructor test and fixed",
+    "One reviewer invocation omitted PYTHONPATH; corrected command passed"
+  ],
+  "model_metadata_verification": {
+    "status": "PASS_METADATA_AND_ARTIFACT_BYTES_ONLY",
+    "model_sha256": "fbd128215c0d74f5d9e5d3ccde778763221f987535dcc8ce4f4f8471a5b35407",
+    "model_bytes": 23397415,
+    "model_role": "Run A final primary EMA",
+    "epoch_index": 2047,
+    "completed_epochs": 2048,
+    "accepted_report_sha256": "a14938dc9a1b9fe6f8498ee8f7dd59c7208741b1888062456542091bf63fc433",
+    "saved_validation_predictions_sha256": "22bf7d88815ae3a84ecb8717c497f11311f058c1a862f8efd0e08a5efda0d3cd",
+    "models_deserialized": 0,
+    "trained_inference_calls": 0,
+    "archive_payloads_opened": 0
+  },
+  "scope": {
+    "models_deserialized": 0,
+    "trained_model_inference_calls": 0,
+    "archive_payloads_opened": 0,
+    "dependencies_changed": false,
+    "solver_changed": false,
+    "real_mace_parity_established": false,
+    "mace_recovery_established": false
+  },
+  "remaining_ownership": {
+    "Idris": "MACE checkpoint loader, environment/model admission and independent reproduction",
+    "Olufunke": "runner/reporter integration"
+  },
+  "next_execution": "After midterm draft: reviewed real-model admission/parity before unchanged 10 validation starts and 6 own-reference controls"
+}
