@@ -196,7 +196,7 @@ def test_blocked_navigation_requires_explicit_typed_reason(tmp_path):
     m=generator();path=tmp_path/'navigation.json'
     value={'schema':'replacement-navigation-v1','scope':'width-rate-replacement-2026-10-01',
         'config_identity':'d0b1637db732b7bccc8a9828b6e17843218e3f1a22cfa0d47e928ff9368b7f36',
-        'status':'blocked','reason':'host CLI command denied','attempted_command':'obsidian vault=hermes read'}
+        'status':'blocked','reason':'host CLI command denied','attempted_command':'notes-cli read project-notes'}
     path.write_text(json.dumps(value));assert m.artifact_role_valid('navigation',str(path),{},{} )
     value.pop('reason');path.write_text(json.dumps(value));assert not m.artifact_role_valid('navigation',str(path),{},{} )
 
