@@ -42,6 +42,7 @@ class PhysicalConsistencyConfig:
 
     finite_difference_step_A: float = 1e-5
     loop_closure_tolerance_A: float = 1e-12
+    loop_quadrature_subdivisions: int = 1
 
     def __post_init__(self):
         if (not math.isfinite(self.finite_difference_step_A)
@@ -50,6 +51,10 @@ class PhysicalConsistencyConfig:
         if (not math.isfinite(self.loop_closure_tolerance_A)
                 or self.loop_closure_tolerance_A < 0):
             raise ValueError("loop_closure_tolerance_A must be finite and nonnegative")
+        if (isinstance(self.loop_quadrature_subdivisions, bool)
+                or not isinstance(self.loop_quadrature_subdivisions, Integral)
+                or self.loop_quadrature_subdivisions < 1):
+            raise ValueError("loop_quadrature_subdivisions must be a positive integer")
 
 
 def _positions(value, *, name: str) -> np.ndarray:
@@ -71,6 +76,18 @@ def _failed(metric: str, error: Exception) -> dict:
         "refusal": dict(info) if isinstance(info, dict) else None,
         "units": dict(UNITS),
     }
+
+
+def _refine_loop(loop: np.ndarray, subdivisions: int) -> np.ndarray:
+    """Uniformly subdivide every declared segment without changing its path."""
+    if subdivisions == 1:
+        return loop
+    fractions = np.arange(subdivisions, dtype=np.float64) / subdivisions
+    refined = [
+        start + fractions[:, None, None] * (end - start)
+        for start, end in zip(loop[:-1], loop[1:])
+    ]
+    return np.concatenate([*refined, loop[-1:]], axis=0)
 
 
 def energy_force_disagreement(
@@ -129,9 +146,23 @@ def energy_force_disagreement(
         result["record_id"] = record_id
         return result
 
-    residual = direct - derived
-    absolute = np.abs(residual)
-    squared = residual * residual
+    try:
+        with np.errstate(over="raise", invalid="raise"):
+            residual = direct - derived
+            absolute = np.abs(residual)
+            squared = residual * residual
+            metrics = {
+                "mae_eV_per_A": float(np.mean(absolute)),
+                "rmse_eV_per_A": float(np.sqrt(np.mean(squared))),
+                "max_abs_eV_per_A": float(np.max(absolute)),
+                "mse_eV2_per_A2": float(np.mean(squared)),
+            }
+        if not all(math.isfinite(value) for value in metrics.values()):
+            raise FloatingPointError("energy-force metric arithmetic is nonfinite")
+    except (FloatingPointError, OverflowError, ValueError) as error:
+        result = _failed("energy_force_disagreement", error)
+        result["record_id"] = record_id
+        return result
     return {
         "metric": "energy_force_disagreement",
         "status": "ok",
@@ -141,10 +172,7 @@ def energy_force_disagreement(
         "finite_difference_step_A": step,
         "force_evaluation_count": 1,
         "energy_evaluation_count": int(2 * point.size),
-        "mae_eV_per_A": float(np.mean(absolute)),
-        "rmse_eV_per_A": float(np.sqrt(np.mean(squared))),
-        "max_abs_eV_per_A": float(np.max(absolute)),
-        "mse_eV2_per_A2": float(np.mean(squared)),
+        **metrics,
         "units": dict(UNITS),
     }
 
@@ -180,32 +208,47 @@ def closed_loop_work(
             "loop_id": loop_id,
             "units": dict(UNITS),
         }
+    integration_loop = _refine_loop(loop, config.loop_quadrature_subdivisions)
     try:
-        forces, _ = arm["forces"](loop, record_id=loop_id)
+        forces, _ = arm["forces"](integration_loop, record_id=loop_id)
         forces = np.asarray(forces, dtype=np.float64)
-        if forces.shape != loop.shape or not np.isfinite(forces).all():
+        if forces.shape != integration_loop.shape or not np.isfinite(forces).all():
             raise ValueError("arm returned an invalid force array for the loop")
     except Exception as error:
         result = _failed("closed_loop_work", error)
         result["loop_id"] = loop_id
         return result
 
-    displacements = np.diff(loop, axis=0)
-    segment_forces = 0.5 * (forces[:-1] + forces[1:])
-    segment_work = np.sum(segment_forces * displacements, axis=(1, 2))
-    work = float(np.sum(segment_work))
+    try:
+        with np.errstate(over="raise", invalid="raise"):
+            displacements = np.diff(integration_loop, axis=0)
+            segment_forces = 0.5 * (forces[:-1] + forces[1:])
+            segment_work = np.sum(segment_forces * displacements, axis=(1, 2))
+            work = float(np.sum(segment_work))
+            absolute_work = abs(work)
+        if (not np.isfinite(segment_work).all()
+                or not math.isfinite(work)
+                or not math.isfinite(absolute_work)):
+            raise FloatingPointError("closed-loop metric arithmetic is nonfinite")
+    except (FloatingPointError, OverflowError, ValueError) as error:
+        result = _failed("closed_loop_work", error)
+        result["loop_id"] = loop_id
+        return result
     return {
         "metric": "closed_loop_work",
         "status": "ok",
         "loop_id": loop_id,
         "atom_count": int(loop.shape[1]),
-        "vertex_count": int(loop.shape[0]),
-        "segment_count": int(loop.shape[0] - 1),
+        "declared_vertex_count": int(loop.shape[0]),
+        "vertex_count": int(integration_loop.shape[0]),
+        "segment_count": int(integration_loop.shape[0] - 1),
+        "quadrature_subdivisions_per_declared_segment": int(
+            config.loop_quadrature_subdivisions),
         "force_call_count": 1,
-        "force_configuration_count": int(loop.shape[0]),
+        "force_configuration_count": int(integration_loop.shape[0]),
         "closure_error_A": closure_error,
         "signed_work_eV": work,
-        "absolute_work_eV": abs(work),
+        "absolute_work_eV": absolute_work,
         "segment_work_eV": [float(value) for value in segment_work],
         "units": dict(UNITS),
     }
@@ -272,7 +315,9 @@ def benchmark_inference(
     batch = np.asarray(positions, dtype=np.float64)
     if batch.ndim == 2:
         batch = batch[np.newaxis, ...]
-    if batch.ndim != 3 or batch.shape[-1] != 3 or not np.isfinite(batch).all():
+    if (batch.ndim != 3 or batch.shape[-1] != 3
+            or batch.shape[0] < 1 or batch.shape[1] < 1
+            or not np.isfinite(batch).all()):
         raise ValueError("positions must have shape (N, 3) or (B, N, 3) and be finite")
     if (isinstance(warmup_calls, bool) or not isinstance(warmup_calls, Integral)
             or warmup_calls < 0):
