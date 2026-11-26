@@ -1,0 +1,561 @@
+{
+  "budget": 1500,
+  "checkpoints": {
+    "consistency-0.1-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.001878500683233142,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 25.750094706658274,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-0.1-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 15,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018761234823614359,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 15,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 26.315242332872003,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-1-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0019733321387320757,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 25.71604724903591,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-1-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018777919467538595,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 25.94995570438914,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "direct-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.00186225026845932,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 25.75797037500888,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "direct-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0019121284130960703,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "energy_property_requests_total": 24016,
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 26.03461479023099,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "energy-0": {
+      "0.001": {
+        "ase_converged": 15,
+        "budget_exhausted": 1,
+        "disconnected_endpoints": 1,
+        "energy_property_requests_total": 5500,
+        "force_calls_max": 1500,
+        "force_calls_min": 128,
+        "median_own_minimum_rmsd_from_dft_A": 0.3107597202893632,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 3.361578209325671,
+        "original_categories": {
+          "nonconverged": 1,
+          "unmatched_converged": 9
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 0.1956267291870077,
+          "min3": 0.37979075112477745,
+          "min6": 1.2525110202641998,
+          "min7": 0.241728689453949,
+          "min8": 0.18238563952360573,
+          "min9": 1.1613388120325334
+        },
+        "reference_categories": {
+          "unmatched_converged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 15,
+        "budget_exhausted": 1,
+        "disconnected_endpoints": 1,
+        "energy_property_requests_total": 3565,
+        "force_calls_max": 1500,
+        "force_calls_min": 48,
+        "median_own_minimum_rmsd_from_dft_A": 0.18355456689732336,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 5.993337795138359,
+        "original_categories": {
+          "nonconverged": 1,
+          "unmatched_converged": 9
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 0.18780372821134816,
+          "min3": 0.05598389939183835,
+          "min6": 0.14053683492022837,
+          "min7": 0.2255266267825588,
+          "min8": 0.17930540558329852,
+          "min9": 0.33003972172675666
+        },
+        "reference_categories": {
+          "unmatched_converged": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "mace-runA-final-ema": {
+      "0.001": {
+        "ase_converged": 16,
+        "budget_exhausted": 0,
+        "disconnected_endpoints": 0,
+        "energy_property_requests_total": 1798,
+        "force_calls_max": 211,
+        "force_calls_min": 1,
+        "median_own_minimum_rmsd_from_dft_A": 1.6523928608755287e-05,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 43.18406053748913,
+        "original_categories": {
+          "matched_reference": 9,
+          "unmatched_converged": 1
+        },
+        "original_count": 10,
+        "original_recovered": 9,
+        "original_recovered_ids": [
+          "aspirin/13/plus",
+          "aspirin/18/minus",
+          "aspirin/18/plus",
+          "aspirin/18_2/minus",
+          "aspirin/18_2/plus",
+          "aspirin/66/minus",
+          "aspirin/66/plus",
+          "aspirin/78/minus",
+          "aspirin/78/plus"
+        ],
+        "original_sym_crosscheck_recovered": 9,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 5.121032645223734e-16,
+          "min3": 1.2213053418382729e-05,
+          "min6": 3.2629880886835584e-05,
+          "min7": 2.0834803799127844e-05,
+          "min8": 2.914161615991583e-05,
+          "min9": 6.145790579960965e-06
+        },
+        "reference_categories": {
+          "matched_reference": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 6,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 16,
+        "budget_exhausted": 0,
+        "disconnected_endpoints": 0,
+        "energy_property_requests_total": 1272,
+        "force_calls_max": 183,
+        "force_calls_min": 1,
+        "median_own_minimum_rmsd_from_dft_A": 1.0131223127238268e-15,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 102.77346691885032,
+        "original_categories": {
+          "matched_reference": 7,
+          "unmatched_converged": 3
+        },
+        "original_count": 10,
+        "original_recovered": 7,
+        "original_recovered_ids": [
+          "aspirin/13/plus",
+          "aspirin/18/minus",
+          "aspirin/18_2/plus",
+          "aspirin/66/minus",
+          "aspirin/66/plus",
+          "aspirin/78/minus",
+          "aspirin/78/plus"
+        ],
+        "original_sym_crosscheck_recovered": 7,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 5.121032645223734e-16,
+          "min3": 1.1440881311066446e-15,
+          "min6": 8.821564943410088e-16,
+          "min7": 1.2570025553743495e-15,
+          "min8": 7.224943535523193e-16,
+          "min9": 1.3778780500335372e-15
+        },
+        "reference_categories": {
+          "matched_reference": 6
+        },
+        "reference_count": 6,
+        "reference_kept": 6,
+        "team_vs_sym_disagreements": []
+      }
+    }
+  },
+  "force_rule_eV_per_A": 0.01,
+  "match_rule_A": 0.05,
+  "thresholds": [
+    0.01,
+    0.001
+  ]
+}

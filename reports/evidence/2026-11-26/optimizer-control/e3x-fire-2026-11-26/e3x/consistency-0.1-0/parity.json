@@ -1,0 +1,58 @@
+{
+  "identity": {
+    "best_msgpack_sha256": "32202e1573d93f6ab874da671e679a0cfffd315549ef3476bcab1dc3df540fac",
+    "best_update": 125500,
+    "equal_connection_force_mae_eV_per_A": 0.039275000995502254,
+    "id": "consistency-0.1-0",
+    "launch_file_sha256": "71bc53d36148dfa8c45354417e238ad0bfc6c72c31b2914f792e93d622dae932",
+    "predictions_sha256": "41aebb6fc3d8bb7925f719b39716103adabd03b937989e772d410a5f11a8f6bc",
+    "role": "primary",
+    "run_directory": "$PROJECT_ROOT/Group9/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0",
+    "run_files_sha256": {
+      "best-checkpoint-verification.json": "43ab4a2374ea6a1d6723e978362f298604747738d9741a903158ec532ba365a2",
+      "config.json": "5dbc1398d97436322e3b9fc4e04ba413a8f435289311234ae11e36b2201c88ae",
+      "provenance.json": "8808a2310d393a626bec72c3a6de30a0b72d0648ff16a77df2a11e941a8a613a",
+      "summary.json": "4efbd6f7cb5e841486dbfc854bc0d3da3d9091a69b61c00e320f54cdf3aa7291"
+    },
+    "saved_run_directory": "$RUNS_ROOT/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0",
+    "saved_score_directory": "$RUNS_ROOT/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0-score",
+    "score_directory": "$PROJECT_ROOT/Group9/runs/aspirin-e3x-controlled-2026-10-16/consistency-0.1-0-score",
+    "score_json_sha256": "de9605d89fb6e8d36bce0c7f9f1d25c02e40eb4ecc2b0a3cd3c7882d506e9076",
+    "source": "reports/execution/e3x-validation-recovery-2026-10-17/LAUNCH_RECORDS.json"
+  },
+  "parity": {
+    "atol": 1e-10,
+    "checkpoint_identity": {
+      "arm": "consistency",
+      "backend": "cpu",
+      "best_update": 125500,
+      "checkpoint_sha256": "32202e1573d93f6ab874da671e679a0cfffd315549ef3476bcab1dc3df540fac",
+      "dataset_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+      "embedded_best_identity": {
+        "control_sha256": "95354bbc1b49becbd215273d93bce0be0dfa31c5856eebe6f0404e38e839991b",
+        "embedded_best_state_sha256": "9234e35086db5250c77db14b4d9fc439e4e88176c767a1c05982f08daeed95fe",
+        "exact_original_payload_match": true,
+        "payload_sha256": "9234e35086db5250c77db14b4d9fc439e4e88176c767a1c05982f08daeed95fe"
+      },
+      "energy_convention": "training-offset residual eV",
+      "energy_offset_eV": -17647.258992926312,
+      "forces_are_energy_gradient": false,
+      "lambda": 0.1,
+      "precision": "float64",
+      "score_sha256": "de9605d89fb6e8d36bce0c7f9f1d25c02e40eb4ecc2b0a3cd3c7882d506e9076",
+      "seed": 0,
+      "source_fingerprint": "a046011a0efdfab2835b00e42f446e691b453b1f30854f8accce26c6292f4da5"
+    },
+    "maximum_absolute_force_difference": 4.264904401862779e-14,
+    "record_count": 974,
+    "rtol": 1e-10,
+    "single_record_ids": [
+      "Landscape17/aspirin/Conformations/coordsts_1_3.xyz",
+      "Landscape17/aspirin/Conformations/coordsts_1_8.xyz",
+      "Landscape17/aspirin/Conformations/coordsts_1_8_2.xyz",
+      "Landscape17/aspirin/Conformations/coordsts_6_6.xyz",
+      "Landscape17/aspirin/Conformations/coordsts_7_8.xyz"
+    ],
+    "status": "verified"
+  }
+}
