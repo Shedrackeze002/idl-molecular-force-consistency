@@ -80,6 +80,66 @@ def test_nonfinite_supplier_failure_is_recorded():
     assert result["refusal"]["reason"] == "nonfinite force"
 
 
+def test_nonfinite_disagreement_arithmetic_is_recorded_as_failed():
+    def paired(positions):
+        return np.zeros(np.asarray(positions).shape[:-2]), np.full_like(positions, 1e200)
+
+    arm = energy_force_arm(paired, species=("C",), arm_id="overflowing-paired")
+    result = energy_force_disagreement(arm, np.zeros((1, 3)), record_id="overflow")
+    assert result["status"] == "failed"
+    assert result["exception_type"] == "FloatingPointError"
+    json.dumps(result, allow_nan=False)
+
+
+def test_nonfinite_loop_arithmetic_is_recorded_as_failed():
+    arm = callable_arm(
+        lambda positions: np.full_like(positions, 1e308),
+        species=("C",),
+        arm_id="overflowing-loop",
+    )
+    loop = np.array([
+        [[0.0, 0.0, 0.0]],
+        [[1.0, 0.0, 0.0]],
+        [[0.0, 1.0, 0.0]],
+        [[0.0, 0.0, 0.0]],
+    ])
+    result = closed_loop_work(arm, loop, loop_id="overflow")
+    assert result["status"] == "failed"
+    assert result["exception_type"] == "FloatingPointError"
+    json.dumps(result, allow_nan=False)
+
+
+def test_loop_quadrature_refinement_reduces_conservative_field_error():
+    def nonlinear_conservative_force(positions):
+        positions = np.asarray(positions)
+        x = positions[..., 0]
+        y = positions[..., 1]
+        output = np.zeros_like(positions)
+        output[..., 0] = -3.0 * x * x * y
+        output[..., 1] = -(x ** 3)
+        return output
+
+    arm = callable_arm(
+        nonlinear_conservative_force, species=("C",), arm_id="nonlinear-conservative")
+    loop = np.array([
+        [[0.0, 0.0, 0.0]],
+        [[1.0, 0.0, 0.0]],
+        [[1.0, 1.0, 0.0]],
+        [[0.0, 1.0, 0.0]],
+        [[0.0, 0.0, 0.0]],
+    ])
+    coarse = closed_loop_work(arm, loop)
+    refined = closed_loop_work(
+        arm,
+        loop,
+        config=PhysicalConsistencyConfig(loop_quadrature_subdivisions=8),
+    )
+    assert coarse["absolute_work_eV"] == pytest.approx(0.5)
+    assert refined["absolute_work_eV"] < coarse["absolute_work_eV"]
+    assert refined["quadrature_subdivisions_per_declared_segment"] == 8
+    assert refined["force_configuration_count"] == 33
+
+
 def test_combined_report_is_json_safe_and_counts_states():
     arm = analytic_fixture_arm()
     report = evaluate_physical_consistency(
@@ -103,6 +163,11 @@ def test_benchmark_separates_warmup_and_measured_calls():
     assert result["measured_calls"] == 5
     assert len(result["sample_seconds"]) == 5
     assert result["median_seconds_per_structure"] >= 0
+
+
+def test_benchmark_rejects_empty_batches():
+    with pytest.raises(ValueError, match="shape"):
+        benchmark_inference(analytic_fixture_arm(), np.empty((0, 1, 3)))
 
 
 @pytest.mark.parametrize("field,value", [("warmup_calls", 1.5), ("measured_calls", True)])
