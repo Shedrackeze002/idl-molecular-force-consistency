@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "$PROJECT_ROOT/output/research/optimizer-control/e3x_lbfgs.py", line 468, in <module>
+    main()
+  File "$PROJECT_ROOT/output/research/optimizer-control/e3x_lbfgs.py", line 460, in main
+    command_run(args)
+  File "$PROJECT_ROOT/output/research/optimizer-control/e3x_lbfgs.py", line 310, in command_run
+    for checkpoint_id, inputs, arm, parity, identity in loader:
+                                                        ^^^^^^
+  File "$PROJECT_ROOT/output/research/optimizer-control/e3x_lbfgs.py", line 166, in setup_mace_one
+    inputs, arm, parity = setup_mace(args)
+                          ^^^^^^^^^^^^^^^^
+  File "/private/tmp/group9-optimizer-run/bound/e3x/energy_decrease/run.py", line 56, in setup_mace
+    bridge, starts, refs, policy, binding, manifest, classification, procedure, seen = preflight(record)
+                                                                                       ^^^^^^^^^^^^^^^^^
+  File "/private/tmp/group9-optimizer-run/bound/mace/scripts/run_mace_recovery_controls.py", line 114, in preflight
+    bridge, _ = _authenticated_bridge()
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/group9-optimizer-run/bound/mace/scripts/mace_loader.py", line 481, in _authenticated_bridge
+    raise AdmissionError("frozen modules preloaded; use a fresh parity worker")
+mace_loader.AdmissionError: frozen modules preloaded; use a fresh parity worker
