@@ -1,0 +1,115 @@
+{
+  "A2": {
+    "branch_denominator": 10,
+    "limitation": "Ten paired branches from five connections; A2 failure is weak evidence; no tuning/retry",
+    "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+    "no_relaxation_count": 0,
+    "recovered_branches": 0,
+    "status": "failed"
+  },
+  "arms": {
+    "consistency-0.1": {
+      "mean_rate": 0.0,
+      "seed_range": 0.0,
+      "seed_rates": [
+        0.0,
+        0.0
+      ],
+      "status": "complete"
+    },
+    "direct": {
+      "mean_rate": 0.0,
+      "seed_range": 0.0,
+      "seed_rates": [
+        0.0,
+        0.0
+      ],
+      "status": "complete"
+    }
+  },
+  "independent_connection_count": 5,
+  "mean_paired_difference": 0.0,
+  "models": {
+    "consistency-0.1-0": {
+      "branch_denominator": 10,
+      "connection_rates": {
+        "13": 0.0,
+        "18": 0.0,
+        "18_2": 0.0,
+        "66": 0.0,
+        "78": 0.0
+      },
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "rate": 0.0,
+      "recovered_branches": 0,
+      "status": "complete"
+    },
+    "consistency-0.1-1": {
+      "branch_denominator": 10,
+      "connection_rates": {
+        "13": 0.0,
+        "18": 0.0,
+        "18_2": 0.0,
+        "66": 0.0,
+        "78": 0.0
+      },
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "rate": 0.0,
+      "recovered_branches": 0,
+      "status": "complete"
+    },
+    "direct-0": {
+      "branch_denominator": 10,
+      "connection_rates": {
+        "13": 0.0,
+        "18": 0.0,
+        "18_2": 0.0,
+        "66": 0.0,
+        "78": 0.0
+      },
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "rate": 0.0,
+      "recovered_branches": 0,
+      "status": "complete"
+    },
+    "direct-1": {
+      "branch_denominator": 10,
+      "connection_rates": {
+        "13": 0.0,
+        "18": 0.0,
+        "18_2": 0.0,
+        "66": 0.0,
+        "78": 0.0
+      },
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "rate": 0.0,
+      "recovered_branches": 0,
+      "status": "complete"
+    },
+    "energy-0": {
+      "branch_denominator": 10,
+      "connection_rates": {
+        "13": 0.0,
+        "18": 0.0,
+        "18_2": 0.0,
+        "66": 0.0,
+        "78": 0.0
+      },
+      "nearest_reference_context": "relaxation adds no evidence beyond geometric proximity at this accuracy",
+      "rate": 0.0,
+      "recovered_branches": 0,
+      "status": "complete"
+    }
+  },
+  "paired_connection_differences": {
+    "13": 0.0,
+    "18": 0.0,
+    "18_2": 0.0,
+    "66": 0.0,
+    "78": 0.0
+  },
+  "scientific_main_hypothesis_established": false,
+  "scope": "Paired validation operational recovery; direct fixed point is not automatically an energy minimum; no main-test claim",
+  "seeds_per_arm": 2,
+  "status": "complete_descriptive_A2_failed"
+}

@@ -1,0 +1,68 @@
+{
+  "status": "PASS_NUMERICAL_ARTIFACT_VISUAL_AND_SAVED_RUBRIC_CHECKS",
+  "pages": 5,
+  "prose_paragraphs": 43,
+  "prose_sentences": 173,
+  "max_sentence_words": 21,
+  "language_flags": [],
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "repository_link_present": true,
+  "pdf_sha256": "49920b1cf1d6c080da1fd451b9739f95766a5118c777f5301109fd1b58b3570b",
+  "pdf_bytes": 77077,
+  "visual_review": {
+    "all_five_final_pages_inspected": true,
+    "tables_and_figure_between_paragraphs": true,
+    "clipped_text_overlap_or_broken_glyphs_observed": false
+  },
+  "reviews": "Two independent plan and full-draft reviews completed; required changes applied. Final optional definitions, metadata and float placement checked in the coordinator artifact pass.",
+  "remaining_release_checks": [
+    "Live Canvas instructions",
+    "Member contribution confirmation",
+    "Private repository grader access",
+    "Final team approval"
+  ],
+  "files": {
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 77077,
+      "sha256": "49920b1cf1d6c080da1fd451b9739f95766a5118c777f5301109fd1b58b3570b"
+    },
+    "group9_Midterm_IDL.tex": {
+      "bytes": 18672,
+      "sha256": "da263639f5e115ea98f44c934b8dababb14d973783b67ac48b7d99e3c6d47428"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    "README.md": {
+      "bytes": 2878,
+      "sha256": "3bdf77b9e8214f53e8704fb2316b736a8610ce899a6cec01f04868b7225b7c4b"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 3248,
+      "sha256": "2bf1430d28d53f9c7de0efd1fe6bd7f54ed982c758389a4a874c49742c41723e"
+    },
+    "source-records.json": {
+      "bytes": 2069,
+      "sha256": "bf1ffd30640fe3d298cc6f070c28c039e6833bae27b7c28b489683cf7c3c3822"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    }
+  }
+}

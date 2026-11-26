@@ -1,0 +1,88 @@
+...FFF                                                                   [100%]
+=================================== FAILURES ===================================
+______ test_parent_interruption_reaps_actual_handoff_worker[3-boundary0] _______
+
+boundary = {'root': PosixPath('$PYTEST_TMP/pytest-33/test_parent_interruption_reaps3/mutable-checkout'), 'control': Posix..., 'policy': PosixPath('$PYTEST_TMP/pytest-33/test_parent_interruption_reaps3/external-trust/policy.json'), ...}
+signum = <Signals.SIGQUIT: 3>
+
+    @pytest.mark.parametrize("boundary", [{"worker":
+        "(attempt/'worker.pid').write_text(str(os.getpid()))\n"
+        "(attempt/'ready').touch()\nimport time; time.sleep(1.5)\n"
+        "(attempt/'escaped-completion').touch()\n"}], indirect=True)
+    @pytest.mark.parametrize("signum", [signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT])
+    def test_parent_interruption_reaps_actual_handoff_worker(boundary, signum):
+        process = subprocess.Popen([sys.executable, "-I", "-S", str(boundary["launcher"]),
+            "--policy", str(boundary["policy"]), "--policy-sha256", boundary["policy_hash"],
+            "--entry", "supervisor"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            wait_for_file(boundary["attempt"] / "ready", process)
+            pid = int((boundary["attempt"] / "worker.pid").read_text())
+            os.kill(process.pid, signum)
+            stdout, stderr = process.communicate(timeout=15)
+>           assert process.returncode == 2, (stdout, stderr)
+E           AssertionError: ('', '')
+E           assert -3 == 2
+E            +  where -3 = <Popen: returncode: -3 args: ['$ONBOARDING_ROOT/...>.returncode
+
+tests/test_mace_trusted_launcher.py:402: AssertionError
+_______________________ test_reported_forgery_regression _______________________
+
+tmp_path = PosixPath('$PYTEST_TMP/pytest-33/test_reported_forgery_regressi0')
+
+    def test_reported_forgery_regression(tmp_path):
+        marker = tmp_path / 'forged-parity'
+        bootstrap = SOURCE.parent.parent / 'scripts/mace_bootstrap.py'
+        probe = ("import importlib.util,sys; from pathlib import Path; "
+            "spec=importlib.util.spec_from_file_location('probe',sys.argv.pop(1)); "
+            "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module); "
+            "module.configure_imports(); import mace_loader as loader; "
+            "loader._worker_capability=lambda *args: None; import check_mace_parity as worker; "
+            f"worker.run_parity=lambda *args: (Path({str(marker)!r}).touch(),{{'status':'PARITY_PASS'}})[1]; "
+            "worker.main()")
+        result = subprocess.run([sys.executable,'-I','-S','-c',probe,str(bootstrap),
+            '--packet-root',str(tmp_path),'--attempt-root',str(tmp_path/'attempt')],
+            text=True,capture_output=True,timeout=30)
+>       assert result.returncode != 0, 'forged public main returned success'
+E       AssertionError: forged public main returned success
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['$ONBOARDING_ROOT/.venv-mace-wsl/bin/python', '-I', '-S', '-c', "im...test-33/test_reported_forgery_regressi0/attempt'], returncode=0, stdout='{\n  "status": "PARITY_PASS"\n}\n', stderr='').returncode
+
+tests/test_mace_trusted_launcher.py:513: AssertionError
+___________________ test_reported_initial_receipt_regression ___________________
+
+tmp_path = PosixPath('$PYTEST_TMP/pytest-33/test_reported_initial_receipt_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7b14c80cf2c0>
+
+    def test_reported_initial_receipt_regression(tmp_path, monkeypatch):
+        spec = importlib.util.spec_from_file_location('old_supervisor', SOURCE.parent.parent/'scripts/supervise_mace_parity.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        original = module.Path.write_text
+        fired = False
+        def interrupt(path, data, *args, **kwargs):
+            nonlocal fired
+            result = original(path,data,*args,**kwargs)
+            if path.name=='supervisor-status.json' and not fired:
+                fired=True
+                os.kill(os.getpid(),signal.SIGTERM)
+            return result
+        monkeypatch.setattr(module.Path,'write_text',interrupt)
+        output=tmp_path/'attempt'
+        try:
+            module.supervise(tmp_path,output,command=[sys.executable,'-c','pass'])
+        except module.SupervisorInterrupted:
+            pass
+        status=json.loads((output/'supervisor-status.json').read_text())
+>       assert status['status']=='INTERRUPTED', 'initial receipt remained RUNNING'
+E       AssertionError: initial receipt remained RUNNING
+E       assert 'RUNNING' == 'INTERRUPTED'
+E
+E         - INTERRUPTED
+E         + RUNNING
+
+tests/test_mace_trusted_launcher.py:537: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_mace_trusted_launcher.py::test_parent_interruption_reaps_actual_handoff_worker[3-boundary0]
+FAILED tests/test_mace_trusted_launcher.py::test_reported_forgery_regression
+FAILED tests/test_mace_trusted_launcher.py::test_reported_initial_receipt_regression
+3 failed, 3 passed, 44 deselected in 9.28s

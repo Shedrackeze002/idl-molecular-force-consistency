@@ -1,8 +1,8 @@
 # Landscape17 molecular force consistency
 
-- **Current midterm:** [PDF](https://github.com/Shedrackeze002/idl-molecular-force-consistency/blob/midsemester-report-draft/reports/midterm/group9_Midterm_IDL.pdf) and [source with verification](https://github.com/Shedrackeze002/idl-molecular-force-consistency/tree/midsemester-report-draft/reports/midterm).
+- **Midterm report:** [PDF](reports/midterm/group9_Midterm_IDL.pdf), [source and verification](reports/midterm/README.md), and [earlier editions](reports/archive/midterm/README.md).
 - **Research snapshot:** [code and evidence at 3fa5969](https://github.com/Shedrackeze002/idl-molecular-force-consistency/tree/3fa5969e5a0c2fdeaebc76a05bace20799715203).
-- The status text below describes the 15 October checkpoint; current report work is on `midsemester-report-draft`.
+- The status text below describes the 15 October checkpoint; see [project status](docs/team/PROJECT_STATUS.md) for subsequent evidence and limitations.
 
 Updated 15 October 2026. Group 9 studies whether energy–force consistency improves reference-shape recovery on unseen Landscape17 connections after accounting for force error and cost. The proposal is submitted; the main controlled comparison remains pending.
 

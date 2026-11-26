@@ -1,0 +1,14 @@
+{
+  "scope": "Explanatory/layout revision only; no model execution",
+  "page_limit_source": "User explicitly confirmed five pages excludes references on 23 October 2026",
+  "source_files": {
+    "reports/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.tex": {
+      "bytes": 19220,
+      "sha256": "d59fdf27a8edd7ce23ebf8e7255b8fb9b8d978fd83aa632a07431061c4207cd0"
+    },
+    "reports/midterm-faculty-context-2026-10-23/group9_Midterm_IDL.pdf": {
+      "bytes": 76911,
+      "sha256": "c8e958669bd808f0e6bbcfdc3b0f07cdf4694052c4285e490888c2a0fecbd3ab"
+    }
+  }
+}

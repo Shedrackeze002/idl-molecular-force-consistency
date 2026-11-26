@@ -1,0 +1,24 @@
+{
+  "arms": [
+    "energy",
+    "direct",
+    "consistency"
+  ],
+  "io_fixture_seconds": 180,
+  "loss_weights": {
+    "energy": 0.014584365670390719,
+    "force": 1.9854156343296092
+  },
+  "per_case_seconds": 180,
+  "representative_positive_lambda": 1.0,
+  "scientific_slots_consumed": 0,
+  "seed": 0,
+  "timed_updates": 100,
+  "total_probe_seconds": 1800,
+  "validation_repeats": 3,
+  "warmup_updates": 3,
+  "widths": [
+    32,
+    64
+  ]
+}

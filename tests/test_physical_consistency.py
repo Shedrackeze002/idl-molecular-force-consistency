@@ -4,7 +4,8 @@ import numpy as np
 import pytest
 
 from analytic_fixtures import FIXTURE_MINIMUM
-from evaluation.adapter import analytic_fixture_arm, callable_arm, energy_force_arm
+from evaluation.adapter import analytic_fixture_arm, callable_arm
+from evaluation.paired_adapter import energy_force_arm
 from evaluation.physical_consistency import (
     PhysicalConsistencyConfig,
     benchmark_inference,

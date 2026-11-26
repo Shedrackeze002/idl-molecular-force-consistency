@@ -15,3 +15,6 @@ __pycache__/
 data/processed/
 runs/
 .local-workflow/
+
+# Machine-local reviewed dataset/output locations.
+/configs/representation-study/local-launch.json

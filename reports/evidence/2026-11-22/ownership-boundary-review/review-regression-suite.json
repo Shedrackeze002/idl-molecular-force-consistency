@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "implementation_commit": "4c94765610b9201965dc4b545fb8af2a2298e47b",
+  "command": "PYTHONPATH=.:src:scripts $ONBOARDING_ROOT/.venv-mace-wsl/bin/python -m pytest -q tests/test_mace_trusted_launcher.py tests/test_mace_loader.py tests/test_mace_parity.py tests/test_mace_parity_supervisor.py tests/test_mace_parity_audit.py tests/test_mace_reference_adapter.py tests/test_shape_recovery_runner.py tests/test_shape_recovery_outcomes.py tests/test_shape_recovery_report.py -p no:cacheprovider --basetemp $TEST_ROOT/pytest",
+  "exit_code": 0,
+  "evidence_scope": "Author-run WSL validation; independent review remains pending.",
+  "execution_boundary": "Inert fixtures only; no real checkpoint, MACE construction or learned inference.",
+  "trusted_launcher_sha256": "dfa1cf54ffb6adc2e5e829eae531019a7762193a7dfa63513918ec323a1b2748",
+  "passed": 315,
+  "skipped": 3,
+  "warnings": 45,
+  "subtests_passed": 19,
+  "elapsed_seconds": 193.62
+}

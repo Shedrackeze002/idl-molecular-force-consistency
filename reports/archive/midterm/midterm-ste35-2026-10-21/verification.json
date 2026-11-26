@@ -1,0 +1,80 @@
+{
+  "status": "PASS_NUMERICAL_LANGUAGE_VISUAL_AND_SAVED_RUBRIC_CHECKS",
+  "pages": 5,
+  "prose_paragraphs": 43,
+  "prose_sentences": 125,
+  "max_sentence_words": 29,
+  "language_flags": [],
+  "maximum_allowed_sentence_words": 35,
+  "profile": "ASD-STE100-based with user-authorized 35-word exception; not formal compliance",
+  "sentences_above_25_words": 7,
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "repository_link_present": true,
+  "pdf_sha256": "1da46801ee70f1df40285e14d50cb3fb7bcd851b7c51094ff070f6ee6f3b04b4",
+  "pdf_bytes": 77253,
+  "visual_review": {
+    "all_five_final_pages_inspected": true,
+    "clipping_overlap_or_broken_glyphs_observed": false
+  },
+  "unchanged_against_prior_explanatory_report": [
+    "all numerical tokens including multiplicity",
+    "equation blocks",
+    "predictive table",
+    "recovery table",
+    "bibliography",
+    "figure bytes",
+    "course style"
+  ],
+  "review_scope": "Two independent plan and full-draft reviews completed; required wording corrections applied and final artifact checks passed.",
+  "release_checks_pending": [
+    "Member contributions",
+    "Private grader access",
+    "Live Canvas instructions",
+    "Final team approval"
+  ],
+  "files": {
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 77253,
+      "sha256": "1da46801ee70f1df40285e14d50cb3fb7bcd851b7c51094ff070f6ee6f3b04b4"
+    },
+    "group9_Midterm_IDL.tex": {
+      "bytes": 18984,
+      "sha256": "2ac260bf6c090d7dd4dd09affaee619ebcb80ae2d134f5cdd4422d5885dae3a8"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    "README.md": {
+      "bytes": 2413,
+      "sha256": "9d7e0795f1b5106c31c34d65ad67fcd9a70b9a102d3a659d98844d42d9692b2b"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 3525,
+      "sha256": "92d3616bf1c15da845d851d7b4be986e694afba5ff8b592d8dc61c407fc969d2"
+    },
+    "source-records.json": {
+      "bytes": 2572,
+      "sha256": "0108a1aa71c7ca24734902ac6212df295122a931a1a79a8f18ca3776e34e0375"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    }
+  }
+}

@@ -1,2 +1,17 @@
 reports/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text
 reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text
+scripts/mace_loader.py text eol=lf
+scripts/mace_bootstrap.py text eol=lf
+trust/mace_trusted_launcher.py text eol=lf
+tests/test_mace_trusted_launcher.py text eol=lf
+scripts/check_mace_parity.py text eol=lf
+scripts/supervise_mace_parity.py text eol=lf
+scripts/audit_mace_parity.py text eol=lf
+scripts/mace_reference_adapter.py text eol=lf
+evaluation/adapter.py text eol=lf
+docs/run-mace-parity.md text eol=lf
+tests/test_mace_loader.py text eol=lf
+tests/test_mace_parity.py text eol=lf
+tests/test_mace_parity_supervisor.py text eol=lf
+tests/test_mace_parity_audit.py text eol=lf
+tests/mace_test_runtime.py text eol=lf

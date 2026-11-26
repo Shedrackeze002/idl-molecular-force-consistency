@@ -1,0 +1,15 @@
+{
+  "previous_head": "ffa7ae3b4945cd18aa94bfe507e03b0711ad65d5",
+  "implementation_commit": "4c94765610b9201965dc4b545fb8af2a2298e47b",
+  "unchanged": {
+    "construct": true,
+    "load_arm": true,
+    "check_liveness": true,
+    "prepare": true,
+    "dispatch": true,
+    "OwnedWorker": true,
+    "historical_wsl_proposal": true
+  },
+  "trusted_launcher_sha256": "dfa1cf54ffb6adc2e5e829eae531019a7762193a7dfa63513918ec323a1b2748",
+  "scope": "AST comparison ignores line/column positions; private learned-computation and authentication bodies are unchanged."
+}

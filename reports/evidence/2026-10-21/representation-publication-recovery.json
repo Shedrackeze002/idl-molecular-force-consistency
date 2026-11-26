@@ -1,0 +1,32 @@
+{
+  "GPU_CU_used": 0,
+  "SP0_elapsed_training_seconds": 1971.79538149992,
+  "SP0_validation_force_MAE_meV_per_A": {
+    "BEST": 41.04627288284203,
+    "LAST": 52.52223343762975,
+    "late20": 46.27642265021941
+  },
+  "cause_limit": "The exact failed API response was not captured; delayed PR metadata refresh is suspected, not established.",
+  "completed_new_fits": [
+    "SP-0"
+  ],
+  "completed_training_repeated": false,
+  "current_fit": "S64-0",
+  "date": "2026-10-21",
+  "execution_revision": "79dba2745350e16aa11e6f4e39b5011229ec5fd0",
+  "failure": "Push succeeded; immediate PR-head assertion failed before publication receipt was written, stopping the serial queue. Training completed successfully.",
+  "independent_reviews": 2,
+  "latest_observed_update": 7000,
+  "numerical_source_data_recipe_revision_unchanged": true,
+  "original_SP0_publication_commit": "10f5c4ec58c050d99bc9bb6d916fa2a0f8c2ae10",
+  "original_remote_files_verified": 6,
+  "remaining_order": [
+    "S64-0",
+    "S64-1",
+    "SP-1"
+  ],
+  "repair": "Bounded verification of open PR, actual remote branch and immutable file bytes; existing missing receipt reconciled from original published bytes.",
+  "scope": "Single-seed validation evidence; fixed recipe originally tuned on E64. No paired conclusion, test, recovery, causal symmetry or population superiority claim. Independent scientific interpretation review pending.",
+  "status": "QUEUE_RESUMED_S64_0_ADVANCING",
+  "verification_tests_passed": 7
+}

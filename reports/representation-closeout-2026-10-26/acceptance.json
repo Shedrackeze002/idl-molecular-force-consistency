@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-26",
+  "status": "ACCEPTED_SAVED_VALIDATION_CLOSEOUT",
+  "scope": "Fixed-recipe validation-only descriptive comparison; no new learned calculations",
+  "scientific_review": {
+    "verdict": "APPROVE",
+    "independent_checks": "92inputhashes;12endpointreductions;2406historyobservations;means/deltas/timing/connectionexception",
+    "maximum_endpoint_discrepancy": 6.938893903907228e-18
+  },
+  "engineering_review": {
+    "verdict": "APPROVE",
+    "independent_checks": "92inputhashes;6recipe/controlhistories;12checkpoint/reloadbindings;12endpoints;2476CSVrows;3figures",
+    "maximum_endpoint_discrepancy": 1.3877787807814457e-17
+  },
+  "input_inventory_sha256": "94326b2871e3fb3b75df86bbea30018f5277048c375238ada97de08f9449a610",
+  "report_sha256": "3ac60bf7c4cf7d824ab1f03f32f21a46a18d38d93074054f26d0af150962cc38",
+  "limits": [
+    "Two seeds/five reused validation connections; E64-selected settings without scalar retuning",
+    "No symmetry causality, recovery benefit, model portability or test-generalization claim",
+    "Recorded CPU training times are observational; no inference-speed comparison"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "archive_members": {
+    "Landscape17/aspirin/Conformations/coordsmin_0.xyz": "8a2c7abacc04958b3b674b8412e7ab8be8a6ec5e57c0abf789c05f2b50060e7a",
+    "Landscape17/aspirin/Conformations/coordsmin_1.xyz": "3d6c27301862b836e7ace6259d42eef0c6a18f5f99a8537f5709d7778c5d75f1",
+    "Landscape17/aspirin/Conformations/coordsmin_10.xyz": "fd7037ce8d10ef3be40a89e09592e9148fddf4d4123c2b0aa316720607dac621",
+    "Landscape17/aspirin/Conformations/coordsmin_2.xyz": "4ea865f6f34a05065c67b2913f7b49b8131ebd99530316fac70c45cd23eb3340",
+    "Landscape17/aspirin/Conformations/coordsmin_3.xyz": "d926d49f6c72987aef9ef134f692e76be3cb0ca858413099bf239a07dd78fb09",
+    "Landscape17/aspirin/Conformations/coordsmin_4.xyz": "4b6a831bcea8505d93ecdf3eb01d600c47569fee096cdf02d1d45c2b8d0e1a33",
+    "Landscape17/aspirin/Conformations/coordsmin_5.xyz": "d9fd0a30d95db13f2330eb2d2591bad24c8b92a10a8c57f7f7ce855ad7dca380",
+    "Landscape17/aspirin/Conformations/coordsmin_6.xyz": "f8ce96626e29164d8d6d21dd7fdac9330835ed1f313ccad2f1b6b15c849132ee",
+    "Landscape17/aspirin/Conformations/coordsmin_7.xyz": "b6a62b0018b69790c25d87a070d020f4d5afc3029437680458268c77438b389f",
+    "Landscape17/aspirin/Conformations/coordsmin_8.xyz": "c7aa1c15e6236b3204327c8520c5e2817c0e960229f70b944c4c6d90470d8ef4",
+    "Landscape17/aspirin/Conformations/coordsmin_9.xyz": "b3ab7a6a1f09ba4841b2a650d637789408884644a4777a9841bf059f1b056a06",
+    "Landscape17/aspirin/SteepestDescent/13/coordsminus_000.xyz": "09dd2e4d858681d844ebfbb45f875ded324055dad76fecf5e127a1d9000f740d",
+    "Landscape17/aspirin/SteepestDescent/13/coordsplus_000.xyz": "8a4246316281505610a3fac6052f48d8e44657bbee24a73eae42c53ee1603430",
+    "Landscape17/aspirin/SteepestDescent/18/coordsminus_000.xyz": "daa22bf2712bdde2fe85969a69fba7749b8a6aee1739084f155db6411c0884a0",
+    "Landscape17/aspirin/SteepestDescent/18/coordsplus_000.xyz": "46a1910bcbf954c376af1bb31520888a2898bcd3d0615d0bfcaf5ffcf0bc9266",
+    "Landscape17/aspirin/SteepestDescent/18_2/coordsminus_000.xyz": "5b767cd9030bb30e84d0952f8c2786fd2c153afcb91c0eca73eac817315dcfd3",
+    "Landscape17/aspirin/SteepestDescent/18_2/coordsplus_000.xyz": "395d5690f12405ed99fd705114448e59352b57c3bd1c33cdaf3ace95203dca58",
+    "Landscape17/aspirin/SteepestDescent/66/coordsminus_000.xyz": "58d9ab26888c548a4e0b46111c41e2245dc5231d5602d4de47758e20cd211871",
+    "Landscape17/aspirin/SteepestDescent/66/coordsplus_000.xyz": "946861cd0f2e41bd0abfc115498a0e836e286ba67ca453eda15191147ab22c21",
+    "Landscape17/aspirin/SteepestDescent/78/coordsminus_000.xyz": "f6a8cff1bc27953ed385f3088ed795a628d995b97b1e42f7a41efbb3766df8ee",
+    "Landscape17/aspirin/SteepestDescent/78/coordsplus_000.xyz": "a5bce8ca3aa8f714a75c6e65341e5639c1ca5e76b5e70eec2c27fae76426e973"
+  },
+  "checkpoint_binding": {
+    "best_update": 184500,
+    "checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+    "score_sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b"
+  },
+  "entry_sha256": "936cc2113670c1c05b125abbe07cced661819475aef2b94df3480a2ff5449d6f",
+  "model_id": "energy-0",
+  "test_branch_members_read": 0,
+  "units": {
+    "energy": "eV",
+    "forces": "eV/angstrom",
+    "positions": "angstrom"
+  }
+}

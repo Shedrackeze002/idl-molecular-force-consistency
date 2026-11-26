@@ -1,0 +1,138 @@
+{
+  "branch_key": "aspirin/78/plus",
+  "force_evaluation_count": 1500,
+  "geometry": {
+    "fixed_order_edges_added": [],
+    "fixed_order_edges_removed": [],
+    "fixed_order_pair_distance_max_abs_change_A": 0.45312929540920344,
+    "fixed_order_pair_distance_mean_abs_change_A": 0.05697517907389956,
+    "interpretation": "Fixed stored atom order; not a chemical bond-breaking claim. Nonconverged geometry is diagnostic only; official category unchanged.",
+    "own": {
+      "accepted_classes": [],
+      "incomplete": [],
+      "mapping": null,
+      "record_id": "aspirin/78/plus/final",
+      "reference_class": null,
+      "reference_record": null,
+      "reference_unresolved": [],
+      "scores": {
+        "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null
+      },
+      "status": "unmatched"
+    },
+    "own_alignment": {
+      "graph_isomorphic": true,
+      "reason": null,
+      "rmsd_A": 0.23500203842401465,
+      "search_complete": true
+    },
+    "own_descriptor_bound": 1.0500000001,
+    "own_descriptor_distance": 1.241116144067033,
+    "pool": {
+      "accepted_classes": [],
+      "incomplete": [],
+      "mapping": null,
+      "record_id": "aspirin/78/plus/final",
+      "reference_class": null,
+      "reference_record": null,
+      "reference_unresolved": [],
+      "scores": {
+        "Landscape17/aspirin/Conformations/coordsmin_0.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_1.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_10.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_2.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_3.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_4.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_5.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_6.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_7.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_8.xyz": null,
+        "Landscape17/aspirin/Conformations/coordsmin_9.xyz": null
+      },
+      "status": "unmatched"
+    },
+    "pool_alignments": {
+      "Landscape17/aspirin/Conformations/coordsmin_0.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.2105630264376828,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_1.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.4604953269394179,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_10.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.2125413800815004,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_2.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.5280945963179062,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_3.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.4076172039328199,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_4.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 1.2953658729355593,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_5.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 0.7983967970478051,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_6.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 0.3833109094800328,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_7.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 0.23500203842401465,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_8.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 0.7571764146166903,
+        "search_complete": true
+      },
+      "Landscape17/aspirin/Conformations/coordsmin_9.xyz": {
+        "graph_isomorphic": true,
+        "reason": null,
+        "rmsd_A": 0.7936901985094164,
+        "search_complete": true
+      }
+    }
+  },
+  "history": {
+    "explanation": "Endpoints/counts cannot reconstruct unretained history",
+    "missing_fields": [
+      "steps",
+      "force_history",
+      "final_max_force_component_eV_per_A"
+    ],
+    "status": "unavailable",
+    "trajectory_reconstructed": false
+  },
+  "model_id": "energy-0",
+  "official_category": "nonconverged",
+  "recorded_converged": false,
+  "step_count": 747,
+  "stop_reason": "budget_exhausted"
+}

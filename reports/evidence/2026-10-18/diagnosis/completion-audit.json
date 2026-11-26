@@ -1,0 +1,180 @@
+{
+  "audit_elapsed_seconds": 1.0643768750596792,
+  "cause_established": false,
+  "historical_A2_and_outcomes_unchanged": true,
+  "main_test_access": false,
+  "models": {
+    "consistency-0.1-0": {
+      "diagnostic_own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "endpoint_force_flag_discrepancies": 0,
+      "nonconverged_diagnostic_own_matches": 0,
+      "own_graph_compatibility_counts": {
+        "False": 10
+      },
+      "own_reference_labels_above_force_rule": 0,
+      "own_reference_predictions_above_force_rule": 6,
+      "reference_label_max_force_range_eV_per_A": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_force_range_eV_per_A": [
+        0.05660065228494815,
+        0.14103291503204288
+      ],
+      "unique_own_reference_count": 6
+    },
+    "consistency-0.1-1": {
+      "diagnostic_own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "endpoint_force_flag_discrepancies": 0,
+      "nonconverged_diagnostic_own_matches": 0,
+      "own_graph_compatibility_counts": {
+        "False": 10
+      },
+      "own_reference_labels_above_force_rule": 0,
+      "own_reference_predictions_above_force_rule": 6,
+      "reference_label_max_force_range_eV_per_A": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_force_range_eV_per_A": [
+        0.0413525018885436,
+        0.08014654833688976
+      ],
+      "unique_own_reference_count": 6
+    },
+    "direct-0": {
+      "diagnostic_own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "endpoint_force_flag_discrepancies": 0,
+      "nonconverged_diagnostic_own_matches": 0,
+      "own_graph_compatibility_counts": {
+        "False": 8,
+        "True": 2
+      },
+      "own_reference_labels_above_force_rule": 0,
+      "own_reference_predictions_above_force_rule": 6,
+      "reference_label_max_force_range_eV_per_A": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_force_range_eV_per_A": [
+        0.041425091286949975,
+        0.07089578326422166
+      ],
+      "unique_own_reference_count": 6
+    },
+    "direct-1": {
+      "diagnostic_own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "endpoint_force_flag_discrepancies": 0,
+      "nonconverged_diagnostic_own_matches": 0,
+      "own_graph_compatibility_counts": {
+        "False": 10
+      },
+      "own_reference_labels_above_force_rule": 0,
+      "own_reference_predictions_above_force_rule": 6,
+      "reference_label_max_force_range_eV_per_A": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_force_range_eV_per_A": [
+        0.030193624273498622,
+        0.05925994570838684
+      ],
+      "unique_own_reference_count": 6
+    },
+    "energy-0": {
+      "diagnostic_own_geometry_status_counts": {
+        "unmatched": 10
+      },
+      "endpoint_force_flag_discrepancies": 0,
+      "nonconverged_diagnostic_own_matches": 0,
+      "own_graph_compatibility_counts": {
+        "False": 1,
+        "True": 9
+      },
+      "own_reference_labels_above_force_rule": 0,
+      "own_reference_predictions_above_force_rule": 6,
+      "reference_label_max_force_range_eV_per_A": [
+        0.00053473,
+        0.00274489
+      ],
+      "reference_prediction_max_force_range_eV_per_A": [
+        0.04327881993234728,
+        0.06672755490895133
+      ],
+      "unique_own_reference_count": 6
+    }
+  },
+  "molecular_force_evaluations": 155,
+  "new_training_or_relaxation": false,
+  "observed_utc": "2026-10-17T17:35:55.438173+00:00",
+  "output_file_count": 151,
+  "records_sha256": "7057669ba670b518b36842f1b5473df198ac94482a922c9550b77505c7c87151",
+  "source_and_317_prior_output_files_unchanged": true,
+  "status": "coordinator_diagnosis_audit_passed_result_reviews_pending",
+  "summary": {
+    "cause_established": false,
+    "interpretation": "Exact-reference stationarity mismatch does not exclude a valid nearby point. Endpoint-only force/graph observations do not establish solver causality, conservativity or chemical bond breaking.",
+    "models": {
+      "consistency-0.1-0": {
+        "endpoint_flag_discrepancy_count": 0,
+        "maximum_centroid_torque_norm_eV": 55.83657994603735,
+        "maximum_net_force_norm_eV_per_A": 23.644161282188595,
+        "maximum_start_parity_difference": 9.414691248821327e-14,
+        "reference_count": 11,
+        "reference_labels_above_force_threshold": 0,
+        "reference_prediction_above_force_threshold": 11
+      },
+      "consistency-0.1-1": {
+        "endpoint_flag_discrepancy_count": 0,
+        "maximum_centroid_torque_norm_eV": 388.0176279367471,
+        "maximum_net_force_norm_eV_per_A": 230.21280678675026,
+        "maximum_start_parity_difference": 6.000755448098971e-14,
+        "reference_count": 11,
+        "reference_labels_above_force_threshold": 0,
+        "reference_prediction_above_force_threshold": 11
+      },
+      "direct-0": {
+        "endpoint_flag_discrepancy_count": 0,
+        "maximum_centroid_torque_norm_eV": 952.3579174893296,
+        "maximum_net_force_norm_eV_per_A": 292.81292012509994,
+        "maximum_start_parity_difference": 5.029310301551959e-14,
+        "reference_count": 11,
+        "reference_labels_above_force_threshold": 0,
+        "reference_prediction_above_force_threshold": 11
+      },
+      "direct-1": {
+        "endpoint_flag_discrepancy_count": 0,
+        "maximum_centroid_torque_norm_eV": 135.28612162910582,
+        "maximum_net_force_norm_eV_per_A": 37.90863710733201,
+        "maximum_start_parity_difference": 4.907185768843192e-14,
+        "reference_count": 11,
+        "reference_labels_above_force_threshold": 0,
+        "reference_prediction_above_force_threshold": 11
+      },
+      "energy-0": {
+        "endpoint_flag_discrepancy_count": 0,
+        "maximum_centroid_torque_norm_eV": 8.579661020019128e-15,
+        "maximum_net_force_norm_eV_per_A": 2.0380985511143445e-15,
+        "maximum_start_parity_difference": 4.574118861455645e-14,
+        "reference_count": 11,
+        "reference_labels_above_force_threshold": 0,
+        "reference_prediction_above_force_threshold": 11
+      }
+    },
+    "molecular_force_evaluations": 155,
+    "official_outcomes_unchanged": true,
+    "original_A2": "failed",
+    "status": "complete_diagnosis_result_reviews_pending",
+    "supplier_calls": 40
+  },
+  "summed_supervised_stage_seconds": 41.758032916113734,
+  "supplier_calls": 40
+}

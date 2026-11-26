@@ -1,0 +1,86 @@
+{
+  "status": "PASS_MAIN_TEXT_LIMIT_LANGUAGE_NUMERICAL_AND_VISUAL_CHECKS",
+  "pages": 6,
+  "main_text_pages": 5,
+  "reference_start_page": 6,
+  "reference_pages": 1,
+  "page_limit_source": "Coordinator explicitly confirmed 23 October: five-page limit excludes references; live Canvas instructions not independently verified.",
+  "prose_paragraphs": 43,
+  "prose_sentences": 131,
+  "max_sentence_words": 28,
+  "language_flags": [],
+  "maximum_allowed_sentence_words": 35,
+  "profile": "ASD-STE100-based with user-authorized 35-word exception; not formal compliance",
+  "sentences_above_25_words": 6,
+  "sentence_and_paragraph_scope": "Descriptive body and abstract; mathematical notation and units replaced with tokens for conservative whitespace counts. Tables, captions, headings and references separately reviewed. Not formal dictionary certification.",
+  "five_predictive_rows_unchanged": true,
+  "five_recovery_rows_checked": true,
+  "course_style_unchanged": true,
+  "original_report_pdf_unchanged": true,
+  "prior_short_sentence_pdf_unchanged": true,
+  "original_figure_unchanged": true,
+  "all_pages_rendered": true,
+  "character_bounds_flags": [],
+  "compile_warnings": [
+    "utf8 inputenc ignored by Unicode engine; expected"
+  ],
+  "immutable_research_snapshot_link_present": true,
+  "working_draft_footer_removed": true,
+  "pdf_sha256": "fed98f1b53707dba48a413081293139be8981680710ea470987a2c305438876b",
+  "pdf_bytes": 77438,
+  "all_six_pages_visually_inspected": true,
+  "no_clipping_or_caption_collisions_observed": true,
+  "two_independent_plan_and_final_checks_pass": true,
+  "prior_required_corrections_preserved": true,
+  "scientific_tables_loss_figure_and_bibliography_unchanged": true,
+  "review_scope": "Two independent bounded plan/final checks passed. Prior full content clearance binds the preserved earlier exact PDF; no identical-review claim for this revision.",
+  "release_checks_pending": [
+    "Staff access",
+    "Four contribution confirmations",
+    "Live Canvas instructions and exact due time/timezone",
+    "Exact-PDF team approval",
+    "Submission"
+  ],
+  "files": {
+    "group9_Midterm_IDL.tex": {
+      "bytes": 19639,
+      "sha256": "540dc6ec05786a487ac4af804f784d604d65ad68a276bc963d555ff6f97797af"
+    },
+    "group9_Midterm_IDL.pdf": {
+      "bytes": 77438,
+      "sha256": "fed98f1b53707dba48a413081293139be8981680710ea470987a2c305438876b"
+    },
+    "neurips_2019.sty": {
+      "bytes": 11040,
+      "sha256": "2db0d258efc74c644e02ae4694c94cefb2c84e97cb8e804a5911ae7a02523b42"
+    },
+    "figures/baseline-curves.pdf": {
+      "bytes": 23114,
+      "sha256": "38ed210e72ecccfd0eebbf9982ac5f436f75599a659e7d2ea95d978c109f13d9"
+    },
+    ".gitattributes": {
+      "bytes": 13,
+      "sha256": "547f59603028195ff9f8a87d04c4651551e8bd0d68f075257dfd549cd846b25b"
+    },
+    "README.md": {
+      "bytes": 2135,
+      "sha256": "d61f6db68b508ad86edede12eb16892063b079a84c535f0dfc816a0fd7e96277"
+    },
+    "CHANGES.md": {
+      "bytes": 1181,
+      "sha256": "7d200aaae86d8ccfa701ef613a402cc10d8a34a15ba2d7b75b2af5ec132c4e11"
+    },
+    "RELEASE_CHECKLIST.md": {
+      "bytes": 1190,
+      "sha256": "fdb89ed255e65ca783d97e6e8ad01a4c25301f2a6bb3b0e3e2789d2ad949e7e9"
+    },
+    "EVIDENCE_MAP.md": {
+      "bytes": 1054,
+      "sha256": "867ec3233b57ea12c24845a7eebfe9311101eeb678d1ee399972e7dc9f981b47"
+    },
+    "source-records.json": {
+      "bytes": 570,
+      "sha256": "971cd4f66cdab2013b37309cb1d14a77d39d40f924c56f94033d18685556b6b3"
+    }
+  }
+}

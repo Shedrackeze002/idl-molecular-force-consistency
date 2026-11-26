@@ -1,0 +1,35 @@
+{
+  "atol": 1e-10,
+  "checkpoint_identity": {
+    "arm": "energy",
+    "backend": "cpu",
+    "best_update": 184500,
+    "checkpoint_sha256": "905cb4fc4a95e89476680bf26f3a2c074407bddb1fdc49006c2d5f47590aa389",
+    "dataset_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "embedded_best_identity": {
+      "control_sha256": "5e5b93b35a42c1702d99859f82434c567da203fec1f8b615b2d04a01f603e13d",
+      "embedded_best_state_sha256": "4921c061397651e33b96852cc2cecbc1e085a021f08d36ea22c97abca2d4fb5d",
+      "exact_original_payload_match": true,
+      "payload_sha256": "4921c061397651e33b96852cc2cecbc1e085a021f08d36ea22c97abca2d4fb5d"
+    },
+    "energy_convention": "training-offset residual eV",
+    "energy_offset_eV": -17647.258992926312,
+    "forces_are_energy_gradient": true,
+    "lambda": 0.0,
+    "precision": "float64",
+    "score_sha256": "94256ed5525468461e49b19ea36ec8a12e3527f4d9b09f185133c4cfa0fdca6b",
+    "seed": 0,
+    "source_fingerprint": "a046011a0efdfab2835b00e42f446e691b453b1f30854f8accce26c6292f4da5"
+  },
+  "maximum_absolute_force_difference": 5.689893001203927e-14,
+  "record_count": 974,
+  "rtol": 1e-10,
+  "single_record_ids": [
+    "Landscape17/aspirin/Conformations/coordsts_1_3.xyz",
+    "Landscape17/aspirin/Conformations/coordsts_1_8.xyz",
+    "Landscape17/aspirin/Conformations/coordsts_1_8_2.xyz",
+    "Landscape17/aspirin/Conformations/coordsts_6_6.xyz",
+    "Landscape17/aspirin/Conformations/coordsts_7_8.xyz"
+  ],
+  "status": "verified"
+}

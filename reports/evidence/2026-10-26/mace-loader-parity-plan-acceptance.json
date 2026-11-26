@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-26",
+  "status": "ACCEPTED_PLAN_ONLY",
+  "files": {
+    "docs/research/MACE_LOADER_PARITY_SPEC_2026-10-26.md": {
+      "bytes": 8934,
+      "sha256": "9613b4a32131ae77c2c8e0eb69437dd6ad4afca2a11692ca4c69b0f1d4fe7e8d"
+    },
+    "docs/superpowers/plans/2026-10-26-mace-loader-parity.md": {
+      "bytes": 11292,
+      "sha256": "f1e9ef836f1070286a35aa5fbcd8756fc3a8c59421bff44b0c3208fb5c83a6e8"
+    }
+  },
+  "scientific_review": {
+    "verdict": "APPROVE",
+    "scope": "Fixed validation parity, ID mapping, gauges, acceptance criteria, claim limits and ownership"
+  },
+  "engineering_review": {
+    "verdict": "APPROVE",
+    "clarification": "Production order: verify_packet, validate_inputs, load_admitted_arm, predict, independent audit"
+  },
+  "limits": [
+    "No loader implementation is claimed",
+    "No real model loaded",
+    "No trained inference or recovery",
+    "Implementation review and exact bounded launch record remain required"
+  ]
+}

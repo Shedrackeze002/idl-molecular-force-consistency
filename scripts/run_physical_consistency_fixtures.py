@@ -14,7 +14,8 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from evaluation.adapter import callable_arm, energy_force_arm
+from evaluation.adapter import callable_arm
+from evaluation.paired_adapter import energy_force_arm
 from evaluation.physical_consistency import (
     PhysicalConsistencyConfig,
     benchmark_inference,

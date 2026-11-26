@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-26",
+  "status": "REMOTE_HANDOVER_PRESENT",
+  "pull_request": {
+    "headRefName": "midsemester-report-draft",
+    "headRefOid": "83bd55bcb47ac0b910ba946110648d849a8936c6",
+    "state": "OPEN",
+    "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/pull/10"
+  },
+  "files": {
+    "docs/team/IDRIS_MACE_HANDOVER_2026-10-18.md": {
+      "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/blob/83bd55bcb47ac0b910ba946110648d849a8936c6/docs/team/IDRIS_MACE_HANDOVER_2026-10-18.md",
+      "bytes": 8069,
+      "sha256": "549eb11ba5a96376968829a8e67bc831037f24a55b435d0e06e004dacfa4babd",
+      "matches_local": true
+    },
+    "docs/team/IDRIS_TASKS.md": {
+      "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/blob/83bd55bcb47ac0b910ba946110648d849a8936c6/docs/team/IDRIS_TASKS.md",
+      "bytes": 2029,
+      "sha256": "2965b21cb4be2f2c3ad58da6c45a65b9f266b6c07724a5074374d780da78d837",
+      "matches_local": false
+    },
+    "docs/mace-evaluator-contract.md": {
+      "url": "https://github.com/Shedrackeze002/idl-molecular-force-consistency/blob/83bd55bcb47ac0b910ba946110648d849a8936c6/docs/mace-evaluator-contract.md",
+      "bytes": 8283,
+      "sha256": "6b71d34f10c7d1eafafced67bdb5c720519f07dd0be0b3c28aa5bb8e89524f55",
+      "matches_local": true
+    }
+  },
+  "receipt_basis": "Coordinator states GitHub presence confirms receipt by Idris. Olufunke integration role explicitly confirmed in this chat.",
+  "loader_status": "No published loader contribution visible in inspected branches/PRs. Current implementation status unverified; ownership retained with Idris.",
+  "private_payload_limit": "Remote documentation presence does not independently establish access to separately retained private weights/data.",
+  "comparison_note": "Handover and contract match retained bytes. The public task summary differs from the historical local narrative while preserving the same ownership."
+}

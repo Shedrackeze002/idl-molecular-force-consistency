@@ -1,0 +1,10 @@
+{
+  "status": "EXPECTED_FAILURES_REPRODUCED",
+  "previous_commit": "f812be6a40c9008715685cee8dfdea24245a8f4f",
+  "pytest_exit_code": 1,
+  "expected_failures": [
+    "forged supervisor callback with NOT_APPROVED/hash-mismatched receipts",
+    "direct loader invokes an injected constructor outside supervisor"
+  ],
+  "execution_boundary": "Synthetic process-like object and non-model bytes only; no real model construction or inference."
+}
