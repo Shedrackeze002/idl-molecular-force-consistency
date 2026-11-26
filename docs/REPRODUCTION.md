@@ -28,7 +28,7 @@ The historical source-bound `scripts/report_width_rate_replacement.py` and perso
 
 ## Test boundary
 
-All 36 original test modules remain byte-identical at their original paths. Some historical tests also provide synthetic helpers imported by current tests. `pyproject.toml` lists 19 original default modules explicitly, so helpers retain their original paths without bringing source-bound historical tests into default collection. This reduces regression coverage; the omitted modules include synthetic/controller tests as well as archival checks. No equivalent replacement coverage is claimed.
+All 36 original test modules were exported byte-identical at their original paths. Since then only `tests/test_width_rate_replacement_report.py` has changed: its blocked-navigation fixture uses a neutral command, and the module skips with a reason when the separately retained reporter is absent. Some historical tests also provide synthetic helpers imported by current tests. `pyproject.toml` lists 19 original default modules explicitly, so helpers retain their original paths without bringing source-bound historical tests into default collection. This reduces regression coverage; the omitted modules include synthetic/controller tests as well as archival checks. No equivalent replacement coverage is claimed.
 
 The attempted complete original set on the export produced **168 failed, 482 passed, 3 skipped and 3 errors** in 337.75 seconds. The saved failures require original runs, processed arrays, audit/source-pin files, protected canonical-byte identities or the separately retained audit reporter. The initial attempt also lacked a checkout-relative runtime and did not explicitly pin inherited child imports; the default verification pins parent and child imports to exported source. The complete failed attempt remains retained. It is not reported as a passing full suite.
 
@@ -91,7 +91,7 @@ Historical modules outside default collection, with unchanged originals retained
 - `tests/test_width_rate_preflight.py`: Original width/rate source states and immutable canonical report pins require the original package; path-normalized exports deliberately have different identities.
 - `tests/test_width_rate_recovery.py`: Original width/rate review gate and protected source package are separately retained.
 - `tests/test_width_rate_replacement.py`: Original width/rate/recovery audit gates and protected source package are separately retained.
-- `tests/test_width_rate_replacement_report.py`: Historical source-bound report audit script is separately retained, along with the original pinned packages.
+- `tests/test_width_rate_replacement_report.py`: Historical source-bound report audit script is separately retained, along with the original pinned packages. Without that script the module skips with this reason, so invoking it from a clean checkout reports a skip rather than 41 failures.
 - `tests/test_width_rate_report.py`: Original width/rate source/audit package and immutable canonical report pins require the original package.
 
 Invoke these files explicitly only with the matching historical packages available. Their original guards remain in force. A new numerical/controller failure is not excused by this boundary; investigate it before publication or launch.

@@ -4,6 +4,13 @@ import importlib.util
 import json
 from pathlib import Path
 import pytest
+
+_REPORTER = Path(__file__).resolve().parents[1] / 'scripts' / 'report_width_rate_replacement.py'
+if not _REPORTER.exists():
+    pytest.skip('scripts/report_width_rate_replacement.py is a historical source-bound reporter that is retained '
+                'separately and not shipped in this repository; see the test boundary in docs/REPRODUCTION.md',
+                allow_module_level=True)
+
 from force_consistency.width_rate_contract import digest
 from test_width_rate_replacement import module, CONFIG
 from test_width_rate_report import valid_arm
