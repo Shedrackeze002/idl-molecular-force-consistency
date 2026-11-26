@@ -1,0 +1,1215 @@
+                                                   On the role of gradients for machine learning of
+                                                   molecular energies and forces
+
+
+
+
+arXiv:2007.09593v1 [physics.chem-ph] 19 Jul 2020
+                                                                    Anders S. Christensen & O. Anatole von Lilienfeld∗
+                                                                    Institute of Physical Chemistry
+                                                                    National Center for Computational Design and
+                                                                    Discovery of Novel Materials (MARVEL)
+                                                                    Department of Chemistry
+                                                                    University of Basel
+                                                                    Klingelbergstrasse 80
+                                                                    CH-4056 Basel, Switzerland
+                                                                    ∗ anatole.vonlilienfeld@unibas.ch
+
+
+
+                                                                    Abstract. The accuracy of any machine learning potential can only be as good
+                                                                    as the data used in the fitting process. The most efficient model therefore selects
+                                                                    the training data that will yield the highest accuracy compared to the cost of
+                                                                    obtaining the training data. We investigate the convergence of prediction errors of
+                                                                    quantum machine learning models for organic molecules trained on energy and
+                                                                    force labels, two common data types in molecular simulations. When training
+                                                                    and predicting on different geometries corresponding to the same single molecule,
+                                                                    we find that the inclusion of atomic forces in the training data increases the
+                                                                    accuracy of the predicted energies and forces 7-fold, compared to models trained
+                                                                    on energy only. Surprisingly, for models trained on sets of organic molecules of
+                                                                    varying size and composition in non-equilibrium conformations, inclusion of forces
+                                                                    in the training does not improve the predicted energies of unseen molecules in
+                                                                    new conformations. Predicted forces, however, also improve about 7-fold. For the
+                                                                    systems studied, we find that force labels and energy labels contribute equally per
+                                                                    label to the convergence of the prediction errors. Choosing to include derivatives
+                                                                    such as atomic forces in the training set or not should thus depend on, not only on
+                                                                    the computational cost of acquiring the force labels for training, but also on the
+                                                                    application domain, the property of interest, and the desirable size of the machine
+                                                                    learning model. Based on our observations we describe key considerations for the
+                                                                    creation of datasets for potential energy surfaces of molecules which maximize the
+                                                                    efficiency of the resulting machine learning models.
+
+
+
+
+                                                   1. Introduction
+
+                                                   In recent years, machine learning models have become increasingly popular as methods
+                                                   to approximate potential energy surfaces of molecules. These models range from
+                                                   classical learning methods such as kernel methods to methods based on deep neural
+                                                   networks.1–19 A common denominator for these data-driven models is that they require
+                                                   an adequate training set in order to yield predictions of sufficient accuracy. It is thus
+                                                   clear that informed and rational selection of training data is paramount to proper
+                                                   optimization of the data-efficiency of the machine learning models.
+                                                        For machine learning models describing potential energy surfaces, two types of data
+                                                   seem particularly convenient as training data: single-point energies and atomic force
+                                                   vectors. However, it has not yet been fully demonstrated when and to which degree
+On the role of gradients for machine learning of molecular energies and forces               2
+
+the inclusion of force labels in the training set truly leads to an improvement of the
+accuracy of the trained model versus energy labels. It is even possible to find somewhat
+conflicting information in literature. For example, the GDML and sGDML methods
+achieve state-of-the-art accuracy in certain cases for the MD17 benchmark dataset,
+despite training only on force labels, ignoring the energy labels.20–22 In contrast, the
+HIP-NN neural network—when only trained on energy labels—ostensibly achieves
+similar predictive accuracy to the DTNN, SchNet and PhysNet neural networks, when
+these are trained on both forces and energy labels for 50K molecules from the MD17
+dataset, despite the fact that HIP-NN is trained using far fewer training labels.15, 19, 23, 24
+Similarly, the family of ANI datasets have resulted in successful potential energy models
+for general organic chemistry solely trained on single-point energies on geometries
+distorted along normal-modes, although the corresponding gradient information would
+not have been much more costly to obtain at the density-functional theory (DFT) level
+employed.5, 25–27
+      Consequently, it is not clear from literature which is the best strategy for designing
+a dataset for the most accurate machine learning potentials for chemical compounds
+within a given budget of computational resources. In order to shed more light on this
+matter, here we investigate how the predictive accuracy of machine learning models is
+affected by inclusion of derivative information—namely atomic force vectors in addition
+to the energy—in the training set. More specifically, we investigate the nine possible
+combinations resulting from the inclusion of functions, derivatives, and functions plus
+derivatives in loss-functions used for training, as well as in error measures used for
+evaluating the prediction error.
+      In order to learn, the predictive accuracy of the trained machine must strictly
+increase with an increasing amount of training data, aside from statistical variation.
+This holds true as long as the training data is noiseless, and the machine learning model
+is flexible enough to be able to properly account for all variation in the data.28, 29 This
+has previously been demonstrated numerically with the leading term of the prediction
+error decreasing according to a power-law with number of training samples, N , for
+kernel ridge regression,30 as well as for neural networks,31 i.e.:
+                                                  a
+                                        Error ∝                                            (1)
+                                                  Nb
+Learning curves of functional machine learning models thus must behave linearly on
+log-log scales, and form, in the limit of large N , a robust tool to assess learning
+data-efficiency through comparison of the “offset,” log (a), and “slope,” b.
+     This paper is structured as follows: we first describe our methodology and illustrate
+the idea of learning curve comparison for a well-known toy system from mathematics,
+the well-described Himmelblau’s function, in order to demonstrate how different types
+of training data affect the learning rate for a generic non-trivial 2-dimensional surface.32
+Next, we employ the same testing scheme for two different but common use cases in
+chemistry: The first use case concerns generating a force field for a single molecule.
+Here we demonstrate how using forces and energies in the training data affect the
+learning rate for the potential energy surfaces of 10 individual molecules from the
+MD17 dataset.20, 21 In order to ensure that the underlying data is practically noise-free,
+we additionally present a revision of the MD17 where the energies and forces have been
+calculated using dense integration grids and tight self-consistent field (SCF) tolerances.
+     The second use case concerns generating machine learning models trained across
+chemical compound space, meaning that they can extrapolate to out-of-sample
+On the role of gradients for machine learning of molecular energies and forces           3
+
+molecules not seen during training. Also here, we investigate how the inclusion
+of forces in the training data helps the trained machine to generalize from points on
+the potential energy surfaces of known molecules to points on the potential energy
+surfaces of new molecules.
+
+
+2. Theory
+
+In order to achieve a fair comparison between models trained on different kinds of
+data (here energies and forces), we employ three closely related kernel-based regression
+models which are described in this section, as well as standard training protocols.33
+Using these schemes, we ensure that models trained on different types of data will
+rely on the same kernel functions and representations while at the same time being
+exactly-determined with closed-form solutions. This is done by defining loss functions
+in which basis kernel functions are placed on the training data, as well as placing kernel
+derivatives corresponding to any gradient or force information in the training data.
+This yields a set of basis functions which guarantees that the model (within a given
+regularization) is able to perfectly align with the training labels. Additionally, use of
+the force operator ensures that the resulting force fields are conservative force fields,
+which is important for molecular dynamics simulations, and that the predicted energies
+obey common physical relations such as rotational and translational invariances.
+     The three machine learning models which employ training on either energies
+(function) only, or energies and forces (function and derivatives) simultaneously, or
+forces (derivatives) only are presented next. Each model is characterized by its loss
+function J which is minimized through regression. Note, that prediction errors can
+also be evaluated using different loss functions. Conventionally, training and test error
+definition are identical, and their evaluation only differs in being assessed on a training
+or test set, respectively. As such, there are nine possibilities to combine the three loss
+functions in training and in testing.
+     While the relevant equations for each regressor can be derived both in the context
+of kernel ridge regression (KRR), as well as Gaussian process regression (GPR), we
+present them here in the notation most commonly used for the former.10, 14, 20–22, 34–36
+For more detailed derivations, we refer to the work by Bartók and Csányi,1 as well
+as that of Mathias.37 We further note that the equations for the force-only regressor
+have recently seen a different derivation in the work on “gradient domain” machine
+learning (GDML) by Chmiela et al.20
+
+2.1. Energy-only Training
+In kernel ridge regression, the energy, u, of a query molecule, represented by M̃ , can
+be expanded using a basis set of kernel functions placed on training samples. That is,
+
+                                training
+                                    X              
+                             u M̃ =        k M̃ , Mi αi ,                              (2)
+                                          i
+
+where Mi is the i-th molecule in the training set, αi is the i-th regression coefficient
+with units of energy, and k (·, ·) is a function that relates two molecules through a
+similarity measure which typically depends on the specific functional form of the kernel
+On the role of gradients for machine learning of molecular energies and forces          4
+
+function, the representation, and the metric. Writing the above equation on matrix
+form yields:
+                                      u = Kα                                   (3)
+Here, u is the vector containing predicted energies, K is the kernel matrix containing the
+pairwise kernel elements between the molecules in the training set and the predictions
+sets, and finally α is the vector containing regression coefficients. Bold lowercase
+letters indicate vectors and bold capital letters indicate matrices. The specific kernel
+function used for the different experiments are given in Section 2.4. From Eq. 3, a
+set of regression coefficients can be obtained by minimizing a loss function. Using
+Thikonov regularization and minimizing the squared errors leads to the loss function
+which is the foundation of KRR:
+                                                        2     λ >
+                     J(α | {uref }) = 12 Kα − uref 2 +          α Kα                  (4)
+                                                              2
+This loss function contains a hyperparameter, λ, which determines the amount of
+L2-regularization for the regression coefficients stored in α, which in turn yields the
+well-known closed-form solution for training a KRR model:
+                                                −1
+                                 α = (K + Iλ)        uref .                           (5)
+
+These regression coefficients can then be used to predict energies (as in Eq. 3), through
+evaluation of the relevant kernel matrix. Via the definition of the force operator, i.e.
+the negative gradient of the energy with respect to the atomic coordinate vector, r,
+the atomic force vector, f , can be predicted by differentiation of Eq. 3:
+                                       ∂
+                                              ∂ 
+                                 f , − ∂r u = − ∂r K α                                 (6)
+
+Note that this approach is as ‘naive’ as general, and in principle any differential
+property can be learned this way as long as the representation accounts for all the
+variables which are being perturbed.36
+
+2.2. Combined Energy and Force Training
+The second model investigated herein, is a model closely related to conventional KRR
+but which allows for training on both force and energies simultaneously. Similar to
+how KRR can be used to construct a function that goes through the training points
+exactly, it is also possible to—at the same time—enforce the derivatives at those points.
+Here, derivatives are enforced by including the derivatives (for example, forces) in
+the regression in addition to the function value (for example, energies). In order to
+allow the model to match both the function values and derivatives of the training
+set exactly, it is necessary to increase the number of basis functions considerably, as
+the set of equations would otherwise be vastly overdetermined, as, for example, there
+are 3N force labels for each energy label. One choice of extended basis comes from
+augmenting the set of basis functions in standard KRR with additional kernel functions
+corresponding to the kernel derivatives with respect to the coordinates of the training
+molecules.
+     The resulting set of equations for this problem looks as follows:
+
+                                                 − ∂r∂| K
+                                                       
+                                u        K
+                                   =     ∂        ∂2        α                        (7)
+                                f      − ∂r K    ∂r∂r| K
+On the role of gradients for machine learning of molecular energies and forces                    5
+
+Here, K is again the kernel matrix containing the pairwise kernel elements between the
+molecules in the training set and the predictions sets, and is defined identially to K in
+Eq. 3. Similarly to the problem in Eq. 3, this choice of basis functions ensures that
+the training kernel is square-symmetric and the minimization of the regularized loss
+function has a convenient closed-form solution. For a set of reference training energies
+and forces, the regression coefficients can here be obtained by minimizing the following
+set of squared errors with Thikonov regularization:
+                                                                  ref  2
+                                                  − ∂r∂| K                                 − ∂r∂| K
+                                                                                                 
+                           1         K                            u          λ >    K
+J(α | {uref , f ref }) =             ∂             ∂ 2       α −    ref    +   α    ∂       ∂ 2       α
+                           2       − ∂r K         ∂r∂r|  K        f          2    − ∂r K   ∂r∂r| K
+                                                                         2
+                                                                                                 (8)
+The closed-form solution is, similarly to that of Eq. 5,
+                                                                     !−1 
+                                                     − ∂r∂| K             uref
+                                                                               
+                                         K
+                           α=                           2       + Iλ               .            (9)
+                                       ∂
+                                     − ∂r K           ∂
+                                                     ∂r∂r| K
+                                                                           f ref
+
+This definition guarantees that the regression problem is exactly determined, and
+allows for the machine-learned potential energy surface to match both the energy and
+the forces of each training molecule.
+     With the regression coefficients obtained through Eq. 9, predicted energies can
+then be calculated via the set of kernel functions and kernel derivatives placed on the
+training set:
+                                 u = K − ∂r∂| K α
+                                                   
+                                                                                   (10)
+Likewise, forces can be obtained by taking the relevant derivative of the energy, i.e.:
+                                      h                  i
+                               ∂
+                         f , − ∂r        ∂
+                                  u = − ∂r          ∂2     α                       (11)
+                                           K      ∂r∂r| K
+
+
+2.3. Force-only Training
+The third model presented is a model which constructs a potential energy surface from
+information about derivatives only. This model is similar to the model described in
+Section 2.2 except that, in this case, only force labels are used in the training step,
+and, consequently, the set of basis functions is comprised of only the corresponding
+kernel derivatives.
+     In this approach, we start with the following equation, in which the kernel matrix
+is formed by the double derivatives of pair-wise kernel functions:
+                                        h 2       i
+                                           ∂
+                                    f = ∂r∂r        α                             (12)
+                                              | K
+
+For a set of reference force labels, f ref , the corresponding regression coefficients are
+obtained analogously to the energy-only and energy+force examples in the previous
+sections.                          h 2       i           2       h 2     i
+                                                             λ >
+              J(α | {f ref }) = 12 ∂r∂r
+                                     ∂
+                                        | K    α − f ref
+                                                           + 2 α   ∂
+                                                                  ∂r∂r| K  α          (13)
+                                                                     2
+
+                                             h          i          −1
+                                     α=            ∂2        + Iλ         f ref .             (14)
+                                                  ∂r∂r| K
+
+This is also sometimes referred to as training in the “gradient domain”.20
+On the role of gradients for machine learning of molecular energies and forces       6
+
+     Energies can then be predicted through direct integration of Eq. 12, which allows
+the scalar field to be determined up to an integration constant:
+
+                            u = − ∂r∂| K α + constant term
+                                       
+                                                                                  (15)
+
+For problems where only a single surface is of interest—for example the potential
+energy surface of a given stoichiometry—the integration constant is rarely of any
+importance, and can also be inferred by predicting the energies for the training data.
+Unfortunately, however, this approach is less practical when multiple surfaces are of
+interest, for example for datasets involving the potential energy surfaces of multiple
+different molecules. Note that the number of possible stoichiometries is known to grow
+exponentially with elementary particle number.38 Hence, force-only training makes it
+hard if not impossible to train models that directly predict energies for molecules of
+varying size and chemical composition, if the energy of the molecules are of interest.
+Of course, composite approaches, e.g. using dressed atom models,39 can still be used
+to rectify such shortcomings.
+
+2.4. Representations and Kernel Functions
+Since we present machine learning models trained on (i) an analytical function
+(Himmelblau’s function) and on (ii) several models of molecular energetics trained
+non-equilibrium geometries, different kernel and representation choices have been made.
+
+2.4.1. Representing Himmelblau’s Function Here, Himmelblau’s function is used as a
+toy-model for learning complicated surfaces.32 This allows for thorough benchmarking
+of the regressors used herein. Himmelblau’s function is a multi-modal function with
+one local maximum and four minima and bears some resemblance to the potential
+energy surface of a simple molecule with four conformational minimia. The function is
+defined as:                                  2              2
+                       u (x, y) = x2 + y − 11 + x + y 2 − 7 .                    (16)
+Points on the surface are represented here as their xy-coordinate pair, that is, qi =
+          >
+[xi , yi ] . A Gaussian kernel function is used to compute the kernel elements for
+Himmelblau’s function, i.e.:
+
+                             kqi − qj k22
+                                         
+                Kij = exp −                 for Himmelblau’s function            (17)
+                                 2σ 2
+
+This choice of representation and kernel function makes is straightforward to implement
+and enables the computation of necessary kernels and derivatives analytically.
+
+2.4.2. Representing Molecules To represent the environments of an atom in a molecule,
+we rely on the computationally more efficient variant of the Faber-Christensen-Huang-
+Lilienfeld (FCHL) representation,40 namely the FCHL19 representation.22 Briefly,
+this representation is a vector which contains histograms of the radial distributions
+of atoms and a number of Fourier terms describing angular distributions of atoms
+in the environment of a certain atom.41 In principle, any continuous representation
+that generalizes across chemical space could have been used for this purpose. In
+addition, we use the localized kernel ansatz in which the kernel elements between
+two molecules correspond to the pairwise sum over the kernel functions between the
+On the role of gradients for machine learning of molecular energies and forces            7
+
+respective representations of atomic environments in the two molecules.35, 42 This
+makes it possible to train models that span molecules of varying size and chemical
+composition. The following Gaussian kernel function is used throughout:
+                                         kqI − qJ k22
+                     XX                              
+              Kij =         δZI ZJ exp −                 for molecules        (18)
+                                             2σ 2
+                      I∈i J∈i
+
+where qI and qJ are the representations of the I’th and J’th atoms in the molecules i
+and j, respectively, δ is the Kronecker delta, with ZI and ZJ being the atomic numbers
+of each atom, respectively.
+
+3. Results
+
+In this section, we present numerical evidence which demonstrates the effects on the
+learning rate of including derivative labels in the training data. This section is organized
+as follows: first, we establish the generality of our numerical experiment by learning
+the surface of a simple two-dimensional function, unrelated to molecules or chemistry.
+Next, we demonstrate the same principles applied to two distinct use cases, namely (1)
+training a model for the potential energy surface for a single molecule, and (2) training
+a general model for the potential energy surfaces of a number of molecules of different
+size and chemical composition.
+
+3.1. Toy system: Learning Himmelblau’s Function
+In this section we investigate the learning curves of machines trained to predict
+Himmelblau’s Function. This 2D surface has four local minima and is displayed in
+Fig. 1, as well as the norm of its gradient. Here, Himmelblau’s function serves as a
+toy system to demonstrate the effects of including function derivatives in the training
+procedure.
+      We generate a dataset by selecting random points from the surface. The test set
+consists of 10,000 points sampled randomly and uniformly across the interval {xi , yi } ∈
+[−6.0; 6.0], with training sets of varying sizes sampled randomly and uniformly across
+the same interval. For each training set size N ∈ {25, 50, 100, 200, 400, 800, 1, 600}, 100
+training and test sets are created using 100-fold random sub-sampling cross-validation
+with a constant test set size of 10,000 points. This extensive cross-validation was
+necessary in order to have well-converged averages over the folds, as the test errors
+were observed to vary up to one order of magnitude. In total over 350,000 individual
+machines were trained in order to obtain the presented learning curves.
+      Three different models were trained for the surface: the first model trained on only
+the function values, the second only trained on the function derivatives at the training
+points, and the third model was trained on both the function values and function
+derivatives simultaneously. As expected,30, 31 the three machines yield learning curve
+fits for the predicted mean-absolute-error (MAE) function value with similar slopes
+when plotted on a log-log scale, as displayed in Fig. 1C.
+      The average difference between the two models which include forces labels in
+the training set is much smaller than the standard deviation of the 100 folds used to
+calculate the average. Compared to training on function values exclusively, the average
+decrease in the off-set of the learning-curve was found to be a factor of 7.0 for the
+model trained on only function derivatives, and 7.2 for the model trained on both
+function values and function derivatives.
+  On the role of gradients for machine learning of molecular energies and forces                                                                                 8
+
+                       6 (A) Himmelblau's
+                                       800
+                                           Function                                                       6            (B) Gradient Norm
+                                                                                                                                      800
+                                                                                                                               200
+                       4                                                                                  4                                    100
+                            800                                                                                                           25
+                                                                                                                               25
+                                                 25 50
+                       2    800                              50                                           2
+                                                                                                                                     50               25
+                                                                     200 100                                     400
+     y                 0                                                             y                    0              25
+                                                                     25                                                              25
+                                                                                                                                                      50
+                       2     400   25 100                                                                 2
+                                                                                                                       25
+                       4                    50                                                            4
+                       6                         800                                                      6                                            800
+                                  5.0            2.5 0.0       2.5      5.0                                        5.0         2.5 0.0          2.5        5.0
+                                                      x                                                                             x
+                                                  (C) Error                                                            (D) Gradient Error
+                     101                               u(x, y) only                                     101
+                                                        u(x, y) only
+
+
+
+
+                                                                               MAE gradient component
+                      100                              u(x, y) and u(x, y)                               100
+
+
+
+MAE function value
+                     10 1                                                                               10 1
+                     10 2                                                                               10 2
+                     10 3                                                                               10 3
+                     10 4                                                                               10 4
+                     10 5                                                                               10 5
+                                  25 50 100 200 400 8001600                                                       25 50 100 200 400 8001600
+                                            #N                                                                              #N
+                                            Figure 1. Panel (A) Displays the surface of Himmelblau’s function, and (B) the
+                                            gradient norm of the surface. Panels (C) and (D) display the MAE prediction and
+                                            MAE gradient prediciton, respectively, of the surface of Himmelblau’s function
+                                            as a function of the training set size. Three different sets of training labels are
+                                            used: green is trained on only the function values, red is trained only on function
+                                            gradient components, and finally blue is trained using both simultaneously.
+
+
+
+
+                                            Table 1. Slopes and offsets for predictions of the MAE value and MAE gradient
+                                            component for Himmelblau’s function, based on three machine learning methods
+                                            trained on different types of data.
+                                                                          MAE Value                                MAE Gradient
+                                        Training data                     Slope Offset                             Slope Offset
+                                        Values                            -2.45                           8.49         -2.05          7.14
+                                        Values and gradients              -2.33                           5.81         -1.96          4.76
+                                        Gradients                         -2.43                           6.43         -2.06          5.16
+On the role of gradients for machine learning of molecular energies and forces                                 9
+
+                  Table 2. Learning curves for three machines trained on different types of data,
+                  and the same loss functions evaluated on a test set of 10,000 points on the surface
+                  of Himmelblau’s function. The three machines are trained on either function
+                  values, function values and gradients simultaneously, or gradients only. The loss
+                  functions used to train each machine is denoted in the left column, followed by
+                  the slopes and offsets for the resulting learning curves for three loss functions
+                  evaulated on the test data. The three loss functions are defined in the text in
+                  Eqn. 4, 8, and 13, respectively.
+ Training                                        Test loss            Test loss                  Test loss
+                                                 J(α | {utest })      J(α | {utest , f test })   J(α | {f test })
+ Training data          Training loss            Slope       Offset   Slope           Offset     Slope     Offset
+ / Values               J(α | {uref })           -4.59       27.06    -3.74            25.19     -3.63       24.41
+ Values and gradients   J(α | {uref , f ref })   -4.41       22.35    -3.58            20.80     -3.49       20.25
+ Gradients              J(α | {f ref })          -4.60       23.10    -3.78            21.51     -3.69       20.91
+
+
+
+     Learning curves for gradient predictions show similar trends among the three
+models (see Fig. 1D): the average decrease in the offset was found to be a factor of 7.9,
+when training on gradients only, and 7.0 when training on both function values and
+gradients simultaneously, compared to training only on function values.
+     Fitted slopes and offsets for all six learning curves are displayed in Table 1. We
+note that the 95% confidence intervals of the fitted learning curves for the two models
+that include gradients in the training loss-function are mostly overlapping, and while
+slopes and offsets differ somewhat (see Table 1), the difference between the two models
+is not statistically significant.
+     Also for learning curves using loss functions we find agreement with the power-
+law behavior that is expected from models trained on function values,30, 31 here
+demonstrated for models trained on function gradients. In Table 2, we present resulting
+slopes and offsets for loss-function learning curves for the three types of trained machines
+trained using three different sets of training data and corresponding loss functions
+(rows). These learning curves are shown graphically in Fig. S1 in the Supplementary
+Information.
+     Results for the corresponding three test loss functions (columns) are obtained
+using a test set of 10,000 points randomly selected from the surface of Himmelblau’s
+function. Here, the same trends as for the MAE learning curves are observed. The
+resulting slopes from the three types of trained machines do not differ with statistical
+significance, but instead depend on the type of test data. In contrast, the offsets
+depend strongly on the training loss function and training data. More specifically,
+the inclusion of gradients in the training loss function is on average beneficial when
+predicting function values, function and gradient values, as well as gradient values alone.
+We also remind the reader that the slope of these learning curves are independent of the
+units of the labels, as this quantity is folded into the offset. Despite using hundred-fold
+cross-validation, we do not observe a statistically significant difference between any
+of the three test predictions when using training loss functions and data sets based
+on function values and gradients, or gradients alone. We also note that the learning
+curves for the MAE error are observed to follow the expected power-law behavior over
+a range that spans 6 and 5 orders of magnitudes for predicted function values and
+predicted function gradient components, respectively.
+     We have thus demonstrated for the Himmelblau function, that MAE error in this
+case can be decreased 7-fold by inclusion of labels that correspond to function derivatives
+On the role of gradients for machine learning of molecular energies and forces                                                          10
+
+                      (A) MD17 Energy Learning
+                                                  Aspirin           Benzene            Ethanol          Salicylic Acid    Malonaldehyde
+                                          10.0
+MAE atomization                            1.0
+
+energy [kcal/mol]
+                                           0.1    Energy Only
+                                                  Force Only
+                                          0.01    Force & Energy
+
+                                                 Toluene           Naphthalene          Uracil          Paracetamol        Azobenzene
+                                          10.0
+MAE atomization                            1.0
+
+energy [kcal/mol]
+                                           0.1
+                                          0.01
+                                                 100   1000         100   1000        100   1000          100   1000        100   1000
+                                                    #N                 #N                #N                  #N                #N
+                     (B) MD17 Force Learning
+                                                 Aspirin            Benzene            Ethanol          Salicylic Acid    Malonaldehyde
+
+
+
+
+MAE force component MAE force component
+                                          10.0
+
+                                           1.0
+                                                  Energy Only
+                                                  Force Only
+                                           0.1    Force & Energy
+
+                                                 Toluene           Naphthalene          Uracil          Paracetamol        Azobenzene
+
+
+
+    [kcal/mol/Å]        [kcal/mol/Å]
+                                          10.0
+
+                                           1.0
+
+                                           0.1
+                                                 100   1000         100   1000        100   1000         100   1000         100   1000
+                                                    #N                 #N                #N                 #N                 #N
+
+                                                      Figure 2. Learning curves for machines trained on three different datatypes for
+                                                      the 10 molecules in the revised MD17 dataset, namely machines trained on energies
+                                                      only, forces only, and both forces and energies. Data for five folds are plotted as
+                                                      a scatter plot for each training set size, and a linear fit for each curve is plotted
+                                                      in addition. In (A) the mean absolute error (MAE) of the predicted atomization
+                                                      energy is presented for each molecule as a function of the number of molecules in
+                                                      the training set, while (B) shows MAE of the predicted force components for the
+                                                      same folds.
+
+
+in the training set. At the same time, however, we find negligible improvement upon
+inclusion of function values, in addition to the gradient information in the training
+algorithm. Interestingly, these results suggest that when learning a single function
+surface, using derivatives as training labels is more advantageous than actual function
+values.
+On the role of gradients for machine learning of molecular energies and forces           11
+
+3.2. Use case 1: Learning the PES for a one molecule
+In this section we discuss the accuracy of energy and force predictions from three
+models trained on the revised MD17 dataset.20, 21
+      For each of the 10 molecules in the revised MD17 dataset, three models are trained
+using either only the energy labels of each sample, only the force labels, or both types
+of labels simultaneously. For each of the three models, the training set size N is
+varied for N ∈ {50, 100, 150, 200, 400, 600, 800, 1000}. The resulting MAE of energy
+and force predictions for each molecule can be found in Table S1 in the Supplementary
+Information, and plots with linear fits to the learning curves are shown in Fig. 2. As
+it is clear from the results, and similarly to the example with Himmelblau’s function,
+including the forces in the training procedure improves the prediction of both energies
+and forces. On average, the MAE of the predicted energies and force components is
+reduced about 7-fold for the same number of training samples. Regarding the inclusion
+of energies in addition to forces, we find, again in complete analogy to the Himmelblau
+function, that it makes little difference. In all cases, the largest difference was found to
+be 0.001 kcal/mol MAE predicted energy, and 0.002 kcal/mol/Å MAE predicted force
+components at the largest training set size of N =1000 samples.
+      In Fig. S2 the MAE predicted energy is plotted as a function of the number of
+training labels for each of the 10 molecules using the three models described earlier.
+Here, the slopes and offsets of the learning curve are close to identical in all 10 cases,
+regardless of what data was used to train the models. This suggests that for this
+dataset, one force label yields as much improvement in the predictive accuracy of a
+machine learning model as one energy label. Thus, a model for a specific molecule,
+trained on a certain number of energies, will have roughly the same predictive accuracy
+as one that is trained on the same number of force labels. As a consequence, in such
+cases—and if force-evaluations represent computationally negligible overhead (common
+within, for example, DFT)—the number of independent quantum calculations necessary
+to generate the training data required to reach a certain predictive power, can be
+reduced by a factor of 3N thanks to the inclusion of forces.
+      We find that in all but one case, the learning curves for both force as well as energy
+prediction follows the expected power law, meaning they display a linear relationship
+on a log-log scale. In the case of benzene, the off-set of the learning curve is extremely
+low, but the slope is inconsistent with the expected power-law. It seems unlikely that
+underlying numerical noise in the training data is at the origin of such premature
+saturation: the learning curves for Uracil are equally low and do not suffer from lack
+of linearity. The more likely culprit appears to be the specific parameterization of the
+FCHL19 representation achieving only insufficient uniqueness, a possibility recently
+pointed out by Pozdnyakov et al.43 The addition of higher order terms, such as for
+example 4-body terms, into FCHL40 might rectify this issue. Furthermore, we note
+that the parameters in the representation have not been re-optimized for discriminating
+the subtle difference between the very similar structures in this, but rather work across
+molecules of varying sizes and chemical composition. It is thus possible that they could
+be re-optimized to alleviate such issues to some extent.
+
+3.3. Use case 2: Training models across chemical composition
+In our second use case scenario, we investigate how learning forces and energy across
+chemical compound space behaves as a function of the number of training molecules
+ On the role of gradients for machine learning of molecular energies and forces                                            12
+
+                                         (A) Energy Prediction                       (B) Energy Prediction
+
+
+
+
+MAE Atomization Energy [kcal/mol]
+                                    16           Energy Only                  16
+                                                 Energy and Forces
+                                    10                                        10
+                                     8                                         8
+                                     6                                         6
+                                     4                                         4
+
+                                         50 100 200          500 1000               50         500        5000       50000
+                                         (C) Force Prediction                         (D) Force Prediction
+
+
+
+
+MAE Force Component [kcal/mol/Å]
+                                    20                                        20
+
+                                    10                                        10
+                                     8                                         8
+                                     6                                         6
+                                     4                                         4
+
+                                     2                                         2
+                                         50 100 200 500 1000                        50         500 5000              50000
+                                              # Molecules                                        # Labels
+                                             Figure 3. Energy and force learning curves machine learning models trained
+                                             on a dataset consisting of non-equilibrium conformers for 1,595 small, organic
+                                             molecules. Two models are trained, one including only the energy labels of each
+                                             non-equilibrium conformer, and one additionally including the corresponding force
+                                             labels. Panel (A) shows the MAE predicted atomization energy as a function of
+                                             the number of molecules in the training set, while (B) shows the same predicted
+                                             quantity, but as a function of the total number of training labels (i.e. the total
+                                             number of energy and force components in the training set) for each machine.
+                                             The MAE predicted force components are displayed in panels (C) and (D) as a
+                                             function of the number of molecules in the training set (C) as well as the total
+                                             number of training labels (D).
+On the role of gradients for machine learning of molecular energies and forces                     13
+
+                 Table 3. Slope and offsets (see text) of linear fits to mean absolute error (MAE) of
+                 predicted energies and gradients versus the training set size, on a log-log scale. The
+                 dataset consists of 1,595 small organic molecules in nonequilibrium conformation
+                 (see text). The column “Training” denotes what data was used to train the models.
+                 Lastly, the column “N unit” denotes the unit is used for the abscissa of a given
+                 learning curve. [Molecules] denotes that the unit is simply the number of molecules
+                 in the training set, that is for energy-only training, one training label (the energy)
+                 is used per molecule, while for energy+forces, 3N +1 training labels (one energy
+                 and 3N force components) are used for each molecule, whereas [Labels] denotes
+                 that the total number of 3N + 1 labels are used on the abscissa.
+                                         MAE Energy [kcal/mol]       MAE Force [kcal/mol/Å]
+     Training             N unit         Slope          Offset       Slope            Offset
+     Energy Only          [Molecules]    -0.44                4.35    -0.23                 4.01
+     Energy and Forces    [Molecules]    -0.45                4.47    -0.31                 3.29
+     Energy and Forces    [Labels]       -0.45                6.16    -0.31                 4.46
+
+
+
+and the type of training data. Fig. 3 shows learning curves for force and energy
+predictions on a dataset consisting of non-equilibrium conformations of 1,595 small,
+organic molecules. The training set is divided such that every (distorted) molecule of a
+given chemical composition is only seen once in either the training or test sets. Using
+this data, two types of models are trained: one model is trained using only atomization
+energy labels, and a second model is trained using both atomization energy as well
+as the corresponding 3N components of the force vector. As the model trained on
+only forces would only integrate the energy up to an arbitrary constant, the predicted
+energies would not be meaningful, and therefore this model is not used in this section.
+     Fig. 3A shows the MAE predicted atomization energy for the two models as a
+function of the number of molecules involved. The learning rates hardly differ, with
+the largest deviation between the two curves being 3% of the average MAE. While
+this seems surprising in light of the effect of including forces for the MD17 dataset
+discussed in the previous section, this result has a simple explanation. Since the
+gradient information only provides information about the underlying function up to
+an integration constant, the additional information is useless in providing information
+about the differences between the individual potential energy surface on which all
+the molecules are located. In this case, this information is provided solely by the
+atomization energies and, in the end, the dominant error in the learned atomization
+energies comes from learning energy differences between the different constitutions of
+atoms in each molecule, and not from more subtle changes in molecular conformation.
+The learning rates are displayed in Table 3, where the slopes and offsets for energy
+predictions are very close for the two different models. For energy predictions, the
+slopes of the learning curves are -0.44 and -0.45 for the models trained on only energies
+and the models simultaneously trained on energies and forces, respectively. For force
+prediction, however, the slopes differ somewhat, at -0.23 and -0.31, for the same two
+models, respectively, indicating that the model trained on both energies and forces
+might be better at very large training sets. We note, however, that the current training
+set is not large enough to confirm this, as this would require a force training set with
+at least 10,000 to 50,000 training molecules (See Fig. 3D), which, in turn, would render
+this experiment computationally intractable with a kernel matrix of up to around
+2,000,000 × 2,000,000 elements.
+     When the curves are viewed as a function of the total number of training labels (in
+On the role of gradients for machine learning of molecular energies and forces              14
+
+Fig. 3B), the energy-only model requires about 51 times fewer labels to reach the same
+accuracy as the model trained on both forces and energies. This indicates, that the
+additional force labels do not aid the model in predicting energies of unseen molecules.
+This is likely due to the fact that forces can only determine the potential surface up to
+an integration constant, which can only be learned using energy labels.
+     Next, in Fig. 3C, the MAE predicted force components are plotted for the two
+models as a function of the number of molecules in the training set. On average,
+including the forces in the training set reduces the predicted MAE force component by
+a factor of 3.5. Essentially, while the additional gradient information is not able to
+improve learning beyond the integration constant, it does help improve the prediction
+of the relative energy landscape of each potential energy surface, in turn leading to
+improved gradient predictions, but at the cost of much larger number of training labels.
+Fig. 3D displays the same MAE predicted force components as in Fig. 3C, but as a
+function of the total number of training labels. In this case, we observe that the two
+learning curves are very close-lying, similarly to what was found for the revised MD17
+dataset in the previous section. This suggests that for the training sizes investigated
+herein, one training energy label is worth roughly the same as one training force
+component label, although the differences in slopes indicate that the model trained on
+energies and forces might reach superior accuracy at much larger training sizes where
+the role of the integration constant is diminished.
+
+4. Methodology
+
+4.1. Hyperparameter Selection and Learning Curves
+All learning curves were generated using nested cross-validation as implemented in
+scikit-learn44 via the following recipe: First, the datasets were randomized. Secondly,
+the datasets were divided into 100 folds using random subsampling for Himmielblau’s
+function, while datasets consisting of molecules were randomly divided into 5 folds using
+the KFold class implemented in scikit-learn. Next, a grid-search with 4-fold cross-
+validation within the training set extracted from the fold was used to select the optimal
+choice of the hyperparameters σ (the kernel width) and λ (regularization strength),
+in order to avoid overfitting. In order to select hyperparameters that simultaneously
+work well for both force and energy prediction, the following score function was used
+to select these:15
+                               X            2 X 1
+                     L = 0.01        Ui − Ûi +          kFi − F̂i k2                (19)
+                                 i                 i
+                                                      ni
+
+Here, Ui is the energy of the i’th molecule, and Fi and ni are the force-vector and
+number of atoms in the same atom, respectively. In the cases where either force/function
+derivatives or energies/function values were not included in the training data, the first
+or the second term was left out, respectively.
+     For the grid searches for Himmelblau’s function, the kernel width was tested in the
+range σ ∈ {0.4, 0.8, 1.6, 3.2, 6.4, 12.8, 25.6}, and the regularization strength was tested in
+the range λ ∈ {10−13 , 10−12 , 10−11 , 10−10 , 10−9 , 10−8 }. For the molecular datasets (see
+next section), the grid-searches used values of σ ∈ {0.25, 0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0}
+for the kernel width, and λ ∈ {10−12 , 10−11 , 10−10 , 10−9 , 10−8 , 10−7 , 10−6 } for the
+regularization strength.
+On the role of gradients for machine learning of molecular energies and forces                                                         15
+
+                 (A)                                          (B)                                               (C)
+           200                                      0.0015
+                                                                                                       0.02
+           150
+# Counts                                  Density                                            Density
+                                                    0.0010
+           100                                                                                         0.01
+                                                    0.0005
+           50
+            0                                       0.0000                                             0.00
+                        10          20                           2000      1000        0                          200     0       200
+                       Molecule size                         Atomization energy [kcal/mol]                    Force Component [kcal/mol/Å]
+
+                              Figure 4. The distribution of various properties of the dataset of small organic
+                              molecules.36 (A) shows the distribution of molecular sizes, while (B) shows the a
+                              kernel density estimate (KDE) plot of the distribution of atomization energies of
+                              the molecules, and lastly (C) shows the KDE plot of the force components in the
+                              dataset.
+
+
+4.2. Software
+All machine learning models were implemented in Python using the QML machine
+learning package.45 The packages Matplotlib and Seaborn were used to plot all
+figures, and Scikit-Learn was used to obtain the linear fits to learning curves.44, 46, 47
+
+4.3. Datasets
+This subsection briefly presents the used datasets and their availability.
+
+4.3.1. Revised MD17 Dataset For each of the 10 molecules in the MD17 dataset20, 21
+(aspirin, benzene, ethanol, salicylic acid, malonaldehyde, toluene, naphthalene, uracil,
+paracetamol, and azobenzene), 100,000 structures were randomly selected from the
+available MD trajectory data. For each of these structures, a single-point force and
+energy evaluation was carried out at the DFT level. All calculations were performed in
+ORCA 4.0.1, using the PBE functional and the def2-SVP basis set with the resolution-
+of-identity (RI) approximation for the Coulomb integrals.48–50 In order to have a
+minimal unsystematic error, the keyword VeryTightSCF was used to reduce the error
+from SCF convergence, while the keywords Grid7 and NoFinalGrid were used to utilize
+the largest standard grid implemented in ORCA. This data has been uploaded to
+https://dx.doi.org/10.6084/m9.figshare.12672038 along with the indices used
+for the outer 5-fold cross-validation.
+
+4.3.2. Small organic molecules This dataset is taken from Ref. 36 and consists of
+non-equilibrium conformers of 1,595 small organic molecules with up to 7 atoms of the
+elements CNO saturated with hydrogen atoms. This data is available for download at
+https://dx.doi.org/10.6084/m9.figshare.7000280. For each of these structures
+generated via normal-mode sampling, the atomization energy and corresponding forces
+were provided at the ωB97xD/6-31G(d) level of theory.51 Fig. 4 shows plots of the
+distributions of molecular sizes, energies, and forces in the dataset.
+On the role of gradients for machine learning of molecular energies and forces          16
+
+5. Conclusion and Outlook
+
+In this paper we have presented numerical confirmation that the predictive error of
+machines trained on function derivatives follows a power law, a result that is well-known
+and to be expected for both neural networks as well as kernel models trained on scalar
+values. Our numerical results demonstrate this power-law behaviour for two popular
+and distinct types of molecular datasets, as well as for the Himmelblau’s function for
+which 6 orders of magnitude have been spanned.
+      For datasets that deal with a single surface, such as Himmelblaus’s function
+and the potential energy surfaces of 10 molecules in the MD17 dataset, we find that
+including force labels in the set of training labels—in addition to energy labels—leads
+to an improvement of the predictive error when the same number of training points
+are used. At the same time, however, we only find negligible differences between
+models trained on force labels only and models trained on both energy and force labels.
+Regarding the number of total training labels (rather than number of molecules in the
+MD17 dataset), we found that the predictive error of forces and energies was close
+to identical, regardless of whether the model was trained on energies only, trained on
+both energies and forces, or trained on forces only.
+      For the diverse dataset of distinct organic molecules, we find that the prediction
+error of energies does not improve upon addition of force labels to energy labels in
+the training set, in contrast to what was observed for Himmelblau’s function and the
+MD17 dataset. Conversely, the predictive error of atomic forces is greatly improved
+by including forces in the training set. The likely explanation is that geometrical
+derivative information only helps determine the surface up to an integration constant,
+corresponding to the atomization energy. This effect is more visible when viewing
+the learning rate as a function of the number of training labels. In this case, energies
+are learned with about 20× less training labels, training on energies only, compared
+to training on both forces and energies. At the same time, the predictive force error
+when training on either energies, or forces and energies simultaneously, seems to
+decay at comparable rates with the number of force labels in these two scenarios.
+In order to use derivative information to further improve this learning, it would be
+necessary to use alchemical derivatives, i.e. the derivatives of the energy with respect
+to the atomic charges38, 52 which form the basis of alchemical perturbation density
+functional theory53, 54 These derivatives describe the change in energy as one molecule is
+alchemically transformed to another molecule, and could allow for better interpolation
+between potential energy surfaces of different molecules in a training set.
+      We believe that our observations have implications for the generation of new
+molecular datasets. Here we point out that it is necessary to account for the cost of
+obtaining the training labels. With this in mind, it is beneficial for use cases of the
+MD17-type to include forces labels in the training set when the cost of acquisition
+is less than the cost of 3N single-point energy calculations on un-correlated samples,
+where N is the number of atoms in the molecule. This suggests that for DFT-based
+datasets, it seems very favorable to calculate and report gradients in addition to
+single-point energies, while for methods with more costly gradients (compared to the
+energy evaluation) this becomes less favorable.
+      For energy predictions throughout large datasets used to fit models for general
+chemistry, i.e. throughout chemical space, such as, for example, the family of ANI
+datasets,5, 25–27 it seems more valuable to build the most compact model using a
+compositionally diverse training set with only single-point energies, rather than “wasting”
+On the role of gradients for machine learning of molecular energies and forces                   17
+
+coefficients by training also on forces for more conformations of the same molecule. If
+the goal, however, consists of also modeling forces, such as is typically the case for
+relaxing geometries throughout chemical compound space, our results indicate that
+the addition of forces (if acquisition cost is lower than for energies) in the training set
+is always beneficial. This conclusion, however, also depends on the requirements for
+execution speed and the availability of training data: Models trained on force labels
+can be computationally substantially more expensive to train and execute compared
+to models on the same number of energy labels, since this often involves the derivative
+of, for example, a kernel matrix or a neural network. Consequently, in an application
+scenario where sufficient energy labels are available, it might be best to train on energy
+labels only, as this enables numerically less complex training models. Considering
+the prediction times for kernel-based models, it is also much more computationally
+expensive to evaluate kernel functions placed on derivatives compared to those placed
+on scalars. If the ultimate goal is to have very fast prediction times for kernel-based
+models, it seems worthwhile to consider the use of kernel-based force models which do
+not require the evaluation of second-order kernel derivatives.
+      All these observations summarize our insights into the design of future data-driven
+models and their underlying dataset generation. We believe that they are applicable
+to all branches of machine learning where the goal is to learn multidimensional,
+differentiable function surfaces.
+
+Acknowledgements
+
+This work was partly supported by the NCCR MARVEL, funded by the Swiss National
+Science Foundation. O.A.v.L. acknowledges funding from the Swiss National Science
+foundation (407540_167186 NFP 75 Big Data) and from the European Research
+Council (ERC-CoG grant QML). The authors thank Puck van Gerwen for helpful
+comments on the manuscript. We further acknowledge the use of the following software:
+NumPy and the F2PY tool,55 and OpenMP.56
+
+References
+ [1] Albert P. Bartók and Gábor Csányi. Gaussian approximation potentials: A brief tutorial
+        introduction. Int. J. Quantum Chem., 115(16):1051–1057, 2015.
+ [2] S. Lorenz, A. Gross, and M. Scheffler. Representing high-dimensional potential-energy surfaces
+        for reactions at surfaces by neural networks. Chem. Phys. Lett., 395:210, 2004.
+ [3] J. Behler and M. Parrinello. Generalized neural-network representation of high-dimensional
+        potential-energy surfaces. Phys. Rev. Lett., 98:146401, 2007.
+ [4] Jörg Behler. Perspective: Machine learning potentials for atomistic simulations. J. Chem. Phys.,
+        145(17):170901, 2016.
+ [5] Justin Steven Smith, Olexandr Isayev, and Adrian E Roitberg. ANI-1: An extensible neural
+        network potential with DFT accuracy at force field computational cost. Chem. Sci., 8(4):3192–
+        3203, 2017.
+ [6] V. Botu and R. Ramprasad. Learning scheme to predict atomic forces and accelerate materials
+        simulations. Phys. Rev. B, 92:094306, Sep 2015.
+ [7] Venkatesh Botu and Rampi Ramprasad. Adaptive machine learning framework to accelerate ab
+        initio molecular dynamics. Int. J. Quantum Chem., 115(16):1074–1083, 2015.
+ [8] V. Botu, R. Batra, J. Chapman, and R. Ramprasad. Machine learning force fields: Construction,
+        validation, and outlook. J. Phys. Chem. C, 121(1):511–522, December 2016.
+ [9] Tran Doan Huan, Rohit Batra, James Chapman, Sridevi Krishnan, Lihua Chen, and Rampi
+        Ramprasad. A universal strategy for the creation of machine learning-based atomistic force
+        fields. Npj Comput. Mater., 3(1), September 2017.
+On the role of gradients for machine learning of molecular energies and forces                      18
+
+[10] Zhenwei Li, James R. Kermode, and Alessandro De Vita. Molecular dynamics with on-the-fly
+        machine learning of quantum-mechanical forces. Phys. Rev. Lett., 114:096405, Mar 2015.
+[11] Konstantin Gubaev, Evgeny V Podryabinkin, and Alexander V Shapeev. Machine learning of
+        molecular properties: Locality and active learning. J. Chem. Phys., 148(24):241727, 2018.
+[12] A.P. Thompson, L.P. Swiler, C.R. Trott, S.M. Foiles, and G.J. Tucker. Spectral neighbor analysis
+        method for automated generation of quantum-accurate interatomic potentials. Journal of
+       Computational Physics, 285:316 – 330, 2015.
+[13] Aldo Glielmo, Peter Sollich, and Alessandro De Vita. Accurate interatomic force fields via
+        machine learning with covariant kernels. Phys. Rev. B, 95(21):214302, 2017.
+[14] Aldo Glielmo, Claudio Zeni, and Alessandro De Vita. Efficient nonparametric n-body force fields
+        from machine learning. Phys. Rev. B, 97:184307, May 2018.
+[15] Kristof T Schütt, Huziel E Sauceda, P-J Kindermans, Alexandre Tkatchenko, and K-R
+        Müller. SchNet–A deep learning architecture for molecules and materials. J. Chem. Phys.,
+       148(24):241722, 2018.
+[16] K. T. Schütt, P. Kessel, M. Gastegger, K. A. Nicoli, A. Tkatchenko, and K.-R. Müller. SchNetPack:
+       A Deep Learning Toolbox For Atomistic Systems. J. Chem. Theory Comput., 15(1):448–455,
+        2019.
+[17] Andrea Grisafi, David M Wilkins, Gábor Csányi, and Michele Ceriotti. Symmetry-adapted
+        machine learning for tensorial properties of atomistic systems. Phys. Rev. Lett., 120(3):036002,
+        2018.
+[18] Linfeng Zhang, Jiequn Han, Han Wang, Roberto Car, and Weinan E. Deep potential molecular
+        dynamics: A scalable model with the accuracy of quantum mechanics. Phys. Rev. Lett.,
+       120:143001, Apr 2018.
+[19] Oliver T. Unke and Markus Meuwly. PhysNet: A Neural Network for Predicting Energies, Forces,
+        Dipole Moments, and Partial Charges. J. Chem. Theory Comput., 15(6):3678–3693, 2019.
+[20] Stefan Chmiela, Alexandre Tkatchenko, Huziel E Sauceda, Igor Poltavsky, Kristof T Schütt, and
+        Klaus-Robert Müller. Machine learning of accurate energy-conserving molecular force fields.
+       Sci. Adv., 3(5):e1603015, 2017.
+[21] Stefan Chmiela, Huziel E Sauceda, Klaus-Robert Müller, and Alexandre Tkatchenko. Towards
+        exact molecular dynamics simulations with machine-learned force fields. Nat. Commun.,
+        9(1):3887, 2018.
+[22] Anders S. Christensen, Lars A. Bratholm, Felix A. Faber, and O. Anatole von Lilienfeld. Fchl
+        revisited: Faster and more accurate quantum machine learning. The Journal of Chemical
+       Physics, 152(4):044107, 2020.
+[23] Nicholas Lubbers, Justin S. Smith, and Kipton Barros. Hierarchical modeling of molecular
+        energies using a deep neural network. The Journal of Chemical Physics, 148(24):241715, 2018.
+[24] Kristof T Schütt, Farhad Arbabzadah, Stefan Chmiela, Klaus R Müller, and Alexandre
+       Tkatchenko. Quantum-chemical insights from deep tensor neural networks. Nat. Comm.,
+        8:13890, 2017.
+[25] Justin S Smith, Olexandr Isayev, and Adrian E Roitberg. ANI-1, A data set of 20 million
+        calculated off-equilibrium conformations for organic molecules. Sci. Data, 4:170193, 2017.
+[26] Justin S Smith, Ben Nebgen, Nicholas Lubbers, Olexandr Isayev, and Adrian E Roitberg. Less
+        is more: Sampling chemical space with active learning. The Journal of Chemical Physics,
+       148(24):241733, 2018.
+[27] The ani-1ccx and ani-1x data sets, coupled-cluster and density functional theory properties for
+        molecules.
+[28] Vladimir Vapnik. The nature of statistical learning theory. Springer science & business media,
+        2013.
+[29] O. Anatole von Lilienfeld. Quantum machine learning in chemical compound space. Angew.
+       Chem. Int. Ed., 57:4164, 2018.
+[30] Corinna Cortes, Lawrence D Jackel, Sara A Solla, Vladimir Vapnik, and John S Denker. Learning
+        curves: Asymptotic values and rate of convergence. In Advances in Neural Information
+       Processing Systems, pages 327–334. Morgan-Kaufsmann, 1994.
+[31] K. R. Müller, M. Finke, N. Murata, K. Schulten, and S. Amari. A numerical study on learning
+        curves in stochastic multilayer feedforward networks. Neural Comp., 8:1085, 1996.
+[32] David Mautner Himmelblau. Applied Nonlinear Programming. McGraw-Hill, jun 1972.
+[33] K. Hansen, G. Montavon, F. Biegler, S. Fazli, M. Rupp, M. Scheffler, O. Anatole von Lilienfeld,
+       A. Tkatchenko, and K.-R. Müller. Assessment and validation of machine learning methods for
+        predicting molecular atomization energies. J. Chem. Theory Comput., 9(8):3404–3419, 2013.
+[34] C. E. Rasmussen and C. K. I. Williams. Gaussian Processes for Machine Learning,
+        www.GaussianProcess.org. MIT Press, Cambridge, 2006. Editor: T. Dietterich.
+On the role of gradients for machine learning of molecular energies and forces                   19
+
+[35] Albert P. Bartók, Mike C. Payne, Risi Kondor, and Gábor Csányi. Gaussian approximation
+        potentials: The accuracy of quantum mechanics, without the electrons. Phys. Rev. Lett.,
+        104(13):136403, 2010.
+[36] Anders S. Christensen, Felix A. Faber, and O. Anatole von Lilienfeld. Operators in quantum
+        machine learning: Response properties in chemical space. J. Chem. Phys., 150(6):064105,
+        2019.
+[37] Sonja Mathias.       A Kernel-Based Learning Method for an efficient Approximation of
+        the high-dimensional Born-Oppenheimer Potential Energy Surface.             Master’s thesis,
+        Mathematisch-Naturwissenschaftliche Fakultät der Rheinischen Friedrich-Wilhelms-Universität
+        Bonn, Germany, 2015. http://wissrech.ins.uni-bonn.de/teaching/master/masterthesis_
+        mathias_revised.pdf; accessed February 2020.
+[38] O. A. von Lilienfeld. First principles view on chemical compound space: Gaining rigorous
+        atomistic control of molecular properties. Int. J. Quantum Chem., 113(12):1676–1689, 2013.
+[39] Katja Hansen, Franziska Biegler, Raghunathan Ramakrishnan, Wiktor Pronobis, O. Anatole von
+        Lilienfeld, Klaus-Robert Müller, and Alexandre Tkatchenko. Machine learning predictions of
+        molecular properties: Accurate many-body potentials and nonlocality in chemical space. The
+        Journal of Physical Chemistry Letters, 6(12):2326–2331, 2015.
+[40] Felix A Faber, Anders S Christensen, Bing Huang, and O Anatole von Lilienfeld. Alchemical
+        and structural distribution based representation for universal quantum machine learning. J.
+        Chem. Phys., 148(24):241717, 2018.
+[41] Felix A. Faber, Anders S. Christensen, Bing Huang, and O. Anatole von Lilienfeld. Alchemical
+        and structural distribution based representation for universal quantum machine learning. J.
+        Chem. Phys., 148(24):241717, 2018.
+[42] James Barker, Johannes Bulin, Jan Hamaekers, and Sonja Mathias. Localized coulomb descriptors
+        for the gaussian approximation potential, 2016.
+[43] Sergey N. Pozdnyakov, Michael J. Willatt, Albert P. Bartók, Christoph Ortner, Gábor Csányi,
+        and Michele Ceriotti. On the completeness of atomic structure representations, 2020.
+[44] F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel,
+        P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher,
+        M. Perrot, and E. Duchesnay. Scikit-learn: Machine learning in Python. J. Mach. Learn.
+        Res., 12:2825–2830, 2011.
+[45] A. S. Christensen, F. A. Faber, B. Huang, L. A. Bratholm, A. Tkatchenko, K.-R. Müller,
+        and O. A. von Lilienfeld. Qml: A python toolkit for quantum machine learning,
+        https://github.com/qmlcode/qml, 2017.
+[46] J. D. Hunter. Matplotlib: A 2d graphics environment. Computing in Science & Engineering,
+        9(3):90–95, 2007.
+[47] Michael Waskom, Olga Botvinnik, Drew O’Kane, Paul Hobson, Saulius Lukauskas, David C
+        Gemperline, Tom Augspurger, Yaroslav Halchenko, John B. Cole, Jordi Warmenhoven, Julian
+        de Ruiter, Cameron Pye, Stephan Hoyer, Jake Vanderplas, Santi Villalba, Gero Kunter, Eric
+        Quintero, Pete Bachant, Marcel Martin, Kyle Meyer, Alistair Miles, Yoav Ram, Tal Yarkoni,
+        Mike Lee Williams, Constantine Evans, Clark Fitzgerald, Brian, Chris Fonnesbeck, Antony
+        Lee, and Adel Qalieh. mwaskom/seaborn: v0.8.1 (september 2017), September 2017.
+[48] Neese Frank. Software update: the orca program system, version 4.0. Wiley. Interdiscip. Rev.
+        Comput. Mol. Sci., 8(1):e1327, 2017.
+[49] J. P. Perdew, K. Burke, and M. Ernzerhof. Generalized gradient approximation made simple.
+        Phys. Rev. Lett., 77:3865, 1996.
+[50] Florian Weigend and Reinhart Ahlrichs. Balanced basis sets of split valence, triple zeta valence
+        and quadruple zeta valence quality for h to rn: Design and assessment of accuracy. Physical
+        Chemistry Chemical Physics, 7(18):3297, 2005.
+[51] Jeng-Da Chai and Martin Head-Gordon. Long-range corrected hybrid density functionals with
+        damped atom–atom dispersion corrections. Physical Chemistry Chemical Physics, 10(44):6615,
+        2008.
+[52] O. A. von Lilienfeld, R. Lins, and U. Rothlisberger. Variational particle number approach for
+        rational compound design. Phys. Rev. Lett., 95:153002, 2005.
+[53] Guido Falk von Rudorff and O. Anatole von Lilienfeld. Alchemical perturbation density functional
+        theory. Phys. Rev. Research, 2:023220, May 2020.
+[54] Guido Falk von Rudorff and O. Anatole von Lilienfeld. Rapid and accurate molecular
+        deprotonation energies from quantum alchemy. Phys. Chem. Chem. Phys., 22:10519–10525,
+        2020.
+[55] Travis Oliphant. NumPy: A guide to NumPy. USA: Trelgol Publishing, 2006–. [Online; accessed
+        July 2019].
+On the role of gradients for machine learning of molecular energies and forces           20
+
+[56] OpenMP Architecture Review Board. OpenMP application program interface version 3.0, May
+       2008.
+On the role of gradients for machine learning of molecular energies and forces   21
+
+Supplementary Material
+  On the role of gradients for machine learning of molecular energies and forces                                                               22
+
+                                (A) Loss, Eq. 4                                         (B) Loss, Eq. 13                    (C) Loss, Eq. 8
+                      106
+                                  u(x, y) only                                 106                                106
+                                   u(x, y) only
+                      104         u(x, y) and u(x, y)                          104                                104
+
+
+
+MAE function value                                      Loss function value
+                      102                                                      102                                102
+                      100                                                      100                                100
+                     10 2                                                     10 2                               10 2
+                     10 4                                                     10 4                               10 4
+
+                            25 50 100 200 400 8001600                                25 50 100 200 400 8001600          25 50 100 200 400 8001600
+                                      #N                                                       #N
+
+                                       Figure S1. Learning curves for test data on three loss functions in Eq. 4 (function
+                                       values only), Eq. 13 (function gradients only), and Eq. 8 (function values and
+                                       gradients). Learning curves are given for three types of machines, trained on
+                                       only function (green), function gradients only (red), and both function values and
+                                       gradients simultaneously (blue).
+On the role of gradients for machine learning of molecular energies and forces                  23
+
+                  Table S1. MAE errors for force and energy for the 10 molecules of the revised
+                  MD17 dataset. Three machines are trained for each moleucle, differening only in
+                  the training data. "E+F" denotes machines trained on both energy and force data,
+                  "F only" denotes training on only force data, while "E only" denotes training on
+                  only energy data. Energy and force errors are given in units of kcal/mol, and
+                  kcal/mol/Å, respectively.
+ Molecule         Data     Property       50      100     150     200     400     600     800     1000
+ Aspirin          E+F      Energy      0.754    0.483   0.388   0.349   0.243   0.183   0.157    0.144
+                  F only   Energy      1.044    0.588   0.428   0.381   0.264   0.193   0.165    0.151
+                  E only   Energy      5.291    3.893   2.882   2.397   1.517   1.114   0.957    0.847
+                  E+F      Force       1.818    1.286   1.081   0.964   0.732   0.600   0.528    0.481
+                  F only   Force       1.824    1.288   1.082   0.965   0.738   0.604   0.528    0.482
+                  E only   Force      18.494   13.038   9.975   8.375   5.201   4.009   3.386    3.042
+ Azobenzene       E+F      Energy      0.295    0.196   0.168   0.153   0.109   0.084   0.076    0.064
+                  F only   Energy      0.302    0.200   0.169   0.155   0.110   0.085   0.076    0.064
+                  E only   Energy      2.775    1.580   1.088   1.009   0.601   0.476   0.409    0.368
+                  E+F      Force       0.844    0.642   0.551   0.497   0.379   0.316   0.280    0.248
+                  F only   Force       0.844    0.643   0.552   0.497   0.379   0.317   0.280    0.248
+                  E only   Force       9.476    5.381   3.578   3.235   2.112   1.743   1.518    1.369
+ Benzene          E+F      Energy      0.015    0.012   0.011   0.010   0.009   0.008   0.008    0.008
+                  F only   Energy      0.015    0.012   0.011   0.010   0.009   0.008   0.008    0.007
+                  E only   Energy      0.139    0.067   0.050   0.039   0.025   0.019   0.017    0.016
+                  E+F      Force       0.125    0.096   0.086   0.081   0.072   0.067   0.063    0.060
+                  F only   Force       0.125    0.096   0.086   0.081   0.072   0.067   0.063    0.060
+                  E only   Force       1.209    0.592   0.463   0.364   0.243   0.190   0.168    0.153
+ Ethanol          E+F      Energy      0.232    0.137   0.098   0.083   0.043   0.032   0.023    0.021
+                  F only   Energy      0.248    0.142   0.101   0.084   0.043   0.032   0.024    0.021
+                  E only   Energy      1.705    0.981   0.687   0.558   0.342   0.253   0.209    0.179
+                  E+F      Force       1.072    0.701   0.533   0.452   0.271   0.207   0.163    0.144
+                  F only   Force       1.088    0.703   0.534   0.452   0.272   0.207   0.166    0.144
+                  E only   Force       7.547    4.855   3.346   2.815   1.875   1.420   1.211    1.049
+ Malonaldehyde    E+F      Energy      0.312    0.191   0.136   0.115   0.070   0.053   0.042    0.035
+                  F only   Energy      0.337    0.213   0.146   0.122   0.072   0.054   0.043    0.035
+                  E only   Energy      2.290    1.443   0.954   0.752   0.460   0.341   0.281    0.245
+                  E+F      Force       1.469    0.966   0.745   0.629   0.422   0.330   0.274    0.237
+                  F only   Force       1.480    0.961   0.753   0.631   0.423   0.330   0.276    0.235
+                  E only   Force      11.690    6.481   4.851   3.856   2.488   1.936   1.629    1.447
+ Naphthalene      E+F      Energy      0.127    0.089   0.075   0.065   0.045   0.036   0.031    0.028
+                  F only   Energy      0.126    0.089   0.075   0.065   0.044   0.036   0.031    0.028
+                  E only   Energy      1.051    0.645   0.486   0.431   0.302   0.239   0.190    0.171
+                  E+F      Force       0.583    0.431   0.365   0.319   0.231   0.191   0.167    0.150
+                  F only   Force       0.583    0.431   0.366   0.319   0.231   0.191   0.168    0.152
+                  E only   Force       4.474    2.753   2.182   1.928   1.451   1.163   0.960    0.859
+ Paracetamol      E+F      Energy      0.391    0.244   0.197   0.172   0.113   0.091   0.079    0.067
+                  F only   Energy      0.401    0.248   0.200   0.175   0.115   0.092   0.080    0.068
+                  E only   Energy      4.620    3.027   2.059   1.654   0.984   0.673   0.549    0.470
+                  E+F      Force       1.181    0.827   0.694   0.617   0.442   0.365   0.321    0.282
+                  F only   Force       1.183    0.828   0.694   0.618   0.444   0.365   0.323    0.283
+                  E only   Force      16.417   10.726   7.768   6.123   3.709   2.687   2.228    1.922
+ Salicylic Acid   E+F      Energy      0.255    0.161   0.120   0.105   0.071   0.056   0.048    0.041
+                  F only   Energy      0.255    0.161   0.120   0.105   0.071   0.056   0.048    0.041
+                  E only   Energy      2.941    1.696   1.201   0.906   0.545   0.419   0.353    0.297
+                  E+F      Force       1.088    0.737   0.585   0.505   0.355   0.286   0.248    0.220
+                  F only   Force       1.089    0.738   0.585   0.505   0.355   0.287   0.248    0.220
+                  E only   Force      13.422    7.040   5.130   3.864   2.533   1.962   1.684    1.469
+ Toluene          E+F      Energy      0.169    0.115   0.097   0.084   0.060   0.049   0.044    0.039
+                  F only   Energy      0.169    0.117   0.097   0.084   0.060   0.049   0.043    0.038
+                  E only   Energy      1.401    0.868   0.642   0.532   0.344   0.272   0.232    0.201
+                  E+F      Force       0.754    0.545   0.457   0.404   0.303   0.251   0.225    0.204
+                  F only   Force       0.755    0.545   0.457   0.405   0.303   0.251   0.225    0.204
+                  E only   Force       5.997    3.731   2.965   2.591   1.691   1.395   1.212    1.043
+ Uracil           E+F      Energy      0.147    0.087   0.066   0.053   0.029   0.020   0.016    0.013
+                  F only   Energy      0.146    0.088   0.066   0.053   0.029   0.020   0.016    0.013
+                  E only   Energy      2.347    1.185   0.810   0.595   0.349   0.243   0.192    0.156
+                  E+F      Force       0.812    0.534   0.408   0.329   0.192   0.142   0.115    0.097
+                  F only   Force       0.809    0.535   0.410   0.329   0.192   0.142   0.115    0.097
+                  E only   Force      12.789    6.261   4.311   3.335   2.026   1.458   1.209    1.030
+On the role of gradients for machine learning of molecular energies and forces                                                                    24
+
+                                        Aspirin                Benzene                Ethanol           Salicylic Acid       Malonaldehyde
+
+
+
+
+  MAE force [kcal/mol/Å]
+                           10.0
+
+                            1.0         Energy Only
+                                        Force Only
+                                        Force & Energy
+                            0.1         Force & Energy
+                                        (Original Data)
+
+
+                                       Toluene               Naphthalene               Uracil            Paracetamol           Azobenzene
+
+
+
+
+  MAE force [kcal/mol/Å]
+                           10.0
+
+                            1.0
+
+                            0.1
+
+                                  100 1000 10000          100 1000 10000        100 1000 10000        100 1000 10000        100 1000 10000
+                                    # Training Labels       # Training Labels     # Training Labels     # Training Labels     # Training Labels
+                                        Aspirin                Benzene                Ethanol           Salicylic Acid       Malonaldehyde
+
+
+
+
+MAE energy [kcal/mol]
+                            1.0
+
+                            0.1         Energy Only
+                                        Force Only
+                                        Force & Energy
+                           0.01         Force & Energy
+                                        (Original Data)
+
+
+                                        Toluene              Naphthalene               Uracil            Paracetamol           Azobenzene
+
+
+
+
+MAE energy [kcal/mol]
+                            1.0
+
+                            0.1
+
+                           0.01
+
+                                  100 1000 10000          100 1000 10000        100 1000 10000        100 1000 10000        100 1000 10000
+                                    # Training Labels       # Training Labels     # Training Labels     # Training Labels     # Training Labels
+
+
+                                                  Figure S2. Force and energy learning curves for the revised MD17 dataset
+                                                  using various types of training data. In addition, learning curves for a machine
+                                                  trained on the original and somewhat noisier DFT data20 is presented, marked as
+                                                  "Original Data".
+

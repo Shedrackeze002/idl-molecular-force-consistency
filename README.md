@@ -1,29 +1,15 @@
-# Consistent learned forces and molecular shape recovery
+# Landscape17 molecular force consistency
 
-This repository is the working home for a **semester-long research project** in 11-785 Introduction to Deep Learning (Fall 2026). The proposal is its first milestone. The goal is to complete a rigorous empirical study and develop the findings into a publishable paper.
+Group 9 investigates whether consistency between energy-derived and direct forces improves stable-shape recovery on unseen transition-state connections. The planned study controls architecture, force accuracy and computational cost. The main comparison remains unexecuted.
 
-## Research question
+The proposal is submitted. We have built the data pipeline, an energy-derived E3x baseline, checkpoint and physical checks, and a sequence of bounded aspirin fitting diagnostics. None of the real-label diagnostics has passed the predeclared joint learning gate. The full pilot, direct-force/consistency arms, shape-recovery evaluation and MACE reference remain pending.
 
-Neural networks can estimate the forces that move a molecule's atoms. Directly predicted forces may be efficient, but they can disagree with the model's predicted energy. This project asks whether training those forces to agree more closely with energy helps a molecule reach the reference stable shape when the route to that shape was not seen during training.
+Start with [the team handoff](docs/team/PROJECT_HANDOFF.md), [team workflow](TEAM.md), [baseline commands](docs/run-baseline.md) and [the experiment index](reports/PAPER_EVIDENCE_LOG.md). The [contribution ledger](docs/team/CONTRIBUTIONS.md) records each member's future authored work and verification.
 
-The planned study uses one electronic-structure reference from [Landscape17](https://doi.org/10.6084/m9.figshare.29949230.v1). Both descent branches of each held-out transition-state connection will stay in one evaluation group. An energy-derived model, an ordinary direct-force model, and a consistency-trained direct-force model will share a controlled equivariant architecture; a same-split MACE model provides an established comparison. Evaluation will consider force error, recovery of verified reference shapes, physical consistency, training cost, and inference speed. Aspirin is the primary molecule, with separately trained paracetamol models as a second check.
+Aspirin preparation is frozen at 4,891 training, 974 primary validation and 1,127 test records across 26/5/6 whole connections. All 11 reference minima are training-seen. Paracetamol preparation remains blocked by the unmatched `01_2/plus` endpoint. Test data are excluded from fitting and selection.
 
-## Project roadmap
+The latest offset-profile trial completed 6,000 updates. Fitting force MSE improved 3.1563519827% relative to the historical width 32 endpoint, but all four energy/force baseline fractions remained above the strict 0.1 gate. Anchor centered energy variance worsened 24.41971159078873%. Anchors are fitted structures, so this is diagnostic evidence, with no held-out performance claim. See [the paper findings](reports/offset-profile-paper-findings.md).
 
-1. **Foundation and proposal:** review the literature, define the claim boundary, inspect the data, and submit the course proposal. This is the current stage.
-2. **Data and baseline:** audit Landscape17, freeze whole-connection train/validation/test splits and exact reference-branch relaxation starts, and verify an energy-derived baseline.
-3. **Model comparisons:** train the direct-force and consistency-trained variants under matched protocols, then add the same-split MACE reference.
-4. **Evaluation and analysis:** run paired relaxations, physical-consistency checks, accuracy and compute comparisons, uncertainty analysis, and paracetamol replication.
-5. **Reporting and paper:** prepare the midterm and final course reports, release reproducible code and results, and develop a manuscript from the completed evidence.
+The next proposed lever is [force-gradient isolation](docs/research/plans/2026-10-03-force-isolation.md). Its implementation and execution remain pending. Read [the literature map](reports/literature/2026-09-30/READING_MAP.md), [proposal source](proposal.tex) and [claim audit](CLAIM_AUDIT.md) for scope and attribution. The proposal files describe submission-time scope; dated experiment reports give current research status.
 
-The plan may be refined as pilot measurements and mentor feedback reveal what is feasible. No model has been trained yet; the repository contains no experimental results.
-
-## Repository contents
-
-- [Current proposal PDF](proposal.pdf) and [LaTeX source](proposal.tex)
-- [Research field guide PDF](Research_Field_Guide.pdf) and [editable guide](FIELD_GUIDE.md)
-- [Claim-by-claim evidence audit](CLAIM_AUDIT.md)
-- [Landscape17 raw pathway sample](data/landscape17_sample/README.md), with source attribution and checksums
-- `neurips_2019.sty`, the course-provided style used to compile the proposal
-
-Training code, frozen split manifests, configuration files, evaluation scripts, and measured results will be added as those stages begin. The small committed data sample is for exploration; the [full Landscape17 archive](https://ndownloader.figshare.com/files/57341180) is needed for the proposed experiments.
+This package contains source, tests, frozen configurations, scientific reports and selected figures. Machine-local report paths are normalized in documented research exports. Complete historical run and launch packages are retained separately, and frozen source guards are unchanged. Read [the reproduction boundary](docs/REPRODUCTION.md) and [Git LFS setup](docs/team/LFS_SETUP.md) before attempting historical reproduction. GPU execution on CMU, Colab or Kaggle remains unverified.

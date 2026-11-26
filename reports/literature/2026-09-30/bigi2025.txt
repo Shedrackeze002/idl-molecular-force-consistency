@@ -1,0 +1,1780 @@
+                   The dark side of the forces: assessing non-conservative
+                        force models for atomistic machine learning
+
+
+                                  Filippo Bigi 1 Marcel F. Langer 1 Michele Ceriotti 1
+
+
+                        Abstract                                   1. Introduction
+                                                                   Interatomic potentials model the microscopic interactions
+     The use of machine learning to estimate the en-               between atoms, and determine – directly or by modulating
+     ergy of a group of atoms, and the forces that drive           the response to thermal excitations – the stability and reac-
+     them to more stable configurations, has revolu-               tivity of molecules and materials. Over many decades, inter-
+     tionized the fields of computational chemistry and            atomic potentials have been used in Monte Carlo (Metropo-
+     materials discovery. In this domain, rigorous en-             lis et al., 1953) and molecular dynamics (MD) (Andersen,
+     forcement of symmetry and conservation laws has               1980) simulations, geometry optimization, and other tech-
+     traditionally been considered essential. For this             niques, allowing a mechanistic study of the atomic-scale
+     reason, interatomic forces are usually computed               behavior and properties of molecules, materials, and biolog-
+     as the derivatives of the potential energy, ensur-            ical systems (Allen & Tildesley, 2017; Tuckerman, 2008).
+     ing energy conservation. Several recent works                 While traditional interatomic potentials are based on simple
+     have questioned this physically constrained ap-               physically inspired functional forms, the last decade has
+     proach, suggesting that directly predicting the               seen machine-learned interatomic potentials (MLIPs) ob-
+     forces yields a better trade-off between accuracy             tain remarkable accuracies at a high level of computational
+     and computational efficiency, and that energy con-            efficiency, most often by learning reference energies and
+     servation can be learned during training. This                forces from much slower first-principle quantum mechanical
+     work investigates the applicability of such non-              calculations (Behler, 2021; Unke et al., 2021).
+     conservative models in microscopic simulations.
+                                                                   At first, such machine-learned interatomic potentials were
+     We identify and demonstrate several fundamen-
+                                                                   trained on quantum mechanical data specific to the chem-
+     tal issues, from ill-defined convergence of geom-
+                                                                   ical system of interest. Over the last years, more diverse
+     etry optimization to instability in various types
+                                                                   datasets have emerged, consisting of up to billions of tar-
+     of molecular dynamics. Given the difficulty in
+                                                                   gets, and spanning much of the periodic table (Chanussot
+     monitoring and correcting the lack of energy con-
+                                                                   et al., 2021; Tran et al., 2023; Barroso-Luque et al., 2024;
+     servation, direct forces should be used with great
+                                                                   Schmidt et al., 2024). This has not only led to an increase
+     care. We show that the best approach to exploit
+                                                                   in the complexity of the models, going from linear or kernel
+     the acceleration they afford is to use them in con-
+                                                                   regression to deep graph neural networks, but it has also
+     junction with conservative forces. A model can
+                                                                   pushed many recent models to abandon some of the under-
+     be pre-trained efficiently on direct forces, then
+                                                                   lying physical symmetries of interatomic potentials in favor
+     fine-tuned using backpropagation. At evaluation
+                                                                   of simpler – and potentially more scalable and efficient –
+     time, both force types can be used together to
+                                                                   architectures (Pozdnyakov & Ceriotti, 2023; Neumann et al.,
+     avoid unphysical effects while still benefitting al-
+                                                                   2024; Qu & Krishnapriyan, 2024). In such models, symme-
+     most entirely from the computational efficiency
+                                                                   tries are learned from data, aided by data augmentation.
+     of direct forces.
+                                                                   Some recent models for interatomic potentials also disregard
+                                                                   the property of energy conservation (Gasteiger et al., 2021;
+    1
+      Laboratory of Computational Science and Modeling,            Neumann et al., 2024; Liao et al., 2023). While conservative
+IMX, École Polytechnique Fédérale de Lausanne, 1015 Lau-        models calculate interatomic forces as the derivatives of
+sanne, Switzerland. Correspondence to: Michele Ceriotti            a total energy with respect to the positions of the atoms,
+<michele.ceriotti@epfl.ch>.                                        non-conservative models predict them directly, therefore
+                                                                   breaking this constraint. Although this practice can lead to
+Proceedings of the 42 nd International Conference on Machine
+Learning, Vancouver, Canada. PMLR 267, 2025. Copyright 2025        more computationally efficient neural networks, the use of
+by the author(s).                                                  such models in practical atomistic simulations has not yet
+
+                                                               1
+                                                    The dark side of the forces
+
+been studied in detail.                                                emerged, with various goals (sampling different thermody-
+                                                                       namic ensembles (Andersen, 1980), improving sampling
+This work compares conservative and non-conservative
+                                                                       efficiency, observing rare events (Laio & Parrinello, 2002),
+machine-learned interatomic potentials. Following a brief
+                                                                       or accounting for nuclear quantum effects (Chandler &
+review of the most common types of potentials and their
+                                                                       Wolynes, 1981), etc.). In this work, we focus on some
+applications, we discuss the theoretical implications of us-
+                                                                       of the simplest variants:
+ing non-conservative forces to drive atomistic simulations,
+highlighting potential shortcomings. We then demonstrate               MD in the NVE ensemble. The number of atoms N , volume
+the impact of these conceptual problems in several case stud-          V and total energy E (kinetic plus potential) are kept con-
+ies, highlighting the pitfalls of using non-conservative inter-        stant, describing the behavior of an isolated system. Usually,
+atomic forces in production, and demonstrating how, con-               this is accomplished by using the velocity Verlet integra-
+trary to the case of geometric symmetry breaking, it is diffi-         tor (Verlet, 1967) with a short time step ∆t.
+cult to monitor and correct the impact of non-conservative
+                                                                       MD in the NVT ensemble. Here, the goal is to simulate
+models. Instead, it might be preferable to supplement a con-
+                                                                       a system at constant temperature T . This is achieved by
+servative model with direct force predictions, using them
+                                                                       modifying the dynamics with so-called thermostats. Local
+to accelerate simulations that have well-defined, energy-
+                                                                       thermostats apply velocity corrections on each atom inde-
+conserving forces as the ground truth.
+                                                                       pendently (Bussi & Parrinello, 2007). While they correctly
+                                                                       sample the desired constant-temperature ensemble and can
+2. Background and related work                                         be used to evaluate static, equilibrium properties, this comes
+                                                                       at the cost of disrupting the dynamics of the system. Global
+2.1. Interatomic potentials and atomistic simulations
+                                                                       thermostats (Bussi et al., 2007) address this shortcoming
+An interatomic potential V describes the potential energy              by modifying the atomic velocities in a concerted manner,
+between the N atoms of a molecule or material as a function            making it possible to investigate time-dependent proper-
+of their positions {ri }N                            N
+                        i=1 and chemical nature {ai }i=1 :             ties (Bussi & Parrinello, 2008).
+
+                       V ({ri , ai }N                                  Many other applications of interatomic potentials (such as
+                                    i=1 ) .                 (1)
+                                                                       lattice dynamics, phonon calculations, etc.) require the cal-
+While some applications, such as Monte Carlo simulations               culation of forces and their higher-order derivatives. How-
+or energy difference calculations (for transition state or de-         ever, for simplicity, this work focuses on the most common
+fect energies, material stability, etc.) need only the values of       use cases, discussed above.
+V , the most popular uses of interatomic potentials require
+the evaluation of interatomic forces, defined as the negative          2.2. Physical symmetries
+derivatives of V with respect to the atomic positions:
+                                                                       Interatomic potentials obey a number of physical symme-
+               fj = −∂V ({ri , ai }N
+                                                                      tries and constraints.
+                                     i=1 ) ∂rj .             (2)
+
+The most notable applications which make use of inter-                 E(3)-invariance. Interatomic potentials are invariant un-
+atomic forces are:                                                     der the transformations of the Euclidean group in three
+                                                                       dimensions E(3), including translations, rotations, and re-
+Geometry optimization. This technique consists of find-                flections. Mathematically, given a group element g ∈ E(3)
+ing one or more minima of the potential energy surface V               that acts on all positions r,
+to identify the preferred structure of a microscopic system.
+Both local and global optimization algorithms are employed,                        V ({g · ri , ai }N                    N
+                                                                                                    i=1 ) = V ({ri , ai }i=1 ) .                 (3)
+and the vast majority use the forces fj both during optimiza-
+tion and as a stopping criterion. Similar methods are used             Permutation invariance. Interatomic potentials are in-
+to identify saddle points of V , which are associated with             variant with respect to permutations of atom indices, i.e.,
+the energy barriers that determine the rate of chemical reac-
+tions (Henkelman et al., 2000).                                          V (.., ri , ai , .., rj , aj , ..) = V (.., rj , aj , .., ri , ai , ..). (4)
+
+Molecular dynamics. MD aims at simulating the behav-
+                                                                       Energy conservation. Interatomic forces are conservative,
+ior of a microscopic system by solving its classical equations
+                                                                       i.e., their mechanical work W over a closed loop is zero:
+of motion numerically. Using a time step ∆t, the simplest
+forms of molecular dynamics propagate a discretized ver-                                           ˛ X
+                                                                                                     N
+sion of Hamilton’s equations (Verlet, 1967). Over more                                     W =               fj · drj = 0 .                      (5)
+than 50 years, many variants of molecular dynamics have                                                j=1
+
+
+                                                                   2
+                                                    The dark side of the forces
+
+This is a direct consequence of (2). The term conserva-                with the same asymptotic computational cost as the en-
+tive alludes to the fact that an isolated physical system in           ergy prediction) with automatic differentiation (Griewank
+which only conservative forces act obeys the principle of              & Walther, 2008). Nevertheless, differentiation incurs a
+conservation of mechanical energy.                                     computational overhead, typically 2−3× for inference and
+                                                                       3× for training; the exact theoretical factors are discussed
+2.3. Interatomic potentials via graph neural networks                  further in Appendix B. This overhead can be avoided by
+                                                                       directly predicting forces during the forward pass. How-
+For many years, most machine learning interatomic poten-               ever, by removing the relationship between forces and en-
+tials made use of feature-based models (Behler & Parrinello,           ergy defined in Eq. (2), such models do not enforce energy
+2007; Bartók et al., 2010) trained on energies and forces             conservation. The possibility of performing a direct, non-
+from quantum mechanical calculations. This combination                 conservative, evaluation of the forces was realized early (Li
+of physically inspired descriptors (Musil et al., 2021; Langer         et al., 2015), but used only sparsely until recently, when it
+et al., 2022) and classical machine learning methods (linear           was applied to equivariant graph neural networks such as
+and kernel models, as well as shallow neural networks) de-             GemNet (Gasteiger et al., 2021) and several more recent
+livers good accuracy and computational efficiency on small             universal machine learning interatomic potentials including
+datasets, usually created for a specific application in chem-          ORB (Neumann et al., 2024) and Equiformer (Liao et al.,
+istry and/or materials science.                                        2023), which are trained on large datasets and promise broad
+However, recent efforts to build much larger and more com-             applicability for chemical modeling. Some of these architec-
+prehensive datasets (Deng et al., 2023; Schmidt et al., 2024;          tures also perform direct evaluation of stresses, which leads
+Eastman et al., 2023; Tran et al., 2023; Chanussot et al.,             to the violation of conservation of enthalpy (see App. G.3).
+2021), have made it apparent that graph neural networks                The impact of lack of energy conservation for practical
+exhibit superior accuracy and scalability compared to earlier          simulations and property prediction has recently been in-
+models (Batzner et al., 2022), as they respect the permu-              vestigated in related works: Eissler et al. (2025) probe the
+tation symmetry of interatomic potentials while delivering             limits of unconstrained architectures and find that lack of
+rich and flexible representations of the atomic structures.            energy conservation becomes more pronounced for larger
+For a review of graph neural networks, we redirect the inter-          target systems. Loew et al. (2024) find that direct-force mod-
+ested reader to Zhou et al. (2020), while their applications           els perform poorly at the prediction of phonon properties,
+to interatomic potentials is detailed in Duval et al. (2023).          which require second derivatives of the potential energy sur-
+                                                                       face. Fu et al. (2025) observe a better correlation between
+2.4. Breaking physical constraints                                     test set error and downstream predictive performance, for
+Several recent architectures do not enforce all physical con-          instance for phonons, for models that can perform stable
+straints listed in 2.2, aiming to increase expressivity, ability       MD simulations, i.e., that are able to conserve energy.
+to scale to large datasets, and computational efficiency. Effi-
+cient inference is crucial to enable the length and time scales        2.5. Use of forces for training
+required for practical molecular dynamics simulations, as              Machine learning models of V are typically trained jointly
+forces must be evaluated at every time step.                           on energy and force labels. The relative weight of these
+                                                                       labels in training, or in the extreme case, whether to train
+Rotationally unconstrained models. In the case of rota-                exclusively on energy or on forces, has been discussed exten-
+tional symmetry this approach, combined with training-time             sively, both for interatomic potentials and diffusion models
+rotational augmentation, has been shown to yield accurate              for atomistic systems (Chmiela et al., 2018; Christensen &
+and efficient models (Pozdnyakov & Ceriotti, 2023; Neu-                von Lilienfeld, 2020; Wang et al., 2024; Ren et al., 2024).
+mann et al., 2024; Qu & Krishnapriyan, 2024) with neg-
+                                                                       One important consideration is that focusing on energies or
+ligible, or easily controllable, impact on physical observ-
+                                                                       forces emphasizes different components of a potential en-
+ables (Langer et al., 2024).
+                                                                       ergy surface, with consequences that are not directly visible
+                                                                       when inspecting training and validation accuracies. To a
+Non-conservative models. The conservative property for                 first approximation, the distortions observed in NVT MD
+forces in Eq. (5) is satisfied if and only if there exists a           simulations – a common strategy to build training sets – can
+function (usually named the potential energy) of which the             be interpreted as a collection of quasi-harmonic oscillators
+forces are the spatial derivatives, see Eq. (2). Therefore, a          of different frequency ω, with high-frequency modes associ-
+machine learning model that calculates interatomic forces              ated with short-range covalent bonding, and low-frequency
+as derivatives of the potential energy according to Eq. (2)            ones associated with collective motions, which are often the
+will be trivially conservative. The required derivatives, the          most relevant for applications. The statistical mechanics of
+gradient of the scalar V , can be obtained efficiently (i.e.,
+
+                                                                   3
+                                                     The dark side of the forces
+
+a harmonic oscillator imply that ⟨V ⟩ ∝ 1, while ⟨f 2 ⟩ ∝ ω 2           no conservative component. λ can also be computed only
+(see Appendix A). In other terms, the largest contributions to          for entries associated with an atom i, or a pair of atoms
+the forces from a thermally sampled dataset come from high-             ij, providing a finer-grained assessment of the violation of
+frequency modes that are hard to integrate and may lead to              Eq. 6, as seen in Figure 1.
+instabilities in the dynamics, while the contribution from
+                                                                        This local symmetry breaking can also be measured by inte-
+the slow modes, which are hard to sample, but usually the
+                                                                        grating the work done by the forces over a closed loop, that
+most relevant, are under-emphasized. The potential energy
+                                                                        is bound to be zero (within integration error) for a conserva-
+provides a more balanced representation of the different
+                                                                        tive force field (Eq. 5). An explicit test of non-conservative
+molecular time and length scales.
+                                                                        behavior can also be implemented by monitoring the total
+The question of relative energy and force weights during                energy in an NVE MD simulation, or equivalently a con-
+training is related to, but distinct from, the question of learn-       served quantity that keeps track of the heat flux associated
+ing energy and forces consistently, i.e., enforcing that the            with the thermostat (Bussi & Parrinello, 2007) in an NVT
+predicted forces are exactly the gradient of the predicted              simulation. To find the power P (energy per unit time) in-
+energy. Models targeting mean-field energies, as in coarse-             jected by the non-conservative forces during a molecular
+graining (Wang et al., 2019) and centroid MD (Musil et al.,             dynamics trajectory, it is sufficient to calculate the average
+2022), usually train exclusively on estimates of the mean               rate of change in the conserved quantity C during a section
+forces, but use a conservative formulation as these forces              of the trajectory, P = ∆C/∆t.
+are defined as derivatives of a thermodynamic potential that
+is difficult to evaluate explicitly. Disregarding the connec-           3.2. Side-effects of direct force prediction
+tion with reference energies may also be beneficial when
+the two targets are subtly inconsistent, because of conver-             Predicting forces as the derivatives of a translationally in-
+gence issues, the use of heterogeneous calculation settings,            variant potential ensures that the total net force acting on
+or numerical techniques like Fermi smearing (Marzari et al.,            all atoms is zero, and that for a potential that is rotation-
+1999), which can be required for metallic systems. This may             ally invariant the torque on an isolated molecule is zero. A
+contribute to the empirical observation that non-consistent             direct force model – irrespective of whether it is E(3) invari-
+training is preferable in datasets like OC20 (Chanussot et al.,         ant – does not have the same guarantees. These spurious
+2021) and OC22 (Tran et al., 2023) that contain a high frac-            effects are easy to remedy, by subtracting the total force
+tion of metallic configurations.                                        and torque from each prediction. This technique is used by
+                                                                        ORB (Neumann et al., 2024), and we also adopt it here.
+
+3. Theory                                                               There is another non-trivial consequence of using a direct-
+                                                                        force prediction architecture. Whereas the potential en-
+Some of the consequences of using non-conservative models               ergy is usually estimated as the sum of atomic contributions
+descend directly from their mathematical formulation and                but is a global property, forces are atom-centered. When
+can be used to foresee their impact on typical applications.            predicting them as derivatives, many atomic environments
+                                                                        contribute to the force fi on each atom. When predicting
+3.1. Measuring non-conservative behavior                                directly, only the i-atom centered environment contributes
+                                                                        to fi . Hence, direct force models can be expected to be
+If a vector field f is the derivative of a smooth scalar function
+                                                                        affected more directly by the geometric degeneracies of low-
+V , then its Jacobian J (the Hessian of V ) contains the mixed
+                                                                        body-order atom-centered descriptors (Pozdnyakov et al.,
+second derivatives of V , and must therefore be symmetric:
+                                                                        2020) and do not benefit from the same extended effec-
+                        ∂fiα   ∂fjβ                                     tive interaction range as conservative forces (Artrith et al.,
+             Jiα,jβ =        =      = Jjβ,iα .               (6)        2011). We discuss these effects in Appendix C, presenting
+                        ∂rjβ   ∂riα
+                                                                        some empirical evidence that direct force models require a
+In order to quantitatively capture the amount of non-                   larger range to match the force accuracy of a comparable
+conservation in a specific force prediction from a trained              conservative model.
+model, it is then possible to compare the Frobenius norm
+(or any other matrix norm) of the antisymmetric component               3.3. Effects on geometry optimization
+of the Jacobian to that of the Jacobian itself:
+                                                                        In order to assess the stability of materials or molecules
+                           ||Janti ||F                                  at low temperature, a common approximation is to search
+                        λ=             ,                     (7)        for minimum-energy configurations. This can be achieved
+                             ||J||F
+                                                                        by minimizing the potential energy V as a function of the
+where Janti = (J − J⊤ )/2. λ then defines a metric going                atomic positions – with most of the widely used algorithms
+from 0 for conservative forces to 1 for forces that have                relying (in some cases exclusively) on the value of the gradi-
+
+                                                                    4
+                                                    The dark side of the forces
+
+ent. The lack of a consistent potential energy is problematic          An alternative approach is to train both a conservative and
+for most optimization schemes: those which require an ex-              non-conservative predictor and adding a force-matching loss
+plicit evaluation of the objective function (e.g., to perform          term, or simply training both on the same forces labels. We
+line searches) cannot be used; those that just “follow the             will discuss this approach in further detail in Section 4.8. It
+forces”, relying on the vanishing magnitude of the force               is important to note that, in both strategies, energy conser-
+as a stopping criterion, can fail because non-conservative             vation can be trained both on labeled and unlabeled data.
+forces can keep driving indefinitely in the same direction,
+e.g., following closed loops with negative total work.                 4. Results
+3.4. Effects on molecular dynamics                                     Having introduced the subject of non-conservative force
+                                                                       fields and discussed the potential pitfalls that might be in-
+It is not uncommon to observe violations of energy conser-             curred when using them in practice, we will now examine
+vation in MD simulations, since finite-timestep integrators            their effect on a range of applications, using liquid water as
+violate the exact correspondence between the change in                 the main, paradigmatic example.
+kinetic and potential energy along a trajectory. This is usu-
+ally accepted, because (1) in well-designed simulations this
+                                                                       4.1. The models
+leads to small fluctuations, and not to a run-away effect; (2)
+the notion of a shadow Hamiltonian (Hairer et al., 2006)               In order to substantiate our empirical observations, we per-
+ensures that simulations reach a steady state that is “sta-            form our experiments on multiple models. Our main ex-
+tistically close” to that generated by an exact integrator;            amples rely on the rotationally unconstrained PET architec-
+(3) thermostatting techniques can relatively easily control            ture (Pozdnyakov & Ceriotti, 2023), trained from scratch
+small integration errors, so that structural and dynamical             on the bulk water dataset of Ref. 22 using both a conser-
+observables are not affected significantly (Morrone et al.,            vative (PET) and non-conservative (PET-NC) architecture.
+2011). The fact that no underlying Hamiltonian can be                  Additionally, we train “PET-M” to predict both conservative
+defined for the dynamics generated by a non-conservative               and non-conservative forces. To assess the implications of
+force field suggests that, in this case, artifacts might be more       a direct prediction of forces in the most favorable possi-
+pronounced and harder to correct. For example, the sym-                ble context, we primarily use the best-performing, custom-
+plectic nature of Hamiltonian dynamics is no longer valid              trained models. We also show some results for the non-
+(this is easy to see, for example, from Eq. 5.2, Chapter 6             conservative ORB-v2 model (Neumann et al., 2024), which
+of Hairer et al. (2006)), and the theorem of equipartition             is currently state-of-the-art for several materials prediction
+of energy (whose proof is also based on the existence of a             benchmarks. Even though ORB is not trained on this spe-
+Hamiltonian (Pathria, 2017)) does not apply. As we shall               cific dataset, and is therefore at a clear disadvantage, it
+see, this is what we observe empirically.                              provides an indication of the relevance of the issues we
+                                                                       discuss. In the appendices, we also discuss several other
+3.5. Learning conservative behavior                                    architectures, including a “legacy” SOAP-BPNN architec-
+                                                                       ture, as well as pre-trained foundation models, MACE-MP-
+The standard approach to making symmetries more eas-                   0 (Batatia et al., 2023), SevenNet (Park et al., 2024), and
+ily learnable from data is to employ data augmentation at              EquiformerV2 (Liao et al., 2023), which we apply to a few
+training time: A random element of the underlying sym-                 diverse materials in Appendix G. A table describing all
+metry group, for instance rotations, is selected and applied           employed models, along with full details on the different
+for every sample or mini-batch. This approach has been                 architectures, can be found in Appendix D.
+successfully employed in the domain of MLIPs, as well
+as in a range of other applications including computer vi-
+                                                                       4.2. Accuracy
+sion (Quiroga et al., 2020). However, it is only applicable
+to explicit geometric symmetries, and therefore not to en-             In terms of sheer accuracy, see Table 1, our tests confirm
+ergy conservation, which is not a symmetry with respect to             that forces provide very useful information to train an in-
+inputs, but rather a symmetry of derivatives, as discussed             teratomic potential, in particular for a dataset containing
+in Section 3.1. Nevertheless, we briefly consider different            relatively large configurations. Using forces in the training
+schemes to promote energy conservation during training.                of a conservative model dramatically improves the accu-
+                                                                       racy of energy predictions with just a minor degradation
+One approach is to include the measure of Jacobian symme-
+                                                                       in the accuracy for f with respect to a model trained only
+try λ, Equation (7), as a term in the loss function. This faces
+                                                                       on forces. A non-conservative force model exhibits about
+severe practical issues: With automatic differentiation, com-
+                                                                       30% higher force error than a conservative architecture, and
+puting J requires multiple (3N in the absence of sparsity
+                                                                       including a separate energy head leads to lower error than
+or stochastic approximations) evaluations of the potential.
+                                                                       a model trained just on V – indicating that the sharing of
+
+                                                                   5
+                                                     The dark side of the forces
+
+weights within the architecture is beneficial. We also show                          102                                           102
+results for the PET-M hybrid architecture, which makes
+both conservative and non-conservative force predictions.                            101                                           101
+Its accuracy is less than 10% worse than the best models                             100                                           100
+                                                                        J / eV/Å2
+for either architectures. As we will discuss in Section 4.8,
+this is an excellent way to exploit non-conservative forces                         10 1                                           10 1
+in simulations. Before doing so, however, we will assess the                        10 2                                           10 2
+behavior of purely non-conservative models.                                                                            |Jij|
+                                                                                    10 3                               |Jij Jji|/2 10 3
+                                                                                                                         ij
+4.3. Non-conservative behavior                                                      10 4                                           10 4
+The asymmetry of the Jacobian is the most direct, point-
+                                                                                           0   2      4          6    8 10
+wise measure of non-conservative behavior. Different non-
+                                                                                                          rij / Å
+conservative models show widely different values of λ –                  Figure 1. Comparison of the norm of each block of the Jacobian,
+0.015 for ORB, 0.017 for Equiformer, 0.032 for SOAP-                     Jij , and of its antisymmetric component, for different pairs of
+BPNN-NC and 0.004 for PET-NC, computed on a few wa-                      atoms, as a function of their distance rij , computed for a randomly
+                                                                         selected bulk water structure from the test set.
+ter structures from the test set of Cheng et al. (2019). As
+we shall see, the magnitude of λ correlates qualitatively
+with the stability of the models in simulations. The sym-
+metry of J applies separately to each pair of atoms, and
+                                                                         Non-conservative behavior can also be demonstrated by
+so it is possible to extract further insights by computing
+                                                                         computing the work along a closed path (see Appendix E).
+the norm of the antisymmetric part of each block Jij re-
+                                                                         Given that the choice of the path is arbitrary, we think it is
+solved for different atomic pairs and plotted as a function
+                                                                         more relevant to quantify the practical implications of this
+of the interatomic distance (Figure 1). The asymmetry is
+                                                                         issue in terms of an energy drift in molecular simulations.
+also present for “on-site” blocks, i.e., swapping only the
+Cartesian coordinates used in the derivatives for a given
+atom; the relative magnitude of Jasym is small compared to               4.4. Constant-energy molecular dynamics
+the magnitude of the Jacobian; the asymmetric component                  Let us now consider the use of non-conservative MLIPs in
+between atoms i and j decays with the interatomic distance               the context of MD simulations. Also in this case, we focus
+more slowly than the absolute magnitude of J (which has                  our analysis on the best-performing models for liquid water,
+been used as a measure of the interactions between pairs                 PET and PET-NC. A more thorough comparison, including
+of atoms (Herbold & Behler, 2022)), and in the intermedi-                several foundation models and a few homogeneous and het-
+ate regime around 6Å it becomes comparable in size – so                 erogeneous material structures, is discussed in Appendix G,
+that the pair-resolved Jacobian asymmetry λij approaches                 and consistently corroborates the observations we make
+1 for large interatomic distances. This latter observation               here. Constant-pressure simulations, which, if performed
+has important implications when applying these models in                 with direct-stress models, break conservation of enthalpy
+simulations, as the impact of non-conservative behavior on               and therefore lead to drift in the volume of the simulation,
+different atomic-scale processes is not uniform, and it tends            are shown in App. G.3 using the general-purpose PET-MAD
+to be larger – in a relative sense – for collective processes            potential (Mazitov et al., 2025).
+involving long-range correlations.
+                                                                         Given that non-conservative models lack a well-defined con-
+                                                                         served quantity by construction, we rely on indirect measure-
+                                                                         ments of the sampled ensemble. We consider in particular
+Table 1. Test errors (energies in meV per atom, forces in meV/Å)        the kinetic temperature T = 2K/(3N kB ), where N is the
+of PET models trained on the bulk water dataset. In this table,          number of particles considered. This is just a rescaling of
+and all subsequent tables, rows corresponding to non-conservative        the kinetic energy K; its ensemble average should corre-
+models are highlighted with a gray background.                           spond to the target temperature for NVT trajectories (300 K
+                                                                         in these tests), and to a value in its vicinity for NVE trajecto-
+    A RCH .    T YPE    T RAINING     MAE(V )      MAE(f )
+                                                                         ries initialized from a thermally equilibrated configuration.
+    PET          –          V           4.7           –                  As a sensitive indicator of the dynamical behavior of the
+    PET          C          f            –           18.6
+    PET          C         V, f         0.55         19.4
+                                                                         system, we compute the Fourier transform of the velocity-
+    PET         NC          f            –           24.3                velocity correlation function, ĉvv (ω). Its peaks are closely
+    PET         NC         V, f         1.42         24.8                related to the density of vibrational modes and to infrared
+    PET-M
+                C
+                           V, f         0.59
+                                                     20.2                and Raman spectra, and its ω → 0 limit is proportional to
+                NC                                   26.7                the diffusion coefficient.
+
+                                                                    6
+                                                      The dark side of the forces
+
+      800
+                                            ORB, NVE                     Table 2. Mean kinetic temperature excess ⟨∆T ⟩ − ⟨T ⟩ − 300 K,
+      700                                   PET, NVE                     and atom-type resolved temperatures ⟨∆TO ⟩ and ⟨∆TH ⟩, for ORB,
+                                            PET-NC, NVE
+                                            PET-M, NVE MTS-8             the conservative (C), non-conservative (NC) and multiple time-
+      600                                                                stepping (MTS) PET models (which evaluates conservative forces
+                                                                         once every 8 steps). White-noise Langevin (WN) and stochastic
+T/K   500                                                                velocity rescaling (SVR) thermostats are also compared.
+
+      400                                                                  T HRM .   T YPE    τ /fs    ⟨T ⟩/K    ⟨TH ⟩/K    ⟨TO ⟩/K
+                                                                                                      ORB
+      300
+                                                                            WN        NC      1000    51.0(6)    60.4(5)     33(1)
+            0        10000       20000        30000       40000             WN        NC       100     4.2(2)     5.9(3)     0.9(3)
+                                  step                                      WN
+                                                                            SVR
+                                                                                      NC
+                                                                                      NC
+                                                                                                10
+                                                                                                10
+                                                                                                       0.4(1)
+                                                                                                       1.0(1)
+                                                                                                                  0.6(1)
+                                                                                                                 36.2(8)
+                                                                                                                             0.1(1)
+                                                                                                                             -70(2)
+Figure 2. Time series for the kinetic temperature along a NVE MD
+                                                                                                      PET
+trajectory, for ORB, the conservative and non-conservative PET
+models, and for a PET-M model using a multiple time-stepping                WN        C        100     0.1(2)     0.0(2)     0.3(3)
+(MTS) algorithm that evaluates conservative forces every 8 steps.           WN       NC       1000    12.8(5)    11.2(7)     16.2(5)
+                                                                            WN       NC        100     1.4(2)     1.3(2)     1.6(3)
+                                                                            WN       NC         10     0.1(1)     0.0(1)     0.2(1)
+                                                                            SVR       C        10     0.1(1)     -0.4(3)      1.0(7)
+The failure of the non-conservative model in NVE dynamics                   SVR      NC         10     0.3(1)    -4.4(3)     9.9(6)
+is apparent in Figure 2. Whereas for a conservative potential               SVR      M-8       10     0.0(1)     -0.1(4)      0.1(9)
+the kinetic temperature fluctuates around the initial value,
+the spurious work associated with non-conservative forces
+leads to a large drift of T : To put it on a human scale, this un-       feres with atomic motion) are needed, as even at 100 fs the
+physical drift corresponds to a rate of heating of about 7’000           average temperature is significantly off the target value. We
+billion degrees per second for the custom-trained PET-NC                 discuss how these deviations in the equilibrium temperature
+model, and another 10 times larger for the general-purpose               affect structural properties of water in Appendix G.5. The
+ORB model. This spurious energy flow is a clear signature                upshot is that for accurate models and strong thermostatting,
+of non-conservative behavior, and makes direct-force mod-                the effects are small but noticeable. Furthermore, the strong
+els entirely useless for constant-energy simulations. This               Langevin thermostatting reduces the sampling efficiency,
+runaway increase of the kinetic energy can be mitigated –                and so even with a respectable 1 ns trajectory, many simple
+whenever an auxiliary model is available to evaluate the                 structural averages are not fully converged.
+potential energy – by adjusting the velocities to enforce en-
+ergy conservation artificially (see Appendix G.4). Similar to            4.6. Sampling efficiency and time-dependent properties
+what we will discuss for constant-temperature simulations,
+the trajectories are still affected by large artefacts.                  Aggressive Langevin dynamics is bound to dramatically
+                                                                         change time-dependent properties, and in particular to re-
+                                                                         duce the diffusion coefficient – so that longer trajectories
+4.5. Equilibrium properties in the NVT ensemble
+                                                                         are needed to collect statistically independent atomic con-
+The very use of a finite time step in the integration of MD              figurations. This slow-down is apparent when looking at the
+trajectories causes energy fluctuations, and it is not uncom-            velocity correlation spectra (Figure 3). In the weak coupling
+mon to use advanced simulation schemes that violate en-                  regime (WN, τ = 1000 fs) there is a (small) increase in
+ergy conservation (Kühne et al., 2007; Mazzola & Sorella,               diffusion coefficient relative to the reference, because of the
+2017; Morrone et al., 2011; Laio & Parrinello, 2002), for                unphysically higher temperature, while the high-frequency
+instance because they use approximations that yield forces               peaks corresponding to stretching and bending are only
+contaminated by a stochastic noise. In these cases, using a              weakly perturbed. Stronger couplings alter the dynamics
+thermostat can counterbalance the energy error, and obtain               dramatically, and reduce the diffusion coefficient (and hence
+stable trajectories that yield configurations and equilibrium            the efficiency in sampling slow, collective motion) by a fac-
+average properties close the correct NVT ensemble despite                tor of about 1.5 (τ = 100 fs) and 5 (τ = 10 fs), negat-
+the drift of the conserved quantity that generalizes the total           ing the inference speed-up of a non-conservative model –
+energy for constant-temperature simulations.                             while making it impossible to accurately evaluate any time-
+                                                                         dependent property.
+Judging by the average temperature ⟨T ⟩ (Table 2), it is rela-
+tively easy to control the non-conservative behavior using               A potential solution – applied often in similar cases, includ-
+a white-noise (WN) Langevin thermostat. However, strong                  ing to control the artifacts of non-invariant predictions of
+couplings τ (the time scale over which the thermostat inter-             V (Langer et al., 2024) – is to resort to a global thermostat
+
+                                                                     7
+                                                                 The dark side of the forces
+
+
+                       100                                                                                400                       PET-C
+                                                                                                                                    PET-C, fine-tuned
+
+
+
+
+                                                                                 Val. force MAE / meV/Å
+                                                                                                                                    PET-NC
+                                                                                                          200
+
+
+cvv( ) / arb. units
+                      10 1
+                                                                                                          100
+                      10 2         C, SVR, = 10 fs                                                        50
+                                   NC, WN, = 1 ps
+                                   NC, WN, = 100 fs
+                                   NC, WN, = 10 fs
+                      10 3         NC, SVR, = 10 fs                                                       20
+                             101            102            103                                                  5   10   20        50     100      200
+                                                  / cm 1                                                                   GPU hours
+Figure 3. Velocity power spectrum ĉvv (ω), for different PET mod-                  Figure 4. Training curves for PET-C and PET-NC models, and
+els and thermostat types: A conservative (C) and non-conservative                   the conservative fine-tuning of a hybrid PET-M model initialized
+(NC) model using white-noise Langevin (WN) and stochastic ve-                       (epoch marked with arrow) from the potential energy head of the
+locity rescaling (SVR) thermostats.                                                 PET-NC model.
+
+
+                                                                                    on gradients, to avoid the complication of using inconsis-
+that only acts on the total kinetic energy rather than on in-
+                                                                                    tent energies, as discussed in Section 3.3, comparing the
+dividual particle momenta, achieving efficient temperature
+                                                                                    FIRE (Bitzek et al., 2006) algorithm – that is similar in spirit
+control without disrupting dynamics. We use the stochas-
+                                                                                    to zero-temperature MD – and LBFGS (Liu & Nocedal,
+tic velocity rescaling (SVR) method (Bussi et al., 2007),
+                                                                                    1989) – a quasi-Newton algorithm that uses an approxima-
+which indeed brings the average temperature to within 1%
+                                                                                    tion of the Hessian to accelerate convergence. Comparing
+of the target, without dramatically altering ĉvv (ω) even with
+                                                                                    different models on the task of optimizing a water snapshot
+a strong τ = 10 fs coupling. However, a global thermostat
+                                                                                    from a MD configuration (Figure 7) shows that inaccurate
+cannot help when non-conservative terms act differently on
+                                                                                    non-conservative models, such as SOAP-BPNN-NC, fail
+the various degrees of freedom. This is evident in how the
+                                                                                    catastrophically at geometry optimization, while more accu-
+temperature of O and H atoms, computed separately, devi-
+                                                                                    rate models, such as PET-NC and ORB, can reach a locally
+ates by up to 10% from the target, which is reflected in loss
+                                                                                    stable configuration, especially using FIRE. We note, how-
+of structure as measured by g(r), and in an overestimation
+                                                                                    ever, that non-conservative models are less stable when used
+of the diffusion coefficient.
+                                                                                    with a Hessian-based method, with large fluctuations in the
+Some of the more sophisticated thermostats used to stabilize                        residual force that make it hard to define a stopping criterion.
+other types of MD approximations – such as carefully tuned                          On a practical level, non-conservative forces are bound to
+generalized Langevin equations (Ceriotti et al., 2009; Mor-                         make geometry optimization more fragile, and to require
+rone et al., 2011) – can also be used to enforce more aggres-                       careful choice of the minimization algorithm and its con-
+sive temperature control with reduced dynamical disruption                          vergence parameters, as we observe in Appendix F when
+in conservative molecular dynamics, but they still mod-                             comparing different general-purpose models.
+ify the natural dynamical properties significantly, and they
+can fail catastrophically when used with non-conservative                            4.8. Non-conservative forces as accelerators
+forces, as shown in Appendix G.6).
+                                                                                    While we have observed that conservative MLIPs are bet-
+These experiments show clearly that while it is possible to                         ter suited for practical simulations, we suggest that hybrid
+mitigate the runaway temperature increase associated with                           models, which additionally support direct, non-conservative,
+the lack of energy conservation, doing so in a way that does                        force predictions, can be used for faster inference and train-
+not disrupt structural and/or dynamical observables is highly                       ing. Such models can be obtained by training both force
+nontrivial or even impossible.                                                      heads jointly, as demonstrated in the PET-M model, or, more
+                                                                                    efficiently, by first training a non-conservative model and
+4.7. Geometry optimization                                                          then fine-tuning its energy head to yield conservative forces.
+                                                                                    As shown in Figure 4 and further discussed in Appendix H,
+MD performed at very low temperature can be regarded as a
+                                                                                    conservative fine tuning leads to the accuracy and physi-
+form of geometry optimization. Our observations from MD
+                                                                                    cal correctness of conservative models at highly reduced
+suggest that sufficiently accurate non-conservative models
+                                                                                    training time.
+should be able to reach reasonable, low-energy structures.
+We restrict ourselves to optimization algorithms based only                          In simulations, one can then use the conservative forces of
+
+                                                                             8
+                                                    The dark side of the forces
+
+such a hybrid model for validation, error monitoring and               validation set accuracy, but are less reliable in describing
+correction, and the direct forces for faster inference. A              the slow, collective structural rearrangements that are often
+good example is to use multiple time-stepping (MTS) tech-              the key drivers of the most relevant microscopic processes.
+niques (Tuckerman et al., 1992) for molecular dynamics,
+                                                                       Given that the target forces are conservative, accurate mod-
+where the non-conservative forces are used to integrate the
+                                                                       els usually exhibit less pronounced non-conservative behav-
+equations of motion, and the conservative forces are applied
+                                                                       ior. As a consequence, one can expect that, as the field
+every M steps as a correction. This reduces the theoretical
+                                                                       moves to larger training datasets and more expressive mod-
+overhead of a conservative trajectory from a factor of F ≈ 2
+                                                                       els, some of the pathological effects we observe will become
+to one of 1+(F −1)/M . The results using this technique in
+                                                                       less severe. Our findings, however, suggest that the best way
+Table 2, Figure 2 and in Appendix I are essentially indistin-
+                                                                       to exploit the speed-up afforded by direct prediction of the
+guishable from fully conservative ones, using M = 8, which
+                                                                       forces is not to replace conservative models, but to aug-
+leads to a small, approximately 20% slowdown compared
+                                                                       ment them with a non-conservative head. This can be used
+to a direct-force, non-conservative trajectory. Appendix I
+                                                                       to accelerate training by first training a non-conservative
+contains further explanation of the MTS technique, as well
+                                                                       model and then fine-tuning its energy head to yield accurate
+as more detailed results for MTS simulations using models
+                                                                       conservative forces through differentiation. The resulting
+trained on the water and OC20 datasets. The technique can
+                                                                       “multi-force” models can also be used to speed up many
+be also successfully used for constant-pressure simulations,
+                                                                       different types of simulations, by alternating conservative
+as shown in Appendix G.3.
+                                                                       and non-conservative evaluations, avoiding the narrower
+                                                                       applicability and inherent instability associated with relying
+5. Discussion                                                          exclusively on direct force predictions. This insight enables
+                                                                       the efficient training of the next generation of universal
+Chemical and materials modeling is at the forefront of de-
+                                                                       machine-learning interatomic potentials while retaining the
+velopment in the applications of machine learning to sci-
+                                                                       physical correctness required for practical simulations.
+ence. The field has long been advocating for the use of
+physically informed architectural constraints, but there are
+indications that its bitter-lesson moment is coming, with the          Software and Data
+realization that deploying physics-agnostic models at scale
+                                                                       Code and data required to reproduce the re-
+provides better outcomes than exploiting physical priors. It
+                                                                       sults in this work are available on Zenodo at
+appears that this is the case for some of the geometric sym-
+                                                                       https://zenodo.org/records/14778891.
+metry constraints (Pozdnyakov & Ceriotti, 2023; Neumann
+                                                                       An example of how to perform multiple-time-step
+et al., 2024; Qu & Krishnapriyan, 2024), and a growing
+                                                                       dynamics with conservative and direct forces can be
+number of architectures disregard the physical connection
+                                                                       found at https://atomistic-cookbook.org/
+between the interatomic potential and the corresponding
+                                                                       examples/pet-mad-nc/pet-mad-nc.html,
+forces (Gasteiger et al., 2021; Neumann et al., 2024; Liao
+                                                                       and an example of conservative fine-tuning
+et al., 2023). With respect to this latter constraint, our study
+                                                                       at         https://atomistic-cookbook.org/
+paints a nuanced picture. Atomistic simulations rely on
+                                                                       examples/pet-finetuning/pet-ft-nc.html.
+the assumption that forces are the exact derivatives of the
+                                                                       More details on the software used are available in Ap-
+potential, and small deviations from this constraints lead
+                                                                       pendix J.
+to instabilities. Non-conservative behavior also results in
+molecular dynamics trajectories exhibiting a spontaneous
+drift away from the desired thermodynamic conditions. Con-             Acknowledgements
+trolling this effect with thermostats requires careful tuning,
+                                                                       The authors would like to thank Federico Grasselli and
+and disrupts both time-dependent properties and the sam-
+                                                                       Niklas Schmitz for stimulating discussion, and Rafael
+pling efficiency of the trajectory, negating the computational
+                                                                       Gomez-Bombarelli for a coffee-break conversation which
+advantage of a direct-force architecture.
+                                                                       inspired us to look into this problem. ML and MC acknowl-
+Contrary to the case of rotational symmetry that is easy               edge funding from the European Research Council (ERC)
+to monitor and correct at inference time (Langer et al.,               under the European Union’s Horizon 2020 research and
+2024), and learn through data augmentation, assessing non-             innovation programme Grant No. 101001890-FIAMMA.
+conservative behavior requires the explicit evaluation of the          FB and MC acknowledge support from the NCCR MAR-
+Jacobian both as diagnostics and as additional loss term. Fur-         VEL, funded by the Swiss National Science Foundation
+thermore, energy and forces are complementary targets, and             (SNSF, grant number 182892) and from the Swiss Platform
+disregarding the former may lead to potentials that appear             for Advanced Scientific Computing (PASC).
+stable, resilient to dataset inconsistencies, and with good
+
+
+                                                                   9
+                                                  The dark side of the forces
+
+Impact Statement                                                        Kozinsky, B. E(3)-equivariant graph neural networks for
+                                                                        data-efficient and accurate interatomic potentials. Nature
+This paper presents work whose goal is to advance the ap-               Communications, 13(1):2453, May 2022. ISSN 2041-
+plication of machine learning to simulations of molecules               1723. doi: 10.1038/s41467-022-29939-5.
+and materials, which can be used for many purposes. As
+potential impacts are hard to predict and wide-ranging, we            Behler, J. Four Generations of High-Dimensional Neural
+do not believe it is necessary to discuss them here in detail.          Network Potentials. Chemical Reviews, 121(16):10037–
+                                                                        10072, August 2021. ISSN 0009-2665, 1520-6890. doi:
+                                                                        10.1021/acs.chemrev.0c00868.
+References
+Allen, M. P. and Tildesley, D. J. Computer Simulation of              Behler, J. and Parrinello, M. Generalized Neural-Network
+  Liquids, volume 1. Oxford University Press, Novem-                    Representation of High-Dimensional Potential-Energy
+  ber 2017. ISBN 978-0-19-880319-5. doi: 10.1093/oso/                   Surfaces. Physical Review Letters, 98(14):146401, April
+  9780198803195.001.0001.                                               2007. ISSN 0031-9007. doi: 10.1103/PhysRevLett.98.
+                                                                        146401.
+Andersen, H. C. Molecular dynamics simulations at con-
+  stant pressure and/or temperature. The Journal of Chem-             Bigi, F., Chong, S., Kristiadi, A., and Ceriotti, M. Flashmd:
+  ical Physics, 72(4):2384–2393, 1980. ISSN 00219606.                   long-stride, universal prediction of molecular dynamics.
+  doi: 10.1063/1.439486.                                                arXiv preprint arXiv:2505.19350, 2025.
+
+Artrith, N., Morawietz, T., and Behler, J. High-dimensional           Bitzek, E., Koskinen, P., Gähler, F., Moseler, M., and Gumb-
+  neural-network potentials for multicomponent systems:                 sch, P. Structural Relaxation Made Simple. Physical Re-
+  Applications to zinc oxide. Physical Review B, 83(15):                view Letters, 97(17):170201, October 2006. ISSN 0031-
+  153101, April 2011. ISSN 1098-0121. doi: 10.1103/                     9007, 1079-7114. doi: 10.1103/PhysRevLett.97.170201.
+  PhysRevB.83.153101.                                                 Bussi, G. and Parrinello, M. Accurate sampling using
+                                                                        Langevin dynamics. Physical Review E, 75(5):56707,
+Barroso-Luque, L., Shuaibi, M., Fu, X., Wood, B. M.,
+                                                                        2007. doi: 10.1103/PhysRevE.75.056707.
+  Dzamba, M., Gao, M., Rizvi, A., Zitnick, C. L., and
+  Ulissi, Z. W. Open materials 2024 (omat24) inor-                    Bussi, G. and Parrinello, M. Stochastic thermostats: Com-
+  ganic materials dataset and models. arXiv preprint                    parison of local and global schemes. Computer Physics
+  arXiv:2410.12771, 2024.                                               Communications, 179(1-3):26–29, July 2008. ISSN
+                                                                        00104655. doi: 10.1016/j.cpc.2008.01.006.
+Bartók, A. P., Payne, M. C., Kondor, R., and Csányi, G.
+  Gaussian Approximation Potentials: The Accuracy of                  Bussi, G., Donadio, D., and Parrinello, M. Canonical sam-
+  Quantum Mechanics, without the Electrons. Physical                    pling through velocity rescaling. Journal of Chemical
+  Review Letters, 104(13):136403, April 2010. ISSN 0031-                Physics, 126(1):14101, 2007.
+  9007. doi: 10.1103/PhysRevLett.104.136403.
+                                                                      Bussi, G., Zykova-Timan, T., and Parrinello, M. Isothermal-
+Bartók, A. P., Kondor, R., and Csányi, G. On repre-                   isobaric molecular dynamics using stochastic velocity
+  senting chemical environments. Physical Review B,                     rescaling. The Journal of Chemical Physics, 130(7):
+  87(18):184115, May 2013. ISSN 1098-0121. doi:                         074101, February 2009. ISSN 0021-9606. doi: 10.1063/
+  10.1103/PhysRevB.87.184115.                                           1.3073889.
+Batatia, I., Kovacs, D. P., Simm, G. N. C., Ortner, C., and           Ceriotti, M., Bussi, G., and Parrinello, M. Langevin equa-
+  Csanyi, G. MACE: Higher order equivariant message                     tion with colored noise for constant-temperature molec-
+  passing neural networks for fast and accurate force fields.           ular dynamics simulations. Physical Review Letters,
+  In Oh, A. H., Agarwal, A., Belgrave, D., and Cho, K.                  102(2):020601, January 2009. ISSN 00319007. doi:
+  (eds.), Advances in Neural Information Processing Sys-                10.1103/PhysRevLett.102.020601.
+  tems, 2022.
+                                                                      Ceriotti, M., Bussi, G., and Parrinello, M. Colored-noise
+Batatia, I., Benner, P., Chiang, Y., Elena, A. M., Kovács,             thermostats à la Carte. Journal of Chemical Theory
+  D. P., Riebesell, J., Advincula, X. R., Asta, M.,                     and Computation, 6(4):1170–1180, April 2010. ISSN
+  Avaylon, M., Baldwin, W. J., et al. A foundation                      15499626. doi: 10.1021/ct900563s.
+  model for atomistic materials chemistry. arXiv preprint
+  arXiv:2401.00096, 2023.                                             Chandler, D. and Wolynes, P. G. Exploiting the isomor-
+                                                                        phism between quantum theory and classical statistical
+Batzner, S., Musaelian, A., Sun, L., Geiger, M., Mailoa,                mechanics of polyatomic fluids. Journal of Chemical
+  J. P., Kornbluth, M., Molinari, N., Smidt, T. E., and                 Physics, 74(7):4078–4095, 1981.
+
+                                                                 10
+                                                   The dark side of the forces
+
+Chanussot, L., Das, A., Goyal, S., Lavril, T., Shuaibi, M.,            Griewank, A. and Walther, A. Evaluating Derivatives.
+  Riviere, M., Tran, K., Heras-Domingo, J., Ho, C., Hu, W.,              Society for Industrial and Applied Mathematics, Jan-
+  et al. Open catalyst 2020 (oc20) dataset and community                 uary 2008. ISBN 9780898716597, 9780898717761.
+  challenges. Acs Catalysis, 11(10):6059–6072, 2021.                     doi: 10.1137/1.9780898717761. URL https://doi.
+                                                                         org/10.1137/1.9780898717761.
+Cheng, B., Engel, E. A., Behler, J., Dellago, C., and Ceriotti,
+  M. Ab initio thermodynamics of liquid and solid water.               Hairer, E., Hochbruck, M., Iserles, A., and Lubich, C. Geo-
+  Proceedings of the National Academy of Sciences of the                 metric numerical integration. Oberwolfach Reports, 3(1):
+  United States of America, 116(4):1110–1115, January                    805–882, 2006.
+  2019. ISSN 10916490. doi: 10.1073/pnas.1815117116.
+                                                                       Henkelman, G., Uberuaga, B. P., and Jónsson, H. A climb-
+Chmiela, S., Sauceda, H. E., Müller, K.-R., and Tkatchenko,             ing image nudged elastic band method for finding saddle
+  A. Towards exact molecular dynamics simulations with                   points and minimum energy paths. Journal of Chemical
+  machine-learned force fields. Nature Communications, 9:                Physics, 113(22):9901, 2000.
+  3887, 2018. doi: 10.1038/s41467-018-06169-2.                         Herbold, M. and Behler, J. A Hessian-based assessment of
+                                                                         atomic forces for training machine learning interatomic
+Christensen, A. S. and von Lilienfeld, O. A. On the role of
+                                                                         potentials. The Journal of Chemical Physics, 156(11):
+  gradients for machine learning of molecular energies and
+                                                                        114106, March 2022. ISSN 0021-9606, 1089-7690. doi:
+  forces. Machine Learning: Science and Technology, 1(4):
+                                                                        10.1063/5.0082952.
+  045018, 2020. doi: 10.1088/2632-2153/abba6f.
+                                                                       Hjorth Larsen, A., Jørgen Mortensen, J., Blomqvist, J.,
+Deng, B., Zhong, P., Jun, K., Riebesell, J., Han, K., Bartel,            Castelli, I. E., Christensen, R., Dułak, M., Friis, J.,
+  C. J., and Ceder, G. Chgnet as a pretrained universal                  Groves, M. N., Hammer, B., Hargus, C., Hermes, E. D.,
+  neural network potential for charge-informed atomistic                 Jennings, P. C., Bjerre Jensen, P., Kermode, J., Kitchin,
+  modelling. Nature Machine Intelligence, 5(9):1031–1041,                J. R., Leonhard Kolsbjerg, E., Kubal, J., Kaasbjerg, K.,
+  2023.                                                                  Lysgaard, S., Bergmann Maronsson, J., Maxson, T.,
+Duval, A., Mathis, S. V., Joshi, C. K., Schmidt, V., Miret,              Olsen, T., Pastewka, L., Peterson, A., Rostgaard, C.,
+  S., Malliaros, F. D., Cohen, T., Lio, P., Bengio, Y., and              Schiøtz, J., Schütt, O., Strange, M., Thygesen, K. S.,
+  Bronstein, M. A hitchhiker’s guide to geometric gnns                   Vegge, T., Vilhelmsen, L., Walter, M., Zeng, Z., and
+  for 3d atomic systems. arXiv preprint arXiv:2312.07511,                Jacobsen, K. W. The atomic simulation environment—
+  2023.                                                                  a Python library for working with atoms. Journal of
+                                                                         Physics: Condensed Matter, 29(27):273002, July 2017.
+Eastman, P., Behara, P. K., Dotson, D. L., Galvelis, R., Herr,           ISSN 0953-8984, 1361-648X. doi: 10.1088/1361-648X/
+  J. E., Horton, J. T., Mao, Y., Chodera, J. D., Pritchard,              aa680e.
+  B. P., Wang, Y., De Fabritiis, G., and Markland, T. E.
+                                                                       Kapil, V., VandeVondele, J., and Ceriotti, M. Accu-
+  SPICE, A Dataset of Drug-like Molecules and Peptides
+                                                                         rate molecular dynamics and nuclear quantum effects
+  for Training Machine Learning Potentials. Scientific Data,
+                                                                         at low cost by multiple steps in real and imaginary
+  10(1):11, January 2023. ISSN 2052-4463. doi: 10.1038/
+                                                                         time: Using density functional theory to accelerate wave-
+  s41597-022-01882-6.
+                                                                         function methods. Journal of Chemical Physics, 144
+Eissler, M., Korjakow, T., Ganscha, S., Unke, O. T., Müller,            (5):054111, February 2016. ISSN 00219606. doi:
+  K.-R., and Gugler, S. How simple can you go? an off-the-              10.1063/1.4941091.
+  shelf transformer approach to molecular dynamics, 2025.              Kühne, T. D., Krack, M., Mohamed, F. R., and Parrinello,
+  URL https://arxiv.org/abs/2503.01431.                                  M. Efficient and Accurate Car-Parrinello-like Approach
+                                                                         to Born-Oppenheimer Molecular Dynamics. Physical
+Fu, X., Wood, B. M., Barroso-Luque, L., Levine, D. S., Gao,
+                                                                         Review Letters, 98(6):66401, February 2007. ISSN 0031-
+  M., Dzamba, M., and Zitnick, C. L. Learning smooth and
+                                                                         9007. doi: 10.1103/PhysRevLett.98.066401.
+  expressive interatomic potentials for physical property
+  prediction, 2025. URL https://arxiv.org/abs/                         Laio, A. and Parrinello, M. Escaping free-energy minima.
+  2502.12147.                                                            Proceedings of the National Academy of Sciences, 99(20):
+                                                                         12562–12566, 2002.
+Gasteiger, J., Becker, F., and Günnemann, S. Gemnet: Uni-
+  versal directional graph neural networks for molecules.              Langer, M. F., Goeßmann, A., and Rupp, M. Represen-
+  Advances in Neural Information Processing Systems, 34:                 tations of molecules and materials for interpolation of
+  6790–6802, 2021.                                                       quantum-mechanical simulations via machine learning.
+
+                                                                  11
+                                                    The dark side of the forces
+
+  npj Computational Materials, 8(1):41, December 2022.                  Metropolis, N., Rosenbluth, A. W., Rosenbluth, M. N.,
+  ISSN 2057-3960. doi: 10.1038/s41524-022-00721-x.                       Teller, A. H., and Teller, E. Equation of State Calcula-
+                                                                         tions by Fast Computing Machines. Journal of Chemical
+Langer, M. F., Pozdnyakov, S. N., and Ceriotti, M. Prob-                 Physics, 21(6):1087–1092, 1953.
+  ing the effects of broken symmetries in machine learn-
+  ing. Machine Learning: Science and Technology, 5                      Morrone, J. A., Markland, T. E., Ceriotti, M., and Berne,
+  (4):04LT01, December 2024. ISSN 2632-2153. doi:                        B. J. Efficient multiple time scale molecular dynam-
+  10.1088/2632-2153/ad86a0.                                              ics: Using colored noise thermostats to stabilize reso-
+                                                                         nances. Journal of Chemical Physics, 134(1):14103, Jan-
+Li, Z., Kermode, J. R., and De Vita, A. Molecular dynamics               uary 2011. ISSN 00219606. doi: 10.1063/1.3518369.
+  with on-the-fly machine learning of quantum-mechanical
+   forces. Physical Review Letters, 114(9):096405, March                Musil, F., Grisafi, A., Bartók, A. P., Ortner, C., Csányi, G.,
+   2015. ISSN 10797114. doi: 10.1103/PhysRevLett.114.                    and Ceriotti, M. Physics-Inspired Structural Representa-
+   096405.                                                               tions for Molecules and Materials. Chemical Reviews, 121
+                                                                         (16):9759–9815, August 2021. ISSN 0009-2665, 1520-
+Liao, Y.-L., Wood, B., Das, A., and Smidt, T. Equiformerv2:              6890. doi: 10.1021/acs.chemrev.1c00021.
+  Improved equivariant transformer for scaling to higher-
+                                                                        Musil, F., Zaporozhets, I., Noé, F., Clementi, C., and
+  degree representations. arXiv preprint arXiv:2306.12059,
+                                                                         Kapil, V. Quantum dynamics using path integral coarse-
+  2023.
+                                                                         graining. The Journal of Chemical Physics, 157(18):
+                                                                         181102, November 2022. ISSN 0021-9606, 1089-7690.
+Litman, Y., Kapil, V., Feldman, Y. M. Y., Tisi, D., Begušić,
+                                                                         doi: 10.1063/5.0120386.
+  T., Fidanyan, K., Fraux, G., Higer, J., Kellner, M., Li,
+  T. E., Pós, E. S., Stocco, E., Trenins, G., Hirshberg, B.,           Neumann, M., Gin, J., Rhodes, B., Bennett, S., Li, Z.,
+  Rossi, M., and Ceriotti, M. I-PI 3.0: A flexible and                    Choubisa, H., Hussey, A., and Godwin, J. Orb: A
+  efficient framework for advanced atomistic simulations.                 fast, scalable neural network potential. arXiv preprint
+  The Journal of Chemical Physics, 161(6):062504, August                  arXiv:2410.22570, 2024.
+  2024. ISSN 0021-9606, 1089-7690. doi: 10.1063/5.
+  0215869.                                                              Nigam, J., Pozdnyakov, S., Fraux, G., and Ceriotti, M. Uni-
+                                                                          fied theory of atom-centered representations and message-
+Liu, D. C. and Nocedal, J. On the limited memory BFGS                     passing machine-learning schemes. The Journal of Chem-
+  method for large scale optimization. Mathematical Pro-                  ical Physics, 156(20):204115, May 2022. ISSN 0021-
+  gramming, 45(1-3):503–528, August 1989. ISSN 0025-                      9606, 1089-7690. doi: 10.1063/5.0087042.
+  5610, 1436-4646. doi: 10.1007/BF01589116.
+                                                                        Park, Y., Kim, J., Hwang, S., and Han, S. Scalable parallel
+Loew, A., Sun, D., Wang, H.-C., Botti, S., and Marques, M.                algorithm for graph neural network interatomic potentials
+  A. L. Universal machine learning interatomic potentials                 in molecular dynamics simulations. Journal of Chemical
+  are ready for phonons, 2024. URL https://arxiv.                         Theory and Computation, 2024.
+  org/abs/2412.16551.
+                                                                        Pathria, R. K. Statistical Mechanics: International Series of
+Marzari, N., Vanderbilt, D., De Vita, A., and Payne,                      Monographs in Natural Philosophy, volume 45. Elsevier,
+ M. C. Thermal Contraction and Disordering of the                         2017.
+ Al(110) Surface. Physical Review Letters, 82(16):3296–                 Pozdnyakov, S. and Ceriotti, M. Smooth, exact rotational
+ 3299, April 1999. ISSN 0031-9007, 1079-7114. doi:                        symmetrization for deep learning on point clouds. In
+ 10.1103/PhysRevLett.82.3296.                                             Advances in Neural Information Processing Systems, vol-
+                                                                          ume 36, pp. 79469–79501. Curran Associates, Inc., 2023.
+Mazitov, A., Bigi, F., Kellner, M., Pegolo, P., Tisi, D., Fraux,
+ G., Pozdnyakov, S., Loche, P., and Ceriotti, M. PET-                   Pozdnyakov, S. N., Willatt, M. J., Bartók, A. P., Ortner, C.,
+ MAD, a universal interatomic potential for advanced ma-                  Csányi, G., and Ceriotti, M. Incompleteness of Atomic
+ terials modeling. arXiv preprint arXiv:2503.14118, 2025.                 Structure Representations. Physical Review Letters, 125:
+                                                                          166001, 2020. doi: 10.1103/PhysRevLett.125.166001.
+Mazzola, G. and Sorella, S. Accelerating ab initio Molecular
+ Dynamics and Probing the Weak Dispersive Forces in                     Qu, E. and Krishnapriyan, A. S. The importance of being
+ Dense Liquid Hydrogen. Physical Review Letters, 118                      scalable: Improving the speed and accuracy of neural
+ (1):015703, January 2017. ISSN 0031-9007, 1079-7114.                     network interatomic potentials across chemical domains.
+ doi: 10.1103/PhysRevLett.118.015703.                                     arXiv preprint arXiv:2410.24169, 2024.
+
+                                                                   12
+                                                   The dark side of the forces
+
+Quiroga, F., Ronchetti, F., Lanzarini, L., and Bariviera, A. F.        Wang, J., Olsson, S., Wehmeyer, C., Pérez, A., Charron,
+  Revisiting data augmentation for rotational invariance in             N. E., De Fabritiis, G., Noé, F., and Clementi, C. Machine
+  convolutional neural networks. In Modelling and Sim-                  Learning of Coarse-Grained Molecular Dynamics Force
+  ulation in Management Sciences: Proceedings of the                    Fields. ACS Central Science, 5(5):755–767, May 2019.
+  International Conference on Modelling and Simulation                  ISSN 2374-7943, 2374-7951. doi: 10.1021/acscentsci.
+  in Management Sciences (MS-18), pp. 127–141. Springer,                8b00913.
+  2020.
+                                                                       Wang, Y., Wang, L., Shen, Y., Wang, Y., Yuan, H.,
+Ramakrishnan, R., Dral, P. O., Rupp, M., and Von Lilienfeld,            Wu, Y., and Gu, Q. Protein conformation genera-
+  O. A. Quantum chemistry structures and properties of                  tion via force-guided SE(3) diffusion models. In Pro-
+  134 kilo molecules. Scientific data, 1(1):1–7, 2014.                  ceedings of the 41st International Conference on Ma-
+                                                                        chine Learning, pp. 56835–56859. PMLR, 2024. doi:
+Ren, Y., Zheng, D., Liu, C., Jin, P., Shi, Y., Huang, L.,               notavailable. URL https://proceedings.mlr.
+  He, J., Luo, S., Qin, T., and Liu, T.-Y. Physical con-                press/v235/wang24cv.html.
+  sistency bridges heterogeneous data in molecular multi-
+  task learning. In Advances in Neural Information Pro-                Zhou, J., Cui, G., Hu, S., Zhang, Z., Yang, C., Liu, Z., Wang,
+  cessing Systems 38 (NeurIPS 2024), Vancouver, Canada,                  L., Li, C., and Sun, M. Graph neural networks: A review
+  Dec 10–Dec 15, pp. not available. not available, 2024. doi:            of methods and applications. AI open, 1:57–81, 2020.
+  notavailable. URL https://openreview.net/
+  forum?id=GnF9tavqgc.
+
+Schmidt, J., Cerqueira, T. F., Romero, A. H., Loew, A.,
+  Jäger, F., Wang, H.-C., Botti, S., and Marques, M. A.
+  Improving machine-learning models in materials science
+  through large datasets. Materials Today Physics, 48:
+  101560, 2024.
+
+Tran, R., Lan, J., Shuaibi, M., Wood, B. M., Goyal, S., Das,
+  A., Heras-Domingo, J., Kolluru, A., Rizvi, A., Shoghi,
+  N., et al. The open catalyst 2022 (oc22) dataset and
+  challenges for oxide electrocatalysts. ACS Catalysis, 13
+  (5):3066–3084, 2023.
+
+Tuckerman, M. Statistical Mechanics and Molecular Simu-
+  lations. Oxford University Press, 2008.
+
+Tuckerman, M., Berne, B. J., and Martyna, G. J. Reversible
+  multiple time scale molecular dynamics. The Journal of
+  Chemical Physics, 97(3):1990, 1992. ISSN 00219606.
+  doi: 10.1063/1.463137.
+
+Unke, O. T., Chmiela, S., Sauceda, H. E., Gastegger, M.,
+  Poltavsky, I., Schütt, K. T., Tkatchenko, A., and Müller,
+  K.-R. Machine learning force fields. Chemical Reviews,
+ 121(16):10142–10186, 2021. doi: 10.1021/acs.chemrev.
+  0c01111.
+
+Verlet, L. Computer ”Experiments” on Classical Flu-
+  ids. I. Thermodynamical Properties of Lennard-Jones
+  Molecules. Physical Review, 159(1):98–103, July 1967.
+  ISSN 0031-899X. doi: 10.1103/PhysRev.159.98.
+
+Villar, S., Hogg, D. W., Storey-Fisher, K., Yao, W., and
+  Blum-Smith, B. Scalars are universal: Equivariant ma-
+  chine learning, structured like classical physics. Advances
+  in Neural Information Processing Systems, 34:28848–
+  28863, 2021. doi: 10.48550/arXiv.2106.06610.
+
+                                                                  13
+                                                    The dark side of the forces
+
+A. Forces and potentials as training targets
+Including both forces and the potential energy V as targets when training a ML potential (either separately, or jointly for a
+conservative model) requires choosing a weighting factor to combine the errors into a single loss function. Independently
+from the relative weight, it is interesting to consider how these two targets affect the accuracy of a model for different types
+of molecular displacements. To investigate this aspect, we can approximate a material in the vicinity of a stable structure,
+i.e., a local minimum of the potential energy V , as a quadratic form, which can be written in the basis of the eigenvectors of
+the (mass-scaled) Hessian to give a superimposition of harmonic modes,
+                                                       X             1X
+                                              V (q) =     Vk (qk ) =       mωk2 qk2 ,                                        (8)
+                                                                     2
+                                                        k                    k
+
+where m is the atomic mass (the expression generalizes to the case of multiple atomic types), ωk are normal mode frequencies
+and qk the displacements along the eigenvectors.
+If we now consider how configurations are sampled at a constant temperature T (running short MD trajectories is a
+common strategy to generate training sets for MLIPs), one sees that each harmonic mode is distributed as p(qk ) ∝
+exp(−Vk (qk )/kB T ) = exp(−mωk2 qk2 /2kB T ). As a consequence, one can easily compute the expectation values
+                                               kB T
+                                    ⟨qk2 ⟩ ∝        ,   ⟨Vk (qk )⟩ ∝ kB T,       ⟨fk2 ⟩ ∝ kB T ωk2                          (9)
+                                                ωk2
+These textbook results highlight the following facts: (1) low-frequency normal modes are those associated with the largest
+structural deformations – and therefore, often, with phase transitions and important molecular rearrangements; (2) thermal
+excitations affect all normal modes equally in terms of potential energy contributions; (3) the largest force contributions
+come from high-frequency (low-displacement) vibrations.
+Thus, when training on forces using an L2 loss, molecular modes associated with high-frequency vibrations are over-
+emphasized. For example, if one considers the water dataset we use in this work (Cheng et al., 2019), the total force
+acting on each water molecule has a root mean square of 0.97 eV/Å, while the residual “intra-molecular” forces (that are
+predominantly short-ranged and associated with high-frequency molecular vibrations) are four times larger, 3.93 eV/Å. This
+very crude analysis highlights the non-trivial implications of using forces as (direct or indirect) training targets.
+
+B. Theoretical computational cost
+Conservative forces are generally computed from potential energies by backward propagation of gradients. The vast majority
+of operations in neural networks (and nearly all those that take up significant computational time) are binary operations
+which can be expressed as the computation of f (x, y) starting from x and y. During the backward step corresponding to such
+operation, ∂V /∂x and ∂V /∂y must be found from ∂V /∂f . In the case of matrix multiplication, the forward calculation of
+f (x, y), the backward calculation of ∂V /∂x and the backward calculation of ∂V /∂y each consist of a matrix multiplication
+with the same computational cost. Since matrix multiplications can be assumed to be the most costly components of neural
+networks, this generally implies that backward gradient computations are around twice as expensive as the corresponding
+forward function evaluation.
+However, in the case of backward force evaluation, operations where x is an internal representation and y is a weight
+can save the ∂V /∂y calculation. In a simple multi-layer perceptron, where all linear layers correspond to this type of
+computation, this would yield a backward propagation that is roughly as expensive as the forward pass. This is not the case
+in transformers, as the attention mechanism involves comparatively expensive operations where both x and y are internal
+representations, and one can expect the backward propagation of gradients to be somewhere between 1× and 2× the cost of
+the forward evaluation.
+
+C. Range of back-propagated and direct force models
+The use of a cutoff to restrict the range of interactions is ubiquitous in the construction of physics-based potentials, and is
+also an integral part of descriptor-based ML potentials (Musil et al., 2021). It is often argued that models that incorporate
+correlations between at least two neighbors of each central atom achieve an effective interaction range of twice the cutoff
+distance (Artrith et al., 2011) (see Figure 5a). A similar effect also applies to message-passing architectures (Nigam et al.,
+2022).
+
+                                                                14
+                                                      The dark side of the forces
+
+
+
+
+Figure 5. A schematic representation of the interactions in a (ML) interatomic potential. (a) Contributions to an i-centered prediction of
+energy or force from three or more neighbors, labeled j and k. (b) Contributions from a j-centered energy prediction to the force on the
+i-th atom, computed by back-propagation.
+
+
+One can see clearly that this extension of the interaction range beyond the cutoff (or the receptive radius of the GNN) does
+not apply to the case in which forces are predicted directly. Considering for simplicity the case of a three-body model in
+which the potential contribution from each atomic environment i can be written as a sum of a function of its distances with
+two neighbors j and k, and the distance between the neighbors rjk
+                                                              X
+                                                      Vi =           v(rij , rik , rjk ),                                            (10)
+                                                               j,k
+
+
+one sees that the dependency on interatomic distances greater than the cutoff is due to the relative position of atoms other
+than the central atom. Thus, a direct model that predicts a similar 3-body force
+                                                              X
+                                                       fi =          f (rij , rik , rjk ),                                           (11)
+                                                              j,k
+
+
+or any other functional form limited to the neighbors of the i-th atom, only contains information on atoms within the cutoff.
+The dependency of fi on the coordinates of far-away atoms is a consequence of the fact that the total energy is built as a sum
+over multiple centers. It is only through the terms of the form ∂Vj /∂ri that occur naturally when evaluating forces through
+back-propagation, than the force depends on the position of the neighbor’s neighbors. More generally, in a message-passing
+implementation, backpropagation ensures that force predictions benefit from an effective receptive radius that is twice that
+of atom-centered energy predictions.
+A further concern for direct force models is that – at least for low-body-order models – atom-centered descriptors can
+be shown to have low resolving power, with pairs of distinct atomic environments having precisely the same representa-
+tion (Pozdnyakov et al., 2020). For all known degeneracies, descriptors centered on other atoms allows distinguishing
+the structure as a whole, and as a consequence the total energy and interatomic forces can be still differentiated. This
+would not be the case for direct force predictions, which would fail completely to differentiate degenerate pairs when using
+atom-centered low-body-order models, and would be more sensitive to numerical instabilities for higher-order models.
+In practice, we find consistent evidence of the practical impact of these considerations. As an example, Table 3 reports the
+accuracy of PET-C and PET-NC models, using 2 and 3 message passing layers. It can be seen that the accuracy of the direct
+force model benefits much more from the increase in the receptive radius.
+
+                               Model        2 message-passing layers              3 message-passing layers
+                               PET-C                    20.8                                 18.6
+                               PET-NC                   32.8                                 24.3
+
+Table 3. Test-set force MAE, in units of meV/Å, for conservative and non-conservative force-only PET models using 2 and 3 message-
+passing layers, respectively. Upon increasing the receptive radius, the accuracy of the NC model improves by around 30%, while the
+accuracy of the C model only improves by around 10%.
+
+
+
+                                                                       15
+                                                 The dark side of the forces
+
+D. Models and architectures
+Even though the main text is focused on custom-trained models, and emphasize the most accurate non-conservative model
+we could obtain, we also want to provide an overview of the behavior of a less-performant custom-trained model, and of
+several publicly available general-purpose models. A comprehensive list of the models we consider is reported in Table 4.
+
+          Model                 Description
+          ORB-v2                Non-equivariant, non-conservative model, trained on the Alexandria and MPtrj
+                                datasets.
+          Equiformer            Equivariant, non-conservative model, trained on the Alexandria and MPtrj
+                                datasets.
+          MACE-MP-0             Equivariant, conservative model, trained on the MPtrj dataset.
+          SevenNet              Equivariant, conservative model, trained on the MPtrj dataset.
+          PET-C                 A re-implementation of the PET architecture, trained on the bulk water dataset.
+          PET-NC                A modified PET architecture, trained on the bulk water dataset.
+          SOAP-BPNN-C           A SOAP-BPNN architecture, trained on the bulk water dataset.
+          SOAP-BPNN-NC          A modified SOAP-BPNN architecture, trained on the bulk water dataset to
+                                directly predict forces.
+
+                                          Table 4. Models used in the present work.
+
+It should be noted that:
+
+  • The ORB model (orb-v2) is more accurate than MACE-MP-0 and SevenNet, as the former is pre-trained on the
+    Alexandria (Schmidt et al., 2024) dataset and then fine-tuned on MPtrj, while the latter two are only trained on MPtrj.
+    Despite its higher accuracy, ORB yields problematic physical behavior as discussed in this work.
+  • The PET-NC and SOAP-BPNN-NC models are simply obtained from the respective conservative models by changing
+    the output head to predict atomic forces directly. In the case of SOAP-BPNN-NC, an equivariant vector representation
+    is generated internally thanks to the formalism in Villar et al. (2021). In both cases, due to the marginal increase
+    in number of parameters in the force head, the non-conservative models have slightly more parameters than their
+    conservative counterparts. Within the calculators for these two non-conservative models, we implemented the net force
+    removal suggested in Neumann et al. (2024).
+
+The architectures of these models are further described here:
+
+  • ORB: A rotationally unconstrained and non-conservative architecture, presented in Neumann et al. (2024).
+  • MACE: A rotationally invariant and conservative architecture, presented in Batatia et al. (2022).
+  • SevenNet: The SevenNet model (Park et al., 2024) makes use of the NequIP (Batzner et al., 2022) architecture, which
+    is rotationally invariant and conservative.
+  • PET-C and PET-NC: A re-implementation of the architecture in Pozdnyakov & Ceriotti (2023), which is rotationally
+    unconstrained and conservative. The non-conservative version changes the final head to predict forces instead of
+    energies.
+  • SOAP-BPNN-C and SOAP-BPNN-NC: A Behler-Parrinello neural network architecture (Behler & Parrinello, 2007),
+    using SOAP (Bartók et al., 2013) descriptors. This architecture is rotationally invariant and conservative. The non-
+    conservative version makes use of the formalism in Villar et al. (2021) to predict forces (a vector) from a scalar internal
+    representation.
+
+D.1. Timings of general-purpose models
+Table 5 shows the timings for the four general-purpose models tested in this work, compared with the PET models we train
+here. The large version of MACE-MP-0 was used in this table and throughout this work. The small version of EquiformerV2
+was used in this table and throughout this work, except to calculate work loops, where the large version was used.
+
+                                                             16
+                                                          The dark side of the forces
+
+
+
+
+Table 5. Timings (ms) of general-purpose models on a bulk water NVE simulation with 64 water molecules (192 atoms), on an Nvidia
+H100 GPU. Note that timings refer to the overall evaluation time for a single configuration, performed using the ASE calculator distributed
+with each model, and therefore may contain overheads that are not directly associated with the model evaluation (neighbor list construction,
+etc.). The timing of the water-focused PET-C and PET-NC are also reported, for reference.
+
+                              M ODEL                   T IMING PER STEP       T IMING PER STEP PER ATOM
+                              MACE (C)                          26.9                      0.140
+                              S EVEN N ET (C)                   52.8                      0.275
+                              ORB (NC)                          11.9                      0.062
+                              E QUIFORMER (NC)                  1580                      8.230
+                              PET (C)                           19.4                      0.101
+                              PET (NC)                          8.58                      0.047
+
+
+
+
+                 A RCHITECTURE        T YPE    T RAINING        MAE(V )      MAE(f )    T IMING ( TR .)    T IMING ( EV.)
+                 PET                    –           V              4.7       1025.6*          5.48            0.0264
+                 PET                    C           f            1.26**        18.6          15.30            0.0713
+                 PET                    C          V, f           0.55        19.4           15.31            0.0716
+                 PET                   NC           f               –         24.3           5.55             0.0224
+                 PET                   NC          V, f           1.42        24.8           5.63             0.0269
+                                       C                                       20.2                           0.0715
+                 PET-M                             V, f            0.59                      15.43
+                                       NC                                      26.7                           0.0265
+                 PET-M-FT***            C          V, f            0.50        20.0        56.42***           0.0714
+                 SOAP-BPNN              –           V             2.16        177.0*          3.57            0.1065
+                 SOAP-BPNN              C           f            1.89**        40.6          36.10            0.6394
+                 SOAP-BPNN              C          V, f           1.38         41.4          36.20            0.6367
+                 SOAP-BPNN             NC           f               –         112.2          5.81             0.1515
+                 SOAP-BPNN             NC          V, f           3.20        111.9          6.34             0.1674
+
+
+Table 6. Test errors (energies in meV per atom, forces in meV/Å), training and evaluation timings for models trained on the bulk water
+dataset. Training timings correspond to the time to compute a single epoch (in seconds) on 4 H100 GPUs with a total batch size of 64.
+Evaluation timings correspond to the average time per atom (in ms) for energy and/or force evaluations for single structures across the test
+set.
+*The force errors of energy-only models are computed by evaluating forces as derivatives of the energies, despite the fact that no explicit
+force training took place.
+**A linear fit was executed to minimize training errors on energies for the force-only models, in order to calculate the best constant shift
+for the fictitious energy of which the forces are the derivatives.
+***Trained on a single GPU as opposed to four, and for a single day as opposed to two.
+
+
+
+
+                                                                       17
+                                                              The dark side of the forces
+
+    D.2. Accuracy and timings of water models
+    Similarly to Table 1, we evaluate the accuracy of the SOAP-BPNN architecture on the same bulk water dataset under
+    different training conditions. The results in Table 6 show, once again, that the lack of energy conservation without a
+    corresponding data augmentation strategy seems to hurt the accuracy of the models.
+    In general, although the non-conservative models trained in this work on the bulk water dataset (with little more than 250000
+    targets) seem to show worse accuracy, training on larger datasets has shown that non-conservative models can be competitive
+    in accuracy with conservative models. This is not only because energy conservation can then be effectively learned, but also
+    because non-conservative models, by virtue of being faster, can train for a larger number of epochs at a given computational
+    budget. Training duration can be the limiting factor to accuracy on large datasets.
+    The timings of the PET models are fully consistent with the theoretical cost analysis in Appendix B.
+    In contrast, the SOAP-BPNN models rely on the SOAP atomic descriptors as implemented in
+    https://github.com/metatensor/featomic. Within this library for atomistic descriptors, three imple-
+    mentation details account for the SOAP-BPNN timings: 1) although the models are trained and evaluated on GPU, the
+    feature calculation is executed on CPU; 2) feature calculation is parallelized across different structures, but not different
+    chemical environments within the same structure (effectively meaning that no evaluation-time parallelization is present); 3)
+    the equivariant calculation of forces makes it necessary to evaluate additional features with an angular momentum quantum
+    number of 1.
+
+    E. Non-conservative work
+    Since non-conservative models do not obey equation (5), we evaluate indicative magnitudes of the work over a closed loop
+    for the non-conservative models considered in this study. These are shown in Figure 6.
+    The closed path corresponds to the rotation and deformation of a single water molecule within a liquid water structure,
+    while keeping all the other atoms fixed. Figure 6 shows the cumulative work of the models considered in this study. Even
+    though the cumulative work curves are very similar, the conservative models results in zero overall work on the closed path;
+    meanwhile, the non-conservative models leads to an overall non-zero work along the path.
+
+
+   Figure 6. Cumulative work along a closed path for all models considered in the study. While the total work for the conservative models is
+   zero up to machine precision, the non-conservative models exhibit a non-zero total work (ORB: 15 meV, Equiformer: -241 meV, PET-NC:
+   132 meV, SOAP-BPNN-NC: -410 meV). The first figure from the left shows the overall path, while the other two zoom in on the last part.
+                       0                                           PET-NC         PET-C
+                                                                                                0.10
+                                                        0.4        SOAP-NC        SOAP-C
+
+
+
+
+Cumulative work / eV
+                                                                   ORB            SevenNet
+                       10                               0.2        Equiformer     MACE-MP0      0.05
+                       20                               0.0                                     0.00
+                       30                               0.2                                     0.05
+                       40                               0.4
+                                                                                                0.10
+                            0          500       1000            980        990    1000             990            995       1000
+                                Structure number                  Structure number                          Structure number
+
+
+
+
+                                                                          18
+                                                           The dark side of the forces
+
+ F. Geometry optimization
+ F.1. Optimization trajectories
+We compare the behavior of different models when quenching a liquid-water snapshot, optimizing it towards the nearest
+potential energy minimum, (Figure 7) showing both the convergence in terms of the force modulus, and the trajectory of
+configurations as a latent-space projection built on geometric descriptors. The latent-space plots are obtained by computing
+SOAP descriptors for all configurations in all the trajectories, averaged over atomic centers in each structures, and are
+projected on the axes of highest variability using simple Principal Component Analysis (PCA). The qualitative features of
+the latent space plots are insensitive to the details of the SOAP descriptors used.
+
+              101
+                          SOAP-BPNN-NC          PET-NC
+                          SOAP-BPNN             PET
+              100         ORB
+
+             10 1              PCA[1]
+
+|f| / eV/Å   10 2
+                                                 PCA[2]
+             10 3
+             10 4
+                    101            102                    103
+                                         step
+Figure 7. Force modulus as a function of step along FIRE (left) and BFGS (right) optimization trajectories of a liquid water snapshot, for
+different MLIPs. The inset shows a latent-space projection of the trajectory in configuration space; the triangle indicates the starting
+configuration, and the squares the final one
+
+We discuss first the results for the FIRE algorithm (left panel in Figure 7). Despite the very different level of accuracy,
+the conservative SOAP-BPNN model and PET converge to a similar configuration (with PET forces saturating at about
+10−3 eV/Å, due to numerical precision). The non-conservative PET-NC model also converges to a similar structure,
+indicating that a sufficiently accurate non-conservative model can indeed be used with a gradient-based structural optimization
+algorithm. The non-conservative SOAP-BPNN model, however, displays a catastrophic mode of failure, with the force never
+decreasing below 0.1 eV/Å, and the trajectory drifting off in a different direction without ever reaching a stable state. ORB
+converges to a very different structure than the other models, which might be due to the different reference DFT functional
+used for training.
+ The BFGS optimization trajectories (right panel in Figure 7) are very similar to those obtained with FIRE, except for
+ SOAP-BPNN-NC whose catastrophic failure is apparen in the trajectory going in a completely different direction, and in the
+ force modulus never converging below 0.1 eV/Å. Thanks to the second-order nature of LBFGS, convergence is much faster,
+ until PET-based models reach their precision limit. ORB shows an interesting behavior, as it reaches a similar configuration
+ as with FIRE, but the force modulus exhibits large fluctuations, and it would be hard to determine a clear threshold to
+ establish convergence. On a practical level, this experiment shows that non-conservative forces make geometry optimization
+ more fragile – with first-order methods being somewhat more stable although slower – and require careful choice of the
+ minimization algorithm and its convergence parameters.
+
+ F.2. Failure rates
+ In Table 7, geometry optimization is attempted with a range of conservative and non-conservative models. For each model,
+ three cases are considered: 1) geometry optimization of gas-phase water molecules, starting from the experimental geometry,
+ randomly displacing the coordinates with a standard deviation of 0.5 Å, and relaxing the geometry; 2) geometry optimization
+ of bulk water structures from the test set of (Cheng et al., 2019), 3) geometry optimization of molecules chosen at random
+ from the QM9 dataset (Ramakrishnan et al., 2014), randomly displacing the coordinates with a standard deviation of
+ 0.5 Å before relaxing the structures. Geometry optimization is performed with the L-BFGS (Liu & Nocedal, 1989) algorithm
+ as implemented in ASE (Hjorth Larsen et al., 2017). Optimization runs that do not converge within 1000 optimization steps
+ are considered as failed.
+
+                                                                       19
+                                                    The dark side of the forces
+
+
+                                     Table 7. Percentage success rate in geometry optimization.
+
+                              M ODEL                            H2 O(g)    H2 O(l)   QM9      MP TRJ
+                              ORB- LOW- PRECISION * (NC)           3          0         0         10
+                              ORB (NC)                            69          9         1         76
+                              S EVEN N ET (C)                     81         88        92         97
+                              MACE (C)                            94         83        94         99
+                              PET-NC (NC)                         75         52         –         –
+                              PET-C (C)                           83         58         –         –
+                              SOAP-BPNN-NC (NC)                   79         0          –         –
+                              SOAP-BPNN-C (C)                     91         59         –         –
+*This is an ORB model used with its default settings, which lower the precision of matrix multiplications. Given the results here, we
+deactivated this setting for all ORB results shown in the rest of this work.
+
+Non-conservative models consistently show lower rates of success in geometry optimization. It should be noted that strict
+convergence criteria were used (fmax=1e-5Å for molecules and fmax=1e-4Å for bulk systems).
+
+
+
+
+                                                                 20
+                                                          The dark side of the forces
+
+G. Additional molecular dynamics results
+G.1. NVE temperature profiles
+We repeat the experiments in Sec. 4.4 using all the potentials we tested. As shown in Figure 8, all conservative models
+yield a stable kinetic temperature profile (there is a spread in the average temperature that is compatible with the nature of
+constant-energy trajectories) and all the non-conservative models show noticeable temperature drift. Equiformer displays a
+drift comparable to PET-NC, which is remarkable for a general-purpose model (but is too expensive to be used in practical
+simulations). SOAP-BPNN-NC shows an extremely large drift, consistent with the fact it is a very inaccurate model.
+
+                                         800
+                                                              PET-NC                PET-C
+                                         700                  SOAP-NC               SOAP-C
+                                                              ORB                   SevenNet
+                                                              Equiformer            MACE-MP0
+                                         600
+                                   T/K   500
+                                         400
+                                         300
+                                                0          10000       20000         30000         40000
+                                                                        step
+Figure 8. A thorough comparison of kinetic temperature profiles for NVE MD trajectories performed with different conservative (right
+column in the legend) and non-conservative (left column in the legend) ML potentials.
+
+                Graphene               Amorphous carbon            FCC aluminium             Benzene on graphene   Alanine dipeptide in water
+      800
+
+      600
+T/K   400
+                      ORB
+                      Equiformer
+      200             SevenNet
+                      MACE-MP0
+            0    10000       20000 0        10000     20000 0          10000       20000 0          10000     20000 0        10000      20000
+                  step                       step                       step                         step                     step
+
+
+Figure 9. Kinetic temperature profiles for NVE MD trajectories, using three universal models, for three different materials, as indicated.
+Simulations for graphene and amorphous carbon were performed with a time step of 1 fs, and those for aluminum with a time step of 2 fs,
+reflecting the different timescale of atomic motion.
+
+We also perform NVE MD trajectories on a wider range of chemical systems using the general-purpose potentials MACE-MP,
+SevenNet, Equiformer and ORB. Fig. 9 shows that the non-conservative models ORB and Equiformer exhibit a strong
+kinetic energy gain during the simulation of graphene, amorphous carbon and FCC aluminium, with ORB exhibiting an
+explosive behavior for graphene (possibly because it is outside the training set). The conservative models exhibit stable
+temperature fluctuations, even for amorphous carbon where the high distortion of the structure leads to higher initial energy
+and broader kinetic energy fluctuations. The order of magnitude of the drift is similar for systems with different degrees of
+chemical heterogeneity.
+
+
+
+
+                                                                      21
+                                                                    The dark side of the forces
+
+G.2. NVT
+We repeated the bulk water experiments in Sec. 4.5 with a wider range of models and thermostats. The results are summarized
+in Table 8.
+
+Table 8. Average kinetic temperatures (in K) for different models and thermostatting schemes. For SVR, we show also the separate kinetic
+temperature computed only for hydrogen and oxygen atoms. All thermostat time constants are reported in units of fs.
+
+              T HERMOSTAT TYPE                            WN                WN            WN            SVR              SVR        SVR
+              T HERMOSTAT τ                               10                100           1000           10               10         10
+              ATOMS                                       ALL               ALL            ALL           ALL             H            O
+              ORB (NC)                                300.4 (0.1)        304.2 (0.2)    351.0 (0.6)   301.0 (0.1)   336.2 (0.8)   229.5 (1.6)
+              MACE (C)                                300.1 (0.1)        300.4 (0.2)    300.1 (0.4)   300.1 (0.1)   299.0 (0.6)   302.3 (1.1)
+              S EVEN N ET (C)                         300.0 (0.1)        300.1 (0.2)    299.9 (0.5)   300.1 (0.1)   299.9 (0.4)   300.5 (1.1)
+              PET-NC (NC)                             300.1 (0.1)        301.4 (0.2)    312.8 (0.5)   300.3 (0.1)   295.6 (0.3)   309.9 (0.6)
+              PET-C (C)                               300.1 (0.1)        300.1 (0.2)    300.3 (0.7)   300.1 (0.1)   299.6 (0.3)   301.0 (0.7)
+              SOAP-BPNN-NC (NC)                       301.9 (0.1)        340.7 (0.2)    1.2 · 106     309.7 (0.1)   265.5 (0.2)   399.5 (0.4)
+              SOAP-BPNN-C (C)                         299.9 (0.1)        299.8 (0.4)    300.5 (0.5)   300.1 (0.2)   298.9 (0.7)   302.4 (1.5)
+
+
+
+G.3. Direct stresses: NPH and NPT
+In order to test the effects of direct stress prediction, which can be employed in constant-pressure simulations, we run MD in
+the NPH and NPT ensembles. In this case, as a means to disentangle the effects of non-conservative stresses from those
+of non-conservative forces, we run the “non-conservative” (NC) models using non-conservative stresses and conservative
+forces. For these simulations, we employ the PET-MAD general-purpose potential (Mazitov et al., 2025), whose version 1.1
+is trained to provide both conservative and non-conservative stresses.
+
+                                                 15
+                                                                                           PET-MAD-C, NPH
+                                                                                           PET-MAD-NC, NPH
+                                                                                           PET-MAD-C, NPT
+                                                 14                                        PET-MAD-NC, NPT
+                                                                                           PET-MAD-M, NPT MTS-8
+
+                                 Cell edge / Å   13
+
+                                                 12
+                                                      0              2            4       6              8          10
+                                                                                  Time / ps
+Figure 10. Length of the cubic cell edge, as a function of time, during NPH and NPT simulations of liquid water using the PET-MAD
+model, in conservative mode, non-conservative mode, and using multiple time stepping with M = 8. The Bussi-Zykova-Parrinello
+barostat (Bussi et al., 2009) was used in all simulations.
+
+Fig. 10 shows how the conservative runs produce reasonable cell volumes, both in the constant-enthalpy NPH ensemble
+and the isothermal-isobaric NPT ensemble. The non-conservative NPH run shows rapid and unphysical expansion of the
+cell, which is reflected in the rapid growth in the enthalpy of the simulation (which is instead conserved very well by the
+conservative NPH run). This “explosion” of the cell is prevented by the thermostat in the NPT ensemble, although the exact
+value of the cell parameter is inconsistent with the conservative NPT baseline. Finally, we show a MTS (multiple time
+stepping, see App. I) run using M = 8, which correctly reproduces the cell volume of the conservative NPT simulation
+while only evaluating the more expensive conservative stresses every 8 time steps. This simple example illustrates how all
+the considerations that were made for non-conservative forces in the context of NVE/NVT simulations are also applicable to
+NPH/NPT simulations when using direct stress predictions.
+
+                                                                                   22
+                                                            The dark side of the forces
+
+                                                 600
+                                                 500
+
+
+                               Temperature / K
+                                                 400
+                                                 300
+                                                 200       PET-MAD-C             PET-MAD-NC
+                                                           PET-MAD-C, O          PET-MAD-NC, O
+                                                           PET-MAD-C, H          PET-MAD-NC, H
+                                                 100
+                                                       0      2           4       6       8      10
+                                                                          Time / ps
+Figure 11. Total and atom-type-resolved kinetic energy profiles for NVE simulations of liquid water using the conservative and non-
+conservative modes of the PET-MAD (Mazitov et al., 2025) potential. In the non-conservative case, energy conservation is enforced by
+velocity rescaling.
+
+
+G.4. Energy conservation by velocity rescaling
+The easiest way to stabilize NVE molecular dynamics using direct forces is to rescale the velocities (or, equivalently,
+the momenta) at each step to enforce conservation of energy, as proposed in Bigi et al. (2025). While this leads to an
+improvement, in the sense that NVE trajectories are guaranteed to be stable, many fundamental issues remain. As an
+example, Fig. 11 compares traditional NVE MD with a conservative model to NVE MD with a non-conservative model,
+where the latter is stabilized by velocity rescaling. The conservative model shows kinetic temperatures close to the
+temperature at which the starting structure was equilibrated, both for the overall simulation and for individual atomic types.
+In contrast, the non-conservative run departs from the equilibration temperature and, more importantly, it shows much
+different average kinetic energies for atoms belonging to different chemical species. This behavior is in violation of the
+principle of equipartition of energy, and it is a manifestation of the fact that the target ensemble (NVE, in this case) is not
+being sampled correctly. This is very similar to what we observe with global thermostats, and is an analogous manifestation
+of the fact that enforcing the correct values of global quantities does not guarantee that all the parts of a simulation will
+equilibrate correctly, in the absence of a well-defined Hamiltonian.
+
+
+
+
+                                                                          23
+                                                 The dark side of the forces
+
+G.5. Structural correlations
+Even though the kinetic temperature can be used as a diagnostic of the ensemble error, it does not guarantee that the
+trajectory yields structural properties consistent with the correct NVT ensemble. We compute different kinds of structural
+correlation functions: the O-O and H-H pair correlation functions gOO (r) and gHH (r) reports on the probability of finding
+two oxygen or two hydrogen atoms at a given distance r, and the orientational correlation function cuu (r) reports the
+average scalar product between the orientation vector of two water molecules at a given distance. Results for the PET models
+(Figure 12) show that structural correlations are consistent for all thermostatting schemes for the conservative runs. The
+10 fs white-noise Langevin runs exhibit larger error bars, consistent with the poor sampling efficiency. All non-conservative
+PET-NC runs show statistically significant discrepancies with respect to the conservative reference. Although it is not
+possible to rigorously disentangle sampling errors due to non-conservative forces, and the overall difference in the force
+values between PET and PET-NC, we hypothesize that the differences seen in the strong-Langevin-coupling limit are due to
+differences in the underlying forcefield, while the differences for the weaker-coupling τ = 1 ps and global SVR thermostat
+runs are associated with the deviation in the sampling temperature.
+For the ORB models (Figure 13) we consider the high-coupling limit as the most reliable reference of the expected
+correlations with correct sampling. The large difference in reference correlations with respect to the custom-trained PET
+models is due to the difference in reference DFT energetics: the PBEsol functional used in MPTraj is known to yield severely
+overstructured water, while the revPBE0-D3 functional used in (Cheng et al., 2019) was shown to give good agreement with
+experimental data. For the purpose of this work, however, this difference is not important, and the main takeaway from
+Figure 13 is that for ORB there are large discrepancies between different thermostatting schemes, which is indicative of the
+artifacts induced by non-conservative forces, and the difficulty in mitigating them using thermostats.
+
+
+
+
+                                                             24
+                                                              The dark side of the forces
+
+
+
+
+                        Reference (PET-C, SVR)                                       -ref. PET-C                            -ref. PET-NC
+                                                             0.10                                                                     SVR = 10 fs
+                2                                                                                                                     WN = 1 ps
+                                                                                                                                      WN = 100 fs
+                                                             0.05                                                                     WN = 10 fs
+       gOO(r)   1                                            0.00
+                                                             0.05
+                0                                            0.10
+                    2            3       4       5       6          2           3         4        5       62           3         4        5        6
+                                                             0.05
+                2
+                                                             0.00
+       gHH(r)
+                1
+                                                             0.05
+                0
+                    1        2       3       4       5   6          1       2         3       4        5   61       2         3       4        5    6
+              0.4                                            0.04
+                                                             0.02
+     cuu(r)   0.2                                            0.00
+                                                             0.02
+              0.0                                            0.04
+                         3           4           5       6              3              4          5        6    3             4           5         6
+                                      r/Å                                               r/Å                                    r/Å
+
+Figure 12. Structural correlations for simulations of room-temperature water using different PET models. From top to bottom, the rows
+report the O-O correlation function, the H-H correlation function, and the orientational correlation function. The left column shows the
+reference value (SVR thermostat for the conservative PET model), the middle column the differences with respect to this reference for
+PET-C using different thermostats, and the right column differences to the reference using the non-conservative PET model and different
+thermostats. Shaded areas encompass two standard errors around the mean values.
+
+
+
+
+                                                                                25
+                                                                 The dark side of the forces
+
+
+
+
+                                         Reference (ORB, WN = 10 fs)                                     -ref. ORB
+                                                                                  0.75                           SVR = 10 fs
+                                     3                                                                           WN = 1 ps
+                                                                                  0.50                           WN = 100 fs
+                                     2                                            0.25
+                            gOO(r)
+                                     1                                            0.00
+                                     0                                            0.25
+                                         2           3       4       5       6           2           3       4       5         6
+
+                                     2                                             0.1
+                            gHH(r)   1                                             0.0
+                                                                                   0.1
+                                     0
+                                         1       2       3       4       5   6           1       2       3       4       5     6
+                                                                                   0.1
+                                   0.4                                             0.0
+                                                                                   0.1
+                          cuu(r)   0.2
+                                                                                   0.2
+                                   0.0                                             0.3
+                                             3           4           5       6               3            4          5         6
+                                                          r/Å                                              r/Å
+
+Figure 13. Structural correlations for simulations of room-temperature water using the ORB model and different thermostatting scheme.
+From top to bottom, the rows report the O-O correlation function, the H-H correlation function, and the orientational correlation function.
+The left column shows the reference value (strong-coupling, τ = 10 fs white-noise Langevin thermostatting) and the right column the
+differences with respect to this reference for ORB trajectories using different thermostats. Shaded areas encompass two standard errors
+around the mean values. Note the much larger range of the discrepancies with respect to the PET-NC runs in Figure 12.
+
+
+
+
+                                                                             26
+                                                    The dark side of the forces
+
+G.6. Generalized Langevin equations
+The generalized Langevin equation (GLE) thermostat (Ceriotti et al., 2010) is a local stochastic thermostat that extends
+traditional Langevin dynamics by introducing a history-dependent friction term. The possibility of tuning the memory
+kernel of the friction and the noise allows tuning the effect of the thermostat, by effectively coupling different modes of the
+physical system to different friction timescales. Thanks to this construction, near-optimal damping can be achieved for a
+large range of characteristic frequencies, as opposed to the traditional Langevin thermostat, which only achieves optimal
+damping (and therefore sampling) for a narrow frequency range.
+Among the many different applications of GLE thermostats, that of Ref. 50 appears particularly suited to contrast the
+temperature drift observed with the direct prediction of forces: by applying a high-pass filter to the noise, it allows to
+thermostat aggressively the fast degrees of freedom of the system, without disrupting the long-time dynamics and the
+sampling of the diffusive degrees of freedom. We use the same parameters that have been used successfully to control
+temperature drift caused by the integration errors for aqueous systems in Ref. 50, using 1/γ0 = 83.33 ps, 1/γ∞ = 10 fs,
+and ωF = 300 ps−1 , where all GLE parameters refer to their definition in Morrone et al. (2011).
+We probe the behavior of conservative and non-conservative models under GLE-thermostatted dynamics. Table 9 shows that
+this GLE, that could successfully control integration errors for an empirical water model, fails catastropically when used
+with non-conservative models. This can be explained by the observation that the near-diffusive modes, which are those
+that show the most non-conservative behavior according to the analysis in Figure 1, are almost not damped at all by this
+thermostat. Even though one could in principle design a low-pass filter, or use more aggressive parameters for this high-pass
+thermostat, the analysis performed in Ref. 50 indicates that such GLE would slow down long-time sampling, exactly as it is
+the case for a traditional Langevin thermostat. By reducing the sampling efficiency, this effect negates the advantages of
+direct force prediction.
+
+
+Table 9. Average kinetic temperatures (in K) for different models and atomic species, for the molecular dynamics of water using a GLE
+thermostat.
+                                T HERMOSTAT TYPE               GLE            GLE            GLE
+                                ATOMS                           ALL             H              O
+                                ORB (NC)                    1181.5 (5.2)   1099.2 (4.6)   1362.5 (7.7)
+                                MACE (C)                    303.1 (1.2)     301.7 (1.1)   306.0 (1.6)
+                                S EVEN N ET (C)             304.1 (0.8)     302.6 (1.3)   307.3 (2.4)
+                                PET-NC (NC)                  524.1 (4.6)   495.5 (4.0)    585.5 (5.9)
+                                PET-C (C)                    301.8 (1.2)   301.6 (1.2)    302.2 (1.6)
+                                SOAP-BPNN-NC (NC)            1.6 · 108     2.1 · 108      5.9 · 107
+                                SOAP-BPNN-C (C)              301.3 (1.6)   301.0 (1.4)    301.9 (1.8)
+
+
+
+
+                                                                 27
+                                                                    The dark side of the forces
+
+H. Conservative fine-tuning
+Figure 14 and Figure 15 show that a non-conservative model can be trained to its asymptotic accuracy with a 2-4 times
+smaller investment of computational resources. This is consistent with previous observations (Gasteiger et al., 2021), and
+one of the main reasons for which direct prediction of the forces has been proposed in previous work. More importantly,
+the figures also show training curves corresponding to a model that has been initially trained with direct V, f heads (i.e.,
+non-conservatively), and whose V head was then “fine tuned” using energy and back-propagated forces (while the non-
+conservative force head was also trained to avoid its degradation). This “PET-M-FT” model achieves the accuracy of a
+conservative model trained “from scratch” in about 1/3rd of the total training time, demonstrating that this simple fine-tuning
+strategy makes it possible to recover most of the speed-up afforded by direct-force training, while having the convenience
+and accuracy of a conservative model. It might also be possible (although technically more complicated) to alternate gradient
+steps using only the direct head and steps using the conservative forces to achieve a similar effect.
+
+
+Figure 14. Training curves (showing validation MAE force error as a function of the GPU time expenditure on a NVIDIA H100) for a
+conservative PET-C model, for the non-conservative head of a PET-NC model, and for the fine-tuning of a conservative model initialized
+from the potential energy head of the PET-NC model. Training was conducted on the liquid water dataset.
+                                                          400                               PET-C
+                                                                                            PET-C, fine-tuned
+
+
+
+
+                                 Val. force MAE / meV/Å
+                                                                                            PET-NC
+                                                          200
+                                                          100
+                                                           50
+
+                                                           20
+                                                                5   10       20        50         100      200
+                                                                               GPU hours
+
+
+Figure 15. Training curves (showing validation MAE force error as a function of the GPU time expenditure on a NVIDIA H100) for a
+conservative PET-C model, for the non-conservative head of a PET-NC model, and for the fine-tuning of a conservative model initialized
+from the potential energy head of the PET-NC model. Training was conducted on a small subset of OC20 (Chanussot et al., 2021) (training
+on the first 15000 samples of the 200k S2EF training set, and using the next 5000 for validation).
+                                                          200
+                                                                                           PET-C
+                                                                                           PET-NC
+
+
+
+
+                                Val. force MAE / meV/Å
+                                                                                           PET-M, fine-tuned
+
+
+
+                                                          100
+
+                                                          70
+                                                                2     5       10     20            50      100
+                                                                              GPU hours
+
+It should be noted that models trained with this fine-tuning procedure will offer accurate conservative and non-conservative
+forces, making them suitable for the multiple time stepping strategy discussed in Section 4.8. The overall procedure would
+allow the resulting models to be trained and evaluated at the computational cost of non-conservative models, while achieving
+the levels of accuracy and energy conservation of conservative models.
+
+                                                                                28
+                                                    The dark side of the forces
+
+                Type     Relative speed (O on Sc-Co-Al alloy)         Relative speed (water)    Relative speed (theoretical)
+             NC                                               1.0                        1.0                              -
+               C                                             1.93                       1.92                      F = 1.925
+      MTS, M = 4                                             1.50                       1.45                           1.48
+      MTS, M = 8                                             1.19                       1.18                           1.24
+     MTS, M = 16                                             1.05                       1.04                           1.12
+
+Table 10. Empirically observed slowdown of conservative MD simulations for multiple time-stepping with different strides M , as well
+as a simulation where the conservative forces are evaluated at every step, compared with the theoretical cost 1 + F/M with F = 1.925.
+Timings are given for selected systems from the experiments in Section 4.4 and Appendix G, using runs in the NVE ensemble.
+
+
+I. Multiple time stepping
+Multiple time stepping (MTS) is based on a Trotter splitting of the Liouville operator (Tuckerman et al., 1992), and can be
+applied any time one can decompose a potential into a “slowly varying” and expensive to compute part Vslow and a “quickly
+varying”, inexpensive part Vfast . The dynamics is propagated using Vfast and a small discrete time step ∆t. Every M steps,
+one applies a correction based on Vslow . In the case of a Velocity-Verlet integrator (Verlet, 1967), a MTS integrator amounts
+to:
+                                         p ← p + M fslow ∆t/2
+                                                                   
+                                           p ← p + ffast ∆t/2     
+                                           q ← q + p ∆t/m            Repeat M times                                       (12)
+                                                                   
+                                           p ← p + ffast ∆t/2
+                                                                   
+
+                                          p ← p + M fslow ∆t/2
+
+where q and p indicate the vectors containing positions and momenta of all particles, and m the masses. Forces have to be
+recomputed if they are needed after a position update. In the limit of ideal time scale separation, the resulting dynamics (and
+the sampled ensemble for constant-temperature simulations) is consistent with Vslow , at a much-reduced cost: Letting F
+denote the slowdown of “slow” over “fast” forces, and assuming that an evaluation of “slow” forces also yields the “fast”
+ones, MTS reduces the theoretical cost of well-behaved molecular dynamics from F to 1 + (F − 1)/M . Choosing M
+therefore requires a trade-off between accuracy and speed. Morrone et al. (2011) discusses the failure modes of MTS at
+high M , and shows how to use thermostats for mitigation.
+Here we use the implementation in i-PI (Kapil et al., 2016; Litman et al., 2024), and use the non-conservative forces as
+the “fast” forces, ffast = fNC , and the difference between conservative and non-conservative forces as a slow correction,
+fslow = fC − fNC . Our current implementation does not reuse computation between the conservative and non-conservative
+forces, and so the practical overhead is given by 1 + F/M , with an empirical factor of F ≈ 2 (see Appendix B). As seen in
+Table 10, empirical timings match the theoretical ratios rather closely.
+NVE MD trajectories based on the MTS algorithms are stable up to a time step factor of M = 8, while trajectories with
+M = 16 become unstable and show a large kinetic temperature drift (Figure 16). Note that the cause of drift here is different
+than for non-conservative models, and is associated with resonances between the natural dynamics of the fast degrees of
+freedom and the integration errors due to imperfect time scale separation. Running at M = 8 recovers almost in full the
+speed-up associated with the use of a non-conservative force head, while allowing to run stable constant-energy trajectories.
+Using a SVR thermostat makes it possible to sample the NVT ensemble, with excellent agreement with the reference
+PET-C trajectories (Figure 17). The unstable MTS-16 trajectories, on the other hand, show large structural anomalies,
+that might be in part corrected by application of a suitably tuned colored-noise thermostat (Morrone et al., 2011). Given
+that the computational savings would be negligible, however, there is little reason to use M greater than 8 when using
+non-conservative forces in the fast step.
+
+
+
+
+                                                                 29
+                                                                    The dark side of the forces
+
+
+
+                                             800
+                                                                  PET-C, NVE
+                                             700                  PET-NC, NVE
+                                                                  PET-M, NVE MTS-4
+                                                                  PET-M, NVE MTS-8
+                                             600                  PET-M, NVE MTS-16
+                                     T/K     500
+                                             400
+                                             300
+                                                         0              10000        20000           30000           40000
+                                                                                      step
+Figure 16. A comparison of kinetic temperature profiles for NVE MD trajectories of bulk water performed with the PET-M model and
+different orders of MTS integration. The step numbers refer to the “fast” evaluation.
+
+
+
+
+                                         Reference (PET-C, SVR = 10 fs)                                  -ref. PET-M, MTS
+                                                                                       0.6
+                                                                                                                         MTS, M = 4
+                                     2                                                 0.4                               MTS, M = 8
+                                                                                                                         MTS, M = 16
+                                                                                       0.2
+                            gOO(r)   1                                                 0.0
+                                                                                       0.2
+                                     0
+                                         2           3        4          5       6           2           3       4          5          6
+                                                                                       0.2
+                                     2                                                 0.1
+                            gHH(r)                                                     0.0
+                                     1
+                                                                                       0.1
+                                     0
+                                         1       2       3          4        5   6           1       2       3       4          5      6
+                                                                                      0.10
+                                   0.4
+                                                                                      0.05
+
+                          cuu(r)   0.2                                                0.00
+                                                                                      0.05
+                                   0.0
+                                                                                      0.10
+                                             3               4          5        6               3           4             5           6
+                                                              r/Å                                             r/Å
+
+Figure 17. Structural correlations for simulations of room-temperature water using a PET-M model, using multiple time-step integrators
+to alternate the evaluation of non-conservative forces and (every M steps) the conservative model. From top to bottom, the rows report
+the O-O correlation function, the H-H correlation function, and the orientational correlation function. All simulations use an efficient
+and gentle global SVR thermostat, with τ = 10 fs coupling time. The left column shows the reference value (full PET-C MD) and the
+right column the differences with respect to this reference for MTS trajectories using different M values. Shaded areas encompass two
+standard errors around the mean values.
+
+
+
+                                                                                 30
+                                                    The dark side of the forces
+
+We also investigate the behavior of MTS for the more generic PET potential trained on the OC20 dataset in Appendix H. We
+use the model after conservative fine-tuning, which is able to predict both conservative and non-conservative forces with
+a good accuracy. The simulations were run on a system of a single oxygen atom adsorbed on an alloy surface, and their
+kinetic energy profiles are shown in Figure 18. Also in this case, well-behaved molecular dynamics can be performed up to
+a high multiple time-step factor M = 8, a value that retains nearly all the speed-up afforded by non-conservative forces.
+
+                                      400
+                                                   PET-C, NVE
+                                      350          PET-NC, NVE
+                                                   PET-M, NVE MTS-4
+                                                   PET-M, NVE MTS-8
+                                                   PET-M, NVE MTS-16
+                                      300
+                                T/K   250
+                                      200
+                                      150
+                                             0      20000 40000 60000 80000 100000
+                                                              step
+Figure 18. A comparison of kinetic temperature profiles for NVE MD trajectories of an oxygen atom adsorbed on an alloy surface,
+performed with the various heads of a model which was produced by “conservative fine-tuning” on a subset of the OC20 dataset. The step
+numbers refer to the “fast” evaluation.
+
+
+J. Software
+Molecular dynamics simulations have been performed using the i-PI software (Litman et al., 2024), and geometry optimiza-
+tions using ASE (Hjorth Larsen et al., 2017).
+ORB, MACE-MP-0, Equiformer, SevenNet calculations were performed using the publicly available repositories,
+respectively https://github.com/orbital-materials/orb-models/ (orb-models 0.4.0), https:
+//github.com/ACEsuit/mace (mace-torch 0.3.8), https://github.com/FAIR-Chem/fairchem
+(fairchem-core 1.3.0), and https://github.com/MDIL-SNU/SevenNet (sevenn 0.10.1).
+
+
+
+
+                                                                 31
+

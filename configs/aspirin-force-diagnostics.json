@@ -1,0 +1,34 @@
+{
+  "data_directory": "data/processed/aspirin",
+  "expected_split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "backend": "cpu",
+  "seed": 0,
+  "learning_rate": 0.001,
+  "validation_interval": 100,
+  "max_updates": 2000,
+  "wall_seconds": 1800,
+  "model": {
+    "cutoff_A": 5.0,
+    "energy_readout_init": "zero",
+    "features": 16,
+    "iterations": 2,
+    "max_degree": 1,
+    "radial_basis": 8
+  },
+  "expected_learning_subset_hash": "338e75a921b30820b70cfba47d1f06e7356a6d2232905d88975d088844403a3c",
+  "run_directory": "runs/aspirin-force-diagnostics-2026-09-30",
+  "expected_prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+  "source_run": "runs/aspirin-learning-check-zero-readout-seed0",
+  "source_hashes": {
+    "last.msgpack": "0bafe14840bcdfee0e938472e30786c60b070009a7451be29bc02b93b8a1e43a",
+    "learning-subset.json": "9281a4caf24f5297f39512e9cf34505e37995e8940cf9c28db9c21e852788a98",
+    "config.json": "1dcd667df03612f7d5576411bfd4af747c1982b95129494d451aad18d22421b7",
+    "provenance.json": "b091fc7eba280150faaafd7af0ca513a1eb9682e25305c1aa65fa63629978f57"
+  },
+  "teacher_seed": 23,
+  "teacher_kernel_std": 0.1,
+  "lstsq_rcond": 1e-10,
+  "gate_fraction": 0.1,
+  "batch_size": 16,
+  "evidence_log": "reports/PAPER_EVIDENCE_LOG.md"
+}

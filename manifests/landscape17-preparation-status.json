@@ -1,0 +1,23 @@
+{
+  "aspirin": {
+    "status": "model-ready",
+    "prepared_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+    "split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+    "counts": {
+      "test": 1127,
+      "train": 4891,
+      "validation": 974,
+      "validation_minima_diagnostics": 0
+    },
+    "normalization": {
+      "energy_loss_scale_eV": 0.21583988927697104,
+      "energy_offset_eV": -17647.258992926312,
+      "force_loss_scale_eV_per_A": 0.1268863230978139
+    }
+  },
+  "paracetamol": {
+    "status": "blocked",
+    "reason": "unmatched endpoint paracetamol/01_2/plus",
+    "split_assigned": false
+  }
+}

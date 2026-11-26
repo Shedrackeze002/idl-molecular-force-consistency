@@ -1,0 +1,2727 @@
+{
+  "cases": {
+    "final-A-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 0.3148463999338109,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 2.210394148238759e-05,
+              "finite_difference": 0.3148685038752933,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 2.2103990654498418e-07,
+              "finite_difference": 0.31484662097371746,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.34601754775436205,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 4.865556796351811e-08,
+              "finite_difference": 0.3460174990987941,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 4.896523186914692e-10,
+              "finite_difference": 0.34601754726470973,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": -0.9574699966363222,
+          "dot": -0.02794084274188251,
+          "energy_norm": 0.16086195127477235,
+          "energy_raw_joint_descent_slope": 0.002064275373955274,
+          "force_norm": 0.18140990454493783,
+          "force_over_energy_norm": 1.1277365660886893,
+          "force_raw_joint_descent_slope": -0.00496871072512094,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.0448718753537114,
+          "energy_raw_joint_descent_slope": -0.0020134851977590125,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.9809409336059053,
+          "dot": -0.07714462979035987,
+          "energy_norm": 0.2669048575533892,
+          "energy_raw_joint_descent_slope": 0.005906426804764872,
+          "force_norm": 0.29464994465795974,
+          "force_over_energy_norm": 1.1039512257622386,
+          "force_raw_joint_descent_slope": -0.009673960096578879,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": -0.9601190395793596,
+            "dot": -0.0088729837062308,
+            "energy_norm": 0.08980255737811772,
+            "energy_raw_joint_descent_slope": 0.0008084843945806754,
+            "force_norm": 0.10290960171839271,
+            "force_over_energy_norm": 1.145954020942713,
+            "force_raw_joint_descent_slope": -0.0017174024196074146,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": -0.9920781303793791,
+            "dot": -0.0011098262688334023,
+            "energy_norm": 0.03176491710474812,
+            "energy_raw_joint_descent_slope": 0.00010081631016188304,
+            "force_norm": 0.03521773309137234,
+            "force_over_energy_norm": 1.1086990397373997,
+            "force_raw_joint_descent_slope": -0.00013046245526174022,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": -0.9166451146495348,
+            "dot": -0.0012102941780939315,
+            "energy_norm": 0.0348976946448784,
+            "energy_raw_joint_descent_slope": -7.554913433243e-06,
+            "force_norm": 0.03783493374484572,
+            "force_over_energy_norm": 1.084167138541869,
+            "force_raw_joint_descent_slope": -0.00022118803338293377,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": -0.9333410309699974,
+            "dot": -0.00019040619924510748,
+            "energy_norm": 0.013683674413001078,
+            "energy_raw_joint_descent_slope": 3.163253804087078e-06,
+            "force_norm": 0.014908638817813092,
+            "force_over_energy_norm": 1.0895201367586,
+            "force_raw_joint_descent_slope": -3.186131215489587e-05,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": -0.8707808729031787,
+            "dot": -0.00030580176118233404,
+            "energy_norm": 0.019237266929139747,
+            "energy_raw_joint_descent_slope": -6.427067772063976e-05,
+            "force_norm": 0.018255247700482494,
+            "force_over_energy_norm": 0.9489522481403149,
+            "force_raw_joint_descent_slope": -2.7452307423637295e-05,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": -0.9467904414435423,
+            "dot": -0.0015503683248207028,
+            "energy_norm": 0.03693916909594725,
+            "energy_raw_joint_descent_slope": 0.00018586611132171815,
+            "force_norm": 0.044329608909411185,
+            "force_over_energy_norm": 1.2000705482645728,
+            "force_raw_joint_descent_slope": -0.00041474590124064483,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": -0.9926397465564164,
+            "dot": -0.004071647795160952,
+            "energy_norm": 0.05982453376817213,
+            "energy_raw_joint_descent_slope": 0.0004926729545817851,
+            "force_norm": 0.06856448528304383,
+            "force_over_energy_norm": 1.1460930986731992,
+            "force_raw_joint_descent_slope": -0.0006294408469677826,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": -0.9241062802797692,
+            "dot": -0.0011785241612089301,
+            "energy_norm": 0.03625542459597852,
+            "energy_raw_joint_descent_slope": -0.00013593165142575378,
+            "force_norm": 0.03517576677772979,
+            "force_over_energy_norm": 0.9702207923288675,
+            "force_raw_joint_descent_slope": -5.881040719230837e-05,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": -0.9075079121742108,
+            "dot": -6.211858157735404e-05,
+            "energy_norm": 0.007408806286973385,
+            "energy_raw_joint_descent_slope": 7.2281709794576896e-06,
+            "force_norm": 0.00923895539899274,
+            "force_over_energy_norm": 1.2470234800493076,
+            "force_raw_joint_descent_slope": -2.3239715287223073e-05,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.013981390478941771,
+            "energy_raw_joint_descent_slope": -0.0001954792797246436,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": -0.9493628092840001,
+            "dot": -0.000983591616479076,
+            "energy_norm": 0.03142914730938935,
+            "energy_raw_joint_descent_slope": -4.199684116219923e-06,
+            "force_norm": 0.032964766619262856,
+            "force_over_energy_norm": 1.048859719124952,
+            "force_raw_joint_descent_slope": -0.00010308422178339095,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": -0.9714410984200795,
+            "dot": -0.0023489887023397694,
+            "energy_norm": 0.046777022302072126,
+            "energy_raw_joint_descent_slope": 0.00016089888689121631,
+            "force_norm": 0.05169301731079329,
+            "force_over_energy_norm": 1.1050942271822077,
+            "force_raw_joint_descent_slope": -0.00032317933635420473,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": -0.9569965346093612,
+            "dot": -0.00023164847848205017,
+            "energy_norm": 0.015637481612929972,
+            "energy_raw_joint_descent_slope": -1.288235271267282e-05,
+            "force_norm": 0.015479334129376252,
+            "force_over_energy_norm": 0.9898866398395663,
+            "force_raw_joint_descent_slope": -7.961306606822275e-06,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": -0.9887317746873264,
+            "dot": -0.001948902613013804,
+            "energy_norm": 0.040034598109890504,
+            "energy_raw_joint_descent_slope": 0.00034613356719335586,
+            "force_norm": 0.049235252952161766,
+            "force_over_energy_norm": 1.2298175897012003,
+            "force_raw_joint_descent_slope": -0.00047520752024954966,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": -0.953574179715986,
+            "dot": -0.002542762679051275,
+            "energy_norm": 0.04754750334815711,
+            "energy_raw_joint_descent_slope": 0.00028199760440826343,
+            "force_norm": 0.056082017402561336,
+            "force_over_energy_norm": 1.1794944729676329,
+            "force_raw_joint_descent_slope": -0.0006024299968899176,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": -0.9702701278771824,
+            "dot": -0.0001690643011811383,
+            "energy_norm": 0.014375329235834311,
+            "energy_raw_joint_descent_slope": -3.7585789457494386e-05,
+            "force_norm": 0.012121083775244656,
+            "force_over_energy_norm": 0.84318651603677,
+            "force_raw_joint_descent_slope": 2.2143629294639044e-05,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": -0.973805178501881,
+            "dot": -0.0011639133749818844,
+            "energy_norm": 0.03207795047004071,
+            "energy_raw_joint_descent_slope": 0.00013491846862349974,
+            "force_norm": 0.0372599241678643,
+            "force_over_energy_norm": 1.1615431666266618,
+            "force_raw_joint_descent_slope": -0.00022438857401311336,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0448718753537114,
+            "energy_raw_joint_descent_slope": -0.0020134851977590125,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": -0.9809409336059053,
+            "dot": -0.07714462979035987,
+            "energy_norm": 0.2669048575533892,
+            "energy_raw_joint_descent_slope": 0.005906426804764872,
+            "force_norm": 0.29464994465795974,
+            "force_over_energy_norm": 1.1039512257622386,
+            "force_raw_joint_descent_slope": -0.009673960096578879,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": -0.9645968197169623,
+          "dot": -0.10508547253224237,
+          "energy_norm": 0.31484639993381097,
+          "energy_raw_joint_descent_slope": 0.005957216980961133,
+          "force_norm": 0.346017547754362,
+          "force_over_energy_norm": 1.0990043012310258,
+          "force_raw_joint_descent_slope": -0.01464267082169983,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 1.3600232051658168e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.004626643384383441,
+        "force": 0.44974513607731464,
+        "joint": 0.4543717794616981
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "517e4854dfbaeafca9d37c054436aaad12b031e2cef430389e0fe86b1bcdff99",
+        "params": "66d7a8fa4dc158428dcbed6c78c8bd57213337160939b50bd2c127e8ff885643"
+      },
+      "state_hashes_before": {
+        "optimizer": "517e4854dfbaeafca9d37c054436aaad12b031e2cef430389e0fe86b1bcdff99",
+        "params": "66d7a8fa4dc158428dcbed6c78c8bd57213337160939b50bd2c127e8ff885643"
+      },
+      "status": "completed",
+      "update": 2000,
+      "verification_valid": true
+    },
+    "final-B-anchor": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 11.306375042025742,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 5.7449397910858124e-05,
+              "finite_difference": 11.306432491423653,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 5.744796798268226e-07,
+              "finite_difference": 11.306375616505422,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 1.5102467495035337,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 8.008468073139596e-07,
+              "finite_difference": 1.510247550350341,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 8.009899854499736e-09,
+              "finite_difference": 1.5102467575134335,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": -0.4376778388000572,
+          "dot": -4.090505395790416,
+          "energy_norm": 8.464168338444376,
+          "energy_raw_joint_descent_slope": -67.5516402657338,
+          "force_norm": 1.104175535199362,
+          "force_over_energy_norm": 0.13045292709789108,
+          "force_raw_joint_descent_slope": 2.871301783257618,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 6.233752083487319,
+          "energy_raw_joint_descent_slope": -38.859665038382495,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.45387799160948267,
+          "dot": -1.9469565855502038,
+          "energy_norm": 4.163208605275006,
+          "energy_raw_joint_descent_slope": -15.385349305485658,
+          "force_norm": 1.0303599525666705,
+          "force_over_energy_norm": 0.24749179064944038,
+          "force_raw_joint_descent_slope": 0.8853149536970122,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": -0.48992923755442463,
+            "dot": -1.6542434045955765,
+            "energy_norm": 4.8197021606439945,
+            "energy_raw_joint_descent_slope": -21.575285512720814,
+            "force_norm": 0.7005608325665741,
+            "force_over_energy_norm": 0.14535355281641868,
+            "force_raw_joint_descent_slope": 1.163457924469205,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": -0.2032700482370395,
+            "dot": -0.11716293930261482,
+            "energy_norm": 2.5514505555330302,
+            "energy_raw_joint_descent_slope": -6.392736998027194,
+            "force_norm": 0.2259070121503146,
+            "force_over_energy_norm": 0.08854061924124561,
+            "force_raw_joint_descent_slope": 0.06612896116393242,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": -0.3350934537052951,
+            "dot": -0.14623887570162356,
+            "energy_norm": 1.9656921728582133,
+            "energy_raw_joint_descent_slope": -3.71770684273442,
+            "force_norm": 0.22201452447671532,
+            "force_over_energy_norm": 0.11294470596273233,
+            "force_raw_joint_descent_slope": 0.09694842662300153,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": -0.8647072219632579,
+            "dot": -0.016359022187674724,
+            "energy_norm": 0.3266865443326337,
+            "energy_raw_joint_descent_slope": -0.09036507606032314,
+            "force_norm": 0.05791045914552478,
+            "force_over_energy_norm": 0.17726612910802989,
+            "force_raw_joint_descent_slope": 0.01300540090922923,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": 0.282300821278527,
+            "dot": 0.023288785693466728,
+            "energy_norm": 1.8149413570824255,
+            "energy_raw_joint_descent_slope": -3.3173009153416633,
+            "force_norm": 0.04545399981305409,
+            "force_over_energy_norm": 0.025044335253962588,
+            "force_raw_joint_descent_slope": -0.02535485179247185,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": -0.32197738531093645,
+            "dot": -0.12884983501561598,
+            "energy_norm": 1.4107262065175352,
+            "energy_raw_joint_descent_slope": -1.8612985947397396,
+            "force_norm": 0.28367153803860673,
+            "force_over_energy_norm": 0.20108192272040332,
+            "force_raw_joint_descent_slope": 0.04838029352242726,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": -0.3773091528382348,
+            "dot": -0.6288746985303877,
+            "energy_norm": 3.689661181806604,
+            "energy_raw_joint_descent_slope": -12.98472493800012,
+            "force_norm": 0.4517314155211969,
+            "force_over_energy_norm": 0.12243167956685154,
+            "force_raw_joint_descent_slope": 0.42481342676160344,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": -0.42518312040220907,
+            "dot": -0.1274479476419054,
+            "energy_norm": 1.446525976825374,
+            "energy_raw_joint_descent_slope": -1.964989453988697,
+            "force_norm": 0.20721948698122797,
+            "force_over_energy_norm": 0.14325320823895837,
+            "force_raw_joint_descent_slope": 0.08450803185714209,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": -0.5193636363047556,
+            "dot": -0.007646306340930411,
+            "energy_norm": 0.28825502291940774,
+            "energy_raw_joint_descent_slope": -0.07544465189733787,
+            "force_norm": 0.051074399712487936,
+            "force_over_energy_norm": 0.17718476922002382,
+            "force_raw_joint_descent_slope": 0.0050377120349394235,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 1.9901649425608,
+            "energy_raw_joint_descent_slope": -3.9607564985980317,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": -0.18397439265741788,
+            "dot": -0.00801073262778814,
+            "energy_norm": 0.37188820305238857,
+            "energy_raw_joint_descent_slope": -0.13029010294174642,
+            "force_norm": 0.11708532256862117,
+            "force_over_energy_norm": 0.3148401094942158,
+            "force_raw_joint_descent_slope": -0.005698240133209928,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": -0.6280065879736044,
+            "dot": -0.3541812863127054,
+            "energy_norm": 2.4536890452462052,
+            "energy_raw_joint_descent_slope": -5.666408644448529,
+            "force_norm": 0.2298486129423406,
+            "force_over_energy_norm": 0.09367471130363929,
+            "force_raw_joint_descent_slope": 0.3013509014411875,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": -0.765082558140253,
+            "dot": -0.016921593906443398,
+            "energy_norm": 0.4329736790064441,
+            "energy_raw_joint_descent_slope": -0.17054461280593192,
+            "force_norm": 0.051082420905474414,
+            "force_over_energy_norm": 0.11798043017925376,
+            "force_raw_joint_descent_slope": 0.014312180180879349,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": -0.7375063100003932,
+            "dot": -0.1298125168005302,
+            "energy_norm": 0.952316558789833,
+            "energy_raw_joint_descent_slope": -0.7770943113447792,
+            "force_norm": 0.18482873612962122,
+            "force_over_energy_norm": 0.19408329554249737,
+            "force_raw_joint_descent_slope": 0.09565085510125704,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": -0.8192454499688104,
+            "dot": -0.635094409634016,
+            "energy_norm": 2.151180800485753,
+            "energy_raw_joint_descent_slope": -3.9924844267445083,
+            "force_norm": 0.36036892877075105,
+            "force_over_energy_norm": 0.16752145086520714,
+            "force_raw_joint_descent_slope": 0.5052286448106373,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": -0.5224609339850375,
+            "dot": -0.007081158387437537,
+            "energy_norm": 0.24876890192613874,
+            "energy_raw_joint_descent_slope": -0.05480480817809929,
+            "force_norm": 0.05448216998949491,
+            "force_over_energy_norm": 0.21900715711512467,
+            "force_raw_joint_descent_slope": 0.004112851540673318,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": -0.5850935384082748,
+            "dot": -0.13586945449863322,
+            "energy_norm": 0.9773808529230013,
+            "energy_raw_joint_descent_slope": -0.8194038771618601,
+            "force_norm": 0.23759248668981064,
+            "force_over_energy_norm": 0.2430909977203414,
+            "force_raw_joint_descent_slope": 0.07941926476718537,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 6.233752083487319,
+            "energy_raw_joint_descent_slope": -38.859665038382495,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": -0.45387799160948267,
+            "dot": -1.9469565855502038,
+            "energy_norm": 4.163208605275006,
+            "energy_raw_joint_descent_slope": -15.385349305485658,
+            "force_norm": 1.0303599525666705,
+            "force_over_energy_norm": 0.24749179064944038,
+            "force_raw_joint_descent_slope": 0.8853149536970122,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": -0.35357627165408945,
+          "dot": -6.03746198134062,
+          "energy_norm": 11.30637504202574,
+          "energy_raw_joint_descent_slope": -121.79665460960194,
+          "force_norm": 1.5102467495035337,
+          "force_over_energy_norm": 0.13357479686371218,
+          "force_raw_joint_descent_slope": 3.7566167369546304,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 1.8388068845354155e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.02419403325135771,
+        "force": 0.5908628631619006,
+        "joint": 0.6150568964132583
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+        "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+      },
+      "state_hashes_before": {
+        "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+        "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+      },
+      "status": "completed",
+      "update": 2000,
+      "verification_valid": true
+    },
+    "final-B-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 0.8028157974830417,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 2.298031858050109e-05,
+              "finite_difference": 0.8027928171644612,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 2.2981381919695565e-07,
+              "finite_difference": 0.8028155676692225,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.7906236966242359,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 2.1099850910921703e-07,
+              "finite_difference": 0.790623907622745,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 2.0967242386760176e-09,
+              "finite_difference": 0.7906236987209602,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": -0.9878551117811818,
+          "dot": -0.24414419175644558,
+          "energy_norm": 0.491006705079062,
+          "energy_raw_joint_descent_slope": 0.0030566073238486036,
+          "force_norm": 0.5033449578149997,
+          "force_over_energy_norm": 1.0251284811557735,
+          "force_raw_joint_descent_slope": -0.00921195480133824,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.008474198857426174,
+          "energy_raw_joint_descent_slope": -7.181204627520307e-05,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.9963227718391774,
+          "dot": -0.38579514514054347,
+          "energy_norm": 0.6351014156884396,
+          "energy_raw_joint_descent_slope": -0.017558663068916625,
+          "force_norm": 0.6096963860037126,
+          "force_over_energy_norm": 0.9599984678711693,
+          "force_raw_joint_descent_slope": 0.014065462034555443,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": -0.9861811836347697,
+            "dot": -0.12215170153814468,
+            "energy_norm": 0.3485389947040108,
+            "energy_raw_joint_descent_slope": 0.0006722707088622354,
+            "force_norm": 0.35537873310642665,
+            "force_over_energy_norm": 1.0196240263108132,
+            "force_raw_joint_descent_slope": -0.004142342406184121,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": -0.9943525018012155,
+            "dot": -0.00687244531987641,
+            "energy_norm": 0.08055824831295033,
+            "energy_raw_joint_descent_slope": 0.00038281394862544477,
+            "force_norm": 0.08579478853485081,
+            "force_over_energy_norm": 1.065003154010471,
+            "force_raw_joint_descent_slope": -0.000488300419863359,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": -0.9944744241450209,
+            "dot": -0.018976270613305896,
+            "energy_norm": 0.13639541154279697,
+            "energy_raw_joint_descent_slope": 0.00037256232337694664,
+            "force_norm": 0.13989992641745125,
+            "force_over_energy_norm": 1.0256937886327258,
+            "force_raw_joint_descent_slope": -0.0005957187983023776,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": -0.9685558055246328,
+            "dot": -0.0010990948074909833,
+            "energy_norm": 0.03507928161850596,
+            "energy_raw_joint_descent_slope": -0.000131461191379467,
+            "force_norm": 0.03234892228076329,
+            "force_over_energy_norm": 0.9221660418409972,
+            "force_raw_joint_descent_slope": 5.264203476411963e-05,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": -0.9974691992978767,
+            "dot": -0.0008715822623919136,
+            "energy_norm": 0.027899972479339424,
+            "energy_raw_joint_descent_slope": 9.317379804401639e-05,
+            "force_norm": 0.03131880006861001,
+            "force_over_energy_norm": 1.122538744144006,
+            "force_raw_joint_descent_slope": -0.00010928497534565241,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": -0.988817669022172,
+            "dot": -0.023473050517782014,
+            "energy_norm": 0.1527565582340541,
+            "energy_raw_joint_descent_slope": 0.00013848443426805676,
+            "force_norm": 0.15540087170025282,
+            "force_over_energy_norm": 1.0173106378984207,
+            "force_raw_joint_descent_slope": -0.0006763804074164277,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": -0.9938985743180528,
+            "dot": -0.012899739059382881,
+            "energy_norm": 0.10993455712956003,
+            "energy_raw_joint_descent_slope": 0.0008141322081103818,
+            "force_norm": 0.11806050225859877,
+            "force_over_energy_norm": 1.073916203796247,
+            "force_raw_joint_descent_slope": -0.0010385431341697216,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": -0.9926563820312103,
+            "dot": -0.014064457154941139,
+            "energy_norm": 0.1189167205626827,
+            "energy_raw_joint_descent_slope": -7.672927444202227e-05,
+            "force_norm": 0.11914645121060327,
+            "force_over_energy_norm": 1.0019318616157051,
+            "force_raw_joint_descent_slope": -0.00013141968113952567,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": -0.9824080654239751,
+            "dot": -0.0015592347083409283,
+            "energy_norm": 0.040322400880075604,
+            "energy_raw_joint_descent_slope": -6.666130439259357e-05,
+            "force_norm": 0.03936164056650232,
+            "force_over_energy_norm": 0.9761730379986371,
+            "force_raw_joint_descent_slope": 9.895960254407239e-06,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0027054418039829304,
+            "energy_raw_joint_descent_slope": -7.319415354738412e-06,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": -0.9956476361883341,
+            "dot": -0.005857342150804299,
+            "energy_norm": 0.07817203198216977,
+            "energy_raw_joint_descent_slope": -0.00025352443341707283,
+            "force_norm": 0.07525641494434644,
+            "force_over_energy_norm": 0.9627025553270977,
+            "force_raw_joint_descent_slope": 0.00019381416052864815,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": -0.983070986305078,
+            "dot": -0.009924474287093747,
+            "energy_norm": 0.09922197549455365,
+            "energy_raw_joint_descent_slope": 7.947386605194201e-05,
+            "force_norm": 0.10174539508795677,
+            "force_over_energy_norm": 1.025432063621245,
+            "force_raw_joint_descent_slope": -0.0004276511345106711,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": -0.9897671443566634,
+            "dot": -0.004707562104814953,
+            "energy_norm": 0.06688791639921333,
+            "energy_raw_joint_descent_slope": 0.00023356874458680017,
+            "force_norm": 0.07110749139310393,
+            "force_over_energy_norm": 1.0630842642594294,
+            "force_raw_joint_descent_slope": -0.00034871322740539796,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": -0.982098794500906,
+            "dot": -0.0048834891815374235,
+            "energy_norm": 0.06886062526470625,
+            "energy_raw_joint_descent_slope": 0.0001417034696911219,
+            "force_norm": 0.0722111215240704,
+            "force_over_energy_norm": 1.048656198611101,
+            "force_raw_joint_descent_slope": -0.000330956890226641,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": -0.9887772902233639,
+            "dot": -0.010864565011786802,
+            "energy_norm": 0.09958791889703235,
+            "energy_raw_joint_descent_slope": 0.0009468114215449106,
+            "force_norm": 0.11033345116719395,
+            "force_over_energy_norm": 1.107899958038804,
+            "force_raw_joint_descent_slope": -0.0013089054346767694,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": -0.9777709427840794,
+            "dot": -0.00116339755851246,
+            "energy_norm": 0.03410420376163559,
+            "energy_raw_joint_descent_slope": 3.0084429730107935e-07,
+            "force_norm": 0.034888564995031374,
+            "force_over_energy_norm": 1.0229989604471612,
+            "force_raw_joint_descent_slope": -5.3814408900068654e-05,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": -0.9908733279380783,
+            "dot": -0.004775785480239052,
+            "energy_norm": 0.07112508913782603,
+            "energy_raw_joint_descent_slope": -0.0002829928246246465,
+            "force_norm": 0.06776475130171818,
+            "force_over_energy_norm": 0.9527545360316357,
+            "force_raw_joint_descent_slope": 0.00018372396125533683,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.008474198857426174,
+            "energy_raw_joint_descent_slope": -7.181204627520307e-05,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": -0.9963227718391774,
+            "dot": -0.38579514514054347,
+            "energy_norm": 0.6351014156884396,
+            "energy_raw_joint_descent_slope": -0.017558663068916625,
+            "force_norm": 0.6096963860037126,
+            "force_over_energy_norm": 0.9599984678711693,
+            "force_raw_joint_descent_slope": 0.014065462034555443,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": -0.9924599548492967,
+          "dot": -0.6299393368969891,
+          "energy_norm": 0.8028157974830418,
+          "energy_raw_joint_descent_slope": -0.014573867791343176,
+          "force_norm": 0.7906236966242359,
+          "force_over_energy_norm": 0.9848133271704044,
+          "force_raw_joint_descent_slope": 0.0048535072332173135,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 2.01574867908505e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.02075351459354047,
+        "force": 0.9992203131431432,
+        "joint": 1.0199738277366837
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+        "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+      },
+      "state_hashes_before": {
+        "optimizer": "b78d1d84eb8d100874d6dfb719db819789b5721e5ec9bf22a08d7a2dd4b85719",
+        "params": "fd5ed13e2a7a020d61c7059330f0bf029cfec84d71558cd76b67c1bb303232b9"
+      },
+      "status": "completed",
+      "update": 2000,
+      "verification_valid": true
+    },
+    "final-C-anchor": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 5.142758104488361,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 0.0001727970866545192,
+              "finite_difference": 5.142585307401706,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 1.727967923415008e-06,
+              "finite_difference": 5.142756376520437,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 1.0556030968552457,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 1.4533168890551451e-08,
+              "finite_difference": 1.0556031113884146,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 1.5022960653254813e-10,
+              "finite_difference": 1.0556030970054753,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": 0.3746674575935562,
+          "dot": 0.5870904696827086,
+          "energy_norm": 2.588473219661116,
+          "energy_raw_joint_descent_slope": -7.287284078585492,
+          "force_norm": 0.6053623139639702,
+          "force_over_energy_norm": 0.233868486398026,
+          "force_raw_joint_descent_slope": -0.953554000850521,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 3.6936833511779072,
+          "energy_raw_joint_descent_slope": -13.643296698768856,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.5631739631632836,
+          "dot": 1.203287157492114,
+          "energy_norm": 2.4707226905521167,
+          "energy_raw_joint_descent_slope": -7.307757771101206,
+          "force_norm": 0.8647741710542541,
+          "force_over_energy_norm": 0.3500085923689836,
+          "force_raw_joint_descent_slope": -1.9511215244146864,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": 0.5910022471004392,
+            "dot": 0.4092967294134402,
+            "energy_norm": 1.651458524653128,
+            "energy_raw_joint_descent_slope": -3.1366119880629264,
+            "force_norm": 0.41935465772354097,
+            "force_over_energy_norm": 0.25392987559988656,
+            "force_raw_joint_descent_slope": -0.5851550583678684,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": -0.11302118783998025,
+            "dot": -0.009028545679280997,
+            "energy_norm": 0.6826089231575148,
+            "energy_raw_joint_descent_slope": -0.4569263962949809,
+            "force_norm": 0.11702697283032863,
+            "force_over_energy_norm": 0.1714407310836225,
+            "force_raw_joint_descent_slope": -0.00466676669054948,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": 0.2509795195616888,
+            "dot": 0.028320174808241238,
+            "energy_norm": 0.553052847421519,
+            "energy_raw_joint_descent_slope": -0.3341876268492911,
+            "force_norm": 0.20402858305282584,
+            "force_over_energy_norm": 0.36891335792603175,
+            "force_raw_joint_descent_slope": -0.0699478375107851,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": 0.8009390436821077,
+            "dot": 0.006821315522046749,
+            "energy_norm": 0.12869203551391165,
+            "energy_raw_joint_descent_slope": -0.023382955526760646,
+            "force_norm": 0.06617851282317204,
+            "force_over_energy_norm": 0.514239382094614,
+            "force_raw_joint_descent_slope": -0.011200911081533494,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": -0.5370129968272851,
+            "dot": -0.008814050120520901,
+            "energy_norm": 0.5883615396831007,
+            "energy_raw_joint_descent_slope": -0.33735525125774796,
+            "force_norm": 0.027896289624290894,
+            "force_over_energy_norm": 0.04741351659273345,
+            "force_raw_joint_descent_slope": 0.008035847145718582,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": 0.328290274015655,
+            "dot": 0.028924166284768835,
+            "energy_norm": 0.5593864010879109,
+            "energy_raw_joint_descent_slope": -0.341837312006854,
+            "force_norm": 0.1575037610804022,
+            "force_over_energy_norm": 0.2815652307136611,
+            "force_raw_joint_descent_slope": -0.05373160103924125,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": -0.0652381661791612,
+            "dot": -0.01139264446264077,
+            "energy_norm": 0.984745248256054,
+            "energy_raw_joint_descent_slope": -0.9583305595002368,
+            "force_norm": 0.17733681563471348,
+            "force_over_energy_norm": 0.1800839516095865,
+            "force_raw_joint_descent_slope": -0.020055701716819595,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": 0.24317543089475968,
+            "dot": 0.015371129079146844,
+            "energy_norm": 0.4249457818785059,
+            "energy_raw_joint_descent_slope": -0.19595004661548154,
+            "force_norm": 0.14874848556601036,
+            "force_over_energy_norm": 0.3500410920858094,
+            "force_raw_joint_descent_slope": -0.03749724103732844,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": 0.7406803483207084,
+            "dot": 0.0024971190236419247,
+            "energy_norm": 0.08332562150212382,
+            "energy_raw_joint_descent_slope": -0.009440278222357124,
+            "force_norm": 0.04046037088495271,
+            "force_over_energy_norm": 0.48556938616919226,
+            "force_raw_joint_descent_slope": -0.004134160635789854,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.7490710041151789,
+            "energy_raw_joint_descent_slope": -0.5611073692061224,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": 0.3196920423284689,
+            "dot": 0.0027290976073746543,
+            "energy_norm": 0.20905583747121617,
+            "energy_raw_joint_descent_slope": -0.046433440788166205,
+            "force_norm": 0.04083428388473427,
+            "force_over_energy_norm": 0.19532716416185478,
+            "force_raw_joint_descent_slope": -0.004396536347753723,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": 0.44243476543754534,
+            "dot": 0.020548425823410203,
+            "energy_norm": 0.5214546822975766,
+            "energy_raw_joint_descent_slope": -0.2924634115134768,
+            "force_norm": 0.0890661623694255,
+            "force_over_energy_norm": 0.17080326516005553,
+            "force_raw_joint_descent_slope": -0.028481207102627068,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": -0.17884978222627562,
+            "dot": -0.0008801588716826412,
+            "energy_norm": 0.09954070546628196,
+            "energy_raw_joint_descent_slope": -0.009028193173042454,
+            "force_norm": 0.04943925762802219,
+            "force_over_energy_norm": 0.49667377176434674,
+            "force_raw_joint_descent_slope": -0.0015640813231273093,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": 0.5781722726376834,
+            "dot": 0.007410992198233227,
+            "energy_norm": 0.20550740342709814,
+            "energy_raw_joint_descent_slope": -0.0496442850615813,
+            "force_norm": 0.062372280548338294,
+            "force_over_energy_norm": 0.30350381304128676,
+            "force_raw_joint_descent_slope": -0.011301293579033846,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": 0.7795271627484689,
+            "dot": 0.06856242297498519,
+            "energy_norm": 0.5783561760010608,
+            "energy_raw_joint_descent_slope": -0.40305828929355525,
+            "force_norm": 0.15207559579435592,
+            "force_over_energy_norm": 0.2629445350542552,
+            "force_raw_joint_descent_slope": -0.09168940981119351,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": 0.6467963157812568,
+            "dot": 0.0019867053835221147,
+            "energy_norm": 0.0828365575918271,
+            "energy_raw_joint_descent_slope": -0.008848600657186205,
+            "force_norm": 0.037080355430537275,
+            "force_over_energy_norm": 0.4476327422156873,
+            "force_raw_joint_descent_slope": -0.0033616581423770897,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": 0.803878007928934,
+            "dot": 0.024737590698022737,
+            "energy_norm": 0.31295444374174064,
+            "energy_raw_joint_descent_slope": -0.12267807455572503,
+            "force_norm": 0.0983300204016491,
+            "force_over_energy_norm": 0.31419915060478887,
+            "force_raw_joint_descent_slope": -0.03440638361021146,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 3.6936833511779072,
+            "energy_raw_joint_descent_slope": -13.643296698768856,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": 0.5631739631632836,
+            "dot": 1.203287157492114,
+            "energy_norm": 2.4707226905521167,
+            "energy_raw_joint_descent_slope": -7.307757771101206,
+            "force_norm": 0.8647741710542541,
+            "force_over_energy_norm": 0.3500085923689836,
+            "force_raw_joint_descent_slope": -1.9511215244146864,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": 0.32979790255275326,
+          "dot": 1.7903776271748226,
+          "energy_norm": 5.142758104488363,
+          "energy_raw_joint_descent_slope": -28.238338548455555,
+          "force_norm": 1.0556030968552454,
+          "force_over_energy_norm": 0.2052601105103434,
+          "force_raw_joint_descent_slope": -2.9046755252652074,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 2.831068712794149e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.03250258288681271,
+        "force": 0.5519908441887512,
+        "joint": 0.584493427075564
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+        "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+      },
+      "state_hashes_before": {
+        "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+        "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+      },
+      "status": "completed",
+      "update": 2000,
+      "verification_valid": true
+    },
+    "final-C-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 1.3307488075266263,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 0.0002249861811485232,
+              "finite_difference": 1.3305238213454778,
+              "step": 0.0001,
+              "valid": false
+            },
+            {
+              "absolute_error": 2.2498705722906465e-06,
+              "finite_difference": 1.330746557656054,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.9010506259490583,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 1.6306653116693326e-07,
+              "finite_difference": 0.9010507890155894,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 1.628445933654632e-09,
+              "finite_difference": 0.9010506275775042,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 8064,
+      "geometry": {
+        "backbone": {
+          "cosine": -0.8068880152193602,
+          "dot": -0.19405154871711797,
+          "energy_norm": 0.7252104383007638,
+          "energy_raw_joint_descent_slope": -0.331878631103268,
+          "force_norm": 0.3316193027226123,
+          "force_over_energy_norm": 0.4572732067944685,
+          "force_raw_joint_descent_slope": 0.0840801867788864,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.6546292722584924,
+          "energy_raw_joint_descent_slope": -0.4285394840976834,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": -0.8613537646566546,
+          "dot": -0.652053417953977,
+          "energy_norm": 0.9035611350735866,
+          "energy_raw_joint_descent_slope": -0.16436930686149132,
+          "force_norm": 0.8378071786425312,
+          "force_over_energy_norm": 0.9272279939024819,
+          "force_raw_joint_descent_slope": -0.04986745063098119,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": -0.8556812197349932,
+            "dot": -0.10113573363889598,
+            "energy_norm": 0.5073165744268591,
+            "energy_raw_joint_descent_slope": -0.15623437304930687,
+            "force_norm": 0.23297728375179272,
+            "force_over_energy_norm": 0.4592345204076938,
+            "force_raw_joint_descent_slope": 0.046857318894532644,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": -0.9230852886832688,
+            "dot": -0.009264237520736298,
+            "energy_norm": 0.1753084997440973,
+            "energy_raw_joint_descent_slope": -0.021468832561789865,
+            "force_norm": 0.057248601029685764,
+            "force_over_energy_norm": 0.32655918631015124,
+            "force_raw_joint_descent_slope": 0.005986835200880159,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": -0.8843326419049083,
+            "dot": -0.01345333530517001,
+            "energy_norm": 0.17225060216868743,
+            "energy_raw_joint_descent_slope": -0.01621693464230542,
+            "force_norm": 0.08831888182544481,
+            "force_over_energy_norm": 0.5127348219018294,
+            "force_raw_joint_descent_slope": 0.005653110418273124,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": -0.8370880755708703,
+            "dot": -0.0031639821514760393,
+            "energy_norm": 0.07628221200581473,
+            "energy_raw_joint_descent_slope": -0.002654993717024025,
+            "force_norm": 0.04954953594164051,
+            "force_over_energy_norm": 0.6495555731638133,
+            "force_raw_joint_descent_slope": 0.000708825639444115,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": -0.8408843103874925,
+            "dot": -0.002419842976311711,
+            "energy_norm": 0.12172222219263888,
+            "energy_raw_joint_descent_slope": -0.012396456399202439,
+            "force_norm": 0.02364182856955117,
+            "force_over_energy_norm": 0.1942277107965985,
+            "force_raw_joint_descent_slope": 0.001860906918199665,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": -0.8295751305779836,
+            "dot": -0.01396267417302538,
+            "energy_norm": 0.16144751246720923,
+            "energy_raw_joint_descent_slope": -0.012102625108824299,
+            "force_norm": 0.1042513101650138,
+            "force_over_energy_norm": 0.6457288103846613,
+            "force_raw_joint_descent_slope": 0.0030943385019034705,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": -0.8816902377106907,
+            "dot": -0.013043065168641083,
+            "energy_norm": 0.2348994424801184,
+            "energy_raw_joint_descent_slope": -0.04213468290882938,
+            "force_norm": 0.06297695322570118,
+            "force_over_energy_norm": 0.26810175690830546,
+            "force_raw_joint_descent_slope": 0.009076968531048928,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": -0.868110672360716,
+            "dot": -0.00970519911641031,
+            "energy_norm": 0.1406460275226522,
+            "energy_raw_joint_descent_slope": -0.010076105941492334,
+            "force_norm": 0.07948805757401345,
+            "force_over_energy_norm": 0.565163900994013,
+            "force_raw_joint_descent_slope": 0.003386847819520632,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": -0.8227689053992988,
+            "dot": -0.0012881728668306855,
+            "energy_norm": 0.04683374613343554,
+            "energy_raw_joint_descent_slope": -0.0009052269100604032,
+            "force_norm": 0.03343007720398338,
+            "force_over_energy_norm": 0.7138031860346312,
+            "force_raw_joint_descent_slope": 0.000170602804966396,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.1327574022113957,
+            "energy_raw_joint_descent_slope": -0.017624527841918293,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": -0.9461328861834127,
+            "dot": -0.005693695636846537,
+            "energy_norm": 0.08520969123432623,
+            "energy_raw_joint_descent_slope": -0.0015669958434026757,
+            "force_norm": 0.0706241311431227,
+            "force_over_energy_norm": 0.8288274504939431,
+            "force_raw_joint_descent_slope": 0.0007059277371255423,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": -0.7626602913142422,
+            "dot": -0.00665711350353557,
+            "energy_norm": 0.14179955905405875,
+            "energy_raw_joint_descent_slope": -0.013450001444389924,
+            "force_norm": 0.06155735437757618,
+            "force_over_energy_norm": 0.4341152736173774,
+            "force_raw_joint_descent_slope": 0.0028678056255690724,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": -0.9618866931860633,
+            "dot": -0.006224452692653081,
+            "energy_norm": 0.08212046302812115,
+            "energy_raw_joint_descent_slope": -0.0005193177552999311,
+            "force_norm": 0.07879993593414465,
+            "force_over_energy_norm": 0.959565168393663,
+            "force_raw_joint_descent_slope": 1.5022789427780042e-05,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": -0.6580343191061736,
+            "dot": -0.0010224225936167621,
+            "energy_norm": 0.05448492985661836,
+            "energy_raw_joint_descent_slope": -0.001946184987863861,
+            "force_norm": 0.028517109123246957,
+            "force_over_energy_norm": 0.5233944358245869,
+            "force_raw_joint_descent_slope": 0.00020919708086958723,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": -0.7027348437360542,
+            "dot": -0.00345188658937593,
+            "energy_norm": 0.141584434774669,
+            "energy_raw_joint_descent_slope": -0.01659426558108657,
+            "force_norm": 0.034693612189907755,
+            "force_over_energy_norm": 0.24503832109173923,
+            "force_raw_joint_descent_slope": 0.002248239862592214,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": -0.8412769845443411,
+            "dot": -0.0011340212017969566,
+            "energy_norm": 0.04724938430097306,
+            "energy_raw_joint_descent_slope": -0.0010984831150240826,
+            "force_norm": 0.028528964778722687,
+            "force_over_energy_norm": 0.6037954822225093,
+            "force_raw_joint_descent_slope": 0.0003201193704513569,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": -0.7305369519984966,
+            "dot": -0.0024317135817956224,
+            "energy_norm": 0.08555896725208414,
+            "energy_raw_joint_descent_slope": -0.004888623295447586,
+            "force_norm": 0.03890493539017799,
+            "force_over_energy_norm": 0.45471487840136704,
+            "force_raw_joint_descent_slope": 0.0009181195840816986,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.6546292722584924,
+            "energy_raw_joint_descent_slope": -0.4285394840976834,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": -0.8613537646566546,
+            "dot": -0.652053417953977,
+            "energy_norm": 0.9035611350735866,
+            "energy_raw_joint_descent_slope": -0.16436930686149132,
+            "force_norm": 0.8378071786425312,
+            "force_over_energy_norm": 0.9272279939024819,
+            "force_raw_joint_descent_slope": -0.04986745063098119,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": -0.7056331347992232,
+          "dot": -0.8461049666710949,
+          "energy_norm": 1.3307488075266263,
+          "energy_raw_joint_descent_slope": -0.9247874220624428,
+          "force_norm": 0.9010506259490583,
+          "force_over_energy_norm": 0.6771004571657522,
+          "force_raw_joint_descent_slope": 0.03421273614790521,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 1.0547118733938987e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.07036827534157565,
+        "force": 0.8559120259989498,
+        "joint": 0.9262803013405254
+      },
+      "record_count": 128,
+      "state_hashes_after": {
+        "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+        "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+      },
+      "state_hashes_before": {
+        "optimizer": "311d3e2925e1d6b5183ae9346a279b9047ec4fae7a9c162fb83454d758e0e87c",
+        "params": "a05e254c1de7b419f2f659af0e902a137a8380f7e6a6c3bbc423947c9332e236"
+      },
+      "status": "completed",
+      "update": 2000,
+      "verification_valid": true
+    },
+    "fresh-A-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 247.20812241730232,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 1.6200374375330284e-12,
+              "finite_difference": 247.20812241730394,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 6.0538241086760536e-12,
+              "finite_difference": 247.20812241730837,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.5877787788899789,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 4.3076653355456074e-14,
+              "finite_difference": 0.5877787788899358,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 8.838707543645796e-12,
+              "finite_difference": 0.5877787788988176,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.0,
+          "energy_raw_joint_descent_slope": -0.0,
+          "force_norm": 0.0,
+          "force_over_energy_norm": null,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 201.82034128006933,
+          "energy_raw_joint_descent_slope": -40731.450154403654,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.40137044996211485,
+          "dot": 33.67950573894791,
+          "energy_norm": 142.75995809289194,
+          "energy_raw_joint_descent_slope": -20414.08514042321,
+          "force_norm": 0.5877787788899788,
+          "force_over_energy_norm": 0.00411725239165116,
+          "force_raw_joint_descent_slope": -34.0249896318613,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 201.82034128006933,
+            "energy_raw_joint_descent_slope": -40731.450154403654,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": 0.40137044996211485,
+            "dot": 33.67950573894791,
+            "energy_norm": 142.75995809289194,
+            "energy_raw_joint_descent_slope": -20414.08514042321,
+            "force_norm": 0.5877787788899788,
+            "force_over_energy_norm": 0.00411725239165116,
+            "force_raw_joint_descent_slope": -34.0249896318613,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": 0.23178699816178147,
+          "dot": 33.67950573894791,
+          "energy_norm": 247.2081224173023,
+          "energy_raw_joint_descent_slope": -61145.53529482686,
+          "force_norm": 0.5877787788899788,
+          "force_over_energy_norm": 0.002377667744661612,
+          "force_raw_joint_descent_slope": -34.0249896318613,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 5.717648576819556e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 1.3157864990673698,
+        "force": 0.6294082981441705,
+        "joint": 1.9451947972115404
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "state_hashes_before": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "status": "completed",
+      "update": 0,
+      "verification_valid": true
+    },
+    "fresh-B-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 47.75515555607004,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 4.689582056016661e-13,
+              "finite_difference": 47.75515555606957,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 2.6858515411731787e-12,
+              "finite_difference": 47.75515555606735,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.9816442915714093,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 1.415201289489687e-12,
+              "finite_difference": 0.9816442915699941,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 1.8068657681169498e-11,
+              "finite_difference": 0.9816442915533407,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 1008,
+      "geometry": {
+        "backbone": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.0,
+          "energy_raw_joint_descent_slope": -0.0,
+          "force_norm": 0.0,
+          "force_over_energy_norm": null,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 39.23668821652896,
+          "energy_raw_joint_descent_slope": -1539.5177022011026,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.7155520619045864,
+          "dot": 19.1212104805742,
+          "energy_norm": 27.22199808947432,
+          "energy_raw_joint_descent_slope": -760.1583904639177,
+          "force_norm": 0.9816442915714092,
+          "force_over_energy_norm": 0.03606069945141068,
+          "force_raw_joint_descent_slope": -20.084835995748932,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 39.23668821652896,
+            "energy_raw_joint_descent_slope": -1539.5177022011026,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": 0.7155520619045864,
+            "dot": 19.1212104805742,
+            "energy_norm": 27.22199808947432,
+            "energy_raw_joint_descent_slope": -760.1583904639177,
+            "force_norm": 0.9816442915714092,
+            "force_over_energy_norm": 0.03606069945141068,
+            "force_raw_joint_descent_slope": -20.084835995748932,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": 0.4078880413072002,
+          "dot": 19.1212104805742,
+          "energy_norm": 47.75515555607003,
+          "energy_raw_joint_descent_slope": -2299.67609266502,
+          "force_norm": 0.9816442915714092,
+          "force_over_energy_norm": 0.02055577623276394,
+          "force_raw_joint_descent_slope": -20.084835995748932,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 3.885780586188048e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.777525978123801,
+        "force": 1.1142552392797032,
+        "joint": 1.891781217403504
+      },
+      "record_count": 16,
+      "state_hashes_after": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "state_hashes_before": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "status": "completed",
+      "update": 0,
+      "verification_valid": true
+    },
+    "fresh-C-fitting": {
+      "finite_differences": {
+        "energy": {
+          "autodiff_directional_derivative": 72.4114827715311,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 5.400124791776761e-13,
+              "finite_difference": 72.41148277153164,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 8.341771717823576e-12,
+              "finite_difference": 72.41148277152276,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "force": {
+          "autodiff_directional_derivative": 0.5319166048734169,
+          "direction_kind": "unit_gradient",
+          "steps": [
+            {
+              "absolute_error": 5.330180741225377e-13,
+              "finite_difference": 0.5319166048739499,
+              "step": 0.0001,
+              "valid": true
+            },
+            {
+              "absolute_error": 5.529021684935742e-12,
+              "finite_difference": 0.5319166048789459,
+              "step": 1e-05,
+              "valid": true
+            }
+          ],
+          "valid": true
+        },
+        "valid": true
+      },
+      "force_component_count": 8064,
+      "geometry": {
+        "backbone": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 0.0,
+          "energy_raw_joint_descent_slope": -0.0,
+          "force_norm": 0.0,
+          "force_over_energy_norm": null,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 4720
+        },
+        "head_bias": {
+          "cosine": null,
+          "dot": 0.0,
+          "energy_norm": 59.332970471878184,
+          "energy_raw_joint_descent_slope": -3520.4013850167685,
+          "force_norm": 0.0,
+          "force_over_energy_norm": 0.0,
+          "force_raw_joint_descent_slope": -0.0,
+          "parameter_count": 1
+        },
+        "head_kernel": {
+          "cosine": 0.6228055818716899,
+          "dot": 13.751224947757528,
+          "energy_norm": 41.509293563670504,
+          "energy_raw_joint_descent_slope": -1736.772677102735,
+          "force_norm": 0.531916604873417,
+          "force_over_energy_norm": 0.012814397914469871,
+          "force_raw_joint_descent_slope": -14.03416022229759,
+          "parameter_count": 16
+        },
+        "leaves": {
+          "['Backbone_0']['Embed_0']['embedding']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1904
+          },
+          "['Backbone_0']['dense_in_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_in_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_in_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_0']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_0']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 16
+          },
+          "['Backbone_0']['dense_out_1']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['dense_out_1']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 256
+          },
+          "['Backbone_0']['message_0']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_0']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 64
+          },
+          "['Backbone_0']['message_1']['filter']['0+']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['filter']['1-']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['Backbone_0']['message_1']['tensor']['kernel']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 0.0,
+            "energy_raw_joint_descent_slope": -0.0,
+            "force_norm": 0.0,
+            "force_over_energy_norm": null,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 128
+          },
+          "['energy_head']['0+']['bias']": {
+            "cosine": null,
+            "dot": 0.0,
+            "energy_norm": 59.332970471878184,
+            "energy_raw_joint_descent_slope": -3520.4013850167685,
+            "force_norm": 0.0,
+            "force_over_energy_norm": 0.0,
+            "force_raw_joint_descent_slope": -0.0,
+            "parameter_count": 1
+          },
+          "['energy_head']['0+']['kernel']": {
+            "cosine": 0.6228055818716899,
+            "dot": 13.751224947757528,
+            "energy_norm": 41.509293563670504,
+            "energy_raw_joint_descent_slope": -1736.772677102735,
+            "force_norm": 0.531916604873417,
+            "force_over_energy_norm": 0.012814397914469871,
+            "force_raw_joint_descent_slope": -14.03416022229759,
+            "parameter_count": 16
+          }
+        },
+        "whole": {
+          "cosine": 0.35701823442246255,
+          "dot": 13.751224947757528,
+          "energy_norm": 72.41148277153111,
+          "energy_raw_joint_descent_slope": -5257.174062119504,
+          "force_norm": 0.531916604873417,
+          "force_over_energy_norm": 0.007345749382755938,
+          "force_raw_joint_descent_slope": -14.03416022229759,
+          "parameter_count": 4737
+        }
+      },
+      "joint_gradient_identity": {
+        "max_absolute_difference": 3.767819389821625e-15,
+        "valid": true
+      },
+      "losses": {
+        "energy": 0.8053078924970426,
+        "force": 0.8747718406310223,
+        "joint": 1.6800797331280648
+      },
+      "record_count": 128,
+      "state_hashes_after": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "state_hashes_before": {
+        "optimizer": "8fc30b9a817f70448819b69c458e2e1cacc034cde02880066eab48edebd4f01d",
+        "params": "b6351d17922c7646322cb85f142c9566dc5380b6ca5676898c157d92dd93becd"
+      },
+      "status": "completed",
+      "update": 0,
+      "verification_valid": true
+    }
+  },
+  "constraints": {
+    "diverse128": {
+      "equal_group": {
+        "compatible_mse": 0.014083939185454,
+        "floor_mse": 9.03261621934256e-09,
+        "raw_mse": 0.014083948218070219,
+        "translation_mse": 6.15260455854887e-09
+      },
+      "floor_obstructs_gate": false,
+      "force_component_count": 8064,
+      "graph": {
+        "component_range": [
+          1,
+          1
+        ],
+        "cutoff_near_pair_total": 0,
+        "isolated_atom_range": [
+          0,
+          0
+        ],
+        "two_hop_fraction_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "immutable_force_gate_mse": 0.001408394821807022,
+      "pooled": {
+        "compatible_mse": 0.014083939185454,
+        "floor_fraction_of_zero_force": 6.413411977582667e-07,
+        "floor_mse": 9.03261621934256e-09,
+        "raw_mse": 0.014083948218070219,
+        "translation_mse": 6.1526045585488705e-09
+      },
+      "ranks": [
+        6
+      ],
+      "record_count": 128
+    },
+    "diverse16": {
+      "equal_group": {
+        "compatible_mse": 0.017939654694347842,
+        "floor_mse": 9.52759197564495e-09,
+        "raw_mse": 0.017939664221939815,
+        "translation_mse": 5.86885208551584e-09
+      },
+      "floor_obstructs_gate": false,
+      "force_component_count": 1008,
+      "graph": {
+        "component_range": [
+          1,
+          1
+        ],
+        "cutoff_near_pair_total": 0,
+        "isolated_atom_range": [
+          0,
+          0
+        ],
+        "two_hop_fraction_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "immutable_force_gate_mse": 0.0017939664221939815,
+      "pooled": {
+        "compatible_mse": 0.01793965469434784,
+        "floor_fraction_of_zero_force": 5.310908753795357e-07,
+        "floor_mse": 9.527591975644952e-09,
+        "raw_mse": 0.017939664221939815,
+        "translation_mse": 5.8688520855158395e-09
+      },
+      "ranks": [
+        6
+      ],
+      "record_count": 16
+    },
+    "narrow16": {
+      "equal_group": {
+        "compatible_mse": 0.010133553332115677,
+        "floor_mse": 7.749013429412125e-09,
+        "raw_mse": 0.010133561081129106,
+        "translation_mse": 4.644641210085968e-09
+      },
+      "floor_obstructs_gate": false,
+      "force_component_count": 1008,
+      "graph": {
+        "component_range": [
+          1,
+          1
+        ],
+        "cutoff_near_pair_total": 0,
+        "isolated_atom_range": [
+          0,
+          0
+        ],
+        "two_hop_fraction_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "immutable_force_gate_mse": 0.0010133561081129107,
+      "pooled": {
+        "compatible_mse": 0.010133553332115677,
+        "floor_fraction_of_zero_force": 7.646880861894121e-07,
+        "floor_mse": 7.749013429412125e-09,
+        "raw_mse": 0.010133561081129106,
+        "translation_mse": 4.644641210085968e-09
+      },
+      "ranks": [
+        6
+      ],
+      "record_count": 16
+    }
+  },
+  "execution": {
+    "elapsed_seconds": 8.960575666977093,
+    "execution_valid": true,
+    "full_pilot": "pending",
+    "learning_accepted": false,
+    "next_step": "separately_review_intervention_from_local_evidence",
+    "phase_A_status": "completed",
+    "source_hashes_unchanged": true,
+    "stage": "phase-B",
+    "status": "completed"
+  },
+  "figures": {
+    "representation-force-floors.png": "db621e3145c5ee89492e871d379bde090cbad74979f049ad6b02b37dac799455",
+    "representation-gradient-geometry.png": "38121a40550c1bce278b6d85b014d037e53681fdf12442bd579169310fbabaa7"
+  },
+  "generator_sha256": "f94d924cfa67a0aa608795ac233d23c6d1a74a0b1c23f3b11de5d104a56e875b",
+  "matplotlib_version": "3.11.2",
+  "report_sha256": "d426910c2151d1e736f3b93922dd1946a27d8e031a3a677a91d3d326032bd45a",
+  "sources": {
+    "cases.json": "4787ed41450f61183cb465338eff594810f16a24bacacf37131bb684155c6a44",
+    "config.json": "0c609dc6ab929d2c51f4178ebeba353d9cf661c1f89474f175bfb2acff17e936",
+    "final-A-fitting/observations.json": "76baa62b97b3d99e15f3ad9ef36dd11e01a1b91c55325664104cf6aa8a72d315",
+    "final-A-fitting/partial.json": "0235d07bac59cd238774d4903a56cebd36e4fe12d9efd1454ade4f43559e1dd6",
+    "final-A-fitting/prospective.json": "e137e849baf7ad2e212e41a0759ff9a198fd018d65fb100541539a376ffdb3b9",
+    "final-A-fitting/summary.json": "0f0a6c02febf58e86f87aa18a9506c993ba2f1e6aa0bb999243cbf1a5c531e02",
+    "final-B-anchor/observations.json": "18fea2408fc7ce2b320639042c6f23e515a63f722744f5874b2104a8614284d4",
+    "final-B-anchor/partial.json": "2a1c278c160badfe320dae1ad1877dc8ee14082a8a86d91c069c6c20b3c3ae64",
+    "final-B-anchor/prospective.json": "9bb2a18c0b89f02fff7730ba3b55f032239f473f464ab771a0bb72b449924891",
+    "final-B-anchor/summary.json": "82efdcc9d90a887556fcb7189246bac5be111a060caed1e3a39af39f75528663",
+    "final-B-fitting/observations.json": "a4475e427b8a6671390a01ce1820ba09703a39924e43b5b38dc44011996d0b38",
+    "final-B-fitting/partial.json": "9765b1d85caecd49f6f19e720b8176d4c1687727aa21700743f90857822462f9",
+    "final-B-fitting/prospective.json": "cea7b82f42e72392574721204c996745dbb2e4f815da3ec44522e4621cebc18b",
+    "final-B-fitting/summary.json": "4a3659c9755b83419599cc89b1a199cdd02fbe524b3610c90fa3272146457f32",
+    "final-C-anchor/observations.json": "34774a60fcb8fd8d06139eaa2228fe5a337d32cd3389a391f22f3841f76fecc5",
+    "final-C-anchor/partial.json": "d3d6c277e20a041bb5077e2ed7d32b62c4b12a88dfd366a77ec10b6dc5edfbc4",
+    "final-C-anchor/prospective.json": "70f5ca3fdbba3942b0a45e12731a920bc30717bc62e380d3c4217030f1c678ae",
+    "final-C-anchor/summary.json": "71ba6b8f6f70b55d679f73e8274774714c00c69e16ac1bca280ed537ab64a27d",
+    "final-C-fitting/observations.json": "0e57685416e8bbae6a626b4ffa275d4de772a68047c6cc97eaad0ca251520e2e",
+    "final-C-fitting/partial.json": "4228f1c4ad536f2e77d477a39e43d5456869bd83b33f83da661f0d941a45fb5f",
+    "final-C-fitting/prospective.json": "915c2f830a403c87045d5e36e6820f80580066837853f05a544361c86131844c",
+    "final-C-fitting/summary.json": "979fbba5e20e2e5b52d5840841713b5004882c2e166f391676c4d5c7b77e6000",
+    "fresh-A-fitting/observations.json": "871edf2e85cd8fdb5fdb9fc7d6119729217bacc08d4753e1a21f817e31f67cbc",
+    "fresh-A-fitting/partial.json": "dee75a5af21c7806b348c1929cab1543b294d3b11c863385464d0d093a11acbf",
+    "fresh-A-fitting/prospective.json": "49e76563d5c0e66561756d4aed61e344ee176a3de6e8863234598ad9d92040d3",
+    "fresh-A-fitting/summary.json": "e368f7bb5e0f60865e932f56f7a90c169a80d17857b816782ffa4117de6bcf99",
+    "fresh-B-fitting/observations.json": "f2a23f14002b4da1bb3d2653e47b7fadf8f63c4c1f051f61194bc30066520cba",
+    "fresh-B-fitting/partial.json": "abdcaa23b7054550fb280cbf1cae22be9376852c46f1d54d93962a526b339a69",
+    "fresh-B-fitting/prospective.json": "8e53f321235b0a68e03011e182557e7bafde4c965a1adb51ca68db199d807c79",
+    "fresh-B-fitting/summary.json": "932362c1d7e180a4454dad3e95d628c55892df82bc1ceb1eb3f000c5be214d0e",
+    "fresh-C-fitting/observations.json": "86e590a45e3bc5b8a896ab184ccaa4622b5200c62d909fef256955d779640fa1",
+    "fresh-C-fitting/partial.json": "adfa1b2ecab15ace385fdb5ae6ee21a4f61f183cb3732855da02c6c7d96b3d6c",
+    "fresh-C-fitting/prospective.json": "903e3e3622af7ee9fe1016e9a762f12b6eba0577d6e8cdb0acfbcbba09d96641",
+    "fresh-C-fitting/summary.json": "8c52ef2f528d9af3a7c448057e8e5d489bdaa55a9327980f342fbe751862384c",
+    "phase-A.json": "ed8ff3e418c136c7b8e24777658a62ff5aba0ab5fbe5891d35cbcf862d16134b",
+    "provenance.json": "0c29025191bda1c50d9bcbb5408ebb35d129d6cefefc43c65341066b5541cdf2",
+    "subsets.json": "d3c3db7a92f3ffb0748039f63d7a0734bf38214032037ab67780d6182ad764b6",
+    "summary.json": "6d0027b14169bfaa72a6117d786412b8d0909a916ae13f4e0aa562d384907e16"
+  }
+}

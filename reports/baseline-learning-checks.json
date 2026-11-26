@@ -1,0 +1,662 @@
+{
+  "status": "learning gate failed; full pilot pending",
+  "attempts": [
+    {
+      "backend": "cpu",
+      "backend_requested": "cpu",
+      "best_equal_connection_force_mae_eV_per_A": 0.07480701093833524,
+      "best_update": 2000,
+      "checkpoint_new_process_verified": true,
+      "compilation_seconds": 1.3606326669687405,
+      "device_kind": "cpu",
+      "elapsed_seconds": 26.59973204205744,
+      "gpu_hours": null,
+      "initialization_seconds": 3.4160906249890104,
+      "learning_accepted": false,
+      "learning_final_mse": {
+        "energy_mse_eV2": 0.007751758500612726,
+        "force_mse_eV2_per_A2": 0.009779336686872274
+      },
+      "learning_initial_mse": {
+        "energy_mse_eV2": 32.23256077457698,
+        "force_mse_eV2_per_A2": 0.0435718463614834
+      },
+      "memory_collection_method": "JAX device.memory_stats; unavailable when backend returns None",
+      "mode": "learning_check",
+      "parameter_count": 4737,
+      "peak_device_memory_bytes": null,
+      "precision": "float64",
+      "provenance": {
+        "backend": "cpu",
+        "code_files": {
+          "pyproject.toml": "48c22afefed3711f382c7df0cdf70894e76a6509a3d5634c508da4c3792608a9",
+          "src/force_consistency/__init__.py": "99faee9d92bcfe69daf3ed6e2577b1fcc894914d3b85d5e7228c5c03ee16b00b",
+          "src/force_consistency/cli.py": "ceddef17a36e054a493e790fc57e3127fbbb5906931fbeebab0bb0ac465568a0",
+          "src/force_consistency/data/__init__.py": "07edae732e1f38f356369ee977ee9fbb2e22b6103e58bf74c5004ba83b7cd93c",
+          "src/force_consistency/data/audit.py": "0b8d41c8149b9dedfcdfbe7fa129fcf1723244f4ffd98f44611cd9664e912ab8",
+          "src/force_consistency/data/geometry.py": "81a592b9379c81471a59f8147ded74cda3b05e28628cf783b486e925c205edf1",
+          "src/force_consistency/data/matching.py": "7fe93ef2ee39b7701455fedbf4d00ad9dec14f9512d936a9f5e4d7fb3ae3445c",
+          "src/force_consistency/data/prepare.py": "aa25f4a6f4335ca8f1fc4d5468c59caaf8834adc2ed389dcb58c13a15ff4c674",
+          "src/force_consistency/data/source.py": "bc7b7aac2945cee6bfc746935052f78437414802fd85ffc201b728925afa7229",
+          "src/force_consistency/data/splits.py": "b9cc69d86cfb1876215117a873e442b2e7de2e76019c151b581c04bff6a69f80",
+          "src/force_consistency/data/types.py": "cd2774e75c0611ddb2c6c14bd5f9ac6c4afbd9e60b5d4ccbe602cf703e44b4f6",
+          "src/force_consistency/data/units.py": "1ea1983ba9eed7846451bca2e552381b060eacae9346a1c8f3fdb24f8b67d29d",
+          "src/force_consistency/data/xyz.py": "8bb2dbdda93759bce3fc6ea66c9dec63a0d1d8ff07f88fc0b233e29641db94ed",
+          "src/force_consistency/metrics.py": "901e93774e5d075303180abd58540f45889e1e9768d10b81a99e3c040a0784d5",
+          "src/force_consistency/models/__init__.py": "7509bed2e10c99f6e1053a1d1a77084b1a77cd31735afc85d04814618e60787e",
+          "src/force_consistency/models/backbone.py": "6f9b16a3ce792d856cf8509df23a8a8f3d050b9f59e87bc04e0d236881a2dae8",
+          "src/force_consistency/models/energy.py": "08b1fadc82931293980c099edc2845571c860debb7b23ab9667160ee25ad7290",
+          "src/force_consistency/runs.py": "a1f274f26b964c46f9c051d77445d6d0d8b49e7cf0c48393df7d3722c249eb7f",
+          "src/force_consistency/train.py": "e64a494863c4388efac1d29db599fb8bb62edece5aee9c501260db66220aed83",
+          "uv.lock": "cf95835311d113384b040bedf3e21cbbac714e6b2be302a6d4b6b6cfe29aecc4"
+        },
+        "code_fingerprint": "9bb3f52eb1321a852960429f342fe2881662b12eaeeeea97534ab699f40a51a7",
+        "config_computation_hash": "648772fda72abf2a0bc7c4cda82f42f457ba29f6f03848c7563447180be9e295",
+        "dataset_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+        "dependencies": {
+          "ase": "3.29.0",
+          "e3x": "1.0.2",
+          "flax": "0.12.6",
+          "jax": "0.9.2",
+          "jaxlib": "0.9.2",
+          "numpy": "2.5.3",
+          "optax": "0.2.8"
+        },
+        "device_kind": "cpu",
+        "lock_sha256": "cf95835311d113384b040bedf3e21cbbac714e6b2be302a6d4b6b6cfe29aecc4",
+        "normalization": {
+          "energy_loss_scale_eV": 0.21583988927697104,
+          "energy_offset_eV": -17647.258992926312,
+          "force_loss_scale_eV_per_A": 0.1268863230978139
+        },
+        "parameter_count": 4737,
+        "policy_hash": "36abc3d14adc8c3650552b7ff7460891c7701c2685e1a8ec956fbd802e1f488f",
+        "precision": "float64",
+        "python": "3.12.13",
+        "revision": "3e6a4952bc39a7b995e9c3b336dc6cf48e032c2b",
+        "split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+        "unit_evidence_hash": "2d7aebc6c23d00db5c142016c33e45d019c02723ea375fdcce06625bfa32a9ed"
+      },
+      "resume_scope": "Pinned CPU environment tested to 1e-10; GPU/cross-platform bitwise reproducibility unverified",
+      "status": "incomplete",
+      "steady_update_seconds_mean": 0.0035973351656575685,
+      "steady_update_seconds_total": 7.1946703313151374,
+      "stop_reason": "max_updates",
+      "updates": 2000,
+      "validation_seconds_total": 7.303930915892124,
+      "warmup_execution_seconds": 0.016381500056013465,
+      "run_directory": "runs/aspirin-learning-check-seed0",
+      "artifact_sha256": {
+        "best.msgpack": "a54fbcd296654f986d346b58079edc0cb03b2d7f8961df8a7fed7f6e20bf396a",
+        "checkpoint-reference.npz": "2214201eba1cebd2286a310f4ea2c7f2f1a7c9ba9dd62fb498ad1ec3b38f57f4",
+        "checkpoint-verification.json": "4ce690aacc936072d8e81da90e9dc941037a9146aded853c0e49b9e89422abd2",
+        "config.json": "eff7b03e6b6fb6f90a3dda5d235a8184f62f7dd181d524d1cb1ec90a1db8631e",
+        "last.msgpack": "a54fbcd296654f986d346b58079edc0cb03b2d7f8961df8a7fed7f6e20bf396a",
+        "learning-subset.json": "113714da0c7f3c3fb710e3640dbf0756f7bbee0d27ab4a6d34abf02f1e0fb756",
+        "losses.json": "63c770f817a42a2e9477a3bacb931934f20395ce1e177b809d85d912eecbe188",
+        "provenance.json": "72559f0a667d7d00b11fbe4663adbcbb9237ff46484521e7a500447e454d62ee",
+        "summary.json": "c435ffd94b77a243876dae289ecd5201407c1d17237f76c041315d5abf62770d",
+        "validation.json": "d0d79094e4bafec4f0f40c9b4e29b5a6f7b8f442bd2c530da4c237d705e45bda"
+      },
+      "validation_history": [
+        {
+          "update": 0,
+          "energy_mae_eV": 6.982476035732486,
+          "pooled_force_mae_eV_per_A": 0.1788850089781026,
+          "equal_connection_force_mae_eV_per_A": 0.17905971767281065,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 100,
+          "energy_mae_eV": 0.875249650565336,
+          "pooled_force_mae_eV_per_A": 0.11934260021760831,
+          "equal_connection_force_mae_eV_per_A": 0.11948270733172454,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 200,
+          "energy_mae_eV": 0.866302006519426,
+          "pooled_force_mae_eV_per_A": 0.11320930484116302,
+          "equal_connection_force_mae_eV_per_A": 0.11337168708802192,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 300,
+          "energy_mae_eV": 0.8334685037262803,
+          "pooled_force_mae_eV_per_A": 0.10727070776035605,
+          "equal_connection_force_mae_eV_per_A": 0.10745454243261199,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 400,
+          "energy_mae_eV": 0.7776139857347744,
+          "pooled_force_mae_eV_per_A": 0.1019622007811471,
+          "equal_connection_force_mae_eV_per_A": 0.1021642024944753,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 500,
+          "energy_mae_eV": 0.7080191967787393,
+          "pooled_force_mae_eV_per_A": 0.09768434766178355,
+          "equal_connection_force_mae_eV_per_A": 0.09790297842592523,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 600,
+          "energy_mae_eV": 0.7177651283838187,
+          "pooled_force_mae_eV_per_A": 0.09437474908638895,
+          "equal_connection_force_mae_eV_per_A": 0.09461051565106267,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 700,
+          "energy_mae_eV": 0.7375166430347537,
+          "pooled_force_mae_eV_per_A": 0.0914490500617757,
+          "equal_connection_force_mae_eV_per_A": 0.09170591066696689,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 800,
+          "energy_mae_eV": 0.6736467789766171,
+          "pooled_force_mae_eV_per_A": 0.08875500434933951,
+          "equal_connection_force_mae_eV_per_A": 0.08902475092401446,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 900,
+          "energy_mae_eV": 0.6072339906616643,
+          "pooled_force_mae_eV_per_A": 0.0862418207600622,
+          "equal_connection_force_mae_eV_per_A": 0.08652583072878846,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1000,
+          "energy_mae_eV": 0.6341305977275145,
+          "pooled_force_mae_eV_per_A": 0.08439420900384273,
+          "equal_connection_force_mae_eV_per_A": 0.0846912559894955,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1100,
+          "energy_mae_eV": 0.5402900633685902,
+          "pooled_force_mae_eV_per_A": 0.0824967290403433,
+          "equal_connection_force_mae_eV_per_A": 0.08279977288865178,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1200,
+          "energy_mae_eV": 0.5426668471893837,
+          "pooled_force_mae_eV_per_A": 0.08120708380672739,
+          "equal_connection_force_mae_eV_per_A": 0.08151913415514087,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1300,
+          "energy_mae_eV": 0.47695340069715003,
+          "pooled_force_mae_eV_per_A": 0.07984640422356516,
+          "equal_connection_force_mae_eV_per_A": 0.08016442305797686,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1400,
+          "energy_mae_eV": 0.4950426271116876,
+          "pooled_force_mae_eV_per_A": 0.07899332492906114,
+          "equal_connection_force_mae_eV_per_A": 0.07931527242641903,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1500,
+          "energy_mae_eV": 0.43065352376430444,
+          "pooled_force_mae_eV_per_A": 0.07743952550814362,
+          "equal_connection_force_mae_eV_per_A": 0.0777623501681128,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1600,
+          "energy_mae_eV": 0.3997804993159219,
+          "pooled_force_mae_eV_per_A": 0.07648582771752235,
+          "equal_connection_force_mae_eV_per_A": 0.0768100422653229,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1700,
+          "energy_mae_eV": 0.3506464718986619,
+          "pooled_force_mae_eV_per_A": 0.07610693277678035,
+          "equal_connection_force_mae_eV_per_A": 0.07643008267322701,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1800,
+          "energy_mae_eV": 0.3476131020870956,
+          "pooled_force_mae_eV_per_A": 0.07545095872141831,
+          "equal_connection_force_mae_eV_per_A": 0.07577093769855554,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1900,
+          "energy_mae_eV": 0.34355547049713125,
+          "pooled_force_mae_eV_per_A": 0.07495794771569382,
+          "equal_connection_force_mae_eV_per_A": 0.07527758104229106,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 2000,
+          "energy_mae_eV": 0.38563029702367213,
+          "pooled_force_mae_eV_per_A": 0.0744923388508198,
+          "equal_connection_force_mae_eV_per_A": 0.07480701093833524,
+          "record_count": 974,
+          "force_component_count": 61362
+        }
+      ],
+      "fractions_remaining": {
+        "energy_mse_eV2": 0.00024049465243626642,
+        "force_mse_eV2_per_A2": 0.2244416407269122
+      }
+    },
+    {
+      "backend": "cpu",
+      "backend_requested": "cpu",
+      "best_equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+      "best_update": 0,
+      "checkpoint_new_process_verified": true,
+      "compilation_seconds": 1.3782514169579372,
+      "device_kind": "cpu",
+      "elapsed_seconds": 26.417110207956284,
+      "gpu_hours": null,
+      "initialization_seconds": 3.4426302920328453,
+      "learning_accepted": false,
+      "learning_baselines": {
+        "subset_mean_energy_mse_eV2": 0.011184466862616722,
+        "zero_energy_residual_mse_eV2": 0.061298358531283896,
+        "zero_force_mse_eV2_per_A2": 0.010133561081129106
+      },
+      "learning_final_mse": {
+        "energy_mse_eV2": 0.0004897094577467109,
+        "force_mse_eV2_per_A2": 0.0075721620581139844
+      },
+      "learning_history": [
+        {
+          "energy_mse_eV2": 0.061298358531283896,
+          "force_mse_eV2_per_A2": 0.010133561081129104,
+          "update": 0
+        },
+        {
+          "energy_mse_eV2": 0.014504809653137943,
+          "force_mse_eV2_per_A2": 0.010227441013801249,
+          "update": 100
+        },
+        {
+          "energy_mse_eV2": 0.00936744736316579,
+          "force_mse_eV2_per_A2": 0.010242640218785291,
+          "update": 200
+        },
+        {
+          "energy_mse_eV2": 0.005798459001552804,
+          "force_mse_eV2_per_A2": 0.010263612897441907,
+          "update": 300
+        },
+        {
+          "energy_mse_eV2": 0.007429768943268188,
+          "force_mse_eV2_per_A2": 0.00996693464034702,
+          "update": 400
+        },
+        {
+          "energy_mse_eV2": 0.0074695107572984,
+          "force_mse_eV2_per_A2": 0.009732172576740234,
+          "update": 500
+        },
+        {
+          "energy_mse_eV2": 0.0026116246755430606,
+          "force_mse_eV2_per_A2": 0.009544130917640023,
+          "update": 600
+        },
+        {
+          "energy_mse_eV2": 0.005327056771232949,
+          "force_mse_eV2_per_A2": 0.0092340854779735,
+          "update": 700
+        },
+        {
+          "energy_mse_eV2": 0.0020129412623170967,
+          "force_mse_eV2_per_A2": 0.008897778220762109,
+          "update": 800
+        },
+        {
+          "energy_mse_eV2": 0.0019052013301356923,
+          "force_mse_eV2_per_A2": 0.008608121231415704,
+          "update": 900
+        },
+        {
+          "energy_mse_eV2": 0.0012994383358836557,
+          "force_mse_eV2_per_A2": 0.008529363093518597,
+          "update": 1000
+        },
+        {
+          "energy_mse_eV2": 0.0011998521270829383,
+          "force_mse_eV2_per_A2": 0.008478404037899706,
+          "update": 1100
+        },
+        {
+          "energy_mse_eV2": 0.0008579428504999691,
+          "force_mse_eV2_per_A2": 0.008248595658705478,
+          "update": 1200
+        },
+        {
+          "energy_mse_eV2": 0.00067761820539651,
+          "force_mse_eV2_per_A2": 0.008193851499448141,
+          "update": 1300
+        },
+        {
+          "energy_mse_eV2": 0.0006333572063420285,
+          "force_mse_eV2_per_A2": 0.008053233211458328,
+          "update": 1400
+        },
+        {
+          "energy_mse_eV2": 0.00043388809849287846,
+          "force_mse_eV2_per_A2": 0.007988280149538942,
+          "update": 1500
+        },
+        {
+          "energy_mse_eV2": 0.0004652133268063066,
+          "force_mse_eV2_per_A2": 0.007931734842574176,
+          "update": 1600
+        },
+        {
+          "energy_mse_eV2": 0.00034003359035585204,
+          "force_mse_eV2_per_A2": 0.00784945628899367,
+          "update": 1700
+        },
+        {
+          "energy_mse_eV2": 0.0008919599442224445,
+          "force_mse_eV2_per_A2": 0.007758657157713599,
+          "update": 1800
+        },
+        {
+          "energy_mse_eV2": 0.0013283018102874826,
+          "force_mse_eV2_per_A2": 0.007678009782924976,
+          "update": 1900
+        },
+        {
+          "energy_mse_eV2": 0.0004897094577467109,
+          "force_mse_eV2_per_A2": 0.0075721620581139844,
+          "update": 2000
+        }
+      ],
+      "learning_initial_mse": {
+        "energy_mse_eV2": 0.061298358531283896,
+        "force_mse_eV2_per_A2": 0.010133561081129104
+      },
+      "memory_collection_method": "JAX device.memory_stats; unavailable when backend returns None",
+      "mode": "learning_check",
+      "parameter_count": 4737,
+      "peak_device_memory_bytes": null,
+      "precision": "float64",
+      "provenance": {
+        "backend": "cpu",
+        "code_files": {
+          "pyproject.toml": "ae5595d50d97ac81e28ccdbebd42c37f4918f3d8785fb62fca18b6d04cf321ab",
+          "src/force_consistency/__init__.py": "99faee9d92bcfe69daf3ed6e2577b1fcc894914d3b85d5e7228c5c03ee16b00b",
+          "src/force_consistency/cli.py": "ceddef17a36e054a493e790fc57e3127fbbb5906931fbeebab0bb0ac465568a0",
+          "src/force_consistency/data/__init__.py": "07edae732e1f38f356369ee977ee9fbb2e22b6103e58bf74c5004ba83b7cd93c",
+          "src/force_consistency/data/audit.py": "0b8d41c8149b9dedfcdfbe7fa129fcf1723244f4ffd98f44611cd9664e912ab8",
+          "src/force_consistency/data/geometry.py": "81a592b9379c81471a59f8147ded74cda3b05e28628cf783b486e925c205edf1",
+          "src/force_consistency/data/matching.py": "7fe93ef2ee39b7701455fedbf4d00ad9dec14f9512d936a9f5e4d7fb3ae3445c",
+          "src/force_consistency/data/prepare.py": "aa25f4a6f4335ca8f1fc4d5468c59caaf8834adc2ed389dcb58c13a15ff4c674",
+          "src/force_consistency/data/source.py": "bc7b7aac2945cee6bfc746935052f78437414802fd85ffc201b728925afa7229",
+          "src/force_consistency/data/splits.py": "b9cc69d86cfb1876215117a873e442b2e7de2e76019c151b581c04bff6a69f80",
+          "src/force_consistency/data/types.py": "cd2774e75c0611ddb2c6c14bd5f9ac6c4afbd9e60b5d4ccbe602cf703e44b4f6",
+          "src/force_consistency/data/units.py": "1ea1983ba9eed7846451bca2e552381b060eacae9346a1c8f3fdb24f8b67d29d",
+          "src/force_consistency/data/xyz.py": "8bb2dbdda93759bce3fc6ea66c9dec63a0d1d8ff07f88fc0b233e29641db94ed",
+          "src/force_consistency/metrics.py": "901e93774e5d075303180abd58540f45889e1e9768d10b81a99e3c040a0784d5",
+          "src/force_consistency/models/__init__.py": "7509bed2e10c99f6e1053a1d1a77084b1a77cd31735afc85d04814618e60787e",
+          "src/force_consistency/models/backbone.py": "fc1edad54ab81c391c6b1ece1028603e292e9c0dd1bc59a98fd7320b916aad82",
+          "src/force_consistency/models/energy.py": "e137f319deae85bb6374c0ef9844a785ea1cb60cd0eafd45fafbed7498f5e0ec",
+          "src/force_consistency/runs.py": "a1f274f26b964c46f9c051d77445d6d0d8b49e7cf0c48393df7d3722c249eb7f",
+          "src/force_consistency/train.py": "c080e3e612b755381048e0b091985056196c4cfe9536707dab30f7aa83a23536",
+          "uv.lock": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f"
+        },
+        "code_fingerprint": "0f9007085dde4bd8d5344105d7d45a48d4cfdfa7af1e41587694e4ddf3eca290",
+        "config_computation_hash": "388971913ff56925a43665d7a61ee176197d32415a50e9a427bd219265bafbf5",
+        "dataset_identity": "4b9f220201d6483e2b2a8da74c10330c3762942ff4c6fabe6389ee27249c43aa",
+        "dependencies": {
+          "ase": "3.29.0",
+          "e3x": "1.0.2",
+          "flax": "0.12.6",
+          "jax": "0.9.2",
+          "jaxlib": "0.9.2",
+          "numpy": "2.5.3",
+          "optax": "0.2.8"
+        },
+        "device_kind": "cpu",
+        "lock_sha256": "f4fd465a42a95ccd44ecc4b163cee44b38c2cb8dc9aae3859513d2e4f477951f",
+        "normalization": {
+          "energy_loss_scale_eV": 0.21583988927697104,
+          "energy_offset_eV": -17647.258992926312,
+          "force_loss_scale_eV_per_A": 0.1268863230978139
+        },
+        "parameter_count": 4737,
+        "policy_hash": "36abc3d14adc8c3650552b7ff7460891c7701c2685e1a8ec956fbd802e1f488f",
+        "precision": "float64",
+        "python": "3.12.13",
+        "revision": "e146114376d42dee6a143d5c0ecba1764bfffc7b",
+        "split_hash": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+        "unit_evidence_hash": "2d7aebc6c23d00db5c142016c33e45d019c02723ea375fdcce06625bfa32a9ed"
+      },
+      "resume_scope": "Pinned CPU environment tested to 1e-10; GPU/cross-platform bitwise reproducibility unverified",
+      "status": "incomplete",
+      "steady_update_seconds_mean": 0.0035450643731164745,
+      "steady_update_seconds_total": 7.090128746232949,
+      "stop_reason": "max_updates",
+      "updates": 2000,
+      "validation_seconds_total": 7.219315377064049,
+      "warmup_execution_seconds": 0.01685599994380027,
+      "run_directory": "runs/aspirin-learning-check-zero-readout-seed0",
+      "artifact_sha256": {
+        "best.msgpack": "66951eea5c36d1fc6d8a36c74cc550b0fd0db587b93649b691fad91ffc349c39",
+        "checkpoint-reference.npz": "eab52afe9cc9f9c8c137b360131073e93daed01224f1c7cfffcf558328170c74",
+        "checkpoint-verification.json": "4ce690aacc936072d8e81da90e9dc941037a9146aded853c0e49b9e89422abd2",
+        "config.json": "1dcd667df03612f7d5576411bfd4af747c1982b95129494d451aad18d22421b7",
+        "last.msgpack": "0bafe14840bcdfee0e938472e30786c60b070009a7451be29bc02b93b8a1e43a",
+        "learning-history.json": "5d2ec148e21cbfd455ccf52e41f43afe6829d24ff8442550cc9ab60500db5686",
+        "learning-subset.json": "9281a4caf24f5297f39512e9cf34505e37995e8940cf9c28db9c21e852788a98",
+        "losses.json": "82e24dddcf2fbd46b47ee4ce63aeaea4a7257f2e83fb79c11689c6274a79275e",
+        "provenance.json": "b091fc7eba280150faaafd7af0ca513a1eb9682e25305c1aa65fa63629978f57",
+        "summary.json": "22333ac423ae0e031d09cd5837fcbd4294226aeb0e83d5372b3378d80e9adc3c",
+        "validation.json": "305d0e50384c7f3013321090e75e2178508d0ed8a0a266ba7512df1efc4b4c93"
+      },
+      "validation_history": [
+        {
+          "update": 0,
+          "energy_mae_eV": 0.2019505591697434,
+          "pooled_force_mae_eV_per_A": 0.062261978776441435,
+          "equal_connection_force_mae_eV_per_A": 0.06250438966560673,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 100,
+          "energy_mae_eV": 0.2566717476193839,
+          "pooled_force_mae_eV_per_A": 0.06509618307964496,
+          "equal_connection_force_mae_eV_per_A": 0.06537840707925595,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 200,
+          "energy_mae_eV": 0.35811179300327717,
+          "pooled_force_mae_eV_per_A": 0.06808714880957517,
+          "equal_connection_force_mae_eV_per_A": 0.06839999776237757,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 300,
+          "energy_mae_eV": 0.35336000282783253,
+          "pooled_force_mae_eV_per_A": 0.07059435714006228,
+          "equal_connection_force_mae_eV_per_A": 0.07091475062094696,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 400,
+          "energy_mae_eV": 0.29114507184608224,
+          "pooled_force_mae_eV_per_A": 0.06971320954675597,
+          "equal_connection_force_mae_eV_per_A": 0.07001050595120539,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 500,
+          "energy_mae_eV": 0.26474664002560294,
+          "pooled_force_mae_eV_per_A": 0.07189673576995051,
+          "equal_connection_force_mae_eV_per_A": 0.07218980553822137,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 600,
+          "energy_mae_eV": 0.24944101356570308,
+          "pooled_force_mae_eV_per_A": 0.07465239798681368,
+          "equal_connection_force_mae_eV_per_A": 0.07492691459424172,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 700,
+          "energy_mae_eV": 0.2726222128822512,
+          "pooled_force_mae_eV_per_A": 0.07563387201450018,
+          "equal_connection_force_mae_eV_per_A": 0.07588576687464094,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 800,
+          "energy_mae_eV": 0.15955513959776924,
+          "pooled_force_mae_eV_per_A": 0.07465229297851221,
+          "equal_connection_force_mae_eV_per_A": 0.07486684888168842,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 900,
+          "energy_mae_eV": 0.15253943103099452,
+          "pooled_force_mae_eV_per_A": 0.07492753772373625,
+          "equal_connection_force_mae_eV_per_A": 0.07513774996772431,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1000,
+          "energy_mae_eV": 0.15535373819795215,
+          "pooled_force_mae_eV_per_A": 0.07553769670046945,
+          "equal_connection_force_mae_eV_per_A": 0.0757469059295524,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1100,
+          "energy_mae_eV": 0.15595888423266244,
+          "pooled_force_mae_eV_per_A": 0.079086887909264,
+          "equal_connection_force_mae_eV_per_A": 0.0793174598965444,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1200,
+          "energy_mae_eV": 0.15281028219702206,
+          "pooled_force_mae_eV_per_A": 0.07777974773101616,
+          "equal_connection_force_mae_eV_per_A": 0.07803960467819433,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1300,
+          "energy_mae_eV": 0.15171553076491395,
+          "pooled_force_mae_eV_per_A": 0.08003747086817464,
+          "equal_connection_force_mae_eV_per_A": 0.08030626856124129,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1400,
+          "energy_mae_eV": 0.15231156509148683,
+          "pooled_force_mae_eV_per_A": 0.08286212095686978,
+          "equal_connection_force_mae_eV_per_A": 0.0831651956968471,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1500,
+          "energy_mae_eV": 0.15264233076275657,
+          "pooled_force_mae_eV_per_A": 0.08098109696727254,
+          "equal_connection_force_mae_eV_per_A": 0.08127314786572744,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1600,
+          "energy_mae_eV": 0.15090969052776165,
+          "pooled_force_mae_eV_per_A": 0.08082953697776683,
+          "equal_connection_force_mae_eV_per_A": 0.08112227672933121,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1700,
+          "energy_mae_eV": 0.14979494074955527,
+          "pooled_force_mae_eV_per_A": 0.08547948961753972,
+          "equal_connection_force_mae_eV_per_A": 0.08579710344988208,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1800,
+          "energy_mae_eV": 0.15088283526208324,
+          "pooled_force_mae_eV_per_A": 0.08384541167810523,
+          "equal_connection_force_mae_eV_per_A": 0.0841593784985861,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 1900,
+          "energy_mae_eV": 0.1490039852419058,
+          "pooled_force_mae_eV_per_A": 0.08516104968321177,
+          "equal_connection_force_mae_eV_per_A": 0.08546151062886215,
+          "record_count": 974,
+          "force_component_count": 61362
+        },
+        {
+          "update": 2000,
+          "energy_mae_eV": 0.1501228590876907,
+          "pooled_force_mae_eV_per_A": 0.08522152847355635,
+          "equal_connection_force_mae_eV_per_A": 0.08553024244530191,
+          "record_count": 974,
+          "force_component_count": 61362
+        }
+      ],
+      "fractions_remaining": {
+        "energy_mse_eV2": 0.007988948961770085,
+        "force_mse_eV2_per_A2": 0.7472360404690309
+      }
+    }
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "scope": "Saved scientific report exports. Machine-local checkout prefixes and protocol-directory path references are normalized; numerical arrays/leaves, settings, statuses and gates are preserved. Original canonical artifacts and launch/run packages are retained separately. Original artifact hashes appearing inside reports identify the originals, not recomputed export identities. No new scientific execution.",
+  "reports": [
+    {
+      "path": "reports/baseline-learning-checks.json",
+      "original_sha256": "cd739475709a32ffe7d547f3d07d4b20c18ed9aa80549ee5b78960815e326691",
+      "export_sha256": "cd739475709a32ffe7d547f3d07d4b20c18ed9aa80549ee5b78960815e326691",
+      "bytes": 28625,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/baseline-physics-zero-readout.json",
+      "original_sha256": "fe5c606534f066126eed2a0a233bfa978f98086dfc417524bf2da95cf5b46d5e",
+      "export_sha256": "fe5c606534f066126eed2a0a233bfa978f98086dfc417524bf2da95cf5b46d5e",
+      "bytes": 569,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/baseline-physics.json",
+      "original_sha256": "897fd3ae9931de0a59b6ff987be40b1375525c5a8b799b0c143a17cd3e67f5f5",
+      "export_sha256": "897fd3ae9931de0a59b6ff987be40b1375525c5a8b799b0c143a17cd3e67f5f5",
+      "bytes": 587,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/capacity-diagnostics.json",
+      "original_sha256": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+      "export_sha256": "31fc7af10a6b87dcb584fb73593d279d2cc57b61756d8a388e1927b8296769ec",
+      "bytes": 4852699,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/capacity-spike-diagnostics.json",
+      "original_sha256": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+      "export_sha256": "0e3a6f797effe68b63f9c3321141a9374062f69fc9f767b6853b0e70b2bdfc7c",
+      "bytes": 487237,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/convergence-budget-diagnostics.json",
+      "original_sha256": "16d9b1288713325c6bf125939ebd550539b1baa81531e29709fee025e7e27852",
+      "export_sha256": "86873fa5c2363714a741e35756a692af1cbf5f939af148badc141bc31329efb4",
+      "bytes": 5542581,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/data-coverage-diagnostics.json",
+      "original_sha256": "6c5b3233360a6baf9b155162fbae1fdf43b0d1f9b209f79997b468976d40dbb4",
+      "export_sha256": "6c5b3233360a6baf9b155162fbae1fdf43b0d1f9b209f79997b468976d40dbb4",
+      "bytes": 1798148,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/execution/spike-diagnostic-2026-10-02/paper-metrics.json",
+      "original_sha256": "4891efc739f268c8d23eb189b5d38e92de5bbedca79e1ae137f8bf656e6881f4",
+      "export_sha256": "4891efc739f268c8d23eb189b5d38e92de5bbedca79e1ae137f8bf656e6881f4",
+      "bytes": 38786,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json",
+      "original_sha256": "0d3e07affc191a22cb1814d29ce9a23bb3c48fe75d40061de1c5c5de05d98de2",
+      "export_sha256": "16cffcd819aa4743b9dda573438680ff063c92f9269e42544b9817b0eba1839a",
+      "bytes": 108765476,
+      "path_normalized": true,
+      "storage": "git-lfs"
+    },
+    {
+      "path": "reports/execution/width-rate-replacement-2026-10-01/initialization-shape-audit.json",
+      "original_sha256": "318848360e33e640fafb5b8b49b4067913171bbe50401cd0ef116420b6d856f4",
+      "export_sha256": "318848360e33e640fafb5b8b49b4067913171bbe50401cd0ef116420b6d856f4",
+      "bytes": 1257,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/force-learning-diagnostics.json",
+      "original_sha256": "2165ffb58ed9768b20b00b1c05d18dd73db3ddf9ff813c2dc0b31cab4aa73e54",
+      "export_sha256": "2165ffb58ed9768b20b00b1c05d18dd73db3ddf9ff813c2dc0b31cab4aa73e54",
+      "bytes": 26137,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/landscape17-aspirin-44-complete-endpoint-check.json",
+      "original_sha256": "992188985de903c6f313327daa3067ac7416cb77c6e9c0b82c7dfa0ec2b074d8",
+      "export_sha256": "992188985de903c6f313327daa3067ac7416cb77c6e9c0b82c7dfa0ec2b074d8",
+      "bytes": 6681,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/landscape17-aspirin-66-complete-endpoint-check.json",
+      "original_sha256": "439580f003746b7be80ea9f859986793a354b7ed2945661208bc456fe03aa118",
+      "export_sha256": "439580f003746b7be80ea9f859986793a354b7ed2945661208bc456fe03aa118",
+      "bytes": 6679,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/landscape17-duplicates.json",
+      "original_sha256": "c3106a4140f518f2b8187df4e325d7b2b2c86de9c62b22bbd4319a378429b256",
+      "export_sha256": "c3106a4140f518f2b8187df4e325d7b2b2c86de9c62b22bbd4319a378429b256",
+      "bytes": 84,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/landscape17-endpoints.json",
+      "original_sha256": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6",
+      "export_sha256": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6",
+      "bytes": 175840,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/landscape17-paracetamol-01_2-complete-endpoint-check.json",
+      "original_sha256": "09975070d132bf2b42646a4004bd838d35772fbee2a49f6856a4df6e7d818712",
+      "export_sha256": "09975070d132bf2b42646a4004bd838d35772fbee2a49f6856a4df6e7d818712",
+      "bytes": 2946,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/late-rate-diagnostics.json",
+      "original_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+      "export_sha256": "a6b973f63ce978626d42a03cdca7d270ff5bedcf7cbf37e8afea6a59a9c57933",
+      "bytes": 3340001,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/learning-check-diagnostics.json",
+      "original_sha256": "a34b90186d92ed9a31fa47f9084be19b170f86e1a569cc3ea8ec4d83af79ae56",
+      "export_sha256": "a34b90186d92ed9a31fa47f9084be19b170f86e1a569cc3ea8ec4d83af79ae56",
+      "bytes": 2713,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/literature/2026-09-30/registry.json",
+      "original_sha256": "ff90958e507464cb5a17021f655a7409db5be5ba89dd881e3eeb65beab025965",
+      "export_sha256": "ff90958e507464cb5a17021f655a7409db5be5ba89dd881e3eeb65beab025965",
+      "bytes": 24236,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/loss-balance-diagnostics.json",
+      "original_sha256": "c7c35276a38e4f17b785510e745eb75e8c76b2fd3f591b787a8bc43b7f034e4f",
+      "export_sha256": "4cc45de6c702f0b141305648a4e50e51d61cea638a5562420d62b24c6e465d8a",
+      "bytes": 2757766,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/offset-profile-component-comparison.json",
+      "original_sha256": "5baa1ab4f75d126789ccd05d95101876ab5b787a1c8ee7d3a03cb6b3924b3276",
+      "export_sha256": "5baa1ab4f75d126789ccd05d95101876ab5b787a1c8ee7d3a03cb6b3924b3276",
+      "bytes": 37104,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/offset-profile-diagnostics.json",
+      "original_sha256": "33f5b57fc74b363de07026b6401bf79f029b24fbb46bcc356bac4256bf875f26",
+      "export_sha256": "031ba49eb76e377c7ee6b3c8e88d3aa302ebc7cd69ffe737e61fb5531f264399",
+      "bytes": 4320399,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/optimizer-step-diagnostics.json",
+      "original_sha256": "f841592a80e09b205b5422d196fa22088d704d63a03693e1d143ae806be53fc5",
+      "export_sha256": "911eee5ebf9695701b57d0369c8e8bf1a168b7bbc9e546a6d1a6de2465c0373c",
+      "bytes": 22038526,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/representation-gradient-diagnostics.json",
+      "original_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+      "export_sha256": "0f25af23455154c730e5380d9bb7e95470cc283140d68b96f0becb20ddb11477",
+      "bytes": 109850,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/source_evidence/figshare-29949230-v1.json",
+      "original_sha256": "a2804093f44fb8937b188441f5629e49a8fd202720b4e71859840bed50d7a880",
+      "export_sha256": "a2804093f44fb8937b188441f5629e49a8fd202720b4e71859840bed50d7a880",
+      "bytes": 12978,
+      "path_normalized": false,
+      "storage": "git"
+    },
+    {
+      "path": "reports/width-rate-diagnostics.json",
+      "original_sha256": "548158a2e36515a847af63c326e237ac456a65fa7ec1bf5a9064b7a0397efd1a",
+      "export_sha256": "0c69157ddd5d493aed4918bd0c2cbe959ec789713b0039aacd99c206d2d7d448",
+      "bytes": 7571651,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/width-rate-recovery-verification.json",
+      "original_sha256": "a009b32dfbf28e2405a9d6ae5ea52a2e884343a854464b90143b86733186f26c",
+      "export_sha256": "20617cbc33dcc9c3a1f53457d7b525da995d56b4400d5c114be7d93e1f97a309",
+      "bytes": 88465,
+      "path_normalized": true,
+      "storage": "git"
+    },
+    {
+      "path": "reports/width-rate-replacement-diagnostics.json",
+      "original_sha256": "dfa41304021fa8dbd2b557e48cd68ee7a144a7154cd38b4ee2f5c0ab4d059793",
+      "export_sha256": "2730ea1ca5c8b363fcd38ea88809878cef4db4b55fc328f0f7a920b16289a07b",
+      "bytes": 108689722,
+      "path_normalized": true,
+      "storage": "git-lfs"
+    }
+  ]
+}

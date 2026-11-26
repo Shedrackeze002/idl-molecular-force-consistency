@@ -1,0 +1,727 @@
+                                    npj | computational materials                                                                                                                 Article
+                                    Published in partnership with the Shanghai Institute of Ceramics of the Chinese Academy of Sciences
+
+
+
+
+                                                                                                                                               https://doi.org/10.1038/s41524-025-01878-x
+
+
+                                    Global properties of the energy landscape:
+                                    a testing and training arena for machine
+                                    learned potentials
+                                                                                                                                                                           Check for updates
+                                                     1,2,3                        3                   3                   1,2                               1
+                                    Vlad Cărare , Fabian L. Thiemann , Joe D. Morrow , David J. Wales , Edward O. Pyzer-Knapp &
+                                    Luke Dicks1,3
+
+
+                                    Machine learning interatomic potentials (MLIPs) have achieved remarkable accuracy on standard
+                                    benchmarks, yet their ability to reproduce molecular kinetics, critical for reaction rate calculations,
+
+1234567890():,;   1234567890():,;
+                                    remains largely unexplored. We introduce Landscape17, a dataset of complete kinetic transition
+                                    networks (KTNs) for the six molecules of the rMD17 dataset, computed using hybrid-level density
+                                    functional theory. Each KTN contains minima, transition states, and approximate steepest-descent
+                                    paths, along with energies, forces, and Hessian eigenspectra at stationary points. We develop a
+                                    comprehensive test suite to evaluate the MLIPs’ ability to reproduce these reference landscapes and
+                                    apply it to state-of-the-art architectures. Our results reveal limitations in current MLIPs: all models
+                                    considered miss over half of the DFT transition state paths and generate stable unphysical structures
+                                    throughout the potential energy surface. Data augmentation with pathway conﬁgurations improves
+                                    reproduction of DFT potential energy surfaces, resulting in signiﬁcant improvement in global kinetics.
+                                    However, these models still produce many spurious stable structures, indicating that current MLIP
+                                    architectures face underlying challenges in capturing the topology of molecular potential energy
+                                    surfaces. The Landscape17 benchmark provides a straightforward, lightweight, but demanding test of
+                                    MLIPs for kinetic applications, and we propose this test for validation of next-generation MLIPs
+                                    targeting reaction discovery and rate prediction.
+
+
+                                    Physics-based approaches to molecular simulation have long served as the       generalizability, potentially offering improved representations for system-
+                                    foundation for in silico molecular investigation and discovery. Expanded       speciﬁc applications.
+                                    computational power has enabled these tools to answer sets of increasingly          Underlying such advances are both comprehensive benchmarks32 and
+                                    complex questions, with notable success1.                                      lightweight tests that allow for on-the-ﬂy tracking of architectural or
+                                          Over the past decades, machine learning interatomic potentials           training dataset changes. One example is the popular rMD17
+                                    (MLIPs) have emerged as an alternative component for molecular simu-           benchmark33,34, which provides energy and force labels for samples obtained
+                                    lations. These models, often neural networks, are trained on high-quality      from ab initio molecular dynamics (MD) trajectories of small molecules.
+                                    reference data and hold the promise of providing ab initio accuracy at a       Given its simplicity and the desire for models to faithfully sample from the
+                                    fraction of the computational cost2–5. This efﬁciency provides access to       Boltzmann distribution, rMD17 has been used as a ﬁrst benchmark for
+                                    longer simulation time scales and the computation of a wide range of           model accuracy11–13,35.
+                                    derived properties.                                                                 While valuable, standard MD simulations do not address broken
+                                          Various architectures6–15 and molecular representations16–20 have been   ergodicity problems. At low temperature, they tend to sample low-diversity,
+                                    developed for the construction of MLIPs. These models are trained on           low-energy states around local energy minima, trapped between energy
+                                    energies, forces and, for periodic materials, stresses, which are most com-    barriers that restrict exploration of the complete potential energy surface
+                                    monly computed using density functional theory (DFT). Foundational             (PES) on the accessible MD time scale. Increasing temperature can help
+                                    models have been proposed for materials21–23 and molecules24–27 based on       overcome such barriers, but may then miss the conﬁgurations and pathways
+                                    large-scale datasets28–31, which aim to improve out-of-distribution            essential for accurate molecular kinetics calculations at the temperatures of
+
+
+                                    1
+                                        Xyme, Manchester, UK. 2Yusuf Hamied Department of Chemistry, University of Cambridge, Cambridge, UK. 3IBM Research Europe, Daresbury, Warrington, UK.
+                                          e-mail: ldicks@xyme.ai
+
+
+                                    npj Computational Materials | (2026)12:9                                                                                                                  1
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                                 Article
+
+interest (e.g., for reaction rates)36–40. These bottlenecks can also compromise                    accurately reproducing both thermodynamic and kinetic properties. For
+thermodynamic predictions when competing low-energy minima remain                                  each of the selected six molecules (ethanol, malonaldehyde, paracetamol,
+unobserved due to insufﬁcient sampling. Consequently, due to its relatively                        salicylic acid, azobenzene, and aspirin), we provide all the minima and
+low diversity, models released over the past years have saturated the energy                       transition states, along with conﬁgurations from the two approximate
+and force errors on the rMD17 benchmark11–13,35.                                                   steepest-descent paths connecting each transition state to the corresponding
+     While enhanced sampling methods, such as parallel tempering41–43,                             minima. These paths underpin the most probable routes between minima at
+MD replica exchange44, multicanonical45, Wang-Landau46, and biasing                                ﬁnite temperature, offering essential conﬁgurations for understanding
+schemes47,48, can help to overcome broken ergodicity problems, the com-                            system kinetics.
+putational expense limits routine application for generating large databases.                            Secondly, we establish a comprehensive, yet lightweight, testing suite
+Methods to explicitly treat rare event dynamics49–57 are also computationally                      for evaluating energy landscape ﬁdelity, and apply this to assess current
+demanding.                                                                                         MLIP architectures. The ability of MLIPs to capture entire reference DFT
+     An alternative approach is to construct a kinetic transition network                          KTNs, with the corresponding energies and atomic structures of both
+(KTN)58–60 using discrete path sampling61,62, employing methods based on                           minima and transition states, extends molecular validation metrics beyond
+geometry optimization to characterize local minima and the pathways that                           conventional force and energy errors. Since the PES organization strongly
+connect them via transition states in the PES. Here, a transition state is                         determines physical properties, reproducing these properties provides an
+deﬁned as a stationary point with a single negative Hessian eigenvalue63.                          appropriate and generalized test of overall physical property reproduction.
+Global kinetic properties are then extracted using unimolecular rate theory                              Our analysis suggests that current MLIP models struggle to accurately
+for the individual minimum-to-minimum rates64,65. This formalism                                   predict KTNs even for the small, semi-rigid organic molecules present in
+involves the solution of a master equation66 for the global dynamics, as for                       rMD17, despite their apparent simplicity. These small molecules span many
+dynamics-based          schemes       that    produce      a    Markov     state                   ubiquitous functional groups: alkane, alcohol, ketone, carboxylic acid, azo,
+representation53,56,67,68.                                                                         amine, and ester, so we expect the results to be relevant for many small
+     To address the need for kinetically relevant structures in developing                         molecules. Moreover, we ﬁnd that MLIPs often exhibit unphysical minima,
+MLIPs, specialized datasets have been developed that capture transition                            an issue that is not usually a problem for semi-empirical methods such as
+paths. Examples include Transition1x69, which features samples from                                GFN2-xTB79. We therefore propose this dataset and benchmark suite as
+nudged-elastic-band (NEB) constructions across various reactions, and                              initial tests of the models’ physicality and ability to recreate kinetics, both of
+more comprehensive, data-rich collections such as OMol2530 and SPICE29.                            which prove difﬁcult, even for small systems. We demonstrate systematic
+The latter examples, created as training sets for MLIPs, include specialized                       improvement strategies using conﬁgurations sampled along the pathways.
+subsets that capture conﬁgurations along transition state pathways. The
+incorporation of more extensive sampling of molecular conformations has                            Results
+been highlighted as of key importance for MLIP performance70–72. Auto-                             In this contribution, we extend the commonly used rMD17 benchmark
+mated transition state ﬁnding is an important objective of many studies, and                       dataset to produce Landscape17, which provides KTNs for the six molecules
+recent works explore the applicability of generative models: SDiff 73,                             within rMD17 that exhibit multiple distinct minima: ethanol, mal-
+TSGen74, and React-OT75, as well as workﬂows to improve MLIPs’ perfor-                             onaldehyde, salicylic acid, azobenzene, paracetamol, and aspirin. These
+mance in NEBs76.                                                                                   networks were computed using hybrid-functional DFT, at an estimated
+     Given this context, there is a need for lightweight benchmarks that                           computational cost exceeding 105 CPU hours, and capture the pathways
+assess both the accuracy and transferability of MLIPs across the kinetically                       that are essential for a proper description of global kinetics. The dataset
+relevant paths in the energy landscape. Such a benchmark should allow the                          includes conﬁgurations from the pathways to supplement the stationary
+validation of MLIPs beyond energy and force errors to include the orga-                            points and is publicly available80.
+nization of the potential energy landscape. In particular, we wish to                                   We benchmark several MLIP architectures for the selected molecules
+reproduce stationary points faithfully, without additional spurious local                          to evaluate how well they reproduce key features of the reference DFT PESs,
+minima (or transition states). We present two major contributions in this                          and investigate whether incorporating pathway data improves MLIP per-
+direction.                                                                                         formance. We begin with a brief overview of the DFT PESs and data
+     Firstly, we introduce the Landscape17 dataset, which systematically                           acquisition regimes, followed by an evaluation of MLIPs trained using the
+expands upon rMD17 by providing complete KTNs58–60 for the six mole-                               corresponding datasets. We then examine the resulting MLIP surfaces and
+cules within rMD17 that have more than one distinct local minimum                                  compare them with the DFT reference.
+structure. This dataset features global PES representations generated using
+the energy landscape framework77,78, and includes regions crucial for                              DFT landscapes
+                                                                                                   To generate DFT KTNs, we follow an established procedure that begins with
+                                                                                                   basin-hopping global optimization81–83 to identify low-energy minima, fol-
+Table 1 | Statistics of the Landscape17 dataset, reﬂecting the                                     lowed by combined single- and double-ended searches to locate transition
+counts of minima and transition states in the DFT landscape of                                     states; these methods have been explained in detail elsewhere77,78,84,85. Here,
+each molecule                                                                                      transition states are deﬁned geometrically as points of (approximate) zero
+ Molecule                                      # Min.                      # TS
+                                                                                                   gradient and exactly one negative Hessian eigenvalue63. We utilized
+                                                                                                   TopSearch86, an open-source Python package developed by some of the
+ Ethanol                                       2                           2
+                                                                                                   authors, to perform landscape exploration, complemented by the OPTIM
+ Malonaldehyde                                 2                           4
+                                                                                                   program87 for some difﬁcult cases. For each KTN, we excluded repeated
+ Salicylic acid                                7                           11                      permutational isomers and structures related by the inversion operation, as
+ Azobenzene                                    2                           4                       these can be reconstructed through symmetry operations. Further details of
+ Paracetamol                                   4                           9                       the landscape generation process are available in the “Methods” section and
+                                                                                                   in the Supplementary Information Section I.
+ Aspirin                                       11                          37
+                                                                                                         Table 1 presents the number of minima and transition states for the six
+ Total                                         28                          67                      rMD17 molecules in our study. We also collated data along approximate
+The number of stationary points includes only distinct structures, lumping together permutation-   steepest-descent paths from transition states to their connected minima,
+inversion isomers.
+                                                                                                   following small displacements parallel and antiparallel to the eigenvector
+                                                                                                   associated with the unique negative Hessian eigenvalue. The complete
+
+
+npj Computational Materials | (2026)12:9                                                                                                                                           2
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                      Article
+
+
+
+
+Fig. 1 | Contrasting Landscape with Non-Landscape data. Non-Landscape data is         datasets. d Visual representation of the DFT KTN of salicylic acid. Minima are given
+sampled from MD trajectories, while Landscape data is sampled from approximate        by nodes and transition states by edges connecting the nodes. Self-loops and multi-
+paths between transition states and the connected minima. a Sketch of the dis-        edges are permitted, representing transition states between degenerate rearrange-
+tributions resulting from the two sampling schemes. b Energy histogram compar-        ments and alternative transition states, respectively. The colors of the nodes corre-
+ison for test sets of Non-Landscape and Landscape structures of salicylic acid. The   spond to the energy of the corresponding minima relative to the global minimum.
+former data was collected from an MD run at 500 K (rMD1734). c UMAP88 pro-            We highlight the structures along the 3-5-4 pathway. Images were rendered using
+jections of the structurally-averaged MACE12 descriptors of three salicylic acid      OVITO125.
+datasets, showing a clear distinction between Landscape and Non-Landscape
+
+
+dataset—Landscape17—includes atomic coordinates, energies, forces, and                points, while, in contrast, Non-Landscape data concentrates on a single
+Hessian eigenspectra for all the stationary points, along with positions,             region, despite the higher energies. Panel d presents the DFT KTN for
+energies, and forces for conﬁgurations along the pathways.                            salicylic acid. KTNs can be visualized as graphs, where nodes represent
+     In this work, we distinguish between two data categories: Landscape (L)          minima and edges represent transition states. Self-edges indicate transition
+data from approximate steepest-descent pathways, and Non-Landscape (N-                states between minima related by permutation-inversion symmetry; these
+L) data from MD simulations (e.g., rMD17). Landscape data captures                    are termed degenerate rearrangements89. Similar ﬁgures for the other
+minimum energy paths between stationary points, representing the essential            molecules are provided in the Supplementary Information Section II.
+topology of the PES, while Non-Landscape data samples beyond this                           The targeted, discrete path sampling61,62 approach employed in con-
+minimal representation of the connectivity. This distinction is illustrated in        structing the Landscape17 dataset, with explicit exploration of transition
+Fig. 1. The key difference is that the geometry optimization procedures               states, enables both rigorous benchmarking of these critical areas of the PES
+employed in discrete path sampling61,62 can treat both high and low barriers,         and systematic analysis of training data effects on model performance. This
+and the associated long and short time scales, directly addressing rare event         sampling strategy provides clear insight into how different machine learning
+dynamics and broken ergodicity.                                                       potential architectures handle the challenging task of reproducing saddle
+     Panel a provides a schematic of a hypothetical energy landscape that             point regions, which are harder to represent accurately due to the inherently
+contrasts the two sampling methods. Panel b shows energy distributions for            unstable eigendirection with negative curvature.
+one of the rMD17 molecules: salicylic acid. The distributions reveal that 500
+K MD (N-L data) explores higher-energy regions than transition state                  Performance impact of landscape data inclusion
+searching (L data) but produces less diverse distributions, as shown in panel         With the Landscape17 dataset, we can systematically test whether the
+c. These UMAP88 projections of structurally-averaged MACE12 descriptors               inclusion of landscape-speciﬁc data into training sets based on non-
+further demonstrate a clear separation between regions sampled by the two             landscape-speciﬁc data (such as MD trajectories) can help achieve
+methods. Landscape data explores diverse environments around stationary               accurate molecular KTNs. We trained individual models for each of the
+
+
+npj Computational Materials | (2026)12:9                                                                                                                                 3
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                   Article
+
+
+
+
+Fig. 2 | Model performance on the stationary points of the DFT landscapes.            distributions. The results are averaged over all six molecules. b Number of DFT
+a Relative energy errors of MLIPs on minima, transition states, and an rMD17 test     minima and transition states where the maximum force components are correctly
+set, for models trained on Non-Landscape data (N-L models) and the combination        predicted to be smaller than 10−3 eV/Å and 10−2 eV/Å, respectively, by the corre-
+of Non-Landscape and Landscape data (L models). Values for the N-L test set and for   sponding model. c Energy errors parity plot for predictions of Non-Landscape and
+ANI2x are shown for reference. Relative energy errors are obtained by dividing the    Landscape MACE models on a Landscape test set. Error tables for all the other
+root-mean-squared errors by the standard deviations of the ground truth energy        molecules and models are presented in the Supplementary Information Section III.
+
+
+
+
+six selected rMD17 molecules, following the protocols established in                  MLIP using the same algorithms employed for DFT landscape generation.
+the original publications, using the same data across models. The                     We report KTNs for each MLIP and molecule after combining results from
+system-speciﬁc architectures employed include NequIP11, MACE12,                       20 independent landscape exploration runs, each initiated from different
+and Allegro13, supplemented by pretrained foundational models:                        conformations. Permutation-inversion isomers are lumped together (see
+ANI2x14, AIMNet215, MACE-MP-0b321, and SO3LR;25 and the semi-                         Figs. S10 and S14 in the Supplementary Information). This multi-run
+empirical method GFN2-xTB79. These models constitute our baseline                     workﬂow was not feasible for DFT calculations due to the prohibitive
+Non-Landscape (N-L) set. Subsequently, we augmented the Non-                          computational cost; instead, we employed single extended runs followed by
+Landscape training datasets with portions of the newly generated                      thorough manual enumeration of candidate stationary points (see
+Landscape17 data (see “Methods”) to create corresponding Landscape                    “Methods”).
+(L) Allegro, MACE, and NequIP models.                                                      The KTNs for each model were initially assessed through self-
+      The Landscape models demonstrate superior performance in                        consistent analysis without reference to DFT benchmarks, focusing on the
+predicting energies and forces at critical points on DFT energy sur-                  physicality of discovered stationary points. We deﬁne a structure to be
+faces. Figure 2 reveals a consistent improvement across all archi-                    unphysical if its SMILES representation90 differs from that of the global
+tectures, with systematic reductions in both energy and force errors                  minimum, or if it contains hydrogen atoms with multiple bonds.
+following landscape data inclusion (with results for ANI2x displayed                       Our analysis highlights the prevalence of unphysical minima for all
+for reference). Panel a shows the average relative root-mean-squared                  MLIPs, Fig. 3. This phenomenon affects both system-speciﬁc models
+errors (RMSE) for energy predictions on minima and transition states,                 trained on N-L/L data (Allegro, MACE, NequIP) and foundational models
+calculated by normalizing RMSE values against the standard deviations                 pretrained on diverse datasets (ANI2x, AIMNet2, MACE-MP-0b3,
+of target distributions. Panel b quantiﬁes instances where MLIPs                      SO3LR), indicating a systematic limitation across different MLIP archi-
+correctly predict maximum force components below convergence                          tectures and training paradigms. It is very interesting to note that the effects
+thresholds of 10−3 eV/Å for minima and 10−2 eV/Å for transition states                are magniﬁed for the system-speciﬁc models trained on Landscape data,
+—criteria matching those used for DFT stationary point optimization.                  suggesting that adding more training data results in models with rougher
+Panel c presents an example energy parity plot comparing MACE N-L                     energy landscapes. Landscape roughness, and its relation to training data,
+and L model predictions on the aspirin landscape test set. Consistent                 has been explored in detail elsewhere91–93. Extended plots for each molecule
+trends across all models and molecules are documented through                         are shown in Fig. S15.
+comprehensive MAE and RMSE statistics provided in the Supple-                              Importantly, our landscape exploration methodology exclusively
+mentary Information, in Tables S2–S5. It is apparent that N-L models                  employs dihedral angle rotations (see ”Methods”), and application to
+fail, by two orders of magnitude, to accurately predict the energies and              GFN2-xTB reveals no unphysical stationary points. Therefore, the pre-
+forces of stationary points, despite achieving low errors for MD sam-                 valence of such structures serves as a quantitative metric to assess the global
+ples, while L models attain low errors on both test sets. This result                 MLIP energy landscape. The emergence of unphysical local minima will
+underlines the difference between models ﬁtted with Non-Landscape                     hinder enhanced sampling methods, since these artiﬁcial conﬁgurations
+and Landscape data, even for the small molecules considered here.                     may have signiﬁcant statistical weights.
+Further experiments presented in the Supplementary Information
+Section IV explore the errors in predictions of the lowest energy                     Reproduction of reference DFT landscapes by MLIPs
+Hessian eigenmodes and the sum of log (positive) Hessian eigenvalues                  Faithfully reproducing the KTNs for the underlying quantum chemical level
+to corroborate the accuracy of L models.                                              of theory is a demanding test for machine learning potentials. To evaluate
+                                                                                      this capability, we removed the unphysical stationary points from each
+Unphysical structures in MLIP landscapes                                              MLIP landscape and mapped the remaining structures onto the reference
+To evaluate the performance of machine learning potentials beyond tradi-              DFT landscape using the algorithms detailed in the “Methods” section and
+tional energy and force metrics, we constructed energy landscapes for each            in the Supplementary Information, Figs. S11–S13. These mapping
+
+
+npj Computational Materials | (2026)12:9                                                                                                                             4
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                    Article
+
+
+
+
+Fig. 3 | Physicality of MLIP energy landscapes. a Cumulative counts of physical and   minimum conformation of the respective molecule, or by the presence of a multiply-
+unphysical minima and b transition states resulting from energy landscape             bonded hydrogen atom. c Examples of unphysical conﬁgurations for the aspirin
+exploration using the corresponding N-L or L models. Non-physicality of a structure   molecule. Images were rendered using OVITO125.
+is deﬁned by a difference in its SMILES representation from that of the global
+
+
+procedures rely on a structure comparison module that calculates the                        The substantial number of successful minima matches and low RMSD
+minimal root-mean-squared-deviation (RMSD) between conﬁgurations to                   values observed for models trained on data of different DFT functionals
+establish correspondence between DFT and MLIP stationary points.                      (AIMNet2, MACE-MP-0b3, SO3LR) conﬁrms that the stationary points
+     Our comparative analysis addresses two complementary issues: the                 remain consistent across functional choices for these six molecules. This
+extent to which DFT KTN stationary points can be exactly matched to MLIP              observation helps to validate our suggested benchmarking approach.
+analogs, and the structural and relative energy accuracy of the closest DFT-                The case of salicylic acid illustrates general trends clearly (Fig. 5) when
+MLIP pairs. We deﬁne exact matching by an RMSD threshold of 0.3 Å for                 we overlay the MLIP networks on their corresponding DFT counterparts.
+structural equivalence between DFT and MLIP conﬁgurations. For transi-                Missing minima and transition state matches are highlighted in red,
+tion state exact matching, we imposed the additional requirement that the             revealing gaps in MLIP landscape coverage, while additional (unmatched)
+connected minima in the MLIP network must themselves be exactly mat-                  stationary points are omitted. Most models generate minima structures that
+ched to corresponding DFT minima. This stricter criterion for TS is needed            are close to their DFT counterparts, as seen by the overlapping small and
+as rates and other observables depend strongly on the KTN connectivity                large nodes. The materials-oriented MACE-MP-0b3 struggles to predict the
+graph (see the Supplementary Information Section VI). To assess structural            correct structures for minima 1 and 5. We attribute this to the lack of
+and energy ﬁdelity for the closest MLIP analogs of each DFT minimum, we               molecular data in its training. The inclusion of landscape data in Allegro and
+computed average RMSD and relative (to the global minimum) energy                     MACE training datasets produced marked improvements in stationary
+RMSE values, intentionally excluding (physical) transition states from this           point matching alongside reduced energy errors, as anticipated from pre-
+analysis due to their systematic underrepresentation in MLIP landscapes               vious work95. The systematic difﬁculty in physically correct transition state
+compared to DFT references (see the Supplementary Information Fig. S15).              discovery using MLIP energy landscapes emerges as a key problem, with
+The results for exact matching are shown in Fig. 4a–d (and Fig. S16), and for         successful transition state searches proving challenging across all tested
+structural and energy ﬁdelity in e, f.                                                architectures. Of course, if speciﬁc stationary points are not found, we
+     The outcome of exact and closest matching demonstrates that                      cannot be certain that some analog does not exist on the MLIP landscape; it
+incorporating landscape-speciﬁc data into training datasets generally                 is possible that some searches do not converge, or they are attracted to
+enhances the overlap between DFT and MLIP KTNs, improving both                        different stationary points. However, since the same strategies were fol-
+structures (lower number of missing minima—panel a, lower RMSD—                       lowed, and the MLIP searches were more extensive than for the more
+panel e) and energetics (lower relative energy RMSE—panel f). Never-                  computationally demanding DFT calculations, the missing structures and
+theless, the challenge of fully reproducing KTNs remains unsolved,                    corresponding paths must be harder to ﬁnd, if they exist. We mention that
+especially for transition states (panel b). Additionally, panels c, d show            we have tested various parameter choices for searching the MLIP land-
+that all of the models predict large numbers of unmatched stationary                  scapes, but observed little variation in the numbers of matched stationary
+points. These include MLIP minima and transition states with different                points (Fig. S17). The presence of unphysical structures is unambiguous.
+structures to their DFT counterparts, and MLIP TSs with matched                             As a ﬁnal test, we computed mean ﬁrst passage times (MFPTs) between
+geometry but different connecting minima. The presence of additional                  nodes within these networks, using the graph transformation procedure96–98.
+stationary points is a common problem for empirical potentials94. For                 The MFPT provides a physically meaningful and succinct metric for the
+the purpose of studying landscapes where the DFT KTN is not known a                   overlap between DFT and MLIP KTNs, which includes all the pathways
+priori, it is essential that one chooses a model with the best trade-off              with appropriate weights, whether physical or not. It also depends on the
+between maximizing exact matches and minimizing artifacts.                            accuracy with which the DFT stationary points are reproduced. Here, we
+
+
+npj Computational Materials | (2026)12:9                                                                                                                              5
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                  Article
+
+
+
+
+Fig. 4 | DFT-MLIP KTNs comparison. a–d exact and e, f closest DFT matching          closest MLIP-KTN minima pairs. TS pairs are not considered because of the
+statistics for each MLIP KTN. The exact match counts the number of MLIP sta-        inconsistent number of pairings between models. DFT supports a total of 28 minima
+tionary points that can (Matched) and cannot (Additional) be matched to within an   and 67 transition states. The asterisk indicates that energy and forces of the DFT
+RMSD of 0.3 Å to DFT analogs. The number of missing stationary points is com-       KTN were reevaluated with the DFT functional matching the training set of the
+puted by subtracting the count of matches from the number of DFT stationary         corresponding MLIP.
+points. The closest match computes the RMSD and relative energy RMSE of the
+
+
+would expect the MFPT to increase signiﬁcantly if the transition state              models (therefore, we disregard SO3LR and AIMNet2), and concentrate on
+corresponding to the most favorable pathway for the DFT landscape is not            the comparison between N-L and L MACE and Allegro models.
+in the MLIP database. In that case, the rate would reﬂect the highest barrier             L models perform signiﬁcantly better than N-L counterparts, with the
+on the alternative MLIP path. The MFPT could also be too small if the path          low-temperature results for the pathway embedded within the KTN leading
+on the MLIP landscape is too low, and we provide a numerical analysis of the        to a factor of 104 and 106 improvement in the MFPT in the case of Allegro
+sensitivity of the MFPT to landscape misspeciﬁcation in Fig. S18. Since the         and MACE, respectively. GFN2-xTB has a low-temperature offset of 103 in
+rates depend exponentially on barriers, a proper account of kinetics requires       both the embedded and unbranched single-path case, while MACE-MP-
+a faithful account of energetics and network connections (with extension to         0b3 leads to better MFPT results in the embedded case.
+vibrational effects explored in the Supplementary Information, Fig. S9). This
+test, therefore, corresponds to a demanding and important challenge.                Discussion
+      In Fig. 6, we present MFPTs for a pathway that is well described by           Machine learning potentials offer computational speed that facilitates longer
+most models (with the exception of NequIP), corresponding to the nodes              simulations and more extensive exploration of PESs compared to traditional
+3 → 5 → 4 (c.f. Figs. 1 and 5). We compute MFPTs in the regime where an             quantum chemical methods. However, this improved sampling capacity
+unbranched pathway is extracted from the KTN (left panel), and where the            raises important questions about the ability of these models to accurately
+pathway is embedded in the rest of the network (right panel). For ease of           reproduce the correct organization of the global energy landscape, and how
+presentation, we only show the best and worst results for foundational              training data composition inﬂuences this ability. KTNs provide a concise
+
+
+npj Computational Materials | (2026)12:9                                                                                                                            6
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                        Article
+
+
+
+
+Fig. 5 | KTNs of MLIPs superimposed on the reference DFT for salicylic acid.            can be mapped to transition states in the DFT KTN. The correspondence requires
+Large circles represent DFT minima, and solid black lines indicate transition states.   successful MLIP-DFT mapping for the connected minima, as well as structure
+Distances between DFT minima are scaled quadratically with the energy barrier           similarity of 0.3 Å between the TS. A red dashed line represents a lack of such a TS.
+between them. Small overlaid circles represent MLIP minima, with gray contours          For DFT minima, the colors indicate the energy difference of the node with respect to
+indicating a matched pair of DFT-MLIP minima (according to an RMSD threshold            the global minimum (node 0). For MLIP minima, the colors track the energy dif-
+of 0.3 Å), and red indicating a missing MLIP structure. Matched pairs are linked by     ference to their corresponding matched DFT minimum, with white implying a low
+gray lines, of distance proportional to the RMSD between minima at optimal              error. The KTNs for non-landscape models are shown in panel a and the KTNs
+alignment. Black dashed lines represent transition states in the MLIP KTN, which        corresponding to landscape models in panel b.
+
+
+
+
+Fig. 6 | Mean ﬁrst passage times between nodes 3 and 4 (c.f. Fig. 5) as computed from various MLIP KTNs and reported with respect to the DFT values. In the left panel,
+we show the case where the path 3-5-4 is isolated from the rest of the network, while in the right panel, we retain the entire KTN.
+
+
+description of the PES organization, and their faithful reproduction is                 (ANI2x, AIMNet2, MACE-MP-0b3, SO3LR), system-speciﬁc models
+essential for computing reliable transition rates. While comprehensive                  (Allegro, MACE, NequIP), and semi-empirical methods (GFN2-xTB).
+landscape searches remain largely computationally intractable for DFT                         To isolate the effects of training data composition on landscape
+calculations, machine learning potentials make such sampling feasible,                  reproduction, we compared two distinct approaches for system-speciﬁc
+creating an opportunity to rigorously test their global accuracy.                       models: training exclusively on MD data from rMD17 (N-L models) versus
+     We address this challenge by introducing benchmarks for KTN                        augmenting MD data with approximate steepest-descent paths from tran-
+reproduction, providing a framework to validate machine learning’s                      sition states (L models). This comparison enables us to validate performance
+potential performance in regions crucial for both thermodynamics and                    beyond force and energy errors, while directly probing how kinetically
+kinetics. We computed complete reference KTNs for six molecules from the                relevant training data affects PES representation.
+rMD17 dataset using hybrid DFT, creating the Landscape17 dataset con-                         The results reveal a systematic tendency for all machine learning
+taining all minima and transition states for ethanol, malonaldehyde, para-              potentials to overestimate the number of stationary points: MLIPs fre-
+cetamol, azobenzene, salicylic acid, and aspirin. Using this benchmark, we              quently generate unphysical conformations, despite basin-hopping steps
+systematically evaluated three categories of models: foundational models                constrained to only dihedral rotations. This behavior reﬂects substantial
+
+
+npj Computational Materials | (2026)12:9                                                                                                                                   7
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                              Article
+
+artifactual structure in machine learning PESs compared to the DFT                  are directly linked by transition states. Appropriate post-processing using
+reference, a phenomenon that can be quantitatively analyzed using the               standard tools of statistical mechanics and unimolecular rate theory enables
+landscape exploration methodology proposed here. It is noteworthy that the          efﬁcient computation of observable thermodynamic and kinetic properties
+GFN2-xTB framework exhibited markedly different behavior, with no                   within well-deﬁned approximations39. In particular, the explicit inclusion of
+unphysical conformations arising during exploration.                                transition states, which are more difﬁcult to characterize using standard
+      The incorporation of landscape-speciﬁc data into system-speciﬁc               MD, allows for assessment of global kinetics and comparison of MLIP
+model training had two main effects: while increasing the total number of           landscapes with the DFT reference98,102.
+discovered stationary points (including both physically meaningful and                    The reference potential energy landscapes were computed using DFT
+spurious conﬁgurations), it simultaneously enhanced model performance               with the ωB97x hybrid-energy exchange correlation functional and a 6-
+across multiple metrics. These augmented models exhibit superior accuracy           31G(d) basis set within Psi4103. These settings are consistent with the ones
+in reproducing DFT-calculated energies and forces at stationary points,             used to generate the ANI2x training data14. We applied tight energy and
+while also generating KTNs with improved rates and overall ﬁdelity to               density convergence criteria (E_CONVERGENCE and D_CON-
+reference DFT landscapes. These results suggest that incorporating kineti-          VERGENCE) of 10−9 Hartree and 10−9 a.u., along with extremely ﬁne
+cally relevant training data can effectively improve the representation of PES      integration grids (100 radial and 770 spherical points) and a restricted
+curvature in machine learning models.                                               Kohn-Sham reference.
+      Nevertheless, achieving perfect correspondence with DFT reference                   We validated the convergence, grid, and spin settings against published
+data remains elusive across all the models we have tested. This becomes             data from rMD17, using the appropriate functional and basis set: PBE/def2-
+particularly pronounced for transition state prediction, where MLIP sear-           SVP. We achieved energies and forces within 0.1 meV/atom and 5 meV/Å
+ches produced fewer than half of the DFT transition states with matching            respectively, well within the standard acceptable resolution of 1 meV/atom
+structure and connectivity. The persistent challenges in transition state path      and 10 meV/Å.
+identiﬁcation suggest fundamental limitations in current machine learning                 For benchmarking energies of AIMNet2, MACE-MP-0b3, and
+potential architectures and training methodologies, even for the set of             SO3LR, we recomputed the DFT KTN stationary points with the same
+simple, canonical molecules that constitute the Landscape17 dataset. These          functionals (and dispersion correction) as detailed in the original publica-
+results do not prove that the missing transition state paths are absent, but we     tions, speciﬁcally: ωB97m-D3BJ, PBE, and PBE0-D3BJ. Following AIM-
+can say that they were not located by the systematic search protocol                Net2, we used the localized def2-TZVPP basis set for all three cases,
+employed successfully for other potentials. Either way, there is an interesting     although we note that the DFT calculations for the MACE-MP-0b3 and
+question to address, in terms of whether the expected TS paths are not              SO3LR training datasets originally used plane wave basis sets. While using
+supported by the machine learning ﬁts, or why they are somehow elusive.             different functionals might yield different stationary points compared to our
+      Based on these results, we suggest that reproducing full conformational       ωB97x calculations, we expect the results to be very similar for these small
+landscapes of small molecules could serve as a useful benchmark for eval-           molecules, as conﬁrmed by our comparison results (Fig. 4). Future work
+uating future machine learning potentials. This assessment framework                could include reconverging the stationary points using these alternative
+provides a test of model ﬁdelity beyond the usual energy and force pre-             functionals.
+diction metrics, directly probing the ability to capture the features that are            Local minima were ﬁrst collected from the basin-hopping global
+essential for kinetic modeling and the tendency of MLIPs to generate stable         optimization runs81–83, an approach that has been employed successfully for
+unphysical structures.                                                              diverse molecular and abstract landscapes104. The basin-hopping explora-
+      In broader terms, we envision several routes to extend this project.          tion employed random angular perturbations applied to ﬂexible dihedral
+Firstly, we acknowledge the essential need for accurate data and draw               angles, as identiﬁed by the Atomic Simulation Environment package105. We
+attention to recent works on developing wavefunction-based databases and            employ the MMFF94106 force ﬁeld to prevent atomic clashes. The surveys
+MLIPs for accurate transition state characterization99. The Landscape17             used 50 basin-hopping steps with an accept/reject Metropolis condition
+dataset presented here contains rearrangements that proceed largely via             equivalent to a temperature of 100 K. The convergence criteria required
+dihedral rotation, a type of motion common to many reactive steps, and              either the maximum force component to fall below 10−3 eV/Å or the relative
+applied to some of the most common functional groups. However, increased            energy change between steps to drop below 107 eV multiplied by machine
+generalizability could be achieved through the addition of selected mole-           precision.
+cules with greater chemical diversity. Secondly, in practical applications, it            DFT transition state searches were performed between each minimum
+would be beneﬁcial to understand how to efﬁciently ﬁne-tune foundational            and its three nearest neighbors, determined from the Euclidean distance
+models for the tasks presented here and add the tests to open-source testing        with optimal alignment via the MINPERMDIST routine107,108. This proce-
+arenas32,100. Finally, the benchmark would be extended to include generative        dure minimizes the distance with respect to translation, rotation, permu-
+approaches to structure prediction75.                                               tation, and, additionally, we include the inversion operation. The alignment
+                                                                                    is not deterministic when permutations are included, and employs a shortest
+Methods                                                                             augmenting path algorithm109 inside an iterative loop107. Distinct stationary
+DFT landscapes                                                                      points were distinguished by a root mean square distance threshold greater
+The energy landscape framework provides a comprehensive approach to                 than 0.3 Å and energy differences exceeding 10−3 eV. Only one repre-
+mapping surface topography through the identiﬁcation and characteriza-              sentative permutation-inversion isomer was retained for each minimum
+tion of stationary points78,78,84,85,101. These are atomic conﬁgurations at which   and transition state.
+the gradient vanishes, and we focus on local minima and the transition states             Transition states were located using a two-step protocol starting with a
+that connect them, which are distinguished by their Hessian eigenvalue              NEB110–112 calculation. Initial pathways between minima were generated
+spectrum. Local minima exhibit only positive and zero Hessian eigenvalues,          through linear interpolation in internal coordinates after endpoint align-
+indicating that any displacement of internal coordinates increases the              ment. For endpoint alignment, extra care has to be taken for highly sym-
+energy. Transition states are deﬁned as ﬁrst-order saddle points with exactly       metric molecules, such as malonaldehyde and azobenzene. The NEB
+one negative eigenvalue, corresponding to a local maximum along the                 algorithm optimizes these interpolations of 20 images with a 50 eV/Å spring
+reaction coordinate, with positive curvature in the orthogonal eigendirec-          constant and convergence criterion of 10−2 eV/Å for the maximum force
+tions (aside from the zero eigenvalues corresponding to overall rotation and        component. This double-ended phase of the calculation only needs to
+translation)63.                                                                     converge sufﬁciently to identify the local maxima in the proﬁle, which are
+     These stationary points can be represented by weighted graphs, known           taken as starting points for accurate reﬁnement using hybrid eigenvector-
+as KTNs58–60, where minima serve as nodes and edges connect minima that             following113,114. Here, the smallest non-zero eigenvalue and the
+
+
+npj Computational Materials | (2026)12:9                                                                                                                        8
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                 Article
+
+corresponding eigenvector are obtained using a variational method, with               malonaldehyde, we add fewer than 40% data points, in line with their low
+minimization in all orthogonal directions. Convergence required RMS                   number of atoms. Training details and model performance metrics are
+forces below 3 × 10−2 eV/Å. Transition states were veriﬁed through Hessian            provided in Sections SI and SIII.
+analysis, conﬁrming exactly one negative eigenvalue. Only transition states
+with barriers below 1 eV were retained. We do not assume that a path links            MLIP landscapes
+the two original end minima from the NEB phase, even when there is only a             We generated MLIP landscapes using the methodology described in section
+single transition state in the proﬁle. The connectivity of each transition state      IV, but using two nearest neighbors for transition state searching in the ﬁrst
+is always established from the corresponding steepest-descent pathways. In            instance. For each MLIP, we created the ﬁnal KTN by initiating the land-
+general, there may be multiple transition states between two minima, and              scape generation process from 20 different starting structures taken from
+there may be gaps in the connection proﬁle. The two-phase procedure is                rMD17. Each starting point produced a separate KTN, which we subse-
+applied until a complete discrete path is obtained, using the missing con-            quently merged while eliminating permutation-inversion isomers accord-
+nection algorithm to propose new pairs of minima for additional searches115.          ing to the same similarity criteria used for the reference landscapes. The
+      Each transition state connects two local minima, identiﬁed through              Supplementary Information contains a ﬂowchart illustrating this process
+minimization from perturbed transition state geometries. Perturbations of             (Fig. S10). Upon completion of the ﬁrst iteration of MLIP KTNs, we
+approximately 0.3y (0.6y for ﬂatter modes, such as the cis-cis transition state       extended them by running transition state searches between pairs of third
+in azobenzene) were applied along parallel and antiparallel directions to the         nearest neighbors and re-running failed TS searches from the ﬁrst instance
+normalized eigenvector, y, corresponding to the negative eigenvalue, fol-             (see Fig. S17).
+lowed by LBFGS minimization. All intermediate conﬁgurations during
+minimization were stored to map the approximate steepest-descent paths                Landscape analysis
+from transition states to connected minima, excluding initial conﬁgurations           We evaluated the quality of the MLIP landscapes with respect to the DFT
+with force components exceeding 2 eV/Å.                                               references using various metrics detailed below and in the Supplementary
+      Complete KTNs were constructed for six molecules from the rMD17                 Information Section V, using the methodology outlined in Figs. S11–S13.
+dataset33,34: ethanol, malonaldehyde, salicylic acid, azobenzene, paracetamol,              A signiﬁcant limitation of current MLIPs is their tendency to produce
+and aspirin. These molecules were selected as they contain multiple distinct          unphysical molecular structures. To identify these unphysical structures, we
+isomers, enabling meaningful landscape analysis. All calculations utilized            compare each MLIP stationary point against the initial bonding framework.
+the TopSearch Python package86, (or OPTIM program87, for azobenzene,                  Changes in the adjacency matrix indicate inappropriate bond formation or
+see the Supplementary Information I). The resulting compilation of                    breaking, which should not occur under the simple dihedral angle rotations
+minima, transition states, and approximate steepest-descent pathways                  that we implement. We detect these issues by monitoring changes in
+constitutes the Landscape17 dataset. Furthermore, we include the Hessian              SMILES representations (via RDKit124) and hydrogen atom coordination
+eigenspectrum at the stationary points for reference.                                 numbers to identify spurious multiple bonding.
+      MFPTs were computed from the KTNs using the graph transforma-                         As described above, application of the energy landscape framework to a
+tion approach96–98, as implemented in the PyGT package116. The individual             given PES produces a KTN58–60. Comparing these networks allows us to
+rates for each elementary transition between minima directly connected by a           evaluate the similarity between PESs from different methods, particularly in
+transition state were computed using harmonic transition state theory with            both low-energy (minima) and higher-energy (transition state) regions.
+entropic effects set to unity64,65,117,118. The same choice is made consistently to   Here, we describe our methodology for quantifying similarities between two
+compare the results from the MLIP landscapes and the reference DFT KTN.               networks: a reference DFT-generated landscape and one produced by
+More accurate elementary transition rates could be used instead, including            an MLIP.
+methods based on explicit dynamics and associated path sampling49–52,54,119.                Our comparison process begins by removing unphysical structures
+However, the harmonic transition state theory approach is a common                    from the MLIP networks and checking for duplicate structures. We then
+choice for studies that treat the global dynamics of a KTN57,120–122, and is          conduct the comparison along two tracks, as mentioned in the Results
+appropriate for the comparison that we require here. We compute the rates             section. The ﬁrst track identiﬁes exact matches between DFT and MLIP
+between the states corresponding to the nodes 3–4 in Fig. 5. For the                  minima and transition states, while the second track computes similarities
+unbranched path, we retain only nodes 3, 5, and 4 in the network, removing            between the closest pairs of minima using less stringent matching criteria.
+direct connections between nodes 3 and 4.                                                   Both approaches start by computing similarity matrices between
+                                                                                      minima in both networks using the MINPERMDIST routine107,108 to
+Training MLIPs                                                                        compute RMSD values. We then match minima using a greedy algorithm
+We trained and evaluated a range of machine learning potentials: Nequip11,            that pairs each DFT minimum with its closest MLIP counterpart (we note
+MACE12, Allegro13, ANI2x14, AIMNet215, MACE-MP-0b3 (medium)21,                        that Flowchart S13 shows an easier computational alternative for ﬁnding
+SO3LR25 ;but also a semi-empirical method: GFN2-xTB79 (via DFTB+)123.                 exact matches that is, in fact, equivalent to computing the similarity matrix).
+For detailed architecture descriptions, we refer readers to the original              For exact matching, we add the requirement that matches must be within
+publications. Among these, ANI2x, AIMNet2, MACE-MP-0b3, SO3LR,                        0.3 Å RMSD. Successful matches meet this criterion; failed matches do not.
+and GFN2-xTB are transferable potentials that can be used without                     The number of additional minima (shown in Fig. 4a) is calculated by sub-
+retraining, while MACE, Allegro, and NequIP are architectures requiring               tracting successful matches from the total MLIP minima count.
+training for each application. We conducted ANI2x and AIMNet2 eva-                          For transition state comparisons, the closest-match approach uses the
+luations on single CPUs, while all other models were evaluated on single              same algorithm as for minima. The exact-match approach is more stringent,
+NVIDIA A100 GPUs.                                                                     requiring both a 0.3 Å RMSD threshold and that the transition states con-
+     We train models both with and without the incorporation of landscape             nect minima that are themselves exactly matched between the DFT and
+data. In both cases, the custom models were trained from scratch using the            MLIP KTNs. This is essential for rate calculations (see Supplementary
+hyperparameters speciﬁed in their respective publications. For the non-               Information Section VI). These results appear in Fig. 4b.
+landscape (rMD17) dataset, we used the same structures in a 950/50 test/                    In almost all cases, MLIP networks contain more physically correct
+train split, maintaining consistency with the original papers. For the land-          minima than the DFT counterparts, resulting in consistent closest match
+scape models, we additionally included 40% of the pathway data from                   counts across models for each molecule (equal to the DFT minima count).
+Landscape17 for the corresponding molecules (up to 500 structures total),             This observation enables meaningful comparison of average RMSD and
+reserving 10% for validation. The remaining 60% of pathway conﬁgurations              energy RMSE across models (Fig. 4c, d). However, for transition states, the
+(up to 1000 structures) served as additional test data. For ethanol and               counts vary signiﬁcantly between models, and there are often fewer MLIP
+
+
+npj Computational Materials | (2026)12:9                                                                                                                           9
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                             Article
+
+than DFT physically-correct transition states (Fig. 3b), preventing reliable       17.   Behler, J. Atom-centered symmetry functions for constructing high-
+cross-model comparison.                                                                  dimensional neural network potentials. J. Chem. Phys. 134, 074106
+                                                                                         (2011).
+Data availability                                                                  18.   Drautz, R. Atomic cluster expansion for accurate and transferable
+The Landscape17 dataset, which was generated and analyzed during the                     interatomic potentials. Phys. Rev. B 99, 014104 (2019).
+current study, is available in the Figshare repository at https://doi.org/10.      19.   Chmiela, S., Sauceda, H. E., Poltavsky, I., Müller, K.-R. &
+6084/m9.ﬁgshare.29949230. All DFT data described in this work were                       Tkatchenko, A. sGDML: Constructing accurate and data efﬁcient
+generated using the TopSearch Python package (v0.0.3), available at https://             molecular force ﬁelds using machine learning. Comput. Phys.
+github.com/IBM/topography-searcher. The MLIP and GFN2-xTB land-                          Commun. 240, 38–45 (2019).
+scapes were produced using the forked branch available at: https://github.         20.   Huo, H. & Rupp, M. Uniﬁed representation of molecules and crystals
+com/VladCarare/topography-searcher/tree/mlp_run, while the analysis                      for machine learning. Mach. Learn. Sci. Tech. 3, 045017 (2022).
+employed the forked branch: https://github.com/VladCarare/topography-              21.   Batatia, I. et al. A foundation model for atomistic materials chemistry.
+searcher/tree/analysis. An example of how to use the generation and analysis             J. Chem. Phys. 163, 184110, https://doi.org/10.1063/5.0297006
+code is available at https://github.com/VladCarare/mlp-landscapes/tree/                  (2025).
+main, along with the production MLP landscapes.                                    22.   Rhodes, B. et al. Orb-v3: atomistic simulation at scale. Preprint at
+                                                                                         arXiv https://doi.org/10.48550/arXiv.2504.06231 (2025).
+Received: 22 August 2025; Accepted: 17 November 2025;                              23.   Fu, X. et al. Learning smooth and expressive interatomic potentials
+                                                                                         for physical property prediction. In Proceedings of the 42nd
+                                                                                         International Conference on Machine Learning, 17875−17893
+References                                                                               (PMLR, 2025).
+1.    Pyzer-Knapp, E. O. & Curioni, A. Advancing biomolecular simulation           24.   Kovács, D. et al. MACE-OFF: short-range transferable machine
+      through exascale HPC, AI and quantum computing. Curr. Opin.                        learning force ﬁelds for organic molecules. J. Am. Chem. Soc. 147,
+      Struct. Biol. 87, 102826 (2024).                                                   17598–17611 (2025).
+2.    Deringer, V. L., Caro, M. A. & Csányi, G. Machine learning interatomic       25.   Kabylda, A. et al. Molecular simulations with a pretrained neural
+      potentials as emerging tools for materials science. Adv. Mater. 31,                network and universal pairwise force ﬁelds. J. Am. Chem. Soc. 147,
+      1902765 (2019).                                                                    33723–33734 (2025).
+3.    Unke, O. T. et al. Machine learning force ﬁelds. Chem. Rev. 121,             26.   Frank, T., Unke, O., Müller, K.-R. & Chmiela, S. A Euclidean
+      10142–10186 (2021).                                                                transformer for fast and stable machine learned force ﬁelds. Nat.
+4.    Behler, J. Four generations of high-dimensional neural network                     Commun. 15, 6539 (2024).
+      potentials. Chem. Rev. 121, 10037–10072 (2021).                              27.   Wood, B. M. et al. UMA: a family of universal models for atoms.
+5.    Thiemann, F. L., O’Neill, N., Kapil, V., Michaelides, A. & Schran, C.              Preprint at arXiv https://doi.org/10.48550/arXiv.2506.23971 (2025).
+      Introduction to machine learning potentials for atomistic                    28.   Deng, B. et al. CHGNet: pretrained universal neural network potential
+      simulations. J. Phys. Condens. Matter 37, 073002 (2025).                           for charge-informed atomistic modeling. Nat. Mach. Intell. 5,
+6.    Schütt, K. T., Sauceda, H. E., Kindermans, P.-J., Tkatchenko, A. &                 1031–1041 (2023).
+      Müller, K.-R. SchNet—a deep learning architecture for molecules              29.   Eastman, P. et al. SPICE, a dataset of drug-like molecules and
+      and materials. J. Chem. Phys. 148, 241722 (2018).                                  peptides for training machine learning potentials. Sci. Data 10, 11
+7.    Smith, J. S., Isayev, O. & Roitberg, A. E. ANI-1: an extensible neural             (2023).
+      network potential with DFT accuracy at force ﬁeld computational              30.   Levine, D. S. et al. The Open Molecules 2025 (OMol25) dataset,
+      cost. Chem. Sci. 8, 3192–3203 (2017).                                              evaluations, and models. Preprint at arXiv https://doi.org/10.48550/
+8.    Qiao, Z., Welborn, M., Anandkumar, A., Manby, F. R. & Miller III, T. F.            arXiv.2505.08762 (2025).
+      OrbNet: deep learning for quantum chemistry using symmetry-                  31.   Ramakrishnan, R., Dral, P. O., Rupp, M. & von Lilienfeld, O. A.
+      adapted atomic-orbital features. J. Chem. Phys. 153, 124111 (2020).                Quantum chemistry structures and properties of 134 kilo molecules.
+9.    Unke, O. T. et al. SpookyNet: learning force ﬁelds with electronic                 Sci. Data 1, 140022 (2014).
+      degrees of freedom and nonlocal effects. Nat. Commun. 12, 7273               32.   Riebesell, J. et al. A framework to evaluate machine learning crystal
+      (2021).                                                                            stability predictions. Nat. Mach. Intell. 7, 1–12 (2025).
+10.   Gasteiger, J., Groß, J. & Günnemann, S. Directional message                  33.   Chmiela, S. et al. Machine learning of accurate energy-conserving
+      passing for molecular graphs. Preprint at arXiv https://doi.org/10.                molecular force ﬁelds. Sci. Adv. 3, e1603015 (2017).
+      48550/arXiv.2003.03123 (2022).                                               34.   Christensen, A. S. & von Lilienfeld, O. A. On the role of gradients for
+11.   Batzner, S. et al. E(3)-equivariant graph neural networks for data-                machine learning of molecular energies and forces. Mach. Learn.
+      efﬁcient and accurate interatomic potentials. Nat. Commun. 13,                     Sci. Tech. 1, 045018 (2020).
+      2453 (2022).                                                                 35.   Pelaez, R. P. et al. TorchMD-Net 2.0: fast neural network potentials
+12.   Batatia, I., Kovács, D. P., Simm, G. N. C., Ortner, C. & Csányi, G. MACE:          for molecular simulations. J. Chem. Theory Comput. 20, 4076–4087
+      higher order equivariant message passing neural networks for fast and              (2024).
+      accurate force ﬁelds. In Proc. NeurIPS, Vol. 35 (Curran Associates, 2022).   36.   Hartmann, C., Banisch, R., Sarich, M., Badowski, T. & Schütte, C.
+13.   Musaelian, A. et al. Learning local equivariant representations for                Characterization of rare events in molecular dynamics. Entropy 16,
+      large-scale atomistic dynamics. Nat. Commun. 14, 579 (2023).                       350–376 (2014).
+14.   Devereux, C. et al. Extending the applicability of the ANI deep              37.   Staub, R., Gantzer, P., Harabuchi, Y., Maeda, S. & Varnek, A.
+      learning molecular potential to sulfur and halogens. J. Chem. Theory               Challenges for kinetics predictions via neural network potentials: a
+      Comput. 16, 4192–4202 (2020).                                                      Wilkinson’s catalyst case. Molecules 28, 4477 (2023).
+15.   Anstine, D., Zubatyuk, R. & Isayev, O. AIMNet2: a neural network             38.   Shenoy, N. et al. Role of structural and conformational diversity for
+      potential to meet your neutral, charged, organic, and elemental-                   machine learning potentials. Preprint at arXiv https://doi.org/10.
+      organic needs. Chem. Sci. 16, 10228–10244 (2025).                                  48550/arXiv.2311.00862 (2023).
+16.   Bartók, A. P., Payne, M. C., Kondor, R. & Csányi, G. Gaussian                39.   Swinburne, T. D., Kannan, D., Sharpe, D. J. & Wales, D. J. Rare
+      Approximation Potentials: the accuracy of quantum mechanics,                       events and ﬁrst passage time statistics from the energy landscape.
+      without the electrons. Phys. Rev. Lett. 104, 136403 (2010).                        J. Chem. Phys. 153, 134115 (2020).
+
+
+npj Computational Materials | (2026)12:9                                                                                                                      10
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                       Article
+
+40.   Kong, L. & Bryce, R. A. Discriminating high from low energy               63.   Murrell, J. N. & Laidler, K. J. Symmetries of activated complexes.
+      conformers of druglike molecules: an assessment of machine                      Trans. Faraday Soc. 64, 371–377 (1968).
+      learning potentials and quantum chemical methods.                         64.   Forst, W. Theory of Unimolecular Reactions (Academic Press, 1973).
+      ChemPhysChem 26, e202400992 (2025).                                       65.   Laidler, K. J. Chemical Kinetics (Harper & Row, 1987).
+41.   Hukushima, K. & Nemoto, K. Exchange Monte Carlo method and                66.   van Kampen, N. G. Stochastic Processes in Physics and Chemistry
+      application to spin glass simulations. J. Phys. Soc. Jpn. 65, 1604              (North-Holland, 1981).
+      (1996).                                                                   67.   Bowman, G. R., Beauchamp, K. A., Boxer, G. & Pande, V. S.
+42.   Tesi, M. C., van Rensburg, E. J. J., Orlandini, E. & Whittington, S. G.         Progress and challenges in the automated construction of Markov
+      Monte Carlo study of the interacting self-avoiding walk model in                state models for full protein systems. J. Chem. Phys. 131, 124101
+      three dimensions. J. Stat. Phys. 82, 155 (1996).                                (2009).
+43.   Hansmann, U. H. E. Parallel tempering algorithm for conformational        68.   Lane, T. J., Bowman, G. R., Beauchamp, K., Voelz, V. A. & Pande, V.
+      studies of biological molecules. Chem. Phys. Lett. 281, 140–150                 S. Markov state model reveals folding and functional dynamics in
+      (1997).                                                                         ultra-long MD trajectories. J. Am. Chem. Soc. 133, 18413–18419
+44.   Sugita, Y. & Okamoto, Y. Replica-exchange molecular dynamics                    (2011).
+      method for protein folding. Chem. Phys. Lett. 314, 141–151 (1999).        69.   Schreiner, M., Bhowmik, A., Vegge, T., Busk, J. & Winther, O.
+45.   Nakajima, N., Nakamura, H. & Kidera, A. Multicanonical ensemble                 Transition1x—a dataset for building generalizable reactive machine
+      generated by molecular dynamics simulation for enhanced                         learning potentials. Sci. Data 9, 779 (2022).
+      conformational sampling of peptides. J. Phys. Chem. B 101,                70.   de Oca Zapiain, D. M. et al. Training data selection for accuracy and
+      817–824 (1997).                                                                 transferability of interatomic potentials. npj Comput. Mater. 8, 189
+46.   Wang, F. & Landau, D. P. Efﬁcient, multiple-range random walk                   (2022).
+      algorithm to calculate the density of states. Phys. Rev. Lett. 86, 2050   71.   Kulichenko, M. et al. Data generation for machine learning
+      (2001).                                                                         interatomic potentials and beyond. Chem. Rev. 124, 13681–13714
+47.   Torrie, G. M. & Valleau, J. P. Monte Carlo free energy estimates using          (2024).
+      non-Boltzmann sampling: application to the sub-critical Lennard-          72.   Niblett, S. P., Kourtis, P., Magdău, I.-B., Grey, C. P. & Csányi, G.
+      Jones ﬂuid. Chem. Phys. Lett. 28, 578 (1974).                                   Transferability of data sets between machine-learned interatomic
+48.   Laio, A. & Parrinello, M. Escaping free-energy minima. Proc. Natl.              potential algorithms. J. Chem. Inf. Model. 21, 6096–6112 (2025).
+      Acad. Sci. USA 99, 12562–12566 (2002).                                    73.   Kim, S., Woo, J. & Kim, W. Y. Diffusion-based generative AI for
+49.   Bolhuis, P. G., Chandler, D., Dellago, C. & Geissler, P. L. Transition          exploring transition states from 2D molecular graphs. Nat. Commun.
+      path sampling: throwing ropes over rough mountain passes, in the                15, 341 (2024).
+      dark. Annu. Rev. Phys. Chem. 53, 291–318 (2002).                          74.   Choi, S. Prediction of transition state structures of gas-phase
+50.   van Erp, T. S., Moroni, D. & Bolhuis, P. G. A novel path sampling               chemical reactions via machine learning. Nat. Commun. 14, 1168
+      method for the calculation of rate constants. J. Chem. Phys. 118,               (2023).
+      7762–7774 (2003).                                                         75.   Duan, C. et al. Optimal transport for generating transition states in
+51.   Faradjian, A. K. & Elber, R. Computing time scales from reaction                chemical reactions. Nat. Mach. Intell. 7, 615–626 (2025).
+      coordinates by milestoning. J. Chem. Phys. 120, 10880–10889               76.   Kuryla, D., Csányi, G., van Duin, A. C. T. & Michaelides, A. Efﬁcient
+      (2004).                                                                         exploration of reaction pathways using reaction databases and
+52.   Allen, R. J., Frenkel, D. & ten Wolde, P. R. Forward ﬂux sampling-type          active learning. J. Chem. Phys. 162, 114122 (2025).
+      schemes for simulating rare events: efﬁciency analysis. J. Chem.          77.   Wales, D. J. Energy Landscapes (Cambridge University Press, 2003).
+      Phys. 124, 194111 (2006).                                                 78.   Wales, D. J. Exploring energy landscapes. Ann. Rev. Phys. Chem.
+53.   Chodera, J. D. et al. Automatic discovery of metastable states for the          69, 401–425 (2018).
+      construction of Markov models of macromolecular conformational            79.   Bannwarth, C., Ehlert, S. & Grimme, S. GFN2-xTB—an accurate and
+      dynamics. J. Chem. Phys. 126, 155101 (2007).                                    broadly parametrized self-consistent tight-binding quantum
+54.   Dellago, C. & Bolhuis, P. G. Transition path sampling and other                 chemical method with multipole electrostatics and density-
+      advanced simulation techniques for rare events. Adv. Polym. Sci.                dependent dispersion contributions. J. Chem. Theory Comput. 15,
+      221, 167–233 (2009).                                                            1652–1671 (2019).
+55.   Pande, V. S., Beauchamp, K. & Bowman, G. R. Everything you                80.   Cărare, V. et al. Landscape17. ﬁgshare https://doi.org/10.6084/m9.
+      wanted to know about Markov State Models but were afraid to ask.                ﬁgshare.29949230 (2025).
+      Methods 52, 99–105 (2010).                                                81.   Li, Z. & Scheraga, H. A. Monte Carlo-minimization approach to the
+56.   Prinz, J. H. et al. Markov models of molecular kinetics: generation             multiple-minima problem in protein folding. Proc. Natl. Acad. Sci.
+      and validation. J. Chem. Phys. 134, 174105 (2011).                              USA 84, 6611–6615 (1987).
+57.   Swinburne, T. D. & Perez, D. Self-optimized construction of transition    82.   Wales, D. J. & Doye, J. P. K. Global optimization by basin-hopping
+      rate matrices from accelerated atomistic simulations with Bayesian              and the lowest energy structures of Lennard-Jones clusters
+      uncertainty quantiﬁcation. Phys. Rev. Mater. 2, 053802 (2018).                  containing up to 110 atoms. J. Phys. Chem. A 101, 5111–5116
+58.   Noé, F. & Fischer, S. Transition networks for modeling the kinetics of          (1997).
+      conformational change in macromolecules. Curr. Opin. Struct. Biol.        83.   Wales, D. J. & Scheraga, H. A. Global optimization of clusters,
+      18, 154–162 (2008).                                                             crystals and biomolecules. Science 285, 1368–1372 (1999).
+59.   Prada-Gracia, D., Gómez-Gardenes, J., Echenique, P. & Falo, F.            84.   Joseph, J. A., Röder, K., Chakraborty, D., Mantell, R. G. & Wales, D.
+      Exploring the free energy landscape: from dynamics to networks and              J. Exploring biomolecular energy landscapes. Chem. Commun. 53,
+      back. PLoS Comput. Biol. 5, e1000415 (2009).                                    6974–6988 (2017).
+60.   Wales, D. J. Energy landscapes: some new horizons. Curr. Opin.            85.   Röder, K., Joseph, J. A., Husic, B. E. & Wales, D. J. Energy
+      Struct. Biol. 20, 3–10 (2010).                                                  landscapes for proteins: from single funnels to multifunctional
+61.   Wales, D. J. Discrete path sampling. Mol. Phys. 100, 3285–3306                  systems. Adv. Theory Simul. 2, 1800175 (2019).
+      (2002).                                                                   86.   Dicks, L. & Pyzer-Knapp, E. O. TopSearch: a Python package for
+62.   Wales, D. J. Some further applications of discrete path sampling to             topographical analysis of machine learning models and physical
+      cluster isomerization. Mol. Phys. 102, 891–908 (2004).                          systems. J. Open Source Softw. 20, 317–330 (2024).
+
+
+npj Computational Materials | (2026)12:9                                                                                                                11
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                                  Article
+
+87.    Wales, D. J. OPTIM: A program for optimizing geometries and                  109. Jonker, R. & Volgenant, A. A shortest augmenting path algorithm for
+       calculating reaction pathways. https://www-wales.ch.cam.ac.uk/                    dense and sparse linear assignment problems. Computing 38, 325
+       OPTIM/ (2025).                                                                    (1987).
+88.    McInnes, L., Healy, J., Saul, N. & Großberger, L. UMAP: Uniform              110. Jónsson, H., Mills, G. & Jacobsen, K. W. Nudged elastic band
+       Manifold Approximation and Projection. J. Open Source Softw. 3,                   method for ﬁnding minimum energy paths of transitions. In Classical
+       861 (2018).                                                                       and Quantum Dynamics in Condensed Phase Simulations (eds
+89.    Nourse, J. G. Self-inverse and nonself-inverse degenerate                         Berne,B.J., Ciccotti, G. & Coker, D.F.) Ch. 16, 385–404 (World
+       isomerizations. J. Am. Chem. Soc. 102, 4883 (1980).                               Scientiﬁc, 1998).
+90.    Weininger, D. SMILES, a chemical language and information                    111. Henkelman, G., Uberuaga, B. P. & Jónsson, H. A climbing image
+       system. 1. Introduction to methodology and encoding rules. J.                     nudged elastic band method for ﬁnding saddle points and minimum
+       Chem. Inf. Comput. Sci. 28, 31–36 (1988).                                         energy paths. J. Chem. Phys. 113, 9901–9904 (2000).
+91.    de Souza, V. K., Stevenson, J. D., Niblett, S. P., Farrell, J. D. & Wales,   112. Henkelman, G. & Jónsson, H. Improved tangent estimate in the
+       D. J. Deﬁning and quantifying frustration in the energy landscape:                nudged elastic band method for ﬁnding minimum energy paths and
+       applications to atomic and molecular clusters, biomolecules,                      saddle points. J. Chem. Phys. 113, 9978–9985 (2000).
+       jammed and glassy systems. J. Chem. Phys. 146, 124103 (2017).                113. Munro, L. J. & Wales, D. J. Defect migration in crystalline silicon.
+92.    Dicks, L., Graff, D. E., Jordan, K. E., Coley, C. W. & Pyzer-Knapp, E.            Phys. Rev. B 59, 3969–3980 (1999).
+       O. A physics-inspired approach to the understanding of molecular             114. Kumeda, Y., Munro, L. J. & Wales, D. J. Transition states and
+       representations and models. Mol. Syst. Des. Eng. 9, 449–455 (2024).               rearrangement mechanisms from hybrid eigenvector-following and
+93.    Wilson, M. P., Pyzer-Knapp, E. O., Galichet, N. & Dicks, L. Reﬁning               density functional theory. application to C10H10 and defect migration
+       embeddings with ﬁll-tuning: data-efﬁcient generalised performance                 in crystalline silicon. Chem. Phys. Lett. 341, 185–194 (2001).
+       improvements for materials foundation models. Preprint at arXiv              115. Carr, J. M., Trygubenko, S. A. & Wales, D. J. Finding pathways
+       https://doi.org/10.48550/arXiv.2502.13886 (2025).                                 between distant local minima. J. Chem. Phys. 122, 234903 (2005).
+94.    Furman, D. & Wales, D. J. Transforming the accuracy and numerical            116. Swinburne, T. D. & Wales, D. J. Deﬁning, calculating, and converging
+       stability of ReaxFF reactive force ﬁelds. J. Phys. Chem. Lett. 10,                observables of a kinetic transition network. J. Chem. Theory
+       7215–7223 (2019).                                                                 Comput. 16, 2661–2679 (2020).
+95.    Csányi, G., Morgan, J. W. R. & Wales, D. J. Global analysis of energy        117. Eyring, H. The activated complex and the absolute rate of chemical
+       landscapes for materials modeling: a test case for C60. J. Chem.                  reactions. Chem. Rev. 17, 65 (1935).
+       Phys. 159, 104107 (2023).                                                    118. Evans, M. G. & Polanyi, M. Some applications of the transition state
+96.    Trygubenko, S. A. & Wales, D. J. Kinetic analysis of discrete path                method to the calculation of reaction velocities, especially in
+       sampling stationary point databases. Mol. Phys. 104, 1497–1507 (2006).            solution. Trans. Faraday Soc. 31, 875 (1935).
+97.    Trygubenko, S. A. & Wales, D. J. Graph transformation method for             119. van Erp, T. S. & Bolhuis, P. G. Elaborating transition interface
+       calculating waiting times in Markov chains. J. Chem. Phys. 124,                   sampling methods. J. Comput. Phys. 205, 157–181 (2005).
+       234110 (2006).                                                               120. Sørensen, M. R. & Voter, A. F. Temperature-accelerated dynamics
+98.    Sharpe, D. J. & Wales, D. J. Nearly reducible ﬁnite Markov chains:                for simulation of infrequent events. J. Chem. Phys. 112, 9599–9606
+       theory and algorithms. J. Chem. Phys. 155, 140901 (2021).                         (2000).
+99.    Allen, A. E. A. et al. Reactive chemistry at unrestricted coupled            121. Xiao, P., Wu, Q. & Henkelman, G. Basin constrained κ-dimer method
+       cluster level: high-throughput calculations for training machine                  for saddle point ﬁnding. J. Chem. Phys. 141, 164111 (2014).
+       learning potentials. Preprint at arXiv https://doi.org/10.48550/arXiv.       122. Sharia, O. & Henkelman, G. Analytic dynamical corrections to
+       2509.10872 (2025).                                                                transition state theory. N. J. Phys. 18, 013023 (2016).
+100.   Zhao, Q. et al. Harnessing machine learning to enhance transition            123. Hourahine, B. et al. DFTB+, a software package for efﬁcient
+       state search with interatomic potentials and generative models. Adv.              approximate density functional theory based atomistic simulations.
+       Sci. 12, e06240 (2025).                                                           J. Chem. Phys. 152, 124101 (2020).
+101.   Niroomand, M. P., Dicks, L., Pyzer-Knapp, E. O. & Wales, D. J. Insights      124. Landrum, G. et al. RDKit: Open-source cheminformatics. https://
+       into machine learning models from chemical physics: an energy                     www.rdkit.org (2024).
+       landscapes approach (EL for ML). Digit. Discov. 3, 637–648 (2024).           125. Stukowski, A. Visualization and analysis of atomistic simulation data
+102.   Woods, E. J. & Wales, D. J. Analysis and interpretation of ﬁrst                   with OVITO—the open visualization tool. Model. Simul. Mater. Sci.
+       passage time distributions featuring rare events. Phys. Chem.                     Eng. 18, 015012 (2009).
+       Chem. Phys. 26, 1640–1657 (2024).
+103.   Smith, D. G. A. et al. Psi4 1.4: open-source software for high-              Acknowledgements
+       throughput quantum chemistry. J. Chem. Phys. 152, 184108 (2020).             This work was performed using resources provided by the Cambridge
+104.   Dicks, L. & Wales, D. J. Exploiting sequence-dependent rotamer               Service for Data Driven Discovery (www.csd3.cam.ac.uk), provided by Dell
+       information in global optimization of proteins. J. Phys. Chem. B 126,        EMC and Intel using Tier-2 funding from the Engineering and Physical Sci-
+       8381–8390 (2022).                                                            ences Research Council(capital grant EP/T022159/1), and DiRAC funding
+105.   Larsen, A. H. et al. The atomic simulation environment—a Python              from the Science and Technology Facilities Council (www.dirac.ac.uk). V.C.
+       library for working with atoms. J. Phys. Condens. Matter 29, 273002          acknowledges the computational resources obtained through the University
+       (2017).                                                                      of Cambridge EPSRC Core Equipment Award (EP/X034712/1) and EPSRC
+106.   Halgren, T. A. Merck molecular force ﬁeld. I. Basis, form, scope,            IAA award number G116766. The authors thank Gábor Csányi for useful
+       parameterization, and performance of MMFF94. J. Comput. Chem.                discussions.
+       17, 490–519 (1996).
+107.   Wales, D. J. & Carr, J. M. Quasi-continuous interpolation scheme for         Author contributions
+       pathways between distant conﬁgurations. J. Chem. Theory Comput.              L.D., F.T. and E.P.K. conceived the project. L.D., V.C., J.M. and D.J.W.
+       8, 5020–5034 (2012).                                                         generated the DFT reference data. V.C. and F.T. trained the MLIPs. V.C.
+108.   Grifﬁths, M., Niblett, S. P. & Wales, D. J. Optimal alignment of             generated the MLIP landscapes. V.C., F.T., L.D., J.M. and E.P.K. performed
+       structures for ﬁnite and periodic systems. J. Chem. Theory Comput.           the data analysis. V.C., L.D. and F.T. wrote the original draft. All authors read,
+       13, 4914–4931 (2017).                                                        edited, and approved the ﬁnal manuscript.
+
+
+npj Computational Materials | (2026)12:9                                                                                                                           12
+https://doi.org/10.1038/s41524-025-01878-x                                                                                                   Article
+
+Competing interests                                                      Open Access This article is licensed under a Creative Commons
+The authors declare no competing interests.                              Attribution 4.0 International License, which permits use, sharing,
+                                                                         adaptation, distribution and reproduction in any medium or format, as long
+Additional information                                                   as you give appropriate credit to the original author(s) and the source,
+Supplementary information The online version contains                    provide a link to the Creative Commons licence, and indicate if changes
+supplementary material available at                                      were made. The images or other third party material in this article are
+https://doi.org/10.1038/s41524-025-01878-x.                              included in the article’s Creative Commons licence, unless indicated
+                                                                         otherwise in a credit line to the material. If material is not included in the
+Correspondence and requests for materials should be addressed to         article’s Creative Commons licence and your intended use is not permitted
+Luke Dicks.                                                              by statutory regulation or exceeds the permitted use, you will need to
+                                                                         obtain permission directly from the copyright holder. To view a copy of this
+Reprints and permissions information is available at                     licence, visit http://creativecommons.org/licenses/by/4.0/.
+http://www.nature.com/reprints
+                                                                         © The Author(s) 2025
+Publisher’s note Springer Nature remains neutral with regard to
+jurisdictional claims in published maps and institutional afﬁliations.
+
+
+
+
+npj Computational Materials | (2026)12:9                                                                                                            13
+

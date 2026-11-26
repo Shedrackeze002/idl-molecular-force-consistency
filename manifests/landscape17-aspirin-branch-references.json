@@ -1,0 +1,607 @@
+{
+  "branch_references": {
+    "aspirin/00/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/00/coordsminus_105.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/00/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/00/coordsplus_103.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/01/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/01/coordsminus_122.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/01/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/01/coordsplus_110.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/010/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/010/coordsminus_067.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "status": "matched"
+    },
+    "aspirin/010/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/010/coordsplus_070.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/01_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsminus_123.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/01_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/01_2/coordsplus_094.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/04/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/04/coordsminus_070.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/04/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/04/coordsplus_069.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/07/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/07/coordsminus_103.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/07/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/07/coordsplus_122.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/07_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/07_2/coordsminus_078.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/07_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/07_2/coordsplus_123.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_0.xyz",
+      "status": "matched"
+    },
+    "aspirin/11/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/11/coordsminus_107.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/11/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/11/coordsplus_131.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/12/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/12/coordsminus_084.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/12/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/12/coordsplus_107.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/13/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/13/coordsminus_087.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "status": "matched"
+    },
+    "aspirin/13/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/13/coordsplus_075.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/18/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/18/coordsminus_100.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/18/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/18/coordsplus_114.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/18_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsminus_088.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/18_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/18_2/coordsplus_136.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_1.xyz",
+      "status": "matched"
+    },
+    "aspirin/22/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/22/coordsminus_086.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/22/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/22/coordsplus_088.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/23/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/23/coordsminus_082.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/23/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/23/coordsplus_071.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "status": "matched"
+    },
+    "aspirin/24/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/24/coordsminus_084.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/24/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/24/coordsplus_091.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/25/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/25/coordsminus_082.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/25/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/25/coordsplus_102.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_2.xyz",
+      "status": "matched"
+    },
+    "aspirin/310/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/310/coordsminus_068.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "status": "matched"
+    },
+    "aspirin/310/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/310/coordsplus_070.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "status": "matched"
+    },
+    "aspirin/35/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/35/coordsminus_103.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/35/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/35/coordsplus_107.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_3.xyz",
+      "status": "matched"
+    },
+    "aspirin/410/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/410/coordsminus_075.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "status": "matched"
+    },
+    "aspirin/410/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/410/coordsplus_073.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/44/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/44/coordsminus_132.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "status": "matched"
+    },
+    "aspirin/44/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/44/coordsplus_094.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/46/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/46/coordsminus_080.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/46/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/46/coordsplus_104.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/46_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/46_2/coordsminus_104.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/46_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/46_2/coordsplus_098.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/49/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/49/coordsminus_104.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_4.xyz",
+      "status": "matched"
+    },
+    "aspirin/49/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/49/coordsplus_097.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/55/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/55/coordsminus_095.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/55/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/55/coordsplus_105.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/56/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/56/coordsminus_081.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/56/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/56/coordsplus_065.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/58/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/58/coordsminus_072.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/58/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/58/coordsplus_074.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/58_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsminus_106.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/58_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/58_2/coordsplus_078.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/59/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/59/coordsminus_108.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_5.xyz",
+      "status": "matched"
+    },
+    "aspirin/59/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/59/coordsplus_086.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/66/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/66/coordsminus_089.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/66/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/66/coordsplus_107.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/67/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/67/coordsminus_066.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/67/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/67/coordsplus_070.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/69/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/69/coordsminus_068.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/69/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/69/coordsplus_074.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_6.xyz",
+      "status": "matched"
+    },
+    "aspirin/77/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/77/coordsminus_100.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/77/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/77/coordsplus_103.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/78/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/78/coordsminus_090.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/78/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/78/coordsplus_073.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/78_2/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsminus_094.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/78_2/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/78_2/coordsplus_078.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/79/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/79/coordsminus_075.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_7.xyz",
+      "status": "matched"
+    },
+    "aspirin/79/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/79/coordsplus_094.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/88/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/88/coordsminus_096.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/88/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/88/coordsplus_106.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_8.xyz",
+      "status": "matched"
+    },
+    "aspirin/910/minus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/910/coordsminus_111.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_9.xyz",
+      "status": "matched"
+    },
+    "aspirin/910/plus": {
+      "endpoint_record_id": "Landscape17/aspirin/SteepestDescent/910/coordsplus_123.xyz",
+      "reference_class": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "reference_record": "Landscape17/aspirin/Conformations/coordsmin_10.xyz",
+      "status": "matched"
+    }
+  },
+  "filename_metadata_semantics": "historical transition-state filename tokens; no guaranteed plus/minus orientation",
+  "filename_minimum_pairs": {
+    "aspirin/00": [
+      "0",
+      "0"
+    ],
+    "aspirin/01": [
+      "0",
+      "1"
+    ],
+    "aspirin/010": [
+      "0",
+      "10"
+    ],
+    "aspirin/01_2": [
+      "0",
+      "1"
+    ],
+    "aspirin/04": [
+      "0",
+      "4"
+    ],
+    "aspirin/07": [
+      "0",
+      "7"
+    ],
+    "aspirin/07_2": [
+      "0",
+      "7"
+    ],
+    "aspirin/11": [
+      "1",
+      "1"
+    ],
+    "aspirin/12": [
+      "1",
+      "2"
+    ],
+    "aspirin/13": [
+      "1",
+      "3"
+    ],
+    "aspirin/18": [
+      "1",
+      "8"
+    ],
+    "aspirin/18_2": [
+      "1",
+      "8"
+    ],
+    "aspirin/22": [
+      "2",
+      "2"
+    ],
+    "aspirin/23": [
+      "2",
+      "3"
+    ],
+    "aspirin/24": [
+      "2",
+      "4"
+    ],
+    "aspirin/25": [
+      "2",
+      "5"
+    ],
+    "aspirin/310": [
+      "3",
+      "10"
+    ],
+    "aspirin/35": [
+      "3",
+      "5"
+    ],
+    "aspirin/410": [
+      "4",
+      "10"
+    ],
+    "aspirin/44": [
+      "4",
+      "4"
+    ],
+    "aspirin/46": [
+      "4",
+      "6"
+    ],
+    "aspirin/46_2": [
+      "4",
+      "6"
+    ],
+    "aspirin/49": [
+      "4",
+      "9"
+    ],
+    "aspirin/55": [
+      "5",
+      "5"
+    ],
+    "aspirin/56": [
+      "5",
+      "6"
+    ],
+    "aspirin/58": [
+      "5",
+      "8"
+    ],
+    "aspirin/58_2": [
+      "5",
+      "8"
+    ],
+    "aspirin/59": [
+      "5",
+      "9"
+    ],
+    "aspirin/66": [
+      "6",
+      "6"
+    ],
+    "aspirin/67": [
+      "6",
+      "7"
+    ],
+    "aspirin/69": [
+      "6",
+      "9"
+    ],
+    "aspirin/77": [
+      "7",
+      "7"
+    ],
+    "aspirin/78": [
+      "7",
+      "8"
+    ],
+    "aspirin/78_2": [
+      "7",
+      "8"
+    ],
+    "aspirin/79": [
+      "7",
+      "9"
+    ],
+    "aspirin/88": [
+      "8",
+      "8"
+    ],
+    "aspirin/910": [
+      "9",
+      "10"
+    ]
+  },
+  "identity": "65cfff3097fc2822afdad6e9f83cec6ba22d3bb21d817a76f262caae4e65b94d",
+  "schema": 1,
+  "source_sha256": {
+    "endpoint_classification": "4b69a3bfe8a13a4bb8ae454a18cf4a491b191abf496f818729a8e1db46c090b6",
+    "split_manifest": "8bc2e734c1fc12792f98c4264eff56610f98ce41da70c80523297a73164e96b6"
+  },
+  "split_identity": "73d5475bfc1f1158da62b939f5431b1781db886443cece2cdb297c8dd645133a",
+  "target_authority": "committed per-branch reference_class; no filename fallback"
+}

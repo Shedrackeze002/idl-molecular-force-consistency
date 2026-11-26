@@ -1,0 +1,12 @@
+{
+  "duplicate_tolerance": 0.00001,
+  "endpoint_tolerance": 0.05,
+  "reference_tolerance": 0.00001,
+  "graph_factor": 1.2,
+  "graph_min_distance": 0.4,
+  "search_limit": 100000,
+  "seed": 20260929,
+  "nonstationary_force": 0.001,
+  "exact_energy_tolerance": 0.0000001,
+  "exact_force_tolerance": 0.000001
+}

@@ -1,0 +1,32 @@
+{
+  "anchor_frame_count": 16,
+  "backend": "cpu",
+  "checkpoint_prediction_atol": 1e-10,
+  "evidence_log": "reports/PAPER_EVIDENCE_LOG.md",
+  "expected_source_checkpoint_sha256": "0bdb9ac0cc56fc90329260a4f41b06b61642a9b7a00d10c40ecace4826df76e2",
+  "expected_source_control_sha256": "e4ff5e7d7a7f08e9800a3e25cb774533cb20040df30b6ba10f956f9acd0eb3f7",
+  "expected_source_history_sha256": "f1696ecb81bd09de6701bb7b8a5b0af1ec6176e1f8b18ed7d2757e291071eb5d",
+  "expected_source_payload_sha256": "07247cbc7d1890516bfd8a221d6fb49cffc6a065f02fcb6e381a76373f359398",
+  "expected_source_state_hashes": {
+    "optimizer": "d9c6947b181ed08267c93ba4c5a7868965853c615e9d1d59b4fecf5151ebe264",
+    "params": "8c7b4f2fd88b8dbce8ebf02577a32acef4386ba5c90e2609489233c17631107d"
+  },
+  "expected_update": 6000,
+  "failed_run_directory": "runs/aspirin-width-rate-2026-09-30",
+  "fitting_frame_count": 128,
+  "full_pilot": "pending",
+  "maximum_fresh_probe_attempts": 1,
+  "new_training_updates": 0,
+  "original_pin_manifest_sha256": "621e60dd590f18214ac6467f9b9f00eff7d1248067eb1d2c9ee19f014362e0c4",
+  "original_width_rate_config": "configs/aspirin-width-rate-diagnostic.json",
+  "original_width_rate_config_identity": "e64165f0e511ae073dae1fb6e3da49053fee110e5844b5da0471bce47ec01198",
+  "precision": "float64",
+  "recovery_pin_count": 163,
+  "recovery_pin_manifest": "configs/aspirin-width-rate-recovery-source-pins.json",
+  "recovery_pin_manifest_sha256": "f7fff5b24a9e2eae365a97924d720d996d9c60321c39fc00711d307a03e5a4d4",
+  "recovery_role": "copied_checkpoint_verification_only",
+  "run_directory": "runs/aspirin-width-rate-recovery-2026-10-01",
+  "source_cell": "width16-lr1e-3",
+  "status": "planned_unexecuted",
+  "total_wall_seconds": 180
+}

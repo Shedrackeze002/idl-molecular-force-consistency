@@ -1,0 +1,21 @@
+{
+  "parameter_count": 4737,
+  "parameter_dtype": "float64",
+  "seed": 19,
+  "device": "TFRT_CPU_0",
+  "finite_difference_steps_A": [
+    0.001,
+    0.0001,
+    1e-05
+  ],
+  "finite_difference_max_errors_eV_per_A": [
+    1.5030025307671835e-07,
+    9.454223792726424e-09,
+    8.784594329735995e-09
+  ],
+  "net_force_max_eV_per_A": 8.326672684688674e-17,
+  "net_torque_max_eV": 3.8163916471489756e-17,
+  "test_command": ".venv/bin/python -m pytest tests/test_model_physics.py -q",
+  "tests_passed": 6,
+  "lock_sha256": "cf95835311d113384b040bedf3e21cbbac714e6b2be302a6d4b6b6cfe29aecc4"
+}

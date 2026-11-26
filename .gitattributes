@@ -1,0 +1,2 @@
+reports/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text
+reports/execution/width-rate-replacement-2026-10-01/corrected-report/width-rate-replacement-diagnostics.json filter=lfs diff=lfs merge=lfs -text
