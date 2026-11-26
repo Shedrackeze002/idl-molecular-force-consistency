@@ -1,0 +1,162 @@
+[
+ {
+  "start": "aspirin/13/minus",
+  "kind": "original",
+  "E_start": 0.027650007380736738,
+  "E_lbfgs_0.01": -0.22604713051286396,
+  "E_lbfgs_0.001": -0.22642626152041806,
+  "E_custom": -0.22085182462981273,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.0242275590096232
+ },
+ {
+  "start": "aspirin/13/plus",
+  "kind": "original",
+  "E_start": 0.0783659860365223,
+  "E_lbfgs_0.01": -0.42735813355918706,
+  "E_lbfgs_0.001": -0.43113465990054994,
+  "E_custom": -0.4197290534368229,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.013823204982308712
+ },
+ {
+  "start": "aspirin/18/minus",
+  "kind": "original",
+  "E_start": 0.021055241199080338,
+  "E_lbfgs_0.01": -0.42463883817291426,
+  "E_lbfgs_0.001": -0.43113295514897376,
+  "E_custom": -0.19967403914288046,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.05168053067078604
+ },
+ {
+  "start": "aspirin/18/plus",
+  "kind": "original",
+  "E_start": -0.04337528103773425,
+  "E_lbfgs_0.01": -0.42397246638862063,
+  "E_lbfgs_0.001": -0.4311311570857458,
+  "E_custom": -0.25882468560449506,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.04039198322841468
+ },
+ {
+  "start": "aspirin/18_2/minus",
+  "kind": "original",
+  "E_start": 0.29131752875913675,
+  "E_lbfgs_0.01": null,
+  "E_lbfgs_0.001": null,
+  "E_custom": -0.20044474323715505,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.02280867936490258
+ },
+ {
+  "start": "aspirin/18_2/plus",
+  "kind": "original",
+  "E_start": 0.23359015408835943,
+  "E_lbfgs_0.01": -0.3835458227997384,
+  "E_lbfgs_0.001": -0.43113436206666356,
+  "E_custom": -0.24560727096286677,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.03483693866248366
+ },
+ {
+  "start": "aspirin/66/minus",
+  "kind": "original",
+  "E_start": 0.34977954163664005,
+  "E_lbfgs_0.01": -0.23181990050922718,
+  "E_lbfgs_0.001": -0.2318807893616708,
+  "E_custom": 0.25722606740947296,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.020944057648455833
+ },
+ {
+  "start": "aspirin/66/plus",
+  "kind": "original",
+  "E_start": 0.3530539808462312,
+  "E_lbfgs_0.01": -0.2847951256744295,
+  "E_lbfgs_0.001": -0.2848175256008286,
+  "E_custom": 0.2594935970524503,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.020921851963317972
+ },
+ {
+  "start": "aspirin/78/minus",
+  "kind": "original",
+  "E_start": -0.024974084327258672,
+  "E_lbfgs_0.01": -0.206467177513539,
+  "E_lbfgs_0.001": -0.20662888337699603,
+  "E_custom": -0.06311896156870746,
+  "custom_category": "unmatched_converged",
+  "custom_maxF": 0.009994773499562959
+ },
+ {
+  "start": "aspirin/78/plus",
+  "kind": "original",
+  "E_start": -0.045318043550455725,
+  "E_lbfgs_0.01": -0.20571083988286765,
+  "E_lbfgs_0.001": -0.20964783175532936,
+  "E_custom": -0.14406565621893222,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.10253281661746921
+ },
+ {
+  "start": "min1",
+  "kind": "reference",
+  "E_start": -0.4178974723298938,
+  "E_lbfgs_0.01": -0.43087346989792796,
+  "E_lbfgs_0.001": -0.4311279579666618,
+  "E_custom": -0.4240018792314667,
+  "custom_category": "matched_reference",
+  "custom_maxF": 0.009981306294122763
+ },
+ {
+  "start": "min3",
+  "kind": "reference",
+  "E_start": -0.2206791616863023,
+  "E_lbfgs_0.01": -0.2263668534114207,
+  "E_lbfgs_0.001": -0.23188708890084836,
+  "E_custom": -0.22383668037340632,
+  "custom_category": "matched_reference",
+  "custom_maxF": 0.009370302280694465
+ },
+ {
+  "start": "min6",
+  "kind": "reference",
+  "E_start": 0.10687803867377133,
+  "E_lbfgs_0.01": 0.09739718844829032,
+  "E_lbfgs_0.001": -0.06724837331866705,
+  "E_custom": 0.10397592658322255,
+  "custom_category": "matched_reference",
+  "custom_maxF": 0.00992503486546037
+ },
+ {
+  "start": "min7",
+  "kind": "reference",
+  "E_start": -0.19962153144932288,
+  "E_lbfgs_0.01": -0.20892072119865507,
+  "E_lbfgs_0.001": -0.20964631974033873,
+  "E_custom": -0.201257014716755,
+  "custom_category": "matched_reference",
+  "custom_maxF": 0.009993435950316903
+ },
+ {
+  "start": "min8",
+  "kind": "reference",
+  "E_start": -0.18857628782042687,
+  "E_lbfgs_0.01": -0.20643439170286876,
+  "E_lbfgs_0.001": -0.20661358374613917,
+  "E_custom": -0.2007197567207894,
+  "custom_category": "unmatched_converged",
+  "custom_maxF": 0.009958027584615614
+ },
+ {
+  "start": "min9",
+  "kind": "reference",
+  "E_start": 0.1812591739251082,
+  "E_lbfgs_0.01": 0.15070059290880689,
+  "E_lbfgs_0.001": -0.07539008609186515,
+  "E_custom": 0.15899662954279756,
+  "custom_category": "nonconverged",
+  "custom_maxF": 0.017339490330924856
+ }
+]

@@ -1,0 +1,33 @@
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/e3nn/o3/_wigner.py:10: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  _Jd, _W3j_flat, _W3j_indices = torch.load(os.path.join(os.path.dirname(__file__), 'constants.pt'))
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/mace/calculators/mace.py:226: UserWarning: Environment variable TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD detected, since the`weights_only` argument was not explicitly passed to `torch.load`, forcing weights_only=False.
+  torch.load(f=model_path, map_location=device)
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+$PROJECT_ROOT/Group9/baselines/mace/.venv/lib/python3.12/site-packages/torch/jit/_serialization.py:176: FutureWarning: `torch.jit.load` is deprecated. Please switch to `torch.export`.
+  warnings.warn(
+cuequivariance or cuequivariance_torch is not available. Cuequivariance acceleration will be disabled.
+mace-runA-final-ema: parity verified (max force diff 0.00e+00)
+mace-runA-final-ema 01/16 aspirin/13/minus: 0.01 unmatched_converged (250) | 0.001 unmatched_converged (594)
+mace-runA-final-ema 02/16 aspirin/13/plus: 0.01 unmatched_converged (261) | 0.001 matched_reference (1422)
+mace-runA-final-ema 03/16 aspirin/18/minus: 0.01 unmatched_converged (1273) | 0.001 matched_reference (1500)
+mace-runA-final-ema 04/16 aspirin/18/plus: 0.01 unmatched_converged (1428) | 0.001 nonconverged (1500)
+mace-runA-final-ema 05/16 aspirin/18_2/minus: 0.01 unmatched_converged (1351) | 0.001 matched_reference (1500)
+mace-runA-final-ema 06/16 aspirin/18_2/plus: 0.01 nonconverged (1500) | 0.001 nonconverged (1500)
+mace-runA-final-ema 07/16 aspirin/66/minus: 0.01 nonconverged (1500) | 0.001 nonconverged (1500)
+mace-runA-final-ema 08/16 aspirin/66/plus: 0.01 nonconverged (1500) | 0.001 nonconverged (1500)
+mace-runA-final-ema 09/16 aspirin/78/minus: 0.01 unmatched_converged (1032) | 0.001 matched_reference (1500)
+mace-runA-final-ema 10/16 aspirin/78/plus: 0.01 unmatched_converged (606) | 0.001 matched_reference (1221)
+mace-runA-final-ema 11/16 min1: 0.01 matched_reference (1) | 0.001 matched_reference (1)
+mace-runA-final-ema 12/16 min3: 0.01 matched_reference (1) | 0.001 matched_reference (2)
+mace-runA-final-ema 13/16 min6: 0.01 matched_reference (1) | 0.001 matched_reference (2)
+mace-runA-final-ema 14/16 min7: 0.01 matched_reference (1) | 0.001 matched_reference (3)
+mace-runA-final-ema 15/16 min8: 0.01 matched_reference (1) | 0.001 matched_reference (4)
+mace-runA-final-ema 16/16 min9: 0.01 matched_reference (1) | 0.001 matched_reference (2)
+DONE

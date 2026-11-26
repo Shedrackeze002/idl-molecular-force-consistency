@@ -1,0 +1,20 @@
+{
+  "PYTHONPATH": "/private/tmp/group9-optimizer-run/bound/e3x:/private/tmp/group9-optimizer-run/bound/e3x/src:/private/tmp/group9-optimizer-run/bound/e3x/scripts:/private/tmp/group9-optimizer-run/bound/mace/scripts",
+  "argv": [
+    "$PROJECT_ROOT/output/research/optimizer-control/e3x_fire.py",
+    "run",
+    "--model",
+    "e3x",
+    "--group9",
+    "$PROJECT_ROOT/Group9",
+    "--admission",
+    "$PROJECT_ROOT/Group9/.local-workflow/stage2-movement-cap-2026-11-02/runs/s2cap-pair1-a0/A0_RESULT.json",
+    "--output",
+    "$PROJECT_ROOT/output/research/optimizer-control/e3x-fire-2026-11-26/e3x"
+  ],
+  "ase": "3.29.0",
+  "cwd": "/private/tmp/group9-optimizer-run/bound/e3x",
+  "geom_sha256": "8512d7f7772a8760d7570c94ee7146755a8f53f8d5048eab7798c0c4816d69eb",
+  "python": "$PROJECT_ROOT/Group9/.venv/bin/python",
+  "script_sha256": "e3c854e817a4470bdac22ddf8676c691eb09ad9850f9b115e047e666b9c2e87b"
+}

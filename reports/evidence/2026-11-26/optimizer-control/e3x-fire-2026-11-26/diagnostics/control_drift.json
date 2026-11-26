@@ -1,0 +1,622 @@
+{
+ "e3x-lbfgs-2026-11-26": {
+  "energy-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 0.1956267291870077,
+    "connected_5A": true,
+    "max_force": 0.0007830464437017315,
+    "sym_rmsd_from_dft_A": 0.1956267291870077,
+    "category": "unmatched_converged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 0.37979075112477745,
+    "connected_5A": true,
+    "max_force": 0.0007781763926946184,
+    "sym_rmsd_from_dft_A": 0.37979075112477745,
+    "category": "unmatched_converged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 1.2525110202641998,
+    "connected_5A": true,
+    "max_force": 0.0008325270287787845,
+    "sym_rmsd_from_dft_A": 1.2525110202641998,
+    "category": "unmatched_converged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 0.241728689453949,
+    "connected_5A": true,
+    "max_force": 0.0008942655122809173,
+    "sym_rmsd_from_dft_A": 0.241728689453949,
+    "category": "unmatched_converged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 0.18238563952360573,
+    "connected_5A": true,
+    "max_force": 0.0008188388196116447,
+    "sym_rmsd_from_dft_A": 0.18238563952360573,
+    "category": "unmatched_converged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 1.1613388120325334,
+    "connected_5A": true,
+    "max_force": 0.0008201305026483419,
+    "sym_rmsd_from_dft_A": 1.1613388120325334,
+    "category": "unmatched_converged"
+   }
+  },
+  "direct-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 7.048976396640273,
+    "connected_5A": false,
+    "max_force": 27.309908867428753,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 16.58767541487286,
+    "connected_5A": false,
+    "max_force": 264.8385698535559,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 9.255787074346573,
+    "connected_5A": false,
+    "max_force": 98.046157374024,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 11.695089575303369,
+    "connected_5A": false,
+    "max_force": 79.8083259568048,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 4.571544126593747,
+    "connected_5A": false,
+    "max_force": 31.73582755940123,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 3.746231597250094,
+    "connected_5A": false,
+    "max_force": 68.67583342346848,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-0.1-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 6.705364262167325,
+    "connected_5A": false,
+    "max_force": 577.9132371262206,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 3.8888364220775307,
+    "connected_5A": false,
+    "max_force": 724.066429472694,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 10.774259966114743,
+    "connected_5A": false,
+    "max_force": 1879.5842854283408,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 8.67713044876205,
+    "connected_5A": false,
+    "max_force": 246.5726116157466,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 3.6833893573709813,
+    "connected_5A": false,
+    "max_force": 312.82918981590706,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 7.838993766265729,
+    "connected_5A": false,
+    "max_force": 139.62468327823765,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "direct-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 23.016125107208925,
+    "connected_5A": false,
+    "max_force": 711.9159018351068,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 4.59157413418315,
+    "connected_5A": false,
+    "max_force": 558.7466547085756,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 9.977683413137735,
+    "connected_5A": false,
+    "max_force": 412.15921944526565,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 5.814966544176425,
+    "connected_5A": false,
+    "max_force": 79.37329932659618,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 18.26465348106281,
+    "connected_5A": false,
+    "max_force": 2468.6165597595323,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 6.002354669238134,
+    "connected_5A": false,
+    "max_force": 39.26886319692726,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-0.1-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 4.120141290360649,
+    "connected_5A": false,
+    "max_force": 88.08861215350846,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 5.1868965886148,
+    "connected_5A": false,
+    "max_force": 91.13360762845323,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 9.291249501486114,
+    "connected_5A": false,
+    "max_force": 100.40807429873486,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 5.34528045323496,
+    "connected_5A": false,
+    "max_force": 79.13846871339784,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 3.893304312530082,
+    "connected_5A": true,
+    "max_force": 1168.66045243585,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 5.9277501903816505,
+    "connected_5A": false,
+    "max_force": 131.52091590846854,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-1-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 7.056456749408199,
+    "connected_5A": false,
+    "max_force": 110.2230599114597,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 6.31820855326106,
+    "connected_5A": false,
+    "max_force": 26.9830095916448,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 5.321922158257568,
+    "connected_5A": false,
+    "max_force": 22.338703673783314,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 3.8722766594755127,
+    "connected_5A": false,
+    "max_force": 225.12392076135706,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 5.195708855566066,
+    "connected_5A": false,
+    "max_force": 35.613865348174315,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 9.84495099751607,
+    "connected_5A": false,
+    "max_force": 223.9363478049784,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-1-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 7.350743363001033,
+    "connected_5A": false,
+    "max_force": 515.0613243140828,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 6.476592903013203,
+    "connected_5A": false,
+    "max_force": 37.505725009223546,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 3.8182495540122803,
+    "connected_5A": false,
+    "max_force": 101.26854255994039,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 12.474410665262642,
+    "connected_5A": false,
+    "max_force": 460.59141327767765,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 4.001874295330093,
+    "connected_5A": false,
+    "max_force": 88.4733456871512,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 5.048952939154104,
+    "connected_5A": false,
+    "max_force": 975.2334013029663,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  }
+ },
+ "e3x-fire-2026-11-26": {
+  "energy-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 0.15924864101052752,
+    "connected_5A": true,
+    "max_force": 0.0027485339648868345,
+    "sym_rmsd_from_dft_A": 0.15924864101052752,
+    "category": "unmatched_converged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 0.07616788429943835,
+    "connected_5A": true,
+    "max_force": 0.002147422863633265,
+    "sym_rmsd_from_dft_A": 0.07616788429943835,
+    "category": "unmatched_converged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 0.14725487056704192,
+    "connected_5A": true,
+    "max_force": 0.0023771019357755607,
+    "sym_rmsd_from_dft_A": 0.14725487056704192,
+    "category": "unmatched_converged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 0.14487623278243578,
+    "connected_5A": true,
+    "max_force": 0.0032192023074397724,
+    "sym_rmsd_from_dft_A": 0.14487623278243578,
+    "category": "unmatched_converged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 0.1743480671480783,
+    "connected_5A": true,
+    "max_force": 0.0009484797607593309,
+    "sym_rmsd_from_dft_A": 0.1743480671480783,
+    "category": "unmatched_converged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 0.2535629211175087,
+    "connected_5A": true,
+    "max_force": 0.00663455269306959,
+    "sym_rmsd_from_dft_A": 0.2535629211175087,
+    "category": "unmatched_converged"
+   }
+  },
+  "direct-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 22.77665170435848,
+    "connected_5A": false,
+    "max_force": 12.07976101700244,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 18.549865438544483,
+    "connected_5A": false,
+    "max_force": 21.346073589877932,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 11.907702029406897,
+    "connected_5A": false,
+    "max_force": 12.187936599762333,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 23.23755500882854,
+    "connected_5A": false,
+    "max_force": 8.699438536693133,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 25.289755872672238,
+    "connected_5A": false,
+    "max_force": 39.27600924412484,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 23.251811286607097,
+    "connected_5A": false,
+    "max_force": 31.62315885552612,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-0.1-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 32.10912290783444,
+    "connected_5A": false,
+    "max_force": 66.74162587739389,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 20.942663182051145,
+    "connected_5A": false,
+    "max_force": 36.27409047142568,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 38.09673289036414,
+    "connected_5A": false,
+    "max_force": 105.91931070146383,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 4.8204457293293705,
+    "connected_5A": false,
+    "max_force": 6.0449436438063575,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 39.89495472429876,
+    "connected_5A": false,
+    "max_force": 48.44182502152428,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 45.1721284834057,
+    "connected_5A": false,
+    "max_force": 56.95605044441787,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "direct-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 43.87904248798562,
+    "connected_5A": false,
+    "max_force": 51.44893001366281,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 35.11985967088197,
+    "connected_5A": false,
+    "max_force": 94.40007699241046,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 34.91648781764548,
+    "connected_5A": false,
+    "max_force": 76.12145761367323,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 23.483200317408688,
+    "connected_5A": false,
+    "max_force": 11.262336629129013,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 40.40561747465847,
+    "connected_5A": false,
+    "max_force": 23.03873079310748,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 17.553425404881043,
+    "connected_5A": false,
+    "max_force": 35.11077543621892,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-0.1-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 5.925179793516471,
+    "connected_5A": false,
+    "max_force": 67.585222800674,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 2.743249473479465,
+    "connected_5A": false,
+    "max_force": 107.84222268479935,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 4.510056541398212,
+    "connected_5A": false,
+    "max_force": 998.3780867477783,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 0.8184096600550642,
+    "connected_5A": true,
+    "max_force": 541.0694989336284,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 4.03039739164284,
+    "connected_5A": true,
+    "max_force": 142.1752323865311,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 6.563948644362128,
+    "connected_5A": false,
+    "max_force": 1240.9165362828808,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-1-0": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 26.94716030467222,
+    "connected_5A": false,
+    "max_force": 15.917146310464757,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 30.14404113376225,
+    "connected_5A": false,
+    "max_force": 21.993602143442732,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 5.385953253007345,
+    "connected_5A": false,
+    "max_force": 13.587353073478507,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 5.171343789027206,
+    "connected_5A": false,
+    "max_force": 8.403485962628976,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 6.0959874146497235,
+    "connected_5A": false,
+    "max_force": 7.070747456437734,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 9.066306943559946,
+    "connected_5A": false,
+    "max_force": 14.638782844302888,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  },
+  "consistency-1-1": {
+   "min1": {
+    "fixed_order_rmsd_from_dft_A": 4.074037421826563,
+    "connected_5A": false,
+    "max_force": 2.7456841311966373,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min3": {
+    "fixed_order_rmsd_from_dft_A": 2.8528950017577555,
+    "connected_5A": true,
+    "max_force": 1.0525476133783955,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min6": {
+    "fixed_order_rmsd_from_dft_A": 1.3382841056748442,
+    "connected_5A": true,
+    "max_force": 1056.7757888400206,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min7": {
+    "fixed_order_rmsd_from_dft_A": 2.019171983863245,
+    "connected_5A": true,
+    "max_force": 5066.700384667152,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min8": {
+    "fixed_order_rmsd_from_dft_A": 4.119710743989376,
+    "connected_5A": false,
+    "max_force": 1.5447223475487408,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   },
+   "min9": {
+    "fixed_order_rmsd_from_dft_A": 1.597122054857801,
+    "connected_5A": true,
+    "max_force": 3219.149826716376,
+    "sym_rmsd_from_dft_A": null,
+    "category": "nonconverged"
+   }
+  }
+ }
+}

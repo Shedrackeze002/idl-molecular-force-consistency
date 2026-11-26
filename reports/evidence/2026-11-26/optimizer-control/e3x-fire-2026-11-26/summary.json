@@ -1,0 +1,679 @@
+{
+  "budget": 1500,
+  "checkpoints": {
+    "consistency-0.1-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "endpoint_connected_fraction": 0.0,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 125,
+          "median": 44.5,
+          "min": 20
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018643352668732405,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "endpoint_connected_fraction": 0.0,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 125,
+          "median": 44.5,
+          "min": 20
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 22.07629491807893,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-0.1-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 15,
+        "disconnected_endpoints": 11,
+        "endpoint_connected_fraction": 0.3125,
+        "energy_property_requests_total": 96529,
+        "fire_velocity_resets": {
+          "max": 1076,
+          "median": 160.0,
+          "min": 31
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1316,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0019118760246783495,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 2,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 15,
+        "disconnected_endpoints": 11,
+        "endpoint_connected_fraction": 0.3125,
+        "energy_property_requests_total": 96529,
+        "fire_velocity_resets": {
+          "max": 1076,
+          "median": 160.0,
+          "min": 31
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1316,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 31.136688790051267,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 2,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-1-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 13,
+        "endpoint_connected_fraction": 0.1875,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 134,
+          "median": 93.0,
+          "min": 43
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018572912085801363,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 13,
+        "endpoint_connected_fraction": 0.1875,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 134,
+          "median": 93.0,
+          "min": 43
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 22.03660671086982,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "consistency-1-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 5,
+        "endpoint_connected_fraction": 0.6875,
+        "energy_property_requests_total": 80734,
+        "fire_velocity_resets": {
+          "max": 982,
+          "median": 132.0,
+          "min": 114
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018734568729996681,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 4,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 5,
+        "endpoint_connected_fraction": 0.6875,
+        "energy_property_requests_total": 80734,
+        "fire_velocity_resets": {
+          "max": 982,
+          "median": 132.0,
+          "min": 114
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 29.31838933425024,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 4,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "direct-0": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 15,
+        "endpoint_connected_fraction": 0.0625,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 108,
+          "median": 38.0,
+          "min": 18
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0018645829986780882,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 15,
+        "endpoint_connected_fraction": 0.0625,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 108,
+          "median": 38.0,
+          "min": 18
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 22.215512625407428,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "direct-1": {
+      "0.001": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "endpoint_connected_fraction": 0.0,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 41,
+          "median": 20.5,
+          "min": 10
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 0.0019252491183578968,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 0,
+        "budget_exhausted": 16,
+        "disconnected_endpoints": 16,
+        "endpoint_connected_fraction": 0.0,
+        "energy_property_requests_total": 24016,
+        "fire_velocity_resets": {
+          "max": 41,
+          "median": 20.5,
+          "min": 10
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1500,
+        "median_own_minimum_rmsd_from_dft_A": null,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 22.293680458329618,
+        "original_categories": {
+          "nonconverged": 10
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": null,
+          "min3": null,
+          "min6": null,
+          "min7": null,
+          "min8": null,
+          "min9": null
+        },
+        "reference_categories": {
+          "nonconverged": 6
+        },
+        "reference_connected": 0,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 0,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "energy-0": {
+      "0.001": {
+        "ase_converged": 2,
+        "budget_exhausted": 4,
+        "disconnected_endpoints": 0,
+        "endpoint_connected_fraction": 1.0,
+        "energy_property_requests_total": 22991,
+        "fire_velocity_resets": {
+          "max": 136,
+          "median": 135.0,
+          "min": 67
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 737,
+        "median_own_minimum_rmsd_from_dft_A": 0.15325175578878472,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 19.48182208207436,
+        "original_categories": {
+          "nonconverged": 4,
+          "unmatched_converged": 6
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 0.15924864101052752,
+          "min3": 0.07616788429943835,
+          "min6": 0.14725487056704192,
+          "min7": 0.14487623278243578,
+          "min8": 0.1743480671480783,
+          "min9": 0.2535629211175087
+        },
+        "reference_categories": {
+          "unmatched_converged": 6
+        },
+        "reference_connected": 6,
+        "reference_count": 6,
+        "reference_kept": 0,
+        "reference_report_converged": 6,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 12,
+        "budget_exhausted": 3,
+        "disconnected_endpoints": 0,
+        "endpoint_connected_fraction": 1.0,
+        "energy_property_requests_total": 10575,
+        "fire_velocity_resets": {
+          "max": 135,
+          "median": 37.0,
+          "min": 2
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 26,
+        "median_own_minimum_rmsd_from_dft_A": 0.028075082769329015,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 16.53573974594474,
+        "original_categories": {
+          "nonconverged": 3,
+          "unmatched_converged": 7
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 0.03166635913751811,
+          "min3": 0.024483806401139917,
+          "min6": 0.022600347233008994,
+          "min7": 0.008581089175259628,
+          "min8": 0.10973590354793884,
+          "min9": 0.1602471050803541
+        },
+        "reference_categories": {
+          "matched_reference": 4,
+          "unmatched_converged": 2
+        },
+        "reference_connected": 6,
+        "reference_count": 6,
+        "reference_kept": 4,
+        "reference_report_converged": 6,
+        "team_vs_sym_disagreements": []
+      }
+    },
+    "mace-runA-final-ema": {
+      "0.001": {
+        "ase_converged": 9,
+        "budget_exhausted": 4,
+        "disconnected_endpoints": 0,
+        "endpoint_connected_fraction": 1.0,
+        "energy_property_requests_total": 13773,
+        "fire_velocity_resets": {
+          "max": 136,
+          "median": 118.0,
+          "min": 0
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1,
+        "median_own_minimum_rmsd_from_dft_A": 7.74156826452595e-06,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 241.14935295889154,
+        "original_categories": {
+          "matched_reference": 5,
+          "nonconverged": 4,
+          "unmatched_converged": 1
+        },
+        "original_count": 10,
+        "original_recovered": 5,
+        "original_recovered_ids": [
+          "aspirin/13/plus",
+          "aspirin/18/minus",
+          "aspirin/18_2/minus",
+          "aspirin/78/minus",
+          "aspirin/78/plus"
+        ],
+        "original_sym_crosscheck_recovered": 5,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 5.121032645223734e-16,
+          "min3": 8.549137392873778e-06,
+          "min6": 6.9339991361781194e-06,
+          "min7": 1.9471820086711203e-05,
+          "min8": 1.8046060169969338e-05,
+          "min9": 4.302053406014879e-06
+        },
+        "reference_categories": {
+          "matched_reference": 6
+        },
+        "reference_connected": 6,
+        "reference_count": 6,
+        "reference_kept": 6,
+        "reference_report_converged": 6,
+        "team_vs_sym_disagreements": []
+      },
+      "0.01": {
+        "ase_converged": 13,
+        "budget_exhausted": 3,
+        "disconnected_endpoints": 0,
+        "endpoint_connected_fraction": 1.0,
+        "energy_property_requests_total": 10723,
+        "fire_velocity_resets": {
+          "max": 136,
+          "median": 39.5,
+          "min": 0
+        },
+        "force_calls_max": 1500,
+        "force_calls_min": 1,
+        "median_own_minimum_rmsd_from_dft_A": 1.0131223127238268e-15,
+        "nonfinite_stops": 0,
+        "optimizer_wall_s_total": 846.7107190429233,
+        "original_categories": {
+          "nonconverged": 3,
+          "unmatched_converged": 7
+        },
+        "original_count": 10,
+        "original_recovered": 0,
+        "original_recovered_ids": [],
+        "original_sym_crosscheck_recovered": 0,
+        "own_minimum_rmsd_from_dft_A": {
+          "min1": 5.121032645223734e-16,
+          "min3": 1.1440881311066446e-15,
+          "min6": 8.821564943410088e-16,
+          "min7": 1.2570025553743495e-15,
+          "min8": 7.224943535523193e-16,
+          "min9": 1.3778780500335372e-15
+        },
+        "reference_categories": {
+          "matched_reference": 6
+        },
+        "reference_connected": 6,
+        "reference_count": 6,
+        "reference_kept": 6,
+        "reference_report_converged": 6,
+        "team_vs_sym_disagreements": []
+      }
+    }
+  },
+  "force_rule_eV_per_A": 0.01,
+  "match_rule_A": 0.05,
+  "thresholds": [
+    0.01,
+    0.001
+  ]
+}

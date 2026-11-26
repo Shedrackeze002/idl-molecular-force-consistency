@@ -1,0 +1,6 @@
+cuequivariance or cuequivariance_torch is not available. Cuequivariance acceleration will be disabled.
+{"kind": "custom", "start": "aspirin/13/plus", "requests": 8, "stop": "converged", "maxF": 0.0, "connected_5A": false, "max_pair_dist": 535972314.75291234, "rmsd_target": null, "nearest": [99, null]}
+{"kind": "custom", "start": "aspirin/66/plus", "requests": 47, "stop": "converged", "maxF": 0.008868182754614012, "connected_5A": true, "max_pair_dist": 7.519765301854426, "rmsd_target": 1.2533403459764632, "nearest": [1.1482752683744775, "7"]}
+{"kind": "hessian", "point": "13minus_endpoint", "energy_eV": -0.1411317883699164, "maxF": 7.044151069649646e-05, "rmsd_to_min3": 0.2864760455991622, "lowest_eigs": [-0.0, -0.0, -0.0, 0.0, 0.0, 0.0, 0.01876, 0.10043, 0.15757], "n_negative": 0}
+{"kind": "hessian", "point": "min3_relaxed", "energy_eV": -0.1736022497194119, "maxF": 7.337257306427869e-05, "rmsd_to_min3": 0.0010127697365972194, "lowest_eigs": [-0.0, -0.0, -0.0, -0.0, 0.0, 0.0, 0.01465, 0.08265, 0.18391], "n_negative": 0}
+{"kind": "pair", "rmsd_endpoint_vs_relaxed_min3": 0.2863676711367546}
