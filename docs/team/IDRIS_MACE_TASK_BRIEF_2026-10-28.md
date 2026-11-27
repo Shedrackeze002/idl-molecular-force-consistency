@@ -128,7 +128,7 @@ The accepted 26 October Mac-only specification remains unchanged. This worksheet
 
 ## 4. Implement and test the assigned modules
 
-Read the [original detailed implementation plan](../superpowers/plans/2026-10-26-mace-loader-parity.md), [specification](../research/MACE_LOADER_PARITY_SPEC_2026-10-26.md) and [shared contract](../mace-evaluator-contract.md). Their technical controls remain, with WSL differences handled through section 3.
+Read the [original detailed implementation plan](../research/plans/2026-10-26-mace-loader-parity.md), [specification](../research/MACE_LOADER_PARITY_SPEC_2026-10-26.md) and [shared contract](../mace-evaluator-contract.md). Their technical controls remain, with WSL differences handled through section 3.
 
 Create these files in your owner branch; they are implementation deliverables, not tools already supplied:
 
