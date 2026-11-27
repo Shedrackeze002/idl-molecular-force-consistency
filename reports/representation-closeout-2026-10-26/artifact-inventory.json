@@ -1,15 +1,16 @@
 {
   "date": "2026-10-26",
+  "path_note": "On 27 November 2026 the two plan files moved to docs/research/plans with unchanged content.",
   "files": {
     "docs/research/REPRESENTATION_CLOSEOUT_SPEC_2026-10-26.md": {
       "bytes": 7810,
       "sha256": "88da95d47e63fe2fcdb4e3d1a5799141c12ff11ec10a466957bca220c839ce12"
     },
-    "docs/superpowers/plans/2026-10-26-post-midterm-action-plan.md": {
+    "docs/research/plans/2026-10-26-post-midterm-action-plan.md": {
       "bytes": 17234,
       "sha256": "0f8478004ae97e32fc4e300a7317038a1f928278d2bfcfce9ca44f87e17752c1"
     },
-    "docs/superpowers/plans/2026-10-26-representation-closeout.md": {
+    "docs/research/plans/2026-10-26-representation-closeout.md": {
       "bytes": 7088,
       "sha256": "93532af12494f121a64d9e80f0bb55f9e43c9ea2e121d1b406b2c4e26b934d2c"
     },

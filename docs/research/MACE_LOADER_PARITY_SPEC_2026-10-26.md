@@ -1,6 +1,6 @@
 # MACE loader and validation prediction check — specification
 
-26 October 2026. Status: accepted by independent scientific and engineering plan reviews. This is P06 of the [action tracker](../superpowers/plans/2026-10-26-post-midterm-action-plan.md). Idris retains implementation, admission and independent reproduction; Shedrack prepares the coordination plan and reviews. Olufunke retains recovery integration. No new implementation or inference is reported here; implementation and launch checks remain separate.
+26 October 2026. Status: accepted by independent scientific and engineering plan reviews. This is P06 of the [action tracker](plans/2026-10-26-post-midterm-action-plan.md). Idris retains implementation, admission and independent reproduction; Shedrack prepares the coordination plan and reviews. Olufunke retains recovery integration. No new implementation or inference is reported here; implementation and launch checks remain separate.
 
 ## Purpose and scope
 
